@@ -102,7 +102,7 @@ export default function QuickOrderInsertInput({
               style={{
                 backgroundColor: orderColorsData[item.value],
               }}
-              className="rounded-none p-1"
+              className="rounded-none p-1 transition hover:opacity-70"
             >
               {item.label}
             </SelectItem>

@@ -23,13 +23,17 @@ import { toast } from '@/components/ui/use-toast'
 import { sendFeedback } from '@/lib/services/feedback/feedback'
 import { cn } from '@/lib/utils/utils'
 import { LoaderCircle } from 'lucide-react'
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import {
   FEEDBACK_CATEGORY_ENUM,
   feedbackFormSchema,
 } from './feedback-form-schema'
 
-export default function FeedbackForm() {
+export default function FeedbackForm({
+  setIsPopoverFeedbackOpen,
+}: {
+  setIsPopoverFeedbackOpen: Dispatch<SetStateAction<boolean>>
+}) {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const form = useForm<z.infer<typeof feedbackFormSchema>>({
@@ -49,6 +53,7 @@ export default function FeedbackForm() {
     toast({
       title: '피드백 주셔서 감사합니다',
     })
+    setIsPopoverFeedbackOpen(false)
   }
   return (
     <>

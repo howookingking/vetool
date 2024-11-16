@@ -7,6 +7,7 @@ import {
 } from '@/components/ui/select'
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { cn } from '@/lib/utils/utils'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { Dispatch, SetStateAction } from 'react'
 
 export default function TxTableFilter({
@@ -16,12 +17,16 @@ export default function TxTableFilter({
   localFilterState: string
   setLocalFilterState: Dispatch<SetStateAction<string>>
 }) {
+  const {
+    basicHosData: { orderColorsData },
+  } = useBasicHosDataContext()
+
   return (
     <Select value={localFilterState} onValueChange={setLocalFilterState}>
       <SelectTrigger
         className={cn(
           'md: fixed left-2 top-[54px] z-30 w-[calc(100vw-16px)] md:left-auto md:right-2 md:top-1.5 md:w-[240px]',
-          localFilterState !== 'all' && 'pl-7',
+          localFilterState !== 'all' && 'pl-8',
         )}
       >
         {localFilterState !== 'all' && (
@@ -36,7 +41,14 @@ export default function TxTableFilter({
         </SelectItem>
 
         {DEFAULT_ICU_ORDER_TYPE.map((type) => (
-          <SelectItem key={type.value} value={type.value}>
+          <SelectItem
+            key={type.value}
+            value={type.value}
+            style={{
+              backgroundColor: orderColorsData[type.value],
+            }}
+            className="rounded-none transition hover:opacity-70"
+          >
             {type.label}
           </SelectItem>
         ))}
