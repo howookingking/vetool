@@ -29,9 +29,9 @@ import {
 } from 'react'
 import OrdererSelectStep from './orderer/orderer-select-step'
 import { getTemplateCharts } from '@/lib/services/icu/template/template'
-import { useParams } from 'next/navigation'
 
 export default function OrderDialog({
+  hosId,
   icuChartId,
   orders,
   showOrderer,
@@ -46,6 +46,7 @@ export default function OrderDialog({
   setSortedOrders,
   mainVetName,
 }: {
+  hosId: string
   icuChartId: string
   orders: SelectedIcuOrder[]
   showOrderer: boolean
@@ -64,7 +65,6 @@ export default function OrderDialog({
 }) {
   const { isPreviewDialogOpen } = usePreviewDialogStore()
   const { isTemplateDialogOpen } = useTemplateStore()
-  const { hos_id } = useParams()
   const [tabValue, setTabValue] = useState('default')
   const [templateCharts, setTemplateCharts] = useState<TemplateChart[]>([])
 
@@ -95,14 +95,14 @@ export default function OrderDialog({
   useEffect(() => {
     if (tabValue === 'template' && templateCharts?.length === 0) {
       const fetchTemplateData = async () => {
-        const templateChartData = await getTemplateCharts(hos_id as string)
+        const templateChartData = await getTemplateCharts(hosId)
 
         setTemplateCharts(templateChartData)
       }
 
       fetchTemplateData()
     }
-  }, [tabValue, templateCharts, hos_id])
+  }, [tabValue, templateCharts, hosId])
 
   const handleTabValueChange = (value: string) => {
     if (value === 'default') {
