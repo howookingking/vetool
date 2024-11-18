@@ -274,6 +274,7 @@ export default function ChartTable({
 
             {!preview && (
               <OrderDialog
+                hosId={hosId}
                 icuChartId={icu_chart_id}
                 orders={orders}
                 showOrderer={showOrderer}
