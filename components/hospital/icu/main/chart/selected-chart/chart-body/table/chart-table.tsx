@@ -74,7 +74,9 @@ export default function ChartTable({
   const isCommandPressed = useIsCommandPressed()
 
   useEffect(() => {
-    setSortedOrders(orders)
+    if (!isSorting) {
+      setSortedOrders(orders)
+    }
   }, [orders])
 
   // ----- 표에서 수직 안내선 -----
@@ -231,6 +233,7 @@ export default function ChartTable({
     [sortedOrders],
   )
 
+  // --- sorting mode in / out keyboard shortcut ----
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if ((event.ctrlKey || event.metaKey) && event.key === 's') {
@@ -250,6 +253,7 @@ export default function ChartTable({
       window.removeEventListener('keydown', handleKeyDown)
     }
   }, [handleSortButtonClick, isSorting])
+  // --- sorting mode in / out keyboard shortcut ----
 
   return (
     <Table className="border">
