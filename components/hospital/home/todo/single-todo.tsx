@@ -7,6 +7,7 @@ import type { QueriedTodo } from '@/types/hospital/todo'
 import { LoaderCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import DeleteTodoDialog from './delete-todo-dialog'
+import { useRouter } from 'next/navigation'
 
 export default function SingleTodo({
   todo,
@@ -17,6 +18,7 @@ export default function SingleTodo({
 }) {
   const [isToggling, setIsToggling] = useState(false)
   const [isChecked, setIsChecked] = useState(todo.is_done)
+  const { refresh } = useRouter()
 
   useEffect(() => {
     setIsChecked(todo.is_done)
@@ -28,6 +30,7 @@ export default function SingleTodo({
 
     await toggleIsDone(todo.id, todo.is_done)
 
+    refresh()
     setIsToggling(false)
   }
 
