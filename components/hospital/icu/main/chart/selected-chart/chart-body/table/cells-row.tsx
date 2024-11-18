@@ -1,6 +1,9 @@
 'use client'
 
+import Cell from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/cell'
+import NoFecalOrUrineAlert from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/no-fecal-urine-alert'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
+import useIsMobile from '@/hooks/use-is-mobile'
 import {
   type OrderTimePendingQueue,
   useIcuOrderStore,
@@ -9,8 +12,6 @@ import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
 import type { VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import Cell from './cell'
-import NoFecalOrUrineAlert from './tx/no-fecal-urine-alert'
 
 type CellsRowProps = {
   preview?: boolean
@@ -39,6 +40,8 @@ export default function CellsRow({
   vitalRefRange,
   species,
 }: CellsRowProps) {
+  const isMobile = useIsMobile()
+
   const { order_times, order_id, treatments } = order
   const {
     setSelectedOrderPendingQueue,
@@ -142,7 +145,7 @@ export default function CellsRow({
         )
       })}
 
-      {noFecalOrUrineResult && (
+      {!isMobile && noFecalOrUrineResult && (
         <NoFecalOrUrineAlert orderName={order.order_name} />
       )}
     </>
