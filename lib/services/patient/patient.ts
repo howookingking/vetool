@@ -130,6 +130,7 @@ export const updatePatientFromIcu = async (
     icu_chart_id_input: icuChartId,
     weight_measured_date_input: weightMeasuredDate,
     is_weight_changed_input: isWeightChanged,
+    hos_patient_id_input: updatePatient.hos_patient_id,
   })
 
   if (error) {

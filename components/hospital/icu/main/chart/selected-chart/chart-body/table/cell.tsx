@@ -1,13 +1,14 @@
+import { TxDetailHover } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/tx-detail-hover'
+import { VitalResultIndication } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/vital-result-indication'
 import { Input } from '@/components/ui/input'
 import { TableCell } from '@/components/ui/table'
+import useIsMobile from '@/hooks/use-is-mobile'
 import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
 import { TxLocalState } from '@/lib/store/icu/tx-mutation'
 import { cn } from '@/lib/utils/utils'
 import type { SelectedIcuOrder, Treatment, TxLog } from '@/types/icu/chart'
 import { useSearchParams } from 'next/navigation'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { TxDetailHover } from './tx/tx-detail-hover'
-import { VitalResultIndication } from './tx/vital-result-indication'
 
 type CellProps = {
   time: number
@@ -76,6 +77,8 @@ export default function Cell({
   const pressTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const mouseDownTimeRef = useRef<number>(0)
   const isLongPressRef = useRef(false)
+  const touchStartTimeRef = useRef<number>(0)
+  const isTouchEventRef = useRef(false)
 
   const hasOrder = useMemo(() => orderer !== '0', [orderer])
   const hasComment = useMemo(
@@ -170,6 +173,33 @@ export default function Cell({
       orderTimePendingQueueLength,
     ],
   )
+
+  const handleTouchStart = useCallback(() => {
+    isTouchEventRef.current = true
+    setSelectedOrderPendingQueue([])
+
+    touchStartTimeRef.current = Date.now()
+
+    pressTimeoutRef.current = setTimeout(() => {
+      isLongPressRef.current = true
+      handleOpenTxDetail()
+    }, 800)
+  }, [handleOpenTxDetail, setSelectedOrderPendingQueue])
+
+  const handleTouchEnd = useCallback(() => {
+    const pressDuration = Date.now() - touchStartTimeRef.current
+
+    if (!isLongPressRef.current && pressDuration < 800) {
+      setIsFocused(true)
+    }
+
+    cleanupPressTimeout()
+    isTouchEventRef.current = false
+  }, [cleanupPressTimeout])
+
+  const handleTouchMove = useCallback(() => {
+    cleanupPressTimeout()
+  }, [cleanupPressTimeout])
 
   const handleMouseDown = useCallback(
     (e: React.MouseEvent<HTMLInputElement>) => {
@@ -322,6 +352,9 @@ export default function Cell({
           onMouseLeave={handleMouseLeave}
           onMouseEnter={() => onMouseEnter(time)}
           onFocus={() => setIsFocused(true)}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          onTouchMove={handleTouchMove}
         />
         <div
           className={cn(

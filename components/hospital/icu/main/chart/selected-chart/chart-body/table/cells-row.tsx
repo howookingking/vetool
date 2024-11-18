@@ -1,5 +1,7 @@
 'use client'
 
+import Cell from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/cell'
+import NoFecalOrUrineAlert from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/no-fecal-urine-alert'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import {
   type OrderTimePendingQueue,
@@ -9,8 +11,6 @@ import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
 import type { VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import Cell from './cell'
-import NoFecalOrUrineAlert from './tx/no-fecal-urine-alert'
 
 type CellsRowProps = {
   preview?: boolean
