@@ -4,6 +4,7 @@ import NoResult from '@/components/common/no-result'
 import SingleNotice from '@/components/hospital/home/notice/single-notice'
 import { reorderNotices } from '@/lib/services/hospital-home/notice'
 import type { NoticeWithUser } from '@/types/hospital/notice'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { ReactSortable, Sortable } from 'react-sortablejs'
 
@@ -15,6 +16,7 @@ export default function DragAndDropNoticeList({
   hosId: string
 }) {
   const [sortableNotice, setSortableNotice] = useState(noticesData)
+  const { refresh } = useRouter()
 
   useEffect(() => {
     setSortableNotice(noticesData)
@@ -25,6 +27,7 @@ export default function DragAndDropNoticeList({
     const item = noticeIds.splice(event.oldIndex as number, 1)[0]
     noticeIds.splice(event.newIndex as number, 0, item)
     reorderNotices(noticeIds)
+    refresh()
   }
 
   return (
