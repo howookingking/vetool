@@ -1,6 +1,5 @@
 'use client'
 
-import NoResult from '@/components/common/no-result'
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import PatientInfo from '@/components/hospital/common/patient-info'
 import TxTableCell from '@/components/hospital/icu/main/tx-table/tx-table-cell'
@@ -15,9 +14,8 @@ import {
 } from '@/components/ui/table'
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
-import { cn } from '@/lib/utils/utils'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
+import { useEffect, useMemo, useRef } from 'react'
 
 export default function TxTable({
   localFilterState,
@@ -30,9 +28,53 @@ export default function TxTable({
     [key: string]: string
   }
 }) {
-  const orderType = DEFAULT_ICU_ORDER_TYPE.find(
-    (orderType) => orderType.value === localFilterState,
-  )?.label
+  const scrollAreaRef = useRef<HTMLDivElement>(null)
+  const tableRef = useRef<HTMLTableElement>(null)
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      const currentHour = new Date().getHours() - 1
+
+      if (scrollAreaRef.current && tableRef.current) {
+        const scrollContainer = scrollAreaRef.current.querySelector(
+          '[data-radix-scroll-area-viewport]',
+        ) as HTMLDivElement | null
+
+        const headerCells = tableRef.current.querySelectorAll('th')
+
+        let scrollPosition = 0
+        let foundCurrentHour = false
+
+        headerCells.forEach((cell, index) => {
+          if (index === 0) return
+
+          const hour = TIMES[index - 1]
+
+          if (hour < currentHour) {
+            scrollPosition += cell.offsetWidth
+          } else if (hour === currentHour && !foundCurrentHour) {
+            scrollPosition += cell.offsetWidth
+            foundCurrentHour = true
+          }
+        })
+
+        if (scrollContainer) {
+          scrollContainer.style.scrollBehavior = 'smooth'
+          scrollContainer.scrollLeft = scrollPosition
+        }
+      }
+    }, 100)
+
+    return () => clearTimeout(timeoutId)
+  }, [filteredTxData])
+
+  const orderType = useMemo(
+    () =>
+      DEFAULT_ICU_ORDER_TYPE.find(
+        (orderType) => orderType.value === localFilterState,
+      )?.label,
+    [localFilterState],
+  )
 
   if (filteredTxData.length === 0) {
     return (
@@ -45,8 +87,11 @@ export default function TxTable({
   }
 
   return (
-    <ScrollArea className="h-[calc(100vh-136px)] overflow-scroll whitespace-nowrap md:h-icu-chart-main md:w-[calc(100vw-200px)]">
-      <Table className="border">
+    <ScrollArea
+      ref={scrollAreaRef}
+      className="h-[calc(100vh-136px)] overflow-scroll whitespace-nowrap md:h-icu-chart-main md:w-[calc(100vw-200px)]"
+    >
+      <Table className="border" ref={tableRef}>
         <TableHeader className="sticky top-0 z-10 bg-white shadow-sm">
           <TableRow>
             <TableHead className="w-[120px] text-center">환자목록</TableHead>
