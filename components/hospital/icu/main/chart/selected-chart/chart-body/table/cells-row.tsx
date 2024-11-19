@@ -61,7 +61,7 @@ export default function CellsRow({
         setOrderTimeState(order_times)
       }
     }
-  }, [order_times, orderStep])
+  }, [order_times, orderStep, orderTimePendingQueueLength])
 
   const toggleOrderTime = useCallback(
     (orderId: string, time: number) => {
