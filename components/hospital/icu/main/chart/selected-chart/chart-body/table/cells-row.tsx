@@ -57,7 +57,9 @@ export default function CellsRow({
 
   useEffect(() => {
     if (orderStep === 'closed') {
-      setOrderTimeState(order_times)
+      if (orderTimePendingQueueLength === 0) {
+        setOrderTimeState(order_times)
+      }
     }
   }, [order_times, orderStep])
 
