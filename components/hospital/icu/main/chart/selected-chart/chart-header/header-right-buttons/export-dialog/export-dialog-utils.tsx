@@ -2,13 +2,13 @@ import ChartInfos from '@/components/hospital/icu/main/chart/selected-chart/char
 import ChartTable from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table'
 import { Badge } from '@/components/ui/badge'
 import { toast } from '@/components/ui/use-toast'
+import { getIcuChart } from '@/lib/services/icu/chart/get-icu-chart'
 import { getIoDateRange } from '@/lib/services/icu/chart/get-io-date-range'
 import { getIcuData } from '@/lib/services/icu/get-icu-data'
 import { Json } from '@/lib/supabase/database.types'
 import { BasicHosDataProvider } from '@/providers/basic-hos-data-context-provider'
 import type { IcuOrderColors } from '@/types/adimin'
 import type { IcuSidebarIoData, SelectedChart, Vet } from '@/types/icu/chart'
-import type { TemplateChart } from '@/types/icu/template'
 import html2canvas from 'html2canvas'
 import React, { useEffect, useRef } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -17,7 +17,7 @@ import { createRoot } from 'react-dom/client'
 export const captureContent = async (element: HTMLElement) => {
   return await html2canvas(element, {
     width: element.scrollWidth,
-    height: element.scrollHeight,
+    height: element.scrollHeight + 300,
     scale: 1.2,
     useCORS: true,
     allowTaint: true,
@@ -107,22 +107,27 @@ export const renderAndCaptureExportChartBody = (
 }
 
 export const handleExport = async (
-  chartData: SelectedChart,
+  icuIoId: string,
+  patientId: string,
+  target_date: string,
   hosId: string,
   exportFn: (canvases: HTMLCanvasElement[]) => void,
 ) => {
   try {
-    const dateRange = await getIoDateRange(chartData.icu_io.icu_io_id)
-    const initialIcuData = await getIcuData(hosId, chartData.target_date)
+    const dateRange = await getIoDateRange(icuIoId)
+    const initialIcuData = await getIcuData(hosId, target_date)
 
     if (dateRange) {
       const canvases = await Promise.all(
-        dateRange.map(({ target_date }) =>
-          renderAndCaptureExportChartBody(
-            { ...chartData, target_date },
-            initialIcuData,
-          ),
-        ),
+        dateRange.map(async ({ target_date }) => {
+          const chartData = await getIcuChart(hosId, target_date, patientId)
+          const dateChartData = {
+            ...chartData,
+            target_date,
+          }
+
+          return renderAndCaptureExportChartBody(dateChartData, initialIcuData)
+        }),
       )
 
       exportFn(canvases)

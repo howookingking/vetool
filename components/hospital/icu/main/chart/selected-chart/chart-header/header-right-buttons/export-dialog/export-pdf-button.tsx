@@ -15,8 +15,9 @@ export default function ExportPdfButton({
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>
 }) {
   const [isExporting, setIsExporting] = useState(false)
-  const { in_date } = chartData.icu_io
-  const { name } = chartData.patient
+  const { in_date, icu_io_id } = chartData.icu_io
+  const { name, patient_id } = chartData.patient
+  const { target_date } = chartData
   const { hos_id } = useParams()
 
   const generatePdf = (canvases: HTMLCanvasElement[]) => {
@@ -39,11 +40,17 @@ export default function ExportPdfButton({
   const handleExportPdf = async () => {
     setIsExporting(true)
 
-    await handleExport(chartData, hos_id as string, (canvases) => {
-      const pdf = generatePdf(canvases)
+    await handleExport(
+      icu_io_id,
+      patient_id,
+      target_date,
+      hos_id as string,
+      (canvases) => {
+        const pdf = generatePdf(canvases)
 
-      pdf.save(`(입원일_${in_date})_${name}.pdf`)
-    })
+        pdf.save(`(입원일_${in_date})_${name}.pdf`)
+      },
+    )
 
     setIsExporting(false)
     setIsDialogOpen(false)

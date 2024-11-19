@@ -313,9 +313,15 @@ export default function Cell({
   // ---- 바이탈 경고 표시 ----
   const calcVitalResult = useMemo(() => {
     if (rowVitalRefRange && treatment?.tx_result) {
-      if (treatment.tx_result === 'p') return 'above'
       if (Number(treatment.tx_result) < rowVitalRefRange?.min) return 'below'
       if (Number(treatment.tx_result) > rowVitalRefRange?.max) return 'above'
+      if (
+        treatment.tx_result === 'p' ||
+        treatment.tx_result === 'P' ||
+        treatment.tx_result === 'panting' ||
+        treatment.tx_result === 'PANTING'
+      )
+        return 'above'
       return 'normal'
     }
   }, [rowVitalRefRange, treatment?.tx_result])

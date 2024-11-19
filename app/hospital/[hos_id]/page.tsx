@@ -1,4 +1,6 @@
-import HomeEntry from '@/components/hospital/home/home-entry'
+import HospitalSelector from '@/components/hospital/header/hospital-selector'
+import Notice from '@/components/hospital/home/notice/notice'
+import Todo from '@/components/hospital/home/todo/todo'
 import { isSuperAccount } from '@/lib/services/auth/authorization'
 import { getHosList } from '@/lib/services/hospital-home/get-hos-name'
 import { getNotices } from '@/lib/services/hospital-home/notice'
@@ -14,12 +16,11 @@ export default async function HospitalHomePage(props: {
   const isSuper = await isSuperAccount()
 
   return (
-    <HomeEntry
-      hosList={hosList}
-      isSuper={isSuper}
-      noticesData={noticesData}
-      todosData={todosData}
-      hosId={params.hos_id}
-    />
+    <div className="flex w-full flex-col gap-2 p-2 md:flex-row">
+      {isSuper && <HospitalSelector hosList={hosList} />}
+
+      <Notice noticesData={noticesData} hosId={params.hos_id} />
+      <Todo todosData={todosData} hosId={params.hos_id} />
+    </div>
   )
 }
