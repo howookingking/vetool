@@ -2,7 +2,6 @@ import { TxDetailHover } from '@/components/hospital/icu/main/chart/selected-cha
 import { VitalResultIndication } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/vital-result-indication'
 import { Input } from '@/components/ui/input'
 import { TableCell } from '@/components/ui/table'
-import useIsMobile from '@/hooks/use-is-mobile'
 import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
 import { TxLocalState } from '@/lib/store/icu/tx-mutation'
 import { cn } from '@/lib/utils/utils'
@@ -120,8 +119,6 @@ export default function Cell({
   }, [cleanupPressTimeout])
 
   const handleOpenTxDetail = useCallback(() => {
-    if (isFocused) return
-
     setTxLocalState({
       icuChartOrderId,
       txResult: treatment?.tx_result,
@@ -136,7 +133,6 @@ export default function Cell({
     icuChartOrderId,
     icuChartTxId,
     setTxStep,
-    isFocused,
     setTxLocalState,
     time,
     treatment?.tx_comment,
@@ -215,7 +211,7 @@ export default function Cell({
         isLongPressRef.current = true
         // 처치 상세 입력
         handleOpenTxDetail()
-      }, 800)
+      }, 600)
     },
     [handleOpenTxDetail, setSelectedOrderPendingQueue],
   )
