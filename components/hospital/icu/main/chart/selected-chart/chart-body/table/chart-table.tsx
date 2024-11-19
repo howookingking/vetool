@@ -77,7 +77,7 @@ export default function ChartTable({
     if (!isSorting) {
       setSortedOrders(orders)
     }
-  }, [orders])
+  }, [orders, isSorting])
 
   // ----- 표에서 수직 안내선 -----
   const [hoveredColumn, setHoveredColumn] = useState<number | null>(null)
