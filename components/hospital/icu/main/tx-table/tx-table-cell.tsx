@@ -1,5 +1,6 @@
 import CustomTooltip from '@/components/ui/custom-tooltip'
 import { TableCell } from '@/components/ui/table'
+import useIsMobile from '@/hooks/use-is-mobile'
 import { cn, parsingOrderName } from '@/lib/utils/utils'
 import type { IcuOrders, IcuTxs } from '@/types'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
@@ -30,6 +31,7 @@ export default function TxTableCell({
   const { hos_id, target_date } = useParams()
   const { push } = useRouter()
   const searchParams = useSearchParams()
+  const isMobile = useIsMobile()
 
   const isOrderScheduled = useMemo(
     () => order.icu_chart_order_time[time - 1] !== '0',
@@ -64,9 +66,13 @@ export default function TxTableCell({
   const handleCellClick = () => {
     if (!isOrderScheduled) return
     const params = new URLSearchParams(searchParams)
-    push(
-      `/hospital/${hos_id}/icu/${target_date}/chart/${patientId}?order-id=${order.icu_chart_order_id}&time=${time}&${params}`,
-    )
+    if (isMobile) {
+      push(`/hospital/${hos_id}/icu/${target_date}/chart/${patientId}`)
+    } else {
+      push(
+        `/hospital/${hos_id}/icu/${target_date}/chart/${patientId}?order-id=${order.icu_chart_order_id}&time=${time}&${params}`,
+      )
+    }
   }
 
   return (

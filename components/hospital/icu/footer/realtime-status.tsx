@@ -30,7 +30,7 @@ export default function RealtimeStatus({
         <TooltipContent
           className={cn(
             isSubscriptionReady ? 'bg-green-500' : 'bg-red-500',
-            'px-1.5 font-semibold',
+            'ml-14 px-1.5 font-semibold',
           )}
         >
           {isSubscriptionReady
