@@ -23,7 +23,7 @@ export default function SingleNotice({
             size={16}
             cursor="grab"
           />
-          <span>{notice.notice_text}</span>
+          <span className="whitespace-break-spaces">{notice.notice_text}</span>
         </div>
 
         <div className="ml-auto flex shrink-0 items-center gap-1">
