@@ -99,16 +99,20 @@ export default function IcuSearchChart() {
           <Search size={18} />
         </Button>
 
-        <Autocomplete handleUpdate={handleInputChange} label=" " />
+        <Autocomplete
+          handleUpdate={handleInputChange}
+          label=" "
+          placeholder="환자명, 보호자명, DX, CC, 종, 품종, 약물, 오더명 검색"
+        />
 
-        <SearchTypeRadio setOptions={setSearchOptions} />
+        {/* <SearchTypeRadio setOptions={setSearchOptions} /> */}
 
-        <HelperTooltip>
+        {/* <HelperTooltip>
           <span className="flex flex-col font-semibold">
             <span>키워드 검색: 키워드의 메인키워드를 검색</span>
             <span>단순 검색: 상위 키워드도 검색 가능</span>
           </span>
-        </HelperTooltip>
+        </HelperTooltip> */}
         <SearchChartSheet
           searchOptions={searchOptions}
           setSearchOptions={setSearchOptions}

@@ -30,12 +30,14 @@ export default function Autocomplete({
   handleUpdate,
   defaultValue,
   isUpdating,
+  placeholder,
 }: {
   className?: string
   label?: string
   handleUpdate?: (value: string) => void
   defaultValue?: string
   isUpdating?: boolean
+  placeholder?: string
 }) {
   const { trie } = useKeywordTrieStore()
   const [input, setInput] = useState(defaultValue ?? '')
@@ -161,6 +163,7 @@ export default function Autocomplete({
         className={cn(label ? 'pl-8' : '')}
         onBlur={() => handleUpdate!(input)}
         disabled={isUpdating}
+        placeholder={placeholder ?? ''}
       />
 
       {suggestions.length > 0 && (
