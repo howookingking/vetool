@@ -257,7 +257,7 @@ export default function ChartTable({
 
   return (
     <Table className="border">
-      <TableHeader className="sticky -top-3 z-10 bg-white shadow-sm">
+      <TableHeader className="sticky -top-3 z-20 bg-white shadow-sm">
         <TableRow>
           <TableHead className="flex w-[320px] items-center justify-between px-0.5 text-center">
             {!preview && (
