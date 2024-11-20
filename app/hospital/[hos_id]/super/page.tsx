@@ -1,4 +1,4 @@
-import { SuperPageTabs } from '@/components/hospital/super/super-page-tabs'
+import SuperPageTabs from '@/components/hospital/super/super-page-tabs'
 import { isSuperAccount } from '@/lib/services/auth/authorization'
 import { getHosList } from '@/lib/services/hospital-home/get-hos-name'
 import { redirect } from 'next/navigation'

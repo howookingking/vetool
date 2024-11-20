@@ -1310,6 +1310,7 @@ export type Database = {
         Row: {
           created_at: string
           feedback_id: string | null
+          patch_category: string
           patch_content: string
           patch_id: string
           patch_title: string
@@ -1317,6 +1318,7 @@ export type Database = {
         Insert: {
           created_at?: string
           feedback_id?: string | null
+          patch_category?: string
           patch_content: string
           patch_id?: string
           patch_title: string
@@ -1324,6 +1326,7 @@ export type Database = {
         Update: {
           created_at?: string
           feedback_id?: string | null
+          patch_category?: string
           patch_content?: string
           patch_id?: string
           patch_title?: string
