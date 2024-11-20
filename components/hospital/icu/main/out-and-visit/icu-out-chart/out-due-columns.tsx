@@ -1,12 +1,12 @@
 'use client'
 
 import PatientInfo from '@/components/hospital/common/patient-info'
+import ChecklistInput from '@/components/hospital/icu/main/out-and-visit/checklist-input'
+import ChecklistTime from '@/components/hospital/icu/main/out-and-visit/checklist-time'
+import { CancelOutDue } from '@/components/hospital/icu/main/out-and-visit/icu-out-chart/cancel-out-due'
+import GoToButton from '@/components/hospital/icu/main/out-and-visit/icu-out-chart/go-to-button'
 import type { OutDuePatientsData } from '@/types/icu/movement'
 import { ColumnDef } from '@tanstack/react-table'
-import ChecklistInput from '../checklist-input'
-import ChecklistTime from '../checklist-time'
-import { CancelOutDue } from './cancel-out-due'
-import GoToButton from './go-to-button'
 
 export const outDueColumns: ColumnDef<OutDuePatientsData>[] = [
   {
@@ -98,25 +98,6 @@ export const outDueColumns: ColumnDef<OutDuePatientsData>[] = [
           isDischarged={isDischarged}
           value={prescription}
           checkType="prescription"
-        />
-      )
-    },
-  },
-  {
-    accessorKey: 'medication',
-    header: '약 조제',
-    cell: ({ row }) => {
-      const medication = row.original.medication
-      const isDischarged = row.original.out_date !== null
-
-      const icuIoId = row.original.icu_io_id
-
-      return (
-        <ChecklistInput
-          icuIoId={icuIoId}
-          isDischarged={isDischarged}
-          checkType="medication"
-          value={medication}
         />
       )
     },

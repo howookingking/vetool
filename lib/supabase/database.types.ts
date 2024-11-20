@@ -688,7 +688,6 @@ export type Database = {
           etc: string
           icu_io_id: string | null
           icu_out_id: string
-          medication: string
           out_time: string
           patient_id: string | null
           prescription: string
@@ -700,7 +699,6 @@ export type Database = {
           etc?: string
           icu_io_id?: string | null
           icu_out_id?: string
-          medication?: string
           out_time?: string
           patient_id?: string | null
           prescription?: string
@@ -712,7 +710,6 @@ export type Database = {
           etc?: string
           icu_io_id?: string | null
           icu_out_id?: string
-          medication?: string
           out_time?: string
           patient_id?: string | null
           prescription?: string
@@ -1306,6 +1303,38 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      vetool_patches: {
+        Row: {
+          created_at: string
+          feedback_id: string | null
+          patch_content: string
+          patch_id: string
+          patch_title: string
+        }
+        Insert: {
+          created_at?: string
+          feedback_id?: string | null
+          patch_content: string
+          patch_id?: string
+          patch_title: string
+        }
+        Update: {
+          created_at?: string
+          feedback_id?: string | null
+          patch_content?: string
+          patch_id?: string
+          patch_title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vetool_patches_feedback_id_fkey"
+            columns: ["feedback_id"]
+            isOneToOne: false
+            referencedRelation: "vetool_feedbacks"
+            referencedColumns: ["feedback_id"]
           },
         ]
       }
