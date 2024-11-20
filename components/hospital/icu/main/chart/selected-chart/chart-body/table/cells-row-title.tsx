@@ -17,8 +17,8 @@ export default function CellsRowTitle({
   species,
 }: {
   order: SelectedIcuOrder
-  isSorting?: boolean
   index: number
+  isSorting?: boolean
   preview?: boolean
   vitalRefRange?: VitalRefRange[]
   species?: string
