@@ -224,3 +224,19 @@ export const isHosPatientIdDuplicated = async (
 
   return data.length ? true : false
 }
+
+export const getHosPatientCount = async (hosId: string) => {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from('patients')
+    .select('count', { count: 'exact' })
+    .match({ hos_id: hosId })
+
+  if (error) {
+    console.error(error)
+    redirect(`/error?message=${error.message}`)
+  }
+
+  return data[0].count
+}

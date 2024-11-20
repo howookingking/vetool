@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
-import { sendFeedback } from '@/lib/services/feedback/feedback'
+import { sendFeedback } from '@/lib/services/super/feedback/feedback'
 import { cn } from '@/lib/utils/utils'
 import { LoaderCircle } from 'lucide-react'
 import { Dispatch, SetStateAction, useState } from 'react'

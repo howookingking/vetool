@@ -1,9 +1,9 @@
 'use server'
 
+import { getUser } from '@/lib/services/auth/authorization'
 import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
-import { getUser } from '../auth/authorization'
 import type { UserFeedbackType } from '@/types/vetool'
+import { redirect } from 'next/navigation'
 
 export const sendFeedback = async (
   feedbackCategory: string,

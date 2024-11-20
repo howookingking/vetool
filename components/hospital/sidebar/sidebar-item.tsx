@@ -10,6 +10,7 @@ import {
   HeartPulse,
   Home,
   ListChecks,
+  Monitor,
   PawPrint,
   Slice,
   Syringe,
@@ -18,7 +19,7 @@ import { useParams, usePathname, useRouter } from 'next/navigation'
 import { useMemo } from 'react'
 
 // server component에서 props로 전달이 안됨
-const ICON_MAPPER = {
+export const ICON_MAPPER = {
   Home: <Home size={18} />,
   Syringe: <Syringe size={18} />,
   Slice: <Slice size={18} />,
@@ -27,6 +28,7 @@ const ICON_MAPPER = {
   BarChart4: <BarChart4 size={18} />,
   PawPrint: <PawPrint size={18} />,
   Building: <Building size={18} />,
+  Monitor: <Monitor size={18} />,
 }
 
 export default function SidebarItem({
