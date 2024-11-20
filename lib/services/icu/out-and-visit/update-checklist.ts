@@ -8,7 +8,6 @@ const ICU_OUT_CHECK_TYPE = [
   'basic_care',
   'belongings',
   'prescription',
-  'medication',
   'out_time',
   'etc',
 ]

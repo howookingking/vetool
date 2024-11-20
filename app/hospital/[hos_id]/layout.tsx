@@ -2,7 +2,7 @@ import Feedback from '@/components/hospital/feedback/feedback'
 import HospitalHeader from '@/components/hospital/header/hospital-header'
 import MobileSidebar from '@/components/hospital/sidebar/mobile-sidebar'
 import Sidebar from '@/components/hospital/sidebar/sidebar'
-import { getUserData } from '@/lib/services/auth/authorization'
+import { getUserData, isSuperAccount } from '@/lib/services/auth/authorization'
 import { getHosName } from '@/lib/services/hospital-home/get-hos-name'
 
 export async function generateMetadata(props: {
@@ -22,6 +22,7 @@ export default async function Layout(props: {
   const params = await props.params
   const userData = await getUserData()
   const hosName = await getHosName(params.hos_id)
+  const isSuper = await isSuperAccount()
 
   return (
     <div className="flex h-screen">
@@ -31,6 +32,7 @@ export default async function Layout(props: {
         hosId={params.hos_id}
         userData={userData}
         hosName={hosName}
+        isSuper={isSuper}
       />
 
       <div className="ml-0 flex-1 md:ml-14">

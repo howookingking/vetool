@@ -33,7 +33,7 @@ export default function TxTable({
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      const currentHour = new Date().getHours() - 1
+      const currentHour = new Date().getHours() - 5
 
       if (scrollAreaRef.current && tableRef.current) {
         const scrollContainer = scrollAreaRef.current.querySelector(
