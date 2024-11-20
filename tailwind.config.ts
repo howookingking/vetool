@@ -109,6 +109,15 @@ const config = {
         'shake-reverse': createShakeKeyframes(0.1, true),
         'shake-strong': createShakeKeyframes(0.5),
         'shake-strong-reverse': createShakeKeyframes(0.5, true),
+
+        slideDown: {
+          '0%': { transform: 'translateY(-100%)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        slideUp: {
+          '0%': { transform: 'translateY(0)', opacity: '1' },
+          '100%': { transform: 'translateY(100%)', opacity: '0' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -117,6 +126,8 @@ const config = {
         'shake-reverse': 'shake-reverse 1.2s ease-out infinite',
         'shake-strong': 'shake-strong 1.2s ease-out infinite',
         'shake-strong-reverse': 'shake-strong-reverse 1.2s ease-out infinite',
+        slideDown: 'slideDown 0.5s ease-in-out forwards',
+        slideUp: 'slideUp 0.5s ease-in-out forwards',
       },
       height: {
         'exclude-header': 'calc(100vh - 48px)',
@@ -124,7 +135,7 @@ const config = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],
 } satisfies Config
 
 export default config
