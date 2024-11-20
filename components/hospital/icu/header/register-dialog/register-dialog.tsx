@@ -16,10 +16,12 @@ export default function RegisterDialog({
   hosId,
   groupList,
   vetsData,
+  totalPatientCount,
 }: {
   hosId: string
   groupList: string[]
   vetsData: Vet[]
+  totalPatientCount: number
 }) {
   const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false)
   const { step, setStep, reset } = useIcuRegisterStore()
@@ -80,7 +82,11 @@ export default function RegisterDialog({
 
           <TabsContent value="search">
             {step === 'patientSearch' && (
-              <SearchPatientContainer itemsPerPage={8} isIcu />
+              <SearchPatientContainer
+                totalPatientCount={totalPatientCount}
+                itemsPerPage={8}
+                isIcu
+              />
             )}
             {step === 'icuRegister' && (
               <RegisterIcuForm

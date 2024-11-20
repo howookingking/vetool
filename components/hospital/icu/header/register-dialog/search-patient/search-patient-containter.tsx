@@ -10,9 +10,11 @@ import { useEffect, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 
 export default function SearchPatientContainer({
+  totalPatientCount,
   itemsPerPage,
   isIcu,
 }: {
+  totalPatientCount: number
   itemsPerPage: number
   isIcu: boolean
 }) {
@@ -91,6 +93,11 @@ export default function SearchPatientContainer({
         setIsEdited={setIsEdited}
         isIcu={isIcu}
       />
+
+      <p className="text-sm text-muted-foreground">
+        현재 등록된 환자 수:{' '}
+        <span className="font-medium text-black">{totalPatientCount}마리</span>
+      </p>
 
       {!isSearching && (
         <div className="flex items-center justify-between px-2">
