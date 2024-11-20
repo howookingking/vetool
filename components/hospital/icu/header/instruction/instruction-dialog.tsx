@@ -1,7 +1,7 @@
 'use client'
 
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
-import InstructionSidebar from '@/components/hospital/icu/header/(unused)/instruction/instruction-sidebar'
+import InstructionSidebar from '@/components/hospital/icu/header/instruction/(unused)/instruction-sidebar'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -13,14 +13,15 @@ import {
 import { Info } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
+import InstructionShortcutContent from '@/components/hospital/icu/header/instruction/instruction-shortcut-content'
 
-const DynamicInstructionContents = dynamic(
-  () => import('./instruction-contents'),
-  {
-    ssr: false,
-    loading: () => <LargeLoaderCircle />,
-  },
-)
+// const DynamicInstructionContents = dynamic(
+//   () => import('./instruction-contents'),
+//   {
+//     ssr: false,
+//     loading: () => <LargeLoaderCircle />,
+//   },
+// )
 
 export function InstructionDialog() {
   const [currentVideo, setCurrentVideo] = useState({
@@ -35,19 +36,20 @@ export function InstructionDialog() {
           <Info size={18} />
         </Button>
       </DialogTrigger>
-      <DialogContent className="p-0 sm:max-w-[1400px]">
+      <DialogContent className="h-[720px] p-0 sm:max-h-[720px] sm:max-w-[1400px]">
         <DialogTitle className="hidden" />
         <DialogDescription className="hidden" />
-        <div className="flex">
-          <InstructionSidebar
+        <div className="flex h-full">
+          <InstructionShortcutContent />
+          {/* <InstructionSidebar
             currentVideo={currentVideo}
             setCurrentVideo={setCurrentVideo}
-          />
+          /> */}
 
-          <DynamicInstructionContents
+          {/* <DynamicInstructionContents
             currentVideo={currentVideo}
             setCurrentVideo={setCurrentVideo}
-          />
+          /> */}
         </div>
       </DialogContent>
     </Dialog>

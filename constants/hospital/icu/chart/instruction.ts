@@ -1,3 +1,5 @@
+import type { Shortcuts } from '@/types/icu/instruction'
+
 export const INSTRUCTIONS = [
   {
     id: 1,
@@ -185,5 +187,50 @@ export const INSTRUCTIONS = [
         description: '2. 템플릿 검색 및 수정·삭제',
       },
     ],
+  },
+] as const
+
+export const INSTRUCITON_SHORTCUTS: Shortcuts[] = [
+  {
+    title: '차트 복사 & 붙여넣기',
+    description:
+      "특정 차트 페이지에서 'CTRL + C'를 눌러 복사, 붙여넣기 할 차트에서 'CTRL + V'",
+    icons: ['keyboard'],
+  },
+
+  {
+    title: '오더 시간 등록 / 해제',
+    description: 'CTRL 누른 채 + 해당 칸 우클릭',
+    icons: ['keyboard', 'mouse'],
+  },
+  {
+    title: '다수의 처치 결과값을 한꺼번에 입력하기',
+    description:
+      "해당하는 처치 칸들을 'CTRL 누른 채 + 좌클릭', 모두 선택하여 CTRL 해제, 입력창에 결과 값 입력",
+    icons: ['keyboard', 'mouse'],
+  },
+  {
+    title: '새로운 오더 추가',
+    description: "차트 페이지에서 'CTRL + O'를 눌러 오더 입력 창 띄움",
+    icons: ['keyboard'],
+  },
+  {
+    title: '오더 복사 & 붙여넣기',
+    description:
+      "원하는 오더를 'CTRL 누른 채 + 좌클릭'하여 선택, 'CTRL + C'를 눌러 복사, 붙여넣을 차트에서 'CTRL + V'",
+    icons: ['keyboard', 'mouse'],
+  },
+  {
+    title: '오더 템플릿 빠르게 만들기',
+    description:
+      "템플릿으로 저장하고자 하는 오더를 'CTRL 누른 채로 +  좌클릭'하여 모두 선택, 'CTRL + A'",
+    icons: ['keyboard', 'mouse'],
+  },
+
+  {
+    title: '오더 순서 변경',
+    description:
+      "'CTRL + S'를 눌러 오더 순서 변경 모드 진입, 드래그 앤 드롭으로 순서 변경 후 'CTRL + S 또는 ESC'를 눌러 변경 완료",
+    icons: ['keyboard', 'mouse'],
   },
 ] as const
