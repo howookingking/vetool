@@ -20,10 +20,12 @@ export default function MobileSidebar({
   hosId,
   userData,
   hosName,
+  isSuper,
 }: {
   hosId: string
   userData: UserProfile
   hosName: string
+  isSuper: boolean
 }) {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
   const handleCloseMobileDrawer = () => setIsSheetOpen(false)
@@ -51,6 +53,7 @@ export default function MobileSidebar({
                 hosId={hosId}
                 item={item}
                 handleCloseMobileDrawer={handleCloseMobileDrawer}
+                isSuper={isSuper}
               />
             )
           })}

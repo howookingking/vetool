@@ -1,8 +1,8 @@
+import SidebarItem from '@/components/hospital/sidebar/sidebar-item'
+import SidebarUserInfo from '@/components/hospital/sidebar/sidebar-user-info'
 import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
 import { isSuperAccount } from '@/lib/services/auth/authorization'
 import type { UserProfile } from '@/types'
-import SidebarItem from './sidebar-item'
-import SidebarUserInfo from './sidebar-user-info'
 
 export default async function Sidebar({
   hosId,
@@ -12,6 +12,7 @@ export default async function Sidebar({
   userData: UserProfile
 }) {
   const isSuper = await isSuperAccount()
+
   return (
     <aside className="fixed left-0 top-0 z-50 hidden h-screen w-14 border-r bg-white md:block">
       <ul>
