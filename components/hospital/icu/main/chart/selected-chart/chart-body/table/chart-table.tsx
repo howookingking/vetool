@@ -1,8 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 'use client'
 
 import QuickOrderInsertInput from '@/components/hospital/icu/main/chart/selected-chart/chart-body/quick-order-insert-input'
-import CellsRow from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/cells-row'
-import CellsRowTitle from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/cells-row-title'
+import CellsRowTitles from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/cells-row-titles'
 import DeleteOrdersAlertDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/delete-orders-alert-dialog'
 import OrderDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-dialog'
 import SortableOrderWrapper from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/sortable-order-wrapper'
@@ -77,7 +78,7 @@ export default function ChartTable({
     if (!isSorting) {
       setSortedOrders(orders)
     }
-  }, [orders, isSorting])
+  }, [orders])
 
   // ----- 표에서 수직 안내선 -----
   const [hoveredColumn, setHoveredColumn] = useState<number | null>(null)
@@ -195,7 +196,6 @@ export default function ChartTable({
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     setTxStep,
     orderTimePendingQueue,
@@ -214,10 +214,7 @@ export default function ChartTable({
       const orderIds = sortedOrders.map((order) => order.order_id)
 
       await reorderOrders(orderIds)
-
-      toast({
-        title: '오더 순서를 변경하였습니다',
-      })
+      toast({ title: '오더 순서를 변경하였습니다' })
     }
 
     setIsSorting(!isSorting)
@@ -318,44 +315,37 @@ export default function ChartTable({
           onOrdersChange={setSortedOrders}
           onSortEnd={handleReorder}
         >
-          {sortedOrders.map((order, index) => (
-            <TableRow className="divide-x" key={order.order_id}>
-              <CellsRowTitle
-                index={index}
-                order={order}
-                preview={preview}
-                isSorting={isSorting}
-              />
-            </TableRow>
-          ))}
+          <CellsRowTitles
+            sortedOrders={sortedOrders}
+            isSorting={isSorting}
+            preview={preview}
+            vitalRefRange={vitalRefRange}
+            species={patient.species}
+            showOrderer={showOrderer}
+            hoveredColumn={hoveredColumn}
+            handleColumnHover={handleColumnHover}
+            handleColumnLeave={handleColumnLeave}
+            selectedTxPendingQueue={selectedTxPendingQueue}
+            orderStep={orderStep}
+            orderTimePendingQueueLength={orderTimePendingQueue.length}
+          />
         </SortableOrderWrapper>
       ) : (
         <TableBody>
-          {sortedOrders.map((order, index) => (
-            <TableRow className="relative w-full divide-x" key={order.order_id}>
-              <CellsRowTitle
-                index={index}
-                order={order}
-                preview={preview}
-                vitalRefRange={vitalRefRange}
-                species={patient.species}
-              />
-              <CellsRow
-                preview={preview}
-                order={order}
-                showOrderer={showOrderer}
-                hoveredColumn={hoveredColumn}
-                handleColumnHover={handleColumnHover}
-                handleColumnLeave={handleColumnLeave}
-                selectedTxPendingQueue={selectedTxPendingQueue}
-                orderStep={orderStep}
-                orderTimePendingQueueLength={orderTimePendingQueue.length}
-                vitalRefRange={vitalRefRange}
-                species={patient.species}
-              />
-            </TableRow>
-          ))}
-
+          <CellsRowTitles
+            sortedOrders={sortedOrders}
+            isSorting={isSorting}
+            preview={preview}
+            vitalRefRange={vitalRefRange}
+            species={patient.species}
+            showOrderer={showOrderer}
+            hoveredColumn={hoveredColumn}
+            handleColumnHover={handleColumnHover}
+            handleColumnLeave={handleColumnLeave}
+            selectedTxPendingQueue={selectedTxPendingQueue}
+            orderStep={orderStep}
+            orderTimePendingQueueLength={orderTimePendingQueue.length}
+          />
           {!isExport && !preview && (
             <TableRow className="hover:bg-transparent">
               <TableCell className="p-0">

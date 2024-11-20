@@ -27,6 +27,7 @@ export default function MobileSidebarItem({
   item,
   hosId,
   handleCloseMobileDrawer,
+  isSuper,
 }: {
   item: {
     name: string
@@ -36,6 +37,7 @@ export default function MobileSidebarItem({
   }
   hosId: string
   handleCloseMobileDrawer: () => void
+  isSuper: boolean
 }) {
   const { push } = useRouter()
   const pathname = usePathname()
@@ -54,8 +56,13 @@ export default function MobileSidebarItem({
     [item.path],
   )
 
+  const isSuperOnly = useMemo(
+    () => item.name === '벳툴' && !isSuper,
+    [isSuper, item.name],
+  )
+
   return (
-    <li>
+    <li key={item.name} className={isSuperOnly ? 'hidden' : ''}>
       <Button
         onClick={() => {
           push(`/hospital/${hosId}/${dynamicPath}`)
