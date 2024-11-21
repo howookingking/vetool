@@ -31,7 +31,19 @@ export default function ChecklistOrderField({
         render={({ field }) => (
           <FormItem>
             <FormLabel>체크리스트</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <Select
+              onValueChange={(value) => {
+                field.onChange(value)
+                const selectedOrder = CHECKLIST_ORDERS.find(
+                  (order) => order.orderName === value,
+                )
+                form.setValue(
+                  'icu_chart_order_comment',
+                  selectedOrder?.orderComment ?? '',
+                )
+              }}
+              defaultValue={field.value}
+            >
               <FormControl>
                 <SelectTrigger>
                   <SelectValue placeholder="체크리스트 항목 선택" />
@@ -45,7 +57,6 @@ export default function ChecklistOrderField({
                 ))}
               </SelectContent>
             </Select>
-
             <FormMessage />
           </FormItem>
         )}
@@ -55,12 +66,11 @@ export default function ChecklistOrderField({
         name="icu_chart_order_comment"
         render={({ field }) => (
           <FormItem className="w-full space-y-2">
-            <FormLabel className="font-semibold">오더 설명</FormLabel>
+            <FormLabel className="font-semibold">
+              체크리스트 오더 설명
+            </FormLabel>
             <FormControl>
-              <Input
-                placeholder={`${'오더에 대한 설명을 입력해주세요'}`}
-                {...field}
-              />
+              <Input placeholder="오더에 대한 설명을 입력해주세요" {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
