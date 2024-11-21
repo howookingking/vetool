@@ -1,4 +1,7 @@
 import type {
+  DrugDoses,
+  DrugProductsRows,
+  DrugRows,
   IcuTemplate,
   IcuCharts,
   IcuIo,
@@ -115,6 +118,10 @@ export type IcuSidebarIoData = {
   created_at: string
 }
 
+export type DrugProductsJoined = Pick<DrugRows, 'drug_id' | 'drug_name'> & {
+  drug_doses: DrugDoses[]
+  drug_products: DrugProductsRows[]
+}
 export type IcuReadOnlyOrderData = Pick<
   IcuOrders,
   | 'icu_chart_order_id'

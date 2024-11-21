@@ -1,6 +1,10 @@
 'use client'
 
 import DeleteOrderAlertDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/delete-order-alert-dialog'
+import FeedOrderField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/feed-order/feed-order-filed'
+import FluidOrderField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/fluid-order/fluid-order-field'
+import OrderFormField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-form-field'
+// import DrugFormField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order-form/drug-order/drug-form-field'
 import { orderSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-schema'
 import OrderTimeSettings from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-time-settings'
 import { Button } from '@/components/ui/button'
@@ -27,9 +31,6 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import ChecklistOrderField from './checklist-order/checklist-order-field'
-import FeedOrderField from './feed-order/feed-order-filed'
-import FluidOrderFiled from './fluid-order/fluid-order-filed'
-import OrderFormField from './order-form-field'
 
 export default function OrderForm({
   showOrderer,
@@ -171,7 +172,7 @@ export default function OrderForm({
         {orderType === 'checklist' && <ChecklistOrderField form={form} />}
 
         {orderType === 'fluid' && (
-          <FluidOrderFiled
+          <FluidOrderField
             form={form}
             species={species}
             ageInDays={ageInDays}
@@ -180,6 +181,7 @@ export default function OrderForm({
         )}
 
         {orderType === 'feed' && <FeedOrderField form={form} />}
+        {/* {orderType === 'injection' && <DrugFormField form={form} />} */}
 
         {orderType !== 'fluid' &&
           orderType !== 'feed' &&

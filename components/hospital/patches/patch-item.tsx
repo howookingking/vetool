@@ -40,7 +40,8 @@ export default function PatchItem({
 
   return (
     <TableRow className="hover:bg-muted/50">
-      <TableCell className="flex items-center gap-2 pl-8">
+      {/* 카테고리 */}
+      <TableCell className="flex flex-col items-start gap-2 pl-2 sm:flex-row sm:items-center sm:pl-8">
         {
           ICON_MAPPER[
             (foundCategory?.iconName as keyof typeof ICON_MAPPER) ?? 'Monitor'
@@ -53,10 +54,13 @@ export default function PatchItem({
         }
       </TableCell>
 
-      <TableCell className="text-center hover:underline">
+      {/* 제목 */}
+      <TableCell className="max-w-[240px] overflow-hidden truncate text-center hover:underline">
         <Link href={`patches/${id}`}>{title}</Link>
       </TableCell>
-      <TableCell className="pr-8 text-right text-muted-foreground">
+
+      {/* 작성일 */}
+      <TableCell className="pr-2 text-right text-[10px] text-muted-foreground sm:pr-8 sm:text-sm">
         {createdAt.slice(0, 10)}
       </TableCell>
     </TableRow>

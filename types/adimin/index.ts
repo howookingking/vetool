@@ -1,11 +1,11 @@
-import type {
+import {
+  DrugDescription,
+  DrugProductsRows,
   Hospital,
   IcuDefaultChart,
-  IcuIo,
-  Patients,
   User,
   UserApproval,
-} from '..'
+} from '@/types'
 
 export type UserHospitalJoined = Omit<
   User,
@@ -78,3 +78,20 @@ export type VitalRefRange = {
     max: number
   }
 }
+
+export type DrugProductDetail = Pick<
+  DrugProductsRows,
+  | 'drug_products_id'
+  | 'name'
+  | 'total_vol'
+  | 'unit'
+  | 'type'
+  | 'description'
+  | 'company'
+  | 'mass_vol'
+  | 'hos_id'
+> &
+  Pick<
+    DrugDescription,
+    'indication' | 'side_effect' | 'drugs_description_id' | 'drug_name'
+  >

@@ -1,4 +1,8 @@
+import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import WarningMessage from '@/components/common/warning-message'
+import FluidToolTip from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/fluid-order/fluid-tool-tip'
+import { orderSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-schema'
+import { AutoComplete } from '@/components/ui/auto-complete'
 import { Button } from '@/components/ui/button'
 import {
   FormControl,
@@ -8,6 +12,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -17,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { FLUIDS } from '@/constants/hospital/icu/fluid/fluid'
 import { calculatedMaintenaceRate } from '@/lib/calculators/maintenace-rate'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
@@ -24,10 +30,8 @@ import { Calculator } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import type { UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
-import { orderSchema } from '../order-schema'
-import FluidToolTip from './fluid-tool-tip'
 
-export default function FluidOrderFiled({
+export default function FluidOrderField({
   form,
   species,
   ageInDays,
@@ -43,7 +47,6 @@ export default function FluidOrderFiled({
   } = useBasicHosDataContext()
 
   const { selectedChartOrder } = useIcuOrderStore()
-
   const [displayFluidName, setDisplayFluidName] = useState(
     selectedChartOrder.order_name?.split('#')[0] ?? '',
   )
@@ -54,11 +57,15 @@ export default function FluidOrderFiled({
   const [fold, setFold] = useState(
     selectedChartOrder.order_name?.split('#')[2] ?? '1',
   )
+  const [additives, setAdditives] = useState(
+    selectedChartOrder.order_name?.split('#')[3] ?? '',
+  )
 
   useEffect(() => {
-    const fullValue = `${displayFluidName}#${localMaintenaceRateCalcMethod}#${fold}`
+    const fullValue = `${displayFluidName}#${localMaintenaceRateCalcMethod}#${fold}#${additives}`
+
     form.setValue('icu_chart_order_name', fullValue)
-  }, [displayFluidName, fold, form, localMaintenaceRateCalcMethod])
+  }, [displayFluidName, fold, form, localMaintenaceRateCalcMethod, additives])
 
   const calculateFluidRate = useCallback(() => {
     const result = calculatedMaintenaceRate(
@@ -67,29 +74,51 @@ export default function FluidOrderFiled({
       fold,
       localMaintenaceRateCalcMethod as 'a' | 'b' | 'c',
     )
+
     form.setValue('icu_chart_order_comment', result)
   }, [fold, form, localMaintenaceRateCalcMethod, species, weight])
 
   return (
     <>
-      <FormField
-        control={form.control}
-        name="icu_chart_order_name"
-        render={({ field }) => (
-          <FormItem className="w-full space-y-2">
-            <FormLabel className="font-semibold">수액 종류*</FormLabel>
-            <FormControl>
-              <Input
-                placeholder="하트만 + KCl 5ml + Taurine 1ample ..."
-                {...field}
-                value={displayFluidName}
-                onChange={(e) => setDisplayFluidName(e.target.value)}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      <div className="flex gap-2">
+        <FormField
+          control={form.control}
+          name="icu_chart_order_name"
+          render={({ field }) => (
+            <FormItem className="w-2/3 space-y-2">
+              <FormLabel className="font-semibold">수액 종류*</FormLabel>
+              <FormControl>
+                <AutoComplete
+                  selectedValue={field.value}
+                  onSelectedValueChange={field.onChange}
+                  searchValue={displayFluidName}
+                  onSearchValueChange={setDisplayFluidName}
+                  items={FLUIDS.filter((fluid) =>
+                    fluid.value
+                      .toLowerCase()
+                      .includes(displayFluidName.toLowerCase()),
+                  )}
+                  emptyMessage={
+                    <NoResultSquirrel text="검색된 수액 없음" size="sm" />
+                  }
+                  placeholder="수액 검색"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* 첨가제 */}
+        <div className="w-1/3 space-y-2">
+          <Label className="font-semibold">첨가제</Label>
+          <Input
+            value={additives}
+            onChange={(e) => setAdditives(e.target.value)}
+          />
+        </div>
+      </div>
+
       <div>
         <FormField
           control={form.control}
@@ -104,6 +133,13 @@ export default function FluidOrderFiled({
                     <WarningMessage
                       className="text-sm"
                       text={`Pediatrics의 경우,  ${species === 'canine' ? 'Adult Dog * 3' : 'Adult Cat  * 2.5'}`}
+                    />
+                  )}
+
+                  {!Number(weight) && (
+                    <WarningMessage
+                      className="text-sm"
+                      text="몸무게를 입력해주세요"
                     />
                   )}
                 </div>

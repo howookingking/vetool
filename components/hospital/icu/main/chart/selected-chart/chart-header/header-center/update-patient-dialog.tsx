@@ -44,9 +44,11 @@ export default function UpdatePatientDialog({
           <span className="uppercase">{gender}</span> ·
           <span>{getAgeFromAgeInDays(ageInDays)} </span>
           <span>·</span>
-          <span className="">
+          <span>
             {weight === '' ? '체중 입력' : `${weight}kg`}
-            <span className="hidden md:inline">{` (${weightMeasuredDate!})`}</span>
+            <span className="hidden md:inline">
+              {weightMeasuredDate ? `(${weightMeasuredDate})` : ''}
+            </span>
           </span>
         </Button>
       </DialogTrigger>
