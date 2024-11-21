@@ -11,8 +11,10 @@ import {
 } from '@/components/ui/table'
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
-import type { SelectedChart } from '@/types/icu/chart'
-import { useMemo } from 'react'
+import { getDrugs } from '@/lib/services/icu/chart/get-drugs'
+import type { DrugProductsJoined, SelectedChart } from '@/types/icu/chart'
+import { useParams } from 'next/navigation'
+import { useMemo, useState } from 'react'
 
 type ChartTablePropsPreview = {
   chartData: SelectedChart
@@ -26,8 +28,12 @@ type ChartTablePropsNonPreview = {
 
 type ChartTableProps = ChartTablePropsPreview | ChartTablePropsNonPreview
 
-export default function ChartTable({ chartData, preview }: ChartTableProps) {
+export default async function ChartTable({
+  chartData,
+  preview,
+}: ChartTableProps) {
   const { icu_io, icu_chart_id, orders } = chartData
+  const drugs = await getDrugs(chartData.)
 
   const sortedOrders = useMemo(
     () =>

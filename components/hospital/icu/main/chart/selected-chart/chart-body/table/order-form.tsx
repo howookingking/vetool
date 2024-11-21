@@ -1,7 +1,9 @@
 'use client'
 
 import DeleteOrderAlertDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/delete-order-alert-dialog'
-import { orderSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order-schema'
+import DrugFormField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order-form/drug-order/drug-form-field'
+import OrderFormField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order-form/order-form-field'
+import { orderSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order-form/order-schema'
 import OrderTimeSettings from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order-time-settings'
 import { Button } from '@/components/ui/button'
 import { DialogClose, DialogFooter } from '@/components/ui/dialog'
@@ -47,6 +49,8 @@ export default function OrderForm({ icuChartId }: { icuChartId?: string }) {
       icu_chart_order_comment: selectedChartOrder.order_comment ?? undefined,
     },
   })
+
+  const orderType = form.watch('icu_chart_order_type')
 
   const handleSubmit = async (values: z.infer<typeof orderSchema>) => {
     setIsSubmitting(true)
@@ -106,6 +110,9 @@ export default function OrderForm({ icuChartId }: { icuChartId?: string }) {
                 <RadioGroup
                   onValueChange={field.onChange}
                   defaultValue={field.value}
+                  disabled={
+                    isEditMode && selectedChartOrder.order_type === 'injection'
+                  }
                   className="flex flex-wrap gap-4"
                 >
                   {DEFAULT_ICU_ORDER_TYPE.map((item) => (
@@ -128,36 +135,16 @@ export default function OrderForm({ icuChartId }: { icuChartId?: string }) {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="icu_chart_order_name"
-          render={({ field }) => (
-            <FormItem className="w-full space-y-2">
-              <FormLabel className="font-semibold">오더명*</FormLabel>
-              <FormControl>
-                <Input placeholder="오더명을 입력해주세요" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="icu_chart_order_comment"
-          render={({ field }) => (
-            <FormItem className="w-full space-y-2">
-              <FormLabel className="font-semibold">오더 설명</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="오더에 대한 설명을 입력해주세요"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {orderType === 'injection' ? (
+          <DrugFormField
+            form={form}
+            // drugs={drugs}
+            // weight={weight}
+            // species={species}
+          />
+        ) : (
+          <OrderFormField form={form} />
+        )}
 
         <OrderTimeSettings
           startTime={startTime}

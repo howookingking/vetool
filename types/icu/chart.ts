@@ -1,4 +1,7 @@
 import type {
+  DrugDoses,
+  DrugProductsRows,
+  DrugRows,
   IcuBookmark,
   IcuCharts,
   IcuIo,
@@ -100,4 +103,9 @@ export type IcuSidebarIoData = {
   icu_io_id: string
   group_list: string[]
   created_at: string
+}
+
+export type DrugProductsJoined = Pick<DrugRows, 'drug_id' | 'drug_name'> & {
+  drug_doses: DrugDoses[]
+  drug_products: DrugProductsRows[]
 }

@@ -16,6 +16,12 @@ export type IcuCharts = Database['public']['Tables']['icu_charts']['Row']
 export type IcuOrders = Database['public']['Tables']['icu_orders']['Row']
 export type IcuTxs = Database['public']['Tables']['icu_txs']['Row']
 export type IcuBookmark = Database['public']['Tables']['icu_bookmarks']['Row']
+export type DrugProductsRows =
+  Database['public']['Tables']['drug_products_rows']['Row']
+export type DrugRows = Database['public']['Tables']['drugs_rows']['Row']
+export type DrugDoses = Database['public']['Tables']['drug_doses']['Row']
+export type DrugDescription =
+  Database['public']['Tables']['drugs_description']['Row']
 
 // supabase.auth.getUser() 시 return되는 유져타입
 export type AuthUser = {

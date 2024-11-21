@@ -214,3 +214,27 @@ export const changeTargetDateInUrl = (
     : `${path.replace(DATE_REGEX, `/${newDateString}/`)}`
   return newPath
 }
+
+export const calculateTotalDrugAmount = (
+  patientWeight: string,
+  drugDosage: string,
+  drugTotalUnit: string,
+  drugMassVolume: number,
+) => {
+  const base = (Number(drugDosage) * Number(patientWeight)) / drugMassVolume
+  const total = drugTotalUnit === 'ul' ? base * 1000 : base
+
+  return total.toFixed(2)
+}
+
+export const formatOrderName = (name: string, type: string) => {
+  if (type === 'injection') {
+    const parts = name.split('#')
+
+    if (parts.length > 1) {
+      name = parts[0] + '#' + parts[1] + 'ml/kg ' + parts.slice(2).join('#')
+    }
+  }
+
+  return name.replaceAll('#', ' ')
+}
