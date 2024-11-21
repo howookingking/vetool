@@ -9,16 +9,13 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { PatchListProps } from '@/types/vetool'
-import SearchPatientPagination from '@/components/hospital/icu/header/register-dialog/search-patient/search-patient-pagination'
-import { useSearchParams } from 'next/navigation'
 
 export default function PatchItems({ patches }: { patches: PatchListProps[] }) {
-  const searchParams = useSearchParams()
-  const currentPage = Number(searchParams.get('page') || '1')
-
   return (
-    <div className="space-y-4 p-4">
-      <span className="text-3xl font-bold">패치 노트</span>
+    <div className="p-2">
+      <span className="left-18 absolute top-2.5 z-20 text-xl font-bold">
+        패치 노트
+      </span>
 
       <div className="overflow-hidden rounded-lg border bg-white">
         <Table>
@@ -47,11 +44,11 @@ export default function PatchItems({ patches }: { patches: PatchListProps[] }) {
           </TableBody>
         </Table>
       </div>
-      <SearchPatientPagination
+      {/* <SearchPatientPagination
         currentPage={currentPage}
         totalPages={patches.length}
         onPageChange={() => {}}
-      />
+      /> */}
     </div>
   )
 }

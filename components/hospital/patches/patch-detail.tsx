@@ -20,7 +20,7 @@ export default function PatchDetail({
 
   return (
     <Card
-      className="max-h-icu-chart-main divide-y overflow-y-scroll"
+      className="max-h-icu-chart-main divide-y overflow-y-scroll rounded-lg"
       style={{ margin: 0 }}
     >
       {/* 헤더 섹션 */}
