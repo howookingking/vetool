@@ -119,4 +119,20 @@ export const FLUIDS = [
     value: '7.5% Hypertonic Saline',
     label: '7.5% NaCl',
   },
+  {
+    value: '0.45 NS',
+    label: '0.45% NaCl',
+  },
+  {
+    value: '0.45% Saline',
+    label: '0.45% NaCl',
+  },
+  {
+    value: 'Half Saline',
+    label: '0.45% NaCl',
+  },
+  {
+    value: '0.45% NaCl',
+    label: '0.45% NaCl',
+  },
 ]
