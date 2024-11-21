@@ -70,50 +70,18 @@ export const CHECKLIST_ORDERS = [
   {
     orderName: '체온(T)',
     orderComment: '직장체온',
-    min: {
-      canine: 38.3,
-      feline: 38.3,
-    },
-    max: {
-      canine: 39.2,
-      feline: 39.2,
-    },
   },
   {
     orderName: '심박수(P)',
     orderComment: '분당 심박수',
-    min: {
-      canine: 60,
-      feline: 160,
-    },
-    max: {
-      canine: 140,
-      feline: 220,
-    },
   },
   {
     orderName: '호흡수(R)',
     orderComment: '①기침 ②맑은콧물 ③화농성콧물',
-    min: {
-      canine: 15,
-      feline: 15,
-    },
-    max: {
-      canine: 30,
-      feline: 30,
-    },
   },
   {
     orderName: '혈압(BP)',
     orderComment: '도플러 혈압계',
-    min: {
-      canine: 110,
-      feline: 110,
-    },
-    max: {
-      canine: 160,
-      feline: 160,
-    },
   },
   {
     orderName: '활력',
