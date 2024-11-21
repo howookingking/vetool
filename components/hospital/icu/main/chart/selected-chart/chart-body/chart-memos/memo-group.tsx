@@ -4,6 +4,7 @@ import { Label } from '@/components/ui/label'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
+import useIsMobile from '@/hooks/use-is-mobile'
 import { updateMemos } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { ReactSortable, Sortable } from 'react-sortablejs'
@@ -27,6 +28,7 @@ export default function MemoGroup({
   const [isUpdating, setIsUpdating] = useState(false)
   const lastMemoRef = useRef<HTMLLIElement>(null)
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(false)
+  const isMobile = useIsMobile()
 
   useEffect(() => {
     setSortedMemos(memo ?? [])
@@ -165,6 +167,7 @@ export default function MemoGroup({
 
       <ScrollArea className="h-60 rounded-md border p-2">
         <ReactSortable
+          disabled={isMobile}
           list={sortedMemos}
           setList={setSortedMemos}
           className="space-y-2"

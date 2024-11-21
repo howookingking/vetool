@@ -85,7 +85,7 @@ export default function FluidOrderField({
           control={form.control}
           name="icu_chart_order_name"
           render={({ field }) => (
-            <FormItem className="w-2/3 space-y-2">
+            <FormItem className="w-1/2 space-y-2">
               <FormLabel className="font-semibold">수액 종류*</FormLabel>
               <FormControl>
                 <AutoComplete
@@ -110,7 +110,7 @@ export default function FluidOrderField({
         />
 
         {/* 첨가제 */}
-        <div className="w-1/3 space-y-2">
+        <div className="w-1/2 space-y-2">
           <Label className="font-semibold">첨가제</Label>
           <Input
             value={additives}
@@ -145,13 +145,13 @@ export default function FluidOrderField({
                 </div>
               </FormLabel>
 
-              <div className="flex items-center gap-2">
+              <div className="flex grid grid-cols-10 items-center gap-2">
                 <Select
                   value={localMaintenaceRateCalcMethod}
                   onValueChange={setLocalMaintenaceRateCalcMethod}
                   defaultValue={maintenanceRateCalcMethod}
                 >
-                  <SelectTrigger className="w-1/2">
+                  <SelectTrigger className="col-span-5">
                     <SelectValue placeholder="계산법" />
                   </SelectTrigger>
                   <SelectContent>
@@ -205,7 +205,7 @@ export default function FluidOrderField({
                 </Select>
 
                 <Select value={fold} onValueChange={setFold}>
-                  <SelectTrigger className="w-1/4">
+                  <SelectTrigger className="col-span-2">
                     <SelectValue placeholder="배수" />
                   </SelectTrigger>
                   <SelectContent>
@@ -224,14 +224,15 @@ export default function FluidOrderField({
 
                 <Button
                   size="icon"
-                  variant="ghost"
+                  variant="outline"
                   type="button"
                   onClick={calculateFluidRate}
+                  className="col-span-1 mx-auto w-full"
                 >
                   <Calculator size={16} />
                 </Button>
 
-                <div className="relative">
+                <div className="relative col-span-2">
                   <FormControl>
                     <Input placeholder="수액속도" {...field} />
                   </FormControl>
