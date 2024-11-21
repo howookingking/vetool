@@ -49,7 +49,7 @@ export default function GroupedByIcuIo({ icuIo }: { icuIo: SearchedIcuIos }) {
               age_in_days={age_in_days}
               name={name}
               breed={breed}
-              owner_name={owner_name}
+              owner_name={owner_name ?? ''}
               inAndOutDate={inAndOutDate}
               icu_io_dx={icu_io_dx}
               icu_io_cc={icu_io_cc}

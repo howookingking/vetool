@@ -2,7 +2,9 @@
 
 import IcuHeaderDatePicker from '@/components/hospital/icu/header/date-picker/header-date-picker'
 import { Button } from '@/components/ui/button'
-import { changeTargetDateInUrl } from '@/lib/utils'
+import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
+import { useRealtimeSubscriptionStore } from '@/lib/store/icu/realtime-subscription'
+import { changeTargetDateInUrl } from '@/lib/utils/utils'
 import { ArrowLeftIcon, ArrowRightIcon } from '@radix-ui/react-icons'
 import { addDays, format, isToday } from 'date-fns'
 import {
@@ -18,6 +20,8 @@ export default function HeaderDateSelector() {
   const params = useParams()
   const pathname = usePathname()
   const router = useRouter()
+  const { setSelectedOrderPendingQueue } = useIcuOrderStore()
+  const { setIsSubscriptionReady } = useRealtimeSubscriptionStore()
 
   const [targetDate, setTargetDate] = useState(
     new Date(params.target_date as string),
@@ -33,8 +37,16 @@ export default function HeaderDateSelector() {
       )
       router.push(newPath)
       setTargetDate(newDate)
+      setSelectedOrderPendingQueue([])
+      setIsSubscriptionReady(false)
     },
-    [pathname, router, searchParams],
+    [
+      pathname,
+      router,
+      searchParams,
+      setSelectedOrderPendingQueue,
+      setIsSubscriptionReady,
+    ],
   )
 
   const handleUpdateDate = useCallback(
@@ -58,12 +70,17 @@ export default function HeaderDateSelector() {
       >
         <ArrowLeftIcon />
       </Button>
+
       <div className="flex items-center gap-1">
         <span className="min-w-20 text-sm">
           {format(targetDate, 'yyyy-MM-dd')}
         </span>
-        <IcuHeaderDatePicker targetDate={format(targetDate, 'yyyy-MM-dd')} />
+        <IcuHeaderDatePicker
+          targetDate={format(targetDate, 'yyyy-MM-dd')}
+          setIsSubscriptionReady={setIsSubscriptionReady}
+        />
       </div>
+
       <Button
         onClick={() => handleUpdateDate(1)}
         size="icon"

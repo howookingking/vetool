@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Dispatch, SetStateAction } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 import type { SearchOptions } from '@/components/hospital/icu/main/search/icu-search-chart'
 
 export default function OrderSelect({

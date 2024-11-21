@@ -2,7 +2,7 @@
 
 import { POPUP_MOTION } from '@/constants/hospital/icu/notification/aniimations'
 import { useOutsideClick } from '@/hooks/use-outside-click'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/utils'
 import { motion } from 'framer-motion'
 import { Dispatch, SetStateAction, useRef } from 'react'
 import Notifications from './notifications'

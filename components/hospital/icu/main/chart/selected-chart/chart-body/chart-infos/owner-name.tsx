@@ -1,6 +1,5 @@
 'use client'
 
-import CustomTooltip from '@/components/ui/custom-tooltip'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { toast } from '@/components/ui/use-toast'
@@ -44,9 +43,7 @@ export default function OwnerName({
         className="absolute left-2 text-xs text-muted-foreground"
         htmlFor="ownerName"
       >
-        <CustomTooltip contents="보호자 이름" variant="secondary" side="left">
-          <User size={16} className="text-muted-foreground" />
-        </CustomTooltip>
+        <User size={16} className="text-muted-foreground" />
       </Label>
       <Input
         placeholder="보호자"
@@ -57,7 +54,7 @@ export default function OwnerName({
         onBlur={handleUpdateOwnerName}
         onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
         className="w-full pl-8"
-        title={ownerName ?? ''}
+        title={ownerName ?? '미등록'}
       />
     </div>
   )

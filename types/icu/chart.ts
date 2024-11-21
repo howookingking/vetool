@@ -2,12 +2,13 @@ import type {
   DrugDoses,
   DrugProductsRows,
   DrugRows,
-  IcuBookmark,
+  IcuTemplate,
   IcuCharts,
   IcuIo,
   IcuNotification,
   Patients,
   User,
+  IcuOrders,
 } from '@/types'
 
 export type MainAndSubVet = Pick<User, 'name' | 'avatar_url' | 'user_id'>
@@ -33,6 +34,9 @@ export type SelectedChart = Pick<
   | 'weight_measured_date'
   | 'target_date'
   | 'icu_chart_id'
+  | 'in_charge'
+  | 'der_calc_factor'
+  | 'main_vet'
 > & {
   icu_io: Pick<
     IcuIo,
@@ -50,20 +54,28 @@ export type SelectedChart = Pick<
 } & {
   orders: SelectedIcuOrder[]
 } & {
-  patient: Pick<
-    Patients,
-    'name' | 'breed' | 'gender' | 'patient_id' | 'species' | 'owner_name'
-  >
+  patient: Omit<Patients, 'owner_id'>
 } & {
   main_vet: Pick<Vet, 'avatar_url' | 'name' | 'user_id'>
 } & {
   sub_vet: Pick<Vet, 'avatar_url' | 'name' | 'user_id'>
 } & {
-  bookmark: Pick<
-    IcuBookmark,
-    'bookmark_id' | 'bookmark_name' | 'bookmark_comment'
+  template: Pick<
+    IcuTemplate,
+    'template_id' | 'template_name' | 'template_comment'
   >
 }
+
+export type Patient = Pick<
+  Patients,
+  | 'name'
+  | 'breed'
+  | 'gender'
+  | 'patient_id'
+  | 'species'
+  | 'owner_name'
+  | 'hos_id'
+>
 
 export type SelectedIcuOrder = {
   order_id: string
@@ -78,6 +90,7 @@ export type SelectedIcuOrder = {
     tx_comment: string | null
   }[]
   order_comment: string | null
+  id: number
 }
 
 export type Treatment = {
@@ -109,3 +122,11 @@ export type DrugProductsJoined = Pick<DrugRows, 'drug_id' | 'drug_name'> & {
   drug_doses: DrugDoses[]
   drug_products: DrugProductsRows[]
 }
+export type IcuReadOnlyOrderData = Pick<
+  IcuOrders,
+  | 'icu_chart_order_id'
+  | 'icu_chart_order_time'
+  | 'icu_chart_order_name'
+  | 'icu_chart_order_comment'
+  | 'icu_chart_order_type'
+>

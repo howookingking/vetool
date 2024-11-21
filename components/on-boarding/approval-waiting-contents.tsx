@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { logout } from '@/lib/services/auth/authentication'
 import { cancelApproval } from '@/lib/services/on-boarding/on-boarding'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/utils'
 import { UserApprovalHosJoined } from '@/types/on-boarding'
 import { LoaderCircle } from 'lucide-react'
 import { useState } from 'react'

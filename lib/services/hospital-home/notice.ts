@@ -5,13 +5,21 @@ import { NoticeWithUser } from '@/types/hospital/notice'
 import { redirect } from 'next/navigation'
 
 export const getNotices = async (hosId: string) => {
-  const supabase = createClient()
-  const { data: noticesData, error: noticesDataError } = await supabase
+  const supabase = await createClient()
+  const { data, error: error } = await supabase
     .from('notices')
     .select(
       `
-        id, notice_color, notice_text, notice_order, created_at,
-        user_id(user_id, name, avatar_url)
+        id, 
+        notice_color, 
+        notice_text, 
+        notice_order, 
+        created_at,
+        user_id(
+          user_id,
+          name,
+          avatar_url
+        )
       `,
     )
     .match({ hos_id: hosId })
@@ -19,11 +27,10 @@ export const getNotices = async (hosId: string) => {
     .order('created_at', { ascending: true })
     .returns<NoticeWithUser[]>()
 
-  if (noticesDataError) {
-    console.error(noticesDataError)
-    redirect(`/error?message=${noticesDataError.message}`)
+  if (error) {
+    throw new Error(error.message)
   }
-  return noticesData
+  return data
 }
 
 export const createNotice = async (
@@ -31,17 +38,17 @@ export const createNotice = async (
   colorInput: string,
   hosId: string,
 ) => {
-  const supabase = createClient()
-  const { error: createNoticeError } = await supabase.from('notices').insert({
+  const supabase = await createClient()
+  const { error } = await supabase.from('notices').insert({
     hos_id: hosId,
     notice_color: colorInput,
     notice_text: noticeInput,
     notice_order: 999,
   })
 
-  if (createNoticeError) {
-    console.error(createNoticeError)
-    redirect(`/error?message=${createNoticeError.message}`)
+  if (error) {
+    console.error(error)
+    redirect(`/error?message=${error.message}`)
   }
 }
 
@@ -50,8 +57,8 @@ export const updateNotice = async (
   noticeInput: string,
   colorInput: string,
 ) => {
-  const supabase = createClient()
-  const { error: updateNoticeError } = await supabase
+  const supabase = await createClient()
+  const { error } = await supabase
     .from('notices')
     .update({
       notice_color: colorInput,
@@ -59,14 +66,14 @@ export const updateNotice = async (
     })
     .match({ id: noticeId })
 
-  if (updateNoticeError) {
-    console.error(updateNoticeError)
-    redirect(`/error?message=${updateNoticeError.message}`)
+  if (error) {
+    console.error(error)
+    redirect(`/error?message=${error.message}`)
   }
 }
 
 export const deleteNotice = async (noticeId: string) => {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { error: deleteNoticeError } = await supabase
     .from('notices')
     .delete()
@@ -79,17 +86,17 @@ export const deleteNotice = async (noticeId: string) => {
 }
 
 export const reorderNotices = async (noticeIds: string[]) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   noticeIds.forEach(async (noticeId, index) => {
-    const { error: reorderNoticesError } = await supabase
+    const { error } = await supabase
       .from('notices')
       .update({ notice_order: index })
       .match({ id: noticeId })
 
-    if (reorderNoticesError) {
-      console.error(reorderNoticesError)
-      redirect(`/error?message=${reorderNoticesError.message}`)
+    if (error) {
+      console.error(error)
+      redirect(`/error?message=${error.message}`)
     }
   })
 }

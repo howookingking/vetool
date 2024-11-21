@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { logout } from '@/lib/services/auth/authentication'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/utils'
 import { Crown, User } from 'lucide-react'
 import Link from 'next/link'
 

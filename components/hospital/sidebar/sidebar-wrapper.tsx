@@ -4,7 +4,7 @@
 
 import { Button } from '@/components/ui/button'
 import { useSidebarStore } from '@/lib/store/hospital/sidebar'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/utils'
 import { ArrowLeft } from 'lucide-react'
 import React from 'react'
 

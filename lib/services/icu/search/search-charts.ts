@@ -3,7 +3,7 @@
 const SPECIAL_CHAR_REGEX = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]+/g
 
 import { createClient } from '@/lib/supabase/server'
-import { getDateMonthsAgo } from '@/lib/utils'
+import { getDateMonthsAgo } from '@/lib/utils/utils'
 import type { SearchedIcuIos } from '@/types/icu/search'
 import { redirect } from 'next/navigation'
 
@@ -13,7 +13,7 @@ export const searchIos = async (
   timeRange: string,
   order: string,
 ) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const safeWords = searchInput
     .trim()
@@ -65,7 +65,7 @@ export const searchIos = async (
 }
 
 export const getSelectedCharts = async (icuIoId: string) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data, error: error } = await supabase
     .from('icu_charts')

@@ -1,7 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { getDaysSince } from '@/lib/utils'
+import { getDaysSince } from '@/lib/utils/utils'
 import { redirect } from 'next/navigation'
 
 export const registerIcuPatient = async (
@@ -16,7 +16,7 @@ export const registerIcuPatient = async (
   main_vet: string,
   sub_vet?: string,
 ) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { error } = await supabase.rpc('register_icu', {
     hos_id_input: hosId,

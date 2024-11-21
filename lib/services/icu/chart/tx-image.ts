@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/client'
 import { redirect } from 'next/navigation'
 
 export const uploadTxImage = async (txId: string, txImages: File[]) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   Array.from(txImages).forEach(async (txImage, index) => {
     const { error } = await supabase.storage
@@ -16,7 +16,7 @@ export const uploadTxImage = async (txId: string, txImages: File[]) => {
 }
 
 export const getTxImageList = async (txId: string) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data, error } = await supabase.storage
     .from('tx_images')
@@ -31,7 +31,7 @@ export const getTxImageList = async (txId: string) => {
 }
 
 export const getTxImage = async (txId: string, txImageName: string) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data: data } = await supabase.storage
     .from('tx_images')

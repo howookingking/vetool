@@ -46,14 +46,37 @@ export type IcuOrderColors = {
     | 'injection']: string
 }
 
-export type IcuDefaultChartJoined = Pick<
-  IcuDefaultChart,
-  | 'default_chart_id'
-  | 'default_chart_order_name'
-  | 'default_chart_order_comment'
-  | 'default_chart_order_type'
-> & {
-  hos_id: Pick<Hospital, 'order_color'>
+export type IcuDefaultChartJoined = {
+  chart_id: string
+  chart_order_name: string
+  chart_order_comment: string
+  chart_order_type: string
+  chart_order_priority: number
+}
+
+export type IcuChartsInCharge = {
+  today: {
+    all: string
+    am: string
+    pm: string
+  }
+  tomorrow: {
+    all: string
+    am: string
+    pm: string
+  }
+}
+
+export type VitalRefRange = {
+  order_name: string
+  canine: {
+    min: number
+    max: number
+  }
+  feline: {
+    min: number
+    max: number
+  }
 }
 
 export type DrugProductDetail = Pick<

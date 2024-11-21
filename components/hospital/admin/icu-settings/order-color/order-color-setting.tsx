@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { updateOrderColor } from '@/lib/services/admin/icu/order-color'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/utils'
 import type { IcuOrderColors } from '@/types/adimin'
 import { LoaderCircle } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
@@ -56,29 +56,26 @@ export default function OrderColorSetting({
   )
 
   return (
-    <div className="flex flex-col gap-4">
-      <ul className="flex flex-col flex-wrap justify-between gap-3">
-        {sortedOrders.map(([key, value]) => (
-          <li key={key}>
-            <OrderColorPicker
-              color={value}
-              orderType={key}
-              handleChangeOrderTypeColor={handleOrderColor}
-            />
-          </li>
-        ))}
-      </ul>
+    <ul className="flex flex-wrap items-end gap-2">
+      {sortedOrders.map(([key, value]) => (
+        <li key={key}>
+          <OrderColorPicker
+            color={value}
+            orderType={key}
+            handleChangeOrderTypeColor={handleOrderColor}
+          />
+        </li>
+      ))}
       <Button
         type="button"
         onClick={handleUpdateOrderColor}
         disabled={isUpdating}
-        className="w-16"
       >
         수정
         <LoaderCircle
           className={cn(isUpdating ? 'ml-2 animate-spin' : 'hidden')}
         />
       </Button>
-    </div>
+    </ul>
   )
 }

@@ -1,20 +1,18 @@
-'use client'
-
+import AddDefaultChartDialog from '@/components/hospital/icu/main/chart/add-chart-dialogs/add-default-chart-dialog'
+import CopyPrevChartDialog from '@/components/hospital/icu/main/chart/add-chart-dialogs/copy-prev-chart-dialog'
+import PasteCopiedChartDialog from '@/components/hospital/icu/main/chart/add-chart-dialogs/paste-copied-chart-dialog'
+import AddBookmarkChartDialog from '@/components/hospital/icu/main/chart/add-chart-dialogs/bookmark/add-bookmark-chart-dialog'
 import type { SelectedChart } from '@/types/icu/chart'
-import AddDefaultChartDialog from './add-default-chart-dialog'
-import AddBookmarkChartDialog from './bookmark/add-bookmark-chart-dialog'
-import CopyPrevChartDialog from './copy-prev-chart-dialog'
-import PasteCopiedChartDialog from './paste-copied-chart-dialog'
 
 export default function AddChartDialogs({
   chartData,
   isFirstChart,
 }: {
-  isFirstChart: boolean
-  chartData: SelectedChart
+  isFirstChart?: boolean
+  chartData?: SelectedChart
 }) {
   return (
-    <div className="flex w-full flex-col items-center justify-center gap-5 p-5 md:h-icu-chart md:flex-row md:gap-10">
+    <div className="flex h-full w-full flex-col items-center justify-center gap-5 p-5 ring md:flex-row md:gap-10">
       {isFirstChart ? (
         <AddDefaultChartDialog chartData={chartData} />
       ) : (

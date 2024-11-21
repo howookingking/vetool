@@ -4,7 +4,7 @@ import HelperTooltip from '@/components/common/helper-tooltip'
 import { Input } from '@/components/ui/input'
 import { useOutsideClick } from '@/hooks/use-outside-click'
 import { useKeywordTrieStore } from '@/lib/store/hospital/keyword-trie'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/utils'
 import { Keyword } from '@/types/hospital/keywords'
 import {
   ChangeEvent,
@@ -30,12 +30,14 @@ export default function Autocomplete({
   handleUpdate,
   defaultValue,
   isUpdating,
+  placeholder,
 }: {
   className?: string
   label?: string
   handleUpdate?: (value: string) => void
   defaultValue?: string
   isUpdating?: boolean
+  placeholder?: string
 }) {
   const { trie } = useKeywordTrieStore()
   const [input, setInput] = useState(defaultValue ?? '')
@@ -107,8 +109,6 @@ export default function Autocomplete({
   )
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (suggestions.length === 0) return
-
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault()
@@ -129,9 +129,12 @@ export default function Autocomplete({
         setSuggestions([])
         break
       case 'Enter':
+        if (suggestions.length === 0) {
+          inputRef.current?.blur()
+          return
+        }
         e.preventDefault()
         e.stopPropagation()
-
         setTimeout(() => {
           insertSuggestion(suggestions[selectedIndex].mainKeyword)
         }, 0)
@@ -160,6 +163,7 @@ export default function Autocomplete({
         className={cn(label ? 'pl-8' : '')}
         onBlur={() => handleUpdate!(input)}
         disabled={isUpdating}
+        placeholder={placeholder ?? ''}
       />
 
       {suggestions.length > 0 && (
@@ -172,7 +176,7 @@ export default function Autocomplete({
       )}
 
       <HelperTooltip className="absolute right-2 top-2">
-        키워드는 콤마 또는 스페이스로 구분됩니다
+        키워드는 콤마로 구분됩니다
       </HelperTooltip>
     </div>
   )

@@ -19,14 +19,22 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
 import { deleteIcuChartTx } from '@/lib/services/icu/chart/tx-mutation'
+import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 export default function TxDetailInsertStep() {
-  const { setStep, txLocalState, setTxLocalState, setIsDeleting, reset } =
-    useTxMutationStore()
+  const {
+    setTxStep,
+    txLocalState,
+    setTxLocalState,
+    setIsDeleting,
+    reset: txLocalStateReset,
+  } = useTxMutationStore()
+  const { selectedTxPendingQueue, reset: orderQueueReset } = useIcuOrderStore()
 
   const form = useForm<z.infer<typeof txDetailRegisterFormSchema>>({
     resolver: zodResolver(txDetailRegisterFormSchema),
@@ -37,6 +45,10 @@ export default function TxDetailInsertStep() {
     },
   })
 
+  const hasTxOrder = useMemo(() => {
+    return selectedTxPendingQueue.some((order) => order.txId)
+  }, [selectedTxPendingQueue])
+
   const handleNextStep = async (
     values: z.infer<typeof txDetailRegisterFormSchema>,
   ) => {
@@ -46,22 +58,33 @@ export default function TxDetailInsertStep() {
       // isNotificationChecked: values.isNotificationChecked,
     })
 
-    setStep('seletctUser')
+    setTxStep('seletctUser')
+  }
+
+  const handleCloseClick = () => {
+    setTxStep('closed')
+    txLocalStateReset()
+    orderQueueReset()
   }
 
   const handleDeleteTx = async () => {
     setIsDeleting(true)
-    setStep('closed')
+    setTxStep('closed')
 
-    await deleteIcuChartTx(txLocalState?.txId!)
+    if (hasTxOrder) {
+      selectedTxPendingQueue.forEach(async (order) => {
+        if (order.txId) await deleteIcuChartTx(order.txId)
+      })
+    } else {
+      await deleteIcuChartTx(txLocalState?.txId!)
+    }
+
     toast({
       title: '처치내역을 삭제하였습니다',
     })
-  }
 
-  const handleCloseClick = () => {
-    setStep('closed')
-    reset()
+    txLocalStateReset()
+    orderQueueReset()
   }
 
   return (
@@ -141,10 +164,11 @@ export default function TxDetailInsertStep() {
           /> */}
 
           <div className="flex justify-between">
-            {txLocalState?.txId && (
+            {(txLocalState?.txId || hasTxOrder) && (
               <Button
                 variant="destructive"
                 onClick={handleDeleteTx}
+                tabIndex={-1}
                 type="button"
               >
                 삭제

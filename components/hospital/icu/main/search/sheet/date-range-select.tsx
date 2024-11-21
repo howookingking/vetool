@@ -7,29 +7,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Dispatch, SetStateAction } from 'react'
-import type { SearchOptions } from '@/components/hospital/icu/main/search/icu-search-chart'
 
 export default function DateRagneSelect({
   timeRange,
-  setOptions,
+  onChange,
 }: {
   timeRange: string
-  setOptions: Dispatch<SetStateAction<SearchOptions>>
+  onChange: (value: string) => void
 }) {
-  const handleValueChange = (value: string) => {
-    setOptions((prevOptions) => ({
-      ...prevOptions,
-      timeRange: value,
-    }))
-  }
-
   return (
     <div className="flex flex-col gap-2">
       <Label htmlFor="name" className="text-left">
-        조회기간
+        조회 기간
       </Label>
-      <Select defaultValue={timeRange} onValueChange={handleValueChange}>
+      <Select defaultValue={timeRange} onValueChange={onChange}>
         <SelectTrigger className="w-full">
           <SelectValue />
         </SelectTrigger>

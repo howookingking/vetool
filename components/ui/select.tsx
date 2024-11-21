@@ -9,7 +9,7 @@ import {
 } from '@radix-ui/react-icons'
 import * as SelectPrimitive from '@radix-ui/react-select'
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/utils'
 
 const Select = SelectPrimitive.Root
 
@@ -133,7 +133,9 @@ const SelectItem = React.forwardRef<
         <CheckIcon className="h-4 w-4" />
       </SelectPrimitive.ItemIndicator>
     </span>
-    <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+    <SelectPrimitive.ItemText className="border-none">
+      {children}
+    </SelectPrimitive.ItemText>
   </SelectPrimitive.Item>
 ))
 SelectItem.displayName = SelectPrimitive.Item.displayName

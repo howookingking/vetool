@@ -1,13 +1,14 @@
-import ChartBody from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-body'
+import ChartInfos from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/chart-infos'
+import ChartTable from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table'
 import { Badge } from '@/components/ui/badge'
 import { toast } from '@/components/ui/use-toast'
+import { getIcuChart } from '@/lib/services/icu/chart/get-icu-chart'
 import { getIoDateRange } from '@/lib/services/icu/chart/get-io-date-range'
 import { getIcuData } from '@/lib/services/icu/get-icu-data'
 import { Json } from '@/lib/supabase/database.types'
-import { BasicHosDataProvider } from '@/providers/basic-hos-data-context-privider'
-import { IcuOrderColors } from '@/types/adimin'
+import { BasicHosDataProvider } from '@/providers/basic-hos-data-context-provider'
+import type { IcuOrderColors } from '@/types/adimin'
 import type { IcuSidebarIoData, SelectedChart, Vet } from '@/types/icu/chart'
-import { PatientData } from '@/types/patients'
 import html2canvas from 'html2canvas'
 import React, { useEffect, useRef } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -16,8 +17,11 @@ import { createRoot } from 'react-dom/client'
 export const captureContent = async (element: HTMLElement) => {
   return await html2canvas(element, {
     width: element.scrollWidth,
-    height: element.scrollHeight,
+    height: element.scrollHeight + 300,
     scale: 1.2,
+    useCORS: true,
+    allowTaint: true,
+    logging: false,
   })
 }
 
@@ -36,7 +40,10 @@ export const ExportChartBody: React.FC<{
   return (
     <div ref={ref} className="p-4">
       <Badge className="mb-4">{chartData.target_date}</Badge>
-      <ChartBody chartData={chartData} />
+      <div className="flex flex-col gap-2">
+        <ChartInfos chartData={chartData} />
+        <ChartTable chartData={chartData} isExport />
+      </div>
     </div>
   )
 }
@@ -52,7 +59,6 @@ export const renderAndCaptureExportChartBody = (
       group_list: string[]
       icu_memo_names: string[]
     }
-    patientsData: PatientData[]
   },
 ): Promise<HTMLCanvasElement> => {
   return new Promise((resolve, reject) => {
@@ -77,15 +83,21 @@ export const renderAndCaptureExportChartBody = (
     }
 
     const root = createRoot(container)
+
     root.render(
       <BasicHosDataProvider
         basicHosData={{
+          //todo
+          rerCalcMethod: 'a',
+          maintenanceRateCalcMethod: 'b',
+          showOrderer: true,
           vetsListData: initialIcuData.vetsListData,
           groupListData: initialIcuData.basicHosData.group_list,
           sidebarData: initialIcuData.icuSidebarData ?? [],
           orderColorsData: initialIcuData.basicHosData
             .order_color as IcuOrderColors,
           memoNameListData: initialIcuData.basicHosData.icu_memo_names,
+          vitalRefRange: [],
         }}
       >
         <ExportChartBody chartData={chartData} onRender={handleRender} />,
@@ -95,22 +107,27 @@ export const renderAndCaptureExportChartBody = (
 }
 
 export const handleExport = async (
-  chartData: SelectedChart,
+  icuIoId: string,
+  patientId: string,
+  target_date: string,
   hosId: string,
   exportFn: (canvases: HTMLCanvasElement[]) => void,
 ) => {
   try {
-    const dateRange = await getIoDateRange(chartData.icu_io.icu_io_id)
-    const initialIcuData = await getIcuData(hosId, chartData.target_date)
+    const dateRange = await getIoDateRange(icuIoId)
+    const initialIcuData = await getIcuData(hosId, target_date)
 
     if (dateRange) {
       const canvases = await Promise.all(
-        dateRange.map(({ target_date }) =>
-          renderAndCaptureExportChartBody(
-            { ...chartData, target_date },
-            initialIcuData,
-          ),
-        ),
+        dateRange.map(async ({ target_date }) => {
+          const chartData = await getIcuChart(hosId, target_date, patientId)
+          const dateChartData = {
+            ...chartData,
+            target_date,
+          }
+
+          return renderAndCaptureExportChartBody(dateChartData, initialIcuData)
+        }),
       )
 
       exportFn(canvases)

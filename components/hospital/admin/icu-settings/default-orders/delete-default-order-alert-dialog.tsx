@@ -18,10 +18,10 @@ import { useRouter } from 'next/navigation'
 
 export default function DeleteDefaultOrderAlertDialog({
   selectedChartOrder,
-  toggleModal,
+  setOrderStep,
 }: {
   selectedChartOrder: Partial<SelectedIcuOrder>
-  toggleModal: () => void
+  setOrderStep: (orderStep: 'closed' | 'upsert' | 'selectOrderer') => void
 }) {
   const { refresh } = useRouter()
   const handleDeleteOrderClick = async () => {
@@ -31,7 +31,7 @@ export default function DeleteDefaultOrderAlertDialog({
       title: `${selectedChartOrder.order_name} 오더를 삭제하였습니다`,
     })
 
-    toggleModal()
+    setOrderStep('closed')
     refresh()
   }
 

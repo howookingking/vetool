@@ -13,7 +13,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 import { deletePatient } from '@/lib/services/patient/patient'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/utils'
 import { LoaderCircle, Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -34,7 +34,7 @@ export default function DeletePatientAlert({
     await deletePatient(patientId)
 
     toast({
-      title: `${patientName}이(가)) 삭제되었습니다.`,
+      title: `${patientName}이(가) 삭제되었습니다.`,
     })
 
     setIsLoading(false)

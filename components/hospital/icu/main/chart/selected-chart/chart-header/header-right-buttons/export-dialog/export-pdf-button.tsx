@@ -1,11 +1,11 @@
 import { handleExport } from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/export-dialog/export-dialog-utils'
 import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/utils'
 import type { SelectedChart } from '@/types/icu/chart'
 import jsPDF from 'jspdf'
 import { LoaderCircle } from 'lucide-react'
 import { useParams } from 'next/navigation'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { type Dispatch, type SetStateAction, useState } from 'react'
 
 export default function ExportPdfButton({
   chartData,
@@ -15,8 +15,9 @@ export default function ExportPdfButton({
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>
 }) {
   const [isExporting, setIsExporting] = useState(false)
-  const { in_date } = chartData.icu_io
-  const { name } = chartData.patient
+  const { in_date, icu_io_id } = chartData.icu_io
+  const { name, patient_id } = chartData.patient
+  const { target_date } = chartData
   const { hos_id } = useParams()
 
   const generatePdf = (canvases: HTMLCanvasElement[]) => {
@@ -39,11 +40,17 @@ export default function ExportPdfButton({
   const handleExportPdf = async () => {
     setIsExporting(true)
 
-    await handleExport(chartData, hos_id as string, (canvases) => {
-      const pdf = generatePdf(canvases)
+    await handleExport(
+      icu_io_id,
+      patient_id,
+      target_date,
+      hos_id as string,
+      (canvases) => {
+        const pdf = generatePdf(canvases)
 
-      pdf.save(`(입원일_${in_date})_${name}.pdf`)
-    })
+        pdf.save(`(입원일_${in_date})_${name}.pdf`)
+      },
+    )
 
     setIsExporting(false)
     setIsDialogOpen(false)

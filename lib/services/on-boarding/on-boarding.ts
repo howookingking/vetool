@@ -6,7 +6,7 @@ import type { UserApprovalHosJoined } from '@/types/on-boarding'
 import { redirect } from 'next/navigation'
 
 export const getUserAppoval = async () => {
-  const supabase = createClient()
+  const supabase = await createClient()
   const authUser = await getUser()
 
   const { data, error } = await supabase
@@ -24,14 +24,13 @@ export const getUserAppoval = async () => {
     .single()
 
   if (error) {
-    console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    throw new Error(error.message)
   }
 
   return data
 }
 export const cancelApproval = async (userApprovalId: string) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { error } = await supabase.from('user_approvals').delete().match({
     user_approval_id: userApprovalId,
@@ -46,15 +45,14 @@ export const cancelApproval = async (userApprovalId: string) => {
 }
 
 export const getHospitals = async () => {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data, error } = await supabase
     .from('hospitals')
     .select('hos_id, name, city, district')
     .order('name', { ascending: true })
 
   if (error) {
-    console.error(error)
-    redirect(`/error?message=${error.message}`)
+    throw new Error(error.message)
   }
 
   return data
@@ -65,7 +63,7 @@ export const sendApprovalToHospital = async (
   isVet: boolean,
   username: string,
 ) => {
-  const supabase = createClient()
+  const supabase = await createClient()
   console.error(hosId)
   const { error } = await supabase.rpc(
     'update_user_info_when_sending_approval',
@@ -90,7 +88,7 @@ export const createHospital = async (
   district: string,
   businessNumber: string,
 ) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data, error } = await supabase.rpc(
     'update_user_info_when_create_new_hospital',

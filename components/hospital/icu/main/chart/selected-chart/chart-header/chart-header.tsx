@@ -1,8 +1,8 @@
 'use client'
 
+import HeaderCenter from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-center/bookmark-and-signalments'
+import HeaderRightButtons from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/header-right-buttons'
 import type { SelectedChart } from '@/types/icu/chart'
-import HeaderCenter from './header-center/bookmark-and-signalments'
-import HeaderRightButtons from './header-right-buttons/header-right-buttons'
 
 export default function ChartHeader({
   chartData,
@@ -10,7 +10,7 @@ export default function ChartHeader({
   chartData: SelectedChart
 }) {
   return (
-    <header className="left-0 top-0 w-full md:fixed">
+    <header className="left-0 top-0 z-20 w-full md:fixed">
       <HeaderCenter chartData={chartData} />
 
       <HeaderRightButtons chartData={chartData} />

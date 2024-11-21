@@ -35,19 +35,19 @@ type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   visibility?: boolean
-  rowSelect?: boolean
   searchPlaceHolder?: string
   rowLength?: number
   customColumnVisibility?: VisibilityState
+  children?: React.ReactNode
 }
 export default function DataTable<TData, TValue>({
   columns,
   data,
   visibility,
-  rowSelect,
   searchPlaceHolder,
   rowLength = 10,
   customColumnVisibility,
+  children,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [globalFilter, setGlobalFilter] = useState('')
@@ -83,21 +83,25 @@ export default function DataTable<TData, TValue>({
     <div className="w-full">
       {searchPlaceHolder && (
         <div className="flex items-center pb-2">
-          <Input
-            type="text"
-            name="global search"
-            placeholder={searchPlaceHolder}
-            value={globalFilter}
-            onChange={(event) => setGlobalFilter(event.target.value ?? '')}
-          />
-          <Button
-            size="icon"
-            variant="ghost"
-            className="absolute right-8 h-5 w-5 text-muted-foreground"
-            onClick={() => setGlobalFilter('')}
-          >
-            <X size={12} />
-          </Button>
+          <div className="relative w-full">
+            <Input
+              type="text"
+              name="global search"
+              placeholder={searchPlaceHolder}
+              value={globalFilter}
+              onChange={(event) => setGlobalFilter(event.target.value ?? '')}
+            />
+            <Button
+              size="icon"
+              variant="ghost"
+              className="absolute right-5 top-2 h-5 w-5 text-muted-foreground"
+              onClick={() => setGlobalFilter('')}
+            >
+              <X size={12} />
+            </Button>
+          </div>
+
+          {children}
         </div>
       )}
 
@@ -135,7 +139,10 @@ export default function DataTable<TData, TValue>({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className="text-center">
+                    <TableHead
+                      key={header.id}
+                      className="text-center text-xs md:text-sm"
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -173,7 +180,7 @@ export default function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  <NoResult title="결과가 없습니다" className="h-40" />
+                  <NoResult title="검색 결과가 없습니다" className="h-40" />
                 </TableCell>
               </TableRow>
             )}

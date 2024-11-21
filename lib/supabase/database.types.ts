@@ -60,11 +60,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'diet_products_rows_duplicate_hos_id_fkey'
-            columns: ['hos_id']
+            foreignKeyName: "diet_products_rows_duplicate_hos_id_fkey"
+            columns: ["hos_id"]
             isOneToOne: false
-            referencedRelation: 'hospitals'
-            referencedColumns: ['hos_id']
+            referencedRelation: "hospitals"
+            referencedColumns: ["hos_id"]
           },
         ]
       }
@@ -74,6 +74,7 @@ export type Database = {
           created_at: string
           cri_unit: string | null
           default_dose: string | null
+          description: string | null
           dose_id: string
           dose_unit: string | null
           drug_id: string | null
@@ -87,6 +88,7 @@ export type Database = {
           created_at?: string
           cri_unit?: string | null
           default_dose?: string | null
+          description?: string | null
           dose_id?: string
           dose_unit?: string | null
           drug_id?: string | null
@@ -100,6 +102,7 @@ export type Database = {
           created_at?: string
           cri_unit?: string | null
           default_dose?: string | null
+          description?: string | null
           dose_id?: string
           dose_unit?: string | null
           drug_id?: string | null
@@ -110,11 +113,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'drug_doses_drug_id_fkey'
-            columns: ['drug_id']
+            foreignKeyName: "drug_doses_drug_id_fkey"
+            columns: ["drug_id"]
             isOneToOne: false
-            referencedRelation: 'drugs_rows'
-            referencedColumns: ['drug_id']
+            referencedRelation: "drugs_rows"
+            referencedColumns: ["drug_id"]
           },
         ]
       }
@@ -175,18 +178,18 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'drug_products_rows_drug_id_fkey'
-            columns: ['drug_id']
+            foreignKeyName: "drug_products_rows_drug_id_fkey"
+            columns: ["drug_id"]
             isOneToOne: false
-            referencedRelation: 'drugs_rows'
-            referencedColumns: ['drug_id']
+            referencedRelation: "drugs_rows"
+            referencedColumns: ["drug_id"]
           },
           {
-            foreignKeyName: 'drug_products_rows_hos_id_fkey'
-            columns: ['hos_id']
+            foreignKeyName: "drug_products_rows_hos_id_fkey"
+            columns: ["hos_id"]
             isOneToOne: false
-            referencedRelation: 'hospitals'
-            referencedColumns: ['hos_id']
+            referencedRelation: "hospitals"
+            referencedColumns: ["hos_id"]
           },
         ]
       }
@@ -223,18 +226,18 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'drugs_description_drug_id_fkey'
-            columns: ['drug_id']
+            foreignKeyName: "drugs_description_drug_id_fkey"
+            columns: ["drug_id"]
             isOneToOne: false
-            referencedRelation: 'drugs_rows'
-            referencedColumns: ['drug_id']
+            referencedRelation: "drugs_rows"
+            referencedColumns: ["drug_id"]
           },
           {
-            foreignKeyName: 'drugs_description_hos_id_fkey'
-            columns: ['hos_id']
+            foreignKeyName: "drugs_description_hos_id_fkey"
+            columns: ["hos_id"]
             isOneToOne: false
-            referencedRelation: 'hospitals'
-            referencedColumns: ['hos_id']
+            referencedRelation: "hospitals"
+            referencedColumns: ["hos_id"]
           },
         ]
       }
@@ -284,10 +287,14 @@ export type Database = {
           hos_id: string
           icu_memo_names: string[]
           is_personal: boolean
+          maintenance_rate_calc_method: string
           master_user_id: string
           name: string
           order_color: Json | null
           plan: string
+          rer_calc_method: string
+          show_orderer: boolean
+          vital_ref_range: Json
         }
         Insert: {
           business_number?: string
@@ -298,10 +305,14 @@ export type Database = {
           hos_id?: string
           icu_memo_names?: string[]
           is_personal?: boolean
+          maintenance_rate_calc_method?: string
           master_user_id: string
           name: string
           order_color?: Json | null
           plan?: string
+          rer_calc_method?: string
+          show_orderer?: boolean
+          vital_ref_range?: Json
         }
         Update: {
           business_number?: string
@@ -312,116 +323,26 @@ export type Database = {
           hos_id?: string
           icu_memo_names?: string[]
           is_personal?: boolean
+          maintenance_rate_calc_method?: string
           master_user_id?: string
           name?: string
           order_color?: Json | null
           plan?: string
+          rer_calc_method?: string
+          show_orderer?: boolean
+          vital_ref_range?: Json
         }
         Relationships: [
           {
-            foreignKeyName: 'hospitals_master_user_id_fkey'
-            columns: ['master_user_id']
+            foreignKeyName: "hospitals_master_user_id_fkey"
+            columns: ["master_user_id"]
             isOneToOne: false
-            referencedRelation: 'users'
-            referencedColumns: ['user_id']
+            referencedRelation: "users"
+            referencedColumns: ["user_id"]
           },
         ]
       }
-      icu_chart: {
-        Row: {
-          bookmark_id: string | null
-          created_at: string
-          hos_id: string
-          icu_chart_id: string
-          icu_io_id: string
-          main_vet: string
-          memo_a: string
-          memo_b: string
-          memo_c: string
-          patient_id: string
-          sub_vet: string | null
-          target_date: string
-          weight: string
-          weight_measured_date: string | null
-        }
-        Insert: {
-          bookmark_id?: string | null
-          created_at?: string
-          hos_id: string
-          icu_chart_id?: string
-          icu_io_id: string
-          main_vet: string
-          memo_a?: string
-          memo_b?: string
-          memo_c?: string
-          patient_id: string
-          sub_vet?: string | null
-          target_date: string
-          weight?: string
-          weight_measured_date?: string | null
-        }
-        Update: {
-          bookmark_id?: string | null
-          created_at?: string
-          hos_id?: string
-          icu_chart_id?: string
-          icu_io_id?: string
-          main_vet?: string
-          memo_a?: string
-          memo_b?: string
-          memo_c?: string
-          patient_id?: string
-          sub_vet?: string | null
-          target_date?: string
-          weight?: string
-          weight_measured_date?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'icu_chart_bookmark_id_fkey'
-            columns: ['bookmark_id']
-            isOneToOne: false
-            referencedRelation: 'icu_chart_bookmark'
-            referencedColumns: ['bookmark_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_hos_id_fkey'
-            columns: ['hos_id']
-            isOneToOne: false
-            referencedRelation: 'hospitals'
-            referencedColumns: ['hos_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_icu_io_id_fkey'
-            columns: ['icu_io_id']
-            isOneToOne: false
-            referencedRelation: 'icu_io'
-            referencedColumns: ['icu_io_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_main_vet_fkey'
-            columns: ['main_vet']
-            isOneToOne: false
-            referencedRelation: 'users'
-            referencedColumns: ['user_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_patient_id_fkey'
-            columns: ['patient_id']
-            isOneToOne: false
-            referencedRelation: 'patients'
-            referencedColumns: ['patient_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_sub_vet_fkey'
-            columns: ['sub_vet']
-            isOneToOne: false
-            referencedRelation: 'users'
-            referencedColumns: ['user_id']
-          },
-        ]
-      }
-      icu_chart_bookmark: {
+      icu_bookmarks: {
         Row: {
           bookmark_comment: string | null
           bookmark_id: string
@@ -448,32 +369,34 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'icu_chart_bookmark_hos_id_fkey'
-            columns: ['hos_id']
+            foreignKeyName: "icu_bookmarks_hos_id_fkey"
+            columns: ["hos_id"]
             isOneToOne: false
-            referencedRelation: 'hospitals'
-            referencedColumns: ['hos_id']
+            referencedRelation: "hospitals"
+            referencedColumns: ["hos_id"]
           },
           {
-            foreignKeyName: 'icu_chart_bookmark_icu_chart_id_fkey'
-            columns: ['icu_chart_id']
+            foreignKeyName: "icu_bookmarks_icu_chart_id_fkey"
+            columns: ["icu_chart_id"]
             isOneToOne: true
-            referencedRelation: 'icu_chart'
-            referencedColumns: ['icu_chart_id']
+            referencedRelation: "icu_charts"
+            referencedColumns: ["icu_chart_id"]
           },
         ]
       }
       icu_charts: {
         Row: {
           created_at: string
+          der_calc_factor: number | null
           hos_id: string
           icu_chart_id: string
-          icu_io_id: string
-          main_vet: string
-          memo_a: string
-          memo_b: string
-          memo_c: string
-          patient_id: string
+          icu_io_id: string | null
+          in_charge: Json | null
+          main_vet: string | null
+          memo_a: Json | null
+          memo_b: Json | null
+          memo_c: Json | null
+          patient_id: string | null
           sub_vet: string | null
           target_date: string
           weight: string
@@ -481,14 +404,16 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          der_calc_factor?: number | null
           hos_id: string
           icu_chart_id?: string
-          icu_io_id: string
-          main_vet: string
-          memo_a?: string
-          memo_b?: string
-          memo_c?: string
-          patient_id: string
+          icu_io_id?: string | null
+          in_charge?: Json | null
+          main_vet?: string | null
+          memo_a?: Json | null
+          memo_b?: Json | null
+          memo_c?: Json | null
+          patient_id?: string | null
           sub_vet?: string | null
           target_date: string
           weight?: string
@@ -496,14 +421,16 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          der_calc_factor?: number | null
           hos_id?: string
           icu_chart_id?: string
-          icu_io_id?: string
-          main_vet?: string
-          memo_a?: string
-          memo_b?: string
-          memo_c?: string
-          patient_id?: string
+          icu_io_id?: string | null
+          in_charge?: Json | null
+          main_vet?: string | null
+          memo_a?: Json | null
+          memo_b?: Json | null
+          memo_c?: Json | null
+          patient_id?: string | null
           sub_vet?: string | null
           target_date?: string
           weight?: string
@@ -511,247 +438,39 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'icu_chart_order_hos_id_fkey'
-            columns: ['hos_id']
+            foreignKeyName: "icu_charts_hos_id_fkey"
+            columns: ["hos_id"]
             isOneToOne: false
-            referencedRelation: 'hospitals'
-            referencedColumns: ['hos_id']
+            referencedRelation: "hospitals"
+            referencedColumns: ["hos_id"]
           },
           {
-            foreignKeyName: 'icu_chart_order_icu_chart_id_fkey'
-            columns: ['icu_chart_id']
+            foreignKeyName: "icu_charts_icu_io_id_fkey"
+            columns: ["icu_io_id"]
             isOneToOne: false
-            referencedRelation: 'icu_chart'
-            referencedColumns: ['icu_chart_id']
+            referencedRelation: "icu_io"
+            referencedColumns: ["icu_io_id"]
           },
           {
-            foreignKeyName: 'icu_chart_order_icu_chart_order_tx_1_fkey'
-            columns: ['icu_chart_order_tx_1']
+            foreignKeyName: "icu_charts_main_vet_fkey"
+            columns: ["main_vet"]
             isOneToOne: false
-            referencedRelation: 'icu_chart_tx'
-            referencedColumns: ['icu_chart_tx_id']
+            referencedRelation: "users"
+            referencedColumns: ["user_id"]
           },
           {
-            foreignKeyName: 'icu_chart_order_icu_chart_order_tx_10_fkey'
-            columns: ['icu_chart_order_tx_10']
+            foreignKeyName: "icu_charts_patient_id_fkey"
+            columns: ["patient_id"]
             isOneToOne: false
-            referencedRelation: 'icu_chart_tx'
-            referencedColumns: ['icu_chart_tx_id']
+            referencedRelation: "patients"
+            referencedColumns: ["patient_id"]
           },
           {
-            foreignKeyName: 'icu_chart_order_icu_chart_order_tx_11_fkey'
-            columns: ['icu_chart_order_tx_11']
+            foreignKeyName: "icu_charts_sub_vet_fkey"
+            columns: ["sub_vet"]
             isOneToOne: false
-            referencedRelation: 'icu_chart_tx'
-            referencedColumns: ['icu_chart_tx_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_order_icu_chart_order_tx_12_fkey'
-            columns: ['icu_chart_order_tx_12']
-            isOneToOne: false
-            referencedRelation: 'icu_chart_tx'
-            referencedColumns: ['icu_chart_tx_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_order_icu_chart_order_tx_13_fkey'
-            columns: ['icu_chart_order_tx_13']
-            isOneToOne: false
-            referencedRelation: 'icu_chart_tx'
-            referencedColumns: ['icu_chart_tx_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_order_icu_chart_order_tx_14_fkey'
-            columns: ['icu_chart_order_tx_14']
-            isOneToOne: false
-            referencedRelation: 'icu_chart_tx'
-            referencedColumns: ['icu_chart_tx_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_order_icu_chart_order_tx_15_fkey'
-            columns: ['icu_chart_order_tx_15']
-            isOneToOne: false
-            referencedRelation: 'icu_chart_tx'
-            referencedColumns: ['icu_chart_tx_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_order_icu_chart_order_tx_16_fkey'
-            columns: ['icu_chart_order_tx_16']
-            isOneToOne: false
-            referencedRelation: 'icu_chart_tx'
-            referencedColumns: ['icu_chart_tx_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_order_icu_chart_order_tx_17_fkey'
-            columns: ['icu_chart_order_tx_17']
-            isOneToOne: false
-            referencedRelation: 'icu_chart_tx'
-            referencedColumns: ['icu_chart_tx_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_order_icu_chart_order_tx_18_fkey'
-            columns: ['icu_chart_order_tx_18']
-            isOneToOne: false
-            referencedRelation: 'icu_chart_tx'
-            referencedColumns: ['icu_chart_tx_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_order_icu_chart_order_tx_19_fkey'
-            columns: ['icu_chart_order_tx_19']
-            isOneToOne: false
-            referencedRelation: 'icu_chart_tx'
-            referencedColumns: ['icu_chart_tx_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_order_icu_chart_order_tx_2_fkey'
-            columns: ['icu_chart_order_tx_2']
-            isOneToOne: false
-            referencedRelation: 'icu_chart_tx'
-            referencedColumns: ['icu_chart_tx_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_order_icu_chart_order_tx_20_fkey'
-            columns: ['icu_chart_order_tx_20']
-            isOneToOne: false
-            referencedRelation: 'icu_chart_tx'
-            referencedColumns: ['icu_chart_tx_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_order_icu_chart_order_tx_21_fkey'
-            columns: ['icu_chart_order_tx_21']
-            isOneToOne: false
-            referencedRelation: 'icu_chart_tx'
-            referencedColumns: ['icu_chart_tx_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_order_icu_chart_order_tx_22_fkey'
-            columns: ['icu_chart_order_tx_22']
-            isOneToOne: false
-            referencedRelation: 'icu_chart_tx'
-            referencedColumns: ['icu_chart_tx_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_order_icu_chart_order_tx_23_fkey'
-            columns: ['icu_chart_order_tx_23']
-            isOneToOne: false
-            referencedRelation: 'icu_chart_tx'
-            referencedColumns: ['icu_chart_tx_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_order_icu_chart_order_tx_24_fkey'
-            columns: ['icu_chart_order_tx_24']
-            isOneToOne: false
-            referencedRelation: 'icu_chart_tx'
-            referencedColumns: ['icu_chart_tx_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_order_icu_chart_order_tx_3_fkey'
-            columns: ['icu_chart_order_tx_3']
-            isOneToOne: false
-            referencedRelation: 'icu_chart_tx'
-            referencedColumns: ['icu_chart_tx_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_order_icu_chart_order_tx_4_fkey'
-            columns: ['icu_chart_order_tx_4']
-            isOneToOne: false
-            referencedRelation: 'icu_chart_tx'
-            referencedColumns: ['icu_chart_tx_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_order_icu_chart_order_tx_5_fkey'
-            columns: ['icu_chart_order_tx_5']
-            isOneToOne: false
-            referencedRelation: 'icu_chart_tx'
-            referencedColumns: ['icu_chart_tx_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_order_icu_chart_order_tx_6_fkey'
-            columns: ['icu_chart_order_tx_6']
-            isOneToOne: false
-            referencedRelation: 'icu_chart_tx'
-            referencedColumns: ['icu_chart_tx_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_order_icu_chart_order_tx_7_fkey'
-            columns: ['icu_chart_order_tx_7']
-            isOneToOne: false
-            referencedRelation: 'icu_chart_tx'
-            referencedColumns: ['icu_chart_tx_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_order_icu_chart_order_tx_8_fkey'
-            columns: ['icu_chart_order_tx_8']
-            isOneToOne: false
-            referencedRelation: 'icu_chart_tx'
-            referencedColumns: ['icu_chart_tx_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_order_icu_chart_order_tx_9_fkey'
-            columns: ['icu_chart_order_tx_9']
-            isOneToOne: false
-            referencedRelation: 'icu_chart_tx'
-            referencedColumns: ['icu_chart_tx_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_order_icu_io_id_fkey'
-            columns: ['icu_io_id']
-            isOneToOne: false
-            referencedRelation: 'icu_io'
-            referencedColumns: ['icu_io_id']
-          },
-        ]
-      }
-      icu_chart_tx: {
-        Row: {
-          created_at: string
-          hos_id: string
-          icu_chart_order_id: string | null
-          icu_chart_tx_comment: string | null
-          icu_chart_tx_id: string
-          icu_chart_tx_images: string[] | null
-          icu_chart_tx_log: Json[] | null
-          icu_chart_tx_result: string | null
-          icu_io_id: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          created_at?: string
-          hos_id: string
-          icu_chart_order_id?: string | null
-          icu_chart_tx_comment?: string | null
-          icu_chart_tx_id?: string
-          icu_chart_tx_images?: string[] | null
-          icu_chart_tx_log?: Json[] | null
-          icu_chart_tx_result?: string | null
-          icu_io_id?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          created_at?: string
-          hos_id?: string
-          icu_chart_order_id?: string | null
-          icu_chart_tx_comment?: string | null
-          icu_chart_tx_id?: string
-          icu_chart_tx_images?: string[] | null
-          icu_chart_tx_log?: Json[] | null
-          icu_chart_tx_result?: string | null
-          icu_io_id?: string | null
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'icu_chart_tx_icu_chart_order_id_fkey'
-            columns: ['icu_chart_order_id']
-            isOneToOne: false
-            referencedRelation: 'icu_chart_order'
-            referencedColumns: ['icu_chart_order_id']
-          },
-          {
-            foreignKeyName: 'icu_chart_tx_icu_io_id_fkey'
-            columns: ['icu_io_id']
-            isOneToOne: false
-            referencedRelation: 'icu_io'
-            referencedColumns: ['icu_io_id']
+            referencedRelation: "users"
+            referencedColumns: ["user_id"]
           },
         ]
       }
@@ -761,6 +480,7 @@ export type Database = {
           default_chart_id: string
           default_chart_order_comment: string
           default_chart_order_name: string
+          default_chart_order_priority: number
           default_chart_order_type: string
           hos_id: string
         }
@@ -769,6 +489,7 @@ export type Database = {
           default_chart_id?: string
           default_chart_order_comment: string
           default_chart_order_name: string
+          default_chart_order_priority?: number
           default_chart_order_type: string
           hos_id: string
         }
@@ -777,16 +498,17 @@ export type Database = {
           default_chart_id?: string
           default_chart_order_comment?: string
           default_chart_order_name?: string
+          default_chart_order_priority?: number
           default_chart_order_type?: string
           hos_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: 'icu_default_chart_temp_hos_id_fkey'
-            columns: ['hos_id']
+            foreignKeyName: "icu_default_chart_temp_hos_id_fkey"
+            columns: ["hos_id"]
             isOneToOne: false
-            referencedRelation: 'hospitals'
-            referencedColumns: ['hos_id']
+            referencedRelation: "hospitals"
+            referencedColumns: ["hos_id"]
           },
         ]
       }
@@ -803,7 +525,7 @@ export type Database = {
           icu_io_tags: string | null
           in_date: string
           out_date: string | null
-          out_due_date: string
+          out_due_date: string | null
           patient_id: string
         }
         Insert: {
@@ -818,7 +540,7 @@ export type Database = {
           icu_io_tags?: string | null
           in_date: string
           out_date?: string | null
-          out_due_date: string
+          out_due_date?: string | null
           patient_id: string
         }
         Update: {
@@ -833,23 +555,23 @@ export type Database = {
           icu_io_tags?: string | null
           in_date?: string
           out_date?: string | null
-          out_due_date?: string
+          out_due_date?: string | null
           patient_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: 'icu_io_hos_id_fkey'
-            columns: ['hos_id']
+            foreignKeyName: "icu_io_hos_id_fkey"
+            columns: ["hos_id"]
             isOneToOne: false
-            referencedRelation: 'hospitals'
-            referencedColumns: ['hos_id']
+            referencedRelation: "hospitals"
+            referencedColumns: ["hos_id"]
           },
           {
-            foreignKeyName: 'icu_io_patient_id_fkey'
-            columns: ['patient_id']
+            foreignKeyName: "icu_io_patient_id_fkey"
+            columns: ["patient_id"]
             isOneToOne: false
-            referencedRelation: 'patients'
-            referencedColumns: ['patient_id']
+            referencedRelation: "patients"
+            referencedColumns: ["patient_id"]
           },
         ]
       }
@@ -889,29 +611,317 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'icu_notification_hos_id_fkey'
-            columns: ['hos_id']
+            foreignKeyName: "icu_notification_hos_id_fkey"
+            columns: ["hos_id"]
             isOneToOne: false
-            referencedRelation: 'hospitals'
-            referencedColumns: ['hos_id']
+            referencedRelation: "hospitals"
+            referencedColumns: ["hos_id"]
           },
           {
-            foreignKeyName: 'icu_notification_icu_chart_id_fkey'
-            columns: ['icu_chart_id']
+            foreignKeyName: "icu_notification_patient_id_fkey"
+            columns: ["patient_id"]
             isOneToOne: false
-            referencedRelation: 'icu_chart'
-            referencedColumns: ['icu_chart_id']
+            referencedRelation: "patients"
+            referencedColumns: ["patient_id"]
+          },
+        ]
+      }
+      icu_orders: {
+        Row: {
+          created_at: string
+          hos_id: string
+          icu_chart_id: string
+          icu_chart_order_comment: string | null
+          icu_chart_order_id: string
+          icu_chart_order_name: string
+          icu_chart_order_priority: number
+          icu_chart_order_time: string[]
+          icu_chart_order_type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          hos_id: string
+          icu_chart_id: string
+          icu_chart_order_comment?: string | null
+          icu_chart_order_id?: string
+          icu_chart_order_name: string
+          icu_chart_order_priority?: number
+          icu_chart_order_time?: string[]
+          icu_chart_order_type: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          hos_id?: string
+          icu_chart_id?: string
+          icu_chart_order_comment?: string | null
+          icu_chart_order_id?: string
+          icu_chart_order_name?: string
+          icu_chart_order_priority?: number
+          icu_chart_order_time?: string[]
+          icu_chart_order_type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "icu_orders_hos_id_fkey"
+            columns: ["hos_id"]
+            isOneToOne: false
+            referencedRelation: "hospitals"
+            referencedColumns: ["hos_id"]
           },
           {
-            foreignKeyName: 'icu_notification_patient_id_fkey'
-            columns: ['patient_id']
+            foreignKeyName: "icu_orders_icu_chart_id_fkey"
+            columns: ["icu_chart_id"]
             isOneToOne: false
-            referencedRelation: 'patients'
-            referencedColumns: ['patient_id']
+            referencedRelation: "icu_charts"
+            referencedColumns: ["icu_chart_id"]
+          },
+        ]
+      }
+      icu_out: {
+        Row: {
+          basic_care: string
+          belongings: string
+          created_at: string
+          etc: string
+          icu_io_id: string | null
+          icu_out_id: string
+          out_time: string
+          patient_id: string | null
+          prescription: string
+        }
+        Insert: {
+          basic_care?: string
+          belongings?: string
+          created_at?: string
+          etc?: string
+          icu_io_id?: string | null
+          icu_out_id?: string
+          out_time?: string
+          patient_id?: string | null
+          prescription?: string
+        }
+        Update: {
+          basic_care?: string
+          belongings?: string
+          created_at?: string
+          etc?: string
+          icu_io_id?: string | null
+          icu_out_id?: string
+          out_time?: string
+          patient_id?: string | null
+          prescription?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "icu_out_icu_io_id_fkey"
+            columns: ["icu_io_id"]
+            isOneToOne: false
+            referencedRelation: "icu_io"
+            referencedColumns: ["icu_io_id"]
+          },
+          {
+            foreignKeyName: "icu_out_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["patient_id"]
+          },
+        ]
+      }
+      icu_templates: {
+        Row: {
+          created_at: string
+          hos_id: string
+          icu_chart_id: string
+          template_comment: string | null
+          template_id: string
+          template_name: string
+        }
+        Insert: {
+          created_at?: string
+          hos_id: string
+          icu_chart_id: string
+          template_comment?: string | null
+          template_id?: string
+          template_name: string
+        }
+        Update: {
+          created_at?: string
+          hos_id?: string
+          icu_chart_id?: string
+          template_comment?: string | null
+          template_id?: string
+          template_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "icu_templates_hos_id_fkey"
+            columns: ["hos_id"]
+            isOneToOne: false
+            referencedRelation: "hospitals"
+            referencedColumns: ["hos_id"]
+          },
+          {
+            foreignKeyName: "icu_templates_icu_chart_id_fkey"
+            columns: ["icu_chart_id"]
+            isOneToOne: true
+            referencedRelation: "icu_charts"
+            referencedColumns: ["icu_chart_id"]
+          },
+        ]
+      }
+      icu_txs: {
+        Row: {
+          created_at: string
+          hos_id: string
+          icu_chart_order_id: string | null
+          icu_chart_tx_comment: string | null
+          icu_chart_tx_id: string
+          icu_chart_tx_images: string[] | null
+          icu_chart_tx_log: Json[] | null
+          icu_chart_tx_result: string | null
+          time: number
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          hos_id: string
+          icu_chart_order_id?: string | null
+          icu_chart_tx_comment?: string | null
+          icu_chart_tx_id?: string
+          icu_chart_tx_images?: string[] | null
+          icu_chart_tx_log?: Json[] | null
+          icu_chart_tx_result?: string | null
+          time: number
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          hos_id?: string
+          icu_chart_order_id?: string | null
+          icu_chart_tx_comment?: string | null
+          icu_chart_tx_id?: string
+          icu_chart_tx_images?: string[] | null
+          icu_chart_tx_log?: Json[] | null
+          icu_chart_tx_result?: string | null
+          time?: number
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "icu_txs_hos_id_fkey"
+            columns: ["hos_id"]
+            isOneToOne: false
+            referencedRelation: "hospitals"
+            referencedColumns: ["hos_id"]
+          },
+          {
+            foreignKeyName: "icu_txs_icu_chart_order_id_fkey"
+            columns: ["icu_chart_order_id"]
+            isOneToOne: false
+            referencedRelation: "icu_orders"
+            referencedColumns: ["icu_chart_order_id"]
+          },
+        ]
+      }
+      icu_visit: {
+        Row: {
+          consultation_status: string
+          created_at: string
+          hos_id: string | null
+          icu_io_id: string | null
+          icu_visit_id: string
+          is_done: boolean
+          main_vet: string
+          patient_id: string | null
+          place: string
+          preparation: string
+          target_date: string
+          time: string
+          visit_etc: string
+        }
+        Insert: {
+          consultation_status?: string
+          created_at?: string
+          hos_id?: string | null
+          icu_io_id?: string | null
+          icu_visit_id?: string
+          is_done?: boolean
+          main_vet: string
+          patient_id?: string | null
+          place?: string
+          preparation?: string
+          target_date: string
+          time?: string
+          visit_etc?: string
+        }
+        Update: {
+          consultation_status?: string
+          created_at?: string
+          hos_id?: string | null
+          icu_io_id?: string | null
+          icu_visit_id?: string
+          is_done?: boolean
+          main_vet?: string
+          patient_id?: string | null
+          place?: string
+          preparation?: string
+          target_date?: string
+          time?: string
+          visit_etc?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "icu_visit_hos_id_fkey"
+            columns: ["hos_id"]
+            isOneToOne: false
+            referencedRelation: "hospitals"
+            referencedColumns: ["hos_id"]
+          },
+          {
+            foreignKeyName: "icu_visit_icu_io_id_fkey"
+            columns: ["icu_io_id"]
+            isOneToOne: false
+            referencedRelation: "icu_io"
+            referencedColumns: ["icu_io_id"]
+          },
+          {
+            foreignKeyName: "icu_visit_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["patient_id"]
           },
         ]
       }
       keywords: {
+        Row: {
+          keyword: string | null
+          keyword_id: number
+          main_keyword: string | null
+          search_keyword: string | null
+          tags: string | null
+        }
+        Insert: {
+          keyword?: string | null
+          keyword_id?: number
+          main_keyword?: string | null
+          search_keyword?: string | null
+          tags?: string | null
+        }
+        Update: {
+          keyword?: string | null
+          keyword_id?: number
+          main_keyword?: string | null
+          search_keyword?: string | null
+          tags?: string | null
+        }
+        Relationships: []
+      }
+      keywords_old: {
         Row: {
           keyword: string
           keyword_id: number
@@ -968,18 +978,18 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'hos_notice_hos_id_fkey'
-            columns: ['hos_id']
+            foreignKeyName: "hos_notice_hos_id_fkey"
+            columns: ["hos_id"]
             isOneToOne: false
-            referencedRelation: 'hospitals'
-            referencedColumns: ['hos_id']
+            referencedRelation: "hospitals"
+            referencedColumns: ["hos_id"]
           },
           {
-            foreignKeyName: 'notices_user_id_fkey'
-            columns: ['user_id']
+            foreignKeyName: "notices_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: 'users'
-            referencedColumns: ['user_id']
+            referencedRelation: "users"
+            referencedColumns: ["user_id"]
           },
         ]
       }
@@ -990,7 +1000,7 @@ export type Database = {
           hos_owner_id: string
           owner_address: string | null
           owner_id: string
-          owner_level: Database['public']['Enums']['owner_level_enum']
+          owner_level: Database["public"]["Enums"]["owner_level_enum"]
           owner_memo: string | null
           owner_name: string
           owner_phone_number: string | null
@@ -1001,7 +1011,7 @@ export type Database = {
           hos_owner_id: string
           owner_address?: string | null
           owner_id?: string
-          owner_level?: Database['public']['Enums']['owner_level_enum']
+          owner_level?: Database["public"]["Enums"]["owner_level_enum"]
           owner_memo?: string | null
           owner_name?: string
           owner_phone_number?: string | null
@@ -1012,25 +1022,25 @@ export type Database = {
           hos_owner_id?: string
           owner_address?: string | null
           owner_id?: string
-          owner_level?: Database['public']['Enums']['owner_level_enum']
+          owner_level?: Database["public"]["Enums"]["owner_level_enum"]
           owner_memo?: string | null
           owner_name?: string
           owner_phone_number?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: 'owners_hos_id_fkey'
-            columns: ['hos_id']
+            foreignKeyName: "owners_hos_id_fkey"
+            columns: ["hos_id"]
             isOneToOne: false
-            referencedRelation: 'hospitals'
-            referencedColumns: ['hos_id']
+            referencedRelation: "hospitals"
+            referencedColumns: ["hos_id"]
           },
         ]
       }
       patients: {
         Row: {
           birth: string
-          breed: string
+          breed: string | null
           created_at: string
           gender: string
           hos_id: string
@@ -1041,13 +1051,13 @@ export type Database = {
           microchip_no: string | null
           name: string
           owner_id: string | null
-          owner_name: string
+          owner_name: string | null
           patient_id: string
           species: string
         }
         Insert: {
           birth: string
-          breed: string
+          breed?: string | null
           created_at?: string
           gender: string
           hos_id: string
@@ -1058,13 +1068,13 @@ export type Database = {
           microchip_no?: string | null
           name?: string
           owner_id?: string | null
-          owner_name?: string
+          owner_name?: string | null
           patient_id?: string
           species: string
         }
         Update: {
           birth?: string
-          breed?: string
+          breed?: string | null
           created_at?: string
           gender?: string
           hos_id?: string
@@ -1075,24 +1085,24 @@ export type Database = {
           microchip_no?: string | null
           name?: string
           owner_id?: string | null
-          owner_name?: string
+          owner_name?: string | null
           patient_id?: string
           species?: string
         }
         Relationships: [
           {
-            foreignKeyName: 'patients_hos_id_fkey'
-            columns: ['hos_id']
+            foreignKeyName: "patients_hos_id_fkey"
+            columns: ["hos_id"]
             isOneToOne: false
-            referencedRelation: 'hospitals'
-            referencedColumns: ['hos_id']
+            referencedRelation: "hospitals"
+            referencedColumns: ["hos_id"]
           },
           {
-            foreignKeyName: 'patients_owner_id_fkey'
-            columns: ['owner_id']
+            foreignKeyName: "patients_owner_id_fkey"
+            columns: ["owner_id"]
             isOneToOne: false
-            referencedRelation: 'owners'
-            referencedColumns: ['owner_id']
+            referencedRelation: "owners"
+            referencedColumns: ["owner_id"]
           },
         ]
       }
@@ -1126,11 +1136,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'todos_hos_id_fkey'
-            columns: ['hos_id']
+            foreignKeyName: "todos_hos_id_fkey"
+            columns: ["hos_id"]
             isOneToOne: false
-            referencedRelation: 'hospitals'
-            referencedColumns: ['hos_id']
+            referencedRelation: "hospitals"
+            referencedColumns: ["hos_id"]
           },
         ]
       }
@@ -1161,18 +1171,18 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'user_approval_hos_id_fkey'
-            columns: ['hos_id']
+            foreignKeyName: "user_approval_hos_id_fkey"
+            columns: ["hos_id"]
             isOneToOne: false
-            referencedRelation: 'hospitals'
-            referencedColumns: ['hos_id']
+            referencedRelation: "hospitals"
+            referencedColumns: ["hos_id"]
           },
           {
-            foreignKeyName: 'user_approval_user_id_fkey'
-            columns: ['user_id']
+            foreignKeyName: "user_approval_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: 'users'
-            referencedColumns: ['user_id']
+            referencedRelation: "users"
+            referencedColumns: ["user_id"]
           },
         ]
       }
@@ -1221,18 +1231,113 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'users_hos_id_fkey'
-            columns: ['hos_id']
+            foreignKeyName: "users_hos_id_fkey"
+            columns: ["hos_id"]
             isOneToOne: false
-            referencedRelation: 'hospitals'
-            referencedColumns: ['hos_id']
+            referencedRelation: "hospitals"
+            referencedColumns: ["hos_id"]
           },
+        ]
+      }
+      vetool_errors: {
+        Row: {
+          created_at: string
+          description: string
+          error_json: Json
+          is_server: boolean
+          user_id: string | null
+          vetool_error_id: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          error_json: Json
+          is_server: boolean
+          user_id?: string | null
+          vetool_error_id?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          error_json?: Json
+          is_server?: boolean
+          user_id?: string | null
+          vetool_error_id?: string
+        }
+        Relationships: [
           {
-            foreignKeyName: 'users_user_id_fkey'
-            columns: ['user_id']
-            isOneToOne: true
-            referencedRelation: 'users'
-            referencedColumns: ['id']
+            foreignKeyName: "vetool_errors_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      vetool_feedbacks: {
+        Row: {
+          created_at: string
+          feedback_category: string
+          feedback_description: string
+          feedback_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          feedback_category: string
+          feedback_description: string
+          feedback_id?: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          feedback_category?: string
+          feedback_description?: string
+          feedback_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vetool_feedback_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      vetool_patches: {
+        Row: {
+          created_at: string
+          feedback_id: string | null
+          patch_category: string
+          patch_content: string
+          patch_id: string
+          patch_title: string
+        }
+        Insert: {
+          created_at?: string
+          feedback_id?: string | null
+          patch_category?: string
+          patch_content: string
+          patch_id?: string
+          patch_title: string
+        }
+        Update: {
+          created_at?: string
+          feedback_id?: string | null
+          patch_category?: string
+          patch_content?: string
+          patch_id?: string
+          patch_title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vetool_patches_feedback_id_fkey"
+            columns: ["feedback_id"]
+            isOneToOne: false
+            referencedRelation: "vetool_feedbacks"
+            referencedColumns: ["feedback_id"]
           },
         ]
       }
@@ -1269,11 +1374,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'vitals_patient_id_fkey'
-            columns: ['patient_id']
+            foreignKeyName: "vitals_patient_id_fkey"
+            columns: ["patient_id"]
             isOneToOne: false
-            referencedRelation: 'patients'
-            referencedColumns: ['patient_id']
+            referencedRelation: "patients"
+            referencedColumns: ["patient_id"]
           },
         ]
       }
@@ -1282,27 +1387,33 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      copy_prev_chart: {
-        Args: {
-          target_date_input: string
-          patient_id_input: string
-        }
-        Returns: Json
-      }
-      copy_prev_chart_orders: {
-        Args: {
-          prev_chart_id_input: string
-          new_chart_id_input: string
-          selected_io_id_input: string
-        }
-        Returns: undefined
-      }
       copy_prev_orders: {
         Args: {
           prev_chart_id_input: string
           new_chart_id_input: string
         }
         Returns: undefined
+      }
+      copy_selected_orders: {
+        Args: {
+          selected_chart_id_input: string
+          new_chart_id_input: string
+          orderer_name_input: string
+        }
+        Returns: undefined
+      }
+      copy_template_orders: {
+        Args: {
+          prev_chart_id_input: string
+          new_chart_id_input: string
+        }
+        Returns: undefined
+      }
+      get_default_chart_data: {
+        Args: {
+          hos_id_input: string
+        }
+        Returns: Json
       }
       get_drug_product_details: {
         Args: {
@@ -1316,11 +1427,104 @@ export type Database = {
         }
         Returns: Json
       }
+      get_hos_list_data: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
+      get_icu_analysis_data: {
+        Args: {
+          hos_id_input: string
+          target_date_input: string
+        }
+        Returns: Json
+      }
+      get_icu_bookmarked_data: {
+        Args: {
+          hos_id_input: string
+        }
+        Returns: Json
+      }
+      get_icu_chart_data: {
+        Args: {
+          hos_id_input: string
+          target_date_input: string
+          patient_id_input: string
+        }
+        Returns: Json
+      }
+      get_icu_custom_order_data: {
+        Args: {
+          hos_id_input: string
+        }
+        Returns: Json
+      }
+      get_icu_out_due_patients: {
+        Args: {
+          hos_id_input: string
+          target_date_input: string
+        }
+        Returns: Json
+      }
+      get_icu_sidebar_data: {
+        Args: {
+          hos_id_input: string
+          target_date_input: string
+        }
+        Returns: Json
+      }
+      get_icu_summary_data: {
+        Args: {
+          hos_id_input: string
+          target_date_input: string
+        }
+        Returns: Json
+      }
+      get_icu_template_data: {
+        Args: {
+          hos_id_input: string
+        }
+        Returns: Json
+      }
+      get_icu_tx_table_data: {
+        Args: {
+          hos_id_input: string
+          target_date_input: string
+        }
+        Returns: Json
+      }
+      get_icu_visit_patients: {
+        Args: {
+          hos_id_input: string
+          target_date_input: string
+        }
+        Returns: Json
+      }
+      get_icu_visitable_patients: {
+        Args: {
+          hos_id_input: string
+          target_date_input: string
+        }
+        Returns: Json
+      }
+      get_not_out_due_patients: {
+        Args: {
+          hos_id_input: string
+          target_date_input: string
+        }
+        Returns: Json
+      }
       insert_default_chart_orders: {
         Args: {
           hos_id_input: string
           icu_chart_id_input: string
           icu_io_id_input: string
+        }
+        Returns: undefined
+      }
+      insert_default_orders: {
+        Args: {
+          hos_id_input: string
+          icu_chart_id_input: string
         }
         Returns: undefined
       }
@@ -1340,6 +1544,16 @@ export type Database = {
           birth_input: string
         }
         Returns: string
+      }
+      insert_template_orders: {
+        Args: {
+          hos_id_input: string
+          target_date_input: string
+          template_name_input: string
+          template_comment_input: string
+          template_orders_input: Json
+        }
+        Returns: undefined
       }
       register_icu: {
         Args: {
@@ -1371,15 +1585,39 @@ export type Database = {
         }
         Returns: undefined
       }
-      toggle_out_patient: {
+      register_patient: {
         Args: {
-          icu_io_id_input: string
-          patient_id_input: string
-          is_patient_out_input: boolean
-          chart_orders_input: string
-          keywords_input: string
+          hos_id_input: string
+          name_input: string
+          hos_patient_id_input: string
+          species_input: string
+          breed_input: string
+          gender_input: string
+          microchip_no_input: string
+          body_weight_input: string
+          owner_name_input: string
+          hos_owner_id_input: string
+          memo_input: string
+          birth_input: string
         }
-        Returns: undefined
+        Returns: string
+      }
+      search_icu_templates_data: {
+        Args: {
+          hos_id_input: string
+          search_value: string
+        }
+        Returns: Json
+      }
+      search_patients: {
+        Args: {
+          hos_id_input: string
+          search_term_input: string
+          is_icu_input?: boolean
+          page_number_input?: number
+          items_per_page_input?: number
+        }
+        Returns: Json
       }
       toggle_patient_out: {
         Args: {
@@ -1391,7 +1629,24 @@ export type Database = {
           patient_breed_input: string
           patient_name_input: string
           patient_species_input: string
+          owner_name_input: string
           age_in_days_input: number
+          is_alive_input: boolean
+        }
+        Returns: undefined
+      }
+      toggle_patient_out_old: {
+        Args: {
+          icu_io_id_input: string
+          patient_id_input: string
+          is_patient_out_input: boolean
+          chart_orders_input: string
+          keywords_input: string
+          patient_breed_input: string
+          patient_name_input: string
+          patient_species_input: string
+          age_in_days_input: number
+          is_alive_input: boolean
         }
         Returns: undefined
       }
@@ -1401,6 +1656,114 @@ export type Database = {
           icu_chart_id_input: string
           weight_input: string
           weight_measured_date_input: string
+        }
+        Returns: undefined
+      }
+      update_patient: {
+        Args: {
+          birth_input: string
+          species_input: string
+          breed_input: string
+          gender_input: string
+          name_input: string
+          memo_input: string
+          microchip_no_input: string
+          owner_name_input: string
+          hos_owner_id_input: string
+          patient_id_input: string
+          weight_input: string
+          weight_measured_date_input: string
+          icu_chart_id_input: string
+        }
+        Returns: undefined
+      }
+      update_patient_from_icu_route: {
+        Args: {
+          birth_input: string
+          species_input: string
+          breed_input: string
+          gender_input: string
+          name_input: string
+          memo_input: string
+          microchip_no_input: string
+          owner_name_input: string
+          hos_owner_id_input: string
+          patient_id_input: string
+          hos_patient_id_input: string
+          weight_input: string
+          is_weight_changed_input: boolean
+          weight_measured_date_input: string
+          icu_chart_id_input: string
+        }
+        Returns: undefined
+      }
+      update_patient_from_icu_route_old: {
+        Args: {
+          birth_input: string
+          species_input: string
+          breed_input: string
+          gender_input: string
+          name_input: string
+          memo_input: string
+          microchip_no_input: string
+          owner_name_input: string
+          hos_owner_id_input: string
+          patient_id_input: string
+          weight_input: string
+          is_weight_changed_input: boolean
+          weight_measured_date_input: string
+          icu_chart_id_input: string
+        }
+        Returns: undefined
+      }
+      update_patient_from_patient_route: {
+        Args: {
+          birth_input: string
+          species_input: string
+          breed_input: string
+          gender_input: string
+          name_input: string
+          memo_input: string
+          microchip_no_input: string
+          owner_name_input: string
+          hos_owner_id_input: string
+          hos_patient_id_input: string
+          patient_id_input: string
+          weight_input: string
+          is_weight_changed_input: boolean
+        }
+        Returns: undefined
+      }
+      "update_patient_from_patient_route`": {
+        Args: {
+          birth_input: string
+          species_input: string
+          breed_input: string
+          gender_input: string
+          name_input: string
+          memo_input: string
+          microchip_no_input: string
+          owner_name_input: string
+          hos_owner_id_input: string
+          patient_id_input: string
+          weight_input: string
+        }
+        Returns: undefined
+      }
+      update_patient_from_patient_route1: {
+        Args: {
+          birth_input: string
+          species_input: string
+          breed_input: string
+          gender_input: string
+          name_input: string
+          memo_input: string
+          microchip_no_input: string
+          owner_name_input: string
+          hos_owner_id_input: string
+          hos_patient_id_input: string
+          patient_id_input: string
+          weight_input: string
         }
         Returns: undefined
       }
@@ -1438,27 +1801,9 @@ export type Database = {
         }
         Returns: undefined
       }
-      update_weight: {
-        Args: {
-          patient_id_input: string
-          icu_chart_id_input: string
-          weight_input: string
-          weight_measured_date_input: string
-        }
-        Returns: undefined
-      }
-      upsert_icu_bookmark: {
-        Args: {
-          icu_chart_id_input: string
-          bookmark_name_input: string
-          bookmark_comment_input: string
-          hos_id_input: string
-        }
-        Returns: undefined
-      }
     }
     Enums: {
-      owner_level_enum: 'S' | 'A' | 'B' | 'C'
+      owner_level_enum: "S" | "A" | "B" | "C"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1466,27 +1811,27 @@ export type Database = {
   }
 }
 
-type PublicSchema = Database[Extract<keyof Database, 'public'>]
+type PublicSchema = Database[Extract<keyof Database, "public">]
 
 export type Tables<
   PublicTableNameOrOptions extends
-    | keyof (PublicSchema['Tables'] & PublicSchema['Views'])
+    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof (Database[PublicTableNameOrOptions['schema']]['Tables'] &
-        Database[PublicTableNameOrOptions['schema']]['Views'])
+    ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
+        Database[PublicTableNameOrOptions["schema"]]["Views"])
     : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? (Database[PublicTableNameOrOptions['schema']]['Tables'] &
-      Database[PublicTableNameOrOptions['schema']]['Views'])[TableName] extends {
+  ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
+      Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
       Row: infer R
     }
     ? R
     : never
-  : PublicTableNameOrOptions extends keyof (PublicSchema['Tables'] &
-        PublicSchema['Views'])
-    ? (PublicSchema['Tables'] &
-        PublicSchema['Views'])[PublicTableNameOrOptions] extends {
+  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
+        PublicSchema["Views"])
+    ? (PublicSchema["Tables"] &
+        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
         Row: infer R
       }
       ? R
@@ -1495,19 +1840,19 @@ export type Tables<
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
-    | keyof PublicSchema['Tables']
+    | keyof PublicSchema["Tables"]
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions['schema']]['Tables']
+    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
     : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions['schema']]['Tables'][TableName] extends {
+  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Insert: infer I
     }
     ? I
     : never
-  : PublicTableNameOrOptions extends keyof PublicSchema['Tables']
-    ? PublicSchema['Tables'][PublicTableNameOrOptions] extends {
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
         Insert: infer I
       }
       ? I
@@ -1516,19 +1861,19 @@ export type TablesInsert<
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
-    | keyof PublicSchema['Tables']
+    | keyof PublicSchema["Tables"]
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions['schema']]['Tables']
+    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
     : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions['schema']]['Tables'][TableName] extends {
+  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Update: infer U
     }
     ? U
     : never
-  : PublicTableNameOrOptions extends keyof PublicSchema['Tables']
-    ? PublicSchema['Tables'][PublicTableNameOrOptions] extends {
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
         Update: infer U
       }
       ? U
@@ -1537,13 +1882,28 @@ export type TablesUpdate<
 
 export type Enums<
   PublicEnumNameOrOptions extends
-    | keyof PublicSchema['Enums']
+    | keyof PublicSchema["Enums"]
     | { schema: keyof Database },
   EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicEnumNameOrOptions['schema']]['Enums']
+    ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
     : never = never,
 > = PublicEnumNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicEnumNameOrOptions['schema']]['Enums'][EnumName]
-  : PublicEnumNameOrOptions extends keyof PublicSchema['Enums']
-    ? PublicSchema['Enums'][PublicEnumNameOrOptions]
+  ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
+    ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof PublicSchema["CompositeTypes"]
+    | { schema: keyof Database },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
+    ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never

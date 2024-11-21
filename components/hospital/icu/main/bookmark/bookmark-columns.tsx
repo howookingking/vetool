@@ -1,34 +1,31 @@
 'use client'
 
+import PreviewButton from '@/components/hospital/icu/common-dialogs/preview/preview-button'
 import DeleteBookmarkDialog from '@/components/hospital/icu/main/bookmark/delete-bookmark-dialog'
-import GotoIcuButton from '@/components/hospital/icu/main/bookmark/goto-icu-button'
+import BookmarkDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-center/bookmark-dialog'
+import GotoIcuButton from '@/components/hospital/icu/main/template/table/goto-icu-button'
 import { Button } from '@/components/ui/button'
-import { BookmarkedChart } from '@/types/icu/bookmark'
+import type { TemplateChart } from '@/types/icu/template'
 import { ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown } from 'lucide-react'
-import PreviewButton from '../../common-dialogs/preview/preview-button'
 
-export const bookmarkColumns: ColumnDef<BookmarkedChart>[] = [
+export const bookmarkColumns: ColumnDef<TemplateChart>[] = [
   {
-    accessorKey: 'bookmark_name',
+    accessorKey: 'template_name',
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          즐겨찾기 이름
+          북마크 이름
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
     },
-    cell: ({ row }) => {
-      const bookmarkName = row.original.bookmark_name
-      return <div className="flex justify-center">{bookmarkName}</div>
-    },
   },
   {
-    accessorKey: 'bookmark_comment',
+    accessorKey: 'template_comment',
     header: ({ column }) => {
       return (
         <Button
@@ -40,30 +37,7 @@ export const bookmarkColumns: ColumnDef<BookmarkedChart>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => {
-      const bookmarkComment = row.original.bookmark_comment
-      return <>{bookmarkComment}</>
-    },
   },
-  {
-    accessorKey: 'patient_name',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          환자이름
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
-    cell: ({ row }) => {
-      const patientName = row.original.icu_chart_id.patient_id.name
-      return <div>{patientName}</div>
-    },
-  },
-
   {
     accessorKey: 'target_date',
     header: ({ column }) => {
@@ -72,36 +46,38 @@ export const bookmarkColumns: ColumnDef<BookmarkedChart>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          차트생성일
+          차트 생성일
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
-    },
-
-    cell: ({ row }) => {
-      const targetDate = row.original.icu_chart_id.target_date
-      return <div>{targetDate}</div>
     },
   },
   {
     id: 'preview',
     header: '미리보기',
     cell: ({ row }) => {
-      const patientId = row.original.icu_chart_id.patient_id.patient_id
-      const targetDate = row.original.icu_chart_id.target_date
+      const chartId = row.original.icu_chart_id
+      const targetDate = row.original.target_date
+      const patientId = row.original.patient.patient_id
+
       return (
         <div className="flex justify-center">
-          <PreviewButton patientId={patientId} targetDate={targetDate} />
+          <PreviewButton
+            chartId={chartId}
+            patientId={patientId}
+            targetDate={targetDate}
+          />
         </div>
       )
     },
   },
   {
-    id: 'goto',
+    id: 'action',
     header: '이동',
     cell: ({ row }) => {
-      const targetDate = row.original.icu_chart_id.target_date
-      const patientId = row.original.icu_chart_id.patient_id.patient_id
+      const patientId = row.original.patient.patient_id
+      const targetDate = row.original.target_date
+
       return (
         <div className="flex justify-center">
           <GotoIcuButton patientId={patientId} targetDate={targetDate} />
@@ -109,15 +85,37 @@ export const bookmarkColumns: ColumnDef<BookmarkedChart>[] = [
       )
     },
   },
+
+  {
+    id: 'edit',
+    header: '수정',
+    cell: ({ row }) => {
+      const chartId = row.original.icu_chart_id
+
+      return (
+        <div className="flex justify-center">
+          <BookmarkDialog
+            icuChartId={chartId}
+            bookmarkData={row.original}
+            icon="edit"
+          />
+        </div>
+      )
+    },
+  },
+
   {
     id: 'delete',
     header: '삭제',
     cell: ({ row }) => {
+      const bookmarkId = row.original.template_id
+      const bookmarkName = row.original.template_name
+
       return (
         <div className="flex justify-center">
           <DeleteBookmarkDialog
-            bookmarkId={row.original.bookmark_id}
-            bookmarkName={row.original.bookmark_name}
+            bookmarkId={bookmarkId}
+            bookmarkName={bookmarkName}
           />
         </div>
       )

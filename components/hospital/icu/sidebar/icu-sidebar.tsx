@@ -1,10 +1,10 @@
 'use client'
 
-import useIcuSidebarFilter from '@/hooks/useIcuSidebarFilter'
+import useIcuSidebarFilter from '@/hooks/use-icu-sidebar-filter'
 import type { IcuSidebarIoData, Vet } from '@/types/icu/chart'
 import { useCallback, useMemo } from 'react'
-import { MobileSidebarSheet } from './mobile/mobile-sidebar-sheet'
-import NormalSidebar from './normal-sidebar'
+import DesktopIcuSidebar from './desktop-icu-sidebar'
+import { MobileIcuSidebarSheet } from './mobile/mobile-icu-sidebar-sheet'
 
 export type Filter = {
   selectedGroup: string[]
@@ -71,7 +71,7 @@ export default function IcuSidebar({
 
   return (
     <>
-      <NormalSidebar
+      <DesktopIcuSidebar
         hosGroupList={hosGroupList}
         vetsListData={vetsListData}
         filteredData={filteredData}
@@ -80,7 +80,7 @@ export default function IcuSidebar({
         filters={filters}
       />
 
-      <MobileSidebarSheet
+      <MobileIcuSidebarSheet
         hosGroupList={hosGroupList}
         vetsListData={vetsListData}
         filteredData={filteredData}

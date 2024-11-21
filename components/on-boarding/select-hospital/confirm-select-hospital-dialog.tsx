@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dialog'
 import { toast } from '@/components/ui/use-toast'
 import { sendApprovalToHospital } from '@/lib/services/on-boarding/on-boarding'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/utils'
 import { Check, LoaderCircle } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'

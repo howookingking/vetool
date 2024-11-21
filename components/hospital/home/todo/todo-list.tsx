@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/utils'
 import type { QueriedTodo } from '@/types/hospital/todo'
 import CreateTodoDialog from './create-todo-dialog'
 import SingleTodo from './single-todo'

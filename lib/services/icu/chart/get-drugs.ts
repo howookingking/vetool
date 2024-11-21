@@ -5,7 +5,7 @@ import type { DrugProductsJoined } from '@/types/icu/chart'
 import { redirect } from 'next/navigation'
 
 export const getDrugs = async (hosId: string) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data: searchedDrugData, error: searchedDrugDataError } =
     await supabase

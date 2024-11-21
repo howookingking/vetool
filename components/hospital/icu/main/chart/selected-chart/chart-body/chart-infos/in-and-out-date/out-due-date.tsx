@@ -2,7 +2,6 @@
 
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
-import CustomTooltip from '@/components/ui/custom-tooltip'
 import {
   Popover,
   PopoverContent,
@@ -10,11 +9,11 @@ import {
 } from '@/components/ui/popover'
 import { toast } from '@/components/ui/use-toast'
 import { updateOutDueDate } from '@/lib/services/icu/chart/update-icu-chart-infos'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/utils'
 import { format, parseISO } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { LogOut } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 export default function OutDueDate({
   inDate,
@@ -22,81 +21,76 @@ export default function OutDueDate({
   icuIoId,
 }: {
   inDate: string
-  outDueDate: string
+  outDueDate: string | null
   icuIoId: string
 }) {
+  const transformedOutDueDate = useMemo(
+    () => (outDueDate ? new Date(outDueDate) : undefined),
+    [outDueDate],
+  )
   const [outDueDateInput, setOutDueDateInput] = useState<Date | undefined>(
-    new Date(outDueDate),
+    transformedOutDueDate,
+  )
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
+
+  const handleUpdateOutDueDate = useCallback(
+    async (date?: Date) => {
+      setIsPopoverOpen(false)
+      setOutDueDateInput(date)
+
+      await updateOutDueDate(icuIoId, date ? format(date!, 'yyyy-MM-dd') : null)
+
+      toast({
+        title: '퇴원예정일을 변경하였습니다',
+      })
+    },
+    [icuIoId],
   )
 
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
-  const [isUpdating, setIsUpdating] = useState(false)
-
-  useEffect(() => {
-    setOutDueDateInput(new Date(outDueDate))
-  }, [outDueDate])
-
-  const handleUpdateOutDueDate = async (date: Date | undefined) => {
-    if (!date) {
-      setOutDueDateInput(new Date(outDueDate))
-      setIsPopoverOpen(false)
-      return
-    }
-
-    setIsUpdating(true)
-
-    await updateOutDueDate(icuIoId, format(date, 'yyyy-MM-dd'))
-
-    toast({
-      title: '퇴원예정일을 변경하였습니다',
-    })
-
-    setIsUpdating(false)
-    setIsPopoverOpen(false)
-  }
+  const disabledDates = useCallback(
+    (date: Date) => date < parseISO(inDate),
+    [inDate],
+  )
 
   return (
-    <>
-      <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
-        <PopoverTrigger defaultValue={outDueDate} asChild>
-          <Button
-            variant={'outline'}
-            className={cn(
-              'flex w-full items-center justify-start gap-2 px-2',
-              !outDueDateInput && 'text-muted-foreground',
-            )}
-          >
-            <CustomTooltip
-              contents="퇴원예정일"
-              variant="secondary"
-              side="left"
-            >
-              <LogOut className="text-muted-foreground" size={16} />
-            </CustomTooltip>
+    <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant={'outline'}
+          className={cn(
+            'flex w-full items-center justify-start gap-2 px-2',
+            !outDueDateInput && 'text-muted-foreground',
+          )}
+        >
+          <LogOut className="text-muted-foreground" size={16} />
 
-            {outDueDateInput ? (
-              <span className="text-sm font-normal">
-                {format(outDueDateInput, 'yyyy-MM-dd')}
-              </span>
-            ) : (
-              <span>예정일 선택</span>
-            )}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
-          <Calendar
-            locale={ko}
-            mode="single"
-            selected={outDueDateInput}
-            onSelect={(date) => {
-              setOutDueDateInput(date)
-              handleUpdateOutDueDate(date)
-            }}
-            className="rounded-md border"
-            disabled={(date) => date < parseISO(inDate) || isUpdating}
-          />
-        </PopoverContent>
-      </Popover>
-    </>
+          {outDueDateInput ? (
+            <span className="text-xs font-normal md:text-sm">
+              {format(outDueDateInput, 'yyyy-MM-dd')}
+            </span>
+          ) : (
+            <span>퇴원 예정일</span>
+          )}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" align="start">
+        <Calendar
+          locale={ko}
+          mode="single"
+          selected={outDueDateInput}
+          onSelect={handleUpdateOutDueDate}
+          className="rounded-b-none rounded-t-md border"
+          disabled={disabledDates}
+        />
+        <Button
+          className="w-full rounded-t-none border-t-0"
+          size="sm"
+          variant="outline"
+          onClick={() => handleUpdateOutDueDate(undefined)}
+        >
+          미정
+        </Button>
+      </PopoverContent>
+    </Popover>
   )
 }

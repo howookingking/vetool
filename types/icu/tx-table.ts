@@ -12,6 +12,7 @@ export type IcuTxTableData = {
     | 'icu_chart_order_time'
     | 'icu_chart_order_name'
     | 'icu_chart_order_comment'
+    | 'icu_chart_order_type'
   > & {
     treatments: Pick<IcuTxs, 'time'>[]
   })[]

@@ -16,7 +16,7 @@ export default function OutPatientCover() {
   }, [])
 
   return (
-    <div className="absolute left-0 right-0 top-0 flex h-full cursor-not-allowed justify-center">
+    <div className="absolute left-0 right-0 top-0 z-20 flex h-full cursor-not-allowed justify-center">
       <div
         className="fixed top-1/2 flex translate-y-[-50%] flex-col gap-1 rounded-sm bg-black/30 px-10 py-5 text-center text-white transition-opacity duration-500"
         style={{ opacity }}

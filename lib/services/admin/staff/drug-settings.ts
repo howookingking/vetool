@@ -5,7 +5,7 @@ import type { DrugProductDetail } from '@/types/adimin'
 import { redirect } from 'next/navigation'
 
 export const getDrugProductDetails = async (hosId: string) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data: drugProductDetailsData, error: drugProductDetailsDataError } =
     await supabase
@@ -26,7 +26,7 @@ export const updateDrugProduct = async (
   fieldName: string,
   value: string,
 ) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { error: updateDrugDescriptionError } = await supabase
     .from('drug_products_rows')
@@ -44,7 +44,7 @@ export const updateDrugIndication = async (
   drugDescriptionId: string,
   indication: string,
 ) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { error: updateDrugDescriptionError } = await supabase
     .from('drugs_description')
@@ -62,7 +62,7 @@ export const updateDrugType = async (
   hosId: string,
   type: string,
 ) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { error: updateDrugTypeError } = await supabase
     .from('drug_products_rows')

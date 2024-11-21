@@ -1,5 +1,5 @@
 import { LI_MOTION } from '@/constants/hospital/icu/notification/aniimations'
-import { cn, getTimeSince, isDaysBehind } from '@/lib/utils'
+import { cn, formatTimeDifference, isDaysBehind } from '@/lib/utils/utils'
 import type { IcuNotificationJoined } from '@/types/icu/chart'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/navigation'
@@ -65,7 +65,7 @@ export default function SingleNotification({
           </span>
 
           <span className="text-right text-xs text-gray-600">
-            {getTimeSince(notification.created_at)}
+            {formatTimeDifference(notification.created_at)}
           </span>
         </div>
 

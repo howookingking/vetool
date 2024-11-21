@@ -2,59 +2,58 @@
 
 import RegisterDialogHeader from '@/components/hospital/icu/header/register-dialog/register-dialog-header'
 import RegisterIcuForm from '@/components/hospital/icu/header/register-dialog/register-icu/register-icu-form'
+import SearchPatientContainer from '@/components/hospital/icu/header/register-dialog/search-patient/search-patient-containter'
 import PatientForm from '@/components/hospital/patients/patient-form'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useIcuRegisterStore } from '@/lib/store/icu/icu-register'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/utils'
 import type { Vet } from '@/types/icu/chart'
-import type { PatientData } from '@/types/patients'
-import { useEffect, useState } from 'react'
-import PatientSearchTable from './patient-search/patient-search-table'
+import { useCallback, useState } from 'react'
 
 export default function RegisterDialog({
   hosId,
-  patientsData,
   groupList,
   vetsData,
+  totalPatientCount,
 }: {
   hosId: string
-  patientsData: PatientData[]
   groupList: string[]
   vetsData: Vet[]
+  totalPatientCount: number
 }) {
   const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false)
-  const { step, setStep } = useIcuRegisterStore()
+  const { step, setStep, reset } = useIcuRegisterStore()
   const [tab, setTab] = useState('search')
 
-  useEffect(() => {
-    setTimeout(() => {
-      if (!isRegisterDialogOpen) {
+  const handleTabValueChange = useCallback(
+    (value: string) => {
+      if (value === 'search') {
         setTab('search')
         setStep('patientSearch')
+        return
       }
-    }, 1000)
-  }, [isRegisterDialogOpen, setStep])
 
-  const handleTabValueChange = (value: string) => {
-    if (value === 'search') {
-      setTab('search')
-      setStep('patientSearch')
-      return
-    }
+      if (value === 'register') {
+        setTab('register')
+        setStep('patientRegister')
+        return
+      }
+    },
+    [setTab, setStep],
+  )
 
-    if (value === 'register') {
-      setTab('register')
-      setStep('patientRegister')
-      return
-    }
-  }
+  const handleCloseDialog = useCallback(() => {
+    setIsRegisterDialogOpen(false)
+    setTab('search')
+    reset()
+  }, [setIsRegisterDialogOpen, reset])
 
   return (
     <Dialog open={isRegisterDialogOpen} onOpenChange={setIsRegisterDialogOpen}>
       <DialogTrigger asChild className="hidden md:block">
-        <Button size="sm">환자입원</Button>
+        <Button size="sm">환자 입원</Button>
       </DialogTrigger>
 
       <DialogContent
@@ -81,13 +80,17 @@ export default function RegisterDialog({
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="search" className="h-full">
+          <TabsContent value="search">
             {step === 'patientSearch' && (
-              <PatientSearchTable patientData={patientsData} />
+              <SearchPatientContainer
+                totalPatientCount={totalPatientCount}
+                itemsPerPage={8}
+                isIcu
+              />
             )}
             {step === 'icuRegister' && (
               <RegisterIcuForm
-                setIsRegisterDialogOpen={setIsRegisterDialogOpen}
+                handleCloseDialog={handleCloseDialog}
                 hosId={hosId}
                 groupList={groupList}
                 vetsData={vetsData}
@@ -99,15 +102,15 @@ export default function RegisterDialog({
           <TabsContent value="register">
             {step === 'patientRegister' && (
               <PatientForm
+                mode="registerFromIcuRoute"
                 setStep={setStep}
                 hosId={hosId}
-                icu
-                setIsIcuDialogOpen={setIsRegisterDialogOpen}
+                setIsPatientRegisterDialogOpen={setIsRegisterDialogOpen}
               />
             )}
             {step === 'icuRegister' && (
               <RegisterIcuForm
-                setIsRegisterDialogOpen={setIsRegisterDialogOpen}
+                handleCloseDialog={handleCloseDialog}
                 hosId={hosId}
                 groupList={groupList}
                 vetsData={vetsData}

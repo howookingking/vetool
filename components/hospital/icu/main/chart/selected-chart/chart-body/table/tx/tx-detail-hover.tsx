@@ -20,7 +20,7 @@ export function TxDetailHover({ txComment }: { txComment?: string | null }) {
           side="top"
           className="max-w-sm bg-white text-black ring ring-amber-300"
         >
-          <p className="text-sm">{txComment}</p>
+          <p className="whitespace-pre-line text-sm">{txComment}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

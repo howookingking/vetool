@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
 export async function getUser() {
-  const supabase = createClient()
+  const supabase = await createClient()
   const {
     data: { user: authUser },
     error,
@@ -19,7 +19,7 @@ export async function getUser() {
 }
 
 export async function checkIsAdmin(hosId: string, userId: string) {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data, error } = await supabase
     .from('users')
@@ -39,7 +39,7 @@ export async function checkIsAdmin(hosId: string, userId: string) {
 }
 
 export const getUserData = async () => {
-  const supabase = createClient()
+  const supabase = await createClient()
   const {
     data: { user },
     error: userError,
@@ -52,7 +52,7 @@ export const getUserData = async () => {
 
   const { data: userData, error: userDataError } = await supabase
     .from('users')
-    .select('email, name, avatar_url, position, is_admin, user_id')
+    .select('email, name, avatar_url, position, is_admin, user_id, hos_id')
     .match({ user_id: user?.id })
     .single()
 
@@ -62,4 +62,10 @@ export const getUserData = async () => {
   }
 
   return userData
+}
+
+export const isSuperAccount = async () => {
+  const authUser = await getUser()
+
+  return authUser?.email === process.env.NEXT_PUBLIC_SUPER_SHY
 }

@@ -1,5 +1,3 @@
-'use client'
-
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -13,27 +11,33 @@ import {
 } from '@/components/ui/dialog'
 import { toast } from '@/components/ui/use-toast'
 import { registerDefaultChart } from '@/lib/services/icu/chart/add-icu-chart'
+import { cn } from '@/lib/utils/utils'
 import type { SelectedChart } from '@/types/icu/chart'
-import { File } from 'lucide-react'
+import { File, LoaderCircle } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 
 export default function AddDefaultChartDialog({
   chartData,
 }: {
-  chartData: SelectedChart
+  chartData?: SelectedChart
 }) {
   const { hos_id } = useParams()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleAddDefaultChart = async () => {
-    setIsDialogOpen(false)
-
-    await registerDefaultChart(hos_id as string, chartData.icu_chart_id)
+    setIsLoading(true)
+    await registerDefaultChart(
+      hos_id as string,
+      chartData?.icu_chart_id as string,
+    )
 
     toast({
       title: '기본형식의 차트를 생성했습니다',
     })
+    setIsLoading(false)
+    setIsDialogOpen(false)
   }
 
   return (
@@ -59,7 +63,12 @@ export default function AddDefaultChartDialog({
               취소
             </Button>
           </DialogClose>
-          <Button onClick={handleAddDefaultChart}>생성</Button>
+          <Button onClick={handleAddDefaultChart} disabled={isLoading}>
+            생성
+            <LoaderCircle
+              className={cn(isLoading ? 'animate-spin' : 'hidden')}
+            />
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

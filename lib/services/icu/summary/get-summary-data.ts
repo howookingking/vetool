@@ -2,10 +2,9 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { SummaryData } from '@/types/icu/summary'
-import { redirect } from 'next/navigation'
 
 export const getIcuSummaryData = async (hosId: string, targetDate: string) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data, error } = await supabase
     .rpc('get_icu_summary_data', {
@@ -15,8 +14,7 @@ export const getIcuSummaryData = async (hosId: string, targetDate: string) => {
     .returns<SummaryData[]>()
 
   if (error) {
-    console.error(error)
-    redirect(`/error?message=${error?.message}`)
+    throw new Error(error.message)
   }
   return data
 }

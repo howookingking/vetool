@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dialog'
 import { toast } from '@/components/ui/use-toast'
 import { toggleOutPatient } from '@/lib/services/icu/chart/update-icu-chart-infos'
-import { cn, hashtagKeyword } from '@/lib/utils'
+import { cn, hashtagKeyword } from '@/lib/utils/utils'
 import type { SelectedChart } from '@/types/icu/chart'
 import { LoaderCircle, LogOut, Undo2 } from 'lucide-react'
 import { useState } from 'react'
@@ -22,13 +22,13 @@ export default function OutPatientDialog({
 }) {
   const { icu_io, orders, patient } = chartData
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isOutSubmitting, setIsOutSubmitting] = useState(false)
+  const [isAliveSubmitting, setIsAliveSubmitting] = useState(false)
 
   const isPatientOut = icu_io.out_date !== null
 
-  const handleOutPatient = async () => {
-    setIsSubmitting(true)
-
+  const handleOutPatient = async (isAlive: boolean) => {
+    isAlive ? setIsOutSubmitting(true) : setIsAliveSubmitting(true)
     const hashtaggedDxCc = hashtagKeyword(
       `${icu_io.icu_io_dx}, ${icu_io.icu_io_cc}`,
     )
@@ -45,9 +45,11 @@ export default function OutPatientDialog({
       patient.patient_id,
       hashtaggedDxCc,
       patient.species,
-      patient.breed,
+      patient.breed ?? '미정',
       patient.name,
+      patient.owner_name ?? '',
       icu_io.age_in_days,
+      isAlive,
     )
 
     toast({
@@ -56,7 +58,7 @@ export default function OutPatientDialog({
         : `${patient.name}을(를) 퇴원처리 하였습니다`,
     })
 
-    setIsSubmitting(false)
+    isAlive ? setIsOutSubmitting(false) : setIsAliveSubmitting(false)
     setIsDialogOpen(false)
   }
 
@@ -78,15 +80,34 @@ export default function OutPatientDialog({
         </DialogHeader>
 
         <DialogFooter>
+          {!isPatientOut && (
+            <Button
+              variant="destructive"
+              className="mr-auto"
+              onClick={() => handleOutPatient(false)}
+              disabled={isAliveSubmitting}
+            >
+              사망
+              <LoaderCircle
+                className={cn(
+                  isAliveSubmitting ? 'ml-2 animate-spin' : 'hidden',
+                )}
+              />
+            </Button>
+          )}
+
           <DialogClose asChild>
             <Button type="button" variant="outline">
               취소
             </Button>
           </DialogClose>
-          <Button onClick={handleOutPatient} disabled={isSubmitting}>
+          <Button
+            onClick={() => handleOutPatient(true)}
+            disabled={isOutSubmitting}
+          >
             {isPatientOut ? '퇴원취소' : '퇴원'}
             <LoaderCircle
-              className={cn(isSubmitting ? 'ml-2 animate-spin' : 'hidden')}
+              className={cn(isOutSubmitting ? 'ml-2 animate-spin' : 'hidden')}
             />
           </Button>
         </DialogFooter>

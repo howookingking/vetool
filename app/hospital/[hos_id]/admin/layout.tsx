@@ -1,24 +1,25 @@
-import AdminMobileSidebar from '@/components/hospital/admin/admin-mobile-sidebar'
-import AdminSidebar from '@/components/hospital/admin/admin-sidebar'
+import DesktopAdminSidebar from '@/components/hospital/admin/desktop-admin-sidebar'
+import MobileAdminSidebar from '@/components/hospital/admin/mobile-admin-sidebar'
 import { checkIsAdmin, getUser } from '@/lib/services/auth/authorization'
 
-export default async function AdminLayout({
-  children,
-  params,
-}: {
+export default async function AdminLayout(props: {
   children: React.ReactNode
-  params: { hos_id: string }
+  params: Promise<{ hos_id: string }>
 }) {
+  const params = await props.params
+
   const authUser = await getUser()
   await checkIsAdmin(params.hos_id, authUser!.id)
 
   return (
     <div className="flex flex-col md:flex-row">
-      <AdminSidebar />
+      <DesktopAdminSidebar />
 
-      <AdminMobileSidebar />
+      <MobileAdminSidebar />
 
-      <div className="w-full p-2">{children}</div>
+      <div className="h-exclude-header w-full overflow-auto p-2">
+        {props.children}
+      </div>
     </div>
   )
 }

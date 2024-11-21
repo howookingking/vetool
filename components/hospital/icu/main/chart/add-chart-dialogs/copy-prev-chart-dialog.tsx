@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -11,17 +13,18 @@ import {
 } from '@/components/ui/dialog'
 import { toast } from '@/components/ui/use-toast'
 import { copyPrevChart } from '@/lib/services/icu/chart/add-icu-chart'
-import { ClipboardPaste } from 'lucide-react'
+import { cn } from '@/lib/utils/utils'
+import { ClipboardPaste, LoaderCircle } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 
 export default function CopyPrevChartDialog() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const { patient_id, target_date } = useParams()
 
   const handleCopyPrevSelectedChart = async () => {
-    setIsDialogOpen(false)
-
+    setIsLoading(true)
     const { error } = await copyPrevChart(
       target_date as string,
       patient_id as string,
@@ -33,12 +36,15 @@ export default function CopyPrevChartDialog() {
         description: '전날 차트가 있는지 확인해주세요',
         variant: 'destructive',
       })
+      setIsLoading(false)
+      setIsDialogOpen(false)
       return
     }
 
     toast({
       title: '전날 차트를 복사하였습니다',
     })
+    setIsLoading(false)
     setIsDialogOpen(false)
   }
 
@@ -67,7 +73,12 @@ export default function CopyPrevChartDialog() {
               취소
             </Button>
           </DialogClose>
-          <Button onClick={handleCopyPrevSelectedChart}>복사</Button>
+          <Button onClick={handleCopyPrevSelectedChart} disabled={isLoading}>
+            복사
+            <LoaderCircle
+              className={cn(isLoading ? 'animate-spin' : 'hidden')}
+            />
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

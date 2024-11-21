@@ -37,14 +37,14 @@ import {
 import { toast } from '@/components/ui/use-toast'
 import { registerIcuPatient } from '@/lib/services/icu/register-icu-patient'
 import { useIcuRegisterStore } from '@/lib/store/icu/icu-register'
-import { changeTargetDateInUrl, cn } from '@/lib/utils'
+import { changeTargetDateInUrl, cn } from '@/lib/utils/utils'
 import type { Vet } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { CalendarIcon, LoaderCircle } from 'lucide-react'
 import Image from 'next/image'
-import { usePathname, useRouter } from 'next/navigation'
+import { useParams, usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { DateRange } from 'react-day-picker'
 import { useForm } from 'react-hook-form'
@@ -55,19 +55,20 @@ export default function RegisterIcuForm({
   groupList,
   vetsData,
   tab,
-  setIsRegisterDialogOpen,
+  handleCloseDialog,
 }: {
   hosId: string
   groupList: string[]
   vetsData: Vet[]
   tab: string
-  setIsRegisterDialogOpen: (isRegisterDialogOpen: boolean) => void
+  handleCloseDialog: () => void
 }) {
   const path = usePathname()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const { target_date } = useParams()
   const [range, setRange] = useState<DateRange | undefined>({
-    from: new Date(),
-    to: new Date(),
+    from: new Date(target_date as string),
+    to: undefined,
   })
 
   const { push } = useRouter()
@@ -98,36 +99,49 @@ export default function RegisterIcuForm({
   ) => {
     const { dx, cc, in_date, out_due_date, main_vet, sub_vet, group_list } =
       values
-    setIsSubmitting(true)
+    if (
+      confirm(
+        `${registeringPatient?.patientName} 환자를 "${format(in_date, 'yyyy-MM-dd')}"에 입원시키겠습니까?`,
+      )
+    ) {
+      setIsSubmitting(true)
 
-    await registerIcuPatient(
-      hosId,
-      registeringPatient!.patientId,
-      registeringPatient!.birth,
-      dx,
-      cc,
-      format(in_date, 'yyyy-MM-dd'),
-      format(out_due_date, 'yyyy-MM-dd'),
-      group_list,
-      main_vet,
-      sub_vet,
-    )
+      await registerIcuPatient(
+        hosId,
+        registeringPatient!.patientId,
+        registeringPatient!.birth,
+        dx,
+        cc,
+        format(in_date, 'yyyy-MM-dd'),
+        out_due_date ? format(out_due_date, 'yyyy-MM-dd') : '',
+        group_list,
+        main_vet,
+        sub_vet,
+      )
 
-    toast({
-      title: '입원 환자가 등록되었습니다',
-    })
-    setIsRegisterDialogOpen(false)
-    setIsSubmitting(false)
+      toast({
+        title: '입원 환자가 등록되었습니다',
+      })
+      handleCloseDialog()
+      setIsSubmitting(false)
 
-    const splittedPath = path.split('/')
-    splittedPath[splittedPath.length - 1] = registeringPatient!.patientId
-    const newPatientPath = splittedPath.join('/')
+      const splittedPath = path.split('/')
+      if (splittedPath[6]) {
+        splittedPath[splittedPath.length - 1] = registeringPatient!.patientId
+      } else {
+        splittedPath[5] = 'chart'
+        splittedPath.push(registeringPatient!.patientId)
+      }
 
-    const newPath = changeTargetDateInUrl(
-      newPatientPath,
-      format(in_date, 'yyyy-MM-dd'),
-    )
-    push(newPath)
+      const newPatientPath = splittedPath.join('/')
+
+      const newPath = changeTargetDateInUrl(
+        newPatientPath,
+        format(in_date, 'yyyy-MM-dd'),
+      )
+
+      push(newPath)
+    }
   }
 
   const handlePreviousButtonClick = () => {
@@ -200,8 +214,8 @@ export default function RegisterIcuForm({
                         !field.value && 'text-muted-foreground',
                       )}
                     >
-                      {range && range.from && range.to ? (
-                        <>{`${format(range.from, 'yyyy-MM-dd')} ~ ${format(range.to, 'yyyy-MM-dd')}`}</>
+                      {range && range.from ? (
+                        <>{`${format(range.from, 'yyyy-MM-dd')} ~ ${range.to ? format(range.to, 'yyyy-MM-dd') : '미정'}`}</>
                       ) : (
                         <span className="overflow-hidden whitespace-nowrap">
                           입원일을 선택해주세요

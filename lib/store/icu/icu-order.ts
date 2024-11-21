@@ -1,32 +1,109 @@
-import type { SelectedIcuOrder } from '@/types/icu/chart'
+import type { SelectedIcuOrder, TxLog } from '@/types/icu/chart'
 import { create } from 'zustand'
 
-type IcuOrderState = {
-  isModalOpen: boolean
-  toggleModal: () => void
+export type OrderTimePendingQueue = {
+  orderTime: number
+  orderId: string
+  txId?: string
+  txLog?: TxLog[] | null
+}
 
-  isEditMode?: boolean
-  setIsEditMode: (isEditMode: boolean) => void
+type IcuOrderState = {
+  orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit'
+  setOrderStep: (
+    orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit',
+  ) => void
+
+  isEditOrderMode?: boolean
+  setIsEditOrderMode: (isEditOrderMode: boolean) => void
 
   selectedChartOrder: Partial<SelectedIcuOrder>
   setSelectedChartOrder: (chartOrder: Partial<SelectedIcuOrder>) => void
 
-  resetState: () => void
+  selectedOrderPendingQueue: Partial<SelectedIcuOrder>[]
+  setSelectedOrderPendingQueue: (
+    updater:
+      | Partial<SelectedIcuOrder>[]
+      | ((prev: Partial<SelectedIcuOrder>[]) => Partial<SelectedIcuOrder>[]),
+  ) => void
+
+  copiedOrderPendingQueue: Partial<SelectedIcuOrder>[]
+  setCopiedOrderPendingQueue: (
+    updater:
+      | Partial<SelectedIcuOrder>[]
+      | ((prev: Partial<SelectedIcuOrder>[]) => Partial<SelectedIcuOrder>[]),
+  ) => void
+
+  orderTimePendingQueue: OrderTimePendingQueue[]
+  setOrderTimePendingQueue: (
+    updater:
+      | OrderTimePendingQueue[]
+      | ((prev: OrderTimePendingQueue[]) => OrderTimePendingQueue[]),
+  ) => void
+
+  selectedTxPendingQueue: OrderTimePendingQueue[]
+  setSelectedTxPendingQueue: (
+    updater:
+      | OrderTimePendingQueue[]
+      | ((prev: OrderTimePendingQueue[]) => OrderTimePendingQueue[]),
+  ) => void
+
+  reset: () => void
 }
 
 export const useIcuOrderStore = create<IcuOrderState>((set) => ({
-  isModalOpen: false,
-  toggleModal: () => set((state) => ({ isModalOpen: !state.isModalOpen })),
+  orderStep: 'closed',
+  setOrderStep: (orderStep) => set({ orderStep }),
 
-  isEditMode: false,
-  setIsEditMode: (isEditMode) => set({ isEditMode }),
+  isEditOrderMode: false,
+  setIsEditOrderMode: (isEditOrderMode) => set({ isEditOrderMode }),
 
   selectedChartOrder: {} as Partial<SelectedIcuOrder>,
   setSelectedChartOrder: (selectedChartOrder) => set({ selectedChartOrder }),
 
-  resetState: () =>
+  selectedOrderPendingQueue: [],
+  setSelectedOrderPendingQueue: (updater) =>
+    set((state) => ({
+      selectedOrderPendingQueue:
+        typeof updater === 'function'
+          ? updater(state.selectedOrderPendingQueue)
+          : updater,
+    })),
+
+  copiedOrderPendingQueue: [],
+  setCopiedOrderPendingQueue: (updater) =>
+    set((state) => ({
+      copiedOrderPendingQueue:
+        typeof updater === 'function'
+          ? updater(state.copiedOrderPendingQueue)
+          : updater,
+    })),
+
+  orderTimePendingQueue: [],
+  setOrderTimePendingQueue: (updater) =>
+    set((state) => ({
+      orderTimePendingQueue:
+        typeof updater === 'function'
+          ? updater(state.orderTimePendingQueue)
+          : updater,
+    })),
+
+  selectedTxPendingQueue: [],
+  setSelectedTxPendingQueue: (updater) =>
+    set((state) => ({
+      selectedTxPendingQueue:
+        typeof updater === 'function'
+          ? updater(state.selectedTxPendingQueue)
+          : updater,
+    })),
+
+  reset: () =>
     set({
-      isEditMode: false,
+      isEditOrderMode: false,
       selectedChartOrder: {} as Partial<SelectedIcuOrder>,
+      orderTimePendingQueue: [],
+      selectedTxPendingQueue: [],
+      copiedOrderPendingQueue: [],
+      selectedOrderPendingQueue: [],
     }),
 }))

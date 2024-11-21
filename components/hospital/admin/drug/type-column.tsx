@@ -7,7 +7,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { toast } from '@/components/ui/use-toast'
-import { updateDrugType } from '@/lib/services/settings/drug-settings'
+// import { updateDrugType } from '@/lib/services/settings/drug-settings'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -25,7 +25,7 @@ export default function TypeColumn({
 
   const handleDrugTypeChange = async (value: string) => {
     setIsUpdating(true)
-    await updateDrugType(drugProductId, hosId, value)
+    // await updateDrugType(drugProductId, hosId, value)
 
     toast({
       title: `약물 유형을 변경하였습니다`,

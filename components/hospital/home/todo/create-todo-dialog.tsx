@@ -21,7 +21,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
 import { createTodo } from '@/lib/services/hospital-home/todo'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle, Plus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -77,11 +77,7 @@ export default function CreateTodoDialog({
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant={'default'}
-          size="icon"
-          className="h-6 w-6 rounded-full"
-        >
+        <Button variant="default" size="icon" className="h-6 w-6 rounded-full">
           <Plus size={14} />
         </Button>
       </DialogTrigger>

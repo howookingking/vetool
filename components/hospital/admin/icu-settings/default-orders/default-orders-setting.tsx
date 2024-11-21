@@ -1,142 +1,147 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
-import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
+import NoResultSquirrel from '@/components/common/no-result-squirrel'
+import DefaultOrderForm from '@/components/hospital/admin/icu-settings/default-orders/default-order-form'
+import SortableOrderWrapper from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/sortable-order-wrapper'
+import AddTemplateDialog from '@/components/hospital/icu/main/template/add/table/add-template-dialog'
+import AddTemplateHeader from '@/components/hospital/icu/main/template/add/table/add-template-header'
+import AddTemplateRow from '@/components/hospital/icu/main/template/add/table/add-template-row'
+import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
+import { toast } from '@/components/ui/use-toast'
+import { reorderDefaultOrders } from '@/lib/services/admin/icu/default-orders'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
-import { cn } from '@/lib/utils'
-import type { IcuDefaultChartJoined, IcuOrderColors } from '@/types/adimin'
-import { Plus } from 'lucide-react'
-import { useCallback, useMemo } from 'react'
-import DefaultOrderForm from './default-order-form'
+import { hasOrderSortingChanges } from '@/lib/utils/utils'
+import type { IcuOrderColors } from '@/types/adimin'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
+import { useRouter } from 'next/navigation'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { Sortable } from 'react-sortablejs'
 
 export default function DefaultOrdersSetting({
   defaultChartOrders,
-  orderColor,
+  orderColorsData,
 }: {
-  defaultChartOrders: IcuDefaultChartJoined[]
-  orderColor: IcuOrderColors
+  defaultChartOrders: SelectedIcuOrder[] | []
+  orderColorsData: IcuOrderColors
 }) {
+  const lastOrderRef = useRef<HTMLTableCellElement>(null)
+  const { refresh } = useRouter()
   const {
-    isModalOpen,
-    toggleModal,
+    orderStep,
+    setOrderStep,
     setSelectedChartOrder,
-    isEditMode,
-    setIsEditMode,
-    resetState,
+    isEditOrderMode,
+    setIsEditOrderMode,
+    reset,
   } = useIcuOrderStore()
+  const [isSorting, setIsSorting] = useState(false)
+  const [sortedOrders, setSortedOrders] =
+    useState<SelectedIcuOrder[]>(defaultChartOrders)
 
-  const handleAddDialogOpen = useCallback(() => {
-    setIsEditMode(false)
-    resetState()
-  }, [resetState, setIsEditMode])
-
-  const sortedOrders = useMemo(() => {
-    return defaultChartOrders.sort(
-      (prev, next) =>
-        DEFAULT_ICU_ORDER_TYPE.findIndex(
-          (order) => order.value === prev.default_chart_order_type,
-        ) -
-        DEFAULT_ICU_ORDER_TYPE.findIndex(
-          (order) => order.value === next.default_chart_order_type,
-        ),
-    )
+  useEffect(() => {
+    setSortedOrders(defaultChartOrders)
   }, [defaultChartOrders])
 
-  const handleEditDialogOpen = useCallback(
-    (sortedOrder: IcuDefaultChartJoined) => {
-      toggleModal()
-      setIsEditMode(true)
-      setSelectedChartOrder({
-        order_name: sortedOrder.default_chart_order_name,
-        order_comment: sortedOrder.default_chart_order_comment,
-        order_type: sortedOrder.default_chart_order_type,
-        order_id: sortedOrder.default_chart_id,
+  const handleOpenChange = useCallback(() => {
+    if (orderStep === 'closed') {
+      setOrderStep('upsert')
+    } else {
+      setOrderStep('closed')
+    }
+    reset()
+  }, [orderStep, setOrderStep, reset])
+
+  const handleEditOrderDialogOpen = (order: Partial<SelectedIcuOrder>) => {
+    setOrderStep('upsert')
+    setIsEditOrderMode(true)
+    setSelectedChartOrder(order)
+  }
+
+  const handleSortButtonClick = async () => {
+    if (
+      (isSorting &&
+        !hasOrderSortingChanges(sortedOrders, defaultChartOrders)) ||
+      !sortedOrders.length
+    ) {
+      setIsSorting(!isSorting)
+      return
+    }
+
+    if (isSorting) {
+      const orderIds = sortedOrders.map((order) => order.order_id)
+
+      await reorderDefaultOrders(orderIds)
+
+      toast({
+        title: '오더 목록을 변경하였습니다',
       })
-    },
-    [setIsEditMode, setSelectedChartOrder, toggleModal],
-  )
+    }
+
+    setIsSorting(!isSorting)
+    refresh()
+  }
+
+  const handleReorder = async (event: Sortable.SortableEvent) => {
+    const newOrders = [...sortedOrders]
+    const [movedOrder] = newOrders.splice(event.oldIndex as number, 1)
+
+    newOrders.splice(event.newIndex as number, 0, movedOrder)
+    setSortedOrders(newOrders)
+  }
 
   return (
     <Table className="h-full max-w-3xl border">
-      <TableHeader>
-        <TableRow>
-          <TableHead className="relative flex items-center justify-center gap-2 text-center">
-            <span>오더 목록</span>
+      <AddTemplateHeader isSorting={isSorting} onClick={handleSortButtonClick}>
+        <AddTemplateDialog
+          isOpen={orderStep !== 'closed'}
+          onOpenChange={handleOpenChange}
+          isEditOrderMode={isEditOrderMode}
+        >
+          <DefaultOrderForm />
+        </AddTemplateDialog>
+      </AddTemplateHeader>
 
-            <Dialog open={isModalOpen} onOpenChange={toggleModal}>
-              <DialogTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={handleAddDialogOpen}
-                  className="absolute right-1 top-0.5"
-                >
-                  <Plus size={18} />
-                </Button>
-              </DialogTrigger>
-
-              <DialogContent className="max-w-3xl">
-                <DialogHeader>
-                  <DialogTitle>오더 {isEditMode ? '수정' : '추가'}</DialogTitle>
-                  <DialogDescription />
-                </DialogHeader>
-
-                <DefaultOrderForm />
-              </DialogContent>
-            </Dialog>
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-
-      <TableBody>
-        {sortedOrders.map((sortedOrder) => (
-          <TableRow
-            className={cn('divide-x')}
-            key={sortedOrder.default_chart_id}
-          >
-            <TableCell
-              className={cn('p-0')}
-              style={{
-                background:
-                  orderColor[
-                    sortedOrder.default_chart_order_type as keyof IcuOrderColors
-                  ],
-              }}
-            >
-              <Button
-                variant="ghost"
-                onClick={() => handleEditDialogOpen(sortedOrder)}
-                className={cn(
-                  'flex w-full justify-between rounded-none bg-transparent px-2',
-                )}
-              >
-                <span className="truncate">
-                  {sortedOrder.default_chart_order_name}
-                </span>
-                <span className="text-xs text-muted-foreground">
-                  {sortedOrder.default_chart_order_comment}
-                </span>
-              </Button>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
+      {isSorting ? (
+        <SortableOrderWrapper
+          orders={sortedOrders}
+          onOrdersChange={setSortedOrders}
+          onSortEnd={handleReorder}
+        >
+          {sortedOrders.map((order, index) => (
+            <AddTemplateRow
+              key={order.order_id}
+              order={order}
+              index={index}
+              orderColors={orderColorsData}
+              onEdit={handleEditOrderDialogOpen}
+              orderRef={lastOrderRef}
+              isSorting={isSorting}
+            />
+          ))}
+        </SortableOrderWrapper>
+      ) : (
+        <TableBody>
+          {!sortedOrders.length ? (
+            <TableRow className="h-[360px]">
+              <TableCell className="text-center" colSpan={5}>
+                <NoResultSquirrel text="기본차트 오더를 추가해주세요" />
+              </TableCell>
+            </TableRow>
+          ) : (
+            sortedOrders.map((order, index) => (
+              <AddTemplateRow
+                key={index}
+                order={order}
+                index={index}
+                orderColors={orderColorsData}
+                onEdit={handleEditOrderDialogOpen}
+                orderRef={lastOrderRef}
+              />
+            ))
+          )}
+        </TableBody>
+      )}
     </Table>
   )
 }

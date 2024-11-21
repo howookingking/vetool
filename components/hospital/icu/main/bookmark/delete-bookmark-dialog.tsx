@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
-import { deleteBookmarkChart } from '@/lib/services/icu/bookmark/bookmark'
+import { deleteTemplateChart } from '@/lib/services/icu/template/template'
 import { Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
@@ -28,10 +28,10 @@ export default function DeleteBookmarkDialog({
   const { refresh } = useRouter()
 
   const handleDelete = async () => {
-    await deleteBookmarkChart(bookmarkId)
+    await deleteTemplateChart(bookmarkId)
 
     toast({
-      title: '즐겨찾기가 삭제되었습니다',
+      title: `${bookmarkName} 북마크가 삭제되었습니다`,
     })
 
     refresh()

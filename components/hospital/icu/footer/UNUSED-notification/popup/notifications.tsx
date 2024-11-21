@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import useRealtimeNotification from '@/hooks/use-realtime-notification'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/utils'
 import { ChevronDown, X } from 'lucide-react'
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
 import SingleNotification from './single-notification'

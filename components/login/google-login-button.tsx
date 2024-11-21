@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { googleLogin } from '@/lib/services/auth/authentication'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/utils'
 import googleLogo from '@/public/google-logo.svg'
 import { LoaderCircle } from 'lucide-react'
 import Image from 'next/image'

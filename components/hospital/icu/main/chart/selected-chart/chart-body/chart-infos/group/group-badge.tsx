@@ -9,7 +9,9 @@ export default function GroupBadge({
     <ul className="flex items-center gap-1">
       {currentGroups.map((group) => (
         <li key={group}>
-          <Badge>{group}</Badge>
+          <Badge variant="outline" className="m-0">
+            {group}
+          </Badge>
         </li>
       ))}
     </ul>

@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { getIcuChart } from '@/lib/services/icu/chart/get-icu-chart'
+import { getReadOnlyChartOrders } from '@/lib/services/icu/template/template'
 import { useCopiedChartStore } from '@/lib/store/icu/copied-chart'
 import { usePreviewDialogStore } from '@/lib/store/icu/preview-dialog'
 import { Eye, LoaderCircle } from 'lucide-react'
@@ -7,27 +8,37 @@ import { useParams } from 'next/navigation'
 import { useState } from 'react'
 
 export default function PreviewButton({
-  patientId,
   targetDate,
+  patientId,
+  chartId,
 }: {
-  patientId: string
   targetDate: string
+  patientId: string
+  chartId?: string
 }) {
   const { hos_id } = useParams()
-  const { setCopiedChart } = useCopiedChartStore()
   const { setPreviewDialogOpen } = usePreviewDialogStore()
+  const { setCopiedChart, setReadOnlyOrders, setIsReadOnly } =
+    useCopiedChartStore()
   const [isPreviewing, setIsPreviewing] = useState(false)
 
   const handleOpenPreviewDialog = async () => {
     setIsPreviewing(true)
 
-    const previewChart = await getIcuChart(
-      hos_id as string,
-      targetDate,
-      patientId,
-    )
+    if (patientId) {
+      const selectedChartData = await getIcuChart(
+        hos_id as string,
+        targetDate,
+        patientId!,
+      )
 
-    setCopiedChart(previewChart)
+      setCopiedChart(selectedChartData)
+    } else {
+      const icuChartOrders = await getReadOnlyChartOrders(chartId!)
+
+      setReadOnlyOrders(icuChartOrders)
+      setIsReadOnly(true)
+    }
 
     setPreviewDialogOpen(true)
     setIsPreviewing(false)

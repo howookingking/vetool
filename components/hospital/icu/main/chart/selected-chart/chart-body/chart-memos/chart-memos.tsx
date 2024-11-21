@@ -1,9 +1,27 @@
 'use client'
 
-import Memo from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/memo'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-privider'
+import HideAndShowButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/hide-and-show-button'
+import { Separator } from '@/components/ui/separator'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { useState } from 'react'
-import HideAndShowButton from './HideAndShowButton'
+import MemoGroup from './memo-group'
+
+export type Memo = {
+  id: string
+  memo: string
+  create_timestamp: string
+  edit_timestamp: string | null
+  color: string
+  chosen?: boolean
+}
+
+export const MEMO_COLORS = [
+  '#fef9c3', // yellow-100
+  '#d1fae5', // emerald-100
+  '#e0f2fe', // sky-100
+  '#ede9fe', // violet-100
+  '#fce7f3', // pink-100
+] as const
 
 export default function ChartMemos({
   memoA,
@@ -11,40 +29,48 @@ export default function ChartMemos({
   memoC,
   icuChartId,
 }: {
-  memoA: string
-  memoB: string
-  memoC: string
+  memoA: Memo[] | null
+  memoB: Memo[] | null
+  memoC: Memo[] | null
   icuChartId: string
 }) {
-  const [isShow, setIsShow] = useState(true)
+  const [showMemos, setShowMemos] = useState(true)
   const {
     basicHosData: { memoNameListData },
   } = useBasicHosDataContext()
+
   return (
     <div className="relative">
-      {isShow && (
-        <div className="flex flex-col gap-2 md:flex-row">
-          <Memo
+      {showMemos && (
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
+          <MemoGroup
             memo={memoA}
+            memoIndex={0}
             icuChartId={icuChartId}
-            memoNameListData={memoNameListData}
-            index={0}
+            memoName={memoNameListData[0]}
           />
-          <Memo
+
+          <Separator className="mt-4 md:hidden" />
+
+          <MemoGroup
             memo={memoB}
+            memoIndex={1}
             icuChartId={icuChartId}
-            memoNameListData={memoNameListData}
-            index={1}
+            memoName={memoNameListData[1]}
           />
-          <Memo
+
+          <Separator className="mt-4 md:hidden" />
+
+          <MemoGroup
             memo={memoC}
+            memoIndex={2}
             icuChartId={icuChartId}
-            memoNameListData={memoNameListData}
-            index={2}
+            memoName={memoNameListData[2]}
           />
         </div>
       )}
-      <HideAndShowButton setIsShow={setIsShow} isShow={isShow} />
+
+      <HideAndShowButton setShowMemos={setShowMemos} showMemos={showMemos} />
     </div>
   )
 }

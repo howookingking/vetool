@@ -7,7 +7,7 @@ const countPendingOrders = (orders: SummaryOrder[], time: number): number =>
   orders.filter((order) => {
     const orderTime = order.order_times[time - 1]
     const hasTx = order.treatments.some((tx) => tx.time === time)
-    return orderTime === '1' && !hasTx
+    return orderTime !== '0' && !hasTx
   }).length
 
 export default function SummaryTableCell({

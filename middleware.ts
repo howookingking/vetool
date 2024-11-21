@@ -4,12 +4,11 @@ import { createClient } from './lib/supabase/server'
 const VETOOL_COMPANY_ROUTES = ['/', '/products', '/pricing', '/company']
 
 export async function middleware(request: NextRequest) {
-  let response = NextResponse.next({
-    request: {
-      headers: request.headers,
-    },
+  let supabaseResponse = NextResponse.next({
+    request,
   })
-  const supabase = createClient()
+
+  const supabase = await createClient()
 
   const {
     data: { user: authUser },
@@ -86,7 +85,7 @@ export async function middleware(request: NextRequest) {
     request.nextUrl.pathname.startsWith('/hospital') &&
     request.nextUrl.pathname.endsWith('/api/notification')
   ) {
-    return response
+    return supabaseResponse
   }
 
   // Redirect to login page if the user is not logged in and tries to access hospital routes
@@ -96,7 +95,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  return response
+  return supabaseResponse
 }
 
 export const config = {

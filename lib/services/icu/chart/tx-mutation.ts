@@ -10,7 +10,7 @@ export const upsertIcuTx = async (
   txLocalState: TxLocalState,
   updatedLogs?: TxLog[],
 ) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { error } = await supabase.from('icu_txs').upsert({
     hos_id: hosId,
@@ -29,7 +29,7 @@ export const upsertIcuTx = async (
 }
 
 export const deleteIcuChartTx = async (icuChartTxId: string) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { error } = await supabase
     .from('icu_txs')

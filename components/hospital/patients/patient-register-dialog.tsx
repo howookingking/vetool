@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/dialog'
 import { useState } from 'react'
 
-export function PatientRegisterDialog({ hosId }: { hosId: string }) {
+export default function PatientRegisterDialog({ hosId }: { hosId: string }) {
   const [isPatientRegisterDialogOpen, setIsPatientRegisterDialogOpen] =
     useState(false)
 
@@ -21,7 +21,7 @@ export function PatientRegisterDialog({ hosId }: { hosId: string }) {
       open={isPatientRegisterDialogOpen}
       onOpenChange={setIsPatientRegisterDialogOpen}
     >
-      <DialogTrigger asChild className="absolute left-2 top-2">
+      <DialogTrigger asChild>
         <Button size="sm">환자 등록</Button>
       </DialogTrigger>
 
@@ -37,6 +37,7 @@ export function PatientRegisterDialog({ hosId }: { hosId: string }) {
         </DialogHeader>
 
         <PatientForm
+          mode="registerFromPatientRoute"
           hosId={hosId}
           setIsPatientRegisterDialogOpen={setIsPatientRegisterDialogOpen}
         />

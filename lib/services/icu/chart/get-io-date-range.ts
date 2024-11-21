@@ -3,7 +3,7 @@
 import { createClient } from '@/lib/supabase/server'
 
 export const getIoDateRange = async (ioId: string) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data: IcuIoDateRange, error: IcuIoDateRangeError } = await supabase
     .from('icu_charts')

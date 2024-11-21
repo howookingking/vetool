@@ -36,28 +36,29 @@ const chartConfig = {
 const calculateStayDurations = (
   IcuAnalysisData: IcuAnalysisData[],
 ): ChartData[] => {
-  const stayDurations: number[] = []
   const durationCounts: Record<number, number> = {}
+  const seenIoIds = new Set()
 
-  // io_id 기준으로 중복 제거
-  IcuAnalysisData.filter(
-    (data, index, self) =>
-      index ===
-      self.findIndex((t) => t.icu_io.icu_io_id === data.icu_io.icu_io_id),
-  ).forEach((data) => {
-    const { icu_io } = data
-    if (icu_io.out_date) {
+  const stayDurations = IcuAnalysisData
+    // io_id 기준으로 중복 제거
+    .filter((data) => {
+      const isDuplicate = seenIoIds.has(data.icu_io.icu_io_id)
+      seenIoIds.add(data.icu_io.icu_io_id)
+      return !isDuplicate
+    })
+    // out_date가 있는 데이터만 필터링
+    .filter((data) => data.icu_io.out_date)
+    .map(({ icu_io }) => {
       const inDate = new Date(icu_io.in_date)
-      const outDate = new Date(icu_io.out_date)
+      const outDate = new Date(icu_io.out_date!)
 
-      // 퇴원일 - 입원일
-      const stayDuration = Math.round(
-        (outDate.getTime() - inDate.getTime()) / (1000 * 60 * 60 * 24),
+      // 퇴원일 - 입원일 + 1 (당일 포함)
+      return (
+        Math.round(
+          (outDate.getTime() - inDate.getTime()) / (1000 * 60 * 60 * 24),
+        ) + 1
       )
-
-      stayDurations.push(stayDuration + 1)
-    }
-  })
+    })
 
   stayDurations.forEach((duration) => {
     durationCounts[duration] = (durationCounts[duration] || 0) + 1

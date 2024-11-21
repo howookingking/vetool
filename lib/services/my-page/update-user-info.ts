@@ -8,7 +8,7 @@ export const updateUserInfo = async (
   name: string | null,
   avatarUrl: string | null,
 ) => {
-  const supabase = createClient()
+  const supabase = await createClient()
   if (name === null) {
     const { error } = await supabase
       .from('users')

@@ -1,11 +1,12 @@
 import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/utils'
 import { format } from 'date-fns'
 import {
   BarChart4,
   HeartPulse,
   Home,
   ListChecks,
+  PawPrint,
   Slice,
   Syringe,
 } from 'lucide-react'
@@ -19,12 +20,14 @@ const ICON_MAPPER = {
   HeartPulse: <HeartPulse size={18} />,
   ListChecks: <ListChecks size={18} />,
   BarChart4: <BarChart4 size={18} />,
+  PawPrint: <PawPrint size={18} />,
 }
 
 export default function MobileSidebarItem({
   item,
   hosId,
   handleCloseMobileDrawer,
+  isSuper,
 }: {
   item: {
     name: string
@@ -34,6 +37,7 @@ export default function MobileSidebarItem({
   }
   hosId: string
   handleCloseMobileDrawer: () => void
+  isSuper: boolean
 }) {
   const { push } = useRouter()
   const pathname = usePathname()
@@ -52,8 +56,13 @@ export default function MobileSidebarItem({
     [item.path],
   )
 
+  const isSuperOnly = useMemo(
+    () => item.name === '벳툴' && !isSuper,
+    [isSuper, item.name],
+  )
+
   return (
-    <li>
+    <li key={item.name} className={isSuperOnly ? 'hidden' : ''}>
       <Button
         onClick={() => {
           push(`/hospital/${hosId}/${dynamicPath}`)

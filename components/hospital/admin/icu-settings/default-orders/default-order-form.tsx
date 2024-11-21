@@ -1,6 +1,6 @@
 'use client'
 
-import { orderSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order-schema'
+import { orderSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-schema'
 import { Button } from '@/components/ui/button'
 import { DialogClose, DialogFooter } from '@/components/ui/dialog'
 import {
@@ -16,7 +16,8 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { toast } from '@/components/ui/use-toast'
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { upsertDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
-import { cn } from '@/lib/utils'
+import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
+import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
@@ -24,12 +25,11 @@ import { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import DeleteDefaultOrderAlertDialog from './delete-default-order-alert-dialog'
-import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 
 export default function DefaultOrderForm() {
   const { hos_id } = useParams()
   const { refresh } = useRouter()
-  const { toggleModal, selectedChartOrder, isEditMode, resetState } =
+  const { setOrderStep, selectedChartOrder, isEditOrderMode, reset } =
     useIcuOrderStore()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -38,8 +38,8 @@ export default function DefaultOrderForm() {
     resolver: zodResolver(orderSchema),
     defaultValues: {
       icu_chart_order_type: selectedChartOrder.order_type ?? undefined,
-      icu_chart_order_name: selectedChartOrder.order_name ?? undefined,
-      icu_chart_order_comment: selectedChartOrder.order_comment ?? undefined,
+      icu_chart_order_name: selectedChartOrder.order_name ?? '',
+      icu_chart_order_comment: selectedChartOrder.order_comment ?? '',
     },
   })
 
@@ -66,11 +66,11 @@ export default function DefaultOrderForm() {
         title: `${values.icu_chart_order_name} 오더를 추가하였습니다`,
       })
 
-      resetState()
+      reset()
       setIsSubmitting(false)
-      toggleModal()
+      setOrderStep('closed')
     },
-    [hos_id, refresh, resetState, selectedChartOrder.order_id, toggleModal],
+    [hos_id, selectedChartOrder.order_id, refresh, reset, setOrderStep],
   )
 
   return (
@@ -143,10 +143,10 @@ export default function DefaultOrderForm() {
         />
 
         <DialogFooter className="ml-auto w-full gap-2 md:gap-0">
-          {isEditMode && (
+          {isEditOrderMode && (
             <DeleteDefaultOrderAlertDialog
               selectedChartOrder={selectedChartOrder}
-              toggleModal={toggleModal}
+              setOrderStep={setOrderStep}
             />
           )}
 
@@ -157,7 +157,7 @@ export default function DefaultOrderForm() {
           </DialogClose>
 
           <Button type="submit" disabled={isSubmitting}>
-            {isEditMode ? '변경' : '추가'}
+            {isEditOrderMode ? '변경' : '추가'}
             <LoaderCircle
               className={cn(isSubmitting ? 'ml-2 animate-spin' : 'hidden')}
             />

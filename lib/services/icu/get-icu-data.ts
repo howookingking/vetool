@@ -2,12 +2,11 @@
 
 import { createClient } from '@/lib/supabase/server'
 import type { IcuSidebarIoData, Vet } from '@/types/icu/chart'
-import type { PatientData } from '@/types/patients'
 import { redirect } from 'next/navigation'
 
 export const getIcuData = async (hosId: string, targetDate: string) => {
   console.log('Initial Icu Data Fetching')
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const promiseArray = Promise.all([
     supabase
@@ -19,50 +18,45 @@ export const getIcuData = async (hosId: string, targetDate: string) => {
 
     supabase
       .from('users')
-      .select('name, position, user_id, avatar_url')
+      .select('name, position, user_id, avatar_url, rank')
       .match({ hos_id: hosId, is_vet: true })
+      .order('rank', { ascending: true })
       .returns<Vet[]>(),
 
     supabase
       .from('hospitals')
-      .select('order_color, group_list, icu_memo_names')
+      .select(
+        `
+          order_color,
+          group_list,
+          icu_memo_names,
+          maintenance_rate_calc_method,
+          show_orderer,
+          rer_calc_method,
+          vital_ref_range
+        `,
+      )
       .match({ hos_id: hosId })
       .single(),
-
-    supabase
-      .from('patients')
-      .select('*')
-      .match({ hos_id: hosId })
-      .match({ is_alive: true })
-      .order('created_at', { ascending: false })
-      .returns<PatientData[]>(),
   ])
 
   const [
     { data: icuSidebarData, error: icuSidebarDataError },
     { data: vetsListData, error: vetsListDataError },
     { data: basicHosData, error: basicHosDataError },
-    { data: patientsData, error: patientsDataError },
   ] = await promiseArray
 
-  if (
-    icuSidebarDataError ||
-    vetsListDataError ||
-    basicHosDataError ||
-    patientsDataError
-  ) {
+  if (icuSidebarDataError || vetsListDataError || basicHosDataError) {
     console.error({
       icuSidebarDataError,
       vetsListDataError,
       basicHosDataError,
-      patientsDataError,
     })
     redirect(
       `/error?message=${
         icuSidebarDataError?.message ||
         vetsListDataError?.message ||
-        basicHosDataError?.message ||
-        patientsDataError?.message
+        basicHosDataError?.message
       }`,
     )
   }
@@ -70,6 +64,5 @@ export const getIcuData = async (hosId: string, targetDate: string) => {
     icuSidebarData,
     vetsListData,
     basicHosData,
-    patientsData,
   }
 }

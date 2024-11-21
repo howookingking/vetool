@@ -4,7 +4,7 @@ import DrugDoseInput from '@/components/hospital/icu/main/chart/selected-chart/c
 import DrugDoseUnitRadio from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order-form/drug-order/drug-dose-unit-radio'
 import DrugSelectField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order-form/drug-order/drug-select-field'
 import { orderSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order-form/order-schema'
-import { calculateTotalDrugAmount } from '@/lib/utils'
+import { calculateTotalDrugAmount } from '@/lib/utils/utils'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
@@ -56,20 +56,19 @@ export default function DrugFormField({
     drugTotalUnit,
   ])
 
-  // 약물명 && Species && route가 일치하는 약물을 필터링
-  useMemo(() => {
-    const selectedDrug = drugs?.find((drug) =>
-      drug.drug_products.some((product) => product.name === drugName),
-    )
+  // useMemo(() => {
+  //   const selectedDrug = drugs?.find((drug) =>
+  //     drug.drug_products.some((product) => product.name === drugName),
+  //   )
 
-    const drugDoses = selectedDrug?.drug_doses?.filter(
-      (dose) =>
-        dose?.route?.includes(drugRoute) &&
-        (dose?.species === species || dose?.species === 'both'),
-    )
+  //   const drugDoses = selectedDrug?.drug_doses?.filter(
+  //     (dose) =>
+  //       dose?.route?.includes(drugRoute) &&
+  //       (dose?.species === species || dose?.species === 'both'),
+  //   )
 
-    setDrugDosage(drugDoses?.length ? drugDoses[0].default_dose! : '0')
-  }, [drugName, drugs, species, drugRoute])
+  //   setDrugDosage(drugDoses?.length ? drugDoses[0].default_dose! : '0')
+  // }, [drugName, drugs, species, drugRoute])
 
   // 약물 총량 계산
   const getTotalAmount = useCallback(() => {
@@ -154,7 +153,7 @@ export default function DrugFormField({
               label={
                 <div className="mb-1 flex items-center gap-1">
                   약물 총량
-                  <HelperTooltip className="w-4" variant="destructive">
+                  <HelperTooltip className="w-4">
                     자동 계산된 총량은 참고용으로만 사용해주세요
                   </HelperTooltip>
                 </div>

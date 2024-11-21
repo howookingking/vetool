@@ -16,7 +16,6 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
@@ -24,17 +23,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
 import { createNotice, updateNotice } from '@/lib/services/hospital-home/notice'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle, Plus } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import DeleteNoticeButton from './delete-notice-button'
 import { NOTICE_COLORS, NoticeColorType, noticeSchema } from './notice-schema'
-import { Textarea } from '@/components/ui/textarea'
 
 export default function CreateOrUpdateNoticeDialog({
   hosId,
@@ -51,6 +51,7 @@ export default function CreateOrUpdateNoticeDialog({
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const { refresh } = useRouter()
 
   const form = useForm<z.infer<typeof noticeSchema>>({
     resolver: zodResolver(noticeSchema),
@@ -69,9 +70,7 @@ export default function CreateOrUpdateNoticeDialog({
     }
   }, [isDialogOpen, form, isEdit, oldNoticeText, oldNoticeColor])
 
-  const handleCreateOrUpdateNotice = async (
-    values: z.infer<typeof noticeSchema>,
-  ) => {
+  const handleUpsertNotice = async (values: z.infer<typeof noticeSchema>) => {
     const { color, notice } = values
     setIsSubmitting(true)
 
@@ -84,6 +83,7 @@ export default function CreateOrUpdateNoticeDialog({
     toast({
       title: isEdit ? '공지사항을 수정하였습니다' : '공지사항을 추가하였습니다',
     })
+    refresh()
     setIsDialogOpen(false)
     setIsSubmitting(false)
   }
@@ -95,7 +95,7 @@ export default function CreateOrUpdateNoticeDialog({
           <div className="absolute inset-0 cursor-pointer" />
         ) : (
           <Button
-            variant={'default'}
+            variant="default"
             size="icon"
             className="h-6 w-6 rounded-full"
           >
@@ -116,7 +116,7 @@ export default function CreateOrUpdateNoticeDialog({
         </DialogHeader>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(handleCreateOrUpdateNotice)}
+            onSubmit={form.handleSubmit(handleUpsertNotice)}
             className="space-y-4"
           >
             <FormField

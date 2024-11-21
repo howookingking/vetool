@@ -13,7 +13,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 import { deleteStaff } from '@/lib/services/admin/staff/staff'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/utils'
 import { LoaderCircle, UserRoundMinus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -47,11 +47,7 @@ export function DeleteUserColumn({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          disabled={!isMaster || userId === masterUserId}
-        >
+        <Button variant="ghost" size="icon" disabled={userId === masterUserId}>
           <UserRoundMinus size={14} />
         </Button>
       </AlertDialogTrigger>

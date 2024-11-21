@@ -7,7 +7,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { changeTargetDateInUrl } from '@/lib/utils'
+import { changeTargetDateInUrl } from '@/lib/utils/utils'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { CalendarDays } from 'lucide-react'
@@ -16,20 +16,25 @@ import { useState } from 'react'
 
 export default function HeaderDatePicker({
   targetDate,
+  setIsSubscriptionReady,
 }: {
   targetDate: string
+  setIsSubscriptionReady: (isSubscriptionReady: boolean) => void
 }) {
+  const { push } = useRouter()
+  const [open, setOpen] = useState(false)
   const searchParams = useSearchParams()
   const params = new URLSearchParams(searchParams)
-  const [open, setOpen] = useState(false)
   const path = usePathname()
-  const { push } = useRouter()
 
   const handleSelectDate = (date: Date | undefined) => {
-    const formattedDate = format(date!, 'yyyy-MM-dd')
-    const newPath = changeTargetDateInUrl(path, formattedDate, params)
-    push(newPath)
-    setOpen(false)
+    if (date) {
+      const formattedDate = format(date, 'yyyy-MM-dd')
+      const newPath = changeTargetDateInUrl(path, formattedDate, params)
+      push(newPath)
+      setOpen(false)
+      setIsSubscriptionReady(false)
+    }
   }
 
   return (

@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/utils'
 import { LoaderCircle } from 'lucide-react'
 import { useState } from 'react'
 

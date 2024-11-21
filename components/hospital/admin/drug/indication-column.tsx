@@ -5,7 +5,7 @@ import {
 } from '@/components/ui/hover-card'
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
-import { updateDrugIndication } from '@/lib/services/settings/drug-settings'
+// import { updateDrugIndication } from '@/lib/services/settings/drug-settings'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
@@ -31,7 +31,7 @@ export default function IndicationColumn({
 
     setIsUpdating(true)
 
-    await updateDrugIndication(hosId, drugDescriptionId, indicationInput)
+    // await updateDrugIndication(hosId, drugDescriptionId, indicationInput)
 
     toast({
       title: '약물 설명을 변경하였습니다',

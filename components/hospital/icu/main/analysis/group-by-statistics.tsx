@@ -28,16 +28,25 @@ export default function GroupByStatistics({
   analysisData: IcuAnalysisData[]
 }) {
   const { chartData, chartConfig } = useMemo(() => {
-    const groupCounts = analysisData.reduce(
-      (acc, item) => {
-        const { group_list } = item.icu_io
-        group_list.forEach((group) => {
-          acc[group] = (acc[group] || 0) + 1
-        })
-        return acc
-      },
-      {} as Record<string, number>,
-    )
+    const ioIdSet = new Set()
+    const groupCounts = analysisData
+      .filter((item) => {
+        const duplicate = ioIdSet.has(item.icu_io.icu_io_id)
+        ioIdSet.add(item.icu_io.icu_io_id)
+
+        return !duplicate
+      })
+
+      .reduce(
+        (acc, item) => {
+          const { group_list } = item.icu_io
+          group_list.forEach((group) => {
+            acc[group] = (acc[group] || 0) + 1
+          })
+          return acc
+        },
+        {} as Record<string, number>,
+      )
 
     const data = Object.entries(groupCounts).map(([group, counts], index) => ({
       group,

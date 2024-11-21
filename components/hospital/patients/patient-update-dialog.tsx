@@ -10,19 +10,60 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import type { PatientDataTable } from '@/types/patients'
+import { createClient } from '@/lib/supabase/client'
+import type { SearchedPatientsData } from '@/types/patients'
+import { format } from 'date-fns'
 import { Edit } from 'lucide-react'
-import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 
 export default function PatientUpdateDialog({
   hosId,
   editingPatient,
+  setIsEdited,
 }: {
   hosId: string
-  editingPatient: PatientDataTable
+  editingPatient: SearchedPatientsData
+  setIsEdited: Dispatch<SetStateAction<boolean>>
 }) {
+  const supabase = createClient()
+  const { push } = useRouter()
   const [isPatientUpdateDialogOpen, setIsPatientUpdateDialogOpen] =
     useState(false)
+  const [weightInfo, setWeightInfo] = useState({
+    weight: '',
+    weightMeasuredDate: '',
+  })
+
+  useEffect(() => {
+    if (isPatientUpdateDialogOpen) {
+      const fetchWeightInfo = async () => {
+        const { data, error } = await supabase
+          .from('vitals')
+          .select('body_weight, created_at')
+          .match({ patient_id: editingPatient.patient_id })
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle()
+
+        if (error) {
+          console.error(error)
+          push(`/error/?message=${error.message}`)
+        }
+
+        setWeightInfo({
+          weight: data?.body_weight ?? '',
+          weightMeasuredDate: data?.created_at
+            ? format(data?.created_at, 'yyyy-MM-dd')
+            : '',
+        })
+      }
+
+      fetchWeightInfo()
+    }
+  }, [isPatientUpdateDialogOpen, editingPatient.patient_id, push, supabase])
+
   return (
     <Dialog
       open={isPatientUpdateDialogOpen}
@@ -41,10 +82,13 @@ export default function PatientUpdateDialog({
         </DialogHeader>
 
         <PatientForm
+          mode="updateFromPatientRoute"
+          weight={weightInfo.weight}
+          weightMeasuredDate={weightInfo.weightMeasuredDate}
           hosId={hosId}
-          edit
           editingPatient={editingPatient}
           setIsPatientUpdateDialogOpen={setIsPatientUpdateDialogOpen}
+          setIsEdited={setIsEdited}
         />
       </DialogContent>
     </Dialog>

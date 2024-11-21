@@ -1,26 +1,30 @@
 'use client'
 
-import TxDetailInsertStep from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/detail-insert-step/tx-detail-insert-step'
-import TxSelectUserStep from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/tx-select-user-step'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
+import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
 import { useCallback } from 'react'
+import TxDetailInsertStep from './detail-insert-step/tx-detail-insert-step'
+import TxSelectUserStep from './tx-select-user-step'
 
 export default function TxUpsertDialog() {
-  const { step, setStep, reset, setIsMutationCanceled } = useTxMutationStore()
+  const { txStep, setTxStep, reset, setIsMutationCanceled } =
+    useTxMutationStore()
+  const { reset: queueReset } = useIcuOrderStore()
 
   const handleClose = useCallback(() => {
-    setStep('closed')
+    setTxStep('closed')
     setIsMutationCanceled(true)
     reset()
-  }, [setStep, setIsMutationCanceled, reset])
+    queueReset()
+  }, [setTxStep, setIsMutationCanceled, reset, queueReset])
 
   return (
-    <Dialog open={step !== 'closed'} onOpenChange={handleClose}>
+    <Dialog open={txStep !== 'closed'} onOpenChange={handleClose}>
       <DialogContent>
-        {step === 'detailInsert' && <TxDetailInsertStep />}
+        {txStep === 'detailInsert' && <TxDetailInsertStep />}
 
-        {step === 'seletctUser' && <TxSelectUserStep />}
+        {txStep === 'seletctUser' && <TxSelectUserStep />}
       </DialogContent>
     </Dialog>
   )

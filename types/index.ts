@@ -15,7 +15,16 @@ export type IcuDefaultChart =
 export type IcuCharts = Database['public']['Tables']['icu_charts']['Row']
 export type IcuOrders = Database['public']['Tables']['icu_orders']['Row']
 export type IcuTxs = Database['public']['Tables']['icu_txs']['Row']
-export type IcuBookmark = Database['public']['Tables']['icu_bookmarks']['Row']
+export type IcuTemplate = Database['public']['Tables']['icu_templates']['Row']
+export type IcuOut = Database['public']['Tables']['icu_out']['Row']
+export type IcuVisit = Database['public']['Tables']['icu_visit']['Row']
+export type VetoolErrors = Database['public']['Tables']['vetool_errors']['Row']
+export type VetoolFeedbacks =
+  Database['public']['Tables']['vetool_feedbacks']['Row']
+export type VetoolPatches =
+  Database['public']['Tables']['vetool_patches']['Row']
+
+export type Params = { slug: string }
 export type DrugProductsRows =
   Database['public']['Tables']['drug_products_rows']['Row']
 export type DrugRows = Database['public']['Tables']['drugs_rows']['Row']

@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/utils'
 import { SearchX } from 'lucide-react'
 
 export default function NoResult({

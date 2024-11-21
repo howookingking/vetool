@@ -1,8 +1,14 @@
-export const SIDE_BAR_ITEMS = [
+export const SIDEBAR_ITEMS = [
   {
     name: '병원 홈',
     path: '',
     iconName: 'Home',
+    isReady: true,
+  },
+  {
+    name: '환자목록',
+    path: 'patients',
+    iconName: 'PawPrint',
     isReady: true,
   },
   {
@@ -34,5 +40,11 @@ export const SIDE_BAR_ITEMS = [
     path: 'analytics',
     iconName: 'BarChart4',
     isReady: false,
+  },
+  {
+    name: '벳툴',
+    path: 'super',
+    iconName: 'Building',
+    isReady: true,
   },
 ] as const

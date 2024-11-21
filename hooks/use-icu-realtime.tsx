@@ -1,32 +1,36 @@
+import { useRealtimeSubscriptionStore } from '@/lib/store/icu/realtime-subscription'
 import { createClient } from '@/lib/supabase/client'
 import type { RealtimeChannel } from '@supabase/supabase-js'
 import { useRouter } from 'next/navigation'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 
 const supabase = createClient()
 const TABLES = ['icu_io', 'icu_charts', 'icu_orders', 'icu_txs'] as const
-type TableName = (typeof TABLES)[number]
 
-export function useIcuRealtime(hosId: string, targetDate: string) {
+export function useIcuRealtime(hosId: string) {
   const subscriptionRef = useRef<RealtimeChannel | null>(null)
-  const [isSubscriptionReady, setIsSubscriptionReady] = useState(false)
+  const { setIsSubscriptionReady } = useRealtimeSubscriptionStore()
   const { refresh } = useRouter()
 
-  const deboucedRefresh = useDebouncedCallback(() => {
-    console.log('deboucedRefresh')
+  const debouncedRefresh = useDebouncedCallback(() => {
+    console.log('Debouced refresh')
     refresh()
-  }, 500)
+  }, 1000)
 
   const handleChange = useCallback(
     (payload: any) => {
+      if (payload.table === 'icu_io') {
+        refresh()
+      }
+      debouncedRefresh()
+
       console.log(
-        `%c${payload.table.toUpperCase()} ${payload.eventType}`,
+        `%c${payload.table} ${payload.eventType}`,
         `background:${getLogColor(payload.table)}; color:white`,
       )
-      deboucedRefresh()
     },
-    [deboucedRefresh],
+    [debouncedRefresh],
   )
 
   const subscribeToChannel = useCallback(() => {
@@ -35,6 +39,7 @@ export function useIcuRealtime(hosId: string, targetDate: string) {
       return
     }
 
+    console.log('Creating new subscription...')
     const channel = supabase.channel(`icu_realtime_${hosId}`)
 
     TABLES.forEach((table) => {
@@ -69,9 +74,11 @@ export function useIcuRealtime(hosId: string, targetDate: string) {
     subscriptionRef.current = channel.subscribe((status) => {
       if (status === 'SUBSCRIBED') {
         console.log('Subscribed to all tables')
-        setIsSubscriptionReady(true)
+        setTimeout(() => {
+          setIsSubscriptionReady(true)
+        }, 5000)
       } else {
-        console.log('Subscription failed')
+        console.log('Subscription failed with status:', status)
         setIsSubscriptionReady(false)
       }
     })
@@ -79,46 +86,53 @@ export function useIcuRealtime(hosId: string, targetDate: string) {
 
   const unsubscribe = useCallback(() => {
     if (subscriptionRef.current) {
+      console.log('Unsubscribing from channel...')
       supabase.removeChannel(subscriptionRef.current)
       subscriptionRef.current = null
       setIsSubscriptionReady(false)
     }
   }, [])
 
-  useEffect(() => {
-    subscribeToChannel()
-
-    return () => {
+  const handleVisibilityChange = useCallback(() => {
+    if (document.hidden) {
+      console.log('Page is hidden, unsubscribing...')
       unsubscribe()
+    } else {
+      console.log('Page is visible, resubscribing...')
+      subscribeToChannel()
     }
   }, [subscribeToChannel, unsubscribe])
 
   useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (!document.hidden && !subscriptionRef.current) {
-        subscribeToChannel()
-      }
-    }
+    console.log('initial subscription')
+    subscribeToChannel()
 
     document.addEventListener('visibilitychange', handleVisibilityChange)
 
     return () => {
+      console.log('Cleanup: unsubscribing and removing event listener...')
       unsubscribe()
       document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
-  }, [subscribeToChannel, unsubscribe])
-
-  return isSubscriptionReady
+  }, [handleVisibilityChange, subscribeToChannel, unsubscribe])
 }
 
-export function getLogColor(table: string): string {
+function getLogColor(table: string): string {
   switch (table) {
     case 'icu_io':
       return 'blue'
     case 'icu_charts':
       return 'red'
+
     case 'icu_orders':
-      return 'green'
+      /*************  ✨ Codeium Command ⭐  *************/
+      /**
+       * Get the color for a given table's log.
+       *
+       * @param {string} table - The table name.
+       * @returns {string} The color for the given table's log.
+       */
+      /******  be861dde-2353-4b83-856c-89f6ea4f5dee  *******/ return 'green'
     case 'icu_txs':
       return 'purple'
     default:

@@ -18,12 +18,16 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { memoNameFormSchema } from './memo-name-schema'
 import { updateMemoNames } from '@/lib/services/admin/icu/memo-name'
+import { useState } from 'react'
+import { LoaderCircle } from 'lucide-react'
+import { cn } from '@/lib/utils/utils'
 
 export default function MemoNameSetting({
   memoNames,
 }: {
   memoNames: string[]
 }) {
+  const [isUpdating, setIsUpdating] = useState(false)
   const { hos_id } = useParams()
   const { refresh } = useRouter()
 
@@ -51,6 +55,7 @@ export default function MemoNameSetting({
     ) {
       return
     }
+    setIsUpdating(true)
 
     await updateMemoNames(updatedMemoNames, hos_id as string)
 
@@ -58,6 +63,8 @@ export default function MemoNameSetting({
       title: '메모명 변경',
       description: '메모명 변경이 완료되었습니다',
     })
+
+    setIsUpdating(false)
     refresh()
   }
 
@@ -118,8 +125,11 @@ export default function MemoNameSetting({
           )}
         />
 
-        <Button type="submit" className="ml-auto">
+        <Button type="submit" className="ml-auto" disabled={isUpdating}>
           저장
+          <LoaderCircle
+            className={cn(isUpdating ? 'ml-2 animate-spin' : 'hidden')}
+          />
         </Button>
       </form>
     </Form>

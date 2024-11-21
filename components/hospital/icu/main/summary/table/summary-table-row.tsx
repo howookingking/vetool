@@ -2,12 +2,13 @@
 
 import { TableCell, TableRow } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
-import { cn, getDaysDifference } from '@/lib/utils'
+import { cn, getDaysDifference } from '@/lib/utils/utils'
 import type { SummaryData } from '@/types/icu/summary'
 import { Cat, Dog } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useMemo } from 'react'
 import SummaryTableCell from './summary-table-cell'
+import PatientInfo from '@/components/hospital/common/patient-info'
 
 type SummaryTableRowProps = {
   summary: SummaryData
@@ -40,13 +41,12 @@ export default function SummaryTableRow({ summary }: { summary: SummaryData }) {
       onClick={() => handleClickRow(summary.patient_id as string)}
     >
       <TableCell className="flex w-[200px] items-center justify-between">
-        <div className="flex items-center gap-1">
-          {patient.species === 'canine' ? <Dog size={18} /> : <Cat size={18} />}
-          <div className="line-clamp-1">
-            <span>{patient.name}</span>
-            <span className="text-xs">({patient.breed})</span>
-          </div>
-        </div>
+        <PatientInfo
+          name={patient.name}
+          species={patient.species}
+          breed={patient.breed}
+          iconSize={18}
+        />
         <span className="shrink-0 text-xs">{hospitalizationDays}일차</span>
       </TableCell>
       {TIMES.map((time) => (

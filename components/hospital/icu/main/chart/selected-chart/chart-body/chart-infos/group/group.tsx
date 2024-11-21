@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/form'
 import { toast } from '@/components/ui/use-toast'
 import { updateGroup } from '@/lib/services/icu/chart/update-icu-chart-infos'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-privider'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Component } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -29,7 +29,6 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import GroupBadge from './group-badge'
 import { groupCheckFormSchema } from './group-schema'
-import CustomTooltip from '@/components/ui/custom-tooltip'
 
 export default function Group({
   currentGroups,
@@ -76,11 +75,9 @@ export default function Group({
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="flex w-full justify-start overflow-x-auto px-2"
+          className="flex w-full justify-start overflow-hidden px-2"
         >
-          <CustomTooltip contents="그룹" side="left" variant="secondary">
-            <Component size={16} className="mr-2 text-muted-foreground" />
-          </CustomTooltip>
+          <Component size={16} className="text-muted-foreground" />
 
           <GroupBadge currentGroups={currentGroups} />
         </Button>

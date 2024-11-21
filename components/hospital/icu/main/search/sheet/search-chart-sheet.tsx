@@ -13,7 +13,7 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import { CalendarSearch } from 'lucide-react'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { type Dispatch, type SetStateAction, useState } from 'react'
 
 export default function SearchChartSheet({
   searchOptions,
@@ -30,13 +30,20 @@ export default function SearchChartSheet({
     setSearchOptions(options)
   }
 
+  const handleValueChange = (value: string) => {
+    setOptions((prevOptions) => ({
+      ...prevOptions,
+      timeRange: value,
+    }))
+  }
+
   return (
     <Sheet>
       <SheetTrigger asChild>
         <CalendarSearch className="cursor-pointer text-primary" size={18} />
       </SheetTrigger>
 
-      <SheetContent>
+      <SheetContent className="max-w-[400px]">
         <SheetHeader>
           <SheetTitle>검색 필터 설정</SheetTitle>
           <SheetDescription>
@@ -45,7 +52,7 @@ export default function SearchChartSheet({
         </SheetHeader>
 
         <div className="grid gap-4 py-4">
-          <DateRagneSelect timeRange={timeRange} setOptions={setOptions} />
+          <DateRagneSelect timeRange={timeRange} onChange={handleValueChange} />
           <OrderSelect order={order} setOptions={setOptions} />
         </div>
 

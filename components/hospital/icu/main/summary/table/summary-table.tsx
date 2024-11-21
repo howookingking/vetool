@@ -7,7 +7,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/utils'
 import type { SummaryData } from '@/types/icu/summary'
 
 export default function SummaryTable({

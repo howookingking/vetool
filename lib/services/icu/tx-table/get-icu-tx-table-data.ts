@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
 
 export const getIcuTxTableData = async (hosId: string, targetDate: string) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data, error } = await supabase
     .rpc('get_icu_tx_table_data', {
@@ -15,8 +15,7 @@ export const getIcuTxTableData = async (hosId: string, targetDate: string) => {
     .returns<IcuTxTableData[]>()
 
   if (error) {
-    console.error(error)
-    redirect(`/error?message=${error?.message}`)
+    throw new Error(error.message)
   }
 
   return data

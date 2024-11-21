@@ -9,7 +9,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import { SIDE_BAR_ITEMS } from '@/constants/hospital/sidebar-items'
+import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
 import type { UserProfile } from '@/types'
 import { Menu } from 'lucide-react'
 import { useState } from 'react'
@@ -20,19 +20,21 @@ export default function MobileSidebar({
   hosId,
   userData,
   hosName,
+  isSuper,
 }: {
   hosId: string
   userData: UserProfile
   hosName: string
+  isSuper: boolean
 }) {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
   const handleCloseMobileDrawer = () => setIsSheetOpen(false)
 
   return (
     <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-      <SheetTrigger className="absolute right-1 top-1.5 z-30 md:hidden" asChild>
-        <Button variant="ghost" size="icon">
-          <Menu />
+      <SheetTrigger className="fixed right-0 top-0 z-40 md:hidden" asChild>
+        <Button variant="ghost" size="icon" className="h-12 w-12 rounded-none">
+          <Menu size={24} />
         </Button>
       </SheetTrigger>
       <SheetContent side="right" className="p-0">
@@ -44,13 +46,14 @@ export default function MobileSidebar({
         </SheetHeader>
 
         <ul className="z-50">
-          {SIDE_BAR_ITEMS.map((item) => {
+          {SIDEBAR_ITEMS.map((item) => {
             return (
               <MobileSidebarItem
                 key={item.name}
                 hosId={hosId}
                 item={item}
                 handleCloseMobileDrawer={handleCloseMobileDrawer}
+                isSuper={isSuper}
               />
             )
           })}

@@ -1,5 +1,43 @@
 import type { Config } from 'tailwindcss'
 
+const createShakeKeyframes = (degree: number, reverse: boolean = false) => {
+  const rotations = reverse
+    ? {
+        '10%': degree,
+        '20%': -degree,
+        '30%': degree,
+        '40%': -degree,
+        '50%': degree,
+        '60%': -degree,
+        '70%': degree,
+        '80%': -degree,
+        '90%': degree,
+      }
+    : {
+        '10%': -degree,
+        '20%': degree,
+        '30%': -degree,
+        '40%': degree,
+        '50%': -degree,
+        '60%': degree,
+        '70%': -degree,
+        '80%': degree,
+        '90%': -degree,
+      }
+
+  return {
+    '0%': { transform: 'rotate(0deg)' },
+    ...Object.entries(rotations).reduce(
+      (acc, [key, value]) => ({
+        ...acc,
+        [key]: { transform: `rotate(${value}deg)` },
+      }),
+      {},
+    ),
+    '100%': { transform: 'rotate(0deg)' },
+  }
+}
+
 const config = {
   darkMode: ['class'],
   content: [
@@ -67,18 +105,37 @@ const config = {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
+        shake: createShakeKeyframes(0.1),
+        'shake-reverse': createShakeKeyframes(0.1, true),
+        'shake-strong': createShakeKeyframes(0.5),
+        'shake-strong-reverse': createShakeKeyframes(0.5, true),
+
+        slideDown: {
+          '0%': { transform: 'translateY(-100%)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        slideUp: {
+          '0%': { transform: 'translateY(0)', opacity: '1' },
+          '100%': { transform: 'translateY(100%)', opacity: '0' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        shake: 'shake 1.2s ease-out infinite',
+        'shake-reverse': 'shake-reverse 1.2s ease-out infinite',
+        'shake-strong': 'shake-strong 1.2s ease-out infinite',
+        'shake-strong-reverse': 'shake-strong-reverse 1.2s ease-out infinite',
+        slideDown: 'slideDown 0.5s ease-in-out forwards',
+        slideUp: 'slideUp 0.5s ease-in-out forwards',
       },
       height: {
-        'chart-sidebar': 'calc(100vh - 96px)',
-        'icu-chart': 'calc(100vh - 48px)',
+        'exclude-header': 'calc(100vh - 48px)',
+        'icu-chart-main': 'calc(100vh - 88px)',
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],
 } satisfies Config
 
 export default config

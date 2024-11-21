@@ -1,7 +1,7 @@
-import { Label } from '@/components/ui/label'
-import { Dispatch, SetStateAction } from 'react'
 import type { SearchOptions } from '@/components/hospital/icu/main/search/icu-search-chart'
+import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import type { Dispatch, SetStateAction } from 'react'
 
 export default function SearchTypeRadio({
   setOptions,

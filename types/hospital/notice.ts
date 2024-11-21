@@ -6,3 +6,7 @@ export type NoticeWithUser = Omit<
 > & {
   user_id: Pick<User, 'user_id' | 'name' | 'avatar_url'>
 }
+
+export type SortableNotice = NoticeWithUser & {
+  id: number
+}

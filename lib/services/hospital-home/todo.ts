@@ -4,18 +4,17 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
 export const getTodos = async (hosId: string) => {
-  const supabase = createClient()
-  const { data: todosData, error: todosDataError } = await supabase
+  const supabase = await createClient()
+  const { data, error } = await supabase
     .from('todos')
     .select('id, is_done, target_date, target_user, todo_title')
     .match({ hos_id: hosId })
     .order('created_at')
 
-  if (todosDataError) {
-    console.error(todosDataError)
-    redirect(`/error?message=${todosDataError.message}`)
+  if (error) {
+    throw new Error(error.message)
   }
-  return todosData
+  return data
 }
 
 export const createTodo = async (
@@ -24,7 +23,7 @@ export const createTodo = async (
   date: string,
   hosId: string,
 ) => {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { error: createTodoError } = await supabase.from('todos').insert({
     todo_title: todo_title_input,
     hos_id: hosId,
@@ -39,7 +38,7 @@ export const createTodo = async (
 }
 
 export const toggleIsDone = async (todoId: string, isDone: boolean) => {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { error: toggleIsDoneError } = await supabase
     .from('todos')
     .update({
@@ -54,7 +53,7 @@ export const toggleIsDone = async (todoId: string, isDone: boolean) => {
 }
 
 export const deleteTodo = async (todoId: string) => {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { error: deleteTodoError } = await supabase
     .from('todos')
     .delete()

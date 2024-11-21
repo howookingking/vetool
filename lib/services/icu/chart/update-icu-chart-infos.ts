@@ -1,13 +1,14 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { IcuChartsInCharge } from '@/types/adimin'
 import { redirect } from 'next/navigation'
 
 export const updateDiagnosis = async (
   icuIoId: string,
   diagnosisInput: string,
 ) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { error } = await supabase
     .from('icu_io')
@@ -26,7 +27,7 @@ export const updateChiefComplaint = async (
   icuIoId: string,
   chiefComplaint: string,
 ) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { error } = await supabase
     .from('icu_io')
@@ -44,15 +45,17 @@ export const updateChiefComplaint = async (
 export const updateMainSubVet = async (
   icuChartId: string,
   mainVetId: string,
+  inCharge: IcuChartsInCharge,
   subVetId?: string,
 ) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { error } = await supabase
     .from('icu_charts')
     .update({
       main_vet: mainVetId,
       sub_vet: subVetId === 'null' ? null : subVetId,
+      in_charge: inCharge,
     })
     .match({ icu_chart_id: icuChartId })
   if (error) {
@@ -62,7 +65,7 @@ export const updateMainSubVet = async (
 }
 
 export const updateGroup = async (icuIoId: string, groupList: string[]) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { error } = await supabase
     .from('icu_io')
@@ -76,28 +79,11 @@ export const updateGroup = async (icuIoId: string, groupList: string[]) => {
   }
 }
 
-export const updateWeight = async (
-  patientId: string,
-  icuChartId: string,
-  weight: string,
-  weightMesuredDate: string,
+export const updateOutDueDate = async (
+  icuIoId: string,
+  outDueDate: string | null,
 ) => {
-  const supabase = createClient()
-
-  const { error } = await supabase.rpc('update_icu_patient_weight', {
-    icu_chart_id_input: icuChartId,
-    patient_id_input: patientId,
-    weight_input: weight,
-    weight_measured_date_input: weightMesuredDate,
-  })
-
-  if (error) {
-    console.error(error)
-    redirect(`/error/?message=${error.message}`)
-  }
-}
-export const updateOutDueDate = async (icuIoId: string, outDueDate: string) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { error } = await supabase
     .from('icu_io')
@@ -110,28 +96,11 @@ export const updateOutDueDate = async (icuIoId: string, outDueDate: string) => {
   }
 }
 
-export const updateMemoName = async (
-  hosId: string,
-  hosIcuMemoNamesInput: string[],
-) => {
-  const supabase = createClient()
-
-  const { error } = await supabase
-    .from('hospitals')
-    .update({ icu_memo_names: hosIcuMemoNamesInput })
-    .match({ hos_id: hosId })
-
-  if (error) {
-    console.error(error)
-    redirect(`/error/?message=${error.message}`)
-  }
-}
-
-export const updateMemo = async (
+export const updateMemos = async (
   query: { [key: string]: string },
   icuChartId: string,
 ) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { error } = await supabase
     .from('icu_charts')
@@ -153,9 +122,11 @@ export const toggleOutPatient = async (
   patientSpecies: string,
   patientBreed: string,
   patientName: string,
+  ownerName: string,
   ageInDays: number,
+  isAlive: boolean,
 ) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { error } = await supabase.rpc('toggle_patient_out', {
     icu_io_id_input: icuIoId,
@@ -166,7 +137,9 @@ export const toggleOutPatient = async (
     patient_species_input: patientSpecies,
     patient_breed_input: patientBreed,
     patient_name_input: patientName,
+    owner_name_input: ownerName,
     age_in_days_input: ageInDays,
+    is_alive_input: isAlive,
   })
 
   if (error) {
@@ -179,7 +152,7 @@ export const updateOwnerName = async (
   patientId: string,
   ownerNameInput: string,
 ) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { error } = await supabase
     .from('patients')
@@ -192,13 +165,33 @@ export const updateOwnerName = async (
   }
 }
 
-export const updateCpcr = async (icuIoId: string, cpcr: string) => {
-  const supabase = createClient()
+export const updateCpcrEtTube = async (
+  icuIoId: string,
+  cpcr: string,
+  etTube: string | null | undefined,
+) => {
+  const supabase = await createClient()
 
   const { error } = await supabase
     .from('icu_io')
-    .update({ cpcr })
+    .update({ cpcr: etTube ? `${cpcr},${etTube}` : cpcr })
     .match({ icu_io_id: icuIoId })
+
+  if (error) {
+    console.error(error)
+    redirect(`/error/?message=${error.message}`)
+  }
+}
+export const updateDerCalcFactor = async (
+  icuChartId: string,
+  factor: number,
+) => {
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from('icu_charts')
+    .update({ der_calc_factor: factor })
+    .match({ icu_chart_id: icuChartId })
 
   if (error) {
     console.error(error)

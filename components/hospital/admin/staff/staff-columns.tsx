@@ -122,9 +122,9 @@ export const staffColumns: ColumnDef<HospitalUserDataTable>[] = [
     header: ({ column, table }) => {
       const isMaster = table.getRow('0').original.isMaster
 
-      if (!isMaster) {
-        return null
-      }
+      // if (!isMaster) {
+      //   return null
+      // }
 
       return (
         <Button
@@ -139,12 +139,12 @@ export const staffColumns: ColumnDef<HospitalUserDataTable>[] = [
     cell: ({ row }) => {
       const isAdmin = row.original.is_admin
       const userId = row.original.user_id
-      const isMaster = row.original.isMaster
+      // const isMaster = row.original.isMaster
       const masterUserId = row.original.master_user_id
 
-      if (!isMaster) {
-        return null
-      }
+      // if (!isMaster) {
+      //   return null
+      // }
 
       return (
         <IsAdminColumn
@@ -163,9 +163,9 @@ export const staffColumns: ColumnDef<HospitalUserDataTable>[] = [
       const isMaster = row.original.isMaster
       const masterUserId = row.original.master_user_id
 
-      if (!isMaster) {
-        return null
-      }
+      // if (!isMaster) {
+      //   return null
+      // }
 
       return (
         <DeleteUserColumn

@@ -4,57 +4,25 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { cn } from '@/lib/utils'
-import { cva } from 'class-variance-authority'
-import { CircleHelp, CircleAlert } from 'lucide-react'
+import { CircleHelp } from 'lucide-react'
 
 export default function HelperTooltip({
   children,
   className,
-  variant,
+  side = 'top',
 }: {
   children: React.ReactNode
   className?: string
-  variant?: 'default' | 'destructive'
+  side?: 'top' | 'bottom' | 'left' | 'right'
 }) {
-  const IconComponent = variant === 'default' ? CircleHelp : CircleAlert
-
-  const tooltipTriggerVariants = cva('cursor-pointer text-primary', {
-    variants: {
-      variant: {
-        default: 'text-primary',
-        destructive: 'text-destructive',
-      },
-    },
-    defaultVariants: {
-      variant: 'default',
-    },
-  })
-
-  const tooltipContentVariants = cva('', {
-    variants: {
-      variant: {
-        default: 'text-white',
-        destructive: 'text-white bg-destructive',
-      },
-    },
-    defaultVariants: {
-      variant: 'default',
-    },
-  })
-
   return (
     <TooltipProvider delayDuration={70}>
       <Tooltip>
-        <TooltipTrigger
-          asChild
-          className={cn(tooltipTriggerVariants({ variant, className }))}
-        >
-          <IconComponent className="cursor-pointer" size={18} />
+        <TooltipTrigger asChild className={className}>
+          <CircleHelp className="cursor-pointer text-primary" size={18} />
         </TooltipTrigger>
-
-        <TooltipContent className={cn(tooltipContentVariants({ variant }))}>
-          <p>{children}</p>
+        <TooltipContent side={side}>
+          <div>{children}</div>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

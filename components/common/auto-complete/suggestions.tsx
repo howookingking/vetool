@@ -29,7 +29,7 @@ export default function Suggestions({
   }
 
   return (
-    <ul className="absolute top-10 z-10 w-full overflow-y-auto border bg-white shadow">
+    <ul className="absolute top-10 z-30 w-full overflow-y-auto border bg-white shadow">
       {suggestions.map((suggestion, index) => (
         <li
           key={suggestion.id}

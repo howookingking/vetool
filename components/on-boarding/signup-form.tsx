@@ -33,7 +33,7 @@ export function SignupForm() {
   const form = useForm<z.infer<typeof signupFormSchema>>({
     resolver: zodResolver(signupFormSchema),
     defaultValues: {
-      name: undefined,
+      name: '',
       isVet: undefined,
       option: undefined,
     },

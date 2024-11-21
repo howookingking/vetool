@@ -12,6 +12,7 @@ type IcuRegisterStore = {
   setRegisteringPatient: (patient: Patient) => void
   step: 'patientRegister' | 'icuRegister' | 'patientSearch'
   setStep: (step: 'patientRegister' | 'icuRegister' | 'patientSearch') => void
+  reset: () => void
 }
 
 export const useIcuRegisterStore = create<IcuRegisterStore>((set) => ({
@@ -27,4 +28,5 @@ export const useIcuRegisterStore = create<IcuRegisterStore>((set) => ({
     }),
   step: 'patientSearch',
   setStep: (step) => set({ step }),
+  reset: () => set({ registeringPatient: null, step: 'patientSearch' }),
 }))
