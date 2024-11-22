@@ -21,12 +21,14 @@ export default async function HospitalHomePage(props: {
   return (
     <div className="flex w-full flex-col gap-2 p-2 md:flex-row">
       {isSuper && <HospitalSelector hosList={hosListData} />}
+
       <PatchesCarousel
         hosId={params.hos_id}
         patchTitlesData={patchTitlesData}
       />
 
       <Notice noticesData={noticesData} hosId={params.hos_id} />
+
       <Todo todosData={todosData} hosId={params.hos_id} />
     </div>
   )

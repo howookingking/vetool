@@ -13,7 +13,7 @@ import { PatchListProps } from '@/types/vetool'
 export default function PatchItems({ patches }: { patches: PatchListProps[] }) {
   return (
     <div className="p-2">
-      <span className="left-18 absolute top-2.5 z-20 text-xl font-bold">
+      <span className="absolute left-2 top-2.5 z-20 text-xl font-bold md:left-[72px]">
         패치 노트
       </span>
 
