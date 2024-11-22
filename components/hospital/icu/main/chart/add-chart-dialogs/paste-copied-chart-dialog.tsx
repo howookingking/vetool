@@ -22,11 +22,12 @@ import {
 import { toast } from '@/components/ui/use-toast'
 import { pasteChart } from '@/lib/services/icu/chart/paste-chart'
 import { useCopiedChartStore } from '@/lib/store/icu/copied-chart'
+import { useRealtimeSubscriptionStore } from '@/lib/store/icu/realtime-subscription'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { CopyCheck, LoaderCircle } from 'lucide-react'
 import Image from 'next/image'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 export default function PasteCopiedChartDialog() {
   const { target_date, patient_id } = useParams()
@@ -37,6 +38,8 @@ export default function PasteCopiedChartDialog() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [orderer, setOrderer] = useState(vetsListData[0].name)
   const [isLoading, setIsLoading] = useState(false)
+  const { isSubscriptionReady } = useRealtimeSubscriptionStore()
+  const { refresh } = useRouter()
 
   const handlePasteCopiedChart = useCallback(async () => {
     if (!copiedChartId) {
@@ -66,7 +69,16 @@ export default function PasteCopiedChartDialog() {
     setIsLoading(false)
     setIsDialogOpen(false)
     reset()
-  }, [copiedChartId, patient_id, reset, target_date, orderer])
+    if (!isSubscriptionReady) refresh()
+  }, [
+    copiedChartId,
+    patient_id,
+    reset,
+    target_date,
+    orderer,
+    isSubscriptionReady,
+    refresh,
+  ])
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {

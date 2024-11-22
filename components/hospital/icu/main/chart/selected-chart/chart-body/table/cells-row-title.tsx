@@ -158,7 +158,10 @@ export default function CellsRowTitle({
         )}
       >
         <div className="flex items-center gap-1 truncate">
-          <span>{parsingOrderName(order_type, order.order_name)}</span>
+          <span className="font-semibold">
+            {parsingOrderName(order_type, order.order_name)}
+          </span>
+
           {rowVitalRefRange && (
             <span className="text-xs text-muted-foreground">
               ({rowVitalRefRange.min}~{rowVitalRefRange.max})
