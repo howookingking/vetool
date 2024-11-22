@@ -14,7 +14,7 @@ export default function SingleTodo({
   type,
 }: {
   todo: QueriedTodo
-  type: '어제' | '오늘' | '내일'
+  type: '어제' | '오늘' | '내일' | ''
 }) {
   const [isToggling, setIsToggling] = useState(false)
   const [isChecked, setIsChecked] = useState(todo.is_done)

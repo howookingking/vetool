@@ -39,7 +39,7 @@ export default function PatchForm({
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState<PatchFormProps>({
-    feedback_id: '',
+    feedback_id: null,
     patch_title: '',
     patch_content: '',
     patch_category: '',
@@ -81,7 +81,7 @@ export default function PatchForm({
 
     setIsSubmitting(false)
     setFormData({
-      feedback_id: '',
+      feedback_id: null,
       patch_title: '',
       patch_content: '',
       patch_category: '',
