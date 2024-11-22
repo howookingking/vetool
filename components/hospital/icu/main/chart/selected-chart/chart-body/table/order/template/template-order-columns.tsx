@@ -51,24 +51,6 @@ export const templateOrderColumns: ColumnDef<TemplateChart>[] = [
     },
   },
   {
-    accessorKey: 'patient.name',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          환자명
-        </Button>
-      )
-    },
-    cell: ({ row }) => {
-      const patientName = row.original.patient.name
-      return <span>{patientName ?? '-'}</span>
-    },
-  },
-
-  {
     id: 'preview',
     header: '미리보기',
     cell: ({ row }) => {
