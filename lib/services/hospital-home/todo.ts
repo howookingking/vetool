@@ -1,19 +1,24 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { getYesterdayTodayTomorrow } from '@/lib/utils/utils'
 import { redirect } from 'next/navigation'
 
-export const getTodos = async (hosId: string) => {
+export const getTodos = async (hosId: string, searchedDate?: Date) => {
   const supabase = await createClient()
+  const { yesterday, today, tomorrow } = getYesterdayTodayTomorrow(searchedDate)
+
   const { data, error } = await supabase
     .from('todos')
     .select('id, is_done, target_date, target_user, todo_title')
     .match({ hos_id: hosId })
+    .in('target_date', [yesterday, today, tomorrow])
     .order('created_at')
 
   if (error) {
     throw new Error(error.message)
   }
+
   return data
 }
 

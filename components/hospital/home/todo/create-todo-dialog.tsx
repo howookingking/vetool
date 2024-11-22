@@ -36,7 +36,7 @@ export default function CreateTodoDialog({
   date,
 }: {
   hosId: string
-  type: '어제' | '오늘' | '내일'
+  type: '어제' | '오늘' | '내일' | ''
   date: string
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)

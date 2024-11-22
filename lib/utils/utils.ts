@@ -107,8 +107,7 @@ export const getDaysDifference = (dateString: string) => {
   return diffDays
 }
 
-export const getYesterdayTodayTomorrow = () => {
-  const now = new Date()
+export const getYesterdayTodayTomorrow = (now: Date = new Date()) => {
   const koreaTime = new Date(
     now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }),
   )
