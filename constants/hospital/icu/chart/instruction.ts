@@ -204,15 +204,10 @@ export const INSTRUCITON_SHORTCUTS: Shortcuts[] = [
     icons: ['keyboard', 'mouse'],
   },
   {
-    title: '다수의 처치 결과값을 한꺼번에 입력하기',
+    title: '다수의 처치에 동일한 결과값 입력',
     description:
       "해당하는 처치 칸들을 'CTRL 누른 채 + 좌클릭', 모두 선택하여 CTRL 해제, 입력창에 결과 값 입력",
     icons: ['keyboard', 'mouse'],
-  },
-  {
-    title: '새로운 오더 추가',
-    description: "차트 페이지에서 'CTRL + O'를 눌러 오더 입력 창 띄움",
-    icons: ['keyboard'],
   },
   {
     title: '오더 복사 & 붙여넣기',
