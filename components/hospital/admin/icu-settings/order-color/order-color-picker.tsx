@@ -6,7 +6,7 @@ import {
   SelectItem,
   SelectTrigger,
 } from '@/components/ui/select'
-import { COLORS } from '@/constants/common/colors'
+import { ORDER_COLORS } from '@/constants/hospital/icu/chart/colors'
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 
 export default function OrderColorPicker({
@@ -42,7 +42,7 @@ export default function OrderColorPicker({
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            {Object.entries(COLORS).map(([key, value]) => (
+            {Object.entries(ORDER_COLORS).map(([key, value]) => (
               <SelectItem
                 key={key}
                 value={value}
