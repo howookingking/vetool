@@ -1,9 +1,8 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { ArrowLeft } from 'lucide-react'
+import { Menu } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
-import React from 'react'
 
 export default function GotoPatchItemsButton() {
   const { push } = useRouter()
@@ -17,8 +16,8 @@ export default function GotoPatchItemsButton() {
         push(`/${pathname.split('/').slice(1, 3).join('/')}/patches`)
       }
     >
-      <ArrowLeft />
-      목록으로 가기
+      <Menu />
+      패치목록
     </Button>
   )
 }
