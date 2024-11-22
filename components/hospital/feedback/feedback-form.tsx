@@ -1,7 +1,3 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -22,8 +18,11 @@ import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
 import { sendFeedback } from '@/lib/services/super/feedback/feedback'
 import { cn } from '@/lib/utils/utils'
-import { LoaderCircle } from 'lucide-react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { LoaderCircle, X } from 'lucide-react'
 import { Dispatch, SetStateAction, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 import {
   FEEDBACK_CATEGORY_ENUM,
   feedbackFormSchema,
@@ -58,6 +57,11 @@ export default function FeedbackForm({
   return (
     <>
       <h3 className="mb-2 text-center text-lg font-semibold">사용자 피드백</h3>
+      <X
+        onClick={() => setIsPopoverFeedbackOpen(false)}
+        className="absolute right-3 top-3 cursor-pointer text-muted-foreground"
+        size={12}
+      />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
           <FormField
