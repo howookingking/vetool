@@ -20,8 +20,10 @@ import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useTemplateStore } from '@/lib/store/icu/template'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
+import { DialogDescription } from '@radix-ui/react-dialog'
+import { LoaderCircle } from 'lucide-react'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 export default function ConfirmCopyTemplateOrderDialog({
   icuChartId,
@@ -35,35 +37,32 @@ export default function ConfirmCopyTemplateOrderDialog({
     basicHosData: { vetsListData, showOrderer },
   } = useBasicHosDataContext()
   const [orderer, setOrderer] = useState(vetsListData[0].name)
+  const [isPending, setIsPending] = useState(false)
 
-  const handleConfirmCopy = async () => {
+  const handleConfirmCopy = useCallback(async () => {
+    setIsPending(true)
     await upsertTemplateOrders(template.icu_chart_id!, icuChartId)
 
     toast({
       title: '오더를 추가하였습니다',
     })
 
+    setIsPending(false)
     reset()
     setIsTemplateDialogOpen(false)
     setOrderStep('closed')
-  }
-
-  const handleOrdererChange = (value: string) => {
-    setOrderer(value)
-  }
+  }, [template.icu_chart_id])
 
   return (
     <Dialog open={isTemplateDialogOpen} onOpenChange={setIsTemplateDialogOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>오더를 추가하시겠습니까?</DialogTitle>
+          <DialogDescription />
           {showOrderer && (
             <div>
               <Label className="pt-4">오더결정 수의사</Label>
-              <Select
-                onValueChange={handleOrdererChange}
-                defaultValue={orderer}
-              >
+              <Select onValueChange={setOrderer} defaultValue={orderer}>
                 <SelectTrigger
                   className={cn(
                     'h-8 text-sm',
@@ -109,7 +108,12 @@ export default function ConfirmCopyTemplateOrderDialog({
           >
             취소
           </Button>
-          <Button onClick={handleConfirmCopy}>확인</Button>
+          <Button onClick={handleConfirmCopy} disabled={isPending}>
+            확인
+            <LoaderCircle
+              className={cn(isPending ? 'ml-2 animate-spin' : 'hidden')}
+            />
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

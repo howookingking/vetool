@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-
 'use client'
 
 import QuickOrderInsertInput from '@/components/hospital/icu/main/chart/selected-chart/chart-body/quick-order-insert-input'
@@ -296,13 +295,7 @@ export default function ChartTable({
           </TableHead>
 
           {TIMES.map((time) => (
-            <TableHead
-              className={cn(
-                preview ? 'cursor-default' : 'cursor-pointer',
-                'border text-center',
-              )}
-              key={time}
-            >
+            <TableHead className="border text-center" key={time}>
               {time.toString().padStart(2, '0')}
             </TableHead>
           ))}

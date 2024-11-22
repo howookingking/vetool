@@ -1,11 +1,7 @@
 'use client'
 
-import PreviewDialog from '@/components/hospital/icu/common-dialogs/preview/preview-dialog'
-import OrderForm from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-form'
-import ConfirmCopyTemplateOrderDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/template/confirm-copy-template-order-dialog'
-import { templateOrderColumns } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/template/template-order-columns'
+import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import { Button } from '@/components/ui/button'
-import DataTable from '@/components/ui/data-table'
 import {
   Dialog,
   DialogContent,
@@ -15,20 +11,23 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { usePreviewDialogStore } from '@/lib/store/icu/preview-dialog'
-import { useTemplateStore } from '@/lib/store/icu/template'
 import type { Patient, SelectedIcuOrder } from '@/types/icu/chart'
-import { TemplateChart } from '@/types/icu/template'
 import { Plus } from 'lucide-react'
-import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react'
+import dynamic from 'next/dynamic'
+import { Dispatch, SetStateAction, useCallback } from 'react'
 import OrdererSelectStep from './orderer/orderer-select-step'
-import { getTemplateCharts } from '@/lib/services/icu/template/template'
+
+const LazyOrderForm = dynamic(() => import('./order-form'), {
+  ssr: false,
+  loading: () => <LargeLoaderCircle className="h-[400px]" />,
+})
+const LazyTemplateTabContent = dynamic(
+  () => import('./template/template-tab-content'),
+  {
+    ssr: false,
+    loading: () => <LargeLoaderCircle className="h-[400px]" />,
+  },
+)
 
 export default function OrderDialog({
   hosId,
@@ -63,11 +62,6 @@ export default function OrderDialog({
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   mainVetName: string
 }) {
-  const { isPreviewDialogOpen } = usePreviewDialogStore()
-  const { isTemplateDialogOpen } = useTemplateStore()
-  const [tabValue, setTabValue] = useState('default')
-  const [templateCharts, setTemplateCharts] = useState<TemplateChart[]>([])
-
   const handleOpenChange = useCallback(() => {
     if (orderStep === 'closed') {
       setOrderStep('upsert')
@@ -77,44 +71,19 @@ export default function OrderDialog({
     reset()
   }, [orderStep, setOrderStep, reset])
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if ((event.ctrlKey || event.metaKey) && event.key === 'o') {
-        event.preventDefault()
-        handleOpenChange()
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown)
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [handleOpenChange])
-
-  useEffect(() => {
-    if (tabValue === 'template' && templateCharts?.length === 0) {
-      const fetchTemplateData = async () => {
-        const templateChartData = await getTemplateCharts(hosId)
-
-        setTemplateCharts(templateChartData)
-      }
-
-      fetchTemplateData()
-    }
-  }, [tabValue, templateCharts, hosId])
-
-  const handleTabValueChange = (value: string) => {
-    if (value === 'default') {
-      setTabValue('default')
-      return
-    }
-
-    if (value === 'template') {
-      setTabValue('template')
-      return
-    }
-  }
+  // 성능 향상을 위한 불필요한 이벤트 리스너
+  // useEffect(() => {
+  //   const handleKeyDown = (event: KeyboardEvent) => {
+  //     if ((event.ctrlKey || event.metaKey) && event.key === 'o') {
+  //       event.preventDefault()
+  //       handleOpenChange()
+  //     }
+  //   }
+  //   window.addEventListener('keydown', handleKeyDown)
+  //   return () => {
+  //     window.removeEventListener('keydown', handleKeyDown)
+  //   }
+  // }, [handleOpenChange])
 
   return (
     <Dialog open={orderStep !== 'closed'} onOpenChange={handleOpenChange}>
@@ -143,16 +112,18 @@ export default function OrderDialog({
         </DialogHeader>
 
         {orderStep === 'upsert' && (
-          <Tabs defaultValue="default" onValueChange={handleTabValueChange}>
+          <Tabs defaultValue="default">
             <TabsList className="grid grid-cols-2">
               <TabsTrigger value="default">직접 입력</TabsTrigger>
-              <TabsTrigger value="template">템플릿 오더 추가</TabsTrigger>
+              <TabsTrigger value="template" disabled={isEditOrderMode}>
+                템플릿 오더 추가
+              </TabsTrigger>
             </TabsList>
 
             {/* 오더 직접 추가 (기본값) */}
             <TabsContent value="default">
               {!isExport && (
-                <OrderForm
+                <LazyOrderForm
                   showOrderer={showOrderer}
                   icuChartId={icuChartId}
                   species={patient.species}
@@ -165,20 +136,11 @@ export default function OrderDialog({
 
             {/* 템플릿 오더 추가 */}
             <TabsContent value="template">
-              <DataTable
-                columns={templateOrderColumns}
-                data={templateCharts || []}
-                searchPlaceHolder="템플릿 이름, 설명, 환자명으로 검색"
-                rowLength={5}
-              />
-
-              {isTemplateDialogOpen && (
-                <ConfirmCopyTemplateOrderDialog icuChartId={icuChartId} />
-              )}
-              {isPreviewDialogOpen && <PreviewDialog />}
+              <LazyTemplateTabContent hosId={hosId} icuChartId={icuChartId} />
             </TabsContent>
           </Tabs>
         )}
+
         {orderStep === 'selectOrderer' && (
           <OrdererSelectStep
             icuChartId={icuChartId}
