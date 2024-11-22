@@ -2,7 +2,7 @@ import HelperTooltip from '@/components/common/helper-tooltip'
 
 export default function FluidToolTip() {
   return (
-    <HelperTooltip>
+    <HelperTooltip className="mt-[1px]">
       <div className="space-y-2">
         <div className="text-sm font-semibold">유지속도</div>
 

@@ -37,7 +37,7 @@ export default function CellsRowTitle({
     reset,
   } = useIcuOrderStore()
 
-  const isInPendingQueue = useMemo(() => {
+  const isInOrderPendingQueue = useMemo(() => {
     return selectedOrderPendingQueue.some(
       (order) => order.order_id === order_id,
     )
@@ -67,9 +67,7 @@ export default function CellsRowTitle({
         }
       }
     }
-
     window.addEventListener('keydown', handleKeyDown)
-
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
@@ -117,9 +115,10 @@ export default function CellsRowTitle({
     ],
   )
 
-  const isOptimisticOrder = useMemo(() => {
-    return order.order_id.startsWith('temp_order_id')
-  }, [order])
+  const isOptimisticOrder = useMemo(
+    () => order.order_id.startsWith('temp_order_id'),
+    [order],
+  )
 
   // 바이탈 참조범위
   const rowVitalRefRange = useMemo(() => {
@@ -147,18 +146,18 @@ export default function CellsRowTitle({
         variant="ghost"
         onClick={isSorting ? undefined : handleEditOrderDialogOpen}
         className={cn(
-          'flex h-11 w-[320px] justify-between rounded-none bg-transparent px-2 outline-none ring-inset ring-primary',
+          'group flex h-11 w-[320px] justify-between rounded-none bg-transparent px-2 outline-none ring-inset ring-primary transition duration-300 hover:scale-[97%] hover:bg-transparent',
           isOptimisticOrder && 'animate-shake-strong',
           preview
             ? 'cursor-not-allowed'
             : isSorting
               ? 'cursor-grab'
               : 'cursor-pointer',
-          isInPendingQueue && 'ring-2',
+          isInOrderPendingQueue && 'ring-2',
         )}
       >
         <div className="flex items-center gap-1 truncate">
-          <span className="font-semibold">
+          <span className="font-semibold transition group-hover:underline">
             {parsingOrderName(order_type, order.order_name)}
           </span>
 

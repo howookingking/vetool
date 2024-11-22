@@ -127,8 +127,10 @@ export default function FluidOrderField({
             <FormItem className="w-full space-y-2">
               <FormLabel className="font-semibold">
                 <div className="itmes-center flex gap-2">
-                  <span className="leading-none">수액 속도</span>
+                  <span className="mt-[3px]">수액 속도</span>
+
                   <FluidToolTip />
+
                   {ageInDays <= 365 && (
                     <WarningMessage
                       className="text-sm"
@@ -145,7 +147,7 @@ export default function FluidOrderField({
                 </div>
               </FormLabel>
 
-              <div className="flex grid grid-cols-10 items-center gap-2">
+              <div className="grid grid-cols-10 items-center gap-2">
                 <Select
                   value={localMaintenaceRateCalcMethod}
                   onValueChange={setLocalMaintenaceRateCalcMethod}
