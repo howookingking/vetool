@@ -51,7 +51,13 @@ export default function ConfirmCopyTemplateOrderDialog({
     reset()
     setIsTemplateDialogOpen(false)
     setOrderStep('closed')
-  }, [template.icu_chart_id])
+  }, [
+    template.icu_chart_id,
+    icuChartId,
+    reset,
+    setIsTemplateDialogOpen,
+    setOrderStep,
+  ])
 
   return (
     <Dialog open={isTemplateDialogOpen} onOpenChange={setIsTemplateDialogOpen}>
