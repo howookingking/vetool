@@ -169,7 +169,7 @@ export default function CellsRowTitle({
           )}
         </div>
 
-        <span className="min-w-16 truncate text-right text-xs text-muted-foreground">
+        <span className="min-w-16 truncate text-right text-xs font-semibold text-muted-foreground">
           {order_comment} {order_type === 'fluid' && 'ml/hr'}
         </span>
       </Button>
