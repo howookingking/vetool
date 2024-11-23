@@ -30,6 +30,8 @@ export const copyPrevChart = async (targetDate: string, patientId: string) => {
       `,
     )
     .match({ patient_id: patientId, target_date: prevDate })
+    .order('created_at', { ascending: false })
+    .limit(1)
     .maybeSingle()
 
   if (prevChartDataError) {
