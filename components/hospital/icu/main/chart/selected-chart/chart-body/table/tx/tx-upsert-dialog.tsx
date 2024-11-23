@@ -8,23 +8,29 @@ import TxDetailInsertStep from './detail-insert-step/tx-detail-insert-step'
 import TxSelectUserStep from './tx-select-user-step'
 
 export default function TxUpsertDialog() {
-  const { txStep, setTxStep, reset, setIsMutationCanceled } =
-    useTxMutationStore()
-  const { reset: queueReset } = useIcuOrderStore()
+  const {
+    txStep,
+    setTxStep,
+    reset: txReset,
+    setIsMutationCanceled,
+  } = useTxMutationStore()
+
+  const { reset: orderQueueReset } = useIcuOrderStore()
 
   const handleClose = useCallback(() => {
     setTxStep('closed')
+    orderQueueReset()
     setIsMutationCanceled(true)
-    reset()
-    queueReset()
-  }, [setTxStep, setIsMutationCanceled, reset, queueReset])
+  }, [setIsMutationCanceled, setTxStep])
 
   return (
     <Dialog open={txStep !== 'closed'} onOpenChange={handleClose}>
       <DialogContent>
         {txStep === 'detailInsert' && <TxDetailInsertStep />}
 
-        {txStep === 'seletctUser' && <TxSelectUserStep />}
+        {txStep === 'seletctUser' && (
+          <TxSelectUserStep handleClose={handleClose} />
+        )}
       </DialogContent>
     </Dialog>
   )
