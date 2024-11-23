@@ -2,6 +2,7 @@ import { TxDetailHover } from '@/components/hospital/icu/main/chart/selected-cha
 import { VitalResultIndication } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/vital-result-indication'
 import { Input } from '@/components/ui/input'
 import { TableCell } from '@/components/ui/table'
+import useAbnormalVital from '@/hooks/use-abnormal-vital'
 import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
 import { TxLocalState } from '@/lib/store/icu/tx-mutation'
 import { cn } from '@/lib/utils/utils'
@@ -78,6 +79,10 @@ export default function Cell({
   const isLongPressRef = useRef(false)
   const touchStartTimeRef = useRef<number>(0)
   const isTouchEventRef = useRef(false)
+  const { calcVitalResult, isAbnormalVital } = useAbnormalVital(
+    treatment,
+    rowVitalRefRange,
+  )
 
   const hasOrder = useMemo(() => orderer !== '0', [orderer])
   const hasComment = useMemo(
@@ -296,36 +301,15 @@ export default function Cell({
     [],
   )
 
+  // 처치표에서부터 이동시 해당 셀 포커싱
   const searchParams = useSearchParams()
   const params = new URLSearchParams(searchParams)
-  const orderId = params.get('order-id')
-  const orderTime = params.get('time')
-
   useEffect(() => {
+    const orderId = params.get('order-id')
+    const orderTime = params.get('time')
     const cellInputId = document.getElementById(`${orderId}&${orderTime}`)
     if (cellInputId) cellInputId.focus()
-  }, [orderId, orderTime])
-
-  // ---- 바이탈 경고 표시 ----
-  const calcVitalResult = useMemo(() => {
-    if (rowVitalRefRange && treatment?.tx_result) {
-      if (Number(treatment.tx_result) < rowVitalRefRange?.min) return 'below'
-      if (Number(treatment.tx_result) > rowVitalRefRange?.max) return 'above'
-      if (
-        treatment.tx_result === 'p' ||
-        treatment.tx_result === 'P' ||
-        treatment.tx_result === 'panting' ||
-        treatment.tx_result === 'PANTING'
-      )
-        return 'above'
-      return 'normal'
-    }
-  }, [rowVitalRefRange, treatment?.tx_result])
-
-  const isAbnormalVital = useMemo(() => {
-    return calcVitalResult === 'below' || calcVitalResult === 'above'
-  }, [calcVitalResult])
-  // ----------------------
+  }, [params])
 
   return (
     <TableCell className="handle p-0">
