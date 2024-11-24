@@ -7,12 +7,13 @@ import { redirect } from 'next/navigation'
 export const createPatchNote = async (patchData: PatchFormProps) => {
   const supabase = await createClient()
 
-  const { feedback_id, patch_title, patch_content } = patchData
+  const { feedback_id, patch_title, patch_content, patch_category } = patchData
 
   const { error } = await supabase.from('vetool_patches').upsert({
     feedback_id,
     patch_title,
     patch_content,
+    patch_category,
   })
 
   if (error) {
