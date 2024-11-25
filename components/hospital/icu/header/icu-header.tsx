@@ -15,7 +15,7 @@ export default async function IcuHeader({
   totalPatientCount: number
 }) {
   return (
-    <div className="fixed top-1.5 z-30 flex w-full items-center justify-center gap-2 px-2 md:left-14 md:w-auto md:justify-start">
+    <div className="fixed top-2 z-30 flex w-full items-center justify-center gap-2 px-2 sm:top-1.5 md:left-14 md:w-auto md:justify-start">
       <InstructionDialog />
 
       <RegisterDialog
