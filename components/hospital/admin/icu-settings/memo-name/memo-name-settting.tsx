@@ -21,6 +21,13 @@ import { updateMemoNames } from '@/lib/services/admin/icu/memo-name'
 import { useState } from 'react'
 import { LoaderCircle } from 'lucide-react'
 import { cn } from '@/lib/utils/utils'
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from '@/components/ui/card'
 
 export default function MemoNameSetting({
   memoNames,
@@ -69,69 +76,77 @@ export default function MemoNameSetting({
   }
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(handleSubmit)}
-        className="w-full space-y-4 py-4"
-      >
-        <FormField
-          control={form.control}
-          name="memoA"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>첫번째 메모이름</FormLabel>
-              <FormControl>
-                <Input placeholder="입원차트 첫번째 메모이름" {...field} />
-              </FormControl>
-              <FormDescription>
-                입원 차트의 첫번째 메모입력란의 이름에 해당합니다
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+    <Card className="mx-2 mt-4 w-1/2">
+      <CardHeader>
+        <CardTitle>메모 이름 설정</CardTitle>
+      </CardHeader>
 
-        <FormField
-          control={form.control}
-          name="memoB"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>두번째 메모이름</FormLabel>
-              <FormControl>
-                <Input placeholder="메모 B" {...field} />
-              </FormControl>
-              <FormDescription>
-                입원 차트의 두번째 메모입력란의 이름에 해당합니다
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      <CardContent>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="w-1/2 space-y-4"
+          >
+            <FormField
+              control={form.control}
+              name="memoA"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>첫 번째 메모이름</FormLabel>
+                  <FormControl>
+                    <Input placeholder="입원차트 첫번째 메모이름" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    입원 차트의 첫번째 메모입력란의 이름에 해당합니다
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        <FormField
-          control={form.control}
-          name="memoC"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>세번째 메모이름</FormLabel>
-              <FormControl>
-                <Input placeholder="메모 C" {...field} />
-              </FormControl>
-              <FormDescription>
-                입원 차트의 세번째 메모입력란의 이름에 해당합니다
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+            <FormField
+              control={form.control}
+              name="memoB"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>두 번째 메모이름</FormLabel>
+                  <FormControl>
+                    <Input placeholder="메모 B" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    입원 차트의 두번째 메모입력란의 이름에 해당합니다
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        <Button type="submit" className="ml-auto" disabled={isUpdating}>
-          저장
-          <LoaderCircle
-            className={cn(isUpdating ? 'ml-2 animate-spin' : 'hidden')}
-          />
-        </Button>
-      </form>
-    </Form>
+            <FormField
+              control={form.control}
+              name="memoC"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>세 번째 메모이름</FormLabel>
+                  <FormControl>
+                    <Input placeholder="메모 C" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    입원 차트의 세번째 메모입력란의 이름에 해당합니다
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Button type="submit" className="ml-auto" disabled={isUpdating}>
+              저장
+              <LoaderCircle
+                className={cn(isUpdating ? 'ml-2 animate-spin' : 'hidden')}
+              />
+            </Button>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
   )
 }

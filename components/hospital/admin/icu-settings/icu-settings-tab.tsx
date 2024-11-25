@@ -12,7 +12,7 @@ import VitalRefRangeTab from './vital-ref-range/vital-ref-range-tab'
 export default function IcuSettingsTab({ hosId }: { hosId: string }) {
   return (
     <Tabs defaultValue="defaultOrder">
-      <TabsList className="grid grid-cols-7">
+      <TabsList className="m-2 grid grid-cols-7">
         <TabsTrigger value="defaultOrder">기본차트</TabsTrigger>
         <TabsTrigger value="orderColor">오더색상</TabsTrigger>
         <TabsTrigger value="memo">메모이름</TabsTrigger>
