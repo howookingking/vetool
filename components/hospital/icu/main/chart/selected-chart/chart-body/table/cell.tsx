@@ -10,6 +10,8 @@ import type { SelectedIcuOrder, Treatment, TxLog } from '@/types/icu/chart'
 import { useSearchParams } from 'next/navigation'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+const LONGPRESS_TIMEOUT = 600
+
 type CellProps = {
   time: number
   treatment?: Treatment
@@ -216,7 +218,7 @@ export default function Cell({
         isLongPressRef.current = true
         // 처치 상세 입력
         handleOpenTxDetail()
-      }, 600)
+      }, LONGPRESS_TIMEOUT)
     },
     [handleOpenTxDetail, setSelectedOrderPendingQueue],
   )
@@ -230,7 +232,7 @@ export default function Cell({
       cleanupPressTimeout()
 
       // LongPress가 아닌 경우
-      if (!isLongPressRef.current && pressDuration < 800) {
+      if (!isLongPressRef.current && pressDuration < LONGPRESS_TIMEOUT) {
         // 셀 다중 선택인 경우
         if (e.metaKey || e.ctrlKey) {
           e.currentTarget.blur()

@@ -8,12 +8,7 @@ import TxDetailInsertStep from './detail-insert-step/tx-detail-insert-step'
 import TxSelectUserStep from './tx-select-user-step'
 
 export default function TxUpsertDialog() {
-  const {
-    txStep,
-    setTxStep,
-    reset: txReset,
-    setIsMutationCanceled,
-  } = useTxMutationStore()
+  const { txStep, setTxStep, setIsMutationCanceled } = useTxMutationStore()
 
   const { reset: orderQueueReset } = useIcuOrderStore()
 
