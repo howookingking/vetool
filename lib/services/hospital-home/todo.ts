@@ -27,13 +27,16 @@ export const createTodo = async (
   target_user_input: string | undefined,
   date: string,
   hosId: string,
+  id?: string,
 ) => {
   const supabase = await createClient()
-  const { error: createTodoError } = await supabase.from('todos').insert({
+
+  const { error: createTodoError } = await supabase.from('todos').upsert({
     todo_title: todo_title_input,
     hos_id: hosId,
     target_user: target_user_input,
     target_date: date,
+    id,
   })
 
   if (createTodoError) {

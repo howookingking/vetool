@@ -28,7 +28,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { todoSchema } from './todo-schema'
+import { todoSchema } from '@/components/hospital/home/todo/todo-schema'
 
 export default function CreateTodoDialog({
   hosId,

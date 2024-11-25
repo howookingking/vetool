@@ -1,15 +1,17 @@
 'use client'
 
 import NoticeTodoRefreshButton from '@/components/hospital/home/notice-todo-refresh-button'
+import EditTodoDialog from '@/components/hospital/home/todo/edit-todo-dialog'
 import TodoDatePicker from '@/components/hospital/home/todo/todo-date-picker'
 import TodoList from '@/components/hospital/home/todo/todo-list'
+import TodoSkeleton from '@/components/hospital/home/todo/todo-skeleton'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { getTodos } from '@/lib/services/hospital-home/todo'
+import { useTodoStore } from '@/lib/store/icu/todo'
 import { formatDate, getYesterdayTodayTomorrow } from '@/lib/utils/utils'
 import type { QueriedTodo } from '@/types/hospital/todo'
 import { useEffect, useState } from 'react'
-import TodoSkeleton from './todo-skeleton'
 
 export default function Todo({
   todosData: initialTodosData,
@@ -20,12 +22,12 @@ export default function Todo({
 }) {
   const [isLoading, setIsLoading] = useState(false)
   const [selectedDate, setSelectedDate] = useState<Date>(new Date())
-  const [todosData, setTodosData] = useState<QueriedTodo[]>(initialTodosData)
+  const [todosData, setTodosData] = useState<QueriedTodo[]>([])
 
   const { yesterday, today, tomorrow } = getYesterdayTodayTomorrow(selectedDate)
+  const { todo, isTodoDialogOpen } = useTodoStore()
 
   const isSelectedDateDefault = today === formatDate(new Date())
-
   const yesterdayTodos = todosData.filter(
     (todo) => todo.target_date === yesterday,
   )
@@ -33,6 +35,10 @@ export default function Todo({
   const tomorrowTodos = todosData.filter(
     (todo) => todo.target_date === tomorrow,
   )
+
+  useEffect(() => {
+    setTodosData(initialTodosData)
+  }, [initialTodosData])
 
   useEffect(() => {
     const fetchTodos = async () => {
@@ -104,6 +110,8 @@ export default function Todo({
           </>
         )}
       </CardContent>
+
+      {isTodoDialogOpen && <EditTodoDialog hosId={hosId} type={todo.type} />}
     </Card>
   )
 }
