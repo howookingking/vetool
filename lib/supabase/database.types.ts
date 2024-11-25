@@ -1112,7 +1112,7 @@ export type Database = {
           hos_id: string
           id: string
           is_done: boolean
-          target_date: string | null
+          target_date: string
           target_user: string | null
           todo_title: string
         }
@@ -1121,7 +1121,7 @@ export type Database = {
           hos_id: string
           id?: string
           is_done?: boolean
-          target_date?: string | null
+          target_date: string
           target_user?: string | null
           todo_title?: string
         }
@@ -1130,7 +1130,7 @@ export type Database = {
           hos_id?: string
           id?: string
           is_done?: boolean
-          target_date?: string | null
+          target_date?: string
           target_user?: string | null
           todo_title?: string
         }
