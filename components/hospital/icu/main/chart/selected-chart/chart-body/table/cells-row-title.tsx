@@ -132,6 +132,16 @@ export default function CellsRowTitle({
       : undefined
   }, [species, order.order_name, vitalRefRange])
 
+  const renderOrderSubComment = () => {
+    if (order_type === 'fluid') return 'ml/hr'
+
+    if (order_type === 'feed' && order.order_name.split('#')[1]) {
+      return `${order.order_name.split('#')[1]}/회`
+    }
+
+    return
+  }
+
   return (
     <TableCell
       className={cn(
@@ -177,7 +187,8 @@ export default function CellsRowTitle({
         </div>
 
         <span className="min-w-16 truncate text-right text-xs font-semibold text-muted-foreground">
-          {order_comment} {order_type === 'fluid' && 'ml/hr'}
+          {order_comment}
+          {renderOrderSubComment()}
         </span>
       </Button>
     </TableCell>

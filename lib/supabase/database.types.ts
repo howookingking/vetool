@@ -9,21 +9,17 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      diet_products_rows: {
+      diet_vetool: {
         Row: {
           active: boolean | null
           company: string | null
           created_at: string
           description: string | null
           diet_products_id: string
-          hos_id: string | null
-          mass_vol: number | null
+          hos_id: string
+          mass_vol: number
           name: string
           product_tag: string | null
-          standard: string | null
-          stock_plan: number | null
-          total_vol: number | null
-          type: string | null
           unit: string | null
         }
         Insert: {
@@ -32,14 +28,10 @@ export type Database = {
           created_at?: string
           description?: string | null
           diet_products_id?: string
-          hos_id?: string | null
-          mass_vol?: number | null
+          hos_id?: string
+          mass_vol: number
           name: string
           product_tag?: string | null
-          standard?: string | null
-          stock_plan?: number | null
-          total_vol?: number | null
-          type?: string | null
           unit?: string | null
         }
         Update: {
@@ -48,19 +40,15 @@ export type Database = {
           created_at?: string
           description?: string | null
           diet_products_id?: string
-          hos_id?: string | null
-          mass_vol?: number | null
+          hos_id?: string
+          mass_vol?: number
           name?: string
           product_tag?: string | null
-          standard?: string | null
-          stock_plan?: number | null
-          total_vol?: number | null
-          type?: string | null
           unit?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "diet_products_rows_duplicate_hos_id_fkey"
+            foreignKeyName: "diet_vetool_hos_id_fkey"
             columns: ["hos_id"]
             isOneToOne: false
             referencedRelation: "hospitals"
@@ -78,6 +66,7 @@ export type Database = {
           dose_id: string
           dose_unit: string | null
           drug_id: string | null
+          hos_id: string | null
           max_dose: string | null
           min_dose: string | null
           route: string[] | null
@@ -92,6 +81,7 @@ export type Database = {
           dose_id?: string
           dose_unit?: string | null
           drug_id?: string | null
+          hos_id?: string | null
           max_dose?: string | null
           min_dose?: string | null
           route?: string[] | null
@@ -106,6 +96,7 @@ export type Database = {
           dose_id?: string
           dose_unit?: string | null
           drug_id?: string | null
+          hos_id?: string | null
           max_dose?: string | null
           min_dose?: string | null
           route?: string[] | null
@@ -116,12 +107,19 @@ export type Database = {
             foreignKeyName: "drug_doses_drug_id_fkey"
             columns: ["drug_id"]
             isOneToOne: false
-            referencedRelation: "drugs_rows"
+            referencedRelation: "drug_vetool"
             referencedColumns: ["drug_id"]
+          },
+          {
+            foreignKeyName: "drug_doses_hos_id_fkey"
+            columns: ["hos_id"]
+            isOneToOne: false
+            referencedRelation: "hospitals"
+            referencedColumns: ["hos_id"]
           },
         ]
       }
-      drug_products_rows: {
+      drug_products: {
         Row: {
           active: boolean | null
           company: string | null
@@ -181,7 +179,7 @@ export type Database = {
             foreignKeyName: "drug_products_rows_drug_id_fkey"
             columns: ["drug_id"]
             isOneToOne: false
-            referencedRelation: "drugs_rows"
+            referencedRelation: "drug_vetool"
             referencedColumns: ["drug_id"]
           },
           {
@@ -193,12 +191,41 @@ export type Database = {
           },
         ]
       }
-      drugs_description: {
+      drug_vetool: {
+        Row: {
+          created_at: string
+          drug_id: string
+          drug_name: string
+          tag: string | null
+          vetool_drug_description: string | null
+          vetool_drug_indication: string | null
+          vetool_drug_side_effect: string | null
+        }
+        Insert: {
+          created_at?: string
+          drug_id?: string
+          drug_name: string
+          tag?: string | null
+          vetool_drug_description?: string | null
+          vetool_drug_indication?: string | null
+          vetool_drug_side_effect?: string | null
+        }
+        Update: {
+          created_at?: string
+          drug_id?: string
+          drug_name?: string
+          tag?: string | null
+          vetool_drug_description?: string | null
+          vetool_drug_indication?: string | null
+          vetool_drug_side_effect?: string | null
+        }
+        Relationships: []
+      }
+      drugs_hospital: {
         Row: {
           created_at: string
           description: string | null
-          drug_id: string | null
-          drug_name: string | null
+          drug_id: string
           drugs_description_id: string
           hos_id: string | null
           indication: string | null
@@ -207,8 +234,7 @@ export type Database = {
         Insert: {
           created_at?: string
           description?: string | null
-          drug_id?: string | null
-          drug_name?: string | null
+          drug_id: string
           drugs_description_id?: string
           hos_id?: string | null
           indication?: string | null
@@ -217,8 +243,7 @@ export type Database = {
         Update: {
           created_at?: string
           description?: string | null
-          drug_id?: string | null
-          drug_name?: string | null
+          drug_id?: string
           drugs_description_id?: string
           hos_id?: string | null
           indication?: string | null
@@ -229,7 +254,7 @@ export type Database = {
             foreignKeyName: "drugs_description_drug_id_fkey"
             columns: ["drug_id"]
             isOneToOne: false
-            referencedRelation: "drugs_rows"
+            referencedRelation: "drug_vetool"
             referencedColumns: ["drug_id"]
           },
           {
@@ -240,42 +265,6 @@ export type Database = {
             referencedColumns: ["hos_id"]
           },
         ]
-      }
-      drugs_rows: {
-        Row: {
-          created_at: string
-          description: string | null
-          drug_id: string
-          drug_name: string
-          drug_tag: string | null
-          indication: string | null
-          indication_tag: string | null
-          side_effect: string | null
-          side_effect_tag: string | null
-        }
-        Insert: {
-          created_at?: string
-          description?: string | null
-          drug_id?: string
-          drug_name: string
-          drug_tag?: string | null
-          indication?: string | null
-          indication_tag?: string | null
-          side_effect?: string | null
-          side_effect_tag?: string | null
-        }
-        Update: {
-          created_at?: string
-          description?: string | null
-          drug_id?: string
-          drug_name?: string
-          drug_tag?: string | null
-          indication?: string | null
-          indication_tag?: string | null
-          side_effect?: string | null
-          side_effect_tag?: string | null
-        }
-        Relationships: []
       }
       hospitals: {
         Row: {
@@ -923,25 +912,25 @@ export type Database = {
       }
       keywords_old: {
         Row: {
-          keyword: string
+          keyword: string | null
           keyword_id: number
-          main_keyword: string
-          search_keyword: string
-          tags: string
+          main_keyword: string | null
+          search_keyword: string | null
+          tags: string | null
         }
         Insert: {
-          keyword: string
+          keyword?: string | null
           keyword_id?: number
-          main_keyword: string
-          search_keyword: string
-          tags: string
+          main_keyword?: string | null
+          search_keyword?: string | null
+          tags?: string | null
         }
         Update: {
-          keyword?: string
+          keyword?: string | null
           keyword_id?: number
-          main_keyword?: string
-          search_keyword?: string
-          tags?: string
+          main_keyword?: string | null
+          search_keyword?: string | null
+          tags?: string | null
         }
         Relationships: []
       }
@@ -1601,6 +1590,15 @@ export type Database = {
           birth_input: string
         }
         Returns: string
+      }
+      search_diet: {
+        Args: {
+          hos_id_input: string
+          search_term_input: string
+          page_number_input: number
+          items_per_page_input: number
+        }
+        Returns: Json
       }
       search_icu_templates_data: {
         Args: {

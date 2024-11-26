@@ -1,4 +1,3 @@
-// TablePagination.tsx
 import {
   Pagination,
   PaginationContent,

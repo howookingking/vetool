@@ -51,6 +51,7 @@ export default function RerDerForm({
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+
     if (isFactorNan) {
       factorRef.current?.focus()
       return

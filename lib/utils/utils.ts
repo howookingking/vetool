@@ -267,6 +267,12 @@ export const parsingOrderName = (orderType: string, orderName: string) => {
     return `${orderName.split('#')[0]}  ${orderName.split('#')[3] ? `+ ${orderName.split('#')[3]}` : ''} `
   }
 
+  if (orderType === 'feed') {
+    const dietDescription = orderName.split('#')[2]
+
+    return `${orderName.split('#')[0]} ${dietDescription ? `+ ${dietDescription}` : ''}`
+  }
+
   return orderName
 }
 

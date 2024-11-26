@@ -1,7 +1,11 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import type { PaginatedPatientsData, PatientDataTable } from '@/types/patients'
+import type {
+  PaginatedData,
+  PatientDataTable,
+  SearchedPatientsData,
+} from '@/types/patients'
 import { redirect } from 'next/navigation'
 
 export const insertPatient = async (
@@ -196,7 +200,7 @@ export const searchPatientsData = async (
       page_number_input: currentPage,
       items_per_page_input: itemsPerPage,
     })
-    .returns<PaginatedPatientsData>()
+    .returns<PaginatedData<SearchedPatientsData[]>>()
 
   if (error) {
     console.error(error)
