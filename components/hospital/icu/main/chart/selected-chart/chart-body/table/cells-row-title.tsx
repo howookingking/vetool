@@ -142,6 +142,7 @@ export default function CellsRowTitle({
       style={{
         background: orderColorsData[order_type as keyof IcuOrderColors],
         width: orderWidth,
+        transition: 'width 0.3s ease-in-out',
       }}
     >
       <Button
@@ -160,6 +161,7 @@ export default function CellsRowTitle({
         )}
         style={{
           width: orderWidth,
+          transition: 'width 0.3s ease-in-out',
         }}
       >
         <div className="flex items-center gap-1 truncate">
