@@ -150,7 +150,7 @@ export default function CellsRowTitle({
         onClick={isSorting ? undefined : handleEditOrderDialogOpen}
         className={cn(
           'group flex h-11 justify-between rounded-none bg-transparent px-2 outline-none ring-inset ring-primary transition duration-300 hover:scale-[97%] hover:bg-transparent',
-          isOptimisticOrder && 'animate-shake-strong',
+          isOptimisticOrder && 'animate-bounce',
           preview
             ? 'cursor-not-allowed'
             : isSorting
