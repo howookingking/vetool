@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import { useEffect, useMemo, useState } from 'react'
 import { z } from 'zod'
 import type { UseFormReturn } from 'react-hook-form'
@@ -96,7 +98,13 @@ export default function FeedOrderField({
     const orderName = `${searchedDiet}#${selectedDiet?.unit ?? 'g'}#${localDietDescription}`
 
     form.setValue('icu_chart_order_name', orderName)
-  }, [selectedDiet, localDietDescription, dietName, searchedDiet, form])
+  }, [
+    selectedDiet,
+    localDietDescription,
+    form.getValues('icu_chart_order_name'),
+    searchedDiet,
+    form,
+  ])
 
   // 급여 횟수 Input Change 핸들러
   const handleFeedPerDayChange = (e: React.ChangeEvent<HTMLInputElement>) => {
