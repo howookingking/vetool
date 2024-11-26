@@ -15,6 +15,7 @@ export default function CellsRowTitle({
   preview,
   vitalRefRange,
   species,
+  orderWidth,
 }: {
   order: SelectedIcuOrder
   index: number
@@ -22,6 +23,7 @@ export default function CellsRowTitle({
   preview?: boolean
   vitalRefRange?: VitalRefRange[]
   species?: string
+  orderWidth: number
 }) {
   const { order_comment, order_type, order_id } = order
   const {
@@ -133,12 +135,13 @@ export default function CellsRowTitle({
   return (
     <TableCell
       className={cn(
-        'handle group w-[320px] p-0',
+        'handle group p-0',
         isSorting && index % 2 === 0 && 'animate-shake-strong',
         isSorting && index % 2 !== 0 && 'animate-shake-strong-reverse',
       )}
       style={{
         background: orderColorsData[order_type as keyof IcuOrderColors],
+        width: orderWidth,
       }}
     >
       <Button
@@ -146,7 +149,7 @@ export default function CellsRowTitle({
         variant="ghost"
         onClick={isSorting ? undefined : handleEditOrderDialogOpen}
         className={cn(
-          'group flex h-11 w-[320px] justify-between rounded-none bg-transparent px-2 outline-none ring-inset ring-primary transition duration-300 hover:scale-[97%] hover:bg-transparent',
+          'group flex h-11 justify-between rounded-none bg-transparent px-2 outline-none ring-inset ring-primary transition duration-300 hover:scale-[97%] hover:bg-transparent',
           isOptimisticOrder && 'animate-shake-strong',
           preview
             ? 'cursor-not-allowed'
@@ -155,6 +158,9 @@ export default function CellsRowTitle({
               : 'cursor-pointer',
           isInOrderPendingQueue && 'ring-2',
         )}
+        style={{
+          width: orderWidth,
+        }}
       >
         <div className="flex items-center gap-1 truncate">
           <span className="font-semibold transition group-hover:underline">

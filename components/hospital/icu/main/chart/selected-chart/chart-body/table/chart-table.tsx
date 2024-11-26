@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
+import NewFeature from '@/components/common/new-feature'
 import QuickOrderInsertInput from '@/components/hospital/icu/main/chart/selected-chart/chart-body/quick-order-insert-input'
 import CellsRowTitles from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/cells-row-titles'
 import DeleteOrdersAlertDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/delete-orders-alert-dialog'
@@ -20,6 +21,7 @@ import {
 import { toast } from '@/components/ui/use-toast'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import useIsCommandPressed from '@/hooks/use-is-command-pressed'
+import useLocalStorage from '@/hooks/use-local-storage'
 import {
   reorderOrders,
   upsertOrder,
@@ -29,7 +31,7 @@ import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
 import { cn, formatOrders, hasOrderSortingChanges } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
-import { ArrowUpDown } from 'lucide-react'
+import { ArrowLeftToLine, ArrowRightFromLine, ArrowUpDown } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import { Sortable } from 'react-sortablejs'
 
@@ -251,11 +253,32 @@ export default function ChartTable({
   }, [handleSortButtonClick, isSorting])
   // --- sorting mode in / out keyboard shortcut ----
 
+  const [orderWidth, setOrderWidth] = useLocalStorage('orderWidth', 400)
+  const handleOrderWidthChange = useCallback(() => {
+    if (orderWidth === 300) {
+      setOrderWidth(400)
+      return
+    }
+    if (orderWidth === 400) {
+      setOrderWidth(500)
+      return
+    }
+    if (orderWidth === 500) {
+      setOrderWidth(600)
+      return
+    }
+    if (orderWidth === 600) {
+      setOrderWidth(300)
+      return
+    }
+    setOrderWidth(400)
+  }, [orderWidth])
+
   return (
     <Table className="border">
       <TableHeader className="sticky -top-3 z-20 bg-white shadow-sm">
         <TableRow>
-          <TableHead className="flex w-[320px] items-center justify-between px-0.5 text-center">
+          <TableHead className="flex items-center justify-between px-0.5 text-center">
             {!preview && (
               <Button
                 variant="ghost"
@@ -273,22 +296,40 @@ export default function ChartTable({
             <span className="w-full text-center">오더 목록</span>
 
             {!preview && (
-              <OrderDialog
-                hosId={hosId}
-                icuChartId={icu_chart_id}
-                orders={orders}
-                showOrderer={showOrderer}
-                patient={patient}
-                weight={weight}
-                ageInDays={age_in_days}
-                orderStep={orderStep}
-                reset={reset}
-                isEditOrderMode={isEditOrderMode}
-                setOrderStep={setOrderStep}
-                isExport={isExport}
-                setSortedOrders={setSortedOrders}
-                mainVetName={main_vet.name}
-              />
+              <>
+                <OrderDialog
+                  hosId={hosId}
+                  icuChartId={icu_chart_id}
+                  orders={orders}
+                  showOrderer={showOrderer}
+                  patient={patient}
+                  weight={weight}
+                  ageInDays={age_in_days}
+                  orderStep={orderStep}
+                  reset={reset}
+                  isEditOrderMode={isEditOrderMode}
+                  setOrderStep={setOrderStep}
+                  isExport={isExport}
+                  setSortedOrders={setSortedOrders}
+                  mainVetName={main_vet.name}
+                />
+
+                {/* 다음 업데이트시에 삭제 */}
+                <NewFeature LocalStoragekey="orderWidthFeature">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={handleOrderWidthChange}
+                    className="shrink-0"
+                  >
+                    {orderWidth === 600 ? (
+                      <ArrowLeftToLine size={18} />
+                    ) : (
+                      <ArrowRightFromLine size={18} />
+                    )}
+                  </Button>
+                </NewFeature>
+              </>
             )}
 
             {<AddTemplateOrderDialog hosId={hosId} targetDate={targetDate} />}
@@ -321,6 +362,7 @@ export default function ChartTable({
             selectedTxPendingQueue={selectedTxPendingQueue}
             orderStep={orderStep}
             orderTimePendingQueueLength={orderTimePendingQueue.length}
+            orderwidth={orderWidth}
           />
         </SortableOrderWrapper>
       ) : (
@@ -338,6 +380,7 @@ export default function ChartTable({
             selectedTxPendingQueue={selectedTxPendingQueue}
             orderStep={orderStep}
             orderTimePendingQueueLength={orderTimePendingQueue.length}
+            orderwidth={orderWidth}
           />
           {!isExport && !preview && (
             <TableRow className="hover:bg-transparent">
