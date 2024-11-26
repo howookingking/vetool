@@ -19,6 +19,7 @@ type CellsRowTitlesProps = {
   orderTimePendingQueueLength: number
   vitalRefRange: VitalRefRange[]
   species: string
+  orderwidth: number
 }
 
 export default function CellsRowTitles({
@@ -34,6 +35,7 @@ export default function CellsRowTitles({
   orderTimePendingQueueLength,
   vitalRefRange,
   species,
+  orderwidth,
 }: CellsRowTitlesProps) {
   return sortedOrders.map((order, index) => (
     <TableRow
@@ -50,6 +52,7 @@ export default function CellsRowTitles({
         isSorting={isSorting}
         vitalRefRange={vitalRefRange}
         species={species}
+        orderWidth={orderwidth}
       />
       {!isSorting && (
         <CellsRow

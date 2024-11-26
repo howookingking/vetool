@@ -25,13 +25,13 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-export default function TxSelectUserStep() {
+export default function TxSelectUserStep({
+  handleClose,
+}: {
+  handleClose: () => void
+}) {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const {
-    txLocalState,
-    setTxStep,
-    reset: txLocalStateReset,
-  } = useTxMutationStore()
+  const { txLocalState, setTxStep } = useTxMutationStore()
   const { selectedTxPendingQueue, reset: orderQueueReset } = useIcuOrderStore()
   const { isSubscriptionReady } = useRealtimeSubscriptionStore()
   const { refresh } = useRouter()
@@ -50,12 +50,6 @@ export default function TxSelectUserStep() {
       userLog: '',
     },
   })
-
-  const handleReset = useCallback(() => {
-    setTxStep('closed')
-    txLocalStateReset()
-    orderQueueReset()
-  }, [setTxStep, txLocalStateReset, orderQueueReset])
 
   const handleUpsertTx = useCallback(
     async (values: z.infer<typeof userLogFormSchema>) => {
@@ -92,7 +86,8 @@ export default function TxSelectUserStep() {
             )
           }),
         )
-        handleReset()
+        orderQueueReset()
+        setTxStep('closed')
         toast({ title: '처치 내역이 업데이트 되었습니다' })
 
         if (!isSubscriptionReady) refresh()
@@ -113,7 +108,7 @@ export default function TxSelectUserStep() {
           updatedLogs,
         )
 
-        handleReset()
+        setTxStep('closed')
         toast({ title: '처치 내역이 업데이트 되었습니다' })
 
         if (!isSubscriptionReady) refresh()
@@ -123,7 +118,7 @@ export default function TxSelectUserStep() {
 
       // 단일 Tx 일반적인 경우
       await upsertIcuTx(hos_id as string, txLocalState, updatedLogs)
-      handleReset()
+      setTxStep('closed')
       toast({
         title: '처치 내역이 업데이트 되었습니다',
       })
@@ -134,7 +129,8 @@ export default function TxSelectUserStep() {
       hos_id,
       txLocalState,
       selectedTxPendingQueue,
-      handleReset,
+      orderQueueReset,
+      setTxStep,
       isSubscriptionReady,
       refresh,
     ],
@@ -178,7 +174,7 @@ export default function TxSelectUserStep() {
               type="button"
               variant="outline"
               tabIndex={-1}
-              onClick={handleReset}
+              onClick={handleClose}
             >
               취소
             </Button>
