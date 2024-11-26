@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
 import NewFeature from '@/components/common/new-feature'
@@ -80,7 +79,7 @@ export default function ChartTable({
     if (!isSorting) {
       setSortedOrders(orders)
     }
-  }, [orders])
+  }, [orders, isSorting])
 
   // ----- 표에서 수직 안내선 -----
   const [hoveredColumn, setHoveredColumn] = useState<number | null>(null)
@@ -198,6 +197,7 @@ export default function ChartTable({
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     setTxStep,
     orderTimePendingQueue,
@@ -273,7 +273,7 @@ export default function ChartTable({
       return
     }
     setOrderWidth(400)
-  }, [orderWidth])
+  }, [orderWidth, setOrderWidth])
 
   return (
     <Table className="border">
