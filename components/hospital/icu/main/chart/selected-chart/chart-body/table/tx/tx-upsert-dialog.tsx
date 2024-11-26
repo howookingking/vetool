@@ -16,7 +16,7 @@ export default function TxUpsertDialog() {
     setTxStep('closed')
     orderQueueReset()
     setIsMutationCanceled(true)
-  }, [setIsMutationCanceled, setTxStep])
+  }, [setIsMutationCanceled, setTxStep, orderQueueReset])
 
   return (
     <Dialog open={txStep !== 'closed'} onOpenChange={handleClose}>

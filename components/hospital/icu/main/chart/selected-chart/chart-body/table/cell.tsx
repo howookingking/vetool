@@ -305,13 +305,13 @@ export default function Cell({
 
   // 처치표에서부터 이동시 해당 셀 포커싱
   const searchParams = useSearchParams()
-  const params = new URLSearchParams(searchParams)
   useEffect(() => {
+    const params = new URLSearchParams(searchParams)
     const orderId = params.get('order-id')
     const orderTime = params.get('time')
     const cellInputId = document.getElementById(`${orderId}&${orderTime}`)
     if (cellInputId) cellInputId.focus()
-  }, [params])
+  }, [searchParams])
 
   return (
     <TableCell className="handle p-0">
