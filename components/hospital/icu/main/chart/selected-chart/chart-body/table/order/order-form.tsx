@@ -145,7 +145,7 @@ export default function OrderForm({
 
       fetchDietList()
     }
-  }, [orderType, dietListData.length])
+  }, [orderType, dietListData.length, hos_id])
 
   return (
     <Form {...form}>

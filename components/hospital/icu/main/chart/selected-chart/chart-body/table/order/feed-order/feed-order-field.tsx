@@ -94,16 +94,9 @@ export default function FeedOrderField({
 
   useEffect(() => {
     const orderName = `${searchedDiet}#${selectedDiet?.unit ?? 'g'}#${localDietDescription}`
-    console.log(orderName)
 
     form.setValue('icu_chart_order_name', orderName)
-  }, [
-    selectedDiet,
-    localDietDescription,
-    form.getValues('icu_chart_order_name'),
-    searchedDiet,
-    form,
-  ])
+  }, [selectedDiet, localDietDescription, dietName, searchedDiet, form])
 
   // 급여 횟수 Input Change 핸들러
   const handleFeedPerDayChange = (e: React.ChangeEvent<HTMLInputElement>) => {

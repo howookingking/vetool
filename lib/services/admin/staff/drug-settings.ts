@@ -28,15 +28,15 @@ export const updateDrugProduct = async (
 ) => {
   const supabase = await createClient()
 
-  const { error: updateDrugDescriptionError } = await supabase
-    .from('drug_products_rows')
-    .update({ [fieldName]: value })
-    .match({ drug_products_id: drugProductId, hos_id: hosId })
+  // const { error: updateDrugDescriptionError } = await supabase
+  //   .from('drug_products_rows')
+  //   .update({ [fieldName]: value })
+  //   .match({ drug_products_id: drugProductId, hos_id: hosId })
 
-  if (updateDrugDescriptionError) {
-    console.log(updateDrugDescriptionError)
-    redirect(`/error/?message=${updateDrugDescriptionError.message}`)
-  }
+  // if (updateDrugDescriptionError) {
+  //   console.log(updateDrugDescriptionError)
+  //   redirect(`/error/?message=${updateDrugDescriptionError.message}`)
+  // }
 }
 
 export const updateDrugIndication = async (
@@ -46,15 +46,15 @@ export const updateDrugIndication = async (
 ) => {
   const supabase = await createClient()
 
-  const { error: updateDrugDescriptionError } = await supabase
-    .from('drugs_description')
-    .update({ indication })
-    .match({ drugs_description_id: drugDescriptionId, hos_id: hosId })
+  // const { error: updateDrugDescriptionError } = await supabase
+  //   .from('drugs_description')
+  //   .update({ indication })
+  //   .match({ drugs_description_id: drugDescriptionId, hos_id: hosId })
 
-  if (updateDrugDescriptionError) {
-    console.log(updateDrugDescriptionError)
-    redirect(`/error/?message=${updateDrugDescriptionError.message}`)
-  }
+  // if (updateDrugDescriptionError) {
+  //   console.log(updateDrugDescriptionError)
+  //   redirect(`/error/?message=${updateDrugDescriptionError.message}`)
+  // }
 }
 
 export const updateDrugType = async (
@@ -64,13 +64,13 @@ export const updateDrugType = async (
 ) => {
   const supabase = await createClient()
 
-  const { error: updateDrugTypeError } = await supabase
-    .from('drug_products_rows')
-    .update({ type })
-    .match({ drug_products_id: drugProductId, hos_id: hosId })
+  // const { error: updateDrugTypeError } = await supabase
+  //   .from('drug_products_rows')
+  //   .update({ type })
+  //   .match({ drug_products_id: drugProductId, hos_id: hosId })
 
-  if (updateDrugTypeError) {
-    console.log(updateDrugTypeError)
-    redirect(`/error/?message=${updateDrugTypeError.message}`)
-  }
+  // if (updateDrugTypeError) {
+  //   console.log(updateDrugTypeError)
+  //   redirect(`/error/?message=${updateDrugTypeError.message}`)
+  // }
 }
