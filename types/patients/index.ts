@@ -26,8 +26,8 @@ export type SearchedPatientsData = Pick<
   | 'hos_owner_id'
 >
 
-export type PaginatedPatientsData = {
-  data: SearchedPatientsData[]
+export type PaginatedData<T> = {
+  data: T
   total_count: number
   page: number
   itemsPerPage: number

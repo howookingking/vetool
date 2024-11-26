@@ -1,4 +1,5 @@
 import {
+  DietVetool,
   DrugDescription,
   DrugProductsRows,
   Hospital,
@@ -90,8 +91,20 @@ export type DrugProductDetail = Pick<
   | 'company'
   | 'mass_vol'
   | 'hos_id'
-> &
-  Pick<
-    DrugDescription,
-    'indication' | 'side_effect' | 'drugs_description_id' | 'drug_name'
-  >
+>
+// &
+//   Pick<
+//     DrugDescription,
+//     'indication' | 'side_effect' | 'drugs_description_id' | 'drug_name'
+//   >
+
+export type AdminDietData = Pick<
+  DietVetool,
+  | 'hos_id'
+  | 'diet_products_id'
+  | 'name'
+  | 'description'
+  | 'company'
+  | 'unit'
+  | 'mass_vol'
+>

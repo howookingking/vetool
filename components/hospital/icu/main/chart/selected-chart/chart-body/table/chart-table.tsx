@@ -48,6 +48,7 @@ export default function ChartTable({
     patient,
     weight,
     main_vet,
+    der_calc_factor,
     icu_io: { age_in_days },
   } = chartData
 
@@ -288,6 +289,7 @@ export default function ChartTable({
                 isExport={isExport}
                 setSortedOrders={setSortedOrders}
                 mainVetName={main_vet.name}
+                derCalcFactor={der_calc_factor}
               />
             )}
 

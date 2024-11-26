@@ -22,6 +22,7 @@ type Props<T extends string> = {
   isLoading?: boolean
   emptyMessage?: React.ReactNode
   placeholder?: string
+  noBracket?: boolean
 }
 
 export function AutoComplete<T extends string>({
@@ -33,6 +34,7 @@ export function AutoComplete<T extends string>({
   isLoading,
   emptyMessage = 'No items.',
   placeholder = 'Search...',
+  noBracket,
 }: Props<T>) {
   const [open, setOpen] = useState(false)
 
@@ -120,7 +122,9 @@ export function AutoComplete<T extends string>({
                       onMouseDown={(e) => e.preventDefault()}
                       onSelect={onSelectItem}
                     >
-                      {`${option.value} (${option.label})`}
+                      {noBracket
+                        ? `${option.value}`
+                        : `${option.value} (${option.label})`}
                     </CommandItem>
                   ))}
                 </CommandGroup>
