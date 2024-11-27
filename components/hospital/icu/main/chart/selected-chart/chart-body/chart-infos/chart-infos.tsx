@@ -60,11 +60,11 @@ export default function ChartInfos({
         />
       </div>
 
-      <div className="col-span-8 md:order-none md:col-span-1">
+      <div className="col-span-4 md:order-none md:col-span-1">
         <Cage cage={icu_io.cage ?? ''} icuIoId={icu_io.icu_io_id} />
       </div>
 
-      <div className="col-span-8 md:order-none md:col-span-1">
+      <div className="col-span-4 md:order-none md:col-span-1">
         <Group currentGroups={icu_io.group_list} icuIoId={icu_io.icu_io_id} />
       </div>
 

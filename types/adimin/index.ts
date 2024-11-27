@@ -107,4 +107,5 @@ export type AdminDietData = Pick<
   | 'company'
   | 'unit'
   | 'mass_vol'
+  | 'species'
 >

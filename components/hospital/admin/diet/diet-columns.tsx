@@ -6,8 +6,9 @@ import { Button } from '@/components/ui/button'
 import { ArrowUpDown } from 'lucide-react'
 import AddDietDialog from './add-diet-dialog'
 import DeleteDietDialog from './delete-diet-dialog'
+import DietSpeciesIcon from './diet-species-icon'
 
-export const dietColumns: ColumnDef<AdminDietData>[] = [
+export const dietColumns = (hosId: string): ColumnDef<AdminDietData>[] => [
   {
     accessorKey: 'name',
     header: ({ column }) => {
@@ -51,6 +52,29 @@ export const dietColumns: ColumnDef<AdminDietData>[] = [
     },
   },
   {
+    accessorKey: 'species',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          종
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+    cell: ({ row }) => {
+      const species = row.original.species
+
+      return (
+        <div className="flex h-[36px] items-center justify-center">
+          <DietSpeciesIcon species={species ?? 'both'} />
+        </div>
+      )
+    },
+  },
+  {
     accessorKey: 'unit',
     header: ({ column }) => {
       return (
@@ -81,12 +105,15 @@ export const dietColumns: ColumnDef<AdminDietData>[] = [
   {
     id: 'edit',
     header: '수정',
-
     cell: ({ row }) => {
       const adminDietData = row.original
+      const dietHosId = adminDietData.hos_id
+
       return (
         <div className="flex justify-center">
-          <AddDietDialog dietData={adminDietData} isEdit />
+          {dietHosId === hosId && (
+            <AddDietDialog dietData={adminDietData} isEdit />
+          )}
         </div>
       )
     },
@@ -94,14 +121,16 @@ export const dietColumns: ColumnDef<AdminDietData>[] = [
   {
     id: 'delete',
     header: '삭제',
-
     cell: ({ row }) => {
       const dietProductId = row.original.diet_products_id
       const name = row.original.name
+      const dietHosId = row.original.hos_id
 
       return (
         <div className="flex justify-center">
-          <DeleteDietDialog dietProductId={dietProductId} name={name} />
+          {dietHosId === hosId && (
+            <DeleteDietDialog dietProductId={dietProductId} name={name} />
+          )}
         </div>
       )
     },
