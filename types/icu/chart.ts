@@ -8,6 +8,7 @@ import type {
   Patients,
   User,
   IcuOrders,
+  DietVetool,
 } from '@/types'
 
 export type MainAndSubVet = Pick<User, 'name' | 'avatar_url' | 'user_id'>
@@ -133,3 +134,5 @@ export type IcuReadOnlyOrderData = Pick<
   | 'icu_chart_order_comment'
   | 'icu_chart_order_type'
 >
+
+export type Diets = Pick<DietVetool, 'name' | 'mass_vol' | 'unit'>

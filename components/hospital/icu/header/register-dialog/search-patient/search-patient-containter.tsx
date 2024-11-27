@@ -4,7 +4,7 @@ import SearchPatientPagination from '@/components/hospital/icu/header/register-d
 import SearchPatientTable from '@/components/hospital/icu/header/register-dialog/search-patient/search-patient-table'
 import { Input } from '@/components/ui/input'
 import { searchPatientsData } from '@/lib/services/patient/patient'
-import type { PaginatedPatientsData } from '@/types/patients'
+import type { PaginatedData, SearchedPatientsData } from '@/types/patients'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
@@ -22,7 +22,9 @@ export default function SearchPatientContainer({
   const [isEdited, setIsEdited] = useState(false)
   const [inputValue, setInputValue] = useState('')
   const [isSearching, setIsSearching] = useState(false)
-  const [patientsData, setPatientsData] = useState<PaginatedPatientsData>({
+  const [patientsData, setPatientsData] = useState<
+    PaginatedData<SearchedPatientsData[]>
+  >({
     data: [],
     total_count: 0,
     page: 1,
@@ -74,6 +76,7 @@ export default function SearchPatientContainer({
 
   useEffect(() => {
     debouncedSearch()
+
     setIsEdited(false)
   }, [isEdited, debouncedSearch])
 
@@ -84,7 +87,6 @@ export default function SearchPatientContainer({
         value={inputValue}
         onChange={handleInputChange}
         id="search-chart"
-        autoComplete="off"
       />
 
       <SearchPatientTable

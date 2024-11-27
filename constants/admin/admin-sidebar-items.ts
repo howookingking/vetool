@@ -34,9 +34,9 @@ export const ADMIN_SIDEBAR_ITEMS = [
   },
   {
     name: '사료설정',
-    path: 'food-settings',
+    path: 'diet-settings',
     icon: Utensils,
-    isReady: false,
+    isReady: true,
   },
   {
     name: '검사설정',

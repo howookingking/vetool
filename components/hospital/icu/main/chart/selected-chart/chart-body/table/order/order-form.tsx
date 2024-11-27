@@ -1,10 +1,11 @@
 'use client'
 
 import DeleteOrderAlertDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/delete-order-alert-dialog'
-import FeedOrderField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/feed-order/feed-order-filed'
+import FeedOrderField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/feed-order/feed-order-field'
 import FluidOrderField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/fluid-order/fluid-order-field'
 import OrderFormField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-form-field'
 // import DrugFormField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order-form/drug-order/drug-form-field'
+import NewFeature from '@/components/common/new-feature'
 import { orderSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-schema'
 import OrderTimeSettings from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-time-settings'
 import { Button } from '@/components/ui/button'
@@ -33,18 +34,22 @@ import { z } from 'zod'
 import ChecklistOrderField from './checklist-order/checklist-order-field'
 
 export default function OrderForm({
+  hosId,
   showOrderer,
   icuChartId,
   weight,
   species,
   ageInDays,
+  derCalcFactor,
   setSortedOrders,
 }: {
+  hosId: string
   showOrderer: boolean
   icuChartId: string
   weight: string
   species: string
   ageInDays: number
+  derCalcFactor: number | null
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
 }) {
   const {
@@ -158,7 +163,17 @@ export default function OrderForm({
                         <RadioGroupItem value={item.value} />
                       </FormControl>
                       <FormLabel className="cursor-pointer font-normal">
-                        {item.label}
+                        {/* 다음 업데이트시 삭제 */}
+                        {item.label === '식이' ? (
+                          <NewFeature
+                            LocalStoragekey="newFeadFeature"
+                            className="-right-1.5 -top-1.5"
+                          >
+                            식이
+                          </NewFeature>
+                        ) : (
+                          item.label
+                        )}
                       </FormLabel>
                     </FormItem>
                   ))}
@@ -180,7 +195,16 @@ export default function OrderForm({
           />
         )}
 
-        {orderType === 'feed' && <FeedOrderField form={form} />}
+        {orderType === 'feed' && (
+          <FeedOrderField
+            hosId={hosId}
+            form={form}
+            weight={weight}
+            species={species}
+            derCalcFactor={derCalcFactor}
+            orderTime={orderTime}
+          />
+        )}
         {/* {orderType === 'injection' && <DrugFormField form={form} />} */}
 
         {orderType !== 'fluid' &&

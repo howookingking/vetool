@@ -2,11 +2,11 @@ import { Button } from '@/components/ui/button'
 import { TableCell } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
-import { cn, parsingOrderName } from '@/lib/utils/utils'
+import { cn, parsingOrderName, renderOrderSubComment } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect } from 'react'
 
 export default function CellsRowTitle({
   order,
@@ -25,7 +25,7 @@ export default function CellsRowTitle({
   species?: string
   orderWidth: number
 }) {
-  const { order_comment, order_type, order_id } = order
+  const { order_comment, order_type, order_id, order_name } = order
   const {
     basicHosData: { orderColorsData },
   } = useBasicHosDataContext()
@@ -38,12 +38,6 @@ export default function CellsRowTitle({
     setCopiedOrderPendingQueue,
     reset,
   } = useIcuOrderStore()
-
-  const isInOrderPendingQueue = useMemo(() => {
-    return selectedOrderPendingQueue.some(
-      (order) => order.order_id === order_id,
-    )
-  }, [order_id, selectedOrderPendingQueue])
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -117,20 +111,20 @@ export default function CellsRowTitle({
     ],
   )
 
-  const isOptimisticOrder = useMemo(
-    () => order.order_id.startsWith('temp_order_id'),
-    [order],
+  const isInOrderPendingQueue = selectedOrderPendingQueue.some(
+    (order) => order.order_id === order_id,
   )
 
-  // 바이탈 참조범위
-  const rowVitalRefRange = useMemo(() => {
-    const foundVital = vitalRefRange?.find(
-      (vital) => vital.order_name === order.order_name,
-    )
-    return foundVital
-      ? foundVital[species as keyof Omit<VitalRefRange, 'order_name'>]
-      : undefined
-  }, [species, order.order_name, vitalRefRange])
+  const isOptimisticOrder = order.order_id.startsWith('temp_order_id')
+
+  // -------- 바이탈 참조범위 --------
+  const foundVital = vitalRefRange?.find(
+    (vital) => vital.order_name === order.order_name,
+  )
+  const rowVitalRefRange = foundVital
+    ? foundVital[species as keyof Omit<VitalRefRange, 'order_name'>]
+    : undefined
+  // -------- 바이탈 참조범위 --------
 
   return (
     <TableCell
@@ -142,7 +136,7 @@ export default function CellsRowTitle({
       style={{
         background: orderColorsData[order_type as keyof IcuOrderColors],
         width: orderWidth,
-        transition: 'all 0.3s ease-in-out',
+        transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
       }}
     >
       <Button
@@ -161,12 +155,12 @@ export default function CellsRowTitle({
         )}
         style={{
           width: orderWidth,
-          transition: 'all 0.3s ease-in-out',
+          transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
         }}
       >
         <div className="flex items-center gap-1 truncate">
           <span className="font-semibold transition group-hover:underline">
-            {parsingOrderName(order_type, order.order_name)}
+            {parsingOrderName(order_type, order_name)}
           </span>
 
           {rowVitalRefRange && (
@@ -177,7 +171,8 @@ export default function CellsRowTitle({
         </div>
 
         <span className="min-w-16 truncate text-right text-xs font-semibold text-muted-foreground">
-          {order_comment} {order_type === 'fluid' && 'ml/hr'}
+          {order_comment}
+          {renderOrderSubComment(order)}
         </span>
       </Button>
     </TableCell>

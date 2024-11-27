@@ -29,148 +29,151 @@ export const drugColumns: ColumnDef<DrugProductDetail>[] = [
       )
     },
     cell: ({ row }) => {
-      const drugName = row.original.name
+      const drugName = row.original.drug_products_id
       return <span>{drugName}</span>
     },
   },
-  {
-    accessorKey: 'productName',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          약물명
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
-    cell: ({ row }) => {
-      const drugName = row.original.name
-      return (
-        <ProductNameColumn
-          hosId={row.original.hos_id as string}
-          id={row.original.drug_products_id}
-          productName={drugName}
-        />
-      )
-    },
-  },
-  {
-    accessorKey: 'description',
-    header: () => {
-      return <span>설명</span>
-    },
-    cell: ({ row }) => {
-      return (
-        <DescriptionColumn
-          hosId={row.original.hos_id as string}
-          drugProductId={row.original.drug_products_id}
-          description={row.original.description ?? ''}
-        />
-      )
-    },
-  },
-  {
-    accessorKey: 'indication',
-    header: () => {
-      return <span>적응증</span>
-    },
-    cell: ({ row }) => {
-      return (
-        <IndicationColumn
-          hosId={row.original.hos_id as string}
-          drugDescriptionId={row.original.drug_products_id}
-          indication={''}
-        />
-      )
-    },
-  },
-  {
-    accessorKey: 'massVol',
-    header: ({ column }) => {
-      return <span>총량</span>
-    },
-    cell: ({ row }) => {
-      return (
-        <MassVolumeColumn
-          drugProductId={row.original.drug_products_id}
-          hosId={row.original.hos_id as string}
-          massVol={row.original.mass_vol ?? 0}
-        />
-      )
-    },
-  },
-  {
-    accessorKey: 'type',
-    header: ({ column }) => {
-      return <span>유형</span>
-    },
-    cell: ({ row }) => {
-      return (
-        <TypeColumn
-          drugProductId={row.original.drug_products_id}
-          hosId={row.original.hos_id as string}
-          type={row.original.type ?? ''}
-        />
-      )
-    },
-  },
-  {
-    accessorKey: 'unit',
-    header: ({ column }) => {
-      return <span>단위</span>
-    },
-    cell: ({ row }) => {
-      return (
-        <UnitColumn
-          productId={row.original.drug_products_id}
-          unit={row.original.unit ?? ''}
-        />
-      )
-    },
-  },
+  // {
+  //   accessorKey: 'productName',
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant="ghost"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+  //       >
+  //         약물명
+  //         <ArrowUpDown className="ml-2 h-4 w-4" />
+  //       </Button>
+  //     )
+  //   },
+  //   cell: ({ row }) => {
+  //     const drugName = row.original.name
+  //     return (
+  //       <ProductNameColumn
+  //         hosId={row.original.hos_id as string}
+  //         id={row.original.drug_products_id}
+  //         productName={drugName}
+  //       />
+  //     )
+  //   },
+  // },
+  // {
+  //   accessorKey: 'description',
+  //   header: () => {
+  //     return <span>설명</span>
+  //   },
+  //   cell: ({ row }) => {
+  //     return (
+  //       <DescriptionColumn
+  //         hosId={row.original.hos_id as string}
+  //         drugProductId={row.original.drug_products_id}
+  //         description={row.original.description ?? ''}
+  //       />
+  //     )
+  //   },
+  // },
+  // {
+  //   accessorKey: 'indication',
+  //   header: () => {
+  //     return <span>적응증</span>
+  //   },
+  //   cell: ({ row }) => {
+  //     return (
+  //       <IndicationColumn
+  //         hosId={row.original.hos_id as string}
+  //         drugDescriptionId={row.original.drugs_description_id}
+  //         indication={row.original.indication ?? ''}
+  //       />
+  //     )
+  //   },
+  // },
+  // {
+  //   accessorKey: 'massVol',
+  //   header: ({ column }) => {
+  //     return <span>총량</span>
+  //   },
+  //   cell: ({ row }) => {
+  //     return (
+  //       <MassVolumeColumn
+  //         drugProductId={row.original.drug_products_id}
+  //         hosId={row.original.hos_id as string}
+  //         massVol={row.original.mass_vol ?? 0}
+  //       />
+  //     )
+  //   },
+  // },
+  // {
+  //   accessorKey: 'type',
+  //   header: ({ column }) => {
+  //     return <span>유형</span>
+  //   },
+  //   cell: ({ row }) => {
+  //     return (
+  //       <TypeColumn
+  //         drugProductId={row.original.drug_products_id}
+  //         hosId={row.original.hos_id as string}
+  //         type={row.original.type ?? ''}
+  //       />
+  //     )
+  //   },
+  // },
+  // {
+  //   accessorKey: 'unit',
+  //   header: ({ column }) => {
+  //     return <span>단위</span>
+  //   },
+  //   cell: ({ row }) => {
+  //     return (
+  //       <UnitColumn
+  //         productId={row.original.drug_products_id}
+  //         unit={row.original.unit ?? ''}
+  //       />
+  //     )
+  //   },
+  // },
 
-  {
-    accessorKey: 'sideEffect',
-    header: ({ column }) => {
-      return <span>부작용</span>
-    },
-    cell: ({ row }) => {
-      return (
-        <SideEffectColumn id={row.original.drug_products_id} sideEffect={'-'} />
-      )
-    },
-  },
+  // {
+  //   accessorKey: 'sideEffect',
+  //   header: ({ column }) => {
+  //     return <span>부작용</span>
+  //   },
+  //   cell: ({ row }) => {
+  //     return (
+  //       <SideEffectColumn
+  //         id={row.original.drugs_description_id}
+  //         sideEffect={row.original.side_effect ?? '-'}
+  //       />
+  //     )
+  //   },
+  // },
 
-  {
-    accessorKey: 'company',
-    header: ({ column }) => {
-      return <span>제약사</span>
-    },
-    cell: ({ row }) => {
-      return (
-        <CompanyColumn
-          id={row.original.drug_products_id}
-          company={row.original.company ?? '-'}
-        />
-      )
-    },
-  },
+  // {
+  //   accessorKey: 'company',
+  //   header: ({ column }) => {
+  //     return <span>제약사</span>
+  //   },
+  //   cell: ({ row }) => {
+  //     return (
+  //       <CompanyColumn
+  //         id={row.original.drug_products_id}
+  //         company={row.original.company ?? '-'}
+  //       />
+  //     )
+  //   },
+  // },
 
-  {
-    accessorKey: 'delete',
-    header: () => {
-      return <span>삭제</span>
-    },
-    cell: ({ row }) => {
-      return (
-        <DeleteDrugDialog
-          id={row.original.drug_products_id}
-          drugName={row.original.name}
-        />
-      )
-    },
-  },
+  // {
+  //   accessorKey: 'delete',
+  //   header: () => {
+  //     return <span>삭제</span>
+  //   },
+  //   cell: ({ row }) => {
+  //     return (
+  //       <DeleteDrugDialog
+  //         id={row.original.drug_products_id}
+  //         drugName={row.original.name}
+  //       />
+  //     )
+  //   },
+  // },
 ]
