@@ -1,6 +1,7 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
+import IcuSettingsCard from '@/components/hospital/admin/icu-settings/icu-settings-card'
+import { memoNameFormSchema } from '@/components/hospital/admin/icu-settings/memo-name/memo-name-schema'
 import {
   Form,
   FormControl,
@@ -12,15 +13,12 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
+import { updateMemoNames } from '@/lib/services/admin/icu/memo-name'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useParams, useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { memoNameFormSchema } from './memo-name-schema'
-import { updateMemoNames } from '@/lib/services/admin/icu/memo-name'
-import { useState } from 'react'
-import { LoaderCircle } from 'lucide-react'
-import { cn } from '@/lib/utils/utils'
 
 export default function MemoNameSetting({
   memoNames,
@@ -69,69 +67,65 @@ export default function MemoNameSetting({
   }
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(handleSubmit)}
-        className="w-full space-y-4 py-4"
-      >
-        <FormField
-          control={form.control}
-          name="memoA"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>첫번째 메모이름</FormLabel>
-              <FormControl>
-                <Input placeholder="입원차트 첫번째 메모이름" {...field} />
-              </FormControl>
-              <FormDescription>
-                입원 차트의 첫번째 메모입력란의 이름에 해당합니다
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="memoB"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>두번째 메모이름</FormLabel>
-              <FormControl>
-                <Input placeholder="메모 B" {...field} />
-              </FormControl>
-              <FormDescription>
-                입원 차트의 두번째 메모입력란의 이름에 해당합니다
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="memoC"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>세번째 메모이름</FormLabel>
-              <FormControl>
-                <Input placeholder="메모 C" {...field} />
-              </FormControl>
-              <FormDescription>
-                입원 차트의 세번째 메모입력란의 이름에 해당합니다
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <Button type="submit" className="ml-auto" disabled={isUpdating}>
-          저장
-          <LoaderCircle
-            className={cn(isUpdating ? 'ml-2 animate-spin' : 'hidden')}
+    <IcuSettingsCard
+      title="메모명 변경"
+      isUpdating={isUpdating}
+      onSubmit={form.handleSubmit(handleSubmit)}
+    >
+      <Form {...form}>
+        <form className="space-y-4">
+          <FormField
+            control={form.control}
+            name="memoA"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>첫 번째 메모이름</FormLabel>
+                <FormControl>
+                  <Input placeholder="입원차트 첫번째 메모이름" {...field} />
+                </FormControl>
+                <FormDescription>
+                  입원 차트의 첫번째 메모입력란의 이름에 해당합니다
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </Button>
-      </form>
-    </Form>
+
+          <FormField
+            control={form.control}
+            name="memoB"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>두 번째 메모이름</FormLabel>
+                <FormControl>
+                  <Input placeholder="메모 B" {...field} />
+                </FormControl>
+                <FormDescription>
+                  입원 차트의 두번째 메모입력란의 이름에 해당합니다
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="memoC"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>세 번째 메모이름</FormLabel>
+                <FormControl>
+                  <Input placeholder="메모 C" {...field} />
+                </FormControl>
+                <FormDescription>
+                  입원 차트의 세번째 메모입력란의 이름에 해당합니다
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </form>
+      </Form>
+    </IcuSettingsCard>
   )
 }

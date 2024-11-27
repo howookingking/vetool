@@ -1,8 +1,8 @@
 import { getShowOrderer } from '@/lib/services/admin/icu/orderer'
-import OrdererSwitch from './orderer-switch'
+import OrdererSetting from './orderer-setting'
 
 export default async function OrdererTab({ hosId }: { hosId: string }) {
   const showOrderer = await getShowOrderer(hosId)
 
-  return <OrdererSwitch showOrderer={showOrderer} hosId={hosId} />
+  return <OrdererSetting hosId={hosId} showOrderer={showOrderer} />
 }
