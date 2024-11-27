@@ -7,7 +7,7 @@ export const getDiet = async (hosId: string) => {
   const supabase = await createClient()
 
   const { data: dietData, error: dietDataError } = await supabase
-    .from('diet_vetool')
+    .from('diets')
     .select(
       'name, company, description, hos_id, mass_vol, unit, diet_products_id, species',
     )
@@ -40,7 +40,7 @@ type UpsertDietData = {
 export const upsertDietData = async (data: UpsertDietData) => {
   const supabase = await createClient()
 
-  const { error } = await supabase.from('diet_vetool').upsert(data)
+  const { error } = await supabase.from('diets').upsert(data)
 
   if (error) {
     console.error(error)
@@ -52,7 +52,7 @@ export const deleteDietData = async (dietProductId: string) => {
   const supabase = await createClient()
 
   const { error } = await supabase
-    .from('diet_vetool')
+    .from('diets')
     .delete()
     .match({ diet_products_id: dietProductId })
 

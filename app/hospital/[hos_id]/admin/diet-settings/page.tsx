@@ -9,7 +9,7 @@ export default async function AdminFoodSettingsPage(props: {
   const dietData = await getDiet(params.hos_id)
 
   return (
-    <div className="relative p-2">
+    <div className="relative">
       <AddDietDialog />
 
       <DietDataTable dietData={dietData} hosId={params.hos_id} />

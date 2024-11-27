@@ -1,5 +1,4 @@
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ADMIN_SETTING_ITEMS } from '@/constants/admin/admin-setting-items'
 import { Suspense } from 'react'

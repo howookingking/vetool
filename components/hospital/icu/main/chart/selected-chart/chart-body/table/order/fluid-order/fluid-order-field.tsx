@@ -147,13 +147,13 @@ export default function FluidOrderField({
                 </div>
               </FormLabel>
 
-              <div className="grid grid-cols-10 items-center gap-2">
+              <div className="grid grid-cols-6 items-center gap-2">
                 <Select
                   value={localMaintenaceRateCalcMethod}
                   onValueChange={setLocalMaintenaceRateCalcMethod}
                   defaultValue={maintenanceRateCalcMethod}
                 >
-                  <SelectTrigger className="col-span-5">
+                  <SelectTrigger className="col-span-2">
                     <SelectValue placeholder="계산법" />
                   </SelectTrigger>
                   <SelectContent>
@@ -207,7 +207,7 @@ export default function FluidOrderField({
                 </Select>
 
                 <Select value={fold} onValueChange={setFold}>
-                  <SelectTrigger className="col-span-2">
+                  <SelectTrigger className="col-span-1">
                     <SelectValue placeholder="배수" />
                   </SelectTrigger>
                   <SelectContent>

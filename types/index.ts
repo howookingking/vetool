@@ -31,7 +31,7 @@ export type DrugRows = Database['public']['Tables']['drug_vetool']['Row']
 export type DrugDoses = Database['public']['Tables']['drug_doses']['Row']
 export type DrugDescription =
   Database['public']['Tables']['drugs_hospital']['Row']
-export type DietVetool = Database['public']['Tables']['diet_vetool']['Row']
+export type DietVetool = Database['public']['Tables']['diets']['Row']
 
 // supabase.auth.getUser() 시 return되는 유져타입
 export type AuthUser = {
