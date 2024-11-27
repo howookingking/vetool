@@ -19,7 +19,7 @@ export default function SummaryTable({
     <Table className="border">
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[200px] text-center">환자목록</TableHead>
+          <TableHead className="w-[160px] text-center">환자목록</TableHead>
 
           {TIMES.map((time) => (
             <TableHead className={cn('border text-center')} key={time}>

@@ -1,7 +1,6 @@
 import type {
   DrugDoses,
   DrugProductsRows,
-  DrugRows,
   IcuTemplate,
   IcuCharts,
   IcuIo,
@@ -50,6 +49,7 @@ export type SelectedChart = Pick<
     | 'out_due_date'
     | 'cpcr'
     | 'group_list'
+    | 'cage'
   >
 } & {
   orders: SelectedIcuOrder[]
@@ -118,7 +118,10 @@ export type IcuSidebarIoData = {
   created_at: string
 }
 
-export type DrugProductsJoined = Pick<DrugRows, 'drug_id' | 'drug_name'> & {
+export type DrugProductsJoined = Pick<
+  DrugProductsRows,
+  'drug_id' | 'drug_name'
+> & {
   drug_doses: DrugDoses[]
   drug_products: DrugProductsRows[]
 }

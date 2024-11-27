@@ -29,7 +29,7 @@ export const updateDrugProduct = async (
   const supabase = await createClient()
 
   const { error: updateDrugDescriptionError } = await supabase
-    .from('drug_products_rows')
+    .from('drug_products')
     .update({ [fieldName]: value })
     .match({ drug_products_id: drugProductId, hos_id: hosId })
 
@@ -47,8 +47,8 @@ export const updateDrugIndication = async (
   const supabase = await createClient()
 
   const { error: updateDrugDescriptionError } = await supabase
-    .from('drugs_description')
-    .update({ indication })
+    .from('drug_vetool')
+    .update({ vetool_drug_indication: indication })
     .match({ drugs_description_id: drugDescriptionId, hos_id: hosId })
 
   if (updateDrugDescriptionError) {
@@ -65,7 +65,7 @@ export const updateDrugType = async (
   const supabase = await createClient()
 
   const { error: updateDrugTypeError } = await supabase
-    .from('drug_products_rows')
+    .from('drug_products')
     .update({ type })
     .match({ drug_products_id: drugProductId, hos_id: hosId })
 

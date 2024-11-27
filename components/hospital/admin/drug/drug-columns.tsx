@@ -29,7 +29,7 @@ export const drugColumns: ColumnDef<DrugProductDetail>[] = [
       )
     },
     cell: ({ row }) => {
-      const drugName = row.original.drug_name
+      const drugName = row.original.name
       return <span>{drugName}</span>
     },
   },
@@ -81,8 +81,8 @@ export const drugColumns: ColumnDef<DrugProductDetail>[] = [
       return (
         <IndicationColumn
           hosId={row.original.hos_id as string}
-          drugDescriptionId={row.original.drugs_description_id}
-          indication={row.original.indication ?? ''}
+          drugDescriptionId={row.original.drug_products_id}
+          indication={''}
         />
       )
     },
@@ -139,10 +139,7 @@ export const drugColumns: ColumnDef<DrugProductDetail>[] = [
     },
     cell: ({ row }) => {
       return (
-        <SideEffectColumn
-          id={row.original.drugs_description_id}
-          sideEffect={row.original.side_effect ?? '-'}
-        />
+        <SideEffectColumn id={row.original.drug_products_id} sideEffect={'-'} />
       )
     },
   },
