@@ -1,4 +1,3 @@
-import NoResult from '@/components/common/no-result'
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import TxTableContainer from '@/components/hospital/icu/main/tx-table/tx-table-container'
 import { getIcuTxTableData } from '@/lib/services/icu/tx-table/get-icu-tx-table-data'
