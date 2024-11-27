@@ -12,16 +12,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import {
-  format,
-  isValid,
-  parse,
-  differenceInYears,
-  differenceInMonths,
-} from 'date-fns'
+import { differenceInMonths, differenceInYears, format } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { Calendar as CalendarIcon } from 'lucide-react'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 import { registerPatientFormSchema } from './patient-schema'
@@ -35,15 +29,16 @@ export default function BirthDatePicker({
 }) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   const [yearInput, setYearInput] = useState('')
-  const [isInputDisabled, setIsInputDisabled] = useState(false)
   const [monthInput, setMonthInput] = useState('')
   const [dateInput, setDateInput] = useState('')
-  const [isManualInput, setIsManualInput] = useState(false)
+  const [calendarDate, setCalendarDate] = useState<Date | undefined>(undefined)
+  const isInitialBirthSet = useRef(false)
 
   const updateBirthDate = useCallback(
     (date: Date) => {
       form.setValue('birth', date)
       setDateInput(format(date, 'yyyy-MM-dd'))
+      setCalendarDate(date)
 
       const now = new Date()
       const years = differenceInYears(now, date)
@@ -56,41 +51,31 @@ export default function BirthDatePicker({
   )
 
   useEffect(() => {
-    // birth props가 존재하는 경우 환자 나이 지정
-    if (birth && !isManualInput) {
+    if (birth && !isInitialBirthSet.current) {
       updateBirthDate(birth)
+      isInitialBirthSet.current = true
     }
-  }, [birth, updateBirthDate, isManualInput])
+  }, [birth, updateBirthDate])
 
   useEffect(() => {
-    // 직접 나이를 input에 입력하는 경우
-    if (isManualInput && (yearInput || monthInput)) {
+    // 직접 N살 N개월을  입력하는 경우
+    if (yearInput || monthInput) {
       const now = new Date()
       let years = parseInt(yearInput) || 0
       let months = parseInt(monthInput) || 0
-
       let newDate = new Date(
         now.getFullYear() - years,
         now.getMonth() - months,
         now.getDate(),
       )
+
       updateBirthDate(newDate)
     }
-  }, [yearInput, monthInput, updateBirthDate, isManualInput])
+  }, [yearInput, monthInput, updateBirthDate])
 
   const handleDateInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setDateInput(value)
-    setIsManualInput(true)
-
-    if (value.length === 8 && /^\d+$/.test(value)) {
-      const formatted = `${value.slice(0, 4)}-${value.slice(4, 6)}-${value.slice(6, 8)}`
-      const parsedDate = parse(formatted, 'yyyy-MM-dd', new Date())
-
-      if (isValid(parsedDate)) {
-        updateBirthDate(parsedDate)
-      }
-    }
   }
 
   // N살 입력 input chagne
@@ -99,8 +84,6 @@ export default function BirthDatePicker({
     if (value.length > 2 || Number(value) < 0) return
 
     setYearInput(value)
-    setIsManualInput(true)
-    setIsInputDisabled(true)
   }
 
   // N개월 입력 input change
@@ -109,8 +92,6 @@ export default function BirthDatePicker({
     if (Number(value) > 12 || Number(value) < 0) return
 
     setMonthInput(value)
-    setIsManualInput(true)
-    setIsInputDisabled(true)
   }
 
   return (
@@ -147,6 +128,7 @@ export default function BirthDatePicker({
               type="text"
               value={dateInput}
               onChange={handleDateInputChange}
+              disabled
               className="h-8 text-sm"
               placeholder="생년월일 (YYYYMMDD)"
             />
@@ -175,9 +157,9 @@ export default function BirthDatePicker({
                   locale={ko}
                   selected={field.value}
                   mode="single"
+                  month={calendarDate}
                   onSelect={(date) => {
                     if (date) {
-                      setIsManualInput(true)
                       updateBirthDate(date)
                       setIsPopoverOpen(false)
                     }
