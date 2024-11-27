@@ -1,37 +1,26 @@
 'use client'
 
+import PatientInfo from '@/components/hospital/common/patient-info'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { cn, getDaysDifference } from '@/lib/utils/utils'
 import type { SummaryData } from '@/types/icu/summary'
-import { Cat, Dog } from 'lucide-react'
+import { Columns4 } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
-import { useMemo } from 'react'
 import SummaryTableCell from './summary-table-cell'
-import PatientInfo from '@/components/hospital/common/patient-info'
-
-type SummaryTableRowProps = {
-  summary: SummaryData
-}
 
 export default function SummaryTableRow({ summary }: { summary: SummaryData }) {
   const { push } = useRouter()
   const { hos_id, target_date } = useParams()
-  const { orders, patient } = summary
+  const { orders, patient, icu_io } = summary
+
+  const hospitalizationDays = getDaysDifference(summary.icu_io.in_date)
+  const isPatientOut = summary.icu_io.out_date !== null
 
   const handleClickRow = (patientId: string) => {
     push(`/hospital/${hos_id}/icu/${target_date}/chart/${patientId}`)
   }
 
-  const isPatientOut = useMemo(
-    () => summary.icu_io.out_date !== null,
-    [summary.icu_io.out_date],
-  )
-
-  const hospitalizationDays = useMemo(
-    () => getDaysDifference(summary.icu_io.in_date),
-    [summary.icu_io.in_date],
-  )
   return (
     <TableRow
       className={cn(
@@ -40,13 +29,26 @@ export default function SummaryTableRow({ summary }: { summary: SummaryData }) {
       )}
       onClick={() => handleClickRow(summary.patient_id as string)}
     >
-      <TableCell className="flex w-[200px] items-center justify-between">
-        <PatientInfo
-          name={patient.name}
-          species={patient.species}
-          breed={patient.breed}
-          iconSize={18}
-        />
+      <TableCell className="flex w-[160px] items-center justify-between gap-1">
+        <div className="flex flex-1 flex-col items-center gap-1">
+          <PatientInfo
+            name={patient.name}
+            species={patient.species}
+            breed={patient.breed}
+            iconSize={18}
+            col
+          />
+
+          {icu_io.cage && (
+            <div className="flex items-center justify-center gap-1 text-muted-foreground">
+              <Columns4 size={12} />
+              <span className="max-w-[88px] truncate text-xs">
+                {icu_io.cage}
+              </span>
+            </div>
+          )}
+        </div>
+
         <span className="shrink-0 text-xs">{hospitalizationDays}일차</span>
       </TableCell>
       {TIMES.map((time) => (

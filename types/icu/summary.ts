@@ -6,6 +6,7 @@ export type SummaryData = {
     in_date: string
     out_date: string | null
     created_at: string
+    cage: string | null
   }
   orders: SummaryOrder[]
   patient: {
