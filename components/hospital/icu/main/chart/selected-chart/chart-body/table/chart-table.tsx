@@ -1,6 +1,5 @@
 'use client'
 
-import NewFeature from '@/components/common/new-feature'
 import QuickOrderInsertInput from '@/components/hospital/icu/main/chart/selected-chart/chart-body/quick-order-insert-input'
 import CellsRowTitles from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/cells-row-titles'
 import DeleteOrdersAlertDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/delete-orders-alert-dialog'
@@ -254,6 +253,7 @@ export default function ChartTable({
   }, [handleSortButtonClick, isSorting])
   // --- sorting mode in / out keyboard shortcut ----
 
+  // ------- order width 조절 -------
   const [orderWidth, setOrderWidth] = useLocalStorage('orderWidth', 400)
   const handleOrderWidthChange = useCallback(() => {
     if (orderWidth === 300) {
@@ -274,6 +274,7 @@ export default function ChartTable({
     }
     setOrderWidth(400)
   }, [orderWidth, setOrderWidth])
+  // ------- order width 조절 -------
 
   return (
     <Table className="border">
@@ -316,21 +317,18 @@ export default function ChartTable({
                   derCalcFactor={der_calc_factor}
                 />
 
-                {/* 다음 업데이트시에 삭제 */}
-                <NewFeature LocalStoragekey="orderWidthFeature">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={handleOrderWidthChange}
-                    className="shrink-0"
-                  >
-                    {orderWidth === 600 ? (
-                      <ArrowLeftToLine size={18} />
-                    ) : (
-                      <ArrowRightFromLine size={18} />
-                    )}
-                  </Button>
-                </NewFeature>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleOrderWidthChange}
+                  className="shrink-0"
+                >
+                  {orderWidth === 600 ? (
+                    <ArrowLeftToLine size={18} />
+                  ) : (
+                    <ArrowRightFromLine size={18} />
+                  )}
+                </Button>
               </>
             )}
 

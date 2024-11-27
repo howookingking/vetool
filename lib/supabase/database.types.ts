@@ -20,6 +20,7 @@ export type Database = {
           mass_vol: number
           name: string
           product_tag: string | null
+          species: string | null
           unit: string | null
         }
         Insert: {
@@ -32,6 +33,7 @@ export type Database = {
           mass_vol: number
           name: string
           product_tag?: string | null
+          species?: string | null
           unit?: string | null
         }
         Update: {
@@ -44,6 +46,7 @@ export type Database = {
           mass_vol?: number
           name?: string
           product_tag?: string | null
+          species?: string | null
           unit?: string | null
         }
         Relationships: [
@@ -504,6 +507,7 @@ export type Database = {
       icu_io: {
         Row: {
           age_in_days: number
+          cage: string | null
           cpcr: string
           created_at: string
           group_list: string[]
@@ -519,6 +523,7 @@ export type Database = {
         }
         Insert: {
           age_in_days: number
+          cage?: string | null
           cpcr?: string
           created_at?: string
           group_list: string[]
@@ -534,6 +539,7 @@ export type Database = {
         }
         Update: {
           age_in_days?: number
+          cage?: string | null
           cpcr?: string
           created_at?: string
           group_list?: string[]

@@ -132,4 +132,4 @@ export type IcuReadOnlyOrderData = Pick<
   | 'icu_chart_order_type'
 >
 
-export type DietsOrderData = Pick<DietVetool, 'name' | 'mass_vol' | 'unit'>
+export type Diets = Pick<DietVetool, 'name' | 'mass_vol' | 'unit'>

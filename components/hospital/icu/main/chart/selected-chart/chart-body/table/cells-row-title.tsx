@@ -25,7 +25,7 @@ export default function CellsRowTitle({
   species?: string
   orderWidth: number
 }) {
-  const { order_comment, order_type, order_id } = order
+  const { order_comment, order_type, order_id, order_name } = order
   const {
     basicHosData: { orderColorsData },
   } = useBasicHosDataContext()
@@ -160,7 +160,7 @@ export default function CellsRowTitle({
       >
         <div className="flex items-center gap-1 truncate">
           <span className="font-semibold transition group-hover:underline">
-            {parsingOrderName(order)}
+            {parsingOrderName(order_type, order_name)}
           </span>
 
           {rowVitalRefRange && (

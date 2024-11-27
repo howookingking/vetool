@@ -1,7 +1,3 @@
-import { cn } from '@/lib/utils/utils'
-import { Command as CommandPrimitive } from 'cmdk'
-import { Check } from 'lucide-react'
-import React, { useMemo, useState } from 'react'
 import {
   Command,
   CommandEmpty,
@@ -9,11 +5,14 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command'
+import { Command as CommandPrimitive } from 'cmdk'
+import React, { useMemo, useState } from 'react'
 import { Input } from './input'
 import { Popover, PopoverAnchor, PopoverContent } from './popover'
 import { Skeleton } from './skeleton'
 
 type Props<T extends string> = {
+  ref?: React.ForwardedRef<HTMLInputElement>
   selectedValue: T
   onSelectedValueChange: (value: T) => void
   searchValue: string
@@ -26,6 +25,7 @@ type Props<T extends string> = {
 }
 
 export function AutoComplete<T extends string>({
+  ref,
   selectedValue,
   onSelectedValueChange,
   searchValue,
@@ -88,7 +88,11 @@ export function AutoComplete<T extends string>({
               onFocus={() => setOpen(true)}
               // onBlur={onInputBlur}
             >
-              <Input placeholder={placeholder} />
+              <Input
+                placeholder={placeholder}
+                ref={ref}
+                className="focus:ring-inset"
+              />
             </CommandPrimitive.Input>
           </PopoverAnchor>
           {!open && <CommandList aria-hidden="true" className="hidden" />}
@@ -108,8 +112,11 @@ export function AutoComplete<T extends string>({
             <CommandList>
               {isLoading && (
                 <CommandPrimitive.Loading>
-                  <div className="p-1">
-                    <Skeleton className="h-6 w-full" />
+                  <div className="space-y-1 p-1">
+                    <Skeleton className="h-7 w-full" />
+                    <Skeleton className="h-7 w-full" />
+                    <Skeleton className="h-7 w-full" />
+                    <Skeleton className="h-7 w-full" />
                   </div>
                 </CommandPrimitive.Loading>
               )}

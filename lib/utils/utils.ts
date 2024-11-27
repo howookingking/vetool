@@ -262,18 +262,18 @@ export const hasOrderSortingChanges = (
   return JSON.stringify(prevOrders) !== JSON.stringify(sortedOrders)
 }
 
-export const parsingOrderName = (order: SelectedIcuOrder) => {
-  if (order.order_type === 'fluid') {
-    return `${order.order_name.split('#')[0]}  ${order.order_name.split('#')[3] ? `+ ${order.order_name.split('#')[3]}` : ''} `
+export const parsingOrderName = (orderType: string, orderName: string) => {
+  if (orderType === 'fluid') {
+    const [fluidName, _, additives] = orderName.split('#')
+    return `${fluidName}  ${additives ? `+ ${additives}` : ''} `
   }
 
-  if (order.order_type === 'feed') {
-    const dietDescription = order.order_name.split('#')[2]
-
-    return `${order.order_name.split('#')[0]} ${dietDescription ? `+ ${dietDescription}` : ''}`
+  if (orderType === 'feed') {
+    const [dietName, dietDescription] = orderName.split('#')
+    return `${dietName} ${dietDescription ? `+ ${dietDescription}` : ''}`
   }
 
-  return order.order_name
+  return orderName
 }
 
 export const convertPascalCased = (value: string | null) => {
@@ -310,6 +310,5 @@ export const formatOrderName = (name: string, type: string) => {
 
 export const renderOrderSubComment = (order: SelectedIcuOrder) => {
   if (order.order_type === 'fluid') return 'ml/hr'
-  if (order.order_type === 'feed' && order.order_name.split('#')[1])
-    return `${order.order_name.split('#')[1]}/회`
+  if (order.order_type === 'feed') return `${order.order_name.split('#')[2]}/회`
 }

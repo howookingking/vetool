@@ -5,6 +5,7 @@ import FeedOrderField from '@/components/hospital/icu/main/chart/selected-chart/
 import FluidOrderField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/fluid-order/fluid-order-field'
 import OrderFormField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-form-field'
 // import DrugFormField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order-form/drug-order/drug-form-field'
+import NewFeature from '@/components/common/new-feature'
 import { orderSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-schema'
 import OrderTimeSettings from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-time-settings'
 import { Button } from '@/components/ui/button'
@@ -23,7 +24,7 @@ import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import type { DietsOrderData, SelectedIcuOrder } from '@/types/icu/chart'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
 import { useParams } from 'next/navigation'
@@ -31,9 +32,9 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import ChecklistOrderField from './checklist-order/checklist-order-field'
-import { getDiet } from '@/lib/services/icu/chart/get-diets'
 
 export default function OrderForm({
+  hosId,
   showOrderer,
   icuChartId,
   weight,
@@ -42,6 +43,7 @@ export default function OrderForm({
   derCalcFactor,
   setSortedOrders,
 }: {
+  hosId: string
   showOrderer: boolean
   icuChartId: string
   weight: string
@@ -64,7 +66,6 @@ export default function OrderForm({
   } = useBasicHosDataContext()
 
   const [isUpdating, setIsUpdating] = useState(false)
-  const [dietListData, setDietListData] = useState<DietsOrderData[]>([])
   const [startTime, setStartTime] = useState<string>('undefined')
   const [timeTerm, setTimeTerm] = useState<string>('undefined')
   const [orderTime, setOrderTime] = useState<string[]>(
@@ -135,18 +136,6 @@ export default function OrderForm({
     }
   }, [form, startTime, timeTerm])
 
-  useEffect(() => {
-    if (!dietListData.length && orderType === 'feed') {
-      const fetchDietList = async () => {
-        const diets = await getDiet(hos_id as string)
-
-        setDietListData(diets)
-      }
-
-      fetchDietList()
-    }
-  }, [orderType, dietListData.length, hos_id])
-
   return (
     <Form {...form}>
       <form
@@ -174,7 +163,17 @@ export default function OrderForm({
                         <RadioGroupItem value={item.value} />
                       </FormControl>
                       <FormLabel className="cursor-pointer font-normal">
-                        {item.label}
+                        {/* 다음 업데이트시 삭제 */}
+                        {item.label === '식이' ? (
+                          <NewFeature
+                            LocalStoragekey="newFeadFeature"
+                            className="-right-1.5 -top-1.5"
+                          >
+                            식이
+                          </NewFeature>
+                        ) : (
+                          item.label
+                        )}
                       </FormLabel>
                     </FormItem>
                   ))}
@@ -198,8 +197,8 @@ export default function OrderForm({
 
         {orderType === 'feed' && (
           <FeedOrderField
+            hosId={hosId}
             form={form}
-            dietListData={dietListData}
             weight={weight}
             species={species}
             derCalcFactor={derCalcFactor}

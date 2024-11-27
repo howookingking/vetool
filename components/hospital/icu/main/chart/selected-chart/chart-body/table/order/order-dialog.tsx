@@ -126,6 +126,7 @@ export default function OrderDialog({
             <TabsContent value="default">
               {!isExport && (
                 <LazyOrderForm
+                  hosId={hosId}
                   showOrderer={showOrderer}
                   icuChartId={icuChartId}
                   species={patient.species}
