@@ -33,15 +33,8 @@ export default function TxTableCell({
   const searchParams = useSearchParams()
   const isMobile = useIsMobile()
 
-  const isOrderScheduled = useMemo(
-    () => order.icu_chart_order_time[time - 1] !== '0',
-    [order.icu_chart_order_time, time],
-  )
-
-  const isTxCompleted = useMemo(
-    () => order.treatments.some((tx) => tx.time === time),
-    [order.treatments, time],
-  )
+  const isOrderScheduled = order.icu_chart_order_time[time - 1] !== '0'
+  const isTxCompleted = order.treatments.some((tx) => tx.time === time)
 
   const renderOrderContent = () => {
     if (!isTxCompleted && isOrderScheduled) {

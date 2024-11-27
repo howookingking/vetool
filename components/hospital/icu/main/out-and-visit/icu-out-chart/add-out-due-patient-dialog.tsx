@@ -28,7 +28,7 @@ import { convertPascalCased } from '@/lib/utils/utils'
 import type { NotOutDuePatientsData } from '@/types/icu/movement'
 import { Plus } from 'lucide-react'
 import { useParams } from 'next/navigation'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function AddOutDuePatientDialog() {
   const [selectedIoId, setSelectedIoId] = useState('')
@@ -38,6 +38,8 @@ export default function AddOutDuePatientDialog() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const { hos_id, target_date } = useParams()
   const [isFetching, setIsFetching] = useState(false)
+
+  const noPatientToAdd = notOutDuePatients.length === 0
 
   useEffect(() => {
     if (isDialogOpen) {
@@ -70,11 +72,6 @@ export default function AddOutDuePatientDialog() {
 
     setIsDialogOpen(false)
   }
-
-  const noPatientToAdd = useMemo(
-    () => notOutDuePatients.length === 0,
-    [notOutDuePatients],
-  )
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

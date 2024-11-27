@@ -26,7 +26,7 @@ import { convertPascalCased } from '@/lib/utils/utils'
 import { VisitablePatientsData } from '@/types/icu/movement'
 import { Plus } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function AddVisitPatientDialog() {
   const [selectedPatient, setSelectedPatient] = useState<{
@@ -41,6 +41,8 @@ export default function AddVisitPatientDialog() {
   const { hos_id, target_date } = useParams()
   const { refresh } = useRouter()
   const [isFetching, setIsFetching] = useState(false)
+
+  const noPatientToAdd = visitablePatients.length === 0
 
   useEffect(() => {
     if (isDialogOpen) {
@@ -80,15 +82,6 @@ export default function AddVisitPatientDialog() {
 
     refresh()
     setIsDialogOpen(false)
-  }
-
-  const noPatientToAdd = useMemo(
-    () => visitablePatients.length === 0,
-    [visitablePatients],
-  )
-
-  function pascalCased(breed: string): import('react').ReactNode {
-    throw new Error('Function not implemented.')
   }
 
   return (
