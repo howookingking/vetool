@@ -59,7 +59,8 @@ export default function AddDietDialog({
       name: dietData?.name || '',
       description: dietData?.description || null,
       company: dietData?.company || '',
-      mass_vol: dietData?.mass_vol || 0,
+      species: dietData?.species || '',
+      mass_vol: dietData?.mass_vol.toString() || '',
       unit: dietData?.unit || unit,
     },
   })
@@ -67,13 +68,16 @@ export default function AddDietDialog({
   const handleSubmit = async (values: z.infer<typeof dietSchema>) => {
     setIsSubmitting(true)
 
-    await upsertDietData({ ...values, hos_id: hos_id as string })
+    await upsertDietData({
+      ...values,
+      mass_vol: Number(values.mass_vol),
+      hos_id: hos_id as string,
+    })
 
+    refresh()
     form.reset()
     setIsDialogOpen(false)
     setIsSubmitting(false)
-
-    refresh()
   }
 
   return (
@@ -113,25 +117,6 @@ export default function AddDietDialog({
               )}
             />
 
-            {/* 제조사  */}
-            <FormField
-              control={form.control}
-              name="company"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>제조사*</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="제조사 입력"
-                      value={field.value}
-                      onChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             {/* 설명 */}
             <FormField
               control={form.control}
@@ -150,6 +135,70 @@ export default function AddDietDialog({
                 </FormItem>
               )}
             />
+
+            <div className="flex space-x-4">
+              {/* 제조사  */}
+              <FormField
+                control={form.control}
+                name="company"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel>제조사*</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="제조사 입력"
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* 종 */}
+              <FormField
+                control={form.control}
+                name="species"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel>종*</FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={(value) => {
+                          field.onChange(value)
+                        }}
+                        defaultValue={field.value ?? 'both'}
+                        name="unit"
+                      >
+                        <FormControl>
+                          <SelectTrigger
+                            className={cn(
+                              'h-8 text-sm',
+                              !field.value && 'text-muted-foreground',
+                            )}
+                          >
+                            <SelectValue placeholder="종을 선택해주세요" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="canine" className="text-xs">
+                            <span>Canine</span>
+                          </SelectItem>
+                          <SelectItem value="feline" className="text-xs">
+                            Feline
+                          </SelectItem>
+                          <SelectItem value="both" className="text-xs">
+                            Both
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             {/* 총량과 단위 */}
             <div className="flex space-x-4">
