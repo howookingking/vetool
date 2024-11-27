@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils/utils'
 import { LoaderCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import IcuSettingsCard from '../icu-settings-card'
 
 export default function MaintenanceRateSettings({
   hosId,
@@ -33,13 +34,17 @@ export default function MaintenanceRateSettings({
   }
 
   return (
-    <>
+    <IcuSettingsCard
+      title="유지속도 계산법 설정"
+      isUpdating={isUpdating}
+      onSubmit={handleUpdateMaintenanceRateCalcMethod}
+    >
       <RadioGroup
         value={localMaintenaceRateCalcMethod}
         onValueChange={setLocalMaintenaceRateCalcMethod}
-        className="flex flex-col gap-10 p-4"
+        className="flex flex-col gap-10"
       >
-        <div className="w-1/2">
+        <div>
           <RadioGroupItem value="a" id="a" className="hidden" />
           <Label
             htmlFor="a"
@@ -52,7 +57,7 @@ export default function MaintenanceRateSettings({
           </Label>
         </div>
 
-        <div className="w-1/2">
+        <div>
           <RadioGroupItem value="b" id="b" className="hidden" />
           <Label
             htmlFor="b"
@@ -66,7 +71,7 @@ export default function MaintenanceRateSettings({
           </Label>
         </div>
 
-        <div className="w-1/2">
+        <div>
           <RadioGroupItem value="c" id="c" className="hidden" />
           <Label
             htmlFor="c"
@@ -80,17 +85,6 @@ export default function MaintenanceRateSettings({
           </Label>
         </div>
       </RadioGroup>
-
-      <Button
-        onClick={handleUpdateMaintenanceRateCalcMethod}
-        className="ml-auto"
-        disabled={isUpdating}
-      >
-        저장
-        <LoaderCircle
-          className={cn(isUpdating ? 'ml-2 animate-spin' : 'hidden')}
-        />
-      </Button>
-    </>
+    </IcuSettingsCard>
   )
 }

@@ -101,75 +101,81 @@ export default function BirthDatePicker({
       render={({ field }) => (
         <FormItem className="flex flex-col justify-end">
           <FormLabel>생년월일*</FormLabel>
-          <div className="flex items-center gap-2">
-            <div className="relative w-full">
-              <Input
-                type="number"
-                value={yearInput}
-                onChange={handleYearInputChange}
-                className="h-8 text-sm"
-                max={99}
-              />
-              <span className="absolute right-2 top-2 text-xs">살</span>
-            </div>
-            <div className="relative w-full">
-              <Input
-                type="number"
-                value={monthInput}
-                onChange={handleMonthInputChange}
-                className="h-8 text-sm"
-              />
-              <span className="absolute right-2 top-2 text-xs">개월</span>
-            </div>
-
-            <span className="shrink-0">OR</span>
-
-            <Input
-              type="text"
-              value={dateInput}
-              onChange={handleDateInputChange}
-              disabled
-              className="h-8 text-sm"
-              placeholder="생년월일 (YYYYMMDD)"
-            />
-            <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="h-8 w-8 border-none px-2"
-                  aria-label="Open calendar"
-                >
-                  <CalendarIcon className="h-4 w-4" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="end">
-                <Calendar
-                  className="z-50"
-                  styles={{
-                    caption_label: { display: 'none' },
-                    dropdown_month: { fontSize: 14 },
-                    dropdown_year: { fontSize: 14 },
-                    button: { fontSize: 14 },
-                  }}
-                  captionLayout="dropdown-buttons"
-                  fromYear={1900}
-                  toYear={new Date().getFullYear()}
-                  locale={ko}
-                  selected={field.value}
-                  mode="single"
-                  month={calendarDate}
-                  onSelect={(date) => {
-                    if (date) {
-                      updateBirthDate(date)
-                      setIsPopoverOpen(false)
-                    }
-                  }}
-                  disabled={(date) =>
-                    date > new Date() || date < new Date('1900-01-01')
-                  }
+          <div className="flex flex-col items-center gap-2 sm:flex-row">
+            {/* 직접 입력 */}
+            <div className="flex w-full items-center justify-between gap-2">
+              <div className="relative w-full">
+                <Input
+                  type="number"
+                  value={yearInput}
+                  onChange={handleYearInputChange}
+                  className="h-8 text-sm"
+                  max={99}
                 />
-              </PopoverContent>
-            </Popover>
+                <span className="absolute right-2 top-2 text-xs">살</span>
+              </div>
+              <div className="relative w-full">
+                <Input
+                  type="number"
+                  value={monthInput}
+                  onChange={handleMonthInputChange}
+                  className="h-8 text-sm"
+                />
+                <span className="absolute right-2 top-2 text-xs">개월</span>
+              </div>
+
+              <span className="shrink-0">OR</span>
+            </div>
+
+            {/* Date Picker */}
+            <div className="flex">
+              <Input
+                type="text"
+                value={dateInput}
+                onChange={handleDateInputChange}
+                disabled
+                className="h-8 text-sm"
+                placeholder="생년월일 (YYYYMMDD)"
+              />
+              <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="h-8 w-8 border-none px-2"
+                    aria-label="Open calendar"
+                  >
+                    <CalendarIcon className="h-4 w-4" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="end">
+                  <Calendar
+                    className="z-50"
+                    styles={{
+                      caption_label: { display: 'none' },
+                      dropdown_month: { fontSize: 14 },
+                      dropdown_year: { fontSize: 14 },
+                      button: { fontSize: 14 },
+                    }}
+                    captionLayout="dropdown-buttons"
+                    fromYear={1900}
+                    toYear={new Date().getFullYear()}
+                    locale={ko}
+                    selected={field.value}
+                    mode="single"
+                    month={calendarDate}
+                    onSelect={(date) => {
+                      if (date) {
+                        updateBirthDate(date)
+                        setIsPopoverOpen(false)
+                      }
+                    }}
+                    disabled={(date) =>
+                      date > new Date() || date < new Date('1900-01-01')
+                    }
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
           </div>
           <FormMessage className="text-xs" />
         </FormItem>

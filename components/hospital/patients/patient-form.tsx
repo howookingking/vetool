@@ -491,11 +491,13 @@ export default function PatientForm({
                         !field.value && 'text-muted-foreground',
                       )}
                     >
-                      {field.value
-                        ? `${field.value.split('#')[1]} (${field.value.split('#')[0]})`
-                        : watchSpecies
-                          ? '품종을 선택해주세요'
-                          : '종을 먼저 선택해주세요'}
+                      <span className="block overflow-hidden text-ellipsis whitespace-nowrap pr-6">
+                        {field.value
+                          ? `${field.value.split('#')[1]} (${field.value.split('#')[0]})`
+                          : watchSpecies
+                            ? '품종을 선택해주세요'
+                            : '종을 먼저 선택해주세요'}
+                      </span>
                       <CaretSortIcon className="absolute right-3 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </FormControl>

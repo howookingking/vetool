@@ -6,7 +6,7 @@ export default function RerDerDisplay({
   prefix: string
 }) {
   return (
-    <div className="col-span-3 flex h-9 cursor-not-allowed items-center justify-between rounded-md border px-2.5">
+    <div className="col-span-4 flex h-9 cursor-not-allowed items-center justify-between rounded-md border px-2.5 sm:col-span-3">
       <span className="text-sm font-semibold text-muted-foreground">
         {prefix}
       </span>

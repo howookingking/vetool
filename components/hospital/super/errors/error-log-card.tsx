@@ -41,13 +41,13 @@ export default function ErrorLogCard({
               {errorLog.is_server ? 'Server' : 'Client'}
             </Badge>
 
-            <CardTitle className="text-lg font-semibold">
+            <CardTitle className="max-w-36 text-lg font-semibold sm:w-full sm:max-w-full">
               {errorLog.description || parsedError.message}
             </CardTitle>
           </div>
 
           <div className="flex items-center gap-2">
-            <div className="flex shrink-0 flex-col items-end space-x-4 text-sm">
+            <div className="flex shrink-0 flex-col items-end space-x-4 text-xs sm:text-sm">
               <span>{errorLog.user_id.hos_id.city}</span>
               <span>{errorLog.user_id.hos_id.name}</span>
               {formatTimeDifference(errorLog.created_at)}

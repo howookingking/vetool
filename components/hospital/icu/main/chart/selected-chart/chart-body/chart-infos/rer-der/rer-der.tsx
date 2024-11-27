@@ -1,3 +1,5 @@
+import RerDerForm from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/rer-der/rer-der-form'
+import RerDerToolTip from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/rer-der/rer-der-tool-tip'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -13,8 +15,6 @@ import { calculateRer } from '@/lib/calculators/rer'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { Zap } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
-import RerDerForm from './rer-der-form'
-import RerDerToolTip from './rer-der-tool-tip'
 
 export default function RerDer({
   weight,
