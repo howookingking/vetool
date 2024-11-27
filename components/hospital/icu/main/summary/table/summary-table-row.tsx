@@ -5,29 +5,22 @@ import { TableCell, TableRow } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { cn, getDaysDifference } from '@/lib/utils/utils'
 import type { SummaryData } from '@/types/icu/summary'
-import { useParams, useRouter } from 'next/navigation'
-import { useMemo } from 'react'
-import SummaryTableCell from './summary-table-cell'
 import { Columns4 } from 'lucide-react'
+import { useParams, useRouter } from 'next/navigation'
+import SummaryTableCell from './summary-table-cell'
 
 export default function SummaryTableRow({ summary }: { summary: SummaryData }) {
   const { push } = useRouter()
   const { hos_id, target_date } = useParams()
   const { orders, patient, icu_io } = summary
 
+  const hospitalizationDays = getDaysDifference(summary.icu_io.in_date)
+  const isPatientOut = summary.icu_io.out_date !== null
+
   const handleClickRow = (patientId: string) => {
     push(`/hospital/${hos_id}/icu/${target_date}/chart/${patientId}`)
   }
 
-  const isPatientOut = useMemo(
-    () => summary.icu_io.out_date !== null,
-    [summary.icu_io.out_date],
-  )
-
-  const hospitalizationDays = useMemo(
-    () => getDaysDifference(summary.icu_io.in_date),
-    [summary.icu_io.in_date],
-  )
   return (
     <TableRow
       className={cn(

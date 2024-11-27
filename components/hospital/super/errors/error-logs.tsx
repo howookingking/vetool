@@ -3,20 +3,17 @@
 import ErrorLogCard from '@/components/hospital/super/errors/error-log-card'
 import ErrorTypeFilter from '@/components/hospital/super/errors/error-type-filter'
 import { Card, CardContent } from '@/components/ui/card'
-import { useRouter } from 'next/navigation'
-import { useMemo, useState } from 'react'
-import DateRagneSelect from '../../icu/main/search/sheet/date-range-select'
 import type { ErrorFeedbackType } from '@/types/vetool'
+import { useMemo, useState } from 'react'
 
 export default function ErrorLogDashboard({
   errorLogs,
 }: {
   errorLogs: ErrorFeedbackType[]
 }) {
-  const router = useRouter()
   const [filter, setFilter] = useState('all')
   const [search, setSearch] = useState('')
-  const [dateFilter, setDateFilter] = useState('1')
+  // const [dateFilter, setDateFilter] = useState('1')
 
   const filteredAndSortedLogs = useMemo(() => {
     let filtered = [...errorLogs]
@@ -41,11 +38,11 @@ export default function ErrorLogDashboard({
     return filtered
   }, [errorLogs, filter, search])
 
-  const handleDateFilterChange = (newDateFilter: string) => {
-    setDateFilter(newDateFilter)
+  // const handleDateFilterChange = (newDateFilter: string) => {
+  //   setDateFilter(newDateFilter)
 
-    router.push(`super?date=${newDateFilter}`)
-  }
+  //   router.push(`super?date=${newDateFilter}`)
+  // }
 
   return (
     <div className="flex flex-col gap-4">
