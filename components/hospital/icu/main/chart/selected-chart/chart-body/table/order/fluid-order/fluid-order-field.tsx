@@ -24,7 +24,6 @@ import {
 } from '@/components/ui/select'
 import { FLUIDS } from '@/constants/hospital/icu/fluid/fluid'
 import { calculatedMaintenaceRate } from '@/lib/calculators/maintenace-rate'
-import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { Calculator } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
@@ -42,41 +41,45 @@ export default function FluidOrderField({
   ageInDays: number
   weight: string
 }) {
+  const watchedOrderName = form.watch('icu_chart_order_name')
+  const fluidName = watchedOrderName.split('#')[0]
+  const maintenaceRateCalcMethodField = watchedOrderName.split('#')[1]
+  const fold = watchedOrderName.split('#')[2]
+  const additives = watchedOrderName.split('#')[3]
+
   const {
     basicHosData: { maintenanceRateCalcMethod },
   } = useBasicHosDataContext()
 
-  const { selectedChartOrder } = useIcuOrderStore()
-  const [displayFluidName, setDisplayFluidName] = useState(
-    selectedChartOrder.order_name?.split('#')[0] ?? '',
-  )
+  const [displayFluidName, setDisplayFluidName] = useState(fluidName ?? '')
   const [localMaintenaceRateCalcMethod, setLocalMaintenaceRateCalcMethod] =
-    useState(
-      selectedChartOrder.order_name?.split('#')[1] ?? maintenanceRateCalcMethod,
-    )
-  const [fold, setFold] = useState(
-    selectedChartOrder.order_name?.split('#')[2] ?? '1',
-  )
-  const [additives, setAdditives] = useState(
-    selectedChartOrder.order_name?.split('#')[3] ?? '',
-  )
+    useState(maintenaceRateCalcMethodField ?? maintenanceRateCalcMethod)
+  const [localFold, setLocalFold] = useState(fold ?? '1')
+  const [localAdditives, setLocalAdditives] = useState(additives ?? '')
 
   useEffect(() => {
-    const fullValue = `${displayFluidName}#${localMaintenaceRateCalcMethod}#${fold}#${additives}`
+    const fullValue = `${displayFluidName}#${localMaintenaceRateCalcMethod}#${localFold}#${localAdditives}`
 
     form.setValue('icu_chart_order_name', fullValue)
-  }, [displayFluidName, fold, form, localMaintenaceRateCalcMethod, additives])
+  }, [
+    displayFluidName,
+    localFold,
+    form,
+    localMaintenaceRateCalcMethod,
+    localAdditives,
+    watchedOrderName,
+  ])
 
   const calculateFluidRate = useCallback(() => {
     const result = calculatedMaintenaceRate(
       weight,
       species as 'canine' | 'feline',
-      fold,
+      localFold,
       localMaintenaceRateCalcMethod as 'a' | 'b' | 'c',
     )
 
     form.setValue('icu_chart_order_comment', result)
-  }, [fold, form, localMaintenaceRateCalcMethod, species, weight])
+  }, [localFold, form, localMaintenaceRateCalcMethod, species, weight])
 
   return (
     <>
@@ -113,8 +116,8 @@ export default function FluidOrderField({
         <div className="w-1/2 space-y-2">
           <Label className="font-semibold">첨가제</Label>
           <Input
-            value={additives}
-            onChange={(e) => setAdditives(e.target.value)}
+            value={localAdditives}
+            onChange={(e) => setLocalAdditives(e.target.value)}
           />
         </div>
       </div>
@@ -206,7 +209,7 @@ export default function FluidOrderField({
                   </SelectContent>
                 </Select>
 
-                <Select value={fold} onValueChange={setFold}>
+                <Select value={localFold} onValueChange={setLocalFold}>
                   <SelectTrigger className="col-span-1">
                     <SelectValue placeholder="배수" />
                   </SelectTrigger>

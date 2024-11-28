@@ -33,6 +33,17 @@ export default function QuickOrderInsertInput({
   const [orderType, setOrderType] = useState('manual')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  const quickOrderPlaceholder = (() => {
+    switch (orderType) {
+      case 'fluid':
+        return '빠른 오더 (수액명$수액 속도)'
+      case 'feed':
+        return '빠른 오더 (사료명$회당 급여량)'
+      default:
+        return '빠른 오더 (오더명$오더 설명)'
+    }
+  })()
+
   const handleSubmit = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!quickOrderInput) return
 
@@ -94,7 +105,7 @@ export default function QuickOrderInsertInput({
         </SelectTrigger>
         <SelectContent className="p-0">
           {DEFAULT_ICU_ORDER_TYPE.filter(
-            (item) => item.value !== 'checklist' && item.value !== 'fluid',
+            (item) => item.value !== 'checklist',
           ).map((item) => (
             <SelectItem
               key={item.value}
@@ -113,7 +124,7 @@ export default function QuickOrderInsertInput({
       <Input
         className="h-11 rounded-none border-b-0 border-l-0 border-t-0 focus-visible:ring-0"
         disabled={isSubmitting}
-        placeholder="빠른 오더 (오더명$오더설명)"
+        placeholder={quickOrderPlaceholder}
         value={isSubmitting ? '' : quickOrderInput}
         onChange={(e) => setQuickOrderInput(e.target.value)}
         onKeyDown={handleSubmit}

@@ -107,6 +107,7 @@ export type AdminDietData = Pick<
   | 'unit'
   | 'mass_vol'
   | 'species'
+  | 'created_at'
 > & {
   hos_id: Pick<Hospital, 'hos_id' | 'name'>
 }

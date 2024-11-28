@@ -45,7 +45,7 @@ export default function DeleteDietDialog({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="ghost" className="h-8 w-8 rounded-full p-0">
+        <Button variant="ghost" size="icon">
           <Trash2 size={16} />
         </Button>
       </AlertDialogTrigger>

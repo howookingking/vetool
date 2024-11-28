@@ -135,4 +135,7 @@ export type IcuReadOnlyOrderData = Pick<
   | 'icu_chart_order_type'
 >
 
-export type Diets = Pick<Diet, 'name' | 'mass_vol' | 'unit'>
+export type PinnedDiet = Pick<
+  Diet,
+  'diet_id' | 'name' | 'unit' | 'species' | 'mass_vol'
+>

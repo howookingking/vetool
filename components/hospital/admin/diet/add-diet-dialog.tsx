@@ -68,11 +68,14 @@ export default function AddDietDialog({
   const handleSubmit = async (values: z.infer<typeof dietSchema>) => {
     setIsSubmitting(true)
 
-    await upsertDietData({
-      ...values,
-      mass_vol: Number(values.mass_vol),
-      hos_id: hos_id as string,
-    })
+    await upsertDietData(
+      {
+        ...values,
+        mass_vol: Number(values.mass_vol),
+        hos_id: hos_id as string,
+      },
+      isEdit,
+    )
 
     refresh()
     form.reset()
@@ -86,9 +89,9 @@ export default function AddDietDialog({
         <Button
           size="icon"
           variant={isEdit ? 'ghost' : 'default'}
-          className={cn(isEdit ? 'block px-8' : 'h-6 w-6 rounded-full', '')}
+          className={cn(isEdit ? 'inline-flex' : 'h-6 w-6 rounded-full', '')}
         >
-          {isEdit ? <Edit size={14} /> : <Plus size={18} />}
+          {isEdit ? <Edit size={16} /> : <Plus size={18} />}
         </Button>
       </DialogTrigger>
 
