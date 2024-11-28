@@ -40,13 +40,13 @@ export default function FeedOrderField({
   const watchedOrderName = form.watch('icu_chart_order_name')
   const dietName = watchedOrderName.split('#')[0]
   const dietDescription = watchedOrderName.split('#')[1] ?? ''
-  const dietUnit = watchedOrderName.split('#')[2] ?? ''
   const orderLength = orderTime.filter((time) => time !== '0').length
 
   const [isLoading, setIsLoading] = useState(false)
   const [diets, setDiets] = useState<PinnedDiet[]>([])
   const [searchedDiet, setSearchedDiet] = useState(dietName)
   const [selectedDiet, setSelectedDiet] = useState<PinnedDiet | null>(null)
+  const [showNonSelectedMessage, setShowNonSelectedMessage] = useState(false)
   const [localFeedPerDay, setLocalFeedPerDay] = useState(
     orderLength === 0 ? '' : orderLength.toString(),
   )
@@ -107,6 +107,7 @@ export default function FeedOrderField({
   const handleCalculateClick = () => {
     if (!selectedDiet) {
       dietNameRef.current?.focus()
+      setShowNonSelectedMessage(true)
       return
     }
     if (!calculatedDer) {
@@ -128,6 +129,8 @@ export default function FeedOrderField({
       'icu_chart_order_comment',
       `${feedAmount}${selectedDiet.unit}`,
     )
+
+    setShowNonSelectedMessage(false)
   }
 
   useEffect(() => {
@@ -153,6 +156,12 @@ export default function FeedOrderField({
               <HelperTooltip variant="warning">
                 칼로리값이 정확하지 않을 수 있습니다
               </HelperTooltip>
+              {showNonSelectedMessage && (
+                <span className="text-xs text-rose-500">
+                  등록된 사료가 아니면 회당 급여량이 계산되지 않습니다 (사료
+                  등록은 관리자 페이지에서 할 수 있습니다)
+                </span>
+              )}
             </FormLabel>
             <FormControl>
               <div className="relative">
@@ -171,6 +180,7 @@ export default function FeedOrderField({
                     if (value === searchedDiet) return
 
                     setSearchedDiet(value)
+                    setShowNonSelectedMessage(false)
                     form.setValue('icu_chart_order_comment', '')
                   }}
                   placeholder={`${species === 'canine' ? '강아지용' : '고양이용'} 또는 공통사료를 검색합니다`}
