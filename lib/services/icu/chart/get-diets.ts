@@ -1,21 +1,23 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import type { PinnedDiet } from '@/types/icu/chart'
 import { redirect } from 'next/navigation'
 
-export const getDiets = async (hosId: string, species: string) => {
+export const getPinnedDietData = async (hosId: string, species: string) => {
   const supabase = await createClient()
 
-  const { data: dietsData, error: dietsDataError } = await supabase
-    .from('diets')
-    .select('name, mass_vol, unit, species')
-    .or(`hos_id.eq.${hosId},hos_id.eq.00fd3b03-9f70-40f2-bfb5-f2e34eb44ae5`)
-    .or(`species.eq.${species},species.eq.both`)
+  const { data: dietData, error: dietsDataError } = await supabase
+    .rpc('get_pinned_diet_data', {
+      hos_id_input: hosId,
+      species_input: species,
+    })
+    .returns<PinnedDiet[]>()
 
   if (dietsDataError) {
     console.log(dietsDataError)
     redirect(`/error?message=${dietsDataError.message}`)
   }
 
-  return dietsData
+  return dietData ?? []
 }

@@ -18,6 +18,7 @@ export const getDiets = async (hosId: string) => {
         unit, 
         diet_id, 
         species,
+        created_at,
         hos_id(hos_id, name)
       `,
     )
@@ -48,14 +49,36 @@ type UpsertDietData = {
   diet_id?: string
 }
 
-export const upsertDietData = async (data: UpsertDietData) => {
+export const upsertDietData = async (
+  data: UpsertDietData,
+  isEdit?: boolean,
+) => {
   const supabase = await createClient()
 
-  const { error } = await supabase.from('diets').upsert(data)
+  const { data: upsertDietData, error: upsertDietError } = await supabase
+    .from('diets')
+    .upsert(data)
+    .select('diet_id')
+    .single()
 
-  if (error) {
-    console.error(error)
-    redirect(`/error?message=${error.message}`)
+  if (upsertDietError) {
+    console.error(upsertDietError)
+    redirect(`/error?message=${upsertDietError.message}`)
+  }
+
+  // 수정이 아닌 추가인 경우에는 'hospital_diet_pin' table에 추가
+  if (!isEdit) {
+    const { error: insertDietPinnError } = await supabase
+      .from('hospital_diet_pin')
+      .insert({
+        hos_id: data.hos_id,
+        diet_id: upsertDietData.diet_id,
+      })
+
+    if (insertDietPinnError) {
+      console.error(insertDietPinnError)
+      redirect(`/error?message=${insertDietPinnError.message}`)
+    }
   }
 }
 
@@ -67,9 +90,19 @@ export const deleteDietData = async (dietProductId: string) => {
     .delete()
     .match({ diet_id: dietProductId })
 
+  const { error: deletePinError } = await supabase
+    .from('hospital_diet_pin')
+    .delete()
+    .match({ diet_id: dietProductId })
+
   if (error) {
     console.error(error)
     redirect(`/error?message=${error.message}`)
+  }
+
+  if (deletePinError) {
+    console.error(deletePinError)
+    redirect(`/error?message=${deletePinError.message}`)
   }
 }
 
@@ -80,6 +113,7 @@ export const getPinnedDiets = async (hosId: string) => {
     .from('hospital_diet_pin')
     .select('*')
     .match({ hos_id: hosId })
+    .order('created_at', { ascending: false })
 
   if (error) {
     console.error(error)

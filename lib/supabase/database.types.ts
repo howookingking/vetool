@@ -1541,6 +1541,13 @@ export type Database = {
         }
         Returns: Json
       }
+      get_pinned_diet_data: {
+        Args: {
+          hos_id_input: string
+          species_input: string
+        }
+        Returns: Json
+      }
       insert_default_chart_orders: {
         Args: {
           hos_id_input: string

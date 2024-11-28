@@ -13,23 +13,14 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { calculateRer } from '@/lib/calculators/rer'
-import { getDiets } from '@/lib/services/icu/chart/get-diets'
+import { getPinnedDietData } from '@/lib/services/icu/chart/get-diets'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import type { Diets } from '@/types/icu/chart'
+import type { PinnedDiet } from '@/types/icu/chart'
 import { Calculator } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
-
-interface FeedOrderFieldProps {
-  hosId: string
-  form: UseFormReturn<z.infer<typeof orderSchema>>
-  weight: string
-  species: string
-  derCalcFactor: number | null
-  orderTime: string[]
-}
 
 export default function FeedOrderField({
   hosId,
@@ -38,30 +29,34 @@ export default function FeedOrderField({
   species,
   derCalcFactor,
   orderTime,
-}: FeedOrderFieldProps) {
-  const [diets, setDiets] = useState<Diets[]>([])
-
-  const dietName = form.watch('icu_chart_order_name').split('#')[0]
-  const dietDescription = form.watch('icu_chart_order_name').split('#')[1] ?? ''
-  const dietUnit = form.watch('icu_chart_order_name').split('#')[2] ?? ''
-
+}: {
+  hosId: string
+  form: UseFormReturn<z.infer<typeof orderSchema>>
+  weight: string
+  species: string
+  derCalcFactor: number | null
+  orderTime: string[]
+}) {
+  const watchedOrderName = form.watch('icu_chart_order_name')
+  const dietName = watchedOrderName.split('#')[0]
+  const dietDescription = watchedOrderName.split('#')[1] ?? ''
+  const dietUnit = watchedOrderName.split('#')[2] ?? ''
   const orderLength = orderTime.filter((time) => time !== '0').length
 
+  const [isLoading, setIsLoading] = useState(false)
+  const [diets, setDiets] = useState<PinnedDiet[]>([])
   const [searchedDiet, setSearchedDiet] = useState(dietName)
-  const [selectedDiet, setSelectedDiet] = useState<Diets | null>(null)
+  const [selectedDiet, setSelectedDiet] = useState<PinnedDiet | null>(null)
   const [localFeedPerDay, setLocalFeedPerDay] = useState(
     orderLength === 0 ? '' : orderLength.toString(),
   )
 
+  const [localDietDescription, setLocalDietDescription] =
+    useState(dietDescription)
+
   const dietNameRef = useRef<HTMLInputElement>(null)
   const feedPerDayRef = useRef<HTMLInputElement>(null)
   const derRef = useRef<HTMLInputElement>(null)
-
-  const [localDietDescription, setLocalDietDescription] =
-    useState(dietDescription)
-  const [localDietUnit, setLocalDietUnit] = useState(dietUnit)
-
-  const [isLoading, setIsLoading] = useState(false)
 
   const {
     basicHosData: { rerCalcMethod },
@@ -69,7 +64,7 @@ export default function FeedOrderField({
 
   useEffect(() => {
     setIsLoading(true)
-    getDiets(hosId, species)
+    getPinnedDietData(hosId, species)
       .then(setDiets)
       .finally(() => setIsLoading(false))
   }, [hosId, species, setDiets, setIsLoading])
@@ -86,7 +81,6 @@ export default function FeedOrderField({
   useEffect(() => {
     const foundDiet = diets.find((diet) => diet.name === searchedDiet)
     setSelectedDiet(foundDiet || null)
-    setLocalDietUnit(foundDiet?.unit || '')
   }, [searchedDiet, diets])
 
   const calculatedRer = calculateRer(
@@ -98,15 +92,15 @@ export default function FeedOrderField({
     derCalcFactor && (Number(calculatedRer) * derCalcFactor).toFixed(0)
 
   useEffect(() => {
-    const feedOrderName = `${searchedDiet}#${localDietDescription}#${localDietUnit}`
+    const feedOrderName = `${searchedDiet}#${localDietDescription}`
+
     form.setValue('icu_chart_order_name', feedOrderName)
   }, [
-    selectedDiet,
-    localDietDescription,
     searchedDiet,
-    localDietUnit,
-    dietUnit,
+    localDietDescription,
     form,
+    setLocalDietDescription,
+    watchedOrderName,
   ])
 
   // 계산기 버튼 클릭 핸들러
@@ -130,7 +124,10 @@ export default function FeedOrderField({
       Number(localFeedPerDay)
     ).toFixed(1)
 
-    form.setValue('icu_chart_order_comment', feedAmount)
+    form.setValue(
+      'icu_chart_order_comment',
+      `${feedAmount}${selectedDiet.unit}`,
+    )
   }
 
   useEffect(() => {
@@ -260,12 +257,14 @@ export default function FeedOrderField({
         name="icu_chart_order_comment"
         render={({ field }) => (
           <FormItem className="col-span-2 space-y-2">
-            <FormLabel className="font-semibold">1회 급여량</FormLabel>
+            <FormLabel className="font-semibold">
+              1회 급여량 (g/회 또는 ml/회)
+            </FormLabel>
             <FormControl>
               <div className="relative">
                 <Input {...field} placeholder="급여량 입력" className="pr-12" />
                 <span className="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
-                  {`${selectedDiet?.unit || 'g'}/회`}
+                  /회
                 </span>
               </div>
             </FormControl>
