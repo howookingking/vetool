@@ -20,8 +20,16 @@ export const dietColumns = ({
 }): ColumnDef<AdminDietData>[] => [
   {
     accessorKey: 'pinned',
-    header: () => {
-      return isMine ? '병원명' : ' 병원사료등록'
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          {isMine ? '병원명' : ' 병원사료등록'}
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
     },
     cell: ({ row }) => {
       const dietProductId = row.original.diet_id
