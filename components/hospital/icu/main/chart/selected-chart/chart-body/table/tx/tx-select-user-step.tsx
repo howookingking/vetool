@@ -134,6 +134,7 @@ export default function TxSelectUserStep({
       setTxStep,
       isSubscriptionReady,
       refresh,
+      handleClose,
     ],
   )
 

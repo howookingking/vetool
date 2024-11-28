@@ -22,7 +22,7 @@ export default function TxUpsertDialog() {
     orderQueueReset()
     txLocalStateReset()
     setIsMutationCanceled(true)
-  }, [setIsMutationCanceled, setTxStep, orderQueueReset])
+  }, [setIsMutationCanceled, setTxStep, orderQueueReset, txLocalStateReset])
 
   return (
     <Dialog open={txStep !== 'closed'} onOpenChange={handleClose}>
