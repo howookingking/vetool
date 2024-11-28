@@ -10,6 +10,14 @@ import type { VitalRefRange } from '@/types/adimin'
 import { LoaderCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 
 export default function VitalRefRangeSettings({
   hosId,
@@ -59,109 +67,130 @@ export default function VitalRefRangeSettings({
   }
 
   return (
-    <form className="flex flex-col gap-4">
-      {localVitalRefRangeState.map((vital) => (
-        <div key={vital.order_name}>
-          <h4 className="mb-1 text-base font-bold">{vital.order_name}</h4>
+    <Card className="mt-2">
+      <CardHeader>
+        <CardTitle>바이탈 정상 범위 설정</CardTitle>
+      </CardHeader>
 
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <div className="space-y-4 rounded-md bg-slate-50 p-4">
-              <div className="font-medium">Canine</div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor={`${vital.order_name}-canine-min`}>최소</Label>
-                  <Input
-                    className="bg-white"
-                    id={`${vital.order_name}-canine-min`}
-                    type="number"
-                    step="0.1"
-                    value={vital.canine.min}
-                    onChange={(e) =>
-                      handleChange(
-                        vital.order_name,
-                        'canine',
-                        'min',
-                        e.target.value,
-                      )
-                    }
-                  />
+      <CardContent>
+        <form className="flex flex-col gap-4">
+          {localVitalRefRangeState.map((vital) => (
+            <div key={vital.order_name}>
+              <h4 className="mb-1 text-sm font-bold">{vital.order_name}</h4>
+
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div className="space-y-4 rounded-md bg-slate-50 p-4">
+                  <div className="font-medium">Canine</div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor={`${vital.order_name}-canine-min`}>
+                        최소
+                      </Label>
+                      <Input
+                        className="bg-white"
+                        id={`${vital.order_name}-canine-min`}
+                        type="number"
+                        step="0.1"
+                        value={vital.canine.min}
+                        onChange={(e) =>
+                          handleChange(
+                            vital.order_name,
+                            'canine',
+                            'min',
+                            e.target.value,
+                          )
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor={`${vital.order_name}-canine-max`}>
+                        최대
+                      </Label>
+                      <Input
+                        className="bg-white"
+                        id={`${vital.order_name}-canine-max`}
+                        type="number"
+                        step="0.1"
+                        value={vital.canine.max}
+                        onChange={(e) =>
+                          handleChange(
+                            vital.order_name,
+                            'canine',
+                            'max',
+                            e.target.value,
+                          )
+                        }
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor={`${vital.order_name}-canine-max`}>최대</Label>
-                  <Input
-                    className="bg-white"
-                    id={`${vital.order_name}-canine-max`}
-                    type="number"
-                    step="0.1"
-                    value={vital.canine.max}
-                    onChange={(e) =>
-                      handleChange(
-                        vital.order_name,
-                        'canine',
-                        'max',
-                        e.target.value,
-                      )
-                    }
-                  />
+
+                <div className="space-y-4 rounded-md bg-slate-50 p-4">
+                  <div className="font-medium">Feline</div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor={`${vital.order_name}-feline-min`}>
+                        최소
+                      </Label>
+                      <Input
+                        className="bg-white"
+                        id={`${vital.order_name}-feline-min`}
+                        type="number"
+                        step="0.1"
+                        value={vital.feline.min}
+                        onChange={(e) =>
+                          handleChange(
+                            vital.order_name,
+                            'feline',
+                            'min',
+                            e.target.value,
+                          )
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor={`${vital.order_name}-feline-max`}>
+                        최대
+                      </Label>
+                      <Input
+                        className="bg-white"
+                        id={`${vital.order_name}-feline-max`}
+                        type="number"
+                        step="0.1"
+                        value={vital.feline.max}
+                        onChange={(e) =>
+                          handleChange(
+                            vital.order_name,
+                            'feline',
+                            'max',
+                            e.target.value,
+                          )
+                        }
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
+              <Separator className="mt-6" />
             </div>
+          ))}
+        </form>
+      </CardContent>
 
-            <div className="space-y-4 rounded-md bg-slate-50 p-4">
-              <div className="font-medium">Feline</div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor={`${vital.order_name}-feline-min`}>최소</Label>
-                  <Input
-                    className="bg-white"
-                    id={`${vital.order_name}-feline-min`}
-                    type="number"
-                    step="0.1"
-                    value={vital.feline.min}
-                    onChange={(e) =>
-                      handleChange(
-                        vital.order_name,
-                        'feline',
-                        'min',
-                        e.target.value,
-                      )
-                    }
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor={`${vital.order_name}-feline-max`}>최대</Label>
-                  <Input
-                    className="bg-white"
-                    id={`${vital.order_name}-feline-max`}
-                    type="number"
-                    step="0.1"
-                    value={vital.feline.max}
-                    onChange={(e) =>
-                      handleChange(
-                        vital.order_name,
-                        'feline',
-                        'max',
-                        e.target.value,
-                      )
-                    }
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      ))}
-
-      <Button
-        disabled={isUpdating}
-        onClick={handleUpdateVitalRefRange}
-        className="mr-auto"
-      >
-        저장
-        <LoaderCircle
-          className={cn(isUpdating ? 'ml-2 animate-spin' : 'hidden')}
-        />
-      </Button>
-    </form>
+      <CardFooter>
+        <Button
+          type="button"
+          onClick={handleUpdateVitalRefRange}
+          disabled={isUpdating}
+          className="mr-auto"
+        >
+          저장
+          <LoaderCircle
+            className={cn(isUpdating ? 'ml-2 animate-spin' : 'hidden')}
+            size={16}
+          />
+        </Button>
+      </CardFooter>
+    </Card>
   )
 }

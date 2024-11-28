@@ -1,6 +1,14 @@
 'use client'
 
+import OrderColorPicker from '@/components/hospital/admin/icu-settings/order-color/order-color-picker'
 import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { toast } from '@/components/ui/use-toast'
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { updateOrderColor } from '@/lib/services/admin/icu/order-color'
@@ -9,7 +17,7 @@ import type { IcuOrderColors } from '@/types/adimin'
 import { LoaderCircle } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useCallback, useMemo, useState } from 'react'
-import OrderColorPicker from './order-color-picker'
+import IcuSettingsCard from '../icu-settings-card'
 
 export default function OrderColorSetting({
   orderColor,
@@ -56,26 +64,22 @@ export default function OrderColorSetting({
   )
 
   return (
-    <ul className="flex flex-wrap items-end gap-2">
-      {sortedOrders.map(([key, value]) => (
-        <li key={key}>
-          <OrderColorPicker
-            color={value}
-            orderType={key}
-            handleChangeOrderTypeColor={handleOrderColor}
-          />
-        </li>
-      ))}
-      <Button
-        type="button"
-        onClick={handleUpdateOrderColor}
-        disabled={isUpdating}
-      >
-        수정
-        <LoaderCircle
-          className={cn(isUpdating ? 'ml-2 animate-spin' : 'hidden')}
-        />
-      </Button>
-    </ul>
+    <IcuSettingsCard
+      title="오더 색상 설정"
+      isUpdating={isUpdating}
+      onSubmit={handleUpdateOrderColor}
+    >
+      <ul className="flex flex-wrap items-end gap-3">
+        {sortedOrders.map(([key, value]) => (
+          <li key={key}>
+            <OrderColorPicker
+              color={value}
+              orderType={key}
+              handleChangeOrderTypeColor={handleOrderColor}
+            />
+          </li>
+        ))}
+      </ul>
+    </IcuSettingsCard>
   )
 }

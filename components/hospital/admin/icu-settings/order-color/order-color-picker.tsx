@@ -32,7 +32,7 @@ export default function OrderColorPicker({
         }
         value={color}
       >
-        <SelectTrigger className="w-36" id={orderType}>
+        <SelectTrigger className="w-32" id={orderType}>
           <div
             className="h-5 w-5 rounded-full border"
             style={{

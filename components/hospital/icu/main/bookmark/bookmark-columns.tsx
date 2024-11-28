@@ -85,7 +85,6 @@ export const bookmarkColumns: ColumnDef<TemplateChart>[] = [
       )
     },
   },
-
   {
     id: 'edit',
     header: '수정',

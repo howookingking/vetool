@@ -86,8 +86,9 @@ export default function TxSelectUserStep({
             )
           }),
         )
-        orderQueueReset()
-        setTxStep('closed')
+        // orderQueueReset()
+        // setTxStep('closed')
+        handleClose()
         toast({ title: '처치 내역이 업데이트 되었습니다' })
 
         if (!isSubscriptionReady) refresh()
@@ -108,7 +109,7 @@ export default function TxSelectUserStep({
           updatedLogs,
         )
 
-        setTxStep('closed')
+        handleClose()
         toast({ title: '처치 내역이 업데이트 되었습니다' })
 
         if (!isSubscriptionReady) refresh()
@@ -118,7 +119,7 @@ export default function TxSelectUserStep({
 
       // 단일 Tx 일반적인 경우
       await upsertIcuTx(hos_id as string, txLocalState, updatedLogs)
-      setTxStep('closed')
+      handleClose()
       toast({
         title: '처치 내역이 업데이트 되었습니다',
       })
@@ -133,6 +134,7 @@ export default function TxSelectUserStep({
       setTxStep,
       isSubscriptionReady,
       refresh,
+      handleClose,
     ],
   )
 

@@ -5,7 +5,6 @@ import AddChartDialogs from '@/components/hospital/icu/main/chart/add-chart-dial
 import Chart from '@/components/hospital/icu/main/chart/chart'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedChart } from '@/types/icu/chart'
-import { useMemo } from 'react'
 
 export default function ChartEntry({
   chartData,
@@ -18,10 +17,7 @@ export default function ChartEntry({
     basicHosData: { sidebarData },
   } = useBasicHosDataContext()
 
-  const hasIcuIo = useMemo(
-    () => sidebarData.find((io) => io.patient.patient_id === patientId),
-    [patientId, sidebarData],
-  )
+  const hasIcuIo = sidebarData.find((io) => io.patient.patient_id === patientId)
 
   // 입원 전 or 퇴원 후
   if (!chartData && !hasIcuIo) {

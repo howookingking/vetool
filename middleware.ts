@@ -14,13 +14,13 @@ export async function middleware(request: NextRequest) {
     data: { user: authUser },
   } = await supabase.auth.getUser()
 
+  const { data: userData, error: userDataError } = await supabase
+    .from('users')
+    .select('hos_id, email')
+    .match({ user_id: authUser?.id })
+
   if (VETOOL_COMPANY_ROUTES.includes(request.nextUrl.pathname)) {
     if (authUser) {
-      const { data: userData, error: userDataError } = await supabase
-        .from('users')
-        .select('hos_id')
-        .match({ user_id: authUser?.id })
-
       if (userDataError) {
         return NextResponse.redirect(
           new URL(`error?message=${userDataError.message}`, request.url),
@@ -77,6 +77,17 @@ export async function middleware(request: NextRequest) {
       // If the user has applied for approval but not yet approved
       return NextResponse.redirect(
         new URL('/on-boarding/approval-waiting', request.url),
+      )
+    }
+  }
+
+  if (
+    userData?.at(0)?.hos_id &&
+    userData?.at(0)?.email !== process.env.NEXT_PUBLIC_SUPER_SHY
+  ) {
+    if (request.nextUrl.pathname.split('/')[2] !== userData?.at(0)?.hos_id) {
+      return NextResponse.redirect(
+        new URL(`/hospital/${userData?.at(0)?.hos_id}`, request.url),
       )
     }
   }

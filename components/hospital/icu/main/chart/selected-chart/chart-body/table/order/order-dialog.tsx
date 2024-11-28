@@ -44,6 +44,7 @@ export default function OrderDialog({
   isExport,
   setSortedOrders,
   mainVetName,
+  derCalcFactor,
 }: {
   hosId: string
   icuChartId: string
@@ -61,6 +62,7 @@ export default function OrderDialog({
   isExport?: boolean
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   mainVetName: string
+  derCalcFactor: number | null
 }) {
   const handleOpenChange = useCallback(() => {
     if (orderStep === 'closed') {
@@ -124,11 +126,13 @@ export default function OrderDialog({
             <TabsContent value="default">
               {!isExport && (
                 <LazyOrderForm
+                  hosId={hosId}
                   showOrderer={showOrderer}
                   icuChartId={icuChartId}
                   species={patient.species}
                   weight={weight}
                   ageInDays={ageInDays}
+                  derCalcFactor={derCalcFactor}
                   setSortedOrders={setSortedOrders}
                 />
               )}

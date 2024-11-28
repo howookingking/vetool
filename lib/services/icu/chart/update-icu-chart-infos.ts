@@ -198,3 +198,17 @@ export const updateDerCalcFactor = async (
     redirect(`/error/?message=${error.message}`)
   }
 }
+
+export const updateCage = async (icuIoId: string, cage: string) => {
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from('icu_io')
+    .update({ cage })
+    .match({ icu_io_id: icuIoId })
+
+  if (error) {
+    console.error(error)
+    redirect(`/error/?message=${error.message}`)
+  }
+}

@@ -4,12 +4,12 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { toast } from '@/components/ui/use-toast'
-import { updateMaintenanceRateCalcMethod } from '@/lib/services/admin/icu/maintenance-rate'
 import { updateRerCalcMethod } from '@/lib/services/admin/icu/rer-calc'
 import { cn } from '@/lib/utils/utils'
 import { LoaderCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import IcuSettingsCard from '../icu-settings-card'
 
 export default function RerCalcSettings({
   hosId,
@@ -34,13 +34,17 @@ export default function RerCalcSettings({
   }
 
   return (
-    <>
+    <IcuSettingsCard
+      title="RER 계산법 설정"
+      isUpdating={isUpdating}
+      onSubmit={handleUpdateMaintenanceRateCalcMethod}
+    >
       <RadioGroup
         value={localMaintenaceRateCalcMethod}
         onValueChange={setLocalMaintenaceRateCalcMethod}
-        className="flex flex-col gap-10 p-4"
+        className="flex flex-col gap-10"
       >
-        <div className="w-1/2">
+        <div>
           <RadioGroupItem value="a" id="a" className="hidden" />
           <Label
             htmlFor="a"
@@ -56,7 +60,7 @@ export default function RerCalcSettings({
           </Label>
         </div>
 
-        <div className="w-1/2">
+        <div>
           <RadioGroupItem value="b" id="b" className="hidden" />
           <Label
             htmlFor="b"
@@ -69,17 +73,6 @@ export default function RerCalcSettings({
           </Label>
         </div>
       </RadioGroup>
-
-      <Button
-        onClick={handleUpdateMaintenanceRateCalcMethod}
-        className="ml-auto"
-        disabled={isUpdating}
-      >
-        저장
-        <LoaderCircle
-          className={cn(isUpdating ? 'ml-2 animate-spin' : 'hidden')}
-        />
-      </Button>
-    </>
+    </IcuSettingsCard>
   )
 }

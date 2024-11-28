@@ -51,6 +51,7 @@ export default function RerDerForm({
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+
     if (isFactorNan) {
       factorRef.current?.focus()
       return
@@ -92,7 +93,7 @@ export default function RerDerForm({
         className={cn(
           isFactorNan &&
             'focus:ring-error focus-visible:ring-2 focus-visible:ring-rose-300',
-          'col-span-1',
+          'col-span-2 sm:col-span-1',
         )}
         placeholder="배수"
         value={factor}

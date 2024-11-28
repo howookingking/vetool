@@ -1,4 +1,5 @@
 import {
+  Diet,
   DrugDescription,
   DrugProductsRows,
   Hospital,
@@ -90,8 +91,23 @@ export type DrugProductDetail = Pick<
   | 'company'
   | 'mass_vol'
   | 'hos_id'
-> &
-  Pick<
-    DrugDescription,
-    'indication' | 'side_effect' | 'drugs_description_id' | 'drug_name'
-  >
+>
+// &
+//   Pick<
+//     DrugDescription,
+//     'indication' | 'side_effect' | 'drugs_description_id' | 'drug_name'
+//   >
+
+export type AdminDietData = Pick<
+  Diet,
+  | 'diet_id'
+  | 'name'
+  | 'description'
+  | 'company'
+  | 'unit'
+  | 'mass_vol'
+  | 'species'
+  | 'created_at'
+> & {
+  hos_id: Pick<Hospital, 'hos_id' | 'name'>
+}

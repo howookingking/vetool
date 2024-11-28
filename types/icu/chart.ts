@@ -1,7 +1,6 @@
 import type {
   DrugDoses,
   DrugProductsRows,
-  DrugRows,
   IcuTemplate,
   IcuCharts,
   IcuIo,
@@ -9,6 +8,7 @@ import type {
   Patients,
   User,
   IcuOrders,
+  Diet,
 } from '@/types'
 
 export type MainAndSubVet = Pick<User, 'name' | 'avatar_url' | 'user_id'>
@@ -50,6 +50,7 @@ export type SelectedChart = Pick<
     | 'out_due_date'
     | 'cpcr'
     | 'group_list'
+    | 'cage'
   >
 } & {
   orders: SelectedIcuOrder[]
@@ -118,7 +119,10 @@ export type IcuSidebarIoData = {
   created_at: string
 }
 
-export type DrugProductsJoined = Pick<DrugRows, 'drug_id' | 'drug_name'> & {
+export type DrugProductsJoined = Pick<
+  DrugProductsRows,
+  'drug_id' | 'drug_name'
+> & {
   drug_doses: DrugDoses[]
   drug_products: DrugProductsRows[]
 }
@@ -129,4 +133,9 @@ export type IcuReadOnlyOrderData = Pick<
   | 'icu_chart_order_name'
   | 'icu_chart_order_comment'
   | 'icu_chart_order_type'
+>
+
+export type PinnedDiet = Pick<
+  Diet,
+  'diet_id' | 'name' | 'unit' | 'species' | 'mass_vol'
 >

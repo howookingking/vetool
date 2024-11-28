@@ -6,7 +6,7 @@ import { cn, formatTimeDifference } from '@/lib/utils/utils'
 import { ParsedError } from '@/types/hospital'
 import type { ErrorFeedbackType } from '@/types/vetool'
 import { ChevronDown } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 
 export default function ErrorLogCard({
   errorLog,
@@ -15,13 +15,13 @@ export default function ErrorLogCard({
 }) {
   const [isExpanded, setIsExpanded] = useState(false)
 
-  const parsedError: ParsedError = useMemo(() => {
+  const parsedError: ParsedError = (() => {
     try {
       return JSON.parse(errorLog.error_json as string)
     } catch {
       return { message: errorLog.error_json }
     }
-  }, [errorLog.error_json])
+  })()
 
   const getStackTrace = (stack?: string) => {
     if (!stack) return []
@@ -41,13 +41,13 @@ export default function ErrorLogCard({
               {errorLog.is_server ? 'Server' : 'Client'}
             </Badge>
 
-            <CardTitle className="text-lg font-semibold">
+            <CardTitle className="max-w-36 text-lg font-semibold sm:w-full sm:max-w-full">
               {errorLog.description || parsedError.message}
             </CardTitle>
           </div>
 
           <div className="flex items-center gap-2">
-            <div className="flex shrink-0 flex-col items-end space-x-4 text-sm">
+            <div className="flex shrink-0 flex-col items-end space-x-4 text-xs sm:text-sm">
               <span>{errorLog.user_id.hos_id.city}</span>
               <span>{errorLog.user_id.hos_id.name}</span>
               {formatTimeDifference(errorLog.created_at)}

@@ -21,9 +21,7 @@ export default function PatientInfo({
   const Icon = species === 'canine' ? Dog : Cat
 
   return (
-    <div
-      className={cn(`${className}`, !col && 'flex w-full items-center gap-1')}
-    >
+    <div className={cn(`${className}`, !col && 'flex items-center gap-1')}>
       <div className={cn('flex items-center gap-1', col && 'justify-center')}>
         <Icon size={iconSize} />
 

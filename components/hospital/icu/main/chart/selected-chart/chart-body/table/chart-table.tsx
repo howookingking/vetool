@@ -1,7 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
-import NewFeature from '@/components/common/new-feature'
 import QuickOrderInsertInput from '@/components/hospital/icu/main/chart/selected-chart/chart-body/quick-order-insert-input'
 import CellsRowTitles from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/cells-row-titles'
 import DeleteOrdersAlertDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/delete-orders-alert-dialog'
@@ -50,6 +48,7 @@ export default function ChartTable({
     patient,
     weight,
     main_vet,
+    der_calc_factor,
     icu_io: { age_in_days },
   } = chartData
 
@@ -79,7 +78,7 @@ export default function ChartTable({
     if (!isSorting) {
       setSortedOrders(orders)
     }
-  }, [orders])
+  }, [orders, isSorting])
 
   // ----- 표에서 수직 안내선 -----
   const [hoveredColumn, setHoveredColumn] = useState<number | null>(null)
@@ -197,6 +196,7 @@ export default function ChartTable({
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     setTxStep,
     orderTimePendingQueue,
@@ -253,6 +253,7 @@ export default function ChartTable({
   }, [handleSortButtonClick, isSorting])
   // --- sorting mode in / out keyboard shortcut ----
 
+  // ------- order width 조절 -------
   const [orderWidth, setOrderWidth] = useLocalStorage('orderWidth', 400)
   const handleOrderWidthChange = useCallback(() => {
     if (orderWidth === 300) {
@@ -272,7 +273,8 @@ export default function ChartTable({
       return
     }
     setOrderWidth(400)
-  }, [orderWidth])
+  }, [orderWidth, setOrderWidth])
+  // ------- order width 조절 -------
 
   return (
     <Table className="border">
@@ -312,23 +314,21 @@ export default function ChartTable({
                   isExport={isExport}
                   setSortedOrders={setSortedOrders}
                   mainVetName={main_vet.name}
+                  derCalcFactor={der_calc_factor}
                 />
 
-                {/* 다음 업데이트시에 삭제 */}
-                <NewFeature LocalStoragekey="orderWidthFeature">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={handleOrderWidthChange}
-                    className="shrink-0"
-                  >
-                    {orderWidth === 600 ? (
-                      <ArrowLeftToLine size={18} />
-                    ) : (
-                      <ArrowRightFromLine size={18} />
-                    )}
-                  </Button>
-                </NewFeature>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleOrderWidthChange}
+                  className="shrink-0"
+                >
+                  {orderWidth === 600 ? (
+                    <ArrowLeftToLine size={18} />
+                  ) : (
+                    <ArrowRightFromLine size={18} />
+                  )}
+                </Button>
               </>
             )}
 

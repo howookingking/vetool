@@ -15,7 +15,7 @@ type BasicHosData = {
   memoNameListData: string[]
   showOrderer: boolean
   maintenanceRateCalcMethod: string
-  rerCalcMethod: string
+  rerCalcMethod: 'a' | 'b'
   sidebarData: IcuSidebarIoData[]
   vitalRefRange: VitalRefRange[]
 }

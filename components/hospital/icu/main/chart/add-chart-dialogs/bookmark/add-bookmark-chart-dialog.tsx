@@ -45,8 +45,12 @@ export default function AddBookmarkChartDialog() {
       const chartData = await getTemplateCharts(hos_id as string)
 
       // 북마크 차트 - 템플릿 오더로 구분함
-      setBookmarkCharts(chartData.filter((chart) => chart.patient.patient_id))
-      setTemplateCharts(chartData.filter((chart) => !chart.patient.patient_id))
+      setBookmarkCharts(
+        chartData?.filter((chart) => chart.patient.patient_id) ?? [],
+      )
+      setTemplateCharts(
+        chartData?.filter((chart) => !chart.patient.patient_id) ?? [],
+      )
     }
 
     setIsLoading(false)
