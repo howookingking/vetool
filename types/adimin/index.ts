@@ -1,5 +1,5 @@
 import {
-  DietVetool,
+  Diet,
   DrugDescription,
   DrugProductsRows,
   Hospital,
@@ -99,13 +99,14 @@ export type DrugProductDetail = Pick<
 //   >
 
 export type AdminDietData = Pick<
-  DietVetool,
-  | 'hos_id'
-  | 'diet_products_id'
+  Diet,
+  | 'diet_id'
   | 'name'
   | 'description'
   | 'company'
   | 'unit'
   | 'mass_vol'
   | 'species'
->
+> & {
+  hos_id: Pick<Hospital, 'hos_id' | 'name'>
+}

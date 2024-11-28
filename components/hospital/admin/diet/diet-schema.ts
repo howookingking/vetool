@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const dietSchema = z.object({
-  diet_products_id: z.string().optional(),
+  diet_id: z.string().optional(),
   name: z.string().min(1, { message: '사료명을 입력해주세요' }),
   description: z.string().nullable(),
   species: z.string().min(1, { message: '종을 선택해주세요' }).nullable(),

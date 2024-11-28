@@ -9,13 +9,13 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      diets
+      diets: {
         Row: {
           active: boolean | null
           company: string | null
           created_at: string
           description: string | null
-          diet_products_id: string
+          diet_id: string
           hos_id: string
           mass_vol: number
           name: string
@@ -28,7 +28,7 @@ export type Database = {
           company?: string | null
           created_at?: string
           description?: string | null
-          diet_products_id?: string
+          diet_id?: string
           hos_id?: string
           mass_vol: number
           name: string
@@ -41,7 +41,7 @@ export type Database = {
           company?: string | null
           created_at?: string
           description?: string | null
-          diet_products_id?: string
+          diet_id?: string
           hos_id?: string
           mass_vol?: number
           name?: string
@@ -262,6 +262,39 @@ export type Database = {
           },
           {
             foreignKeyName: "drugs_description_hos_id_fkey"
+            columns: ["hos_id"]
+            isOneToOne: false
+            referencedRelation: "hospitals"
+            referencedColumns: ["hos_id"]
+          },
+        ]
+      }
+      hospital_diet_pin: {
+        Row: {
+          created_at: string
+          diet_id: string
+          hos_id: string
+        }
+        Insert: {
+          created_at?: string
+          diet_id?: string
+          hos_id?: string
+        }
+        Update: {
+          created_at?: string
+          diet_id?: string
+          hos_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "hospital_diet_pin_diet_id_fkey"
+            columns: ["diet_id"]
+            isOneToOne: false
+            referencedRelation: "diets"
+            referencedColumns: ["diet_id"]
+          },
+          {
+            foreignKeyName: "hospital_diet_pin_hos_id_fkey"
             columns: ["hos_id"]
             isOneToOne: false
             referencedRelation: "hospitals"

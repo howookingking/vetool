@@ -32,7 +32,7 @@ import { upsertDietData } from '@/lib/services/admin/diet/diet'
 import { cn } from '@/lib/utils/utils'
 import type { AdminDietData } from '@/types/adimin'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Edit, LoaderCircle } from 'lucide-react'
+import { Edit, LoaderCircle, Plus } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -55,7 +55,7 @@ export default function AddDietDialog({
   const form = useForm<z.infer<typeof dietSchema>>({
     resolver: zodResolver(dietSchema),
     defaultValues: {
-      diet_products_id: dietData?.diet_products_id || undefined,
+      diet_id: dietData?.diet_id || undefined,
       name: dietData?.name || '',
       description: dietData?.description || null,
       company: dietData?.company || '',
@@ -84,10 +84,11 @@ export default function AddDietDialog({
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button
+          size="icon"
           variant={isEdit ? 'ghost' : 'default'}
-          className={cn(isEdit ? 'block px-8' : 'fixed left-16 top-1.5 z-20')}
+          className={cn(isEdit ? 'block px-8' : 'h-6 w-6 rounded-full', '')}
         >
-          {isEdit ? <Edit size={18} /> : '사료 추가'}
+          {isEdit ? <Edit size={14} /> : <Plus size={18} />}
         </Button>
       </DialogTrigger>
 
