@@ -91,7 +91,7 @@ export default function DefaultOrdersSetting({
   }
 
   return (
-    <Table className="my-4 h-full max-w-3xl border">
+    <Table className="h-full max-w-3xl border">
       <AddTemplateHeader isSorting={isSorting} onClick={handleSortButtonClick}>
         <AddTemplateDialog
           isOpen={orderStep !== 'closed'}

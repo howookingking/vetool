@@ -1,14 +1,46 @@
 'use client'
 
-import { ColumnDef } from '@tanstack/react-table'
-import type { AdminDietData } from '@/types/adimin'
 import { Button } from '@/components/ui/button'
+import type { AdminDietData } from '@/types/adimin'
+import { ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown } from 'lucide-react'
 import AddDietDialog from './add-diet-dialog'
 import DeleteDietDialog from './delete-diet-dialog'
 import DietSpeciesIcon from './diet-species-icon'
+import PinButton from './pin-button'
 
-export const dietColumns = (hosId: string): ColumnDef<AdminDietData>[] => [
+export const dietColumns = ({
+  hosId,
+  pinnedDietsIds,
+  isMine = false,
+}: {
+  hosId: string
+  pinnedDietsIds: string[]
+  isMine?: boolean
+}): ColumnDef<AdminDietData>[] => [
+  {
+    accessorKey: 'pinned',
+    header: () => {
+      return isMine ? '병원명' : ' 병원사료등록'
+    },
+    cell: ({ row }) => {
+      const dietProductId = row.original.diet_id
+      const isPinned = pinnedDietsIds.includes(dietProductId)
+      const hosName = row.original.hos_id.name
+
+      if (isMine) {
+        return <span>{hosName}</span>
+      }
+
+      return (
+        <PinButton
+          isPinned={isPinned}
+          dietProductid={dietProductId}
+          isMine={isMine}
+        />
+      )
+    },
+  },
   {
     accessorKey: 'name',
     header: ({ column }) => {
@@ -107,7 +139,7 @@ export const dietColumns = (hosId: string): ColumnDef<AdminDietData>[] => [
     header: '수정',
     cell: ({ row }) => {
       const adminDietData = row.original
-      const dietHosId = adminDietData.hos_id
+      const dietHosId = adminDietData.hos_id.hos_id
 
       return (
         <div className="flex justify-center">
@@ -122,9 +154,9 @@ export const dietColumns = (hosId: string): ColumnDef<AdminDietData>[] => [
     id: 'delete',
     header: '삭제',
     cell: ({ row }) => {
-      const dietProductId = row.original.diet_products_id
+      const dietProductId = row.original.diet_id
       const name = row.original.name
-      const dietHosId = row.original.hos_id
+      const dietHosId = row.original.hos_id.hos_id
 
       return (
         <div className="flex justify-center">

@@ -38,9 +38,12 @@ export default function OrdererSetting({
           onCheckedChange={setShowOrdererInput}
         />
         <Label htmlFor="orderer">
-          오더자 설정{' '}
+          오더자 설정
           <span
-            className={cn(showOrdererInput ? 'text-green-600' : 'text-red-600')}
+            className={cn(
+              showOrdererInput ? 'text-green-600' : 'text-red-600',
+              'ml-2',
+            )}
           >
             {showOrdererInput ? 'ON' : 'OFF'}
           </span>
