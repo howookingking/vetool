@@ -65,11 +65,9 @@ export default function DietDataTable({
           data={sortedDietData}
           columns={dietColumns({ hosId, pinnedDietsIds })}
           searchPlaceHolder="사료명, 제조사, 설명으로 검색"
-          rowLength={6}
+          rowLength={5}
         />
       </div>
-
-      <Separator className="my-4" />
 
       <div>
         <div className="mb-1 flex items-center gap-2">
@@ -81,7 +79,7 @@ export default function DietDataTable({
           data={myHosDiets}
           columns={dietColumns({ hosId, pinnedDietsIds, isMine: true })}
           searchPlaceHolder="사료명, 제조사, 설명으로 검색"
-          rowLength={6}
+          rowLength={5}
         />
       </div>
     </>
