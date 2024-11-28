@@ -264,13 +264,13 @@ export const hasOrderSortingChanges = (
 
 export const parsingOrderName = (orderType: string, orderName: string) => {
   if (orderType === 'fluid') {
-    const [fluidName, _, additives] = orderName.split('#')
+    const [fluidName, method, fold, additives] = orderName.split('#')
     return `${fluidName}  ${additives ? `+ ${additives}` : ''} `
   }
 
   if (orderType === 'feed') {
     const [dietName, dietDescription] = orderName.split('#')
-    return `${dietName} ${dietDescription ? `+ ${dietDescription}` : ''}`
+    return `${dietName} ${dietDescription ? `/ ${dietDescription}` : ''}`
   }
 
   return orderName
@@ -310,5 +310,5 @@ export const formatOrderName = (name: string, type: string) => {
 
 export const renderOrderSubComment = (order: SelectedIcuOrder) => {
   if (order.order_type === 'fluid') return 'ml/hr'
-  if (order.order_type === 'feed') return `${order.order_name.split('#')[2]}/회`
+  if (order.order_type === 'feed') return '/회'
 }
