@@ -137,5 +137,5 @@ export type IcuReadOnlyOrderData = Pick<
 
 export type PinnedDiet = Pick<
   Diet,
-  'diet_id' | 'name' | 'unit' | 'species' | 'mass_vol'
+  'diet_id' | 'name' | 'unit' | 'species' | 'mass_vol' | 'company'
 >
