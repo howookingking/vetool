@@ -1,13 +1,13 @@
 'use client'
 
+import DeleteDietDialog from '@/components/hospital/admin/diet/delete-diet-dialog'
+import DietSpeciesIcon from '@/components/hospital/admin/diet/diet-species-icon'
+import AddDietDialog from '@/components/hospital/admin/diet/pin/add-diet-dialog'
+import PinButton from '@/components/hospital/admin/diet/pin/pin-button'
 import { Button } from '@/components/ui/button'
 import type { AdminDietData } from '@/types/adimin'
 import { ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown } from 'lucide-react'
-import AddDietDialog from './add-diet-dialog'
-import DeleteDietDialog from './delete-diet-dialog'
-import DietSpeciesIcon from './diet-species-icon'
-import PinButton from './pin-button'
 
 export const dietColumns = ({
   hosId,
@@ -26,7 +26,7 @@ export const dietColumns = ({
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          {isMine ? '병원명' : ' 병원사료등록'}
+          {isMine ? '병원명' : ' 병원 사료 등록'}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
@@ -43,7 +43,7 @@ export const dietColumns = ({
       return (
         <PinButton
           isPinned={isPinned}
-          dietProductid={dietProductId}
+          dietProductId={dietProductId}
           isMine={isMine}
         />
       )
