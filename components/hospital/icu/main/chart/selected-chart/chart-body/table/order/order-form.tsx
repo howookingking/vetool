@@ -163,17 +163,7 @@ export default function OrderForm({
                         <RadioGroupItem value={item.value} />
                       </FormControl>
                       <FormLabel className="cursor-pointer font-normal">
-                        {/* 다음 업데이트시 삭제 */}
-                        {item.label === '식이' ? (
-                          <NewFeature
-                            LocalStoragekey="newFeadFeature"
-                            className="-right-1.5 -top-1.5"
-                          >
-                            식이
-                          </NewFeature>
-                        ) : (
-                          item.label
-                        )}
+                        {item.label}
                       </FormLabel>
                     </FormItem>
                   ))}

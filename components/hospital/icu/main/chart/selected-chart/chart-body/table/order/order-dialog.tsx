@@ -73,20 +73,6 @@ export default function OrderDialog({
     reset()
   }, [orderStep, setOrderStep, reset])
 
-  // 성능 향상을 위한 불필요한 이벤트 리스너
-  // useEffect(() => {
-  //   const handleKeyDown = (event: KeyboardEvent) => {
-  //     if ((event.ctrlKey || event.metaKey) && event.key === 'o') {
-  //       event.preventDefault()
-  //       handleOpenChange()
-  //     }
-  //   }
-  //   window.addEventListener('keydown', handleKeyDown)
-  //   return () => {
-  //     window.removeEventListener('keydown', handleKeyDown)
-  //   }
-  // }, [handleOpenChange])
-
   return (
     <Dialog open={orderStep !== 'closed'} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
