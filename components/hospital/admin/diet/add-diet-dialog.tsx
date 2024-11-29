@@ -70,7 +70,12 @@ export default function AddDietDialog({
 
     await upsertDietData(
       {
-        ...values,
+        company: values.company,
+        description: values.description,
+        diet_id: values.diet_id,
+        name: values.name,
+        species: values.species!,
+        unit: values.unit,
         mass_vol: Number(values.mass_vol),
         hos_id: hos_id as string,
       },
