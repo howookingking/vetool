@@ -72,7 +72,7 @@ export default function FeedOrderField({
   const mappedDietList = useMemo(
     () =>
       diets.map((diet) => ({
-        value: diet.name,
+        value: `${diet.name} (${diet.company})`,
         label: diet.name,
       })),
     [diets],

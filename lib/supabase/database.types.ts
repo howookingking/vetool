@@ -1308,6 +1308,7 @@ export type Database = {
           feedback_category: string
           feedback_description: string
           feedback_id: string
+          is_read: boolean
           user_id: string
         }
         Insert: {
@@ -1315,6 +1316,7 @@ export type Database = {
           feedback_category: string
           feedback_description: string
           feedback_id?: string
+          is_read?: boolean
           user_id?: string
         }
         Update: {
@@ -1322,6 +1324,7 @@ export type Database = {
           feedback_category?: string
           feedback_description?: string
           feedback_id?: string
+          is_read?: boolean
           user_id?: string
         }
         Relationships: [
@@ -1574,6 +1577,12 @@ export type Database = {
         Args: {
           hos_id_input: string
           icu_chart_id_input: string
+        }
+        Returns: undefined
+      }
+      insert_entire_hospital_diet_pin: {
+        Args: {
+          hos_id_input: string
         }
         Returns: undefined
       }

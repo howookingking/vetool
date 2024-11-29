@@ -1,10 +1,9 @@
 'use client'
 
+import { dietColumns } from '@/components/hospital/admin/diet/diet-columns'
 import DataTable from '@/components/ui/data-table'
 import type { AdminDietData } from '@/types/adimin'
-import AddDietDialog from './add-diet-dialog'
-import { dietColumns } from './diet-columns'
-import { Separator } from '@/components/ui/separator'
+import AddAndPinDropDown from './pin/add-and-pin-dropdown'
 
 export default function DietDataTable({
   dietsData,
@@ -58,30 +57,26 @@ export default function DietDataTable({
 
   return (
     <>
-      <div className="">
-        <h4 className="mb-1 text-lg font-bold">벳툴 등록 사료</h4>
+      <span className="mb-1 text-lg font-bold">벳툴 등록 사료</span>
 
-        <DataTable
-          data={sortedDietData}
-          columns={dietColumns({ hosId, pinnedDietsIds })}
-          searchPlaceHolder="사료명, 제조사, 설명으로 검색"
-          rowLength={5}
-        />
+      <DataTable
+        data={sortedDietData}
+        columns={dietColumns({ hosId, pinnedDietsIds })}
+        searchPlaceHolder="사료명, 제조사, 설명으로 검색"
+        rowLength={5}
+      />
+
+      <div className="mb-1 flex items-center gap-2">
+        <span className="text-lg font-bold">{hosName} 사료</span>
+        <AddAndPinDropDown hosId={hosId} />
       </div>
 
-      <div>
-        <div className="mb-1 flex items-center gap-2">
-          <h4 className="text-lg font-bold">{hosName} 사료</h4>
-          <AddDietDialog />
-        </div>
-
-        <DataTable
-          data={myHosDiets}
-          columns={dietColumns({ hosId, pinnedDietsIds, isMine: true })}
-          searchPlaceHolder="사료명, 제조사, 설명으로 검색"
-          rowLength={5}
-        />
-      </div>
+      <DataTable
+        data={myHosDiets}
+        columns={dietColumns({ hosId, pinnedDietsIds, isMine: true })}
+        searchPlaceHolder="사료명, 제조사, 설명으로 검색"
+        rowLength={5}
+      />
     </>
   )
 }
