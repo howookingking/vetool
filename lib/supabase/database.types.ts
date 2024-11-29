@@ -11,8 +11,8 @@ export type Database = {
     Tables: {
       diets: {
         Row: {
-          active: boolean | null
-          company: string | null
+          active: boolean
+          company: string
           created_at: string
           description: string | null
           diet_id: string
@@ -20,12 +20,12 @@ export type Database = {
           mass_vol: number
           name: string
           product_tag: string | null
-          species: string | null
-          unit: string | null
+          species: string
+          unit: string
         }
         Insert: {
-          active?: boolean | null
-          company?: string | null
+          active?: boolean
+          company: string
           created_at?: string
           description?: string | null
           diet_id?: string
@@ -33,12 +33,12 @@ export type Database = {
           mass_vol: number
           name: string
           product_tag?: string | null
-          species?: string | null
-          unit?: string | null
+          species: string
+          unit: string
         }
         Update: {
-          active?: boolean | null
-          company?: string | null
+          active?: boolean
+          company?: string
           created_at?: string
           description?: string | null
           diet_id?: string
@@ -46,8 +46,8 @@ export type Database = {
           mass_vol?: number
           name?: string
           product_tag?: string | null
-          species?: string | null
-          unit?: string | null
+          species?: string
+          unit?: string
         }
         Relationships: [
           {
@@ -1542,6 +1542,20 @@ export type Database = {
         Returns: Json
       }
       get_pinned_diet_data: {
+        Args: {
+          hos_id_input: string
+          species_input: string
+        }
+        Returns: Json
+      }
+      get_pinned_diet_data_new: {
+        Args: {
+          hos_id_input: string
+          species_input: string
+        }
+        Returns: Json
+      }
+      get_pinned_diets_1: {
         Args: {
           hos_id_input: string
           species_input: string
