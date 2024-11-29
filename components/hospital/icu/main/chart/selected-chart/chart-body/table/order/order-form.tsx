@@ -185,7 +185,7 @@ export default function OrderForm({
           />
         )}
 
-        {/* {orderType === 'feed' && (
+        {orderType === 'feed' && (
           <FeedOrderField
             hosId={hosId}
             form={form}
@@ -194,11 +194,11 @@ export default function OrderForm({
             derCalcFactor={derCalcFactor}
             orderTime={orderTime}
           />
-        )} */}
+        )}
         {/* {orderType === 'injection' && <DrugFormField form={form} />} */}
 
         {orderType !== 'fluid' &&
-          // orderType !== 'feed' &&
+          orderType !== 'feed' &&
           orderType !== 'checklist' && <OrderFormField form={form} />}
 
         <OrderTimeSettings
