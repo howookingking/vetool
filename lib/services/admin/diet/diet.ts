@@ -42,11 +42,12 @@ export const getDiets = async (hosId: string) => {
 type UpsertDietData = {
   name: string
   description: string | null
-  company: string | null
+  company: string
   mass_vol: number
-  unit: string | null
+  unit: string
   hos_id: string
   diet_id?: string
+  species: string
 }
 
 export const upsertDietData = async (
@@ -57,7 +58,15 @@ export const upsertDietData = async (
 
   const { data: upsertDietData, error: upsertDietError } = await supabase
     .from('diets')
-    .upsert(data)
+    .upsert({
+      company: data.company,
+      description: data.description,
+      mass_vol: data.mass_vol,
+      name: data.name,
+      species: data.species,
+      unit: data.unit,
+      hos_id: data.hos_id,
+    })
     .select('diet_id')
     .single()
 

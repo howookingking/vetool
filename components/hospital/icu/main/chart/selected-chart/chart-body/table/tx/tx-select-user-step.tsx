@@ -130,8 +130,6 @@ export default function TxSelectUserStep({
       hos_id,
       txLocalState,
       selectedTxPendingQueue,
-      orderQueueReset,
-      setTxStep,
       isSubscriptionReady,
       refresh,
       handleClose,
