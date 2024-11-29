@@ -1,13 +1,13 @@
 'use client'
 
 import PatientInfo from '@/components/hospital/common/patient-info'
+import SummaryTableCell from '@/components/hospital/icu/main/summary/table/summary-table-cell'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { cn, getDaysDifference } from '@/lib/utils/utils'
 import type { SummaryData } from '@/types/icu/summary'
-import { Columns4 } from 'lucide-react'
+import { SquarePlus } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
-import SummaryTableCell from './summary-table-cell'
 
 export default function SummaryTableRow({ summary }: { summary: SummaryData }) {
   const { push } = useRouter()
@@ -41,7 +41,7 @@ export default function SummaryTableRow({ summary }: { summary: SummaryData }) {
 
           {icu_io.cage && (
             <div className="flex items-center justify-center gap-1 text-muted-foreground">
-              <Columns4 size={12} />
+              <SquarePlus size={12} />
               <span className="max-w-[88px] truncate text-xs">
                 {icu_io.cage}
               </span>
