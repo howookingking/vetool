@@ -20,6 +20,8 @@ type CellProps = {
   icuChartTxId?: string
   preview?: boolean
   orderer: string
+  orderType: string
+  orderName: string
   toggleOrderTime: (orderId: string, time: number) => void
   showOrderer: boolean
   isHovered: boolean
@@ -58,6 +60,8 @@ export default function Cell({
   icuChartTxId,
   preview,
   orderer,
+  orderType,
+  orderName,
   toggleOrderTime,
   showOrderer,
   isHovered,
@@ -128,6 +132,8 @@ export default function Cell({
   const handleOpenTxDetail = useCallback(() => {
     setTxLocalState({
       icuChartOrderId,
+      icuChartOrderType: orderType,
+      icuChartOrderName: orderName,
       txResult: treatment?.tx_result,
       txComment: treatment?.tx_comment,
       txId: icuChartTxId,
@@ -145,6 +151,8 @@ export default function Cell({
     treatment?.tx_comment,
     treatment?.tx_log,
     treatment?.tx_result,
+    orderType,
+    orderName,
   ])
 
   const toggleCellInQueue = useCallback(
@@ -270,9 +278,11 @@ export default function Cell({
       return
     }
     setTxLocalState({
+      icuChartOrderId,
+      icuChartOrderType: orderType,
+      icuChartOrderName: orderName,
       time,
       txResult: briefTxResultInput.replace(/^"|"$/g, '').trim(),
-      icuChartOrderId,
       txId: icuChartTxId,
       txLog: treatment?.tx_log as TxLog[] | null,
     })
@@ -287,6 +297,8 @@ export default function Cell({
     time,
     treatment?.tx_result,
     treatment?.tx_log,
+    orderType,
+    orderName,
   ])
 
   const handleKeyDown = useCallback(

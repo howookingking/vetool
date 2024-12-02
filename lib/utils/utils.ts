@@ -312,3 +312,25 @@ export const renderOrderSubComment = (order: SelectedIcuOrder) => {
   if (order.order_type === 'fluid') return 'ml/hr'
   if (order.order_type === 'feed') return '/회'
 }
+
+export const isValidWeightOrderTx = (
+  orderType: string,
+  orderName: string,
+  weight: string,
+) => {
+  // 오더명에 체중 혹은 몸무게가 포함된 경우
+  const isWeightOrderName = /체중|몸무게/.test(orderName)
+
+  // 0 ~ 999 사이의 숫자 (소숫점 2자리까지 허용)
+  const isValidWeight =
+    weight &&
+    /^\d{1,3}(\.\d{1,2})?$/.test(weight) &&
+    Number(weight) > 0 &&
+    Number(weight) <= 999
+
+  if (orderType === 'checklist' && isWeightOrderName && isValidWeight) {
+    return true
+  }
+
+  return false
+}

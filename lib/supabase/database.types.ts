@@ -1849,6 +1849,14 @@ export type Database = {
         }
         Returns: undefined
       }
+      update_weight_and_insert_vitals_by_order: {
+        Args: {
+          icu_chart_order_id_input: string
+          weight_input: string
+          weight_measured_date_input: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       owner_level_enum: "S" | "A" | "B" | "C"
