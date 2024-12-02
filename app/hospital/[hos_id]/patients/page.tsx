@@ -10,7 +10,7 @@ export default async function HospitalPatientsPage(props: {
   const totalPatientCount = await getHosPatientCount(params.hos_id)
 
   return (
-    <div className="p-2">
+    <div className="overflow-x-scroll p-2">
       <div className="fixed top-2 z-30 hidden items-center gap-2 md:flex">
         <PatientRegisterDialog hosId={params.hos_id} />
 

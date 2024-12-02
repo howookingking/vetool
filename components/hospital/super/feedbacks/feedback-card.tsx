@@ -1,7 +1,10 @@
 import { Badge } from '@/components/ui/badge'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
-import { formatTimeDifference } from '@/lib/utils/utils'
+import { Checkbox } from '@/components/ui/checkbox'
+import { updateReadFeedback } from '@/lib/services/super/feedback/feedback'
+import { cn, formatTimeDifference } from '@/lib/utils/utils'
 import type { UserFeedbackType } from '@/types/vetool'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 export default function FeedbackCard({
@@ -9,20 +12,44 @@ export default function FeedbackCard({
 }: {
   feedbackData: UserFeedbackType
 }) {
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isRead, setIsRead] = useState(feedbackData.is_read)
+  const { refresh } = useRouter()
+
+  const handleReadFeedbackChange = async (feedBackId: string) => {
+    setIsRead((prev) => !prev)
+
+    await updateReadFeedback(feedBackId)
+    refresh()
+  }
 
   return (
     <Card className="mb-4">
-      <CardHeader
-        className="cursor-pointer"
-        onClick={() => setIsExpanded(!isExpanded)}
-      >
+      <CardHeader className="cursor-pointer">
+        <div className="flex items-center gap-2">
+          <label
+            htmlFor={feedbackData.feedback_id}
+            className={cn(
+              'flex cursor-pointer items-center gap-2 text-sm font-semibold',
+              !isRead ? 'text-rose-500' : 'text-primary',
+            )}
+          >
+            <Checkbox
+              id={feedbackData.feedback_id}
+              checked={isRead}
+              onCheckedChange={() =>
+                handleReadFeedbackChange(feedbackData.feedback_id)
+              }
+            />
+
+            <span>{isRead ? '피드백 완료' : '미확인'}</span>
+          </label>
+        </div>
         <div className="flex items-center justify-between gap-10">
           <div className="flex items-center space-x-3">
             <div className="shrink-0">
               <Badge>{feedbackData.feedback_category.split('(')[0]}</Badge>
             </div>
-            <CardTitle className="px-4 text-lg">
+            <CardTitle className={cn('px-4 text-lg', isRead && 'line-through')}>
               {feedbackData.feedback_description}
             </CardTitle>
           </div>

@@ -7,11 +7,11 @@ import { useState } from 'react'
 
 export default function PinButton({
   isPinned,
-  dietProductid,
+  dietProductId,
   isMine,
 }: {
   isPinned: boolean
-  dietProductid: string
+  dietProductId: string
   isMine?: boolean
 }) {
   const [isLoading, setIsLoading] = useState(false)
@@ -22,7 +22,7 @@ export default function PinButton({
   const hadleTogglePin = async () => {
     setIsLoading(true)
 
-    await toggleHospitalDietPin(isPinned, dietProductid, hos_id as string)
+    await toggleHospitalDietPin(isPinned, dietProductId, hos_id as string)
       .then(refresh)
       .then(() =>
         setTimeout(() => {

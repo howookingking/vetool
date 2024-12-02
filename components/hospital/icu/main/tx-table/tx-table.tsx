@@ -15,7 +15,7 @@ import {
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
-import { Columns4 } from 'lucide-react'
+import { SquarePlus } from 'lucide-react'
 import { useEffect, useMemo, useRef } from 'react'
 
 export default function TxTable({
@@ -132,7 +132,7 @@ export default function TxTable({
 
                     {txData.icu_io.cage && (
                       <div className="flex items-center justify-center gap-1 text-muted-foreground">
-                        <Columns4 size={12} />
+                        <SquarePlus size={12} />
                         <span className="text-xs">{txData.icu_io.cage}</span>
                       </div>
                     )}
