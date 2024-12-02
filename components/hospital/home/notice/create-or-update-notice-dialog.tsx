@@ -28,7 +28,7 @@ import { toast } from '@/components/ui/use-toast'
 import { createNotice, updateNotice } from '@/lib/services/hospital-home/notice'
 import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { LoaderCircle, Plus } from 'lucide-react'
+import { Edit2, LoaderCircle, Plus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -92,7 +92,9 @@ export default function CreateOrUpdateNoticeDialog({
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         {isEdit ? (
-          <div className="absolute inset-0 cursor-pointer" />
+          <Button size="icon" className="h-6 w-6 rounded-full" variant="ghost">
+            <Edit2 />
+          </Button>
         ) : (
           <Button
             variant="default"

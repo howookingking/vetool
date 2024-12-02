@@ -4,6 +4,45 @@ import Image from 'next/image'
 import CreateOrUpdateNoticeDialog from './create-or-update-notice-dialog'
 import { NoticeColorType } from './notice-schema'
 
+// Function to detect URLs in text and split into parts
+const parseTextWithUrls = (text: string) => {
+  // Updated regex to catch URLs with or without protocol
+  const urlRegex =
+    /(https?:\/\/[^\s]+|www\.[^\s]+|\b[a-zA-Z0-9][a-zA-Z0-9-]+\.[a-zA-Z]{2,}\b)/g
+  const parts = []
+  let lastIndex = 0
+  let match
+
+  while ((match = urlRegex.exec(text)) !== null) {
+    // Add text before URL
+    if (match.index > lastIndex) {
+      parts.push({
+        type: 'text',
+        content: text.slice(lastIndex, match.index),
+      })
+    }
+    // Add URL with appropriate protocol
+    const url = match[0]
+    const urlWithProtocol = url.startsWith('http') ? url : `https://${url}`
+    parts.push({
+      type: 'url',
+      content: url,
+      href: urlWithProtocol,
+    })
+    lastIndex = match.index + match[0].length
+  }
+
+  // Add remaining text
+  if (lastIndex < text.length) {
+    parts.push({
+      type: 'text',
+      content: text.slice(lastIndex),
+    })
+  }
+
+  return parts
+}
+
 export default function SingleNotice({
   hosId,
   notice,
@@ -11,6 +50,8 @@ export default function SingleNotice({
   hosId: string
   notice: NoticeWithUser
 }) {
+  const textParts = parseTextWithUrls(notice.notice_text)
+
   return (
     <div
       className="relative flex items-center justify-between rounded-md border border-border px-1 py-1"
@@ -23,7 +64,23 @@ export default function SingleNotice({
             size={16}
             cursor="grab"
           />
-          <span className="whitespace-break-spaces">{notice.notice_text}</span>
+          <span className="whitespace-break-spaces">
+            {textParts.map((part, index) =>
+              part.type === 'url' ? (
+                <a
+                  key={index}
+                  href={part.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  {part.content}
+                </a>
+              ) : (
+                <span key={index}>{part.content}</span>
+              ),
+            )}
+          </span>
         </div>
 
         <div className="ml-auto flex shrink-0 items-center gap-1">
