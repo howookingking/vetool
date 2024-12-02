@@ -31,8 +31,8 @@ export default function TxSelectUserStep({
   handleClose: () => void
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const { txLocalState, setTxStep } = useTxMutationStore()
-  const { selectedTxPendingQueue, reset: orderQueueReset } = useIcuOrderStore()
+  const { txLocalState } = useTxMutationStore()
+  const { selectedTxPendingQueue } = useIcuOrderStore()
   const { isSubscriptionReady } = useRealtimeSubscriptionStore()
   const { refresh } = useRouter()
   const { hos_id } = useParams()
@@ -82,6 +82,7 @@ export default function TxSelectUserStep({
                 time: item.orderTime,
                 icuChartOrderId: item.orderId,
               },
+              format(new Date(), 'yyyy-MM-dd'),
               updatedLogs,
             )
           }),
@@ -106,6 +107,7 @@ export default function TxSelectUserStep({
             txResult: result.trim(),
             txComment: comment.trim(),
           },
+          format(new Date(), 'yyyy-MM-dd'),
           updatedLogs,
         )
 
@@ -118,7 +120,13 @@ export default function TxSelectUserStep({
       }
 
       // 단일 Tx 일반적인 경우
-      await upsertIcuTx(hos_id as string, txLocalState, updatedLogs)
+      await upsertIcuTx(
+        hos_id as string,
+        txLocalState,
+        format(new Date(), 'yyyy-MM-dd'),
+        updatedLogs,
+      )
+
       handleClose()
       toast({
         title: '처치 내역이 업데이트 되었습니다',
