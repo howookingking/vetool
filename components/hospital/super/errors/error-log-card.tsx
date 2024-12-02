@@ -63,7 +63,7 @@ export default function ErrorLogCard({
       </CardHeader>
 
       {isExpanded && (
-        <ScrollArea className="h-full max-h-[500px] w-full">
+        <ScrollArea className="h-full max-h-[640px] w-full overflow-scroll">
           <CardContent>
             <div className="space-y-4">
               {parsedError.name && (
