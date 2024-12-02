@@ -6,6 +6,7 @@ import { cn, formatTimeDifference } from '@/lib/utils/utils'
 import { ParsedError } from '@/types/hospital'
 import type { ErrorFeedbackType } from '@/types/vetool'
 import { ChevronDown } from 'lucide-react'
+import Link from 'next/link'
 import { useState } from 'react'
 
 export default function ErrorLogCard({
@@ -63,7 +64,7 @@ export default function ErrorLogCard({
       </CardHeader>
 
       {isExpanded && (
-        <ScrollArea className="h-full max-h-[640px] w-full overflow-scroll">
+        <ScrollArea className="h-full w-full">
           <CardContent>
             <div className="space-y-4">
               {parsedError.name && (
@@ -90,9 +91,14 @@ export default function ErrorLogCard({
               )}
 
               {parsedError.errorUrl && (
-                <div>
+                <div className="flex flex-col">
                   <Label>에러 발생 URL</Label>
-                  <p className="mt-1 text-blue-600">{parsedError.errorUrl}</p>
+                  <Link
+                    className="mt-1 text-blue-600"
+                    href={parsedError.errorUrl}
+                  >
+                    {parsedError.errorUrl}
+                  </Link>
                 </div>
               )}
 
