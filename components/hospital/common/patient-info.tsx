@@ -40,7 +40,7 @@ export default function PatientInfo({
         </div>
       </div>
       {col && (
-        <div className="line-clamp-1 text-[10px] text-muted-foreground">
+        <div className="line-clamp-1 text-center text-[10px] text-muted-foreground">
           {convertPascalCased(breed)}
         </div>
       )}

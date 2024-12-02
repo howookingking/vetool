@@ -29,7 +29,7 @@ export default function SummaryTableRow({ summary }: { summary: SummaryData }) {
       )}
       onClick={() => handleClickRow(summary.patient_id as string)}
     >
-      <TableCell className="flex w-[160px] items-center justify-between gap-1">
+      <TableCell className="flex w-[176px] items-center justify-between gap-1">
         <div className="flex flex-1 flex-col items-center gap-1">
           <PatientInfo
             name={patient.name}
