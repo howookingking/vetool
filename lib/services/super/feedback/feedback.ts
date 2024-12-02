@@ -43,3 +43,34 @@ export const getFeedback = async () => {
   }
   return data ?? []
 }
+
+export const getUnReadFeedbacks = async () => {
+  const supabase = await createClient()
+
+  const { data: unReadFeedbacksData, error: unReadFeedbacksDataError } =
+    await supabase
+      .from('vetool_feedbacks')
+      .select('count', { count: 'exact' })
+      .match({ is_read: false })
+
+  if (unReadFeedbacksDataError) {
+    console.error(unReadFeedbacksDataError)
+    redirect(`/error?message=${unReadFeedbacksDataError.message}`)
+  }
+
+  return unReadFeedbacksData[0].count
+}
+
+export const updateReadFeedback = async (feedbackId: string) => {
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from('vetool_feedbacks')
+    .update({ is_read: true })
+    .match({ feedback_id: feedbackId })
+
+  if (error) {
+    console.error(error)
+    redirect(`/error?message=${error.message}`)
+  }
+}

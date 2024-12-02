@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { toast } from '@/components/ui/use-toast'
 import { updateCage } from '@/lib/services/icu/chart/update-icu-chart-infos'
-import { Columns4 } from 'lucide-react'
+import { SquarePlus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 export default function Cage({
@@ -43,7 +43,7 @@ export default function Cage({
         className="absolute left-2 text-xs text-muted-foreground"
         htmlFor="cage"
       >
-        <Columns4 size={16} className="text-muted-foreground" />
+        <SquarePlus size={16} className="text-muted-foreground" />
       </Label>
 
       <Input

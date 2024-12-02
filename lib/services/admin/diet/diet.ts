@@ -166,3 +166,19 @@ export const toggleHospitalDietPin = async (
     }
   }
 }
+
+export const addEntireDietPin = async (hosId: string) => {
+  const supabase = await createClient()
+
+  const { error: insertPinError } = await supabase.rpc(
+    'insert_entire_hospital_diet_pin',
+    {
+      hos_id_input: hosId,
+    },
+  )
+
+  if (insertPinError) {
+    console.error(insertPinError)
+    redirect(`/error?message=${insertPinError.message}`)
+  }
+}
