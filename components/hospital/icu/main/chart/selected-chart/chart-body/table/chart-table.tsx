@@ -78,7 +78,7 @@ export default function ChartTable({
     if (!isSorting) {
       setSortedOrders(orders)
     }
-  }, [orders, isSorting])
+  }, [orders]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ----- 표에서 수직 안내선 -----
   const [hoveredColumn, setHoveredColumn] = useState<number | null>(null)
