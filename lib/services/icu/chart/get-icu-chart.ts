@@ -24,3 +24,20 @@ export const getIcuChart = async (
 
   return data
 }
+
+export const getPrevIoChartData = async (patientId: string) => {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from('icu_charts')
+    .select('icu_chart_id, target_date')
+    .match({ patient_id: patientId })
+    .order('created_at', { ascending: false })
+    .limit(2)
+
+  if (error) {
+    throw new Error(error.message)
+  }
+
+  return data[1] ?? null
+}
