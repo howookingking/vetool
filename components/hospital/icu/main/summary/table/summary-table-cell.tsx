@@ -13,9 +13,11 @@ const countPendingOrders = (orders: SummaryOrder[], time: number): number =>
 export default function SummaryTableCell({
   time,
   orders,
+  isPatientOut,
 }: {
   time: number
   orders: SummaryOrder[]
+  isPatientOut: boolean
 }) {
   const pendingCount = useMemo(
     () => countPendingOrders(orders, time),
@@ -27,7 +29,11 @@ export default function SummaryTableCell({
       className="text-center"
       style={{
         backgroundColor:
-          pendingCount > 0 ? CELL_COLORS.NOT_DONE : CELL_COLORS.DONE,
+          pendingCount > 0
+            ? isPatientOut
+              ? CELL_COLORS.OUT
+              : CELL_COLORS.NOT_DONE
+            : CELL_COLORS.DONE,
       }}
     >
       {pendingCount}
