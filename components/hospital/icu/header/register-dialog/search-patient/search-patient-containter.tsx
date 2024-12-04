@@ -42,7 +42,7 @@ export default function SearchPatientContainer({
 
   useEffect(() => {
     getHosPatientCount(hosId).then(setTotalPatientCount)
-  }, [])
+  }, [hosId])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value)
