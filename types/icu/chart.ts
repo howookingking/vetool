@@ -142,3 +142,8 @@ export type PinnedDiet = Pick<
   Diet,
   'diet_id' | 'name' | 'unit' | 'species' | 'mass_vol' | 'company'
 >
+
+export type PrevIoChartData = {
+  icu_chart_id: string
+  target_date: string | null
+}

@@ -39,7 +39,7 @@ export default function CellsRow({
   vitalRefRange,
   species,
 }: CellsRowProps) {
-  const { order_times, order_id, treatments } = order
+  const { order_times, order_id, treatments, order_type, order_name } = order
   const {
     setSelectedOrderPendingQueue,
     setOrderTimePendingQueue,
@@ -111,7 +111,9 @@ export default function CellsRow({
           order_times[index] !== '0' &&
           treatments.some((treatment) => treatment.time === time)
         const orderer = orderTimeState[time - 1]
-        const tx = treatments.findLast((treatment) => treatment.time === time)
+        const tx = treatments
+          .reverse()
+          .find((treatment) => treatment.time === time)
         const isHovered = hoveredColumn === index + 1
         const isGuidelineTime = [2, 10, 18].includes(time)
 
@@ -124,6 +126,8 @@ export default function CellsRow({
             icuChartOrderId={order_id}
             isDone={isDone}
             orderer={orderer}
+            orderType={order_type}
+            orderName={order_name}
             icuChartTxId={tx?.tx_id}
             toggleOrderTime={toggleOrderTime}
             showOrderer={showOrderer}

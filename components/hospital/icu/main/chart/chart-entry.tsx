@@ -4,13 +4,15 @@ import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import AddChartDialogs from '@/components/hospital/icu/main/chart/add-chart-dialogs/add-chart-dialogs'
 import Chart from '@/components/hospital/icu/main/chart/chart'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import type { SelectedChart } from '@/types/icu/chart'
+import type { PrevIoChartData, SelectedChart } from '@/types/icu/chart'
 
 export default function ChartEntry({
   chartData,
+  prevIoChartData,
   patientId,
 }: {
   chartData: SelectedChart
+  prevIoChartData: PrevIoChartData | null
   patientId: string
 }) {
   const {
@@ -42,7 +44,13 @@ export default function ChartEntry({
 
   // io가 있고 chart가 있고 order가 없는 경우 => 첫날차트
   if (chartData.orders.length === 0) {
-    return <AddChartDialogs isFirstChart chartData={chartData} />
+    return (
+      <AddChartDialogs
+        isFirstChart
+        chartData={chartData}
+        prevIoChartData={prevIoChartData}
+      />
+    )
   }
 
   // io가 있고 chart가 있고 order가 있음 => 정상차트
