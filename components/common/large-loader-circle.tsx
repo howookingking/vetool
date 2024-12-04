@@ -3,8 +3,10 @@ import { LoaderCircle } from 'lucide-react'
 
 export default function LargeLoaderCircle({
   className,
+  size = 80,
 }: {
   className?: string
+  size?: number
 }) {
   return (
     <div
@@ -13,7 +15,7 @@ export default function LargeLoaderCircle({
         className,
       )}
     >
-      <LoaderCircle className="h-20 w-20 animate-spin" />
+      <LoaderCircle className="animate-spin" size={size} />
     </div>
   )
 }

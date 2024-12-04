@@ -16,7 +16,7 @@ export function useIcuRealtime(hosId: string) {
   const debouncedRefresh = useDebouncedCallback(() => {
     console.log('Debouced refresh')
     refresh()
-  }, 1000)
+  }, 500)
 
   const handleChange = useCallback(
     (payload: any) => {

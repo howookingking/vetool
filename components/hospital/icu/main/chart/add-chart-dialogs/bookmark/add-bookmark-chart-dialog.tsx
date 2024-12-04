@@ -62,7 +62,7 @@ export default function AddBookmarkChartDialog() {
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <Button
         variant="outline"
-        className="hidden h-[200px] w-full items-center justify-center gap-2 md:flex md:h-1/3 md:w-1/4"
+        className="hidden h-1/3 w-full items-center justify-center gap-2 md:flex md:h-1/3 md:w-2/3 lg:w-1/2"
         onClick={handleOpenTemplateDialog}
         disabled={isLoading}
       >

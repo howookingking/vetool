@@ -1,27 +1,52 @@
 'use client'
 
+import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import RegisterDialogHeader from '@/components/hospital/icu/header/register-dialog/register-dialog-header'
-import RegisterIcuForm from '@/components/hospital/icu/header/register-dialog/register-icu/register-icu-form'
-import SearchPatientContainer from '@/components/hospital/icu/header/register-dialog/search-patient/search-patient-containter'
-import PatientForm from '@/components/hospital/patients/patient-form'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useIcuRegisterStore } from '@/lib/store/icu/icu-register'
 import { cn } from '@/lib/utils/utils'
 import type { Vet } from '@/types/icu/chart'
+import dynamic from 'next/dynamic'
 import { useCallback, useState } from 'react'
+
+const LazyRegisterIcuForm = dynamic(
+  () =>
+    import(
+      '@/components/hospital/icu/header/register-dialog/register-icu/register-icu-form'
+    ),
+  {
+    ssr: false,
+    loading: () => <LargeLoaderCircle className="h-[356px]" />,
+  },
+)
+const LazyPatientForm = dynamic(
+  () => import('@/components/hospital/patients/patient-form'),
+  {
+    ssr: false,
+    loading: () => <LargeLoaderCircle className="h-[544px]" />,
+  },
+)
+const LazySearchPatientContainer = dynamic(
+  () =>
+    import(
+      '@/components/hospital/icu/header/register-dialog/search-patient/search-patient-containter'
+    ),
+  {
+    ssr: false,
+    loading: () => <LargeLoaderCircle className="h-[574px]" />,
+  },
+)
 
 export default function RegisterDialog({
   hosId,
   groupList,
   vetsData,
-  totalPatientCount,
 }: {
   hosId: string
   groupList: string[]
   vetsData: Vet[]
-  totalPatientCount: number
 }) {
   const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false)
   const { step, setStep, reset } = useIcuRegisterStore()
@@ -57,7 +82,7 @@ export default function RegisterDialog({
       </DialogTrigger>
 
       <DialogContent
-        className="flex min-h-[720px] flex-col sm:max-w-[1200px]"
+        className="flex flex-col sm:max-w-[1200px]"
         onInteractOutside={(e) => {
           e.preventDefault()
         }}
@@ -82,14 +107,14 @@ export default function RegisterDialog({
 
           <TabsContent value="search">
             {step === 'patientSearch' && (
-              <SearchPatientContainer
-                totalPatientCount={totalPatientCount}
+              <LazySearchPatientContainer
                 itemsPerPage={8}
                 isIcu
+                hosId={hosId}
               />
             )}
             {step === 'icuRegister' && (
-              <RegisterIcuForm
+              <LazyRegisterIcuForm
                 handleCloseDialog={handleCloseDialog}
                 hosId={hosId}
                 groupList={groupList}
@@ -101,7 +126,7 @@ export default function RegisterDialog({
 
           <TabsContent value="register">
             {step === 'patientRegister' && (
-              <PatientForm
+              <LazyPatientForm
                 mode="registerFromIcuRoute"
                 setStep={setStep}
                 hosId={hosId}
@@ -109,7 +134,7 @@ export default function RegisterDialog({
               />
             )}
             {step === 'icuRegister' && (
-              <RegisterIcuForm
+              <LazyRegisterIcuForm
                 handleCloseDialog={handleCloseDialog}
                 hosId={hosId}
                 groupList={groupList}

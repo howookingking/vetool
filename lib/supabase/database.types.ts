@@ -316,6 +316,7 @@ export type Database = {
           master_user_id: string
           name: string
           order_color: Json | null
+          order_font_size: number
           plan: string
           rer_calc_method: string
           show_orderer: boolean
@@ -334,6 +335,7 @@ export type Database = {
           master_user_id: string
           name: string
           order_color?: Json | null
+          order_font_size?: number
           plan?: string
           rer_calc_method?: string
           show_orderer?: boolean
@@ -352,6 +354,7 @@ export type Database = {
           master_user_id?: string
           name?: string
           order_color?: Json | null
+          order_font_size?: number
           plan?: string
           rer_calc_method?: string
           show_orderer?: boolean

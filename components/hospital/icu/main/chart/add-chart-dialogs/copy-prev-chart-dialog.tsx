@@ -35,8 +35,8 @@ export default function CopyPrevChartDialog() {
 
     if (error) {
       toast({
-        title: '전날 차트를 복사할 수 없습니다',
-        description: '전날 차트가 있는지 확인해주세요',
+        title: '전일 차트를 복사할 수 없습니다',
+        description: '전일 차트가 있는지 확인해주세요',
         variant: 'destructive',
       })
       setIsLoading(false)
@@ -45,7 +45,7 @@ export default function CopyPrevChartDialog() {
     }
 
     toast({
-      title: '전날 차트를 복사하였습니다',
+      title: '전일 차트를 복사하였습니다',
     })
     setIsLoading(false)
     setIsDialogOpen(false)
@@ -57,17 +57,17 @@ export default function CopyPrevChartDialog() {
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="flex h-[200px] w-full items-center justify-center gap-2 md:h-1/3 md:w-1/4"
+          className="flex h-1/3 w-full items-center justify-center gap-2 md:h-1/3 md:w-2/3 lg:w-1/2"
         >
           <ClipboardPaste size={20} />
-          <span>전일 차트복사</span>
+          <span>전일 차트 복사</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>전일차트복사</DialogTitle>
+          <DialogTitle>전일 차트 복사</DialogTitle>
           <DialogDescription>
-            전일차트를 복사하여 {target_date} 차트가 생성됩니다
+            전일 차트를 복사하여 {target_date} 차트가 생성됩니다
           </DialogDescription>
         </DialogHeader>
 
@@ -78,7 +78,7 @@ export default function CopyPrevChartDialog() {
             </Button>
           </DialogClose>
           <Button onClick={handleCopyPrevSelectedChart} disabled={isLoading}>
-            복사
+            확인
             <LoaderCircle
               className={cn(isLoading ? 'animate-spin' : 'hidden')}
             />

@@ -1,6 +1,7 @@
 export const CELL_COLORS = {
   DONE: '#ecfdf5', // emerald-50
   NOT_DONE: '#fff1f2', // rose-50
+  OUT: '#f9fafb', // gray-50
 }
 
 export const ORDER_COLORS = {
@@ -49,23 +50,3 @@ export const ORDER_COLORS = {
   violet400: '#a78bfa',
   purple400: '#c084fc',
 } as const
-
-// export const ORDER_COLORS = {
-//   red50: '#ef4444',
-//   orange50: '#f97316',
-//   amber50: '#f59e0b',
-//   yellow50: '#eab308',
-//   lime50: '#84cc16',
-//   green50: '#22c55e',
-//   emerald50: '#10b981',
-//   teal50: '#14b8a6',
-//   cyan50: '#06b6d4',
-//   sky50: '#0ea5e9',
-//   blue50: '#3b82f6',
-//   indigo50: '#6366f1',
-//   violet50: '#8b5cf6',
-//   purple50: '#a855f7',
-//   fuchsia50: '#d946ef',
-//   pink50: '#ec4899',
-//   rose50: '#f43f5e',
-// } as const

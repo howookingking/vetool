@@ -1,6 +1,5 @@
 'use client'
 
-import Autocomplete from '@/components/common/auto-complete/auto-complete'
 import { registerIcuPatientFormSchema } from '@/components/hospital/icu/header/register-dialog/register-icu/icu-schema'
 import {
   AlertDialog,
@@ -77,12 +76,9 @@ export default function RegisterIcuForm({
   const form = useForm<z.infer<typeof registerIcuPatientFormSchema>>({
     resolver: zodResolver(registerIcuPatientFormSchema),
     defaultValues: {
-      dx: undefined,
-      cc: undefined,
       in_date: range?.from,
       out_due_date: range?.to,
       main_vet: vetsData[0].user_id,
-      sub_vet: undefined,
       group_list: [groupList[0]],
     },
   })
@@ -97,8 +93,7 @@ export default function RegisterIcuForm({
   const handleSubmit = async (
     values: z.infer<typeof registerIcuPatientFormSchema>,
   ) => {
-    const { dx, cc, in_date, out_due_date, main_vet, sub_vet, group_list } =
-      values
+    const { in_date, out_due_date, main_vet, group_list } = values
     if (
       confirm(
         `${registeringPatient?.patientName} 환자를 "${format(in_date, 'yyyy-MM-dd')}"에 입원시키겠습니까?`,
@@ -110,13 +105,13 @@ export default function RegisterIcuForm({
         hosId,
         registeringPatient!.patientId,
         registeringPatient!.birth,
-        dx,
-        cc,
+        '',
+        '',
         format(in_date, 'yyyy-MM-dd'),
         out_due_date ? format(out_due_date, 'yyyy-MM-dd') : '',
         group_list,
         main_vet,
-        sub_vet,
+        undefined,
       )
 
       toast({
@@ -161,43 +156,6 @@ export default function RegisterIcuForm({
         onSubmit={form.handleSubmit(handleSubmit)}
         className="flex flex-col gap-4"
       >
-        <FormField
-          control={form.control}
-          name="dx"
-          render={({ field }) => (
-            <FormItem className="relative">
-              <FormLabel htmlFor="DX">진단명 DX*</FormLabel>
-              <FormControl className="w-full">
-                <Autocomplete
-                  defaultValue={field.value || ''}
-                  handleUpdate={(value) => field.onChange(value)}
-                  label="DX"
-                />
-              </FormControl>
-              <FormMessage className="text-xs" />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="cc"
-          render={({ field }) => (
-            <FormItem className="relative">
-              <FormLabel htmlFor="CC">주증상 CC*</FormLabel>
-              <FormControl>
-                <Autocomplete
-                  defaultValue={field.value || ''}
-                  handleUpdate={(value) => field.onChange(value)}
-                  label="CC"
-                />
-              </FormControl>
-
-              <FormMessage className="text-xs" />
-            </FormItem>
-          )}
-        />
-
         <FormField
           control={form.control}
           name="in_date"
@@ -315,56 +273,6 @@ export default function RegisterIcuForm({
                         />
                         <span>{vet.name}</span>
                         <span className="text-xs">({vet.position})</span>
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage className="text-xs" />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="sub_vet"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>부주치의</FormLabel>
-              <Select
-                onValueChange={field.onChange}
-                defaultValue={field.value ?? undefined}
-              >
-                <FormControl>
-                  <SelectTrigger
-                    className={cn(
-                      'h-8 text-sm',
-                      !field.value && 'text-muted-foreground',
-                    )}
-                  >
-                    <SelectValue placeholder="부주치의를 선택해주세요" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {vetsData.map((vet) => (
-                    <SelectItem
-                      key={vet.user_id}
-                      value={vet.user_id}
-                      id={vet.user_id}
-                    >
-                      <div className="flex items-center gap-2">
-                        <Image
-                          unoptimized
-                          src={vet.avatar_url ?? ''}
-                          alt={vet.name}
-                          width={20}
-                          height={20}
-                          className="rounded-full"
-                        />
-                        <span>{vet.name}</span>
-                        <span className="text-xs">
-                          ({vet.position ?? '미분류'})
-                        </span>
                       </div>
                     </SelectItem>
                   ))}

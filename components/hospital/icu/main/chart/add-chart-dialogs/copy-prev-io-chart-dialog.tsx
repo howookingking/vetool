@@ -21,88 +21,50 @@ import {
 } from '@/components/ui/select'
 import { toast } from '@/components/ui/use-toast'
 import { pasteChart } from '@/lib/services/icu/chart/paste-chart'
-import { useCopiedChartStore } from '@/lib/store/icu/copied-chart'
 import { useRealtimeSubscriptionStore } from '@/lib/store/icu/realtime-subscription'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { CopyCheck, LoaderCircle } from 'lucide-react'
+import type { PrevIoChartData } from '@/types/icu/chart'
+import { CalendarPlus, LoaderCircle } from 'lucide-react'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
-export default function PasteCopiedChartDialog() {
-  const { target_date, patient_id } = useParams()
-  const { copiedChartId, reset } = useCopiedChartStore()
+import { useState } from 'react'
+
+export default function CopyPrevIoChartDialog({
+  prevIoChartData,
+}: {
+  prevIoChartData: PrevIoChartData
+}) {
+  const { refresh } = useRouter()
+  const { patient_id, target_date } = useParams()
+  const { isSubscriptionReady } = useRealtimeSubscriptionStore()
   const {
     basicHosData: { vetsListData, showOrderer },
   } = useBasicHosDataContext()
+  const { icu_chart_id: prevChartId, target_date: prevDate } = prevIoChartData
+
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [orderer, setOrderer] = useState(vetsListData[0].name)
   const [isLoading, setIsLoading] = useState(false)
-  const { isSubscriptionReady } = useRealtimeSubscriptionStore()
-  const { refresh } = useRouter()
+  const [orderer, setOrderer] = useState(vetsListData[0].name)
 
-  const handlePasteCopiedChart = useCallback(async () => {
-    if (!copiedChartId) {
-      setIsDialogOpen(false)
-
-      toast({
-        title: '차트 붙여넣기 실패',
-        description: '차트를 먼저 복사해주세요',
-        variant: 'destructive',
-      })
-      return
-    }
-
+  const handleCopyPrevIoChart = async () => {
     setIsLoading(true)
 
     await pasteChart(
       patient_id as string,
-      copiedChartId,
+      prevChartId,
       target_date as string,
       orderer,
     )
 
     toast({
-      title: '차트를 붙여넣었습니다',
-      description: '복사한 차트는 클립보드에서 제거됩니다',
+      title: '최근 입원 차트를 복사하였습니다',
     })
 
     setIsLoading(false)
     setIsDialogOpen(false)
-    reset()
     if (!isSubscriptionReady) refresh()
-  }, [
-    copiedChartId,
-    patient_id,
-    reset,
-    target_date,
-    orderer,
-    isSubscriptionReady,
-    refresh,
-  ])
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      const activeElement = document.activeElement
-      const isInputFocused =
-        activeElement instanceof HTMLInputElement ||
-        activeElement instanceof HTMLTextAreaElement
-      if (
-        (event.ctrlKey || event.metaKey) &&
-        event.key === 'v' &&
-        !isInputFocused
-      ) {
-        event.preventDefault()
-        setIsDialogOpen(true)
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown)
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [handlePasteCopiedChart])
+  }
 
   const handleOrdererChange = (value: string) => {
     setOrderer(value)
@@ -115,15 +77,19 @@ export default function PasteCopiedChartDialog() {
           variant="outline"
           className="hidden h-1/3 w-full items-center justify-center gap-2 md:flex md:h-1/3 md:w-2/3 lg:w-1/2"
         >
-          <CopyCheck size={20} />
-          <span>복사한 차트 붙여넣기</span>
+          <CalendarPlus size={20} />
+          <div className="flex flex-wrap justify-center">
+            <span>최근 입원 차트 복사</span>
+            <span>{`(${prevDate})`}</span>
+          </div>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>복사한 차트 생성</DialogTitle>
+          <DialogTitle>최근 입원 차트 복사</DialogTitle>
           <DialogDescription>
-            클립보드에 복사한 차트를 붙여넣어 차트가 생성됩니다
+            최근 입원 차트{`(${prevDate})`}를 복사하여 {target_date} 차트가
+            생성됩니다
           </DialogDescription>
 
           {showOrderer && (
@@ -178,7 +144,7 @@ export default function PasteCopiedChartDialog() {
               취소
             </Button>
           </DialogClose>
-          <Button onClick={handlePasteCopiedChart} disabled={isLoading}>
+          <Button onClick={handleCopyPrevIoChart} disabled={isLoading}>
             확인
             <LoaderCircle
               className={cn(isLoading ? 'animate-spin' : 'hidden')}

@@ -1,14 +1,14 @@
 import type {
+  Diet,
   DrugDoses,
   DrugProductsRows,
-  IcuTemplate,
   IcuCharts,
   IcuIo,
   IcuNotification,
+  IcuOrders,
+  IcuTemplate,
   Patients,
   User,
-  IcuOrders,
-  Diet,
 } from '@/types'
 
 export type MainAndSubVet = Pick<User, 'name' | 'avatar_url' | 'user_id'>
@@ -25,6 +25,22 @@ export type IcuNotificationJoined = IcuNotification & {
   patient_id: Pick<Patients, 'name' | 'breed' | 'gender' | 'patient_id'>
 }
 
+export type SelectedChartIcuIo = Pick<
+  IcuIo,
+  | 'in_date'
+  | 'out_date'
+  | 'icu_io_cc'
+  | 'icu_io_dx'
+  | 'icu_io_id'
+  | 'created_at'
+  | 'age_in_days'
+  | 'out_due_date'
+  | 'cpcr'
+  | 'group_list'
+  | 'cage'
+>
+export type SelectedChartPatient = Omit<Patients, 'owner_id'>
+
 export type SelectedChart = Pick<
   IcuCharts,
   | 'memo_a'
@@ -38,24 +54,11 @@ export type SelectedChart = Pick<
   | 'der_calc_factor'
   | 'main_vet'
 > & {
-  icu_io: Pick<
-    IcuIo,
-    | 'in_date'
-    | 'out_date'
-    | 'icu_io_cc'
-    | 'icu_io_dx'
-    | 'icu_io_id'
-    | 'created_at'
-    | 'age_in_days'
-    | 'out_due_date'
-    | 'cpcr'
-    | 'group_list'
-    | 'cage'
-  >
+  icu_io: SelectedChartIcuIo
 } & {
   orders: SelectedIcuOrder[]
 } & {
-  patient: Omit<Patients, 'owner_id'>
+  patient: SelectedChartPatient
 } & {
   main_vet: Pick<Vet, 'avatar_url' | 'name' | 'user_id'>
 } & {
@@ -111,7 +114,9 @@ export type IcuSidebarIoData = {
   patient: {
     name: string
     breed: string
+    species: string
     patient_id: string
+    owner_name: string
   }
   out_date: string | null
   icu_io_id: string
@@ -139,3 +144,8 @@ export type PinnedDiet = Pick<
   Diet,
   'diet_id' | 'name' | 'unit' | 'species' | 'mass_vol' | 'company'
 >
+
+export type PrevIoChartData = {
+  icu_chart_id: string
+  target_date: string | null
+}

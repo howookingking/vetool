@@ -2,7 +2,6 @@ import IcuFooter from '@/components/hospital/icu/footer/icu-footer'
 import IcuHeader from '@/components/hospital/icu/header/icu-header'
 import IcuSidebar from '@/components/hospital/icu/sidebar/icu-sidebar'
 import { getIcuData } from '@/lib/services/icu/get-icu-data'
-import { getHosPatientCount } from '@/lib/services/patient/patient'
 import { BasicHosDataProvider } from '@/providers/basic-hos-data-context-provider'
 import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
 import React from 'react'
@@ -12,7 +11,6 @@ export default async function IcuPageLayout(props: {
   params: Promise<{ target_date: string; hos_id: string }>
 }) {
   const params = await props.params
-  const totalPatientCount = await getHosPatientCount(params.hos_id)
 
   const { basicHosData, icuSidebarData, vetsListData } = await getIcuData(
     params.hos_id,
@@ -31,13 +29,13 @@ export default async function IcuPageLayout(props: {
         rerCalcMethod: basicHosData.rer_calc_method as 'a' | 'b',
         sidebarData: icuSidebarData ?? [],
         vitalRefRange: basicHosData.vital_ref_range as VitalRefRange[],
+        orderFontSizeData: basicHosData.order_font_size,
       }}
     >
       <IcuHeader
         hosId={params.hos_id}
         groupList={basicHosData.group_list}
         vetsData={vetsListData}
-        totalPatientCount={totalPatientCount}
       />
 
       <div className="flex h-icu-chart-main">
@@ -47,7 +45,7 @@ export default async function IcuPageLayout(props: {
           vetsListData={vetsListData}
         />
 
-        <div className="ml-0 w-screen flex-1 md:ml-[144px] md:w-auto">
+        <div className="ml-0 w-screen flex-1 md:ml-48 md:w-auto">
           {props.children}
         </div>
       </div>

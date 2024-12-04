@@ -18,7 +18,7 @@ export default function NoResultSquirrel({
   className,
   size = 'md',
 }: {
-  text: string
+  text: React.ReactNode
   className?: string
   size?: 'sm' | 'md' | 'lg'
 }) {
@@ -31,7 +31,7 @@ export default function NoResultSquirrel({
       )}
     >
       <Squirrel className="hover:scale-x-[-1]" size={ICON_SIZE_MAP[size]} />
-      <span>{text}</span>
+      <div>{text}</div>
     </div>
   )
 }
