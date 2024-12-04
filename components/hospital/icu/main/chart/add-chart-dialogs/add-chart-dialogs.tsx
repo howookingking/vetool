@@ -21,7 +21,7 @@ export default function AddChartDialogs({
   useEffect(() => {
     if (!isFirstChart) return
     getPrevIoChartData(patientId!).then(setPrevIoChartData)
-  }, [patientId])
+  }, [patientId, isFirstChart])
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-5 px-5 py-5 ring md:flex-row md:gap-10 lg:px-32">
