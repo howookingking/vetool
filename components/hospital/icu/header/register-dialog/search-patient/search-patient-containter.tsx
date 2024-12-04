@@ -112,7 +112,7 @@ export default function SearchPatientContainer({
             {totalPatientCount}마리
           </span>
         ) : (
-          <Skeleton className="h-6 w-20" />
+          <Skeleton className="h-5 w-20" />
         )}
       </div>
 

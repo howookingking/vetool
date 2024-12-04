@@ -18,14 +18,14 @@ const LazyRegisterIcuForm = dynamic(
     ),
   {
     ssr: false,
-    loading: () => <LargeLoaderCircle className="h-[574px]" />,
+    loading: () => <LargeLoaderCircle className="h-[356px]" />,
   },
 )
 const LazyPatientForm = dynamic(
   () => import('@/components/hospital/patients/patient-form'),
   {
     ssr: false,
-    loading: () => <LargeLoaderCircle className="h-[574px]" />,
+    loading: () => <LargeLoaderCircle className="h-[544px]" />,
   },
 )
 const LazySearchPatientContainer = dynamic(
@@ -82,7 +82,7 @@ export default function RegisterDialog({
       </DialogTrigger>
 
       <DialogContent
-        className="flex min-h-[720px] flex-col sm:max-w-[1200px]"
+        className="flex flex-col sm:max-w-[1200px]"
         onInteractOutside={(e) => {
           e.preventDefault()
         }}
