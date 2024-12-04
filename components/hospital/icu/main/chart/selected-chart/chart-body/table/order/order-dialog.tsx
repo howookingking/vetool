@@ -19,13 +19,13 @@ import OrdererSelectStep from './orderer/orderer-select-step'
 
 const LazyOrderForm = dynamic(() => import('./order-form'), {
   ssr: false,
-  loading: () => <LargeLoaderCircle className="h-[400px]" />,
+  loading: () => <LargeLoaderCircle className="h-[388px]" />,
 })
 const LazyTemplateTabContent = dynamic(
   () => import('./template/template-tab-content'),
   {
     ssr: false,
-    loading: () => <LargeLoaderCircle className="h-[400px]" />,
+    loading: () => <LargeLoaderCircle className="h-[388px]" />,
   },
 )
 

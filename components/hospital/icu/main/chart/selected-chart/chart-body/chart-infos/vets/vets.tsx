@@ -1,6 +1,6 @@
 'use client'
 
-import VetsUpdateForm from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/vets/vets-update-form'
+import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -16,8 +16,20 @@ import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provi
 import type { IcuChartsInCharge } from '@/types/adimin'
 import type { MainAndSubVet } from '@/types/icu/chart'
 import { Stethoscope } from 'lucide-react'
+import dynamic from 'next/dynamic'
 import { useState } from 'react'
 import VetName from './vet-name'
+
+const LazyVetsUpdateForm = dynamic(
+  () =>
+    import(
+      '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/vets/vets-update-form'
+    ),
+  {
+    ssr: false,
+    loading: () => <LargeLoaderCircle className="h-[276px]" />,
+  },
+)
 
 export default function Vets({
   mainVet,
@@ -72,7 +84,7 @@ export default function Vets({
           <DialogTitle>담당의 변경</DialogTitle>
           <DialogDescription />
         </DialogHeader>
-        <VetsUpdateForm
+        <LazyVetsUpdateForm
           setIsDialogOpen={setIsDialogOpen}
           mainVet={mainVet}
           subVet={subVet}

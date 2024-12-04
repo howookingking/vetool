@@ -1,4 +1,4 @@
-import RerDerForm from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/rer-der/rer-der-form'
+import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import RerDerToolTip from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/rer-der/rer-der-tool-tip'
 import { Button } from '@/components/ui/button'
 import {
@@ -14,7 +14,19 @@ import { Separator } from '@/components/ui/separator'
 import { calculateRer } from '@/lib/calculators/rer'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { Zap } from 'lucide-react'
+import dynamic from 'next/dynamic'
 import { useEffect, useMemo, useState } from 'react'
+
+const LazyRerDerForm = dynamic(
+  () =>
+    import(
+      '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/rer-der/rer-der-form'
+    ),
+  {
+    ssr: false,
+    loading: () => <LargeLoaderCircle className="h-[80px]" />,
+  },
+)
 
 export default function RerDer({
   weight,
@@ -96,7 +108,7 @@ export default function RerDer({
           <DialogDescription />
         </DialogHeader>
 
-        <RerDerForm
+        <LazyRerDerForm
           factor={factor}
           setFactor={setFactor}
           hasNoWeight={hasNoWeight}
