@@ -1,4 +1,4 @@
-import PatientForm from '@/components/hospital/patients/patient-form'
+import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -11,8 +11,17 @@ import {
 import { convertPascalCased, getAgeFromAgeInDays } from '@/lib/utils/utils'
 import type { PatientDataTable } from '@/types/patients'
 import { Cat, Dog } from 'lucide-react'
+import dynamic from 'next/dynamic'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
+
+const LazyPatientForm = dynamic(
+  () => import('@/components/hospital/patients/patient-form'),
+  {
+    ssr: false,
+    loading: () => <LargeLoaderCircle className="h-[544px]" />,
+  },
+)
 
 export default function UpdatePatientDialog({
   patientData,
@@ -59,7 +68,7 @@ export default function UpdatePatientDialog({
           <DialogDescription>환자의 정보를 수정합니다</DialogDescription>
         </DialogHeader>
 
-        <PatientForm
+        <LazyPatientForm
           mode="updateFromIcuRoute"
           hosId={hos_id as string}
           editingPatient={patientData}

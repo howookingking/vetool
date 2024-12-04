@@ -75,7 +75,7 @@ export default function CopyPrevIoChartDialog({
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="flex h-1/3 w-full items-center justify-center gap-2 md:h-1/3 md:w-2/3 lg:w-1/2"
+          className="hidden h-1/3 w-full items-center justify-center gap-2 md:flex md:h-1/3 md:w-2/3 lg:w-1/2"
         >
           <CalendarPlus size={20} />
           <div className="flex flex-wrap justify-center">
@@ -145,7 +145,7 @@ export default function CopyPrevIoChartDialog({
             </Button>
           </DialogClose>
           <Button onClick={handleCopyPrevIoChart} disabled={isLoading}>
-            복사
+            확인
             <LoaderCircle
               className={cn(isLoading ? 'animate-spin' : 'hidden')}
             />

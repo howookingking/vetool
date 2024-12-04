@@ -3,21 +3,26 @@
 import SearchPatientPagination from '@/components/hospital/icu/header/register-dialog/search-patient/search-patient-pagination'
 import SearchPatientTable from '@/components/hospital/icu/header/register-dialog/search-patient/search-patient-table'
 import { Input } from '@/components/ui/input'
-import { searchPatientsData } from '@/lib/services/patient/patient'
+import { Skeleton } from '@/components/ui/skeleton'
+import {
+  getHosPatientCount,
+  searchPatientsData,
+} from '@/lib/services/patient/patient'
 import type { PaginatedData, SearchedPatientsData } from '@/types/patients'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 
 export default function SearchPatientContainer({
-  totalPatientCount,
   itemsPerPage,
   isIcu,
+  hosId,
 }: {
-  totalPatientCount: number
   itemsPerPage: number
   isIcu: boolean
+  hosId: string
 }) {
+  const [totalPatientCount, setTotalPatientCount] = useState<number>()
   const { hos_id } = useParams()
   const [isEdited, setIsEdited] = useState(false)
   const [inputValue, setInputValue] = useState('')
@@ -34,6 +39,10 @@ export default function SearchPatientContainer({
   const currentPage = Number(searchParams.get('page') || '1')
   const router = useRouter()
   const totalPages = Math.ceil(patientsData.total_count / itemsPerPage)
+
+  useEffect(() => {
+    getHosPatientCount(hosId).then(setTotalPatientCount)
+  }, [hosId])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value)
@@ -96,10 +105,16 @@ export default function SearchPatientContainer({
         isIcu={isIcu}
       />
 
-      <p className="text-sm text-muted-foreground">
-        현재 등록된 환자 수:{' '}
-        <span className="font-medium text-black">{totalPatientCount}마리</span>
-      </p>
+      <div className="flex items-center gap-1 text-sm text-muted-foreground">
+        현재 등록된 환자 수 :
+        {totalPatientCount ? (
+          <span className="font-medium text-black">
+            {totalPatientCount}마리
+          </span>
+        ) : (
+          <Skeleton className="h-5 w-20" />
+        )}
+      </div>
 
       {!isSearching && (
         <div className="flex items-center justify-between px-2">

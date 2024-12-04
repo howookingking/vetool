@@ -1,5 +1,4 @@
-import ExportPdfButton from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/export-dialog/export-pdf-button'
-import ExportPngButton from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/export-dialog/export-png-button'
+import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -12,7 +11,13 @@ import {
 } from '@/components/ui/dialog'
 import type { SelectedChart } from '@/types/icu/chart'
 import { Share } from 'lucide-react'
+import dynamic from 'next/dynamic'
 import { useState } from 'react'
+
+const LazyExportButtons = dynamic(() => import('./export-buttons'), {
+  ssr: false,
+  loading: () => <LargeLoaderCircle size={40} />,
+})
 
 export default function ExportDialog({
   chartData,
@@ -37,12 +42,7 @@ export default function ExportDialog({
         </DialogHeader>
 
         <DialogFooter>
-          <ExportPngButton
-            chartData={chartData}
-            setIsDialogOpen={setIsDialogOpen}
-          />
-
-          <ExportPdfButton
+          <LazyExportButtons
             chartData={chartData}
             setIsDialogOpen={setIsDialogOpen}
           />

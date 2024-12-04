@@ -1,5 +1,6 @@
 'use client'
 
+import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -12,8 +13,16 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils/utils'
 import { Activity } from 'lucide-react'
+import dynamic from 'next/dynamic'
 import { useState } from 'react'
-import CpcrEtTubeUpdateForm from './cpcr-et-tube-update-form'
+
+const LazyCpcrEtTubeUpdateForm = dynamic(
+  () => import('./cpcr-et-tube-update-form'),
+  {
+    ssr: false,
+    loading: () => <LargeLoaderCircle className="h-[116px]" />,
+  },
+)
 
 export default function CpcrEtTube({
   cpcrEtTube,
@@ -53,7 +62,7 @@ export default function CpcrEtTube({
           <DialogDescription />
         </DialogHeader>
 
-        <CpcrEtTubeUpdateForm
+        <LazyCpcrEtTubeUpdateForm
           icuIoId={icuIoId}
           cpcr={cpcr}
           etTube={etTube}

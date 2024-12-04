@@ -69,7 +69,7 @@ export default function AddDefaultChartDialog({
             </Button>
           </DialogClose>
           <Button onClick={handleAddDefaultChart} disabled={isLoading}>
-            생성
+            확인
             <LoaderCircle
               className={cn(isLoading ? 'animate-spin' : 'hidden')}
             />
