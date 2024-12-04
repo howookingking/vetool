@@ -53,7 +53,7 @@ export default function VetFilter({
       <SelectTrigger className="flex h-8 w-full justify-center gap-1">
         <SelectValue placeholder="수의사" />
       </SelectTrigger>
-      <SelectContent className="w-32 p-0">
+      <SelectContent className="p-0">
         <Command>
           <SelectGroup>
             {vetsListData.map((vet) => (
@@ -72,7 +72,9 @@ export default function VetFilter({
               </SelectItem>
             ))}
             <SelectItem value="reset">
-              <div className="text-center text-gray-500">선택 초기화</div>
+              <div className="text-center text-muted-foreground">
+                선택 초기화
+              </div>
             </SelectItem>
           </SelectGroup>
         </Command>

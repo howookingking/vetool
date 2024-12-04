@@ -20,6 +20,7 @@ type CellsRowTitlesProps = {
   vitalRefRange: VitalRefRange[]
   species: string
   orderwidth: number
+  cellRef?: React.RefObject<HTMLTableRowElement>
 }
 
 export default function CellsRowTitles({
@@ -36,6 +37,7 @@ export default function CellsRowTitles({
   vitalRefRange,
   species,
   orderwidth,
+  cellRef,
 }: CellsRowTitlesProps) {
   return sortedOrders.map((order, index) => (
     <TableRow
@@ -44,6 +46,7 @@ export default function CellsRowTitles({
         !isSorting && 'hover:bg-muted/50',
       )}
       key={order.order_id}
+      ref={cellRef}
     >
       <CellsRowTitle
         index={index}

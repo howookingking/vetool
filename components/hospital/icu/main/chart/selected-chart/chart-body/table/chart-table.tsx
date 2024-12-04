@@ -37,10 +37,12 @@ export default function ChartTable({
   chartData,
   preview,
   isExport,
+  cellRef,
 }: {
   chartData: SelectedChart
   preview?: boolean
   isExport?: boolean
+  cellRef?: React.RefObject<HTMLTableRowElement>
 }) {
   const {
     icu_chart_id,
@@ -363,6 +365,7 @@ export default function ChartTable({
             orderStep={orderStep}
             orderTimePendingQueueLength={orderTimePendingQueue.length}
             orderwidth={orderWidth}
+            cellRef={cellRef}
           />
         </SortableOrderWrapper>
       ) : (
@@ -381,6 +384,7 @@ export default function ChartTable({
             orderStep={orderStep}
             orderTimePendingQueueLength={orderTimePendingQueue.length}
             orderwidth={orderWidth}
+            cellRef={cellRef}
           />
           {!isExport && !preview && (
             <TableRow className="hover:bg-transparent">
