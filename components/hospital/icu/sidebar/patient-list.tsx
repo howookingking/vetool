@@ -1,16 +1,18 @@
 import PatientButton from '@/components/hospital/icu/sidebar/patient-button'
 import { Separator } from '@/components/ui/separator'
-import type { IcuSidebarIoData } from '@/types/icu/chart'
+import type { IcuSidebarIoData, Vet } from '@/types/icu/chart'
 
 type IcuSidebarContentProps = {
   filteredIcuIoData: IcuSidebarIoData[]
   excludedIcuIoData: IcuSidebarIoData[]
+  vetsListData: Vet[]
   handleCloseMobileDrawer?: () => void
 }
 
 export default function PatientList({
   filteredIcuIoData,
   excludedIcuIoData,
+  vetsListData,
   handleCloseMobileDrawer,
 }: IcuSidebarContentProps) {
   const fileteredPatientCount = filteredIcuIoData.length
@@ -22,13 +24,16 @@ export default function PatientList({
           <span className="text-xs font-bold text-muted-foreground">
             입원환자 ({fileteredPatientCount})
           </span>
-          {filteredIcuIoData.map((data) => (
+          {filteredIcuIoData.map((icuIoData) => (
             <li
-              key={data.icu_io_id}
+              key={icuIoData.icu_io_id}
               className="w-full"
               onClick={handleCloseMobileDrawer}
             >
-              <PatientButton data={data} />
+              <PatientButton
+                icuIoData={icuIoData}
+                vetsListData={vetsListData}
+              />
             </li>
           ))}
         </ul>
@@ -46,13 +51,16 @@ export default function PatientList({
             <span className="text-xs font-bold text-muted-foreground">
               필터링 제외 ({excludedIcuIoData.length})
             </span>
-            {excludedIcuIoData.map((data) => (
+            {excludedIcuIoData.map((icuIoData) => (
               <li
-                key={data.icu_io_id}
+                key={icuIoData.icu_io_id}
                 className="w-full"
                 onClick={handleCloseMobileDrawer}
               >
-                <PatientButton data={data} />
+                <PatientButton
+                  icuIoData={icuIoData}
+                  vetsListData={vetsListData}
+                />
               </li>
             ))}
           </ul>
