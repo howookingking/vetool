@@ -27,7 +27,7 @@ export default function CellsRowTitle({
 }) {
   const { order_comment, order_type, order_id, order_name } = order
   const {
-    basicHosData: { orderColorsData },
+    basicHosData: { orderColorsData, orderFontSizeData },
   } = useBasicHosDataContext()
   const {
     setOrderStep,
@@ -159,7 +159,10 @@ export default function CellsRowTitle({
         }}
       >
         <div className="flex items-center gap-1 truncate">
-          <span className="font-semibold transition group-hover:underline">
+          <span
+            className="font-semibold transition group-hover:underline"
+            style={{ fontSize: `${orderFontSizeData}px` }}
+          >
             {parsingOrderName(order_type, order_name)}
           </span>
 
@@ -170,7 +173,10 @@ export default function CellsRowTitle({
           )}
         </div>
 
-        <span className="min-w-16 truncate text-right text-xs font-semibold text-muted-foreground">
+        <span
+          className="min-w-16 truncate text-right text-xs font-semibold text-muted-foreground"
+          style={{ fontSize: `${orderFontSizeData - 2}px` }}
+        >
           {order_comment}
           {renderOrderSubComment(order)}
         </span>

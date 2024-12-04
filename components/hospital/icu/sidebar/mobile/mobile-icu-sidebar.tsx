@@ -44,6 +44,7 @@ export default function MobileSidebar({
           <PatientList
             filteredIcuIoData={filteredData.filteredIcuIoData}
             excludedIcuIoData={filteredData.excludedIcuIoData}
+            vetsListData={vetsListData}
             handleCloseMobileDrawer={handleCloseMobileDrawer}
           />
         </>

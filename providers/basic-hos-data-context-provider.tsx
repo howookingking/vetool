@@ -18,6 +18,7 @@ type BasicHosData = {
   rerCalcMethod: 'a' | 'b'
   sidebarData: IcuSidebarIoData[]
   vitalRefRange: VitalRefRange[]
+  orderFontSizeData: number
 }
 
 const BasicHosDataContext = createContext<IcuContextType | undefined>(undefined)
