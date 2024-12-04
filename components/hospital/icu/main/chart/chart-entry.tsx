@@ -1,6 +1,6 @@
 'use client'
 
-import NoResult from '@/components/common/no-result'
+import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import AddChartDialogs from '@/components/hospital/icu/main/chart/add-chart-dialogs/add-chart-dialogs'
 import Chart from '@/components/hospital/icu/main/chart/chart'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
@@ -22,14 +22,15 @@ export default function ChartEntry({
   // 입원 전 or 퇴원 후
   if (!chartData && !hasIcuIo) {
     return (
-      <NoResult
-        title={
-          <>
-            해당환자는 선택한 날짜의 차트가 없습니다 <br /> 선택한 날짜에 아직
+      <NoResultSquirrel
+        className="h-full flex-col"
+        size="lg"
+        text={
+          <div className="flex flex-col text-center">
+            해당환자는 선택한 날짜에 차트가 없습니다 <br /> 선택한 날짜에 아직
             입원을 하지 않았거나 이미 퇴원을 하였습니다
-          </>
+          </div>
         }
-        className="h-full ring"
       />
     )
   }
