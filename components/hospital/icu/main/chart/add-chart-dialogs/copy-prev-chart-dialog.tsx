@@ -78,7 +78,7 @@ export default function CopyPrevChartDialog() {
             </Button>
           </DialogClose>
           <Button onClick={handleCopyPrevSelectedChart} disabled={isLoading}>
-            복사
+            확인
             <LoaderCircle
               className={cn(isLoading ? 'animate-spin' : 'hidden')}
             />

@@ -3,32 +3,25 @@ import AddBookmarkChartDialog from '@/components/hospital/icu/main/chart/add-cha
 import CopyPrevChartDialog from '@/components/hospital/icu/main/chart/add-chart-dialogs/copy-prev-chart-dialog'
 import CopyPrevIoChartDialog from '@/components/hospital/icu/main/chart/add-chart-dialogs/copy-prev-io-chart-dialog'
 import PasteCopiedChartDialog from '@/components/hospital/icu/main/chart/add-chart-dialogs/paste-copied-chart-dialog'
+import { getPrevIoChartData } from '@/lib/services/icu/chart/get-icu-chart'
 import type { PrevIoChartData, SelectedChart } from '@/types/icu/chart'
+import { useEffect, useState } from 'react'
 
 export default function AddChartDialogs({
   chartData,
-  isFirstChart,
-  prevIoChartData,
+  patientId,
 }: {
-  isFirstChart?: boolean
   chartData?: SelectedChart
-  prevIoChartData?: PrevIoChartData | null
+  patientId?: string
 }) {
-  if (isFirstChart && prevIoChartData) {
-    return (
-      <div className="flex h-full w-full items-center justify-center gap-5 p-5 ring md:gap-10">
-        <div className="flex h-full w-full flex-col items-end justify-center gap-5 md:gap-10">
-          <AddDefaultChartDialog chartData={chartData} />
-          <PasteCopiedChartDialog />
-        </div>
+  const isFirstChart = chartData && chartData.orders.length === 0
 
-        <div className="flex h-full w-full flex-col justify-center gap-5 md:gap-10">
-          <CopyPrevIoChartDialog prevIoChartData={prevIoChartData} />
-          <AddBookmarkChartDialog />
-        </div>
-      </div>
-    )
-  }
+  const [prevIoChartData, setPrevIoChartData] =
+    useState<PrevIoChartData | null>(null)
+  useEffect(() => {
+    if (!isFirstChart) return
+    getPrevIoChartData(patientId!).then(setPrevIoChartData)
+  }, [patientId])
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-5 px-5 py-5 ring md:flex-row md:gap-10 lg:px-32">
@@ -36,6 +29,10 @@ export default function AddChartDialogs({
         <AddDefaultChartDialog chartData={chartData} />
       ) : (
         <CopyPrevChartDialog />
+      )}
+
+      {prevIoChartData && (
+        <CopyPrevIoChartDialog prevIoChartData={prevIoChartData} />
       )}
 
       <PasteCopiedChartDialog />

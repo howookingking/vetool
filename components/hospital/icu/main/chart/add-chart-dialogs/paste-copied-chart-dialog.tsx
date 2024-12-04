@@ -179,7 +179,7 @@ export default function PasteCopiedChartDialog() {
             </Button>
           </DialogClose>
           <Button onClick={handlePasteCopiedChart} disabled={isLoading}>
-            붙여넣기
+            확인
             <LoaderCircle
               className={cn(isLoading ? 'animate-spin' : 'hidden')}
             />
