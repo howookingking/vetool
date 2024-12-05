@@ -12,7 +12,7 @@ export default async function AdminLayout(props: {
 }) {
   const params = await props.params
   const supabaseUser = await getSupabaseUser()
-  const isAdmin = await checkIsAdmin(params.hos_id, supabaseUser.id)
+  const isAdmin = await checkIsAdmin(supabaseUser.id)
 
   if (!isAdmin) {
     redirect(`/hospital/${params.hos_id}`)

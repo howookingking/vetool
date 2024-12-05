@@ -22,13 +22,13 @@ export async function getSupabaseUser() {
   return supabaseUser
 }
 
-export async function checkIsAdmin(hosId: string, userId: string) {
+export async function checkIsAdmin(userId: string) {
   const supabase = await createClient()
 
   const { data: vetoolUserData, error } = await supabase
     .from('users')
     .select('is_admin')
-    .match({ user_id: userId, hos_id: hosId })
+    .match({ user_id: userId })
     .single()
 
   if (error) {
