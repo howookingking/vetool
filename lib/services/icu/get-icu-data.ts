@@ -62,7 +62,7 @@ export const getIcuData = async (hosId: string, targetDate: string) => {
     )
   }
   return {
-    icuSidebarData,
+    icuSidebarData: icuSidebarData ?? [],
     vetsListData,
     basicHosData,
   }

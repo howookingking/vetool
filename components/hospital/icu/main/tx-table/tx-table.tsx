@@ -16,7 +16,7 @@ import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
 import { SquarePlus } from 'lucide-react'
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export default function TxTable({
   localFilterState,
@@ -25,57 +25,47 @@ export default function TxTable({
 }: {
   localFilterState: string
   filteredTxData: IcuTxTableData[]
-  chartBackgroundMap: {
-    [key: string]: string
-  }
+  chartBackgroundMap: Record<string, string>
 }) {
   const scrollAreaRef = useRef<HTMLDivElement>(null)
   const tableRef = useRef<HTMLTableElement>(null)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  const getCurrentScrollPosition = () => {
+    const currentHour = new Date().getHours() - 5
+    if (!tableRef.current) return 0
+    const headerCells = Array.from(tableRef.current.querySelectorAll('th'))
+    return headerCells.slice(1, currentHour + 1).reduce((total, cell) => {
+      return total + cell.offsetWidth
+    }, 0)
+  }
 
   useEffect(() => {
+    const scrollToCurrentTime = () => {
+      const scrollContainer = scrollAreaRef.current?.querySelector(
+        '[data-radix-scroll-area-viewport]',
+      ) as HTMLDivElement | null
+
+      if (scrollContainer) {
+        const scrollPosition = getCurrentScrollPosition()
+        scrollContainer.style.scrollBehavior = 'smooth'
+        scrollContainer.scrollLeft = scrollPosition
+      }
+    }
+
     const timeoutId = setTimeout(() => {
-      const currentHour = new Date().getHours() - 5
-
-      if (scrollAreaRef.current && tableRef.current) {
-        const scrollContainer = scrollAreaRef.current.querySelector(
-          '[data-radix-scroll-area-viewport]',
-        ) as HTMLDivElement | null
-
-        const headerCells = tableRef.current.querySelectorAll('th')
-
-        let scrollPosition = 0
-        let foundCurrentHour = false
-
-        headerCells.forEach((cell, index) => {
-          if (index === 0) return
-
-          const hour = TIMES[index - 1]
-
-          if (hour < currentHour) {
-            scrollPosition += cell.offsetWidth
-          } else if (hour === currentHour && !foundCurrentHour) {
-            scrollPosition += cell.offsetWidth
-            foundCurrentHour = true
-          }
-        })
-
-        if (scrollContainer) {
-          scrollContainer.style.scrollBehavior = 'smooth'
-          scrollContainer.scrollLeft = scrollPosition
-        }
+      if (!isScrolled) {
+        setIsScrolled(true)
+        scrollToCurrentTime()
       }
     }, 100)
 
     return () => clearTimeout(timeoutId)
-  }, [filteredTxData])
+  }, [filteredTxData, isScrolled])
 
-  const orderType = useMemo(
-    () =>
-      DEFAULT_ICU_ORDER_TYPE.find(
-        (orderType) => orderType.value === localFilterState,
-      )?.label,
-    [localFilterState],
-  )
+  const orderType = DEFAULT_ICU_ORDER_TYPE.find(
+    (orderType) => orderType.value === localFilterState,
+  )?.label
 
   if (filteredTxData.length === 0) {
     return (
