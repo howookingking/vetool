@@ -85,7 +85,7 @@ export default function OrderDialog({
           <Plus size={18} />
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-3xl">
+      <DialogContent className="max-w-3xl overflow-x-auto">
         <DialogHeader>
           {orderStep === 'upsert' && (
             <DialogTitle>오더 {isEditOrderMode ? '수정' : '추가'}</DialogTitle>
@@ -101,7 +101,7 @@ export default function OrderDialog({
 
         {orderStep === 'upsert' && (
           <Tabs defaultValue="default">
-            <TabsList className="grid grid-cols-2">
+            <TabsList className="grid max-w-full grid-cols-2 overflow-x-auto whitespace-nowrap">
               <TabsTrigger value="default">직접 입력</TabsTrigger>
               <TabsTrigger value="template" disabled={isEditOrderMode}>
                 템플릿 오더 추가

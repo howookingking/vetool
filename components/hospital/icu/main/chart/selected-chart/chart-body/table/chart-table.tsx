@@ -19,6 +19,7 @@ import {
 import { toast } from '@/components/ui/use-toast'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import useIsCommandPressed from '@/hooks/use-is-command-pressed'
+import useIsMobile from '@/hooks/use-is-mobile'
 import useLocalStorage from '@/hooks/use-local-storage'
 import {
   reorderOrders,
@@ -77,6 +78,7 @@ export default function ChartTable({
     basicHosData: { showOrderer, vetsListData, orderColorsData, vitalRefRange },
   } = useBasicHosDataContext()
   const isCommandPressed = useIsCommandPressed()
+  const isMobile = useIsMobile()
 
   useEffect(() => {
     if (!isSorting) {
@@ -260,6 +262,11 @@ export default function ChartTable({
   // ------- order width 조절 -------
   const [orderWidth, setOrderWidth] = useLocalStorage('orderWidth', 400)
   const handleOrderWidthChange = useCallback(() => {
+    if (isMobile) {
+      setOrderWidth(300)
+      return
+    }
+
     if (orderWidth === 300) {
       setOrderWidth(400)
       return
@@ -289,7 +296,7 @@ export default function ChartTable({
               'flex items-center justify-between px-0.5 text-center',
             )}
             style={{
-              width: isTouchMove ? 200 : orderWidth,
+              width: isTouchMove ? 200 : isMobile ? 300 : orderWidth,
               transition: 'width 0.3s ease-in-out ',
             }}
           >
@@ -333,7 +340,7 @@ export default function ChartTable({
                   variant="ghost"
                   size="icon"
                   onClick={handleOrderWidthChange}
-                  className="shrink-0 md:block"
+                  className="hidden shrink-0 md:inline-flex"
                 >
                   {orderWidth === 600 ? (
                     <ArrowLeftToLine size={18} />
