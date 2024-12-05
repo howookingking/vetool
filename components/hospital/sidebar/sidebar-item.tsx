@@ -37,16 +37,12 @@ export default function SidebarItem({
   iconName,
   isReady,
   isSuper,
-  isSuperOnly,
-  unReadFeedbacks,
 }: {
   name: string
   path: string
   iconName: string
   isReady: boolean
   isSuper: boolean
-  isSuperOnly: boolean
-  unReadFeedbacks: number
 }) {
   const pathname = usePathname()
   const { hos_id } = useParams()
@@ -66,31 +62,24 @@ export default function SidebarItem({
   )
 
   return (
-    <li key={name} className={isSuperOnly && !isSuper ? 'hidden' : ''}>
+    <li key={name} className={!isSuper ? 'hidden' : ''}>
       <CustomTooltip
         contents={name}
         side="right"
         sideOffset={4}
         delayDuration={300}
       >
-        <div className="relative">
-          {isSuperOnly && unReadFeedbacks > 0 && (
-            <div className="absolute right-1 top-1 flex h-[20px] w-[20px] items-center justify-center rounded-full bg-rose-500 px-1 text-xs text-white">
-              {unReadFeedbacks}
-            </div>
+        <Button
+          onClick={() => push(`/hospital/${hos_id}/${dynamicPath}`)}
+          className={cn(
+            isActive && 'bg-primary text-white',
+            'h-12 w-full rounded-none',
           )}
-          <Button
-            onClick={() => push(`/hospital/${hos_id}/${dynamicPath}`)}
-            className={cn(
-              isActive && 'bg-primary text-white',
-              'h-12 w-full rounded-none',
-            )}
-            variant="ghost"
-            disabled={!isReady}
-          >
-            {ICON_MAPPER[iconName as keyof typeof ICON_MAPPER]}
-          </Button>
-        </div>
+          variant="ghost"
+          disabled={!isReady}
+        >
+          {ICON_MAPPER[iconName as keyof typeof ICON_MAPPER]}
+        </Button>
       </CustomTooltip>
     </li>
   )

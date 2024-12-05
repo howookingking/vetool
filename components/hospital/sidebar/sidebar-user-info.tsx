@@ -15,12 +15,13 @@ import { logout } from '@/lib/services/auth/authentication'
 import { cn } from '@/lib/utils/utils'
 import { Crown, User } from 'lucide-react'
 import Link from 'next/link'
+import { Dispatch, SetStateAction } from 'react'
 
 export default function SidebarUserInfo({
   hosId,
   userData,
   mobile,
-  handleCloseMobileDrawer,
+  setIsSheetOpen,
 }: {
   hosId: string
   userData: {
@@ -32,7 +33,7 @@ export default function SidebarUserInfo({
     user_id: string
   }
   mobile?: boolean
-  handleCloseMobileDrawer?: () => void
+  setIsSheetOpen?: Dispatch<SetStateAction<boolean>>
 }) {
   return (
     <div className={cn('absolute bottom-0', mobile ? 'right-2' : 'left-2')}>
@@ -61,9 +62,7 @@ export default function SidebarUserInfo({
             {userData.is_admin && (
               <DropdownMenuItem
                 asChild
-                onClick={() =>
-                  handleCloseMobileDrawer && handleCloseMobileDrawer()
-                }
+                onClick={() => setIsSheetOpen && setIsSheetOpen(false)}
               >
                 <Link
                   href={`/hospital/${hosId}/admin/staff`}
@@ -76,9 +75,7 @@ export default function SidebarUserInfo({
             )}
             <DropdownMenuItem
               asChild
-              onClick={() =>
-                handleCloseMobileDrawer && handleCloseMobileDrawer()
-              }
+              onClick={() => setIsSheetOpen && setIsSheetOpen(false)}
             >
               <Link
                 href={`/hospital/${hosId}/my-page`}

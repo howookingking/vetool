@@ -1,6 +1,7 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { cookies, type UnsafeUnwrappedCookies } from 'next/headers'
 import { Database } from './database.types'
+import { redirect } from 'next/navigation'
 
 export async function createClient() {
   const cookieStore = await cookies()
@@ -18,6 +19,7 @@ export async function createClient() {
             cookieStore.set({ name, value, ...options })
           } catch (error) {
             console.error(error)
+            redirect('/login')
           }
         },
         remove(name: string, options: CookieOptions) {

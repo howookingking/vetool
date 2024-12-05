@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { getUser } from '@/lib/services/auth/authorization'
+import { getSupabaseUser } from '@/lib/services/auth/authorization'
 import { sendErrorFeedback } from '@/lib/services/error-feedback/error-feedback'
 import { cn } from '@/lib/utils/utils'
 import {
@@ -37,7 +37,7 @@ export default function ErrorPage(props: {
 
   useEffect(() => {
     const getUserId = async () => {
-      const user = await getUser()
+      const user = await getSupabaseUser()
       setUserId(user?.id)
     }
     getUserId()

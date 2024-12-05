@@ -316,6 +316,7 @@ export type Database = {
           master_user_id: string
           name: string
           order_color: Json | null
+          order_font_size: number
           plan: string
           rer_calc_method: string
           show_orderer: boolean
@@ -334,6 +335,7 @@ export type Database = {
           master_user_id: string
           name: string
           order_color?: Json | null
+          order_font_size?: number
           plan?: string
           rer_calc_method?: string
           show_orderer?: boolean
@@ -352,6 +354,7 @@ export type Database = {
           master_user_id?: string
           name?: string
           order_color?: Json | null
+          order_font_size?: number
           plan?: string
           rer_calc_method?: string
           show_orderer?: boolean
@@ -1223,6 +1226,7 @@ export type Database = {
           hos_id: string | null
           is_active: boolean | null
           is_admin: boolean
+          is_super: boolean
           is_vet: boolean
           name: string
           position: string
@@ -1237,6 +1241,7 @@ export type Database = {
           hos_id?: string | null
           is_active?: boolean | null
           is_admin?: boolean
+          is_super?: boolean
           is_vet?: boolean
           name: string
           position?: string
@@ -1251,6 +1256,7 @@ export type Database = {
           hos_id?: string | null
           is_active?: boolean | null
           is_admin?: boolean
+          is_super?: boolean
           is_vet?: boolean
           name?: string
           position?: string
