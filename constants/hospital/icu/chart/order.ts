@@ -103,6 +103,10 @@ export const CHECKLIST_ORDERS = [
     orderName: '체중',
     orderComment: '',
   },
+  {
+    orderName: 'SPO2',
+    orderComment: '',
+  },
 ] as const
 
 export const DEFAULT_ICU_ORDER_TYPE = [
@@ -134,4 +138,23 @@ export const DEFAULT_ICU_ORDER_TYPE = [
     label: '식이',
     value: 'feed',
   },
+] as const
+
+export const CHECKLIST_ORDER_NAMES = [
+  '체온',
+  '체온(T)',
+  '심박수',
+  '심박수(P)',
+  '호흡수',
+  '호흡수(R)',
+  '혈압',
+  '혈압(BP)',
+  '활력',
+  '활기',
+  '구토',
+  '배변',
+  '배뇨',
+  '체중',
+  '몸무게',
+  'SPO2',
 ] as const
