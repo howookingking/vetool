@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { TableCell } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
+import useIsMobile from '@/hooks/use-is-mobile'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { cn, parsingOrderName, renderOrderSubComment } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
@@ -40,6 +41,7 @@ export default function CellsRowTitle({
     setCopiedOrderPendingQueue,
     reset,
   } = useIcuOrderStore()
+  const isMobile = useIsMobile()
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -138,7 +140,6 @@ export default function CellsRowTitle({
       )}
       style={{
         background: orderColorsData[order_type as keyof IcuOrderColors],
-        width: isTouchMove ? 180 : orderWidth,
         transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
       }}
     >
@@ -157,7 +158,7 @@ export default function CellsRowTitle({
           isInOrderPendingQueue && 'ring-2',
         )}
         style={{
-          width: isTouchMove ? 180 : orderWidth,
+          width: isTouchMove ? 200 : isMobile ? 300 : orderWidth,
           transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
         }}
       >
