@@ -3,10 +3,10 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
-export async function getUser() {
+export async function getSupabaseUser() {
   const supabase = await createClient()
   const {
-    data: { user: authUser },
+    data: { user: supabaseUser },
     error,
   } = await supabase.auth.getUser()
 
@@ -15,57 +15,48 @@ export async function getUser() {
     redirect('/login')
   }
 
-  return authUser
+  if (!supabaseUser) {
+    redirect('/login')
+  }
+
+  return supabaseUser
 }
 
-export async function checkIsAdmin(hosId: string, userId: string) {
+export async function checkIsAdmin(userId: string) {
   const supabase = await createClient()
 
-  const { data, error } = await supabase
+  const { data: vetoolUserData, error } = await supabase
     .from('users')
     .select('is_admin')
     .match({ user_id: userId })
+    .single()
 
   if (error) {
     console.error(error)
     redirect(`/error?message=${error.message}`)
   }
 
-  const isAdmin = data[0].is_admin ?? false
+  const isAdmin = vetoolUserData.is_admin
 
-  if (!isAdmin) {
-    redirect(`/hospital/${hosId}`)
-  }
+  return isAdmin
 }
 
-export const getUserData = async () => {
+export const getVetoolUserData = async () => {
   const supabase = await createClient()
-  const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser()
+  const supabaseUser = await getSupabaseUser()
 
-  if (userError) {
-    console.error(userError)
-    redirect(`/error?message=${userError.message}`)
-  }
-
-  const { data: userData, error: userDataError } = await supabase
+  const { data: vetoolUserData, error: vetoolUserDataError } = await supabase
     .from('users')
-    .select('email, name, avatar_url, position, is_admin, user_id, hos_id')
-    .match({ user_id: user?.id })
+    .select(
+      'email, name, avatar_url, position, is_admin, user_id, hos_id, is_super',
+    )
+    .match({ user_id: supabaseUser.id })
     .single()
 
-  if (userDataError) {
-    console.error(userDataError)
-    redirect(`/error?message=${userDataError.message}`)
+  if (vetoolUserDataError) {
+    console.error(vetoolUserDataError)
+    redirect(`/error?message=${vetoolUserDataError.message}`)
   }
 
-  return userData
-}
-
-export const isSuperAccount = async () => {
-  const authUser = await getUser()
-
-  return authUser?.email === process.env.NEXT_PUBLIC_SUPER_SHY
+  return vetoolUserData
 }

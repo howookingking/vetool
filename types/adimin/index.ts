@@ -1,12 +1,4 @@
-import {
-  Diet,
-  DrugDescription,
-  DrugProductsRows,
-  Hospital,
-  IcuDefaultChart,
-  User,
-  UserApproval,
-} from '@/types'
+import { Diet, DrugProductsRows, Hospital, User, UserApproval } from '@/types'
 
 export type UserHospitalJoined = Omit<
   User,
@@ -17,7 +9,7 @@ export type UserHospitalJoined = Omit<
 
 export type HospitalUserDataTable = Omit<
   User,
-  'email' | 'is_active' | 'created_at' | 'hos_id'
+  'email' | 'is_active' | 'created_at' | 'hos_id' | 'is_super'
 > &
   Pick<Hospital, 'master_user_id' | 'group_list'> & {
     isMaster: boolean

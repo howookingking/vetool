@@ -9,10 +9,10 @@ import type { HosListData } from '@/types/hospital'
 
 export default async function SuperPageTabs({
   hosList,
-  dateRange,
+  // dateRange,
 }: {
   hosList: HosListData[]
-  dateRange: string
+  // dateRange: string
 }) {
   const errorLogData = await getErrorFeedback('all')
   const userFeedbackData = await getFeedback()

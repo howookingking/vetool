@@ -1,6 +1,6 @@
 'use server'
 
-import { getUser } from '@/lib/services/auth/authorization'
+import { getSupabaseUser } from '@/lib/services/auth/authorization'
 import { createClient } from '@/lib/supabase/server'
 import type { UserFeedbackType } from '@/types/vetool'
 import { redirect } from 'next/navigation'
@@ -10,7 +10,7 @@ export const sendFeedback = async (
   feedbackDescription: string,
 ) => {
   const supabase = await createClient()
-  const authUser = await getUser()
+  const authUser = await getSupabaseUser()
 
   const { error } = await supabase.from('vetool_feedbacks').insert({
     feedback_category: feedbackCategory,
@@ -44,22 +44,22 @@ export const getFeedback = async () => {
   return data ?? []
 }
 
-export const getUnReadFeedbacks = async () => {
-  const supabase = await createClient()
+// export const getUnReadFeedbacks = async () => {
+//   const supabase = await createClient()
 
-  const { data: unReadFeedbacksData, error: unReadFeedbacksDataError } =
-    await supabase
-      .from('vetool_feedbacks')
-      .select('count', { count: 'exact' })
-      .match({ is_read: false })
+//   const { data: unReadFeedbacksData, error: unReadFeedbacksDataError } =
+//     await supabase
+//       .from('vetool_feedbacks')
+//       .select('count', { count: 'exact' })
+//       .match({ is_read: false })
 
-  if (unReadFeedbacksDataError) {
-    console.error(unReadFeedbacksDataError)
-    redirect(`/error?message=${unReadFeedbacksDataError.message}`)
-  }
+//   if (unReadFeedbacksDataError) {
+//     console.error(unReadFeedbacksDataError)
+//     redirect(`/error?message=${unReadFeedbacksDataError.message}`)
+//   }
 
-  return unReadFeedbacksData[0].count
-}
+//   return unReadFeedbacksData[0].count
+// }
 
 export const updateReadFeedback = async (feedbackId: string) => {
   const supabase = await createClient()
