@@ -62,7 +62,7 @@ export default function SidebarItem({
   )
 
   return (
-    <li key={name} className={!isSuper ? 'hidden' : ''}>
+    <li key={name}>
       <CustomTooltip
         contents={name}
         side="right"
@@ -74,6 +74,7 @@ export default function SidebarItem({
           className={cn(
             isActive && 'bg-primary text-white',
             'h-12 w-full rounded-none',
+            !isSuper && name === '벳툴' && 'hidden',
           )}
           variant="ghost"
           disabled={!isReady}
