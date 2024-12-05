@@ -19,15 +19,15 @@ export default function MobileChartTable({
 }: {
   chartData: SelectedChart
 }) {
-  // const cellRef = useRef<HTMLTableRowElement>(null)
-  // const [isTouchMove, setIsTouchMove] = useState(false)
+  const cellRef = useRef<HTMLTableRowElement>(null)
+  const [isTouchMove, setIsTouchMove] = useState(false)
 
-  // const checkWidth = useDebouncedCallback(() => {
-  //   if (cellRef.current) {
-  //     const isMoving = cellRef.current.getBoundingClientRect().left < 0
-  //     setIsTouchMove(isMoving)
-  //   }
-  // }, 10)
+  const checkWidth = useDebouncedCallback(() => {
+    if (cellRef.current) {
+      const isMoving = cellRef.current.getBoundingClientRect().left < 0
+      setIsTouchMove(isMoving)
+    }
+  }, 10)
 
   return (
     <Dialog>
@@ -48,14 +48,11 @@ export default function MobileChartTable({
           <DialogTitle />
           <DialogDescription />
         </DialogHeader>
-        <div
-          className="min-h-[calc(70vh)] overflow-auto"
-          // onScroll={checkWidth}
-        >
+        <div className="min-h-[calc(70vh)] overflow-auto" onScroll={checkWidth}>
           <ChartTable
             chartData={chartData}
-            // cellRef={cellRef}
-            // isTouchMove={isTouchMove}
+            cellRef={cellRef}
+            isTouchMove={isTouchMove}
           />
         </div>
       </DialogContent>

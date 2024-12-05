@@ -1,15 +1,22 @@
 import { Button } from '@/components/ui/button'
 import { ArrowLeftToLine, ArrowRightFromLine } from 'lucide-react'
-import { useCallback } from 'react'
+import { Dispatch, SetStateAction, useCallback } from 'react'
 
 export default function OrderWidthButton({
   orderWidth,
   setOrderWidth,
+  isMobile,
 }: {
   orderWidth: number
-  setOrderWidth: React.Dispatch<React.SetStateAction<number>>
+  setOrderWidth: Dispatch<SetStateAction<number>>
+  isMobile: boolean
 }) {
   const handleOrderWidthChange = useCallback(() => {
+    if (isMobile) {
+      setOrderWidth(300)
+      return
+    }
+
     if (orderWidth === 300) {
       setOrderWidth(400)
       return
@@ -27,7 +34,7 @@ export default function OrderWidthButton({
       return
     }
     setOrderWidth(400)
-  }, [orderWidth, setOrderWidth])
+  }, [orderWidth, setOrderWidth, isMobile])
 
   return (
     <Button

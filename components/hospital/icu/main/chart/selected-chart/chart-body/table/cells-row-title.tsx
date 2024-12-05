@@ -13,6 +13,7 @@ export default function CellsRowTitle({
   order,
   isSorting,
   index,
+  isMobile,
   preview,
   vitalRefRange,
   species,
@@ -21,6 +22,7 @@ export default function CellsRowTitle({
 }: {
   order: SelectedIcuOrder
   index: number
+  isMobile: boolean
   isSorting?: boolean
   preview?: boolean
   vitalRefRange?: VitalRefRange[]
@@ -113,7 +115,6 @@ export default function CellsRowTitle({
       )}
       style={{
         background: orderColorsData[order_type as keyof IcuOrderColors],
-        width: isTouchMove ? 180 : orderWidth,
         transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
       }}
     >
@@ -132,7 +133,7 @@ export default function CellsRowTitle({
           isInOrderPendingQueue && 'ring-2',
         )}
         style={{
-          width: isTouchMove ? 180 : orderWidth,
+          width: isTouchMove ? 200 : isMobile ? 300 : orderWidth,
           transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
         }}
       >

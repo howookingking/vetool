@@ -145,12 +145,12 @@ export default function FeedOrderField({
   }
 
   return (
-    <div className="grid grid-cols-6 gap-2">
+    <div className="flex flex-col gap-2">
       <FormField
         control={form.control}
         name="icu_chart_order_name"
         render={({ field }) => (
-          <FormItem className="col-span-6 space-y-2">
+          <FormItem className="space-y-2">
             <FormLabel className="flex items-center gap-2 font-semibold">
               <span>사료*</span>
               <HelperTooltip variant="warning">
@@ -204,7 +204,7 @@ export default function FeedOrderField({
       />
 
       {/* 급여 방법, 설명 */}
-      <div className="col-span-6 space-y-2">
+      <div className="space-y-2">
         <Label className="font-semibold">급여 방법, 추가 설명</Label>
         <Input
           placeholder="자발, 핸드피딩, 강제급여..."
@@ -213,75 +213,81 @@ export default function FeedOrderField({
         />
       </div>
 
-      {/* DER */}
-      <div className="col-span-2 space-y-2">
-        <Label className={cn('text-right font-semibold')}>DER</Label>
+      <div className="grid grid-cols-3 items-center gap-2 md:grid-cols-6">
+        {/* DER */}
+        <div className="col-span-2 space-y-2">
+          <Label className={cn('text-right font-semibold')}>DER</Label>
 
-        <div className="relative w-full">
-          <Input
-            ref={derRef}
-            className={cn(
-              'pr-18 cursor-not-allowed select-none shadow-none',
-              !calculatedDer && 'text-sm text-rose-500',
-            )}
-            value={calculatedDer || 'DER을 설정해주세요'}
-            readOnly
-          />
-          <span className="absolute right-2 top-1/2 -translate-y-1/2 cursor-not-allowed select-none text-sm text-muted-foreground">
-            kcal/day
-          </span>
+          <div className="relative w-full">
+            <Input
+              ref={derRef}
+              className={cn(
+                'pr-18 cursor-not-allowed select-none shadow-none',
+                !calculatedDer && 'text-sm text-rose-500',
+              )}
+              value={calculatedDer || 'DER을 설정해주세요'}
+              readOnly
+            />
+            <span className="absolute right-2 top-1/2 -translate-y-1/2 cursor-not-allowed select-none text-sm text-muted-foreground">
+              kcal/day
+            </span>
+          </div>
         </div>
-      </div>
 
-      <div className="col-span-1 space-y-2">
-        <Label className="font-semibold">급여 횟수</Label>
-        <div className="relative w-full">
-          <Input
-            ref={feedPerDayRef}
-            className="pr-12"
-            value={localFeedPerDay}
-            type="text"
-            inputMode="numeric"
-            pattern="[0-9]*"
-            onChange={handleFeedPerDayChange}
-          />
-          <span className="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
-            회
-          </span>
+        <div className="col-span-1 space-y-2">
+          <Label className="font-semibold">급여 횟수</Label>
+          <div className="relative w-full">
+            <Input
+              ref={feedPerDayRef}
+              className="pr-12"
+              value={localFeedPerDay}
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              onChange={handleFeedPerDayChange}
+            />
+            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
+              회
+            </span>
+          </div>
         </div>
+
+        <Button
+          size="icon"
+          variant="outline"
+          type="button"
+          onClick={handleCalculateClick}
+          className="col-span-1 mx-auto mt-auto w-full"
+        >
+          <Calculator size={16} />
+        </Button>
+
+        {/* 급여량 */}
+        <FormField
+          control={form.control}
+          name="icu_chart_order_comment"
+          render={({ field }) => (
+            <FormItem className="col-span-2 space-y-2">
+              <FormLabel className="font-semibold">
+                1회 급여량 (g/회 또는 ml/회)
+              </FormLabel>
+              <FormControl>
+                <div className="relative">
+                  <Input
+                    {...field}
+                    placeholder="급여량 입력"
+                    className="pr-12"
+                  />
+                  <span className="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
+                    /회
+                  </span>
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
       </div>
-
-      <Button
-        size="icon"
-        variant="outline"
-        type="button"
-        onClick={handleCalculateClick}
-        className="col-span-1 mx-auto mt-auto w-full"
-      >
-        <Calculator size={16} />
-      </Button>
-
-      {/* 급여량 */}
-      <FormField
-        control={form.control}
-        name="icu_chart_order_comment"
-        render={({ field }) => (
-          <FormItem className="col-span-2 space-y-2">
-            <FormLabel className="font-semibold">
-              1회 급여량 (g/회 또는 ml/회)
-            </FormLabel>
-            <FormControl>
-              <div className="relative">
-                <Input {...field} placeholder="급여량 입력" className="pr-12" />
-                <span className="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
-                  /회
-                </span>
-              </div>
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
     </div>
   )
 }

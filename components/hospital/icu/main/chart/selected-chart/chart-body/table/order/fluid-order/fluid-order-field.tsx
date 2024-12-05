@@ -83,12 +83,12 @@ export default function FluidOrderField({
 
   return (
     <>
-      <div className="flex gap-2">
+      <div className="flex flex-col gap-2 md:flex-row">
         <FormField
           control={form.control}
           name="icu_chart_order_name"
           render={({ field }) => (
-            <FormItem className="w-1/2 space-y-2">
+            <FormItem className="w-full space-y-2 md:w-1/2">
               <FormLabel className="font-semibold">수액 종류*</FormLabel>
               <FormControl>
                 <AutoComplete
@@ -113,7 +113,7 @@ export default function FluidOrderField({
         />
 
         {/* 첨가제 */}
-        <div className="w-1/2 space-y-2">
+        <div className="w-full space-y-2 md:w-1/2">
           <Label className="font-semibold">첨가제</Label>
           <Input
             value={localAdditives}
@@ -150,7 +150,7 @@ export default function FluidOrderField({
                 </div>
               </FormLabel>
 
-              <div className="grid grid-cols-6 items-center gap-2">
+              <div className="grid grid-cols-3 items-center gap-2 md:grid-cols-6">
                 <Select
                   value={localMaintenaceRateCalcMethod}
                   onValueChange={setLocalMaintenaceRateCalcMethod}
