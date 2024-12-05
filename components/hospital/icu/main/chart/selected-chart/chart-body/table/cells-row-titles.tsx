@@ -5,6 +5,7 @@ import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
 import { cn } from '@/lib/utils/utils'
 import type { VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
+import { RefObject } from 'react'
 
 type CellsRowTitlesProps = {
   sortedOrders: SelectedIcuOrder[]
@@ -20,7 +21,8 @@ type CellsRowTitlesProps = {
   vitalRefRange: VitalRefRange[]
   species: string
   orderwidth: number
-  cellRef?: React.RefObject<HTMLTableRowElement>
+  cellRef?: RefObject<HTMLTableRowElement>
+  isTouchMove?: boolean
 }
 
 export default function CellsRowTitles({
@@ -38,6 +40,7 @@ export default function CellsRowTitles({
   species,
   orderwidth,
   cellRef,
+  isTouchMove,
 }: CellsRowTitlesProps) {
   return sortedOrders.map((order, index) => (
     <TableRow
@@ -56,6 +59,7 @@ export default function CellsRowTitles({
         vitalRefRange={vitalRefRange}
         species={species}
         orderWidth={orderwidth}
+        isTouchMove={isTouchMove}
       />
       {!isSorting && (
         <CellsRow

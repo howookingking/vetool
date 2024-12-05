@@ -16,6 +16,7 @@ export default function CellsRowTitle({
   vitalRefRange,
   species,
   orderWidth,
+  isTouchMove,
 }: {
   order: SelectedIcuOrder
   index: number
@@ -24,6 +25,7 @@ export default function CellsRowTitle({
   vitalRefRange?: VitalRefRange[]
   species?: string
   orderWidth: number
+  isTouchMove?: boolean
 }) {
   const { order_comment, order_type, order_id, order_name } = order
   const {
@@ -132,10 +134,11 @@ export default function CellsRowTitle({
         'handle group p-0',
         isSorting && index % 2 === 0 && 'animate-shake-strong',
         isSorting && index % 2 !== 0 && 'animate-shake-strong-reverse',
+        isTouchMove && 'sticky left-0 z-10',
       )}
       style={{
         background: orderColorsData[order_type as keyof IcuOrderColors],
-        width: orderWidth,
+        width: isTouchMove ? 180 : orderWidth,
         transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
       }}
     >
@@ -154,7 +157,7 @@ export default function CellsRowTitle({
           isInOrderPendingQueue && 'ring-2',
         )}
         style={{
-          width: orderWidth,
+          width: isTouchMove ? 180 : orderWidth,
           transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
         }}
       >
@@ -173,13 +176,15 @@ export default function CellsRowTitle({
           )}
         </div>
 
-        <span
-          className="min-w-16 truncate text-right text-xs font-semibold text-muted-foreground"
-          style={{ fontSize: `${orderFontSizeData - 2}px` }}
-        >
-          {order_comment}
-          {renderOrderSubComment(order)}
-        </span>
+        {!isTouchMove && (
+          <span
+            className="min-w-16 truncate text-right text-xs font-semibold text-muted-foreground"
+            style={{ fontSize: `${orderFontSizeData - 2}px` }}
+          >
+            {order_comment}
+            {renderOrderSubComment(order)}
+          </span>
+        )}
       </Button>
     </TableCell>
   )

@@ -30,7 +30,7 @@ import { cn, formatOrders, hasOrderSortingChanges } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
 import { ArrowLeftToLine, ArrowRightFromLine, ArrowUpDown } from 'lucide-react'
-import { useCallback, useEffect, useState } from 'react'
+import { RefObject, useCallback, useEffect, useState } from 'react'
 import { Sortable } from 'react-sortablejs'
 
 export default function ChartTable({
@@ -38,11 +38,13 @@ export default function ChartTable({
   preview,
   isExport,
   cellRef,
+  isTouchMove,
 }: {
   chartData: SelectedChart
   preview?: boolean
   isExport?: boolean
-  cellRef?: React.RefObject<HTMLTableRowElement>
+  cellRef?: RefObject<HTMLTableRowElement>
+  isTouchMove?: boolean
 }) {
   const {
     icu_chart_id,
@@ -282,7 +284,15 @@ export default function ChartTable({
     <Table className="border">
       <TableHeader className="sticky -top-3 z-20 bg-white shadow-sm">
         <TableRow>
-          <TableHead className="flex items-center justify-between px-0.5 text-center">
+          <TableHead
+            className={cn(
+              'flex items-center justify-between px-0.5 text-center',
+            )}
+            style={{
+              width: isTouchMove ? 200 : orderWidth,
+              transition: 'width 0.3s ease-in-out ',
+            }}
+          >
             {!preview && (
               <Button
                 variant="ghost"
@@ -323,7 +333,7 @@ export default function ChartTable({
                   variant="ghost"
                   size="icon"
                   onClick={handleOrderWidthChange}
-                  className="shrink-0"
+                  className="shrink-0 md:block"
                 >
                   {orderWidth === 600 ? (
                     <ArrowLeftToLine size={18} />
@@ -366,6 +376,7 @@ export default function ChartTable({
             orderTimePendingQueueLength={orderTimePendingQueue.length}
             orderwidth={orderWidth}
             cellRef={cellRef}
+            isTouchMove={isTouchMove}
           />
         </SortableOrderWrapper>
       ) : (
@@ -385,6 +396,7 @@ export default function ChartTable({
             orderTimePendingQueueLength={orderTimePendingQueue.length}
             orderwidth={orderWidth}
             cellRef={cellRef}
+            isTouchMove={isTouchMove}
           />
           {!isExport && !preview && (
             <TableRow className="hover:bg-transparent">

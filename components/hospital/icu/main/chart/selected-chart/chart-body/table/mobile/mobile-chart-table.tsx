@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dialog'
 import type { SelectedChart } from '@/types/icu/chart'
 import { Fullscreen } from 'lucide-react'
-import { useEffect, useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 // import PinchZoomContainer from '../../pinch-zoom-container'
 
@@ -20,16 +20,14 @@ export default function MobileChartTable({
   chartData: SelectedChart
 }) {
   const cellRef = useRef<HTMLTableRowElement>(null)
+  const [isTouchMove, setIsTouchMove] = useState(false)
 
   const checkWidth = useDebouncedCallback(() => {
     if (cellRef.current) {
-      const halfDeviceWidth = window.innerWidth / 2
-      const cellWidth = cellRef.current.getBoundingClientRect().left
-      const exceeded = cellWidth < halfDeviceWidth * -1
-
-      console.log(exceeded)
+      const isMoving = cellRef.current.getBoundingClientRect().left < 0
+      setIsTouchMove(isMoving)
     }
-  }, 20)
+  }, 10)
 
   return (
     <Dialog>
@@ -51,7 +49,11 @@ export default function MobileChartTable({
           <DialogDescription />
         </DialogHeader>
         <div className="min-h-[calc(70vh)] overflow-auto" onScroll={checkWidth}>
-          <ChartTable chartData={chartData} cellRef={cellRef} />
+          <ChartTable
+            chartData={chartData}
+            cellRef={cellRef}
+            isTouchMove={isTouchMove}
+          />
         </div>
       </DialogContent>
     </Dialog>
