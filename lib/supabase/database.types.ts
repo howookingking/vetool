@@ -1226,6 +1226,7 @@ export type Database = {
           hos_id: string | null
           is_active: boolean | null
           is_admin: boolean
+          is_super: boolean
           is_vet: boolean
           name: string
           position: string
@@ -1240,6 +1241,7 @@ export type Database = {
           hos_id?: string | null
           is_active?: boolean | null
           is_admin?: boolean
+          is_super?: boolean
           is_vet?: boolean
           name: string
           position?: string
@@ -1254,6 +1256,7 @@ export type Database = {
           hos_id?: string | null
           is_active?: boolean | null
           is_admin?: boolean
+          is_super?: boolean
           is_vet?: boolean
           name?: string
           position?: string

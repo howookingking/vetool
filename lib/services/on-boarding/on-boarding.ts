@@ -1,13 +1,13 @@
 'use server'
 
-import { getUser } from '@/lib/services/auth/authorization'
+import { getSupabaseUser } from '@/lib/services/auth/authorization'
 import { createClient } from '@/lib/supabase/server'
 import type { UserApprovalHosJoined } from '@/types/on-boarding'
 import { redirect } from 'next/navigation'
 
 export const getUserAppoval = async () => {
   const supabase = await createClient()
-  const authUser = await getUser()
+  const authUser = await getSupabaseUser()
 
   const { data, error } = await supabase
     .from('user_approvals')

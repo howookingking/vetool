@@ -19,16 +19,13 @@ import SidebarUserInfo from './sidebar-user-info'
 export default function MobileSidebar({
   hosId,
   userData,
-  hosName,
   isSuper,
 }: {
   hosId: string
   userData: UserProfile
-  hosName: string
   isSuper: boolean
 }) {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
-  const handleCloseMobileDrawer = () => setIsSheetOpen(false)
 
   return (
     <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
@@ -38,10 +35,8 @@ export default function MobileSidebar({
         </Button>
       </SheetTrigger>
       <SheetContent side="right" className="p-0">
-        <SheetHeader className="h-12 space-y-0">
-          <SheetTitle className="text-md my-auto pl-4 text-left">
-            {hosName}
-          </SheetTitle>
+        <SheetHeader className="h-12">
+          <SheetTitle />
           <SheetDescription />
         </SheetHeader>
 
@@ -52,7 +47,7 @@ export default function MobileSidebar({
                 key={item.name}
                 hosId={hosId}
                 item={item}
-                handleCloseMobileDrawer={handleCloseMobileDrawer}
+                setIsSheetOpen={setIsSheetOpen}
                 isSuper={isSuper}
               />
             )
@@ -63,7 +58,7 @@ export default function MobileSidebar({
           hosId={hosId}
           userData={userData}
           mobile
-          handleCloseMobileDrawer={handleCloseMobileDrawer}
+          setIsSheetOpen={setIsSheetOpen}
         />
       </SheetContent>
     </Sheet>

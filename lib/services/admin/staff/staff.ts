@@ -48,7 +48,7 @@ export const getStaffs = async (hosId: string) => {
     throw new Error(error.message)
   }
 
-  return data
+  return data // 무조건 1명은 있음
 }
 
 export const updateStaffRank = async (userId: string, rankInput: string) => {

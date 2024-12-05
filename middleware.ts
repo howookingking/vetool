@@ -16,7 +16,7 @@ export async function middleware(request: NextRequest) {
 
   const { data: userData, error: userDataError } = await supabase
     .from('users')
-    .select('hos_id, email')
+    .select('hos_id, email, is_super')
     .match({ user_id: authUser?.id })
 
   if (VETOOL_COMPANY_ROUTES.includes(request.nextUrl.pathname)) {
@@ -81,10 +81,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  if (
-    userData?.at(0)?.hos_id &&
-    userData?.at(0)?.email !== process.env.NEXT_PUBLIC_SUPER_SHY
-  ) {
+  if (userData?.at(0)?.hos_id && !userData?.at(0)?.is_super) {
     if (request.nextUrl.pathname.split('/')[2] !== userData?.at(0)?.hos_id) {
       return NextResponse.redirect(
         new URL(`/hospital/${userData?.at(0)?.hos_id}`, request.url),

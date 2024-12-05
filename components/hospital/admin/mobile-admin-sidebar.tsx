@@ -12,13 +12,10 @@ import {
 } from '@/components/ui/sheet'
 import { ADMIN_SIDEBAR_ITEMS } from '@/constants/admin/admin-sidebar-items'
 import { Menu } from 'lucide-react'
-import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 
 export default function MobileAdminSidebar() {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
-  const path = usePathname()
-  const currentAdminPath = path.split('/').at(-1)
 
   return (
     <div className="flex items-center gap-2 border-b md:hidden">
