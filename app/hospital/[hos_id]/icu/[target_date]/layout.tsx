@@ -29,6 +29,7 @@ export default async function IcuPageLayout(props: {
         rerCalcMethod: basicHosData.rer_calc_method as 'a' | 'b',
         sidebarData: icuSidebarData ?? [],
         vitalRefRange: basicHosData.vital_ref_range as VitalRefRange[],
+        orderFontSizeData: basicHosData.order_font_size,
       }}
     >
       <IcuHeader
@@ -44,7 +45,7 @@ export default async function IcuPageLayout(props: {
           vetsListData={vetsListData}
         />
 
-        <div className="ml-0 w-screen flex-1 md:ml-[144px] md:w-auto">
+        <div className="ml-0 w-screen flex-1 md:ml-48 md:w-auto">
           {props.children}
         </div>
       </div>

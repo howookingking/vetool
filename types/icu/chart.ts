@@ -114,7 +114,9 @@ export type IcuSidebarIoData = {
   patient: {
     name: string
     breed: string
+    species: string
     patient_id: string
+    owner_name: string
   }
   out_date: string | null
   icu_io_id: string
