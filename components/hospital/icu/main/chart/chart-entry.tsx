@@ -26,7 +26,7 @@ export default function ChartEntry({
         className="h-full flex-col"
         size="lg"
         text={
-          <div className="flex flex-col text-center">
+          <div className="text-center">
             해당환자는 선택한 날짜에 차트가 없습니다 <br /> 선택한 날짜에 아직
             입원을 하지 않았거나 이미 퇴원을 하였습니다
           </div>

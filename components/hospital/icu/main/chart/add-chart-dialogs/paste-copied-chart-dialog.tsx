@@ -119,7 +119,7 @@ export default function PasteCopiedChartDialog() {
           <span>복사한 차트 붙여넣기</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>복사한 차트 생성</DialogTitle>
           <DialogDescription>

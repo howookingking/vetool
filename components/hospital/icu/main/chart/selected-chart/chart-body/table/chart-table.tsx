@@ -32,6 +32,8 @@ import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
 import { ArrowLeftToLine, ArrowRightFromLine, ArrowUpDown } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import { Sortable } from 'react-sortablejs'
+import SortingButton from './sorting-button'
+import OrderWidthButton from './order-width-button'
 
 export default function ChartTable({
   chartData,
@@ -55,6 +57,7 @@ export default function ChartTable({
   const hosId = chartData.patient.hos_id
   const targetDate = chartData.target_date
   const [isSorting, setIsSorting] = useState(false)
+  const [orderWidth, setOrderWidth] = useLocalStorage('orderWidth', 400)
   const [sortedOrders, setSortedOrders] = useState<SelectedIcuOrder[]>(orders)
   const [isDeleteOrdersDialogOpen, setIsDeleteOrdersDialogOpen] =
     useState(false)
@@ -78,7 +81,7 @@ export default function ChartTable({
     if (!isSorting) {
       setSortedOrders(orders)
     }
-  }, [orders]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [orders, isSorting])
 
   // ----- 표에서 수직 안내선 -----
   const [hoveredColumn, setHoveredColumn] = useState<number | null>(null)
@@ -196,30 +199,17 @@ export default function ChartTable({
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     setTxStep,
     orderTimePendingQueue,
     copiedOrderPendingQueue.length,
     selectedOrderPendingQueue.length,
+    showOrderer,
+    handleUpsertOrderWithoutOrderer,
+    setIsDeleteOrdersDialogOpen,
+    setOrderStep,
   ])
   // ------------------------------------
-
-  const handleSortButtonClick = useCallback(async () => {
-    if (isSorting && !hasOrderSortingChanges(chartData.orders, sortedOrders)) {
-      setIsSorting(false)
-      return
-    }
-
-    if (isSorting) {
-      const orderIds = sortedOrders.map((order) => order.order_id)
-
-      await reorderOrders(orderIds)
-      toast({ title: '오더 순서를 변경하였습니다' })
-    }
-
-    setIsSorting(!isSorting)
-  }, [chartData.orders, isSorting, sortedOrders])
 
   const handleReorder = useCallback(
     (event: Sortable.SortableEvent) => {
@@ -231,68 +221,18 @@ export default function ChartTable({
     [sortedOrders],
   )
 
-  // --- sorting mode in / out keyboard shortcut ----
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if ((event.ctrlKey || event.metaKey) && event.key === 's') {
-        event.preventDefault()
-        handleSortButtonClick()
-      }
-
-      if (isSorting && event.key === 'Escape') {
-        event.preventDefault()
-        handleSortButtonClick()
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown)
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [handleSortButtonClick, isSorting])
-  // --- sorting mode in / out keyboard shortcut ----
-
-  // ------- order width 조절 -------
-  const [orderWidth, setOrderWidth] = useLocalStorage('orderWidth', 400)
-  const handleOrderWidthChange = useCallback(() => {
-    if (orderWidth === 300) {
-      setOrderWidth(400)
-      return
-    }
-    if (orderWidth === 400) {
-      setOrderWidth(500)
-      return
-    }
-    if (orderWidth === 500) {
-      setOrderWidth(600)
-      return
-    }
-    if (orderWidth === 600) {
-      setOrderWidth(300)
-      return
-    }
-    setOrderWidth(400)
-  }, [orderWidth, setOrderWidth])
-  // ------- order width 조절 -------
-
   return (
     <Table className="border">
       <TableHeader className="sticky -top-3 z-20 bg-white shadow-sm">
         <TableRow>
           <TableHead className="flex items-center justify-between px-0.5 text-center">
             {!preview && (
-              <Button
-                variant="ghost"
-                size="icon"
-                className={cn(
-                  isSorting && 'animate-pulse text-primary',
-                  'shrink-0',
-                )}
-                onClick={handleSortButtonClick}
-              >
-                <ArrowUpDown size={18} />
-              </Button>
+              <SortingButton
+                chartData={chartData}
+                sortedOrders={sortedOrders}
+                isSorting={isSorting}
+                setIsSorting={setIsSorting}
+              />
             )}
 
             <span className="w-full text-center">오더 목록</span>
@@ -316,27 +256,24 @@ export default function ChartTable({
                   mainVetName={main_vet.name}
                   derCalcFactor={der_calc_factor}
                 />
-
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={handleOrderWidthChange}
-                  className="shrink-0"
-                >
-                  {orderWidth === 600 ? (
-                    <ArrowLeftToLine size={18} />
-                  ) : (
-                    <ArrowRightFromLine size={18} />
-                  )}
-                </Button>
               </>
             )}
 
             {<AddTemplateOrderDialog hosId={hosId} targetDate={targetDate} />}
+            <OrderWidthButton
+              orderWidth={orderWidth}
+              setOrderWidth={setOrderWidth}
+            />
           </TableHead>
 
           {TIMES.map((time) => (
-            <TableHead className="border text-center" key={time}>
+            <TableHead
+              className={cn(
+                hoveredColumn === time && 'bg-muted/50',
+                'border text-center',
+              )}
+              key={time}
+            >
               {time.toString().padStart(2, '0')}
             </TableHead>
           ))}
