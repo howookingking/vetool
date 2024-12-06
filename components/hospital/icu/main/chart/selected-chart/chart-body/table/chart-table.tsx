@@ -284,7 +284,7 @@ export default function ChartTable({
       return
     }
     setOrderWidth(400)
-  }, [orderWidth, setOrderWidth])
+  }, [orderWidth, setOrderWidth, isMobile])
   // ------- order width 조절 -------
 
   return (

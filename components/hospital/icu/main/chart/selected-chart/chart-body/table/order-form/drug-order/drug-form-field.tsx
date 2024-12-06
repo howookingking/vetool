@@ -3,11 +3,11 @@ import DrugComboBox from '@/components/hospital/icu/main/chart/selected-chart/ch
 import DrugDoseInput from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order-form/drug-order/drug-dose-input'
 import DrugDoseUnitRadio from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order-form/drug-order/drug-dose-unit-radio'
 import DrugSelectField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order-form/drug-order/drug-select-field'
-import { orderSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order-form/order-schema'
 import { calculateTotalDrugAmount } from '@/lib/utils/utils'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
+import { orderSchema } from '../../order/order-schema'
 
 export default function DrugFormField({
   form,
