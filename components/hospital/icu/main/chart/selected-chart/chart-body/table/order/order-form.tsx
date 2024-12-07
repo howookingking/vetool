@@ -32,6 +32,8 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import ChecklistOrderField from './checklist-order/checklist-order-field'
+import { upsertDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
+import { useTemplateStore } from '@/lib/store/icu/template'
 
 export default function OrderForm({
   hosId,
@@ -42,15 +44,17 @@ export default function OrderForm({
   ageInDays,
   derCalcFactor,
   setSortedOrders,
+  isEditTemplateMode,
 }: {
   hosId: string
-  showOrderer: boolean
-  icuChartId: string
-  weight: string
-  species: string
-  ageInDays: number
-  derCalcFactor: number | null
-  setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
+  showOrderer?: boolean
+  icuChartId?: string
+  weight?: string
+  species?: string
+  ageInDays?: number
+  derCalcFactor?: number | null
+  setSortedOrders?: Dispatch<SetStateAction<SelectedIcuOrder[]>>
+  isEditTemplateMode?: boolean
 }) {
   const {
     setOrderStep,
@@ -58,12 +62,16 @@ export default function OrderForm({
     isEditOrderMode,
     setSelectedChartOrder,
     reset,
+    orderMode,
   } = useIcuOrderStore()
+  const { addTemplateOrder, updateTemplateOrder, orderIndex } =
+    useTemplateStore()
 
   const { hos_id } = useParams()
-  const {
-    basicHosData: { vetsListData },
-  } = useBasicHosDataContext()
+  const vetsListData =
+    orderMode === 'icu'
+      ? useBasicHosDataContext().basicHosData.vetsListData
+      : [{ name: 'default' }]
 
   const [isUpdating, setIsUpdating] = useState(false)
   const [startTime, setStartTime] = useState<string>('undefined')
@@ -83,6 +91,7 @@ export default function OrderForm({
 
   const orderType = form.watch('icu_chart_order_type')
 
+  // 1. 오더자 설정인 경우 Submit Handler
   const handleNextStep = async (values: z.infer<typeof orderSchema>) => {
     setSelectedChartOrder({
       order_name: values.icu_chart_order_name,
@@ -91,8 +100,11 @@ export default function OrderForm({
       order_times: orderTime,
       order_id: selectedChartOrder.order_id,
     })
+
     setOrderStep('selectOrderer')
   }
+
+  // 2. 오더자 미설정인 경우 Submit Handler
   const handleSubmitWithoutOrderer = async (
     values: z.infer<typeof orderSchema>,
   ) => {
@@ -100,7 +112,7 @@ export default function OrderForm({
 
     await upsertOrder(
       hos_id as string,
-      icuChartId,
+      icuChartId!,
       selectedChartOrder.order_id,
       orderTime.map((time) => (time === '1' ? vetsListData[0].name : '0')),
       {
@@ -120,7 +132,79 @@ export default function OrderForm({
     setIsUpdating(false)
   }
 
-  const handleSubmit = showOrderer ? handleNextStep : handleSubmitWithoutOrderer
+  // 3. 기본 차트 설정인 경우 Submit Handler
+  const handleSubmitDefaultOrder = async (
+    values: z.infer<typeof orderSchema>,
+  ) => {
+    setIsUpdating(true)
+
+    await upsertDefaultChartOrder(
+      hos_id as string,
+      selectedChartOrder.order_id,
+      {
+        default_chart_order_name: values.icu_chart_order_name.trim(),
+        default_chart_order_comment: values.icu_chart_order_comment
+          ? values.icu_chart_order_comment.trim()
+          : '',
+        default_chart_order_type: values.icu_chart_order_type,
+      },
+    )
+
+    toast({
+      title: `오더를 ${isEditOrderMode ? '수정' : '추가'}하였습니다`,
+    })
+
+    reset()
+    setOrderStep('closed')
+    setIsUpdating(false)
+  }
+
+  // 4. 템플릿 차트 설정인 경우 Submit Handler
+  const handleSubmitTemplateOrder = async (
+    values: z.infer<typeof orderSchema>,
+  ) => {
+    setIsUpdating(true)
+
+    const updatedOrder = {
+      order_name: values.icu_chart_order_name.trim(),
+      order_comment: values.icu_chart_order_comment
+        ? values.icu_chart_order_comment.trim()
+        : '',
+      order_type: values.icu_chart_order_type,
+      id: 999,
+    }
+
+    if (isEditOrderMode) {
+      updateTemplateOrder(updatedOrder, orderIndex)
+      setOrderStep('closed')
+    } else {
+      addTemplateOrder(updatedOrder)
+
+      if (isEditTemplateMode) {
+        setOrderStep('closed')
+      }
+    }
+
+    reset()
+
+    setIsUpdating(false)
+  }
+
+  const handleSubmit = (() => {
+    switch (true) {
+      case orderMode === 'default':
+        return handleSubmitDefaultOrder
+
+      case orderMode === 'template':
+        return handleSubmitTemplateOrder
+
+      case !showOrderer:
+        return handleSubmitWithoutOrderer
+
+      default:
+        return handleNextStep
+    }
+  })()
 
   useEffect(() => {
     if (startTime !== 'undefined' && timeTerm !== 'undefined') {
@@ -179,6 +263,7 @@ export default function OrderForm({
         {orderType === 'fluid' && (
           <FluidOrderField
             form={form}
+            orderMode={orderMode}
             species={species}
             ageInDays={ageInDays}
             weight={weight}
@@ -189,6 +274,7 @@ export default function OrderForm({
           <FeedOrderField
             hosId={hosId}
             form={form}
+            orderMode={orderMode}
             weight={weight}
             species={species}
             derCalcFactor={derCalcFactor}
@@ -201,19 +287,22 @@ export default function OrderForm({
           orderType !== 'feed' &&
           orderType !== 'checklist' && <OrderFormField form={form} />}
 
-        <OrderTimeSettings
-          startTime={startTime}
-          timeTerm={timeTerm}
-          orderTime={orderTime}
-          setStartTime={setStartTime}
-          setTimeTerm={setTimeTerm}
-          setOrderTime={setOrderTime}
-        />
+        {orderMode === 'icu' && (
+          <OrderTimeSettings
+            startTime={startTime}
+            timeTerm={timeTerm}
+            orderTime={orderTime}
+            setStartTime={setStartTime}
+            setTimeTerm={setTimeTerm}
+            setOrderTime={setOrderTime}
+          />
+        )}
 
         <DialogFooter className="ml-auto w-full gap-2 md:gap-0">
           {isEditOrderMode && (
             <DeleteOrderAlertDialog
               selectedChartOrder={selectedChartOrder}
+              orderMode={orderMode}
               setOrderStep={setOrderStep}
               setSortedOrders={setSortedOrders}
             />

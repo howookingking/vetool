@@ -14,8 +14,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import type { Patient, SelectedIcuOrder } from '@/types/icu/chart'
 import { Plus } from 'lucide-react'
 import dynamic from 'next/dynamic'
-import { Dispatch, SetStateAction, useCallback } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 import OrdererSelectStep from './orderer/orderer-select-step'
+import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 
 const LazyOrderForm = dynamic(() => import('./order-form'), {
   ssr: false,
@@ -38,48 +39,37 @@ export default function OrderDialog({
   weight,
   ageInDays,
   orderStep,
-  isEditOrderMode,
-  setOrderStep,
-  reset,
   isExport,
   setSortedOrders,
   mainVetName,
   derCalcFactor,
+  onOpenChange,
+  isEditTemplateMode,
 }: {
   hosId: string
-  icuChartId: string
-  orders: SelectedIcuOrder[]
-  showOrderer: boolean
-  patient: Patient
-  weight: string
-  ageInDays: number
+  icuChartId?: string
+  orders?: SelectedIcuOrder[]
+  showOrderer?: boolean
+  patient?: Patient
+  weight?: string
+  ageInDays?: number
   orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit'
-  isEditOrderMode?: boolean
-  setOrderStep: (
-    orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit',
-  ) => void
-  reset: () => void
   isExport?: boolean
-  setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
-  mainVetName: string
-  derCalcFactor: number | null
+  setSortedOrders?: Dispatch<SetStateAction<SelectedIcuOrder[]>>
+  mainVetName?: string
+  derCalcFactor?: number | null
+  onOpenChange: () => void
+  isEditTemplateMode?: boolean
 }) {
-  const handleOpenChange = useCallback(() => {
-    if (orderStep === 'closed') {
-      setOrderStep('upsert')
-    } else {
-      setOrderStep('closed')
-    }
-    reset()
-  }, [orderStep, setOrderStep, reset])
+  const { isEditOrderMode } = useIcuOrderStore()
 
   return (
-    <Dialog open={orderStep !== 'closed'} onOpenChange={handleOpenChange}>
+    <Dialog open={orderStep !== 'closed'} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
         <Button
           variant="ghost"
           size="icon"
-          onClick={handleOpenChange}
+          onClick={onOpenChange}
           className="shrink-0"
         >
           <Plus size={18} />
@@ -98,8 +88,7 @@ export default function OrderDialog({
           )}
           <DialogDescription />
         </DialogHeader>
-
-        {orderStep === 'upsert' && (
+        {orderStep === 'upsert' && icuChartId && (
           <Tabs defaultValue="default">
             <TabsList className="grid max-w-full grid-cols-2 overflow-x-auto whitespace-nowrap">
               <TabsTrigger value="default">직접 입력</TabsTrigger>
@@ -115,11 +104,12 @@ export default function OrderDialog({
                   hosId={hosId}
                   showOrderer={showOrderer}
                   icuChartId={icuChartId}
-                  species={patient.species}
+                  species={patient?.species}
                   weight={weight}
                   ageInDays={ageInDays}
                   derCalcFactor={derCalcFactor}
                   setSortedOrders={setSortedOrders}
+                  isEditTemplateMode={isEditTemplateMode}
                 />
               )}
             </TabsContent>
@@ -131,11 +121,24 @@ export default function OrderDialog({
           </Tabs>
         )}
 
+        {orderStep === 'upsert' && !icuChartId && !isExport && (
+          <LazyOrderForm
+            hosId={hosId}
+            showOrderer={showOrderer}
+            icuChartId={icuChartId}
+            species={patient?.species}
+            weight={weight}
+            ageInDays={ageInDays}
+            derCalcFactor={derCalcFactor}
+            setSortedOrders={setSortedOrders}
+          />
+        )}
+
         {orderStep === 'selectOrderer' && (
           <OrdererSelectStep
-            icuChartId={icuChartId}
-            orders={orders}
-            mainVetName={mainVetName}
+            icuChartId={icuChartId!}
+            orders={orders!}
+            mainVetName={mainVetName!}
           />
         )}
       </DialogContent>

@@ -32,14 +32,16 @@ import { z } from 'zod'
 
 export default function FluidOrderField({
   form,
+  orderMode,
   species,
-  ageInDays,
+  ageInDays = 1,
   weight,
 }: {
   form: UseFormReturn<z.infer<typeof orderSchema>>
-  species: string
-  ageInDays: number
-  weight: string
+  orderMode?: string
+  species?: string
+  ageInDays?: number
+  weight?: string
 }) {
   const watchedOrderName = form.watch('icu_chart_order_name')
   const fluidName = watchedOrderName.split('#')[0]
@@ -47,9 +49,10 @@ export default function FluidOrderField({
   const fold = watchedOrderName.split('#')[2]
   const additives = watchedOrderName.split('#')[3]
 
-  const {
-    basicHosData: { maintenanceRateCalcMethod },
-  } = useBasicHosDataContext()
+  const maintenanceRateCalcMethod =
+    orderMode === 'icu'
+      ? useBasicHosDataContext().basicHosData.maintenanceRateCalcMethod
+      : 'a'
 
   const [displayFluidName, setDisplayFluidName] = useState(fluidName ?? '')
   const [localMaintenaceRateCalcMethod, setLocalMaintenaceRateCalcMethod] =
@@ -72,7 +75,7 @@ export default function FluidOrderField({
 
   const calculateFluidRate = useCallback(() => {
     const result = calculatedMaintenaceRate(
-      weight,
+      weight!,
       species as 'canine' | 'feline',
       localFold,
       localMaintenaceRateCalcMethod as 'a' | 'b' | 'c',
@@ -233,6 +236,7 @@ export default function FluidOrderField({
                   type="button"
                   onClick={calculateFluidRate}
                   className="col-span-1 mx-auto w-full"
+                  disabled={!species}
                 >
                   <Calculator size={16} />
                 </Button>

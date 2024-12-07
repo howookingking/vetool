@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
+import { deleteDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
 import { deleteOrder } from '@/lib/services/icu/chart/order-mutation'
 import { useRealtimeSubscriptionStore } from '@/lib/store/icu/realtime-subscription'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
@@ -20,12 +21,14 @@ import { Dispatch, SetStateAction, useState } from 'react'
 
 export default function DeleteOrderAlertDialog({
   selectedChartOrder,
+  orderMode,
   setOrderStep,
   setSortedOrders,
 }: {
   selectedChartOrder: Partial<SelectedIcuOrder>
   setOrderStep: (orderStep: 'closed' | 'upsert' | 'selectOrderer') => void
-  setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
+  orderMode?: 'icu' | 'default' | 'template'
+  setSortedOrders?: Dispatch<SetStateAction<SelectedIcuOrder[]>>
 }) {
   const [isDeleteOrdersDialogOpen, setIsDeleteOrdersDialogOpen] =
     useState(false)
@@ -36,15 +39,23 @@ export default function DeleteOrderAlertDialog({
     setIsDeleteOrdersDialogOpen(false)
     setOrderStep('closed')
 
-    setSortedOrders((prev) =>
-      prev.filter((order) => order.order_id !== selectedChartOrder.order_id),
-    )
+    // ICU 오더 삭제
+    if (orderMode === 'icu' && setSortedOrders) {
+      setSortedOrders((prev) =>
+        prev.filter((order) => order.order_id !== selectedChartOrder.order_id),
+      )
 
-    await deleteOrder(selectedChartOrder.order_id!)
+      await deleteOrder(selectedChartOrder.order_id!)
+    }
+
+    if (orderMode === 'default') {
+      await deleteDefaultChartOrder(selectedChartOrder.order_id!)
+    }
 
     toast({
       title: `${selectedChartOrder.order_name} 오더를 삭제하였습니다`,
     })
+
     setOrderStep('closed')
 
     if (!isSubscriptionReady) {
