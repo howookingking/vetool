@@ -1,9 +1,8 @@
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
+import OrderDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-dialog'
 import SortableOrderWrapper from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/sortable-order-wrapper'
-import AddTemplateDialog from '@/components/hospital/icu/main/template/add/table/add-template-dialog'
-import AddTemplateHeader from '@/components/hospital/icu/main/template/add/table/add-template-header'
-import AddTemplateRow from '@/components/hospital/icu/main/template/add/table/add-template-row'
-import TemplateOrderForm from '@/components/hospital/icu/main/template/add/template-order-form'
+import OrderListHeader from '@/components/hospital/icu/main/template/add/table/add-template-header'
+import OrderRow from '@/components/hospital/icu/main/template/add/table/add-template-row'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
 import { reorderOrders } from '@/lib/services/icu/chart/order-mutation'
@@ -12,12 +11,12 @@ import { useTemplateStore } from '@/lib/store/icu/template'
 import { hasOrderSortingChanges } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
+import { useParams } from 'next/navigation'
 import {
   Dispatch,
   SetStateAction,
   useCallback,
   useEffect,
-  useRef,
   useState,
 } from 'react'
 import { Sortable } from 'react-sortablejs'
@@ -26,24 +25,16 @@ export default function TemplateOrdersTable({
   isSorting,
   setIsSorting,
   initialOrders,
-  editTemplateMode = false,
+  isEditTemplateMode = false,
 }: {
   isSorting: boolean
   setIsSorting: Dispatch<SetStateAction<boolean>>
   initialOrders?: Partial<SelectedIcuOrder>[]
-  editTemplateMode?: boolean
+  isEditTemplateMode?: boolean
 }) {
-  const orderRef = useRef<HTMLTableCellElement>(null)
-  const { templateOrders, setTemplateOrders, setOrderIndex } =
-    useTemplateStore()
-  const {
-    orderStep,
-    setOrderStep,
-    setSelectedChartOrder,
-    isEditOrderMode,
-    setIsEditOrderMode,
-    reset,
-  } = useIcuOrderStore()
+  const { hos_id } = useParams()
+  const { templateOrders, setTemplateOrders } = useTemplateStore()
+  const { orderStep, setOrderStep, reset, setOrderMode } = useIcuOrderStore()
   const {
     basicHosData: { orderColorsData },
   } = useBasicHosDataContext()
@@ -62,21 +53,12 @@ export default function TemplateOrdersTable({
   const handleOpenChange = useCallback(() => {
     if (orderStep === 'closed') {
       setOrderStep('upsert')
+      setOrderMode('template')
     } else {
       setOrderStep('closed')
     }
     reset()
   }, [orderStep, setOrderStep, reset])
-
-  const handleEditOrderDialogOpen = (
-    order: Partial<SelectedIcuOrder>,
-    index?: number,
-  ) => {
-    setOrderStep('upsert')
-    setIsEditOrderMode(true)
-    setSelectedChartOrder(order)
-    setOrderIndex(index)
-  }
 
   const handleSortButtonClick = async () => {
     // 오더가 없다면 버튼 작동 X
@@ -91,7 +73,7 @@ export default function TemplateOrdersTable({
     }
 
     // 오더 수정 중 정렬하면 reorder 통신
-    if (isSorting && editTemplateMode) {
+    if (isSorting && isEditTemplateMode) {
       const orderIds = sortedOrders.map((order) => order.order_id)
       await reorderOrders(orderIds)
       setIsSorting(!isSorting)
@@ -114,16 +96,22 @@ export default function TemplateOrdersTable({
   }
 
   return (
-    <Table className="h-full border">
-      <AddTemplateHeader isSorting={isSorting!} onClick={handleSortButtonClick}>
-        <AddTemplateDialog
+    <Table className="h-full max-w-3xl border">
+      <OrderListHeader isSorting={isSorting!} onClick={handleSortButtonClick}>
+        {/* <AddTemplateDialog
           isOpen={orderStep !== 'closed'}
           onOpenChange={handleOpenChange}
           isEditOrderMode={isEditOrderMode}
         >
           <TemplateOrderForm editTemplateMode={editTemplateMode} />
-        </AddTemplateDialog>
-      </AddTemplateHeader>
+        </AddTemplateDialog> */}
+        <OrderDialog
+          hosId={hos_id as string}
+          orderStep={orderStep}
+          onOpenChange={handleOpenChange}
+          isEditTemplateMode={isEditTemplateMode}
+        />
+      </OrderListHeader>
 
       {isSorting ? (
         <SortableOrderWrapper
@@ -132,14 +120,13 @@ export default function TemplateOrdersTable({
           onSortEnd={handleReorder}
         >
           {sortedOrders.map((order, index) => (
-            <AddTemplateRow
+            <OrderRow
               key={index}
               order={order}
               index={index}
               orderColors={orderColorsData}
-              onEdit={() => handleEditOrderDialogOpen(order, index)}
-              orderRef={orderRef}
               isSorting
+              isTemplate
             />
           ))}
         </SortableOrderWrapper>
@@ -153,13 +140,12 @@ export default function TemplateOrdersTable({
             </TableRow>
           ) : (
             sortedOrders.map((order, index) => (
-              <AddTemplateRow
+              <OrderRow
                 key={index}
                 order={order}
                 index={index}
                 orderColors={orderColorsData}
-                onEdit={() => handleEditOrderDialogOpen(order, index)}
-                orderRef={orderRef}
+                isTemplate
               />
             ))
           )}

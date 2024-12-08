@@ -15,7 +15,10 @@ type IcuOrderState = {
   ) => void
 
   isEditOrderMode?: boolean
+  orderMode?: 'icu' | 'default' | 'template'
+
   setIsEditOrderMode: (isEditOrderMode: boolean) => void
+  setOrderMode: (orderMode: 'icu' | 'default' | 'template') => void
 
   selectedChartOrder: Partial<SelectedIcuOrder>
   setSelectedChartOrder: (chartOrder: Partial<SelectedIcuOrder>) => void
@@ -57,6 +60,9 @@ export const useIcuOrderStore = create<IcuOrderState>((set) => ({
 
   isEditOrderMode: false,
   setIsEditOrderMode: (isEditOrderMode) => set({ isEditOrderMode }),
+
+  orderMode: 'icu',
+  setOrderMode: (orderMode) => set({ orderMode }),
 
   selectedChartOrder: {} as Partial<SelectedIcuOrder>,
   setSelectedChartOrder: (selectedChartOrder) => set({ selectedChartOrder }),

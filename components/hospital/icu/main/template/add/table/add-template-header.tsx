@@ -16,17 +16,13 @@ export default function AddTemplateHeader({
   return (
     <TableHeader>
       <TableRow>
-        <TableHead className="relative flex items-center justify-center gap-2 text-center">
+        <TableHead className="relative flex items-center justify-between gap-2 text-center">
           <Button
             variant="ghost"
             size="icon"
-            className={cn(
-              'absolute left-1',
-              isSorting && 'animate-pulse text-primary',
-            )}
+            className={cn('', isSorting && 'animate-pulse text-primary')}
             onClick={onClick}
           >
-            {/* TODO: 순서 변경 논의 필요 */}
             <ArrowUpDown size={18} />
           </Button>
           <span>오더 목록</span>

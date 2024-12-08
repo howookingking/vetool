@@ -4,6 +4,7 @@ export const calculateRer = (
   method: 'a' | 'b',
 ) => {
   let rer
+
   if (species === 'canine') {
     if (method === 'a') {
       rer = Number(weight) * 30 + 70
@@ -16,6 +17,9 @@ export const calculateRer = (
     } else if (method === 'b') {
       rer = 70 * Number(weight) ** (3 / 4)
     }
+  } else {
+    return 0
   }
+
   return rer!.toFixed(0)
 }

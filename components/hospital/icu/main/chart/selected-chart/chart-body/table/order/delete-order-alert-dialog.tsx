@@ -12,39 +12,70 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
+import { deleteDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
 import { deleteOrder } from '@/lib/services/icu/chart/order-mutation'
 import { useRealtimeSubscriptionStore } from '@/lib/store/icu/realtime-subscription'
+import { useTemplateStore } from '@/lib/store/icu/template'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { useRouter } from 'next/navigation'
 import { Dispatch, SetStateAction, useState } from 'react'
 
 export default function DeleteOrderAlertDialog({
   selectedChartOrder,
+  orderMode,
   setOrderStep,
   setSortedOrders,
+  orderIndex,
 }: {
   selectedChartOrder: Partial<SelectedIcuOrder>
   setOrderStep: (orderStep: 'closed' | 'upsert' | 'selectOrderer') => void
-  setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
+  orderMode?: 'icu' | 'default' | 'template'
+  setSortedOrders?: Dispatch<SetStateAction<SelectedIcuOrder[]>>
+  orderIndex?: number
 }) {
   const [isDeleteOrdersDialogOpen, setIsDeleteOrdersDialogOpen] =
     useState(false)
   const { refresh } = useRouter()
   const { isSubscriptionReady } = useRealtimeSubscriptionStore()
+  const { templateOrders, setTemplateOrders } = useTemplateStore()
 
   const handleDeleteOrderClick = async () => {
     setIsDeleteOrdersDialogOpen(false)
     setOrderStep('closed')
 
-    setSortedOrders((prev) =>
-      prev.filter((order) => order.order_id !== selectedChartOrder.order_id),
-    )
+    // ICU 오더 삭제
+    if (orderMode === 'icu' && setSortedOrders) {
+      setSortedOrders((prev) =>
+        prev.filter((order) => order.order_id !== selectedChartOrder.order_id),
+      )
 
-    await deleteOrder(selectedChartOrder.order_id!)
+      await deleteOrder(selectedChartOrder.order_id!)
+    }
+
+    // Default 오더 삭제
+    if (orderMode === 'default') {
+      await deleteDefaultChartOrder(selectedChartOrder.order_id!)
+    }
+
+    // template 오더 삭제
+    if (orderMode === 'template') {
+      const newOrders = templateOrders.filter(
+        (_, index) => index !== orderIndex,
+      )
+
+      if (selectedChartOrder.order_id) {
+        await deleteOrder(selectedChartOrder.order_id)
+      }
+      setTemplateOrders(newOrders)
+
+      console.log(selectedChartOrder)
+      // await deleteOrder(selectedChartOrder.order_id!)
+    }
 
     toast({
       title: `${selectedChartOrder.order_name} 오더를 삭제하였습니다`,
     })
+
     setOrderStep('closed')
 
     if (!isSubscriptionReady) {

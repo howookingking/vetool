@@ -71,7 +71,7 @@ export default function ChartTable({
     orderTimePendingQueue,
     selectedOrderPendingQueue,
     copiedOrderPendingQueue,
-    isEditOrderMode,
+    setOrderMode,
   } = useIcuOrderStore()
 
   const {
@@ -287,6 +287,16 @@ export default function ChartTable({
   }, [orderWidth, setOrderWidth, isMobile])
   // ------- order width 조절 -------
 
+  const handleOpenChange = useCallback(() => {
+    if (orderStep === 'closed') {
+      setOrderStep('upsert')
+      setOrderMode('icu')
+    } else {
+      setOrderStep('closed')
+    }
+    reset()
+  }, [orderStep, setOrderStep, reset])
+
   return (
     <Table className="border">
       <TableHeader className="sticky -top-3 z-20 bg-white shadow-sm">
@@ -327,13 +337,11 @@ export default function ChartTable({
                   weight={weight}
                   ageInDays={age_in_days}
                   orderStep={orderStep}
-                  reset={reset}
-                  isEditOrderMode={isEditOrderMode}
-                  setOrderStep={setOrderStep}
                   isExport={isExport}
                   setSortedOrders={setSortedOrders}
                   mainVetName={main_vet.name}
                   derCalcFactor={der_calc_factor}
+                  onOpenChange={handleOpenChange}
                 />
 
                 <Button

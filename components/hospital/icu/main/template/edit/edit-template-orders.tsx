@@ -124,7 +124,7 @@ export default function EditTemplateOrders({
               initialOrders={initialOrders}
               isSorting={isSorting}
               setIsSorting={setIsSorting}
-              editTemplateMode
+              isEditTemplateMode
             />
           )
         )}

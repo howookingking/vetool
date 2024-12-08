@@ -25,6 +25,7 @@ import { z } from 'zod'
 export default function FeedOrderField({
   hosId,
   form,
+  orderMode,
   weight,
   species,
   derCalcFactor,
@@ -32,9 +33,10 @@ export default function FeedOrderField({
 }: {
   hosId: string
   form: UseFormReturn<z.infer<typeof orderSchema>>
-  weight: string
-  species: string
-  derCalcFactor: number | null
+  orderMode?: string
+  weight?: string
+  species?: string
+  derCalcFactor?: number | null
   orderTime: string[]
 }) {
   const watchedOrderName = form.watch('icu_chart_order_name')
@@ -58,13 +60,15 @@ export default function FeedOrderField({
   const feedPerDayRef = useRef<HTMLInputElement>(null)
   const derRef = useRef<HTMLInputElement>(null)
 
-  const {
-    basicHosData: { rerCalcMethod },
-  } = useBasicHosDataContext()
+  const rerCalcMethod =
+    orderMode === 'icu'
+      ? useBasicHosDataContext().basicHosData.rerCalcMethod
+      : 'a'
 
   useEffect(() => {
     setIsLoading(true)
-    getPinnedDietData(hosId, species)
+
+    getPinnedDietData(hosId, 'both')
       .then(setDiets)
       .finally(() => setIsLoading(false))
   }, [hosId, species, setDiets, setIsLoading])
@@ -84,10 +88,11 @@ export default function FeedOrderField({
   }, [searchedDiet, diets])
 
   const calculatedRer = calculateRer(
-    weight,
+    weight || '0',
     species as 'canine' | 'feline',
     rerCalcMethod,
   )
+
   const calculatedDer =
     derCalcFactor && (Number(calculatedRer) * derCalcFactor).toFixed(0)
 
@@ -213,81 +218,83 @@ export default function FeedOrderField({
         />
       </div>
 
-      <div className="grid grid-cols-3 items-center gap-2 md:grid-cols-6">
-        {/* DER */}
-        <div className="col-span-2 space-y-2">
-          <Label className={cn('text-right font-semibold')}>DER</Label>
-
-          <div className="relative w-full">
-            <Input
-              ref={derRef}
-              className={cn(
-                'pr-18 cursor-not-allowed select-none shadow-none',
-                !calculatedDer && 'text-sm text-rose-500',
-              )}
-              value={calculatedDer || 'DER을 설정해주세요'}
-              readOnly
-            />
-            <span className="absolute right-2 top-1/2 -translate-y-1/2 cursor-not-allowed select-none text-sm text-muted-foreground">
-              kcal/day
-            </span>
+      {species && (
+        <div className="grid grid-cols-3 items-center gap-2 md:grid-cols-6">
+          {/* DER */}
+          <div className="col-span-2 space-y-2">
+            <Label className={cn('text-right font-semibold')}>DER</Label>
+            <div className="relative w-full">
+              <Input
+                ref={derRef}
+                className={cn(
+                  'pr-18 cursor-not-allowed select-none shadow-none',
+                  !calculatedDer && 'text-sm text-rose-500',
+                )}
+                value={calculatedDer || 'DER을 설정해주세요'}
+                readOnly
+              />
+              <span className="absolute right-2 top-1/2 -translate-y-1/2 cursor-not-allowed select-none text-sm text-muted-foreground">
+                kcal/day
+              </span>
+            </div>
           </div>
-        </div>
 
-        <div className="col-span-1 space-y-2">
-          <Label className="font-semibold">급여 횟수</Label>
-          <div className="relative w-full">
-            <Input
-              ref={feedPerDayRef}
-              className="pr-12"
-              value={localFeedPerDay}
-              type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
-              onChange={handleFeedPerDayChange}
-            />
-            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
-              회
-            </span>
+          <div className="col-span-1 space-y-2">
+            <Label className="font-semibold">급여 횟수</Label>
+            <div className="relative w-full">
+              <Input
+                ref={feedPerDayRef}
+                className="pr-12"
+                value={localFeedPerDay}
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                onChange={handleFeedPerDayChange}
+              />
+              <span className="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
+                회
+              </span>
+            </div>
           </div>
+
+          <Button
+            size="icon"
+            variant="outline"
+            type="button"
+            onClick={handleCalculateClick}
+            disabled={!species}
+            className="col-span-1 mx-auto mt-auto w-full"
+          >
+            <Calculator size={16} />
+          </Button>
+
+          {/* 급여량 */}
+          <FormField
+            control={form.control}
+            name="icu_chart_order_comment"
+            render={({ field }) => (
+              <FormItem className="col-span-2 space-y-2">
+                <FormLabel className="font-semibold">
+                  1회 급여량 (g/회 또는 ml/회)
+                </FormLabel>
+                <FormControl>
+                  <div className="relative">
+                    <Input
+                      {...field}
+                      placeholder="급여량 입력"
+                      className="pr-12"
+                    />
+                    <span className="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
+                      /회
+                    </span>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
-
-        <Button
-          size="icon"
-          variant="outline"
-          type="button"
-          onClick={handleCalculateClick}
-          className="col-span-1 mx-auto mt-auto w-full"
-        >
-          <Calculator size={16} />
-        </Button>
-
-        {/* 급여량 */}
-        <FormField
-          control={form.control}
-          name="icu_chart_order_comment"
-          render={({ field }) => (
-            <FormItem className="col-span-2 space-y-2">
-              <FormLabel className="font-semibold">
-                1회 급여량 (g/회 또는 ml/회)
-              </FormLabel>
-              <FormControl>
-                <div className="relative">
-                  <Input
-                    {...field}
-                    placeholder="급여량 입력"
-                    className="pr-12"
-                  />
-                  <span className="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
-                    /회
-                  </span>
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
+      )}
     </div>
   )
 }
