@@ -58,7 +58,7 @@ export default function TemplateOrdersTable({
       setOrderStep('closed')
     }
     reset()
-  }, [orderStep, setOrderStep, reset])
+  }, [orderStep, setOrderStep, reset, setOrderMode])
 
   const handleSortButtonClick = async () => {
     // 오더가 없다면 버튼 작동 X

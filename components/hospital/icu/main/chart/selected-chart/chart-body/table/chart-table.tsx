@@ -295,7 +295,7 @@ export default function ChartTable({
       setOrderStep('closed')
     }
     reset()
-  }, [orderStep, setOrderStep, reset])
+  }, [orderStep, setOrderStep, reset, setOrderMode])
 
   return (
     <Table className="border">

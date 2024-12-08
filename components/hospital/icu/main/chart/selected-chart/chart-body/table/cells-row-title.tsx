@@ -114,6 +114,7 @@ export default function CellsRowTitle({
       setOrderStep,
       setIsEditOrderMode,
       reset,
+      setOrderMode,
     ],
   )
 
