@@ -67,9 +67,6 @@ export default function DeleteOrderAlertDialog({
         await deleteOrder(selectedChartOrder.order_id)
       }
       setTemplateOrders(newOrders)
-
-      console.log(selectedChartOrder)
-      // await deleteOrder(selectedChartOrder.order_id!)
     }
 
     toast({

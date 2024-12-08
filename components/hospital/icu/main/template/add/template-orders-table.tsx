@@ -98,13 +98,6 @@ export default function TemplateOrdersTable({
   return (
     <Table className="h-full max-w-3xl border">
       <OrderListHeader isSorting={isSorting!} onClick={handleSortButtonClick}>
-        {/* <AddTemplateDialog
-          isOpen={orderStep !== 'closed'}
-          onOpenChange={handleOpenChange}
-          isEditOrderMode={isEditOrderMode}
-        >
-          <TemplateOrderForm editTemplateMode={editTemplateMode} />
-        </AddTemplateDialog> */}
         <OrderDialog
           hosId={hos_id as string}
           orderStep={orderStep}
