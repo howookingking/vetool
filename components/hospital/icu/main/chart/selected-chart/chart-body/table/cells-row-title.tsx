@@ -1,12 +1,13 @@
 import { Button } from '@/components/ui/button'
 import { TableCell } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
+import useShorcutKey from '@/hooks/use-shortcut-key'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { cn, parsingOrderName, renderOrderSubComment } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
-import { useCallback, useEffect } from 'react'
+import { useCallback } from 'react'
 
 export default function CellsRowTitle({
   order,
@@ -39,39 +40,18 @@ export default function CellsRowTitle({
     reset,
   } = useIcuOrderStore()
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      const activeElement = document.activeElement
-      const isInputFocused =
-        activeElement instanceof HTMLInputElement ||
-        activeElement instanceof HTMLTextAreaElement ||
-        activeElement?.hasAttribute('contenteditable')
-
-      if (
-        (event.ctrlKey || event.metaKey) &&
-        event.key === 'c' &&
-        !isInputFocused
-      ) {
-        if (selectedOrderPendingQueue.length > 0) {
-          setCopiedOrderPendingQueue(selectedOrderPendingQueue)
-          setSelectedOrderPendingQueue([])
-
-          toast({
-            title: '오더 복사 완료',
-            description: '붙여넣기 할 차트로 이동해주세요',
-          })
-        }
-      }
-    }
-    window.addEventListener('keydown', handleKeyDown)
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [
-    selectedOrderPendingQueue,
-    setCopiedOrderPendingQueue,
-    setSelectedOrderPendingQueue,
-  ])
+  useShorcutKey({
+    keys: ['c'],
+    condition: selectedOrderPendingQueue.length > 0,
+    callback: () => {
+      setCopiedOrderPendingQueue(selectedOrderPendingQueue)
+      setSelectedOrderPendingQueue([])
+      toast({
+        title: '오더 복사 완료',
+        description: '붙여넣기 할 차트로 이동해주세요',
+      })
+    },
+  })
 
   const handleEditOrderDialogOpen = useCallback(
     (e: React.MouseEvent) => {
@@ -79,22 +59,18 @@ export default function CellsRowTitle({
 
       if (e.metaKey || e.ctrlKey) {
         e.preventDefault()
-
         setSelectedOrderPendingQueue((prev) => {
           const existingIndex = prev.findIndex(
             (item) => item.order_id === order.order_id,
           )
-
           if (existingIndex !== -1) {
             return prev.filter((_, index) => index !== existingIndex)
           } else {
             return [...prev, order]
           }
         })
-
         return
       }
-
       reset()
       setOrderStep('upsert')
       setIsEditOrderMode(true)
@@ -114,7 +90,6 @@ export default function CellsRowTitle({
   const isInOrderPendingQueue = selectedOrderPendingQueue.some(
     (order) => order.order_id === order_id,
   )
-
   const isOptimisticOrder = order.order_id.startsWith('temp_order_id')
 
   // -------- 바이탈 참조범위 --------

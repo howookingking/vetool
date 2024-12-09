@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
+import useShorcutKey from '@/hooks/use-shortcut-key'
 import { insertCustomTemplateChart } from '@/lib/services/icu/template/template'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useTemplateStore } from '@/lib/store/icu/template'
@@ -38,7 +39,6 @@ export default function AddTemplateOrderDialog({
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [selectedOrdersLength, setSelectedOrdersLength] = useState(0)
-
   const { templateOrders, setTemplateOrders, reset } = useTemplateStore()
   const { selectedOrderPendingQueue, setSelectedOrderPendingQueue } =
     useIcuOrderStore()
@@ -80,43 +80,19 @@ export default function AddTemplateOrderDialog({
         template_name: undefined,
         template_comment: undefined,
       })
-
       setSelectedOrderPendingQueue([])
     }
-  }, [isDialogOpen, form, setSelectedOrderPendingQueue])
+  }, [isDialogOpen])
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      const activeElement = document.activeElement
-      const isInputFocused =
-        activeElement instanceof HTMLInputElement ||
-        activeElement instanceof HTMLTextAreaElement ||
-        activeElement?.hasAttribute('contenteditable')
-
-      if (
-        (event.ctrlKey || event.metaKey) &&
-        event.key === 'a' &&
-        !isInputFocused
-      ) {
-        if (selectedOrderPendingQueue.length > 0) {
-          setTemplateOrders(selectedOrderPendingQueue)
-          setIsDialogOpen(true)
-          setSelectedOrdersLength(selectedOrderPendingQueue.length)
-        }
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown)
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [
-    selectedOrderPendingQueue,
-    setTemplateOrders,
-    setIsDialogOpen,
-    setSelectedOrdersLength,
-  ])
+  useShorcutKey({
+    keys: ['a'],
+    condition: selectedOrderPendingQueue.length > 0,
+    callback: () => {
+      setTemplateOrders(selectedOrderPendingQueue)
+      setIsDialogOpen(true)
+      setSelectedOrdersLength(selectedOrderPendingQueue.length)
+    },
+  })
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { toast } from '@/components/ui/use-toast'
+import useShorcutKey from '@/hooks/use-shortcut-key'
 import { pasteChart } from '@/lib/services/icu/chart/paste-chart'
 import { useCopiedChartStore } from '@/lib/store/icu/copied-chart'
 import { useRealtimeSubscriptionStore } from '@/lib/store/icu/realtime-subscription'
@@ -28,7 +29,7 @@ import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provi
 import { CopyCheck, LoaderCircle } from 'lucide-react'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 export default function PasteCopiedChartDialog() {
   const { target_date, patient_id } = useParams()
   const { copiedChartId, reset } = useCopiedChartStore()
@@ -81,32 +82,10 @@ export default function PasteCopiedChartDialog() {
     refresh,
   ])
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      const activeElement = document.activeElement
-      const isInputFocused =
-        activeElement instanceof HTMLInputElement ||
-        activeElement instanceof HTMLTextAreaElement
-      if (
-        (event.ctrlKey || event.metaKey) &&
-        event.key === 'v' &&
-        !isInputFocused
-      ) {
-        event.preventDefault()
-        setIsDialogOpen(true)
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown)
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [handlePasteCopiedChart])
-
-  const handleOrdererChange = (value: string) => {
-    setOrderer(value)
-  }
+  useShorcutKey({
+    keys: ['v'],
+    callback: () => setIsDialogOpen(true),
+  })
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -129,10 +108,7 @@ export default function PasteCopiedChartDialog() {
           {showOrderer && (
             <div>
               <Label className="pt-4">오더결정 수의사</Label>
-              <Select
-                onValueChange={handleOrdererChange}
-                defaultValue={orderer}
-              >
+              <Select onValueChange={setOrderer} defaultValue={orderer}>
                 <SelectTrigger
                   className={cn(
                     'h-8 text-sm',

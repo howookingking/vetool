@@ -21,7 +21,7 @@ import { updateStaffGroup } from '@/lib/services/admin/staff/staff'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { DialogDescription } from '@radix-ui/react-dialog'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -52,12 +52,6 @@ export function GroupColumnDialog({
       items: group || [],
     },
   })
-
-  useEffect(() => {
-    if (!isDialogOpen) {
-      form.reset({ items: group || [] })
-    }
-  }, [isDialogOpen, group, form])
 
   const handleSubmit = async (values: z.infer<typeof GroupCheckFormSchema>) => {
     setIsUpdating(true)

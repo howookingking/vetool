@@ -8,7 +8,7 @@ import { TxLocalState } from '@/lib/store/icu/tx-mutation'
 import { cn } from '@/lib/utils/utils'
 import type { SelectedIcuOrder, Treatment, TxLog } from '@/types/icu/chart'
 import { useSearchParams } from 'next/navigation'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 const LONGPRESS_TIMEOUT = 600
 
@@ -90,17 +90,10 @@ export default function Cell({
     rowVitalRefRange,
   )
 
-  const hasOrder = useMemo(() => orderer !== '0', [orderer])
-  const hasComment = useMemo(
-    () => !!treatment?.tx_comment,
-    [treatment?.tx_comment],
-  )
-  const isInPendingQueue = useMemo(
-    () =>
-      selectedTxPendingQueue.some(
-        (item) => item.orderId === icuChartOrderId && item.orderTime === time,
-      ),
-    [icuChartOrderId, selectedTxPendingQueue, time],
+  const hasOrder = orderer !== '0'
+  const hasComment = !!treatment?.tx_comment
+  const isInPendingQueue = selectedTxPendingQueue.some(
+    (item) => item.orderId === icuChartOrderId && item.orderTime === time,
   )
 
   useEffect(() => {
@@ -108,7 +101,7 @@ export default function Cell({
       setBriefTxResultInput('')
       setIsMutationCanceled(false)
     }
-  }, [isMutationCanceled, setIsMutationCanceled, treatment?.tx_result])
+  }, [isMutationCanceled, treatment?.tx_result, setIsMutationCanceled])
 
   const cleanupPressTimeout = useCallback(() => {
     // 타이머가 있다면 취소 및 참조 제거
@@ -140,7 +133,6 @@ export default function Cell({
       time,
       txLog: treatment?.tx_log as TxLog[] | null,
     })
-
     setTxStep('detailInsert')
   }, [
     icuChartOrderId,
