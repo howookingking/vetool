@@ -61,7 +61,7 @@ export default function HeaderDateSelector() {
   }, [updateDate])
 
   return (
-    <div className="flex h-8 items-center gap-2">
+    <div className="flex h-8 items-center gap-3">
       <Button
         onClick={() => handleUpdateDate(-1)}
         size="icon"
@@ -72,9 +72,7 @@ export default function HeaderDateSelector() {
       </Button>
 
       <div className="flex items-center gap-1">
-        <span className="min-w-20 text-sm">
-          {format(targetDate, 'yyyy-MM-dd')}
-        </span>
+        <span className="min-w-20">{format(targetDate, 'yyyy-MM-dd')}</span>
         <IcuHeaderDatePicker
           targetDate={format(targetDate, 'yyyy-MM-dd')}
           setIsSubscriptionReady={setIsSubscriptionReady}

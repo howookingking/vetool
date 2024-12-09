@@ -82,6 +82,7 @@ export default function AddTemplateOrderDialog({
       })
       setSelectedOrderPendingQueue([])
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDialogOpen])
 
   useShorcutKey({
