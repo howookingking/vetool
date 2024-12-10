@@ -24,6 +24,7 @@ import {
 } from '@/components/ui/select'
 import { FLUIDS } from '@/constants/hospital/icu/chart/fluid'
 import { calculatedMaintenaceRate } from '@/lib/calculators/maintenace-rate'
+import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { Calculator } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
@@ -32,24 +33,22 @@ import { z } from 'zod'
 
 export default function FluidOrderField({
   form,
+  maintenanceRateCalcMethod,
   species,
-  ageInDays,
+  ageInDays = 1,
   weight,
 }: {
   form: UseFormReturn<z.infer<typeof orderSchema>>
-  species: string
-  ageInDays: number
-  weight: string
+  maintenanceRateCalcMethod?: string
+  species?: string
+  ageInDays?: number
+  weight?: string
 }) {
   const watchedOrderName = form.watch('icu_chart_order_name')
   const fluidName = watchedOrderName.split('#')[0]
   const maintenaceRateCalcMethodField = watchedOrderName.split('#')[1]
   const fold = watchedOrderName.split('#')[2]
   const additives = watchedOrderName.split('#')[3]
-
-  const {
-    basicHosData: { maintenanceRateCalcMethod },
-  } = useBasicHosDataContext()
 
   const [displayFluidName, setDisplayFluidName] = useState(fluidName ?? '')
   const [localMaintenaceRateCalcMethod, setLocalMaintenaceRateCalcMethod] =
@@ -72,7 +71,7 @@ export default function FluidOrderField({
 
   const calculateFluidRate = useCallback(() => {
     const result = calculatedMaintenaceRate(
-      weight,
+      weight || '0',
       species as 'canine' | 'feline',
       localFold,
       localMaintenaceRateCalcMethod as 'a' | 'b' | 'c',
@@ -83,12 +82,17 @@ export default function FluidOrderField({
 
   return (
     <>
-      <div className="flex flex-col gap-2 md:flex-row">
+      <div className={cn('flex flex-col gap-2', species ? 'md:flex-row' : '')}>
         <FormField
           control={form.control}
           name="icu_chart_order_name"
           render={({ field }) => (
-            <FormItem className="w-full space-y-2 md:w-1/2">
+            <FormItem
+              className={cn(
+                'w-full space-y-2',
+                species ? 'md:w-1/2' : 'w-full',
+              )}
+            >
               <FormLabel className="font-semibold">수액 종류*</FormLabel>
               <FormControl>
                 <AutoComplete
@@ -113,7 +117,9 @@ export default function FluidOrderField({
         />
 
         {/* 첨가제 */}
-        <div className="w-full space-y-2 md:w-1/2">
+        <div
+          className={cn('w-full space-y-2', species ? 'md:w-1/2' : 'w-full')}
+        >
           <Label className="font-semibold">첨가제</Label>
           <Input
             value={localAdditives}
@@ -122,135 +128,137 @@ export default function FluidOrderField({
         </div>
       </div>
 
-      <div>
-        <FormField
-          control={form.control}
-          name="icu_chart_order_comment"
-          render={({ field }) => (
-            <FormItem className="w-full space-y-2">
-              <FormLabel className="font-semibold">
-                <div className="itmes-center flex gap-2">
-                  <span className="mt-[3px]">수액 속도</span>
+      {species && (
+        <div>
+          <FormField
+            control={form.control}
+            name="icu_chart_order_comment"
+            render={({ field }) => (
+              <FormItem className="w-full space-y-2">
+                <FormLabel className="font-semibold">
+                  <div className="itmes-center flex gap-2">
+                    <span className="mt-[3px]">수액 속도</span>
 
-                  <FluidToolTip />
+                    <FluidToolTip />
 
-                  {ageInDays <= 365 && (
-                    <WarningMessage
-                      className="text-sm"
-                      text={`Pediatrics의 경우,  ${species === 'canine' ? 'Adult Dog * 3' : 'Adult Cat  * 2.5'}`}
-                    />
-                  )}
+                    {ageInDays <= 365 && (
+                      <WarningMessage
+                        className="text-sm"
+                        text={`Pediatrics의 경우,  ${species === 'canine' ? 'Adult Dog * 3' : 'Adult Cat  * 2.5'}`}
+                      />
+                    )}
 
-                  {!Number(weight) && (
-                    <WarningMessage
-                      className="text-sm"
-                      text="몸무게를 입력해주세요"
-                    />
-                  )}
+                    {!Number(weight) && (
+                      <WarningMessage
+                        className="text-sm"
+                        text="몸무게를 입력해주세요"
+                      />
+                    )}
+                  </div>
+                </FormLabel>
+
+                <div className="grid grid-cols-3 items-center gap-2 md:grid-cols-6">
+                  <Select
+                    value={localMaintenaceRateCalcMethod}
+                    onValueChange={setLocalMaintenaceRateCalcMethod}
+                    defaultValue={maintenanceRateCalcMethod}
+                  >
+                    <SelectTrigger className="col-span-2">
+                      <SelectValue placeholder="계산법" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>계산법</SelectLabel>
+                        {species === 'canine' ? (
+                          <>
+                            <SelectItem value="a">
+                              a. 60{' '}
+                              <span className="text-sm text-muted-foreground">
+                                ml/kg/day
+                              </span>
+                            </SelectItem>
+                            <SelectItem value="b">
+                              b. 132 * (몸무게) <sup>0.75</sup>{' '}
+                              <span className="text-sm text-muted-foreground">
+                                ml/day
+                              </span>
+                            </SelectItem>
+                            <SelectItem value="c">
+                              c. 30 * (몸무게) + 70{' '}
+                              <span className="text-sm text-muted-foreground">
+                                ml/day
+                              </span>
+                            </SelectItem>
+                          </>
+                        ) : (
+                          <>
+                            <SelectItem value="a">
+                              a. 40{' '}
+                              <span className="text-sm text-muted-foreground">
+                                ml/kg/day
+                              </span>
+                            </SelectItem>
+                            <SelectItem value="b">
+                              b. 80 * (몸무게) <sup>0.75</sup>{' '}
+                              <span className="text-sm text-muted-foreground">
+                                ml/day
+                              </span>
+                            </SelectItem>
+                            <SelectItem value="c">
+                              c. 30 * (몸무게) + 70{' '}
+                              <span className="text-sm text-muted-foreground">
+                                ml/day
+                              </span>
+                            </SelectItem>
+                          </>
+                        )}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+
+                  <Select value={localFold} onValueChange={setLocalFold}>
+                    <SelectTrigger className="col-span-1">
+                      <SelectValue placeholder="배수" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>유지속도 배수</SelectLabel>
+                        <SelectItem value="1">1배</SelectItem>
+                        <SelectItem value="1.5">1.5배</SelectItem>
+                        <SelectItem value="2">2배</SelectItem>
+                        <SelectItem value="2.5">2.5배</SelectItem>
+                        <SelectItem value="3">3배</SelectItem>
+                        <SelectItem value="3.5">3.5배</SelectItem>
+                        <SelectItem value="4">4배</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    type="button"
+                    onClick={calculateFluidRate}
+                    className="col-span-1 mx-auto w-full"
+                  >
+                    <Calculator size={16} />
+                  </Button>
+
+                  <div className="relative col-span-2">
+                    <FormControl>
+                      <Input placeholder="수액속도" {...field} />
+                    </FormControl>
+                    <span className="absolute right-2 top-2 text-sm text-muted-foreground">
+                      ml/hr
+                    </span>
+                  </div>
                 </div>
-              </FormLabel>
-
-              <div className="grid grid-cols-3 items-center gap-2 md:grid-cols-6">
-                <Select
-                  value={localMaintenaceRateCalcMethod}
-                  onValueChange={setLocalMaintenaceRateCalcMethod}
-                  defaultValue={maintenanceRateCalcMethod}
-                >
-                  <SelectTrigger className="col-span-2">
-                    <SelectValue placeholder="계산법" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>계산법</SelectLabel>
-                      {species === 'canine' ? (
-                        <>
-                          <SelectItem value="a">
-                            a. 60{' '}
-                            <span className="text-sm text-muted-foreground">
-                              ml/kg/day
-                            </span>
-                          </SelectItem>
-                          <SelectItem value="b">
-                            b. 132 * (몸무게) <sup>0.75</sup>{' '}
-                            <span className="text-sm text-muted-foreground">
-                              ml/day
-                            </span>
-                          </SelectItem>
-                          <SelectItem value="c">
-                            c. 30 * (몸무게) + 70{' '}
-                            <span className="text-sm text-muted-foreground">
-                              ml/day
-                            </span>
-                          </SelectItem>
-                        </>
-                      ) : (
-                        <>
-                          <SelectItem value="a">
-                            a. 40{' '}
-                            <span className="text-sm text-muted-foreground">
-                              ml/kg/day
-                            </span>
-                          </SelectItem>
-                          <SelectItem value="b">
-                            b. 80 * (몸무게) <sup>0.75</sup>{' '}
-                            <span className="text-sm text-muted-foreground">
-                              ml/day
-                            </span>
-                          </SelectItem>
-                          <SelectItem value="c">
-                            c. 30 * (몸무게) + 70{' '}
-                            <span className="text-sm text-muted-foreground">
-                              ml/day
-                            </span>
-                          </SelectItem>
-                        </>
-                      )}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-
-                <Select value={localFold} onValueChange={setLocalFold}>
-                  <SelectTrigger className="col-span-1">
-                    <SelectValue placeholder="배수" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>유지속도 배수</SelectLabel>
-                      <SelectItem value="1">1배</SelectItem>
-                      <SelectItem value="1.5">1.5배</SelectItem>
-                      <SelectItem value="2">2배</SelectItem>
-                      <SelectItem value="2.5">2.5배</SelectItem>
-                      <SelectItem value="3">3배</SelectItem>
-                      <SelectItem value="3.5">3.5배</SelectItem>
-                      <SelectItem value="4">4배</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-
-                <Button
-                  size="icon"
-                  variant="outline"
-                  type="button"
-                  onClick={calculateFluidRate}
-                  className="col-span-1 mx-auto w-full"
-                >
-                  <Calculator size={16} />
-                </Button>
-
-                <div className="relative col-span-2">
-                  <FormControl>
-                    <Input placeholder="수액속도" {...field} />
-                  </FormControl>
-                  <span className="absolute right-2 top-2 text-sm text-muted-foreground">
-                    ml/hr
-                  </span>
-                </div>
-              </div>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+      )}
     </>
   )
 }

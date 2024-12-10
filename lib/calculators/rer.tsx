@@ -16,6 +16,9 @@ export const calculateRer = (
     } else if (method === 'b') {
       rer = 70 * Number(weight) ** (3 / 4)
     }
+  } else {
+    return 0
   }
+
   return rer!.toFixed(0)
 }
