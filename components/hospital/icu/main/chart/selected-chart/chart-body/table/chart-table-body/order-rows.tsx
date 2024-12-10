@@ -1,5 +1,5 @@
-import CellsRow from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/cells-row'
-import CellsRowTitle from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/cells-row-title'
+import OrderRowCells from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-row-cells'
+import OrderRowTitle from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-row-title'
 import { TableRow } from '@/components/ui/table'
 import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
 import { cn } from '@/lib/utils/utils'
@@ -26,7 +26,7 @@ type CellsRowTitlesProps = {
   isTouchMove?: boolean
 }
 
-export default function CellsRowTitles({
+export default function OrderRows({
   sortedOrders,
   isSorting,
   preview,
@@ -53,7 +53,7 @@ export default function CellsRowTitles({
       key={order.order_id}
       ref={cellRef}
     >
-      <CellsRowTitle
+      <OrderRowTitle
         index={index}
         order={order}
         preview={preview}
@@ -65,7 +65,7 @@ export default function CellsRowTitles({
         isMobile={isMobile}
       />
       {!isSorting && (
-        <CellsRow
+        <OrderRowCells
           preview={preview}
           order={order}
           showOrderer={showOrderer}

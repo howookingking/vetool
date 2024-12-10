@@ -2,9 +2,9 @@ import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
 import { Dispatch, RefObject, SetStateAction } from 'react'
-import OrderWidthButton from '../order-width-button'
+import OrderWidthButton from './order-width-button'
 import OrderDialog from '../order/order-dialog'
-import SortingButton from '../sorting-button'
+import SortingButton from './sorting-button'
 
 export default function ChartTableHeader({
   preview,

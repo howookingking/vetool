@@ -1,6 +1,4 @@
-'use client'
-
-import Cell from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/cell'
+import Cell from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/cell'
 import NoFecalOrUrineAlert from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/no-fecal-urine-alert'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import {
@@ -26,7 +24,7 @@ type CellsRowProps = {
   species: string
 }
 
-export default function CellsRow({
+export default function OrderRowCells({
   preview,
   order,
   showOrderer,

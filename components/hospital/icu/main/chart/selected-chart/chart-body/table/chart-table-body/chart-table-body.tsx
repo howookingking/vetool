@@ -4,8 +4,8 @@ import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provi
 import type { VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { Dispatch, RefObject, SetStateAction } from 'react'
-import QuickOrderInsertInput from '../../quick-order-insert-input'
-import CellsRowTitles from '../cells-row-titles'
+import QuickOrderInsertInput from './quick-order-insert-input'
+import OrderRows from './order-rows'
 
 export default function ChartTableBody({
   sortedOrders,
@@ -52,7 +52,7 @@ export default function ChartTableBody({
 
   return (
     <TableBody>
-      <CellsRowTitles
+      <OrderRows
         sortedOrders={sortedOrders}
         isSorting={isSorting}
         preview={preview}
@@ -70,6 +70,7 @@ export default function ChartTableBody({
         isMobile={isMobile}
         isTouchMove={isTouchMove}
       />
+
       {!isExport && !preview && (
         <TableRow className="hover:bg-transparent">
           <TableCell className="p-0">

@@ -17,7 +17,7 @@ import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provi
 import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
 import { RefObject, useCallback, useEffect, useState } from 'react'
 import { Sortable } from 'react-sortablejs'
-import CellsRowTitle from './cells-row-title'
+import OrderRowTitle from './chart-table-body/order-row-title'
 import ChartTableBody from './chart-table-body/chart-table-body'
 import ChartTableHeader from './chart-table-header/chart-table-header'
 import AddTemplateOrderDialog from './order/template/add-template-order-dialog'
@@ -214,7 +214,7 @@ export default function ChartTable({
         >
           {sortedOrders.map((order, index) => (
             <TableRow className="relative divide-x" key={order.order_id}>
-              <CellsRowTitle
+              <OrderRowTitle
                 index={index}
                 order={order}
                 preview={preview}
