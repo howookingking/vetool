@@ -69,16 +69,6 @@ export default function TxTable({
     (orderType) => orderType.value === localFilterState,
   )?.label
 
-  if (filteredTxData.length === 0) {
-    return (
-      <NoResultSquirrel
-        text={`모든 ${orderType ?? ''} 처치를 완료했습니다`}
-        className="h-icu-chart-main flex-col"
-        size="lg"
-      />
-    )
-  }
-
   const [copiedTxTime, setCopiedTxTime] = useState<number | null>()
   const handleTimeTxTextCopy = useCallback(
     (time: number) => {
@@ -112,6 +102,16 @@ export default function TxTable({
     },
     [filteredTxData, localFilterState],
   )
+
+  if (filteredTxData.length === 0) {
+    return (
+      <NoResultSquirrel
+        text={`모든 ${orderType ?? ''} 처치를 완료했습니다`}
+        className="h-icu-chart-main flex-col"
+        size="lg"
+      />
+    )
+  }
 
   return (
     <ScrollArea
