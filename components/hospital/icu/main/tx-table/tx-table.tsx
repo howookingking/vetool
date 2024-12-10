@@ -4,21 +4,13 @@ import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import PatientInfo from '@/components/hospital/common/patient-info'
 import TxTableCell from '@/components/hospital/icu/main/tx-table/tx-table-cell'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import { toast } from '@/components/ui/use-toast'
+import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
 import { SquarePlus } from 'lucide-react'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import TimeTxTextCopy from './time-tx-text-copy'
+import { useEffect, useRef, useState } from 'react'
+import TxTableHeader from './tx-table-header'
 
 export default function TxTable({
   localFilterState,
@@ -69,40 +61,6 @@ export default function TxTable({
     (orderType) => orderType.value === localFilterState,
   )?.label
 
-  const [copiedTxTime, setCopiedTxTime] = useState<number | null>()
-  const handleTimeTxTextCopy = useCallback(
-    (time: number) => {
-      const title = `${time}시 ${DEFAULT_ICU_ORDER_TYPE.find((order) => order.value === localFilterState)?.label ?? '전체'} 처치`
-
-      const filteredTimeTxData = filteredTxData
-        .map((data) => ({
-          ...data,
-          orders: data.orders.filter(
-            (order) => order.icu_chart_order_time[time - 1] !== '0',
-          ),
-        }))
-        .filter((data) => data.orders.length > 0)
-
-      let text = `‼️${title}\n\n`
-
-      filteredTimeTxData.forEach((data) => {
-        text += `${data.patient.species === 'canine' ? '🐶' : '🐱'} ${data.patient.name}(${data.patient.breed}) - ${data.icu_charts.weight}kg\n`
-        data.orders.forEach(
-          (order) =>
-            (text += `✅ ${order.icu_chart_order_name}, ${order.icu_chart_order_comment} \n`),
-        )
-        text += '\n'
-      })
-
-      navigator.clipboard.writeText(text.trim())
-      setCopiedTxTime(time)
-      toast({
-        title: `클립보드에 ${title}를 복사하였습니다`,
-      })
-    },
-    [filteredTxData, localFilterState],
-  )
-
   if (filteredTxData.length === 0) {
     return (
       <NoResultSquirrel
@@ -119,23 +77,10 @@ export default function TxTable({
       className="h-[calc(100vh-136px)] overflow-scroll whitespace-nowrap md:h-icu-chart-main md:w-[calc(100vw-250px)]"
     >
       <Table className="border" ref={tableRef}>
-        <TableHeader className="sticky top-0 z-10 bg-white shadow-sm">
-          <TableRow>
-            <TableHead className="w-[120px] text-center">환자목록</TableHead>
-
-            {TIMES.map((time) => (
-              <TableHead className="border text-center" key={time}>
-                <div className="flex items-center justify-center">
-                  <span>{time.toString().padStart(2, '0')}</span>
-                  <TimeTxTextCopy
-                    handleClick={() => handleTimeTxTextCopy(time)}
-                    isCopied={copiedTxTime === time}
-                  />
-                </div>
-              </TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
+        <TxTableHeader
+          filteredTxData={filteredTxData}
+          localFilterState={localFilterState}
+        />
 
         <TableBody>
           {filteredTxData.flatMap((txData) =>

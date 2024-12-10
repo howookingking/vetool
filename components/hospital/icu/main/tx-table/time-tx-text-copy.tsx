@@ -10,7 +10,7 @@ export default function TimeTxTextCopy({
 }) {
   return (
     <Button
-      variant="outline"
+      variant="ghost"
       size="icon"
       className="ml-1 h-7 w-7"
       onClick={handleClick}

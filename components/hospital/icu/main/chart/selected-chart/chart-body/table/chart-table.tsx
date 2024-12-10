@@ -6,6 +6,7 @@ import TxUpsertDialog from '@/components/hospital/icu/main/chart/selected-chart/
 import { Table, TableRow } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
 import useIsCommandPressed from '@/hooks/use-is-command-pressed'
+import useIsMobile from '@/hooks/use-is-mobile'
 import useLocalStorage from '@/hooks/use-local-storage'
 import useShorcutKey from '@/hooks/use-shortcut-key'
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
@@ -14,7 +15,7 @@ import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
 import { formatOrders } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
-import { useCallback, useEffect, useState } from 'react'
+import { RefObject, useCallback, useEffect, useState } from 'react'
 import { Sortable } from 'react-sortablejs'
 import CellsRowTitle from './cells-row-title'
 import ChartTableBody from './chart-table-body/chart-table-body'
@@ -25,10 +26,14 @@ export default function ChartTable({
   chartData,
   preview,
   isExport,
+  cellRef,
+  isTouchMove,
 }: {
   chartData: SelectedChart
   preview?: boolean
   isExport?: boolean
+  cellRef?: RefObject<HTMLTableRowElement>
+  isTouchMove?: boolean
 }) {
   const {
     icu_chart_id,
@@ -53,6 +58,7 @@ export default function ChartTable({
     isEditOrderMode,
   } = useIcuOrderStore()
 
+  const isMobile = useIsMobile()
   const {
     basicHosData: { showOrderer, vetsListData, vitalRefRange },
   } = useBasicHosDataContext()
@@ -195,6 +201,8 @@ export default function ChartTable({
         setSortedOrders={setSortedOrders}
         orderWidth={orderWidth}
         setOrderWidth={setOrderWidth}
+        isTouchMove={isTouchMove}
+        isMobile={isMobile}
       />
 
       {isSorting ? (
@@ -211,6 +219,7 @@ export default function ChartTable({
                 preview={preview}
                 isSorting={isSorting}
                 orderWidth={orderWidth}
+                isMobile={isMobile}
               />
             </TableRow>
           ))}
@@ -229,9 +238,12 @@ export default function ChartTable({
           orderStep={orderStep}
           orderTimePendingQueue={orderTimePendingQueue}
           orderWidth={orderWidth}
+          isMobile={isMobile}
+          isTouchMove={isTouchMove}
           isExport={isExport}
           icuChartId={icu_chart_id}
           setSortedOrders={setSortedOrders}
+          cellRef={cellRef}
         />
       )}
 

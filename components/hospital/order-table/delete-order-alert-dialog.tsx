@@ -12,53 +12,57 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
+import { deleteDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
 import { deleteOrder } from '@/lib/services/icu/chart/order-mutation'
-import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useTemplateStore } from '@/lib/store/icu/template'
-import { useRef, useState } from 'react'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
+import { useRouter } from 'next/navigation'
 
-export default function DeleteOrdersAlertDialog({
-  orderIndex,
-  orderName,
-  orderId,
+export default function DeleteOrderAlertDialog({
+  selectedChartOrder,
+  setOrderStep,
+  mode,
 }: {
-  orderIndex: number
-  orderName: string
-  orderId?: string
+  selectedChartOrder: Partial<SelectedIcuOrder>
+  setOrderStep: (orderStep: 'closed' | 'upsert' | 'selectOrderer') => void
+  mode: 'default' | 'addTemplate' | 'editTemplate'
 }) {
-  const [isDeleteOrdersDialogOpen, setIsDeleteOrdersDialogOpen] =
-    useState(false)
-  const { setOrderStep } = useIcuOrderStore()
-  const { templateOrders, setTemplateOrders } = useTemplateStore()
-  const deleteButtonRef = useRef<HTMLButtonElement>(null)
+  const { refresh } = useRouter()
+  const { orderIndex, templateOrders, setTemplateOrders } = useTemplateStore()
+  const { order_id } = selectedChartOrder
 
   const handleDeleteOrderClick = async () => {
-    const newOrders = templateOrders.filter((_, index) => index !== orderIndex)
-
-    if (orderId) {
-      await deleteOrder(orderId)
+    if (mode === 'default') {
+      await deleteDefaultChartOrder(selectedChartOrder.order_id!)
     }
 
-    setTemplateOrders(newOrders)
-    setOrderStep('closed')
+    if (mode !== 'default') {
+      const newOrders = templateOrders.filter(
+        (_, index) => index !== orderIndex,
+      )
+
+      if (order_id) {
+        await deleteOrder(order_id)
+      }
+
+      setTemplateOrders(newOrders)
+    }
 
     toast({
       title: `오더를 삭제하였습니다`,
     })
 
-    setIsDeleteOrdersDialogOpen(false)
+    setOrderStep('closed')
+    refresh()
   }
 
   return (
-    <AlertDialog
-      open={isDeleteOrdersDialogOpen}
-      onOpenChange={setIsDeleteOrdersDialogOpen}
-    >
+    <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button
-          variant="destructive"
           type="button"
           className="mr-auto"
+          variant="destructive"
           tabIndex={-1}
         >
           삭제
@@ -66,18 +70,17 @@ export default function DeleteOrdersAlertDialog({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{orderName} 오더 삭제</AlertDialogTitle>
+          <AlertDialogTitle>오더 삭제</AlertDialogTitle>
           <AlertDialogDescription>
             선택한 오더를 삭제합니다
             <WarningMessage text="해당작업은 실행 후 되될릴 수 없습니다." />
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel tabIndex={-1}>취소</AlertDialogCancel>
+          <AlertDialogCancel>취소</AlertDialogCancel>
           <AlertDialogAction
             className="bg-destructive hover:bg-destructive/80"
             onClick={handleDeleteOrderClick}
-            ref={deleteButtonRef}
           >
             삭제
           </AlertDialogAction>

@@ -72,7 +72,7 @@ export default function SingleNotice({
                   href={part.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
+                  className="break-all text-blue-600 hover:underline"
                 >
                   {part.content}
                 </a>

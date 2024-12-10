@@ -38,12 +38,14 @@ export default function TemplateTabContent({
 
   return (
     <>
-      <DataTable
-        columns={templateOrderColumns}
-        data={templateCharts}
-        searchPlaceHolder="템플릿 이름, 설명, 환자명으로 검색"
-        rowLength={5}
-      />
+      <div className="w-full overflow-x-auto">
+        <DataTable
+          columns={templateOrderColumns}
+          data={templateCharts}
+          searchPlaceHolder="템플릿 이름, 설명, 환자명으로 검색"
+          rowLength={5}
+        />
+      </div>
 
       {isTemplateDialogOpen && (
         <ConfirmCopyTemplateOrderDialog icuChartId={icuChartId} />

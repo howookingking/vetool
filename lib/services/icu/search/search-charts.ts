@@ -41,7 +41,7 @@ export const searchIos = async (
 
   // 각 단어에 대해 개별적인 ilike 조건 추가 (AND 방식)
   safeWords.forEach((word) => {
-    queryBuilder = queryBuilder.ilike('icu_io_tags', `%${word}%`)
+    queryBuilder = queryBuilder.ilike('icu_io_tags', `%#${word}%`)
   })
 
   if (timeRange !== 'all') {

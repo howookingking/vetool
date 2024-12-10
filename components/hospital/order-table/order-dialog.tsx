@@ -10,7 +10,7 @@ import {
 import { Plus } from 'lucide-react'
 import { ReactNode } from 'react'
 
-export default function AddTemplateDialog({
+export default function OrderDialog({
   isOpen,
   onOpenChange,
   children,

@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils/utils'
 import { ArrowUpDown } from 'lucide-react'
 import { ReactNode } from 'react'
 
-export default function AddTemplateHeader({
+export default function OrderTableHeader({
   isSorting,
   onClick,
   children,

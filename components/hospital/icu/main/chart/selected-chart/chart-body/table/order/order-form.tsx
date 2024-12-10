@@ -1,5 +1,3 @@
-'use client'
-
 import DeleteOrderAlertDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/delete-order-alert-dialog'
 import FeedOrderField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/feed-order/feed-order-field'
 import FluidOrderField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/fluid-order/fluid-order-field'
@@ -62,7 +60,7 @@ export default function OrderForm({
 
   const { hos_id } = useParams()
   const {
-    basicHosData: { vetsListData },
+    basicHosData: { vetsListData, maintenanceRateCalcMethod, rerCalcMethod },
   } = useBasicHosDataContext()
 
   const [isUpdating, setIsUpdating] = useState(false)
@@ -179,6 +177,7 @@ export default function OrderForm({
         {orderType === 'fluid' && (
           <FluidOrderField
             form={form}
+            maintenanceRateCalcMethod={maintenanceRateCalcMethod}
             species={species}
             ageInDays={ageInDays}
             weight={weight}
@@ -189,6 +188,7 @@ export default function OrderForm({
           <FeedOrderField
             hosId={hosId}
             form={form}
+            rerCalcMethod={rerCalcMethod}
             weight={weight}
             species={species}
             derCalcFactor={derCalcFactor}
