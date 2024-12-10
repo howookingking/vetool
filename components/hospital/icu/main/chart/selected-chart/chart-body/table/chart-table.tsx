@@ -6,6 +6,7 @@ import TxUpsertDialog from '@/components/hospital/icu/main/chart/selected-chart/
 import { Table, TableRow } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
 import useIsCommandPressed from '@/hooks/use-is-command-pressed'
+import useIsMobile from '@/hooks/use-is-mobile'
 import useLocalStorage from '@/hooks/use-local-storage'
 import useShorcutKey from '@/hooks/use-shortcut-key'
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
@@ -14,10 +15,10 @@ import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
 import { formatOrders } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
-import { useCallback, useEffect, useState } from 'react'
+import { RefObject, useCallback, useEffect, useState } from 'react'
 import { Sortable } from 'react-sortablejs'
-import CellsRowTitle from './cells-row-title'
 import ChartTableBody from './chart-table-body/chart-table-body'
+import OrderRowTitle from './chart-table-body/order-row-title'
 import ChartTableHeader from './chart-table-header/chart-table-header'
 import AddTemplateOrderDialog from './order/template/add-template-order-dialog'
 
@@ -25,15 +26,19 @@ export default function ChartTable({
   chartData,
   preview,
   isExport,
+  cellRef,
+  isTouchMove,
 }: {
   chartData: SelectedChart
   preview?: boolean
   isExport?: boolean
+  cellRef?: RefObject<HTMLTableRowElement>
+  isTouchMove?: boolean
 }) {
   const {
     icu_chart_id,
     orders,
-    patient: { hos_id },
+    patient: { hos_id, species },
     target_date,
   } = chartData
 
@@ -53,6 +58,7 @@ export default function ChartTable({
     isEditOrderMode,
   } = useIcuOrderStore()
 
+  const isMobile = useIsMobile()
   const {
     basicHosData: { showOrderer, vetsListData, vitalRefRange },
   } = useBasicHosDataContext()
@@ -64,6 +70,7 @@ export default function ChartTable({
     }
   }, [isSorting, orders])
 
+  // 기능 없에고 반응보고 결정
   // ----- 표에서 수직 안내선 -----
   const [hoveredColumn, setHoveredColumn] = useState<number | null>(null)
   const handleColumnHover = useCallback(
@@ -179,6 +186,7 @@ export default function ChartTable({
 
   return (
     <Table className="border">
+      {/* 소팅버튼, 오더목록, 오더추가 버튼, 오더너비조절 버튼, 시간 */}
       <ChartTableHeader
         chartData={chartData}
         hosId={hos_id}
@@ -195,6 +203,8 @@ export default function ChartTable({
         setSortedOrders={setSortedOrders}
         orderWidth={orderWidth}
         setOrderWidth={setOrderWidth}
+        isTouchMove={isTouchMove}
+        isMobile={isMobile}
       />
 
       {isSorting ? (
@@ -204,34 +214,40 @@ export default function ChartTable({
           onSortEnd={handleReorder}
         >
           {sortedOrders.map((order, index) => (
-            <TableRow className="relative w-full divide-x" key={order.order_id}>
-              <CellsRowTitle
+            <TableRow className="relative divide-x" key={order.order_id}>
+              <OrderRowTitle
                 index={index}
                 order={order}
                 preview={preview}
                 isSorting={isSorting}
                 orderWidth={orderWidth}
+                isMobile={isMobile}
+                species={species}
               />
             </TableRow>
           ))}
         </SortableOrderWrapper>
       ) : (
         <ChartTableBody
+          handleColumnHover={handleColumnHover}
+          handleColumnLeave={handleColumnLeave}
+          hoveredColumn={hoveredColumn}
           isSorting={isSorting}
           sortedOrders={sortedOrders}
           preview={preview}
-          handleColumnHover={handleColumnHover}
-          handleColumnLeave={handleColumnLeave}
           vitalRefRange={vitalRefRange}
           showOrderer={showOrderer}
-          hoveredColumn={hoveredColumn}
           selectedTxPendingQueue={selectedTxPendingQueue}
           orderStep={orderStep}
           orderTimePendingQueue={orderTimePendingQueue}
           orderWidth={orderWidth}
+          isMobile={isMobile}
+          isTouchMove={isTouchMove}
           isExport={isExport}
           icuChartId={icu_chart_id}
           setSortedOrders={setSortedOrders}
+          cellRef={cellRef}
+          species={species}
         />
       )}
 

@@ -1,7 +1,11 @@
 'use client'
 
+import DeleteOrderAlertDialog from '@/components/hospital/order-table/delete-order-alert-dialog'
+import ChecklistOrderField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/checklist-order/checklist-order-field'
+import FeedOrderField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/feed-order/feed-order-field'
+import FluidOrderField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/fluid-order/fluid-order-field'
+import OrderFormField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-form-field'
 import { orderSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-schema'
-import DeleteOrdersAlertDialog from '@/components/hospital/icu/main/template/delete-order-alert-dialog'
 import { Button } from '@/components/ui/button'
 import { DialogClose, DialogFooter } from '@/components/ui/dialog'
 import {
@@ -12,22 +16,27 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { toast } from '@/components/ui/use-toast'
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
+import { upsertDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useTemplateStore } from '@/lib/store/icu/template'
 import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
+import { useParams, useRouter } from 'next/navigation'
 import { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-export default function TemplateOrderForm({
-  editTemplateMode,
+
+export default function OrderForm({
+  mode,
 }: {
-  editTemplateMode?: boolean
+  mode: 'default' | 'addTemplate' | 'editTemplate'
 }) {
+  const { hos_id } = useParams()
+  const { refresh } = useRouter()
   const { setOrderStep, selectedChartOrder, isEditOrderMode, reset } =
     useIcuOrderStore()
   const { addTemplateOrder, updateTemplateOrder, orderIndex } =
@@ -44,6 +53,8 @@ export default function TemplateOrderForm({
     },
   })
 
+  const orderType = form.watch('icu_chart_order_type')
+
   const handleSubmit = useCallback(
     async (values: z.infer<typeof orderSchema>) => {
       setIsSubmitting(true)
@@ -51,7 +62,6 @@ export default function TemplateOrderForm({
       const trimmedOrderName = values.icu_chart_order_name.trim()
       const orderComment = values.icu_chart_order_comment ?? ''
       const orderType = values.icu_chart_order_type
-
       const updatedOrder = {
         order_name: trimmedOrderName,
         order_comment: orderComment,
@@ -59,32 +69,56 @@ export default function TemplateOrderForm({
         id: 999,
       }
 
+      if (mode === 'default') {
+        await upsertDefaultChartOrder(
+          hos_id as string,
+          selectedChartOrder.order_id,
+          {
+            default_chart_order_name: trimmedOrderName,
+            default_chart_order_comment: orderComment,
+            default_chart_order_type: orderType,
+          },
+        )
+
+        setOrderStep('closed')
+      }
+
       if (isEditOrderMode) {
         updateTemplateOrder(updatedOrder, orderIndex)
         setOrderStep('closed')
       } else {
-        addTemplateOrder(updatedOrder)
+        if (mode === 'addTemplate') {
+          addTemplateOrder(updatedOrder)
+        }
 
-        if (editTemplateMode) {
+        if (mode === 'editTemplate') {
           setOrderStep('closed')
         }
       }
 
-      reset()
+      refresh()
+
+      toast({
+        title: `오더를 추가하였습니다`,
+      })
+
       form.resetField('icu_chart_order_name')
       form.resetField('icu_chart_order_comment')
-
+      reset()
       setIsSubmitting(false)
     },
     [
-      addTemplateOrder,
-      form,
-      isEditOrderMode,
-      editTemplateMode,
-      orderIndex,
+      hos_id,
+      selectedChartOrder.order_id,
+      refresh,
       reset,
       setOrderStep,
+      mode,
+      isEditOrderMode,
+      orderIndex,
+      addTemplateOrder,
       updateTemplateOrder,
+      form,
     ],
   )
 
@@ -99,12 +133,7 @@ export default function TemplateOrderForm({
           name="icu_chart_order_type"
           render={({ field }) => (
             <FormItem className="space-y-2">
-              <FormLabel
-                htmlFor="icu_chart_order_type"
-                className="font-semibold"
-              >
-                오더 타입*
-              </FormLabel>
+              <FormLabel className="font-semibold">오더 타입*</FormLabel>
               <FormControl>
                 <RadioGroup
                   onValueChange={field.onChange}
@@ -117,15 +146,9 @@ export default function TemplateOrderForm({
                       className="flex items-center space-x-1 space-y-0"
                     >
                       <FormControl>
-                        <RadioGroupItem
-                          id={`order-type-${item.value}`}
-                          value={item.value}
-                        />
+                        <RadioGroupItem value={item.value} />
                       </FormControl>
-                      <FormLabel
-                        htmlFor={`order-type-${item.value}`}
-                        className="font-normal"
-                      >
+                      <FormLabel className="font-normal">
                         {item.label}
                       </FormLabel>
                     </FormItem>
@@ -137,58 +160,28 @@ export default function TemplateOrderForm({
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="icu_chart_order_name"
-          render={({ field }) => (
-            <FormItem className="w-full space-y-2">
-              <FormLabel
-                htmlFor="icu_chart_order_name"
-                className="font-semibold"
-              >
-                오더명*
-              </FormLabel>
-              <FormControl>
-                <Input
-                  id="icu_chart_order_name"
-                  placeholder="오더명을 입력해주세요"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {orderType === 'checklist' && <ChecklistOrderField form={form} />}
 
-        <FormField
-          control={form.control}
-          name="icu_chart_order_comment"
-          render={({ field }) => (
-            <FormItem className="w-full space-y-2">
-              <FormLabel
-                htmlFor="icu_chart_order_comment"
-                className="font-semibold"
-              >
-                오더 설명
-              </FormLabel>
-              <FormControl>
-                <Input
-                  id="icu_chart_order_comment"
-                  placeholder="오더에 대한 설명을 입력해주세요"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {orderType === 'fluid' && <FluidOrderField form={form} />}
+
+        {orderType === 'feed' && (
+          <FeedOrderField
+            hosId={hos_id as string}
+            form={form}
+            orderTime={new Array(24).fill('0')}
+          />
+        )}
+
+        {orderType !== 'fluid' &&
+          orderType !== 'feed' &&
+          orderType !== 'checklist' && <OrderFormField form={form} />}
 
         <DialogFooter className="ml-auto w-full gap-2 md:gap-0">
           {isEditOrderMode && (
-            <DeleteOrdersAlertDialog
-              orderIndex={orderIndex}
-              orderName={selectedChartOrder.order_name!}
-              orderId={selectedChartOrder.order_id}
+            <DeleteOrderAlertDialog
+              selectedChartOrder={selectedChartOrder}
+              setOrderStep={setOrderStep}
+              mode={mode}
             />
           )}
 

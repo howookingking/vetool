@@ -1,38 +1,38 @@
-import CellsRow from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/cells-row'
-import CellsRowTitle from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/cells-row-title'
+import OrderRowCells from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-row-cells'
+import OrderRowTitle from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-row-title'
 import { TableRow } from '@/components/ui/table'
 import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
-import { cn } from '@/lib/utils/utils'
 import type { VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { RefObject } from 'react'
 
 type CellsRowTitlesProps = {
+  hoveredColumn: number | null
+  handleColumnHover: (columnIndex: number) => void
+  handleColumnLeave: () => void
   sortedOrders: SelectedIcuOrder[]
   isSorting: boolean
   preview?: boolean
   showOrderer: boolean
-  hoveredColumn: number | null
-  handleColumnHover: (columnIndex: number) => void
-  handleColumnLeave: () => void
   selectedTxPendingQueue: OrderTimePendingQueue[]
   orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit'
   orderTimePendingQueueLength: number
   vitalRefRange: VitalRefRange[]
   species: string
   orderwidth: number
+  isMobile: boolean
   cellRef?: RefObject<HTMLTableRowElement>
   isTouchMove?: boolean
 }
 
-export default function CellsRowTitles({
+export default function OrderRows({
+  hoveredColumn,
+  handleColumnHover,
+  handleColumnLeave,
   sortedOrders,
   isSorting,
   preview,
   showOrderer,
-  hoveredColumn,
-  handleColumnHover,
-  handleColumnLeave,
   selectedTxPendingQueue,
   orderStep,
   orderTimePendingQueueLength,
@@ -41,17 +41,15 @@ export default function CellsRowTitles({
   orderwidth,
   cellRef,
   isTouchMove,
+  isMobile,
 }: CellsRowTitlesProps) {
   return sortedOrders.map((order, index) => (
     <TableRow
-      className={cn(
-        'relative w-full divide-x',
-        !isSorting && 'hover:bg-muted/50',
-      )}
+      className="relative w-full divide-x"
       key={order.order_id}
       ref={cellRef}
     >
-      <CellsRowTitle
+      <OrderRowTitle
         index={index}
         order={order}
         preview={preview}
@@ -60,15 +58,16 @@ export default function CellsRowTitles({
         species={species}
         orderWidth={orderwidth}
         isTouchMove={isTouchMove}
+        isMobile={isMobile}
       />
       {!isSorting && (
-        <CellsRow
-          preview={preview}
-          order={order}
-          showOrderer={showOrderer}
+        <OrderRowCells
           hoveredColumn={hoveredColumn}
           handleColumnHover={handleColumnHover}
           handleColumnLeave={handleColumnLeave}
+          preview={preview}
+          order={order}
+          showOrderer={showOrderer}
           selectedTxPendingQueue={selectedTxPendingQueue}
           orderStep={orderStep}
           orderTimePendingQueueLength={orderTimePendingQueueLength}

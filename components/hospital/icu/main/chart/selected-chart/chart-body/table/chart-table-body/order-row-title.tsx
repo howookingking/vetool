@@ -9,25 +9,29 @@ import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { useCallback } from 'react'
 
-export default function CellsRowTitle({
+type OrderRowTitleProps = {
+  order: SelectedIcuOrder
+  index: number
+  isMobile: boolean
+  isSorting?: boolean
+  preview?: boolean
+  vitalRefRange?: VitalRefRange[]
+  species: string
+  orderWidth: number
+  isTouchMove?: boolean
+}
+
+export default function OrderRowTitle({
   order,
   isSorting,
   index,
+  isMobile,
   preview,
   vitalRefRange,
   species,
   orderWidth,
   isTouchMove,
-}: {
-  order: SelectedIcuOrder
-  index: number
-  isSorting?: boolean
-  preview?: boolean
-  vitalRefRange?: VitalRefRange[]
-  species?: string
-  orderWidth: number
-  isTouchMove?: boolean
-}) {
+}: OrderRowTitleProps) {
   const { order_comment, order_type, order_id, order_name } = order
   const {
     basicHosData: { orderColorsData, orderFontSizeData },
@@ -55,10 +59,9 @@ export default function CellsRowTitle({
     },
   })
 
-  const handleEditOrderDialogOpen = useCallback(
+  const handleClickOrderTitle = useCallback(
     (e: React.MouseEvent) => {
-      if (preview) return
-
+      // 오더 다중 선택시
       if (e.metaKey || e.ctrlKey) {
         e.preventDefault()
         setSelectedOrderPendingQueue((prev) => {
@@ -73,13 +76,14 @@ export default function CellsRowTitle({
         })
         return
       }
+
+      // 오더 수정하기 위해 다이얼로그 여는 경우
       reset()
       setOrderStep('upsert')
       setIsEditOrderMode(true)
       setSelectedChartOrder(order)
     },
     [
-      preview,
       order,
       setSelectedOrderPendingQueue,
       setSelectedChartOrder,
@@ -112,27 +116,27 @@ export default function CellsRowTitle({
         isTouchMove && 'sticky left-0 z-10',
       )}
       style={{
+        width: orderWidth,
         background: orderColorsData[order_type as keyof IcuOrderColors],
-        width: isTouchMove ? 180 : orderWidth,
         transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
       }}
     >
       <Button
         disabled={isOptimisticOrder}
         variant="ghost"
-        onClick={isSorting ? undefined : handleEditOrderDialogOpen}
+        onClick={isSorting ? undefined : handleClickOrderTitle}
         className={cn(
-          'group flex h-11 justify-between rounded-none bg-transparent px-2 outline-none ring-inset ring-primary transition duration-300 hover:scale-[97%] hover:bg-transparent',
+          'group flex h-11 justify-between rounded-none bg-transparent px-2 outline-none transition duration-300 hover:scale-[97%] hover:bg-transparent',
           isOptimisticOrder && 'animate-bounce',
           preview
             ? 'cursor-not-allowed'
             : isSorting
               ? 'cursor-grab'
               : 'cursor-pointer',
-          isInOrderPendingQueue && 'ring-2',
+          isInOrderPendingQueue && 'ring-4 ring-inset',
         )}
         style={{
-          width: isTouchMove ? 180 : orderWidth,
+          width: isTouchMove ? 200 : isMobile ? 300 : orderWidth,
           transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
         }}
       >

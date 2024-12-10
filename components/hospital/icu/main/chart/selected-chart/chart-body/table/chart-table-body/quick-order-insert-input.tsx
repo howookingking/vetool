@@ -1,5 +1,3 @@
-'use client'
-
 import { Input } from '@/components/ui/input'
 import {
   Select,
@@ -10,47 +8,40 @@ import {
 } from '@/components/ui/select'
 import { toast } from '@/components/ui/use-toast'
 import {
+  CHECKLIST_ORDER_NAMES,
   CHECKLIST_ORDERS,
   DEFAULT_ICU_ORDER_TYPE,
-  CHECKLIST_ORDER_NAMES,
+  QUICKORDER_PLACEHOLDER,
+  type OrderType,
 } from '@/constants/hospital/icu/chart/order'
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import { useRealtimeSubscriptionStore } from '@/lib/store/icu/realtime-subscription'
 import { cn } from '@/lib/utils/utils'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { IcuOrderColors } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { useParams, useRouter } from 'next/navigation'
 import { Dispatch, SetStateAction, useState } from 'react'
 
+type QuickOrderInsertInputProps = {
+  icuChartId: string
+  setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
+}
+
 export default function QuickOrderInsertInput({
   icuChartId,
   setSortedOrders,
-  orderColorsData,
-}: {
-  icuChartId: string
-  setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
-  orderColorsData: IcuOrderColors
-}) {
+}: QuickOrderInsertInputProps) {
+  const {
+    basicHosData: { orderColorsData },
+  } = useBasicHosDataContext()
   const { hos_id } = useParams()
   const { refresh } = useRouter()
   const { isSubscriptionReady } = useRealtimeSubscriptionStore()
-
   const [quickOrderInput, setQuickOrderInput] = useState('')
   const [orderType, setOrderType] = useState('manual')
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isChecklistInput, setIsChecklistInput] = useState(false)
-  const [isSelectOpen, setIsSelectOpen] = useState(false)
-
-  const quickOrderPlaceholder = (() => {
-    switch (orderType) {
-      case 'fluid':
-        return '빠른 오더 (수액명$수액 속도)'
-      case 'feed':
-        return '빠른 오더 (사료명$회당 급여량)'
-      default:
-        return '빠른 오더 (오더명$오더 설명)'
-    }
-  })()
+  const [isChecklistOrder, setIsChecklistOrder] = useState(false)
 
   const createOrder = async (orderName: string, orderDescription: string) => {
     // 빠른 오더를 생성하고, 기존 오더 배열에 추가
@@ -83,8 +74,7 @@ export default function QuickOrderInsertInput({
 
     setQuickOrderInput('')
     setIsSubmitting(false)
-    setIsChecklistInput(false)
-    setIsSelectOpen(false)
+    setIsChecklistOrder(false)
 
     toast({
       title: `${orderName} 오더를 생성하였습니다`,
@@ -102,13 +92,14 @@ export default function QuickOrderInsertInput({
 
     // 체크리스트 INPUT을 입력했을 경우
     if (CHECKLIST_ORDER_NAMES.some((name) => name.includes(orderName))) {
-      setIsChecklistInput(true)
-      setIsSelectOpen(true)
+      setIsChecklistOrder(true)
+      setOrderType('checklist')
+      setQuickOrderInput('')
       return
     }
 
     setIsSubmitting(true)
-    await createOrder(orderName, orderDescription || '')
+    await createOrder(orderName, orderDescription ?? '')
   }
 
   // 체크리스트 SELECT onChange
@@ -129,15 +120,13 @@ export default function QuickOrderInsertInput({
   }
 
   return (
-    <div className="hidden items-center md:flex">
+    <div className="relative hidden items-center md:flex">
       <Select
         onValueChange={(value) => {
           setOrderType(value)
-          setIsChecklistInput(false)
+          setIsChecklistOrder(false)
         }}
         value={orderType}
-        open={isSelectOpen}
-        onOpenChange={setIsSelectOpen}
       >
         <SelectTrigger
           className="h-11 w-1/2 rounded-none border-0 shadow-none ring-0 focus:ring-0"
@@ -182,21 +171,20 @@ export default function QuickOrderInsertInput({
           <Input
             className={cn(
               'h-11 rounded-none border-b-0 border-l-0 border-t-0 focus-visible:ring-0',
-              isChecklistInput && 'ring-1 ring-destructive',
+              isChecklistOrder && 'ring-1 ring-destructive',
             )}
             disabled={isSubmitting}
-            placeholder={quickOrderPlaceholder}
+            placeholder={QUICKORDER_PLACEHOLDER[orderType as OrderType]}
             value={isSubmitting ? '' : quickOrderInput}
             onChange={(e) => setQuickOrderInput(e.target.value)}
             onKeyDown={handleSubmit}
           />
-
-          {isChecklistInput && (
-            <span className="absolute -bottom-6 left-2 text-destructive">
-              해당 타입을 체크리스트로 선택해주세요
-            </span>
-          )}
         </div>
+      )}
+      {isChecklistOrder && (
+        <span className="absolute -bottom-5 right-3 text-xs text-destructive">
+          해당 오더는 체크리스트에 존재합니다
+        </span>
       )}
     </div>
   )

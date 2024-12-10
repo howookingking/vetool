@@ -2,27 +2,11 @@ import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
 import { Dispatch, SetStateAction } from 'react'
-import OrderWidthButton from '../order-width-button'
 import OrderDialog from '../order/order-dialog'
-import SortingButton from '../sorting-button'
+import OrderWidthButton from './order-width-button'
+import SortingButton from './sorting-button'
 
-export default function ChartTableHeader({
-  preview,
-  chartData,
-  sortedOrders,
-  isSorting,
-  setIsSorting,
-  hosId,
-  showOrderer,
-  orderStep,
-  reset,
-  isEditOrderMode,
-  setOrderStep,
-  isExport,
-  setSortedOrders,
-  orderWidth,
-  setOrderWidth,
-}: {
+type ChartTableHeaderProps = {
   preview?: boolean
   chartData: SelectedChart
   sortedOrders: SelectedIcuOrder[]
@@ -40,7 +24,29 @@ export default function ChartTableHeader({
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   orderWidth: number
   setOrderWidth: Dispatch<SetStateAction<number>>
-}) {
+  isMobile: boolean
+  isTouchMove?: boolean
+}
+
+export default function ChartTableHeader({
+  preview,
+  chartData,
+  sortedOrders,
+  isSorting,
+  setIsSorting,
+  hosId,
+  showOrderer,
+  orderStep,
+  reset,
+  isEditOrderMode,
+  setOrderStep,
+  isExport,
+  setSortedOrders,
+  orderWidth,
+  setOrderWidth,
+  isMobile,
+  isTouchMove,
+}: ChartTableHeaderProps) {
   const {
     icu_chart_id,
     orders,
@@ -54,7 +60,13 @@ export default function ChartTableHeader({
   return (
     <TableHeader className="sticky -top-3 z-20 bg-white shadow-sm">
       <TableRow>
-        <TableHead className="flex items-center justify-between px-0.5 text-center">
+        <TableHead
+          className="flex items-center justify-between px-0.5 text-center"
+          style={{
+            width: isTouchMove ? 200 : isMobile ? 300 : orderWidth,
+            transition: 'width 0.3s ease-in-out ',
+          }}
+        >
           {!preview && (
             <SortingButton
               chartData={chartData}
@@ -90,8 +102,9 @@ export default function ChartTableHeader({
 
           {!isSorting && (
             <OrderWidthButton
-              orderWidth={orderWidth}
+              orderWidth={orderWidth as [300, 400, 500, 600][number]}
               setOrderWidth={setOrderWidth}
+              isMobile={isMobile}
             />
           )}
         </TableHead>

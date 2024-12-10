@@ -1,5 +1,3 @@
-'use client'
-
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import { Button } from '@/components/ui/button'
 import {
@@ -29,23 +27,7 @@ const LazyTemplateTabContent = dynamic(
   },
 )
 
-export default function OrderDialog({
-  hosId,
-  icuChartId,
-  orders,
-  showOrderer,
-  patient,
-  weight,
-  ageInDays,
-  orderStep,
-  isEditOrderMode,
-  setOrderStep,
-  reset,
-  isExport,
-  setSortedOrders,
-  mainVetName,
-  derCalcFactor,
-}: {
+type OrderDialogProps = {
   hosId: string
   icuChartId: string
   orders: SelectedIcuOrder[]
@@ -63,7 +45,25 @@ export default function OrderDialog({
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   mainVetName: string
   derCalcFactor: number | null
-}) {
+}
+
+export default function OrderDialog({
+  hosId,
+  icuChartId,
+  orders,
+  showOrderer,
+  patient,
+  weight,
+  ageInDays,
+  orderStep,
+  isEditOrderMode,
+  setOrderStep,
+  reset,
+  isExport,
+  setSortedOrders,
+  mainVetName,
+  derCalcFactor,
+}: OrderDialogProps) {
   const handleOpenChange = useCallback(() => {
     if (orderStep === 'closed') {
       setOrderStep('upsert')
@@ -85,7 +85,7 @@ export default function OrderDialog({
           <Plus size={18} />
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-3xl">
+      <DialogContent className="max-w-3xl overflow-x-auto">
         <DialogHeader>
           {orderStep === 'upsert' && (
             <DialogTitle>오더 {isEditOrderMode ? '수정' : '추가'}</DialogTitle>
@@ -101,7 +101,7 @@ export default function OrderDialog({
 
         {orderStep === 'upsert' && (
           <Tabs defaultValue="default">
-            <TabsList className="grid grid-cols-2">
+            <TabsList className="grid max-w-full grid-cols-2 overflow-x-auto whitespace-nowrap">
               <TabsTrigger value="default">직접 입력</TabsTrigger>
               <TabsTrigger value="template" disabled={isEditOrderMode}>
                 템플릿 오더 추가
