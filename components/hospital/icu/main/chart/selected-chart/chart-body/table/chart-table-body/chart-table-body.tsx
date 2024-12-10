@@ -1,40 +1,20 @@
 import { TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { Dispatch, RefObject, SetStateAction } from 'react'
-import QuickOrderInsertInput from '../../quick-order-insert-input'
-import CellsRowTitles from '../cells-row-titles'
+import OrderRows from './order-rows'
+import QuickOrderInsertInput from './quick-order-insert-input'
 
-export default function ChartTableBody({
-  sortedOrders,
-  isSorting,
-  preview,
-  vitalRefRange,
-  showOrderer,
-  hoveredColumn,
-  handleColumnHover,
-  handleColumnLeave,
-  selectedTxPendingQueue,
-  orderStep,
-  orderTimePendingQueue,
-  orderWidth,
-  isMobile,
-  isTouchMove,
-  isExport,
-  icuChartId,
-  setSortedOrders,
-  cellRef,
-}: {
+type ChartTableBodyProps = {
+  hoveredColumn: number | null
+  handleColumnHover: (columnIndex: number) => void
+  handleColumnLeave: () => void
   sortedOrders: SelectedIcuOrder[]
   isSorting: boolean
   preview?: boolean
   vitalRefRange: VitalRefRange[]
   showOrderer: boolean
-  hoveredColumn: number | null
-  handleColumnHover: (columnIndex: number) => void
-  handleColumnLeave: () => void
   selectedTxPendingQueue: OrderTimePendingQueue[]
   orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit'
   orderTimePendingQueue: OrderTimePendingQueue[]
@@ -45,23 +25,42 @@ export default function ChartTableBody({
   icuChartId: string
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   cellRef?: RefObject<HTMLTableRowElement>
-}) {
-  const {
-    basicHosData: { orderColorsData },
-  } = useBasicHosDataContext()
+  species: string
+}
 
+export default function ChartTableBody({
+  handleColumnHover,
+  handleColumnLeave,
+  hoveredColumn,
+  sortedOrders,
+  isSorting,
+  preview,
+  vitalRefRange,
+  showOrderer,
+  selectedTxPendingQueue,
+  orderStep,
+  orderTimePendingQueue,
+  orderWidth,
+  isMobile,
+  isTouchMove,
+  isExport,
+  icuChartId,
+  setSortedOrders,
+  cellRef,
+  species,
+}: ChartTableBodyProps) {
   return (
     <TableBody>
-      <CellsRowTitles
+      <OrderRows
+        handleColumnHover={handleColumnHover}
+        handleColumnLeave={handleColumnLeave}
+        hoveredColumn={hoveredColumn}
         sortedOrders={sortedOrders}
         isSorting={isSorting}
         preview={preview}
         vitalRefRange={vitalRefRange}
-        species={'canine'}
+        species={species}
         showOrderer={showOrderer}
-        hoveredColumn={hoveredColumn}
-        handleColumnHover={handleColumnHover}
-        handleColumnLeave={handleColumnLeave}
         selectedTxPendingQueue={selectedTxPendingQueue}
         orderStep={orderStep}
         orderTimePendingQueueLength={orderTimePendingQueue.length}
@@ -70,13 +69,13 @@ export default function ChartTableBody({
         isMobile={isMobile}
         isTouchMove={isTouchMove}
       />
+
       {!isExport && !preview && (
         <TableRow className="hover:bg-transparent">
           <TableCell className="p-0">
             <QuickOrderInsertInput
               icuChartId={icuChartId}
               setSortedOrders={setSortedOrders}
-              orderColorsData={orderColorsData}
             />
           </TableCell>
         </TableRow>

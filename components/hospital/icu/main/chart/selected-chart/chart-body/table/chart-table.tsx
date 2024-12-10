@@ -17,8 +17,8 @@ import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provi
 import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
 import { RefObject, useCallback, useEffect, useState } from 'react'
 import { Sortable } from 'react-sortablejs'
-import CellsRowTitle from './cells-row-title'
 import ChartTableBody from './chart-table-body/chart-table-body'
+import OrderRowTitle from './chart-table-body/order-row-title'
 import ChartTableHeader from './chart-table-header/chart-table-header'
 import AddTemplateOrderDialog from './order/template/add-template-order-dialog'
 
@@ -38,7 +38,7 @@ export default function ChartTable({
   const {
     icu_chart_id,
     orders,
-    patient: { hos_id },
+    patient: { hos_id, species },
     target_date,
   } = chartData
 
@@ -70,6 +70,7 @@ export default function ChartTable({
     }
   }, [isSorting, orders])
 
+  // 기능 없에고 반응보고 결정
   // ----- 표에서 수직 안내선 -----
   const [hoveredColumn, setHoveredColumn] = useState<number | null>(null)
   const handleColumnHover = useCallback(
@@ -185,6 +186,7 @@ export default function ChartTable({
 
   return (
     <Table className="border">
+      {/* 소팅버튼, 오더목록, 오더추가 버튼, 오더너비조절 버튼, 시간 */}
       <ChartTableHeader
         chartData={chartData}
         hosId={hos_id}
@@ -212,28 +214,29 @@ export default function ChartTable({
           onSortEnd={handleReorder}
         >
           {sortedOrders.map((order, index) => (
-            <TableRow className="relative w-full divide-x" key={order.order_id}>
-              <CellsRowTitle
+            <TableRow className="relative divide-x" key={order.order_id}>
+              <OrderRowTitle
                 index={index}
                 order={order}
                 preview={preview}
                 isSorting={isSorting}
                 orderWidth={orderWidth}
                 isMobile={isMobile}
+                species={species}
               />
             </TableRow>
           ))}
         </SortableOrderWrapper>
       ) : (
         <ChartTableBody
+          handleColumnHover={handleColumnHover}
+          handleColumnLeave={handleColumnLeave}
+          hoveredColumn={hoveredColumn}
           isSorting={isSorting}
           sortedOrders={sortedOrders}
           preview={preview}
-          handleColumnHover={handleColumnHover}
-          handleColumnLeave={handleColumnLeave}
           vitalRefRange={vitalRefRange}
           showOrderer={showOrderer}
-          hoveredColumn={hoveredColumn}
           selectedTxPendingQueue={selectedTxPendingQueue}
           orderStep={orderStep}
           orderTimePendingQueue={orderTimePendingQueue}
@@ -244,6 +247,7 @@ export default function ChartTable({
           icuChartId={icu_chart_id}
           setSortedOrders={setSortedOrders}
           cellRef={cellRef}
+          species={species}
         />
       )}
 

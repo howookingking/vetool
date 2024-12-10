@@ -1,6 +1,4 @@
-'use client'
-
-import Cell from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/cell'
+import Cell from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/cell'
 import NoFecalOrUrineAlert from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/no-fecal-urine-alert'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import {
@@ -13,12 +11,12 @@ import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 type CellsRowProps = {
-  preview?: boolean
-  order: SelectedIcuOrder
-  showOrderer: boolean
   hoveredColumn: number | null
   handleColumnHover: (columnIndex: number) => void
   handleColumnLeave: () => void
+  preview?: boolean
+  order: SelectedIcuOrder
+  showOrderer: boolean
   selectedTxPendingQueue: OrderTimePendingQueue[]
   orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit'
   orderTimePendingQueueLength: number
@@ -26,13 +24,13 @@ type CellsRowProps = {
   species: string
 }
 
-export default function CellsRow({
+export default function OrderRowCells({
+  handleColumnHover,
+  handleColumnLeave,
+  hoveredColumn,
   preview,
   order,
   showOrderer,
-  hoveredColumn,
-  handleColumnHover,
-  handleColumnLeave,
   selectedTxPendingQueue,
   orderStep,
   orderTimePendingQueueLength,
@@ -97,12 +95,9 @@ export default function CellsRow({
       : undefined
   }, [order.order_name, species, vitalRefRange])
 
-  const noFecalOrUrineResult = useMemo(
-    () =>
-      (order.order_name === '배변' || order.order_name === '배뇨') &&
-      order.treatments.length === 0,
-    [order.order_name, order.treatments.length],
-  )
+  const noFecalOrUrineResult =
+    (order.order_name === '배변' || order.order_name === '배뇨') &&
+    order.treatments.length === 0
 
   return (
     <>
@@ -119,6 +114,9 @@ export default function CellsRow({
 
         return (
           <Cell
+            isHovered={isHovered}
+            onMouseEnter={() => handleColumnHover(index + 1)}
+            onMouseLeave={handleColumnLeave}
             preview={preview}
             key={time}
             time={time}
@@ -131,9 +129,6 @@ export default function CellsRow({
             icuChartTxId={tx?.tx_id}
             toggleOrderTime={toggleOrderTime}
             showOrderer={showOrderer}
-            isHovered={isHovered}
-            onMouseEnter={handleColumnHover}
-            onMouseLeave={handleColumnLeave}
             isGuidelineTime={isGuidelineTime}
             setSelectedTxPendingQueue={setSelectedTxPendingQueue}
             selectedTxPendingQueue={selectedTxPendingQueue}

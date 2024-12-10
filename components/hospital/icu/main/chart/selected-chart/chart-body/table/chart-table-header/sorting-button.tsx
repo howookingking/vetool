@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button'
-import CustomTooltip from '@/components/ui/custom-tooltip'
 import { toast } from '@/components/ui/use-toast'
 import useShorcutKey from '@/hooks/use-shortcut-key'
 import { reorderOrders } from '@/lib/services/icu/chart/order-mutation'
@@ -8,17 +7,19 @@ import { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
 import { ArrowUpDown } from 'lucide-react'
 import React, { useCallback } from 'react'
 
+type SortingButtonProps = {
+  isSorting: boolean
+  chartData: SelectedChart
+  sortedOrders: SelectedIcuOrder[]
+  setIsSorting: React.Dispatch<React.SetStateAction<boolean>>
+}
+
 export default function SortingButton({
   isSorting,
   chartData,
   sortedOrders,
   setIsSorting,
-}: {
-  isSorting: boolean
-  chartData: SelectedChart
-  sortedOrders: SelectedIcuOrder[]
-  setIsSorting: React.Dispatch<React.SetStateAction<boolean>>
-}) {
+}: SortingButtonProps) {
   const handleSortButtonClick = useCallback(async () => {
     if (!isSorting) {
       toast({
@@ -45,23 +46,13 @@ export default function SortingButton({
   })
 
   return (
-    <CustomTooltip
-      sideOffset={1}
-      contents={
-        <div className="font-bold">
-          <kbd>[CTRL]</kbd> + <kbd>[S]</kbd>
-        </div>
-      }
+    <Button
+      variant="ghost"
+      size="icon"
+      className={cn(isSorting && 'animate-pulse text-primary', 'shrink-0')}
+      onClick={handleSortButtonClick}
     >
-      <Button
-        variant="ghost"
-        size="icon"
-        className={cn(isSorting && 'animate-pulse text-primary', 'shrink-0')}
-        onClick={handleSortButtonClick}
-        accessKey="s"
-      >
-        <ArrowUpDown size={18} />
-      </Button>
-    </CustomTooltip>
+      <ArrowUpDown size={18} />
+    </Button>
   )
 }

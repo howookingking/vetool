@@ -13,6 +13,9 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 const LONGPRESS_TIMEOUT = 600
 
 type CellProps = {
+  isHovered: boolean
+  onMouseEnter: (columnIndex: number) => void
+  onMouseLeave: () => void
   time: number
   treatment?: Treatment
   icuChartOrderId: string
@@ -24,9 +27,6 @@ type CellProps = {
   orderName: string
   toggleOrderTime: (orderId: string, time: number) => void
   showOrderer: boolean
-  isHovered: boolean
-  onMouseEnter: (columnIndex: number) => void
-  onMouseLeave: () => void
   isGuidelineTime: boolean
   setSelectedTxPendingQueue: (
     updater:
@@ -53,6 +53,9 @@ type CellProps = {
 }
 
 export default function Cell({
+  isHovered,
+  onMouseEnter,
+  onMouseLeave,
   time,
   treatment,
   icuChartOrderId,
@@ -64,9 +67,6 @@ export default function Cell({
   orderName,
   toggleOrderTime,
   showOrderer,
-  isHovered,
-  onMouseEnter,
-  onMouseLeave,
   isGuidelineTime,
   selectedTxPendingQueue,
   setSelectedTxPendingQueue,
