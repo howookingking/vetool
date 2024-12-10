@@ -107,7 +107,19 @@ export default function OrderForm({
       reset()
       setIsSubmitting(false)
     },
-    [hos_id, selectedChartOrder.order_id, refresh, reset, setOrderStep],
+    [
+      hos_id,
+      selectedChartOrder.order_id,
+      refresh,
+      reset,
+      setOrderStep,
+      mode,
+      isEditOrderMode,
+      orderIndex,
+      addTemplateOrder,
+      updateTemplateOrder,
+      form,
+    ],
   )
 
   return (
