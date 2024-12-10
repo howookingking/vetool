@@ -2,11 +2,11 @@
 'use client'
 
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
-import DefaultOrderForm from '@/components/hospital/admin/icu-settings/default-orders/default-order-form'
 import SortableOrderWrapper from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/sortable-order-wrapper'
-import AddTemplateDialog from '@/components/hospital/icu/main/template/add/table/add-template-dialog'
-import AddTemplateHeader from '@/components/hospital/icu/main/template/add/table/add-template-header'
-import AddTemplateRow from '@/components/hospital/icu/main/template/add/table/add-template-row'
+import OrderDialog from '@/components/hospital/order-table/order-dialog'
+import OrderForm from '@/components/hospital/order-table/order-form'
+import OrderTableHeader from '@/components/hospital/order-table/order-table-header'
+import OrderTableRow from '@/components/hospital/order-table/order-table-row'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
 import { reorderDefaultOrders } from '@/lib/services/admin/icu/default-orders'
@@ -18,7 +18,7 @@ import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Sortable } from 'react-sortablejs'
 
-export default function DefaultOrdersSetting({
+export default function DefaultOrdersTable({
   defaultChartOrders,
   orderColorsData,
 }: {
@@ -92,15 +92,15 @@ export default function DefaultOrdersSetting({
 
   return (
     <Table className="h-full max-w-3xl border">
-      <AddTemplateHeader isSorting={isSorting} onClick={handleSortButtonClick}>
-        <AddTemplateDialog
+      <OrderTableHeader isSorting={isSorting} onClick={handleSortButtonClick}>
+        <OrderDialog
           isOpen={orderStep !== 'closed'}
           onOpenChange={handleOpenChange}
           isEditOrderMode={isEditOrderMode}
         >
-          <DefaultOrderForm />
-        </AddTemplateDialog>
-      </AddTemplateHeader>
+          <OrderForm mode="default" />
+        </OrderDialog>
+      </OrderTableHeader>
 
       {isSorting ? (
         <SortableOrderWrapper
@@ -109,7 +109,7 @@ export default function DefaultOrdersSetting({
           onSortEnd={handleReorder}
         >
           {sortedOrders.map((order, index) => (
-            <AddTemplateRow
+            <OrderTableRow
               key={order.order_id}
               order={order}
               index={index}
@@ -130,7 +130,7 @@ export default function DefaultOrdersSetting({
             </TableRow>
           ) : (
             sortedOrders.map((order, index) => (
-              <AddTemplateRow
+              <OrderTableRow
                 key={index}
                 order={order}
                 index={index}
