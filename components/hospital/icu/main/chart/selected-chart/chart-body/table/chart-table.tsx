@@ -17,8 +17,8 @@ import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provi
 import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
 import { RefObject, useCallback, useEffect, useState } from 'react'
 import { Sortable } from 'react-sortablejs'
-import OrderRowTitle from './chart-table-body/order-row-title'
 import ChartTableBody from './chart-table-body/chart-table-body'
+import OrderRowTitle from './chart-table-body/order-row-title'
 import ChartTableHeader from './chart-table-header/chart-table-header'
 import AddTemplateOrderDialog from './order/template/add-template-order-dialog'
 
@@ -38,7 +38,7 @@ export default function ChartTable({
   const {
     icu_chart_id,
     orders,
-    patient: { hos_id },
+    patient: { hos_id, species },
     target_date,
   } = chartData
 
@@ -221,6 +221,7 @@ export default function ChartTable({
                 isSorting={isSorting}
                 orderWidth={orderWidth}
                 isMobile={isMobile}
+                species={species}
               />
             </TableRow>
           ))}
@@ -245,6 +246,7 @@ export default function ChartTable({
           icuChartId={icu_chart_id}
           setSortedOrders={setSortedOrders}
           cellRef={cellRef}
+          species={species}
         />
       )}
 

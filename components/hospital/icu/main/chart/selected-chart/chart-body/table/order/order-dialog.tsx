@@ -1,5 +1,3 @@
-'use client'
-
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import { Button } from '@/components/ui/button'
 import {
@@ -29,23 +27,7 @@ const LazyTemplateTabContent = dynamic(
   },
 )
 
-export default function OrderDialog({
-  hosId,
-  icuChartId,
-  orders,
-  showOrderer,
-  patient,
-  weight,
-  ageInDays,
-  orderStep,
-  isEditOrderMode,
-  setOrderStep,
-  reset,
-  isExport,
-  setSortedOrders,
-  mainVetName,
-  derCalcFactor,
-}: {
+type OrderDialogProps = {
   hosId: string
   icuChartId: string
   orders: SelectedIcuOrder[]
@@ -63,7 +45,25 @@ export default function OrderDialog({
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   mainVetName: string
   derCalcFactor: number | null
-}) {
+}
+
+export default function OrderDialog({
+  hosId,
+  icuChartId,
+  orders,
+  showOrderer,
+  patient,
+  weight,
+  ageInDays,
+  orderStep,
+  isEditOrderMode,
+  setOrderStep,
+  reset,
+  isExport,
+  setSortedOrders,
+  mainVetName,
+  derCalcFactor,
+}: OrderDialogProps) {
   const handleOpenChange = useCallback(() => {
     if (orderStep === 'closed') {
       setOrderStep('upsert')

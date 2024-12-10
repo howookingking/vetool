@@ -7,17 +7,19 @@ import { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
 import { ArrowUpDown } from 'lucide-react'
 import React, { useCallback } from 'react'
 
+type SortingButtonProps = {
+  isSorting: boolean
+  chartData: SelectedChart
+  sortedOrders: SelectedIcuOrder[]
+  setIsSorting: React.Dispatch<React.SetStateAction<boolean>>
+}
+
 export default function SortingButton({
   isSorting,
   chartData,
   sortedOrders,
   setIsSorting,
-}: {
-  isSorting: boolean
-  chartData: SelectedChart
-  sortedOrders: SelectedIcuOrder[]
-  setIsSorting: React.Dispatch<React.SetStateAction<boolean>>
-}) {
+}: SortingButtonProps) {
   const handleSortButtonClick = useCallback(async () => {
     if (!isSorting) {
       toast({

@@ -1,30 +1,12 @@
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
-import { Dispatch, RefObject, SetStateAction } from 'react'
-import OrderWidthButton from './order-width-button'
+import { Dispatch, SetStateAction } from 'react'
 import OrderDialog from '../order/order-dialog'
+import OrderWidthButton from './order-width-button'
 import SortingButton from './sorting-button'
 
-export default function ChartTableHeader({
-  preview,
-  chartData,
-  sortedOrders,
-  isSorting,
-  setIsSorting,
-  hosId,
-  showOrderer,
-  orderStep,
-  reset,
-  isEditOrderMode,
-  setOrderStep,
-  isExport,
-  setSortedOrders,
-  orderWidth,
-  setOrderWidth,
-  isMobile,
-  isTouchMove,
-}: {
+type ChartTableHeaderProps = {
   preview?: boolean
   chartData: SelectedChart
   sortedOrders: SelectedIcuOrder[]
@@ -44,7 +26,27 @@ export default function ChartTableHeader({
   setOrderWidth: Dispatch<SetStateAction<number>>
   isMobile: boolean
   isTouchMove?: boolean
-}) {
+}
+
+export default function ChartTableHeader({
+  preview,
+  chartData,
+  sortedOrders,
+  isSorting,
+  setIsSorting,
+  hosId,
+  showOrderer,
+  orderStep,
+  reset,
+  isEditOrderMode,
+  setOrderStep,
+  isExport,
+  setSortedOrders,
+  orderWidth,
+  setOrderWidth,
+  isMobile,
+  isTouchMove,
+}: ChartTableHeaderProps) {
   const {
     icu_chart_id,
     orders,
@@ -100,7 +102,7 @@ export default function ChartTableHeader({
 
           {!isSorting && (
             <OrderWidthButton
-              orderWidth={orderWidth}
+              orderWidth={orderWidth as [300, 400, 500, 600][number]}
               setOrderWidth={setOrderWidth}
               isMobile={isMobile}
             />

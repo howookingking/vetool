@@ -9,6 +9,18 @@ import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { useCallback } from 'react'
 
+type OrderRowTitleProps = {
+  order: SelectedIcuOrder
+  index: number
+  isMobile: boolean
+  isSorting?: boolean
+  preview?: boolean
+  vitalRefRange?: VitalRefRange[]
+  species: string
+  orderWidth: number
+  isTouchMove?: boolean
+}
+
 export default function OrderRowTitle({
   order,
   isSorting,
@@ -19,17 +31,7 @@ export default function OrderRowTitle({
   species,
   orderWidth,
   isTouchMove,
-}: {
-  order: SelectedIcuOrder
-  index: number
-  isMobile: boolean
-  isSorting?: boolean
-  preview?: boolean
-  vitalRefRange?: VitalRefRange[]
-  species?: string
-  orderWidth: number
-  isTouchMove?: boolean
-}) {
+}: OrderRowTitleProps) {
   const { order_comment, order_type, order_id, order_name } = order
   const {
     basicHosData: { orderColorsData, orderFontSizeData },
@@ -82,7 +84,6 @@ export default function OrderRowTitle({
       setSelectedChartOrder(order)
     },
     [
-      preview,
       order,
       setSelectedOrderPendingQueue,
       setSelectedChartOrder,

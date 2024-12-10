@@ -1,11 +1,32 @@
 import { TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { Dispatch, RefObject, SetStateAction } from 'react'
-import QuickOrderInsertInput from './quick-order-insert-input'
 import OrderRows from './order-rows'
+import QuickOrderInsertInput from './quick-order-insert-input'
+
+type ChartTableBodyProps = {
+  sortedOrders: SelectedIcuOrder[]
+  isSorting: boolean
+  preview?: boolean
+  vitalRefRange: VitalRefRange[]
+  showOrderer: boolean
+  hoveredColumn: number | null
+  handleColumnHover: (columnIndex: number) => void
+  handleColumnLeave: () => void
+  selectedTxPendingQueue: OrderTimePendingQueue[]
+  orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit'
+  orderTimePendingQueue: OrderTimePendingQueue[]
+  orderWidth: number
+  isMobile: boolean
+  isTouchMove?: boolean
+  isExport?: boolean
+  icuChartId: string
+  setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
+  cellRef?: RefObject<HTMLTableRowElement>
+  species: string
+}
 
 export default function ChartTableBody({
   sortedOrders,
@@ -26,30 +47,8 @@ export default function ChartTableBody({
   icuChartId,
   setSortedOrders,
   cellRef,
-}: {
-  sortedOrders: SelectedIcuOrder[]
-  isSorting: boolean
-  preview?: boolean
-  vitalRefRange: VitalRefRange[]
-  showOrderer: boolean
-  hoveredColumn: number | null
-  handleColumnHover: (columnIndex: number) => void
-  handleColumnLeave: () => void
-  selectedTxPendingQueue: OrderTimePendingQueue[]
-  orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit'
-  orderTimePendingQueue: OrderTimePendingQueue[]
-  orderWidth: number
-  isMobile: boolean
-  isTouchMove?: boolean
-  isExport?: boolean
-  icuChartId: string
-  setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
-  cellRef?: RefObject<HTMLTableRowElement>
-}) {
-  const {
-    basicHosData: { orderColorsData },
-  } = useBasicHosDataContext()
-
+  species,
+}: ChartTableBodyProps) {
   return (
     <TableBody>
       <OrderRows
@@ -57,7 +56,7 @@ export default function ChartTableBody({
         isSorting={isSorting}
         preview={preview}
         vitalRefRange={vitalRefRange}
-        species={'canine'}
+        species={species}
         showOrderer={showOrderer}
         hoveredColumn={hoveredColumn}
         handleColumnHover={handleColumnHover}
@@ -77,7 +76,6 @@ export default function ChartTableBody({
             <QuickOrderInsertInput
               icuChartId={icuChartId}
               setSortedOrders={setSortedOrders}
-              orderColorsData={orderColorsData}
             />
           </TableCell>
         </TableRow>

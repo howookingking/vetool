@@ -140,7 +140,18 @@ export const DEFAULT_ICU_ORDER_TYPE = [
   },
 ] as const
 
+export const QUICKORDER_PLACEHOLDER = {
+  checklist: '체크리스트',
+  fluid: '수액명$수액속도',
+  injection: '주사제$용량',
+  po: '경구제$용량',
+  test: '검사명$검사설명',
+  manual: '오더명$오더설명',
+  feed: '사료명$회당급여량',
+} as const
+
 export const CHECKLIST_ORDER_NAMES = [
+  '산소포화도',
   '체온',
   '체온(T)',
   '심박수',
@@ -157,4 +168,8 @@ export const CHECKLIST_ORDER_NAMES = [
   '체중',
   '몸무게',
   'SPO2',
+  '대변',
+  '소변',
 ] as const
+
+export type OrderType = (typeof DEFAULT_ICU_ORDER_TYPE)[number]['value']
