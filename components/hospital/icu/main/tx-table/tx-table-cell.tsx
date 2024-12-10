@@ -32,7 +32,6 @@ export default function TxTableCell({
   const { push } = useRouter()
   const searchParams = useSearchParams()
   const isMobile = useIsMobile()
-
   const isOrderScheduled = order.icu_chart_order_time[time - 1] !== '0'
   const isTxCompleted = order.treatments.some((tx) => tx.time === time)
 
