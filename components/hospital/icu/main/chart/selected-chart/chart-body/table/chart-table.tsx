@@ -185,6 +185,7 @@ export default function ChartTable({
 
   return (
     <Table className="border">
+      {/* 소팅버튼, 오더목록, 오더추가 버튼, 오더너비조절 버튼, 시간 */}
       <ChartTableHeader
         chartData={chartData}
         hosId={hos_id}
@@ -212,7 +213,7 @@ export default function ChartTable({
           onSortEnd={handleReorder}
         >
           {sortedOrders.map((order, index) => (
-            <TableRow className="relative w-full divide-x" key={order.order_id}>
+            <TableRow className="relative divide-x" key={order.order_id}>
               <CellsRowTitle
                 index={index}
                 order={order}

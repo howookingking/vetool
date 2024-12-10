@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button'
-import CustomTooltip from '@/components/ui/custom-tooltip'
 import { toast } from '@/components/ui/use-toast'
 import useShorcutKey from '@/hooks/use-shortcut-key'
 import { reorderOrders } from '@/lib/services/icu/chart/order-mutation'
@@ -45,23 +44,13 @@ export default function SortingButton({
   })
 
   return (
-    <CustomTooltip
-      sideOffset={1}
-      contents={
-        <div className="font-bold">
-          <kbd>[CTRL]</kbd> + <kbd>[S]</kbd>
-        </div>
-      }
+    <Button
+      variant="ghost"
+      size="icon"
+      className={cn(isSorting && 'animate-pulse text-primary', 'shrink-0')}
+      onClick={handleSortButtonClick}
     >
-      <Button
-        variant="ghost"
-        size="icon"
-        className={cn(isSorting && 'animate-pulse text-primary', 'shrink-0')}
-        onClick={handleSortButtonClick}
-        accessKey="s"
-      >
-        <ArrowUpDown size={18} />
-      </Button>
-    </CustomTooltip>
+      <ArrowUpDown size={18} />
+    </Button>
   )
 }

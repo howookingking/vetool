@@ -55,8 +55,6 @@ export default function ChartTableHeader({
     icu_io: { age_in_days },
   } = chartData
 
-  console.log(isTouchMove, isMobile)
-
   return (
     <TableHeader className="sticky -top-3 z-20 bg-white shadow-sm">
       <TableRow>

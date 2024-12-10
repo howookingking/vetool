@@ -114,6 +114,7 @@ export default function CellsRowTitle({
         isTouchMove && 'sticky left-0 z-10',
       )}
       style={{
+        width: orderWidth,
         background: orderColorsData[order_type as keyof IcuOrderColors],
         transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
       }}
@@ -123,14 +124,14 @@ export default function CellsRowTitle({
         variant="ghost"
         onClick={isSorting ? undefined : handleEditOrderDialogOpen}
         className={cn(
-          'group flex h-11 justify-between rounded-none bg-transparent px-2 outline-none ring-inset ring-primary transition duration-300 hover:scale-[97%] hover:bg-transparent',
+          'group flex h-11 justify-between rounded-none bg-transparent px-2 outline-none transition duration-300 hover:scale-[97%] hover:bg-transparent',
           isOptimisticOrder && 'animate-bounce',
           preview
             ? 'cursor-not-allowed'
             : isSorting
               ? 'cursor-grab'
               : 'cursor-pointer',
-          isInOrderPendingQueue && 'ring-2',
+          isInOrderPendingQueue && 'ring-4 ring-inset',
         )}
         style={{
           width: isTouchMove ? 200 : isMobile ? 300 : orderWidth,
