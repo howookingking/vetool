@@ -225,7 +225,7 @@ export const INSTRUCITON_SHORTCUTS: Shortcuts[] = [
   {
     title: '오더 순서 변경',
     description:
-      "'CTRL + S'를 눌러 오더 순서 변경 모드 진입, 드래그 앤 드롭으로 순서 변경 후 'CTRL + S 또는 ESC'를 눌러 변경 완료",
+      "'CTRL + S'를 눌러 오더 순서 변경 모드 진입, 드래그 앤 드롭으로 순서 변경 후 'CTRL + S",
     icons: ['keyboard', 'mouse'],
   },
 ] as const

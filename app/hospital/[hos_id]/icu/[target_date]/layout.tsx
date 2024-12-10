@@ -27,7 +27,7 @@ export default async function IcuPageLayout(props: {
         showOrderer: basicHosData.show_orderer,
         maintenanceRateCalcMethod: basicHosData.maintenance_rate_calc_method,
         rerCalcMethod: basicHosData.rer_calc_method as 'a' | 'b',
-        sidebarData: icuSidebarData ?? [],
+        sidebarData: icuSidebarData,
         vitalRefRange: basicHosData.vital_ref_range as VitalRefRange[],
         orderFontSizeData: basicHosData.order_font_size,
       }}
@@ -41,7 +41,7 @@ export default async function IcuPageLayout(props: {
       <div className="flex h-icu-chart-main">
         <IcuSidebar
           hosGroupList={basicHosData.group_list}
-          icuSidebarData={icuSidebarData ?? []}
+          icuSidebarData={icuSidebarData}
           vetsListData={vetsListData}
         />
 

@@ -84,7 +84,7 @@ export default function CopyPrevIoChartDialog({
           </div>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>최근 입원 차트 복사</DialogTitle>
           <DialogDescription>
