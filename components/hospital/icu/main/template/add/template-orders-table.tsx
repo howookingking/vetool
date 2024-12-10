@@ -1,9 +1,9 @@
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import SortableOrderWrapper from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/sortable-order-wrapper'
-import AddTemplateDialog from '@/components/hospital/icu/main/template/add/table/add-template-dialog'
-import AddTemplateHeader from '@/components/hospital/icu/main/template/add/table/add-template-header'
-import AddTemplateRow from '@/components/hospital/icu/main/template/add/table/add-template-row'
-import TemplateOrderForm from '@/components/hospital/icu/main/template/add/template-order-form'
+import OrderDialog from '@/components/hospital/order-table/order-dialog'
+import OrderForm from '@/components/hospital/order-table/order-form'
+import OrderTableHeader from '@/components/hospital/order-table/order-table-header'
+import OrderTableRow from '@/components/hospital/order-table/order-table-row'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
 import { reorderOrders } from '@/lib/services/icu/chart/order-mutation'
@@ -115,15 +115,15 @@ export default function TemplateOrdersTable({
 
   return (
     <Table className="h-full border">
-      <AddTemplateHeader isSorting={isSorting!} onClick={handleSortButtonClick}>
-        <AddTemplateDialog
+      <OrderTableHeader isSorting={isSorting!} onClick={handleSortButtonClick}>
+        <OrderDialog
           isOpen={orderStep !== 'closed'}
           onOpenChange={handleOpenChange}
           isEditOrderMode={isEditOrderMode}
         >
-          <TemplateOrderForm editTemplateMode={editTemplateMode} />
-        </AddTemplateDialog>
-      </AddTemplateHeader>
+          <OrderForm mode={editTemplateMode ? 'editTemplate' : 'addTemplate'} />
+        </OrderDialog>
+      </OrderTableHeader>
 
       {isSorting ? (
         <SortableOrderWrapper
@@ -132,7 +132,7 @@ export default function TemplateOrdersTable({
           onSortEnd={handleReorder}
         >
           {sortedOrders.map((order, index) => (
-            <AddTemplateRow
+            <OrderTableRow
               key={index}
               order={order}
               index={index}
@@ -153,7 +153,7 @@ export default function TemplateOrdersTable({
             </TableRow>
           ) : (
             sortedOrders.map((order, index) => (
-              <AddTemplateRow
+              <OrderTableRow
                 key={index}
                 order={order}
                 index={index}

@@ -3,7 +3,7 @@ import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, RefObject, SetStateAction } from 'react'
 import QuickOrderInsertInput from '../../quick-order-insert-input'
 import CellsRowTitles from '../cells-row-titles'
 
@@ -20,9 +20,12 @@ export default function ChartTableBody({
   orderStep,
   orderTimePendingQueue,
   orderWidth,
+  isMobile,
+  isTouchMove,
   isExport,
   icuChartId,
   setSortedOrders,
+  cellRef,
 }: {
   sortedOrders: SelectedIcuOrder[]
   isSorting: boolean
@@ -36,9 +39,12 @@ export default function ChartTableBody({
   orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit'
   orderTimePendingQueue: OrderTimePendingQueue[]
   orderWidth: number
+  isMobile: boolean
+  isTouchMove?: boolean
   isExport?: boolean
   icuChartId: string
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
+  cellRef?: RefObject<HTMLTableRowElement>
 }) {
   const {
     basicHosData: { orderColorsData },
@@ -60,6 +66,9 @@ export default function ChartTableBody({
         orderStep={orderStep}
         orderTimePendingQueueLength={orderTimePendingQueue.length}
         orderwidth={orderWidth}
+        cellRef={cellRef}
+        isMobile={isMobile}
+        isTouchMove={isTouchMove}
       />
       {!isExport && !preview && (
         <TableRow className="hover:bg-transparent">

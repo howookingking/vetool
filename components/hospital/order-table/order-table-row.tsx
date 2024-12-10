@@ -1,11 +1,11 @@
 import { Button } from '@/components/ui/button'
 import { TableCell, TableRow } from '@/components/ui/table'
-import { cn } from '@/lib/utils/utils'
+import { cn, parsingOrderName } from '@/lib/utils/utils'
 import type { IcuOrderColors } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { RefObject } from 'react'
 
-export default function AddTemplateRow({
+export default function OrderTableRow({
   order,
   index,
   orderColors,
@@ -48,7 +48,9 @@ export default function AddTemplateRow({
             isSorting ? 'cursor-grab' : 'cursor-pointer',
           )}
         >
-          <span className="truncate">{order.order_name}</span>
+          <span className="truncate">
+            {parsingOrderName(order.order_type, order.order_name)}
+          </span>
           <span className="text-xs text-muted-foreground">
             {order.order_comment}
           </span>

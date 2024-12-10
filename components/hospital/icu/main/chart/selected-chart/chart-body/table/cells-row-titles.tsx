@@ -21,6 +21,7 @@ type CellsRowTitlesProps = {
   vitalRefRange: VitalRefRange[]
   species: string
   orderwidth: number
+  isMobile: boolean
   cellRef?: RefObject<HTMLTableRowElement>
   isTouchMove?: boolean
 }
@@ -41,6 +42,7 @@ export default function CellsRowTitles({
   orderwidth,
   cellRef,
   isTouchMove,
+  isMobile,
 }: CellsRowTitlesProps) {
   return sortedOrders.map((order, index) => (
     <TableRow
@@ -60,6 +62,7 @@ export default function CellsRowTitles({
         species={species}
         orderWidth={orderwidth}
         isTouchMove={isTouchMove}
+        isMobile={isMobile}
       />
       {!isSorting && (
         <CellsRow
