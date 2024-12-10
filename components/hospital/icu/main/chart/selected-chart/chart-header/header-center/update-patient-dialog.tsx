@@ -47,7 +47,7 @@ export default function UpdatePatientDialog({
       onOpenChange={setIsPatientUpdateDialogOpen}
     >
       <DialogTrigger asChild>
-        <Button variant="ghost" className="flex gap-2">
+        <Button variant="ghost" className="flex gap-3 text-base font-semibold">
           {species === 'canine' ? <Dog size={20} /> : <Cat size={20} />}
           <span>{name}</span> ·<span>{convertPascalCased(breed)}</span> ·
           <span className="uppercase">{gender}</span> ·

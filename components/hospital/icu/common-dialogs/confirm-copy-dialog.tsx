@@ -69,7 +69,7 @@ export function ConfirmCopyDialog({
       open={isConfirmCopyDialogOpen}
       onOpenChange={setIsConfirmCopyDialogOpen}
     >
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>차트를 생성하시겠습니까?</DialogTitle>
           {showOrderer && (

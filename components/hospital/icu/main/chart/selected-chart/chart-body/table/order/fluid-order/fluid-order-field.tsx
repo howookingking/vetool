@@ -22,7 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { FLUIDS } from '@/constants/hospital/icu/fluid/fluid'
+import { FLUIDS } from '@/constants/hospital/icu/chart/fluid'
 import { calculatedMaintenaceRate } from '@/lib/calculators/maintenace-rate'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'

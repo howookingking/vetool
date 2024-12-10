@@ -1,65 +1,45 @@
 'use client'
 
-import QuickOrderInsertInput from '@/components/hospital/icu/main/chart/selected-chart/chart-body/quick-order-insert-input'
-import CellsRowTitles from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/cells-row-titles'
 import DeleteOrdersAlertDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/delete-orders-alert-dialog'
-import OrderDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-dialog'
 import SortableOrderWrapper from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/sortable-order-wrapper'
-import AddTemplateOrderDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/template/add-template-order-dialog'
 import TxUpsertDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/tx-upsert-dialog'
-import { Button } from '@/components/ui/button'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
+import { Table, TableRow } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
-import { TIMES } from '@/constants/hospital/icu/chart/time'
 import useIsCommandPressed from '@/hooks/use-is-command-pressed'
 import useIsMobile from '@/hooks/use-is-mobile'
 import useLocalStorage from '@/hooks/use-local-storage'
-import {
-  reorderOrders,
-  upsertOrder,
-} from '@/lib/services/icu/chart/order-mutation'
+import useShorcutKey from '@/hooks/use-shortcut-key'
+import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
-import { cn, formatOrders, hasOrderSortingChanges } from '@/lib/utils/utils'
+import { formatOrders } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
-import { ArrowLeftToLine, ArrowRightFromLine, ArrowUpDown } from 'lucide-react'
-import { RefObject, useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Sortable } from 'react-sortablejs'
+import CellsRowTitle from './cells-row-title'
+import ChartTableBody from './chart-table-body/chart-table-body'
+import ChartTableHeader from './chart-table-header/chart-table-header'
+import AddTemplateOrderDialog from './order/template/add-template-order-dialog'
 
 export default function ChartTable({
   chartData,
   preview,
   isExport,
-  cellRef,
-  isTouchMove,
 }: {
   chartData: SelectedChart
   preview?: boolean
   isExport?: boolean
-  cellRef?: RefObject<HTMLTableRowElement>
-  isTouchMove?: boolean
 }) {
   const {
     icu_chart_id,
     orders,
-    patient,
-    weight,
-    main_vet,
-    der_calc_factor,
-    icu_io: { age_in_days },
+    patient: { hos_id },
+    target_date,
   } = chartData
 
-  const hosId = chartData.patient.hos_id
-  const targetDate = chartData.target_date
   const [isSorting, setIsSorting] = useState(false)
+  const [orderWidth, setOrderWidth] = useLocalStorage('orderWidth', 400)
   const [sortedOrders, setSortedOrders] = useState<SelectedIcuOrder[]>(orders)
   const [isDeleteOrdersDialogOpen, setIsDeleteOrdersDialogOpen] =
     useState(false)
@@ -75,7 +55,7 @@ export default function ChartTable({
   } = useIcuOrderStore()
 
   const {
-    basicHosData: { showOrderer, vetsListData, orderColorsData, vitalRefRange },
+    basicHosData: { showOrderer, vetsListData, vitalRefRange },
   } = useBasicHosDataContext()
   const isCommandPressed = useIsCommandPressed()
   const isMobile = useIsMobile()
@@ -84,7 +64,7 @@ export default function ChartTable({
     if (!isSorting) {
       setSortedOrders(orders)
     }
-  }, [orders]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isSorting, orders])
 
   // ----- 표에서 수직 안내선 -----
   const [hoveredColumn, setHoveredColumn] = useState<number | null>(null)
@@ -110,12 +90,18 @@ export default function ChartTable({
           : time,
       )
 
-      await upsertOrder(hosId, icu_chart_id, order.orderId, updatedOrderTimes, {
-        icu_chart_order_name: currentOrder.order_name,
-        icu_chart_order_comment: currentOrder.order_comment,
-        icu_chart_order_type: currentOrder.order_type,
-        icu_chart_order_priority: currentOrder.id,
-      })
+      await upsertOrder(
+        hos_id,
+        icu_chart_id,
+        order.orderId,
+        updatedOrderTimes,
+        {
+          icu_chart_order_name: currentOrder.order_name,
+          icu_chart_order_comment: currentOrder.order_comment,
+          icu_chart_order_type: currentOrder.order_type,
+          icu_chart_order_priority: currentOrder.id,
+        },
+      )
     }
 
     toast({
@@ -123,7 +109,7 @@ export default function ChartTable({
     })
 
     reset()
-  }, [hosId, icu_chart_id, orderTimePendingQueue, orders, reset, vetsListData])
+  }, [hos_id, icu_chart_id, orderTimePendingQueue, orders, reset, vetsListData])
 
   // -------- 커멘드키 뗐을 때 작업 --------
   const { txStep, setTxStep } = useTxMutationStore()
@@ -151,21 +137,15 @@ export default function ChartTable({
   ])
   // ---------------------------------
 
-  // ----- 다중 오더 붙여넣기, 삭제 기능 -----
+  // --------- 다중 오더 붙여넣기, 삭제 기능 ---------
   const handleUpsertOrderWithoutOrderer = useCallback(async () => {
     for (const order of copiedOrderPendingQueue) {
-      await upsertOrder(
-        hosId as string,
-        icu_chart_id,
-        undefined,
-        order.order_times!,
-        {
-          icu_chart_order_name: order.order_name!,
-          icu_chart_order_comment: order.order_comment!,
-          icu_chart_order_type: order.order_type!,
-          icu_chart_order_priority: order.id!,
-        },
-      )
+      await upsertOrder(hos_id, icu_chart_id, undefined, order.order_times!, {
+        icu_chart_order_name: order.order_name!,
+        icu_chart_order_comment: order.order_comment!,
+        icu_chart_order_type: order.order_type!,
+        icu_chart_order_priority: order.id!,
+      })
     }
 
     toast({
@@ -173,59 +153,21 @@ export default function ChartTable({
     })
 
     reset()
-  }, [hosId, icu_chart_id, copiedOrderPendingQueue, reset])
+  }, [hos_id, icu_chart_id, copiedOrderPendingQueue, reset])
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (
-        (event.ctrlKey || event.metaKey) &&
-        event.key === 'v' &&
-        copiedOrderPendingQueue.length > 0
-      ) {
-        event.preventDefault()
-        showOrderer
-          ? setOrderStep('selectOrderer')
-          : handleUpsertOrderWithoutOrderer()
-      }
+  useShorcutKey({
+    keys: ['v'],
+    condition: copiedOrderPendingQueue.length > 0,
+    callback: showOrderer
+      ? () => setOrderStep('selectOrderer')
+      : () => handleUpsertOrderWithoutOrderer(),
+  })
 
-      if (
-        ((event.metaKey && event.key === 'Backspace') ||
-          event.key === 'Delete') &&
-        selectedOrderPendingQueue.length > 0
-      ) {
-        event.preventDefault()
-        setIsDeleteOrdersDialogOpen(true)
-      }
-    }
-    window.addEventListener('keydown', handleKeyDown)
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    setTxStep,
-    orderTimePendingQueue,
-    copiedOrderPendingQueue.length,
-    selectedOrderPendingQueue.length,
-  ])
-  // ------------------------------------
-
-  const handleSortButtonClick = useCallback(async () => {
-    if (isSorting && !hasOrderSortingChanges(chartData.orders, sortedOrders)) {
-      setIsSorting(false)
-      return
-    }
-
-    if (isSorting) {
-      const orderIds = sortedOrders.map((order) => order.order_id)
-
-      await reorderOrders(orderIds)
-      toast({ title: '오더 순서를 변경하였습니다' })
-    }
-
-    setIsSorting(!isSorting)
-  }, [chartData.orders, isSorting, sortedOrders])
+  useShorcutKey({
+    keys: ['backspace', 'delete'],
+    condition: selectedOrderPendingQueue.length > 0,
+    callback: () => setIsDeleteOrdersDialogOpen(true),
+  })
 
   const handleReorder = useCallback(
     (event: Sortable.SortableEvent) => {
@@ -289,78 +231,23 @@ export default function ChartTable({
 
   return (
     <Table className="border">
-      <TableHeader className="sticky -top-3 z-20 bg-white shadow-sm">
-        <TableRow>
-          <TableHead
-            className={cn(
-              'flex items-center justify-between px-0.5 text-center',
-            )}
-            style={{
-              width: isTouchMove ? 200 : isMobile ? 300 : orderWidth,
-              transition: 'width 0.3s ease-in-out ',
-            }}
-          >
-            {!preview && (
-              <Button
-                variant="ghost"
-                size="icon"
-                className={cn(
-                  isSorting && 'animate-pulse text-primary',
-                  'shrink-0',
-                )}
-                onClick={handleSortButtonClick}
-              >
-                <ArrowUpDown size={18} />
-              </Button>
-            )}
-
-            <span className="w-full text-center">오더 목록</span>
-
-            {!preview && (
-              <>
-                <OrderDialog
-                  hosId={hosId}
-                  icuChartId={icu_chart_id}
-                  orders={orders}
-                  showOrderer={showOrderer}
-                  patient={patient}
-                  weight={weight}
-                  ageInDays={age_in_days}
-                  orderStep={orderStep}
-                  reset={reset}
-                  isEditOrderMode={isEditOrderMode}
-                  setOrderStep={setOrderStep}
-                  isExport={isExport}
-                  setSortedOrders={setSortedOrders}
-                  mainVetName={main_vet.name}
-                  derCalcFactor={der_calc_factor}
-                />
-
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={handleOrderWidthChange}
-                  className="hidden shrink-0 md:inline-flex"
-                >
-                  {orderWidth === 600 ? (
-                    <ArrowLeftToLine size={18} />
-                  ) : (
-                    <ArrowRightFromLine size={18} />
-                  )}
-                </Button>
-              </>
-            )}
-
-            {<AddTemplateOrderDialog hosId={hosId} targetDate={targetDate} />}
-          </TableHead>
-
-          {TIMES.map((time) => (
-            <TableHead className="border text-center" key={time}>
-              {time.toString().padStart(2, '0')}
-            </TableHead>
-          ))}
-        </TableRow>
-      </TableHeader>
+      <ChartTableHeader
+        chartData={chartData}
+        hosId={hos_id}
+        isSorting={isSorting}
+        setIsSorting={setIsSorting}
+        preview={preview}
+        sortedOrders={sortedOrders}
+        showOrderer={showOrderer}
+        orderStep={orderStep}
+        reset={reset}
+        isEditOrderMode={isEditOrderMode}
+        setOrderStep={setOrderStep}
+        isExport={isExport}
+        setSortedOrders={setSortedOrders}
+        orderWidth={orderWidth}
+        setOrderWidth={setOrderWidth}
+      />
 
       {isSorting ? (
         <SortableOrderWrapper
@@ -368,55 +255,36 @@ export default function ChartTable({
           onOrdersChange={setSortedOrders}
           onSortEnd={handleReorder}
         >
-          <CellsRowTitles
-            sortedOrders={sortedOrders}
-            isSorting={isSorting}
-            preview={preview}
-            vitalRefRange={vitalRefRange}
-            species={patient.species}
-            showOrderer={showOrderer}
-            hoveredColumn={hoveredColumn}
-            handleColumnHover={handleColumnHover}
-            handleColumnLeave={handleColumnLeave}
-            selectedTxPendingQueue={selectedTxPendingQueue}
-            orderStep={orderStep}
-            orderTimePendingQueueLength={orderTimePendingQueue.length}
-            orderwidth={orderWidth}
-            cellRef={cellRef}
-            isTouchMove={isTouchMove}
-          />
+          {sortedOrders.map((order, index) => (
+            <TableRow className="relative w-full divide-x" key={order.order_id}>
+              <CellsRowTitle
+                index={index}
+                order={order}
+                preview={preview}
+                isSorting={isSorting}
+                orderWidth={orderWidth}
+              />
+            </TableRow>
+          ))}
         </SortableOrderWrapper>
       ) : (
-        <TableBody>
-          <CellsRowTitles
-            sortedOrders={sortedOrders}
-            isSorting={isSorting}
-            preview={preview}
-            vitalRefRange={vitalRefRange}
-            species={patient.species}
-            showOrderer={showOrderer}
-            hoveredColumn={hoveredColumn}
-            handleColumnHover={handleColumnHover}
-            handleColumnLeave={handleColumnLeave}
-            selectedTxPendingQueue={selectedTxPendingQueue}
-            orderStep={orderStep}
-            orderTimePendingQueueLength={orderTimePendingQueue.length}
-            orderwidth={orderWidth}
-            cellRef={cellRef}
-            isTouchMove={isTouchMove}
-          />
-          {!isExport && !preview && (
-            <TableRow className="hover:bg-transparent">
-              <TableCell className="p-0">
-                <QuickOrderInsertInput
-                  icuChartId={icu_chart_id}
-                  setSortedOrders={setSortedOrders}
-                  orderColorsData={orderColorsData}
-                />
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
+        <ChartTableBody
+          isSorting={isSorting}
+          sortedOrders={sortedOrders}
+          preview={preview}
+          handleColumnHover={handleColumnHover}
+          handleColumnLeave={handleColumnLeave}
+          vitalRefRange={vitalRefRange}
+          showOrderer={showOrderer}
+          hoveredColumn={hoveredColumn}
+          selectedTxPendingQueue={selectedTxPendingQueue}
+          orderStep={orderStep}
+          orderTimePendingQueue={orderTimePendingQueue}
+          orderWidth={orderWidth}
+          isExport={isExport}
+          icuChartId={icu_chart_id}
+          setSortedOrders={setSortedOrders}
+        />
       )}
 
       {!isExport && (
@@ -427,6 +295,7 @@ export default function ChartTable({
             setIsDeleteOrdersDialogOpen={setIsDeleteOrdersDialogOpen}
             setSortedOrders={setSortedOrders}
           />
+          <AddTemplateOrderDialog hosId={hos_id} targetDate={target_date} />
         </>
       )}
     </Table>

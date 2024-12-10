@@ -31,19 +31,7 @@ export default function ChecklistOrderField({
         render={({ field }) => (
           <FormItem>
             <FormLabel>체크리스트</FormLabel>
-            <Select
-              onValueChange={(value) => {
-                field.onChange(value)
-                const selectedOrder = CHECKLIST_ORDERS.find(
-                  (order) => order.orderName === value,
-                )
-                form.setValue(
-                  'icu_chart_order_comment',
-                  selectedOrder?.orderComment ?? '',
-                )
-              }}
-              defaultValue={field.value}
-            >
+            <Select defaultValue={field.value}>
               <FormControl>
                 <SelectTrigger>
                   <SelectValue placeholder="체크리스트 항목 선택" />

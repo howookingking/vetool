@@ -33,33 +33,29 @@ export default function TxTableContainer({
 }) {
   const [localFilterState, setLocalFilterState] = useState('all')
 
-  const filteredTxData = useMemo(() => {
-    return txTableData
-      .filter((data) => !data.icu_io.out_date)
-      .map((data) => ({
-        ...data,
-        orders: data.orders.filter((order) => {
-          if (localFilterState && localFilterState !== 'all') {
-            if (order.icu_chart_order_type !== localFilterState) {
-              return false
-            }
+  const filteredTxData = txTableData
+    .filter((data) => !data.icu_io.out_date)
+    .map((data) => ({
+      ...data,
+      orders: data.orders.filter((order) => {
+        if (localFilterState && localFilterState !== 'all') {
+          if (order.icu_chart_order_type !== localFilterState) {
+            return false
           }
-
-          const orderTimes = order.icu_chart_order_time
-            .map((time, index) => (time !== '0' ? index + 1 : null))
-            .filter((time): time is number => time !== null)
-
-          const treatmentTimes = order.treatments.map((t) => t.time)
-
-          const pendingOrderTimes = orderTimes.filter(
-            (time) => !treatmentTimes.includes(time),
-          )
-
-          return pendingOrderTimes.length > 0
-        }),
-      }))
-      .filter((data) => data.orders.length > 0)
-  }, [txTableData, localFilterState])
+        }
+        const orderTimes = order.icu_chart_order_time
+          .map((time, index) => (time !== '0' ? index + 1 : null))
+          .filter((time): time is number => time !== null)
+        const treatmentTimes = order.treatments.map(
+          (treatment) => treatment.time,
+        )
+        const pendingOrderTimes = orderTimes.filter(
+          (time) => !treatmentTimes.includes(time),
+        )
+        return pendingOrderTimes.length > 0
+      }),
+    }))
+    .filter((data) => data.orders.length > 0)
 
   const chartBackgroundMap = useMemo(
     () =>
