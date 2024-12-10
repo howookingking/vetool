@@ -7,14 +7,14 @@ import OrderRows from './order-rows'
 import QuickOrderInsertInput from './quick-order-insert-input'
 
 type ChartTableBodyProps = {
+  // hoveredColumn: number | null
+  // handleColumnHover: (columnIndex: number) => void
+  // handleColumnLeave: () => void
   sortedOrders: SelectedIcuOrder[]
   isSorting: boolean
   preview?: boolean
   vitalRefRange: VitalRefRange[]
   showOrderer: boolean
-  hoveredColumn: number | null
-  handleColumnHover: (columnIndex: number) => void
-  handleColumnLeave: () => void
   selectedTxPendingQueue: OrderTimePendingQueue[]
   orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit'
   orderTimePendingQueue: OrderTimePendingQueue[]
@@ -34,9 +34,6 @@ export default function ChartTableBody({
   preview,
   vitalRefRange,
   showOrderer,
-  hoveredColumn,
-  handleColumnHover,
-  handleColumnLeave,
   selectedTxPendingQueue,
   orderStep,
   orderTimePendingQueue,
@@ -58,9 +55,6 @@ export default function ChartTableBody({
         vitalRefRange={vitalRefRange}
         species={species}
         showOrderer={showOrderer}
-        hoveredColumn={hoveredColumn}
-        handleColumnHover={handleColumnHover}
-        handleColumnLeave={handleColumnLeave}
         selectedTxPendingQueue={selectedTxPendingQueue}
         orderStep={orderStep}
         orderTimePendingQueueLength={orderTimePendingQueue.length}

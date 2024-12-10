@@ -2,19 +2,18 @@ import OrderRowCells from '@/components/hospital/icu/main/chart/selected-chart/c
 import OrderRowTitle from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-row-title'
 import { TableRow } from '@/components/ui/table'
 import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
-import { cn } from '@/lib/utils/utils'
 import type { VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { RefObject } from 'react'
 
 type CellsRowTitlesProps = {
+  // hoveredColumn: number | null
+  // handleColumnHover: (columnIndex: number) => void
+  // handleColumnLeave: () => void
   sortedOrders: SelectedIcuOrder[]
   isSorting: boolean
   preview?: boolean
   showOrderer: boolean
-  hoveredColumn: number | null
-  handleColumnHover: (columnIndex: number) => void
-  handleColumnLeave: () => void
   selectedTxPendingQueue: OrderTimePendingQueue[]
   orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit'
   orderTimePendingQueueLength: number
@@ -31,9 +30,6 @@ export default function OrderRows({
   isSorting,
   preview,
   showOrderer,
-  hoveredColumn,
-  handleColumnHover,
-  handleColumnLeave,
   selectedTxPendingQueue,
   orderStep,
   orderTimePendingQueueLength,
@@ -46,10 +42,7 @@ export default function OrderRows({
 }: CellsRowTitlesProps) {
   return sortedOrders.map((order, index) => (
     <TableRow
-      className={cn(
-        'relative w-full divide-x',
-        !isSorting && 'hover:bg-muted/50',
-      )}
+      className="relative w-full divide-x"
       key={order.order_id}
       ref={cellRef}
     >
@@ -69,9 +62,6 @@ export default function OrderRows({
           preview={preview}
           order={order}
           showOrderer={showOrderer}
-          hoveredColumn={hoveredColumn}
-          handleColumnHover={handleColumnHover}
-          handleColumnLeave={handleColumnLeave}
           selectedTxPendingQueue={selectedTxPendingQueue}
           orderStep={orderStep}
           orderTimePendingQueueLength={orderTimePendingQueueLength}

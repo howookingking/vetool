@@ -70,13 +70,14 @@ export default function ChartTable({
     }
   }, [isSorting, orders])
 
+  // 기능 없에고 반응보고 결정
   // ----- 표에서 수직 안내선 -----
-  const [hoveredColumn, setHoveredColumn] = useState<number | null>(null)
-  const handleColumnHover = useCallback(
-    (columnIndex: number) => setHoveredColumn(columnIndex),
-    [],
-  )
-  const handleColumnLeave = useCallback(() => setHoveredColumn(null), [])
+  // const [hoveredColumn, setHoveredColumn] = useState<number | null>(null)
+  // const handleColumnHover = useCallback(
+  //   (columnIndex: number) => setHoveredColumn(columnIndex),
+  //   [],
+  // )
+  // const handleColumnLeave = useCallback(() => setHoveredColumn(null), [])
   // --------------------------
 
   const handleUpsertOrderTimesWithoutOrderer = useCallback(async () => {
@@ -231,11 +232,8 @@ export default function ChartTable({
           isSorting={isSorting}
           sortedOrders={sortedOrders}
           preview={preview}
-          handleColumnHover={handleColumnHover}
-          handleColumnLeave={handleColumnLeave}
           vitalRefRange={vitalRefRange}
           showOrderer={showOrderer}
-          hoveredColumn={hoveredColumn}
           selectedTxPendingQueue={selectedTxPendingQueue}
           orderStep={orderStep}
           orderTimePendingQueue={orderTimePendingQueue}

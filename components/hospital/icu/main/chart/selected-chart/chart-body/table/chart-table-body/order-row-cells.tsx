@@ -11,12 +11,12 @@ import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 type CellsRowProps = {
+  // hoveredColumn: number | null
+  // handleColumnHover: (columnIndex: number) => void
+  // handleColumnLeave: () => void
   preview?: boolean
   order: SelectedIcuOrder
   showOrderer: boolean
-  hoveredColumn: number | null
-  handleColumnHover: (columnIndex: number) => void
-  handleColumnLeave: () => void
   selectedTxPendingQueue: OrderTimePendingQueue[]
   orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit'
   orderTimePendingQueueLength: number
@@ -28,9 +28,6 @@ export default function OrderRowCells({
   preview,
   order,
   showOrderer,
-  hoveredColumn,
-  handleColumnHover,
-  handleColumnLeave,
   selectedTxPendingQueue,
   orderStep,
   orderTimePendingQueueLength,
@@ -95,12 +92,9 @@ export default function OrderRowCells({
       : undefined
   }, [order.order_name, species, vitalRefRange])
 
-  const noFecalOrUrineResult = useMemo(
-    () =>
-      (order.order_name === '배변' || order.order_name === '배뇨') &&
-      order.treatments.length === 0,
-    [order.order_name, order.treatments.length],
-  )
+  const noFecalOrUrineResult =
+    (order.order_name === '배변' || order.order_name === '배뇨') &&
+    order.treatments.length === 0
 
   return (
     <>
@@ -112,7 +106,7 @@ export default function OrderRowCells({
         const tx = treatments
           .reverse()
           .find((treatment) => treatment.time === time)
-        const isHovered = hoveredColumn === index + 1
+        // const isHovered = hoveredColumn === index + 1
         const isGuidelineTime = [2, 10, 18].includes(time)
 
         return (
@@ -129,9 +123,6 @@ export default function OrderRowCells({
             icuChartTxId={tx?.tx_id}
             toggleOrderTime={toggleOrderTime}
             showOrderer={showOrderer}
-            isHovered={isHovered}
-            onMouseEnter={handleColumnHover}
-            onMouseLeave={handleColumnLeave}
             isGuidelineTime={isGuidelineTime}
             setSelectedTxPendingQueue={setSelectedTxPendingQueue}
             selectedTxPendingQueue={selectedTxPendingQueue}

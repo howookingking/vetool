@@ -13,6 +13,9 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 const LONGPRESS_TIMEOUT = 600
 
 type CellProps = {
+  // isHovered: boolean
+  // onMouseEnter: (columnIndex: number) => void
+  // onMouseLeave: () => void
   time: number
   treatment?: Treatment
   icuChartOrderId: string
@@ -24,9 +27,6 @@ type CellProps = {
   orderName: string
   toggleOrderTime: (orderId: string, time: number) => void
   showOrderer: boolean
-  isHovered: boolean
-  onMouseEnter: (columnIndex: number) => void
-  onMouseLeave: () => void
   isGuidelineTime: boolean
   setSelectedTxPendingQueue: (
     updater:
@@ -64,9 +64,6 @@ export default function Cell({
   orderName,
   toggleOrderTime,
   showOrderer,
-  isHovered,
-  onMouseEnter,
-  onMouseLeave,
   isGuidelineTime,
   selectedTxPendingQueue,
   setSelectedTxPendingQueue,
@@ -244,10 +241,10 @@ export default function Cell({
     [cleanupPressTimeout, icuChartOrderId, time, toggleCellInQueue],
   )
 
-  const handleMouseLeave = useCallback(() => {
-    cleanupPressTimeout()
-    onMouseLeave()
-  }, [cleanupPressTimeout, onMouseLeave])
+  // const handleMouseLeave = useCallback(() => {
+  //   cleanupPressTimeout()
+  //   onMouseLeave()
+  // }, [cleanupPressTimeout, onMouseLeave])
 
   const handleRightClick = useCallback(
     (e: React.MouseEvent<HTMLInputElement>) => {
@@ -324,7 +321,7 @@ export default function Cell({
           id={`${icuChartOrderId}&${time}`}
           className={cn(
             isGuidelineTime && 'bg-amber-300/10',
-            isHovered && 'bg-muted/50',
+            // isHovered && 'bg-muted/50',
             hasOrder && 'bg-rose-400/10',
             isDone && 'bg-emerald-400/10',
             isInPendingQueue && 'ring-2',
@@ -341,8 +338,8 @@ export default function Cell({
           onMouseDown={handleMouseDown}
           onMouseUp={handleMouseUp}
           onContextMenu={handleRightClick}
-          onMouseLeave={handleMouseLeave}
-          onMouseEnter={() => onMouseEnter(time)}
+          // onMouseLeave={handleMouseLeave}
+          // onMouseEnter={() => onMouseEnter(time)}
           onFocus={() => setIsFocused(true)}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
