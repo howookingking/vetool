@@ -1,13 +1,10 @@
-'use client'
-
 import Filters from '@/components/hospital/icu/sidebar/filters/filters'
 import { Filter } from '@/components/hospital/icu/sidebar/icu-sidebar'
 import NoPatients from '@/components/hospital/icu/sidebar/no-patients'
 import PatientList from '@/components/hospital/icu/sidebar/patient-list'
 import { Separator } from '@/components/ui/separator'
 import type { IcuSidebarIoData, Vet } from '@/types/icu/chart'
-import { useEffect, useState, type Dispatch, type SetStateAction } from 'react'
-import { useDebouncedCallback } from 'use-debounce'
+import { type Dispatch, type SetStateAction } from 'react'
 
 export default function DesktopIcuSidebar({
   filteredData,
