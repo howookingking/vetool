@@ -11,9 +11,9 @@ import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 type CellsRowProps = {
-  // hoveredColumn: number | null
-  // handleColumnHover: (columnIndex: number) => void
-  // handleColumnLeave: () => void
+  hoveredColumn: number | null
+  handleColumnHover: (columnIndex: number) => void
+  handleColumnLeave: () => void
   preview?: boolean
   order: SelectedIcuOrder
   showOrderer: boolean
@@ -25,6 +25,9 @@ type CellsRowProps = {
 }
 
 export default function OrderRowCells({
+  handleColumnHover,
+  handleColumnLeave,
+  hoveredColumn,
   preview,
   order,
   showOrderer,
@@ -106,11 +109,14 @@ export default function OrderRowCells({
         const tx = treatments
           .reverse()
           .find((treatment) => treatment.time === time)
-        // const isHovered = hoveredColumn === index + 1
+        const isHovered = hoveredColumn === index + 1
         const isGuidelineTime = [2, 10, 18].includes(time)
 
         return (
           <Cell
+            isHovered={isHovered}
+            onMouseEnter={() => handleColumnHover(index + 1)}
+            onMouseLeave={handleColumnLeave}
             preview={preview}
             key={time}
             time={time}

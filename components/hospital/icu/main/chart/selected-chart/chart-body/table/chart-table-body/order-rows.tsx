@@ -7,9 +7,9 @@ import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { RefObject } from 'react'
 
 type CellsRowTitlesProps = {
-  // hoveredColumn: number | null
-  // handleColumnHover: (columnIndex: number) => void
-  // handleColumnLeave: () => void
+  hoveredColumn: number | null
+  handleColumnHover: (columnIndex: number) => void
+  handleColumnLeave: () => void
   sortedOrders: SelectedIcuOrder[]
   isSorting: boolean
   preview?: boolean
@@ -26,6 +26,9 @@ type CellsRowTitlesProps = {
 }
 
 export default function OrderRows({
+  hoveredColumn,
+  handleColumnHover,
+  handleColumnLeave,
   sortedOrders,
   isSorting,
   preview,
@@ -59,6 +62,9 @@ export default function OrderRows({
       />
       {!isSorting && (
         <OrderRowCells
+          hoveredColumn={hoveredColumn}
+          handleColumnHover={handleColumnHover}
+          handleColumnLeave={handleColumnLeave}
           preview={preview}
           order={order}
           showOrderer={showOrderer}

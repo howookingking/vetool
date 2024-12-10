@@ -7,9 +7,9 @@ import OrderRows from './order-rows'
 import QuickOrderInsertInput from './quick-order-insert-input'
 
 type ChartTableBodyProps = {
-  // hoveredColumn: number | null
-  // handleColumnHover: (columnIndex: number) => void
-  // handleColumnLeave: () => void
+  hoveredColumn: number | null
+  handleColumnHover: (columnIndex: number) => void
+  handleColumnLeave: () => void
   sortedOrders: SelectedIcuOrder[]
   isSorting: boolean
   preview?: boolean
@@ -29,6 +29,9 @@ type ChartTableBodyProps = {
 }
 
 export default function ChartTableBody({
+  handleColumnHover,
+  handleColumnLeave,
+  hoveredColumn,
   sortedOrders,
   isSorting,
   preview,
@@ -49,6 +52,9 @@ export default function ChartTableBody({
   return (
     <TableBody>
       <OrderRows
+        handleColumnHover={handleColumnHover}
+        handleColumnLeave={handleColumnLeave}
+        hoveredColumn={hoveredColumn}
         sortedOrders={sortedOrders}
         isSorting={isSorting}
         preview={preview}
