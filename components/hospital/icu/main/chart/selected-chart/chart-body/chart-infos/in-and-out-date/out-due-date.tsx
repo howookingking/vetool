@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils/utils'
 import { format, parseISO } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { LogOut } from 'lucide-react'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 export default function OutDueDate({
   inDate,
@@ -24,10 +24,8 @@ export default function OutDueDate({
   outDueDate: string | null
   icuIoId: string
 }) {
-  const transformedOutDueDate = useMemo(
-    () => (outDueDate ? new Date(outDueDate) : undefined),
-    [outDueDate],
-  )
+  const transformedOutDueDate = outDueDate ? new Date(outDueDate) : undefined
+
   const [outDueDateInput, setOutDueDateInput] = useState<Date | undefined>(
     transformedOutDueDate,
   )

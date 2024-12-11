@@ -28,7 +28,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
@@ -57,14 +57,8 @@ export default function OrdererSelectStep({
   } = useIcuOrderStore()
   const { isSubscriptionReady } = useRealtimeSubscriptionStore()
 
-  const isSingleTx = useMemo(
-    () => orderTimePendingQueue.length === 0,
-    [orderTimePendingQueue],
-  )
-  const isPendingOrder = useMemo(
-    () => copiedOrderPendingQueue.length > 0,
-    [copiedOrderPendingQueue],
-  )
+  const isSingleTx = orderTimePendingQueue.length === 0
+  const isPendingOrder = copiedOrderPendingQueue.length > 0
 
   const selectRef = useRef<HTMLButtonElement>(null)
 

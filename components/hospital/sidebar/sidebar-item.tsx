@@ -16,7 +16,6 @@ import {
   Syringe,
 } from 'lucide-react'
 import { useParams, usePathname, useRouter } from 'next/navigation'
-import { useMemo } from 'react'
 
 // server component에서 props로 전달이 안됨
 export const ICON_MAPPER = {
@@ -48,18 +47,12 @@ export default function SidebarItem({
   const { hos_id } = useParams()
   const { push } = useRouter()
 
-  const isActive = useMemo(
-    () =>
-      pathname.split('/').at(3) === path ||
-      (!pathname.split('/').at(3) && name === '병원 홈'),
-    [name, path, pathname],
-  )
+  const isActive =
+    pathname.split('/').at(3) === path ||
+    (!pathname.split('/').at(3) && name === '병원 홈')
 
-  const dynamicPath = useMemo(
-    () =>
-      path === 'icu' ? `icu/${format(new Date(), 'yyyy-MM-dd')}/summary` : path,
-    [path],
-  )
+  const dynamicPath =
+    path === 'icu' ? `icu/${format(new Date(), 'yyyy-MM-dd')}/summary` : path
 
   return (
     <li key={name}>

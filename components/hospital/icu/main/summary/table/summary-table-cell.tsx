@@ -1,7 +1,6 @@
 import { TableCell } from '@/components/ui/table'
 import { CELL_COLORS } from '@/constants/hospital/icu/chart/colors'
 import type { SummaryOrder } from '@/types/icu/summary'
-import { useMemo } from 'react'
 
 const countPendingOrders = (orders: SummaryOrder[], time: number): number =>
   orders.filter((order) => {
@@ -19,10 +18,7 @@ export default function SummaryTableCell({
   orders: SummaryOrder[]
   isPatientOut: boolean
 }) {
-  const pendingCount = useMemo(
-    () => countPendingOrders(orders, time),
-    [orders, time],
-  )
+  const pendingCount = countPendingOrders(orders, time)
 
   return (
     <TableCell
