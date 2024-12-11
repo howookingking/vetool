@@ -40,11 +40,13 @@ export default function GroupForm({
   const {
     basicHosData: { groupListData },
   } = useBasicHosDataContext()
+
   useEffect(() => {
     if (!isDialogOpen) {
       form.reset({ groupList: currentGroups })
     }
-  }, [isDialogOpen, form, currentGroups])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDialogOpen, currentGroups])
 
   const handleSubmit = async (values: z.infer<typeof groupCheckFormSchema>) => {
     setIsSubmitting(true)

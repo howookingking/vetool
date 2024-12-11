@@ -1,5 +1,6 @@
 'use client'
 
+import { todoSchema } from '@/components/hospital/home/todo/todo-schema'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -28,7 +29,6 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { todoSchema } from '@/components/hospital/home/todo/todo-schema'
 
 export default function CreateTodoDialog({
   hosId,
@@ -58,7 +58,8 @@ export default function CreateTodoDialog({
         target_user: undefined,
       })
     }
-  }, [isDialogOpen, form])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDialogOpen])
 
   const handleCreateTodo = async (values: z.infer<typeof todoSchema>) => {
     const { todo_title, target_user } = values

@@ -34,21 +34,18 @@ export default function BirthDatePicker({
   const [calendarDate, setCalendarDate] = useState<Date | undefined>(undefined)
   const isInitialBirthSet = useRef(false)
 
-  const updateBirthDate = useCallback(
-    (date: Date) => {
-      form.setValue('birth', date)
-      setDateInput(format(date, 'yyyy-MM-dd'))
-      setCalendarDate(date)
+  const updateBirthDate = (date: Date) => {
+    form.setValue('birth', date)
+    setDateInput(format(date, 'yyyy-MM-dd'))
+    setCalendarDate(date)
 
-      const now = new Date()
-      const years = differenceInYears(now, date)
-      const months = differenceInMonths(now, date) % 12
+    const now = new Date()
+    const years = differenceInYears(now, date)
+    const months = differenceInMonths(now, date) % 12
 
-      setYearInput(years > 0 ? years.toString() : '')
-      setMonthInput(months > 0 ? months.toString() : '')
-    },
-    [form],
-  )
+    setYearInput(years > 0 ? years.toString() : '')
+    setMonthInput(months > 0 ? months.toString() : '')
+  }
 
   useEffect(() => {
     if (birth && !isInitialBirthSet.current) {
