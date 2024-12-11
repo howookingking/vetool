@@ -3,19 +3,18 @@ import { VitalResultIndication } from '@/components/hospital/icu/main/chart/sele
 import { Input } from '@/components/ui/input'
 import { TableCell } from '@/components/ui/table'
 import useAbnormalVital from '@/hooks/use-abnormal-vital'
+import useCellAutofocus from '@/hooks/use-cell-autofocus'
+import { useLongPress } from '@/hooks/use-long-press'
 import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
 import { TxLocalState } from '@/lib/store/icu/tx-mutation'
 import { cn } from '@/lib/utils/utils'
 import type { SelectedIcuOrder, Treatment, TxLog } from '@/types/icu/chart'
-import { useSearchParams } from 'next/navigation'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-
-const LONGPRESS_TIMEOUT = 600
+import React, { useCallback, useEffect, useState } from 'react'
 
 type CellProps = {
-  isHovered: boolean
-  onMouseEnter: (columnIndex: number) => void
-  onMouseLeave: () => void
+  // isHovered: boolean
+  // onMouseEnter: (columnIndex: number) => void
+  // onMouseLeave: () => void
   time: number
   treatment?: Treatment
   icuChartOrderId: string
@@ -33,7 +32,6 @@ type CellProps = {
       | OrderTimePendingQueue[]
       | ((prev: OrderTimePendingQueue[]) => OrderTimePendingQueue[]),
   ) => void
-  selectedTxPendingQueue: OrderTimePendingQueue[]
   isMutationCanceled: boolean
   setIsMutationCanceled: (isMutationCanceled: boolean) => void
   setTxStep: (txStep: 'closed' | 'detailInsert' | 'seletctUser') => void
@@ -50,12 +48,12 @@ type CellProps = {
         max: number
       }
     | undefined
+  hasOrder: boolean
+  hasComment: boolean
+  isInPendingQueue: boolean
 }
 
 export default function Cell({
-  isHovered,
-  onMouseEnter,
-  onMouseLeave,
   time,
   treatment,
   icuChartOrderId,
@@ -68,7 +66,6 @@ export default function Cell({
   toggleOrderTime,
   showOrderer,
   isGuidelineTime,
-  selectedTxPendingQueue,
   setSelectedTxPendingQueue,
   isMutationCanceled,
   setIsMutationCanceled,
@@ -77,24 +74,17 @@ export default function Cell({
   setSelectedOrderPendingQueue,
   orderTimePendingQueueLength,
   rowVitalRefRange,
+  hasComment,
+  hasOrder,
+  isInPendingQueue,
 }: CellProps) {
   const [briefTxResultInput, setBriefTxResultInput] = useState('')
   const [isFocused, setIsFocused] = useState(false)
-  const pressTimeoutRef = useRef<NodeJS.Timeout | null>(null)
-  const mouseDownTimeRef = useRef<number>(0)
-  const isLongPressRef = useRef(false)
-  const touchStartTimeRef = useRef<number>(0)
-  const isTouchEventRef = useRef(false)
   const { calcVitalResult, isAbnormalVital } = useAbnormalVital(
     treatment,
     rowVitalRefRange,
   )
-
-  const hasOrder = orderer !== '0'
-  const hasComment = !!treatment?.tx_comment
-  const isInPendingQueue = selectedTxPendingQueue.some(
-    (item) => item.orderId === icuChartOrderId && item.orderTime === time,
-  )
+  useCellAutofocus
 
   useEffect(() => {
     if (treatment?.tx_result || isMutationCanceled) {
@@ -102,25 +92,6 @@ export default function Cell({
       setIsMutationCanceled(false)
     }
   }, [isMutationCanceled, treatment?.tx_result, setIsMutationCanceled])
-
-  const cleanupPressTimeout = useCallback(() => {
-    // 타이머가 있다면 취소 및 참조 제거
-    if (pressTimeoutRef.current) {
-      clearTimeout(pressTimeoutRef.current)
-      pressTimeoutRef.current = null
-    }
-
-    // 상태 초기화
-    isLongPressRef.current = false
-    setIsFocused(false)
-  }, [])
-
-  // 컴포넌트 언마운트 시 클린업
-  useEffect(() => {
-    return () => {
-      cleanupPressTimeout()
-    }
-  }, [cleanupPressTimeout])
 
   const handleOpenTxDetail = useCallback(() => {
     setTxLocalState({
@@ -146,6 +117,10 @@ export default function Cell({
     orderType,
     orderName,
   ])
+  const longPressProps = useLongPress({
+    onLongPress: handleOpenTxDetail,
+    onClick: () => toggleCellInQueue(icuChartOrderId, time),
+  })
 
   const toggleCellInQueue = useCallback(
     (orderId: string, time: number) => {
@@ -175,89 +150,6 @@ export default function Cell({
       treatment?.tx_log,
       orderTimePendingQueueLength,
     ],
-  )
-
-  const handleTouchStart = useCallback(() => {
-    isTouchEventRef.current = true
-    setSelectedOrderPendingQueue([])
-
-    touchStartTimeRef.current = Date.now()
-
-    pressTimeoutRef.current = setTimeout(() => {
-      isLongPressRef.current = true
-      handleOpenTxDetail()
-    }, 800)
-  }, [handleOpenTxDetail, setSelectedOrderPendingQueue])
-
-  const handleTouchEnd = useCallback(() => {
-    const pressDuration = Date.now() - touchStartTimeRef.current
-
-    if (!isLongPressRef.current && pressDuration < 800) {
-      setIsFocused(true)
-    }
-
-    cleanupPressTimeout()
-    isTouchEventRef.current = false
-  }, [cleanupPressTimeout])
-
-  const handleTouchMove = useCallback(() => {
-    cleanupPressTimeout()
-  }, [cleanupPressTimeout])
-
-  const handleMouseDown = useCallback(
-    (e: React.MouseEvent<HTMLInputElement>) => {
-      // 우클릭무시
-      if (e.button === 2) return
-      // Order Pending Queue Reset
-      setSelectedOrderPendingQueue([])
-
-      mouseDownTimeRef.current = Date.now()
-
-      // 0.8s 동안 마우스를 누르고 있으면 LongPress
-      pressTimeoutRef.current = setTimeout(() => {
-        isLongPressRef.current = true
-        // 처치 상세 입력
-        handleOpenTxDetail()
-      }, LONGPRESS_TIMEOUT)
-    },
-    [handleOpenTxDetail, setSelectedOrderPendingQueue],
-  )
-
-  const handleMouseUp = useCallback(
-    (e: React.MouseEvent<HTMLInputElement>) => {
-      if (e.button === 2) return
-
-      // Mouse Down 시간 게산
-      const pressDuration = Date.now() - mouseDownTimeRef.current
-      cleanupPressTimeout()
-
-      // LongPress가 아닌 경우
-      if (!isLongPressRef.current && pressDuration < LONGPRESS_TIMEOUT) {
-        // 셀 다중 선택인 경우
-        if (e.metaKey || e.ctrlKey) {
-          e.currentTarget.blur()
-          toggleCellInQueue(icuChartOrderId, time)
-        }
-        setIsFocused(true)
-      }
-    },
-    [cleanupPressTimeout, icuChartOrderId, time, toggleCellInQueue],
-  )
-
-  const handleMouseLeave = useCallback(() => {
-    cleanupPressTimeout()
-    onMouseLeave()
-  }, [cleanupPressTimeout, onMouseLeave])
-
-  const handleRightClick = useCallback(
-    (e: React.MouseEvent<HTMLInputElement>) => {
-      e.preventDefault()
-      if (e.metaKey || e.ctrlKey) {
-        e.currentTarget.blur()
-        toggleOrderTime(icuChartOrderId, time)
-      }
-    },
-    [icuChartOrderId, time, toggleOrderTime],
   )
 
   const handleUpsertBriefTxResultInput = useCallback(async () => {
@@ -293,41 +185,38 @@ export default function Cell({
     orderName,
   ])
 
-  const handleKeyDown = useCallback(
+  const handleRightClick = useCallback(
+    (e: React.MouseEvent<HTMLInputElement>) => {
+      e.preventDefault()
+      if (e.metaKey || e.ctrlKey) {
+        e.currentTarget.blur()
+        toggleOrderTime(icuChartOrderId, time)
+      }
+    },
+    [icuChartOrderId, time, toggleOrderTime],
+  )
+
+  const handleEnterPress = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
         const target = e.currentTarget
-        setTimeout(() => {
-          if (target) {
-            target.blur()
-          }
-        }, 0)
+        setTimeout(() => target?.blur(), 0)
       }
     },
     [],
   )
 
-  // 처치표에서부터 이동시 해당 셀 포커싱
-  const searchParams = useSearchParams()
-  useEffect(() => {
-    const params = new URLSearchParams(searchParams)
-    const orderId = params.get('order-id')
-    const orderTime = params.get('time')
-    const cellInputId = document.getElementById(`${orderId}&${orderTime}`)
-    if (cellInputId) cellInputId.focus()
-  }, [searchParams])
-
   return (
     <TableCell className="handle p-0">
-      <div className="relative overflow-hidden">
+      <div className="relative">
         <Input
           id={`${icuChartOrderId}&${time}`}
           className={cn(
             isGuidelineTime && 'bg-amber-300/10',
-            isHovered && 'bg-muted/50',
+            // isHovered && 'bg-muted/50',
             hasOrder && 'bg-rose-400/10',
             isDone && 'bg-emerald-400/10',
-            isInPendingQueue && 'ring-2',
+            isInPendingQueue && 'ring-2 ring-primary',
             'h-11 rounded-none border-none px-1 text-center outline-none ring-inset focus-visible:ring-2 focus-visible:ring-primary',
           )}
           disabled={preview}
@@ -337,16 +226,10 @@ export default function Cell({
             setIsFocused(false)
             handleUpsertBriefTxResultInput()
           }}
-          onKeyDown={handleKeyDown}
-          onMouseDown={handleMouseDown}
-          onMouseUp={handleMouseUp}
+          onKeyDown={handleEnterPress}
           onContextMenu={handleRightClick}
-          onMouseLeave={handleMouseLeave}
-          onMouseEnter={() => onMouseEnter(time)}
           onFocus={() => setIsFocused(true)}
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-          onTouchMove={handleTouchMove}
+          {...longPressProps}
         />
         <div
           className={cn(

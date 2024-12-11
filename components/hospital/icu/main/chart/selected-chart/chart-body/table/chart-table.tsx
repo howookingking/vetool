@@ -1,9 +1,8 @@
 'use client'
 
 import DeleteOrdersAlertDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/delete-orders-alert-dialog'
-import SortableOrderWrapper from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/sortable-order-wrapper'
 import TxUpsertDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/tx-upsert-dialog'
-import { Table, TableRow } from '@/components/ui/table'
+import { Table } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
 import useIsCommandPressed from '@/hooks/use-is-command-pressed'
 import useIsMobile from '@/hooks/use-is-mobile'
@@ -16,11 +15,18 @@ import { formatOrders } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
 import { RefObject, useCallback, useEffect, useState } from 'react'
-import { Sortable } from 'react-sortablejs'
 import ChartTableBody from './chart-table-body/chart-table-body'
-import OrderRowTitle from './chart-table-body/order-row-title'
+import SortingOrderRows from './chart-table-body/sorting-order-rows'
 import ChartTableHeader from './chart-table-header/chart-table-header'
 import AddTemplateOrderDialog from './order/template/add-template-order-dialog'
+
+type ChartTableProps = {
+  chartData: SelectedChart
+  preview?: boolean
+  isExport?: boolean
+  cellRef?: RefObject<HTMLTableRowElement>
+  isTouchMove?: boolean
+}
 
 export default function ChartTable({
   chartData,
@@ -28,13 +34,7 @@ export default function ChartTable({
   isExport,
   cellRef,
   isTouchMove,
-}: {
-  chartData: SelectedChart
-  preview?: boolean
-  isExport?: boolean
-  cellRef?: RefObject<HTMLTableRowElement>
-  isTouchMove?: boolean
-}) {
+}: ChartTableProps) {
   const {
     icu_chart_id,
     orders,
@@ -43,21 +43,21 @@ export default function ChartTable({
   } = chartData
 
   const [isSorting, setIsSorting] = useState(false)
-  const [orderWidth, setOrderWidth] = useLocalStorage('orderWidth', 400)
   const [sortedOrders, setSortedOrders] = useState<SelectedIcuOrder[]>(orders)
   const [isDeleteOrdersDialogOpen, setIsDeleteOrdersDialogOpen] =
     useState(false)
+
+  const [orderWidth, setOrderWidth] = useLocalStorage('orderWidth', 400)
   const {
-    orderStep,
     setOrderStep,
     reset,
     selectedTxPendingQueue,
     orderTimePendingQueue,
     selectedOrderPendingQueue,
     copiedOrderPendingQueue,
+    orderStep,
     isEditOrderMode,
   } = useIcuOrderStore()
-
   const isMobile = useIsMobile()
   const {
     basicHosData: { showOrderer, vetsListData, vitalRefRange },
@@ -69,16 +69,6 @@ export default function ChartTable({
       setSortedOrders(orders)
     }
   }, [isSorting, orders])
-
-  // 기능 없에고 반응보고 결정
-  // ----- 표에서 수직 안내선 -----
-  const [hoveredColumn, setHoveredColumn] = useState<number | null>(null)
-  const handleColumnHover = useCallback(
-    (columnIndex: number) => setHoveredColumn(columnIndex),
-    [],
-  )
-  const handleColumnLeave = useCallback(() => setHoveredColumn(null), [])
-  // --------------------------
 
   const handleUpsertOrderTimesWithoutOrderer = useCallback(async () => {
     const formattedOrders = formatOrders(orderTimePendingQueue)
@@ -173,16 +163,7 @@ export default function ChartTable({
     condition: selectedOrderPendingQueue.length > 0,
     callback: () => setIsDeleteOrdersDialogOpen(true),
   })
-
-  const handleReorder = useCallback(
-    (event: Sortable.SortableEvent) => {
-      const newOrders = [...sortedOrders]
-      const [movedOrder] = newOrders.splice(event.oldIndex as number, 1)
-      newOrders.splice(event.newIndex as number, 0, movedOrder)
-      setSortedOrders(newOrders)
-    },
-    [sortedOrders],
-  )
+  // --------- 다중 오더 붙여넣기, 삭제 기능 ---------
 
   return (
     <Table className="border">
@@ -208,30 +189,17 @@ export default function ChartTable({
       />
 
       {isSorting ? (
-        <SortableOrderWrapper
-          orders={sortedOrders}
-          onOrdersChange={setSortedOrders}
-          onSortEnd={handleReorder}
-        >
-          {sortedOrders.map((order, index) => (
-            <TableRow className="relative divide-x" key={order.order_id}>
-              <OrderRowTitle
-                index={index}
-                order={order}
-                preview={preview}
-                isSorting={isSorting}
-                orderWidth={orderWidth}
-                isMobile={isMobile}
-                species={species}
-              />
-            </TableRow>
-          ))}
-        </SortableOrderWrapper>
+        <SortingOrderRows
+          isMobile={isMobile}
+          isSorting={isSorting}
+          orderWidth={orderWidth}
+          preview={preview}
+          setSortedOrders={setSortedOrders}
+          sortedOrders={sortedOrders}
+          species={species}
+        />
       ) : (
         <ChartTableBody
-          handleColumnHover={handleColumnHover}
-          handleColumnLeave={handleColumnLeave}
-          hoveredColumn={hoveredColumn}
           isSorting={isSorting}
           sortedOrders={sortedOrders}
           preview={preview}

@@ -1,8 +1,5 @@
 import { Button } from '@/components/ui/button'
 import { TableCell } from '@/components/ui/table'
-import { toast } from '@/components/ui/use-toast'
-import useShorcutKey from '@/hooks/use-shortcut-key'
-import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { cn, parsingOrderName, renderOrderSubComment } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
@@ -19,6 +16,16 @@ type OrderRowTitleProps = {
   species: string
   orderWidth: number
   isTouchMove?: boolean
+  reset?: () => void
+  setSelectedOrderPendingQueue?: (
+    updater:
+      | Partial<SelectedIcuOrder>[]
+      | ((prev: Partial<SelectedIcuOrder>[]) => Partial<SelectedIcuOrder>[]),
+  ) => void
+  setOrderStep?: (orderStep: 'closed' | 'upsert' | 'selectOrderer') => void
+  setIsEditOrderMode?: (isEditOrderMode: boolean) => void
+  setSelectedChartOrder?: (chartOrder: Partial<SelectedIcuOrder>) => void
+  isInOrderPendingQueue?: boolean
 }
 
 export default function OrderRowTitle({
@@ -31,40 +38,25 @@ export default function OrderRowTitle({
   species,
   orderWidth,
   isTouchMove,
+  reset,
+  setSelectedOrderPendingQueue,
+  setOrderStep,
+  setIsEditOrderMode,
+  setSelectedChartOrder,
+  isInOrderPendingQueue,
 }: OrderRowTitleProps) {
-  const { order_comment, order_type, order_id, order_name } = order
+  const { order_comment, order_type, order_name } = order
+
   const {
     basicHosData: { orderColorsData, orderFontSizeData },
   } = useBasicHosDataContext()
-  const {
-    setOrderStep,
-    setIsEditOrderMode,
-    setSelectedChartOrder,
-    selectedOrderPendingQueue,
-    setSelectedOrderPendingQueue,
-    setCopiedOrderPendingQueue,
-    reset,
-  } = useIcuOrderStore()
-
-  useShorcutKey({
-    keys: ['c'],
-    condition: selectedOrderPendingQueue.length > 0,
-    callback: () => {
-      setCopiedOrderPendingQueue(selectedOrderPendingQueue)
-      setSelectedOrderPendingQueue([])
-      toast({
-        title: '오더 복사 완료',
-        description: '붙여넣기 할 차트로 이동해주세요',
-      })
-    },
-  })
 
   const handleClickOrderTitle = useCallback(
     (e: React.MouseEvent) => {
       // 오더 다중 선택시
       if (e.metaKey || e.ctrlKey) {
         e.preventDefault()
-        setSelectedOrderPendingQueue((prev) => {
+        setSelectedOrderPendingQueue!((prev) => {
           const existingIndex = prev.findIndex(
             (item) => item.order_id === order.order_id,
           )
@@ -78,10 +70,10 @@ export default function OrderRowTitle({
       }
 
       // 오더 수정하기 위해 다이얼로그 여는 경우
-      reset()
-      setOrderStep('upsert')
-      setIsEditOrderMode(true)
-      setSelectedChartOrder(order)
+      reset!()
+      setOrderStep!('upsert')
+      setIsEditOrderMode!(true)
+      setSelectedChartOrder!(order)
     },
     [
       order,
@@ -93,11 +85,6 @@ export default function OrderRowTitle({
     ],
   )
 
-  const isInOrderPendingQueue = selectedOrderPendingQueue.some(
-    (order) => order.order_id === order_id,
-  )
-  const isOptimisticOrder = order.order_id.startsWith('temp_order_id')
-
   // -------- 바이탈 참조범위 --------
   const foundVital = vitalRefRange?.find(
     (vital) => vital.order_name === order.order_name,
@@ -106,6 +93,8 @@ export default function OrderRowTitle({
     ? foundVital[species as keyof Omit<VitalRefRange, 'order_name'>]
     : undefined
   // -------- 바이탈 참조범위 --------
+
+  const isOptimisticOrder = order.order_id.startsWith('temp_order_id')
 
   return (
     <TableCell
@@ -133,7 +122,7 @@ export default function OrderRowTitle({
             : isSorting
               ? 'cursor-grab'
               : 'cursor-pointer',
-          isInOrderPendingQueue && 'ring-4 ring-inset',
+          isInOrderPendingQueue && 'ring-4 ring-inset ring-primary',
         )}
         style={{
           width: isTouchMove ? 200 : isMobile ? 300 : orderWidth,
