@@ -1,15 +1,19 @@
 import OrderRowCells from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-row-cells'
 import OrderRowTitle from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-row-title'
 import { TableRow } from '@/components/ui/table'
-import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
+import { toast } from '@/components/ui/use-toast'
+import useShorcutKey from '@/hooks/use-shortcut-key'
+import useVerticalGuideline from '@/hooks/use-vertical-guideline'
+import {
+  OrderTimePendingQueue,
+  useIcuOrderStore,
+} from '@/lib/store/icu/icu-order'
+import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
 import type { VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { RefObject } from 'react'
 
 type CellsRowTitlesProps = {
-  hoveredColumn: number | null
-  handleColumnHover: (columnIndex: number) => void
-  handleColumnLeave: () => void
   sortedOrders: SelectedIcuOrder[]
   isSorting: boolean
   preview?: boolean
@@ -26,9 +30,6 @@ type CellsRowTitlesProps = {
 }
 
 export default function OrderRows({
-  hoveredColumn,
-  handleColumnHover,
-  handleColumnLeave,
   sortedOrders,
   isSorting,
   preview,
@@ -43,38 +44,93 @@ export default function OrderRows({
   isTouchMove,
   isMobile,
 }: CellsRowTitlesProps) {
-  return sortedOrders.map((order, index) => (
-    <TableRow
-      className="relative w-full divide-x"
-      key={order.order_id}
-      ref={cellRef}
-    >
-      <OrderRowTitle
-        index={index}
-        order={order}
-        preview={preview}
-        isSorting={isSorting}
-        vitalRefRange={vitalRefRange}
-        species={species}
-        orderWidth={orderwidth}
-        isTouchMove={isTouchMove}
-        isMobile={isMobile}
-      />
-      {!isSorting && (
-        <OrderRowCells
-          hoveredColumn={hoveredColumn}
-          handleColumnHover={handleColumnHover}
-          handleColumnLeave={handleColumnLeave}
-          preview={preview}
-          order={order}
-          showOrderer={showOrderer}
-          selectedTxPendingQueue={selectedTxPendingQueue}
-          orderStep={orderStep}
-          orderTimePendingQueueLength={orderTimePendingQueueLength}
-          vitalRefRange={vitalRefRange}
-          species={species}
-        />
-      )}
-    </TableRow>
-  ))
+  const { handleColumnHover, handleColumnLeave, hoveredColumn } =
+    useVerticalGuideline()
+
+  const {
+    setOrderStep,
+    setIsEditOrderMode,
+    setSelectedChartOrder,
+    selectedOrderPendingQueue,
+    setSelectedOrderPendingQueue,
+    setCopiedOrderPendingQueue,
+    reset,
+    setOrderTimePendingQueue,
+    setSelectedTxPendingQueue,
+  } = useIcuOrderStore()
+
+  const {
+    isMutationCanceled,
+    setIsMutationCanceled,
+    setTxStep,
+    setTxLocalState,
+  } = useTxMutationStore()
+
+  useShorcutKey({
+    keys: ['c'],
+    condition: selectedOrderPendingQueue.length > 0,
+    callback: () => {
+      setCopiedOrderPendingQueue(selectedOrderPendingQueue)
+      setSelectedOrderPendingQueue([])
+      toast({
+        title: '오더 복사 완료',
+        description: '붙여넣기 할 차트로 이동해주세요',
+      })
+    },
+  })
+
+  return (
+    <>
+      {sortedOrders.map((order, index) => {
+        const isInOrderPendingQueue = selectedOrderPendingQueue.some(
+          (o) => o.order_id === order.order_id,
+        )
+        return (
+          <TableRow
+            className="relative w-full divide-x"
+            key={order.order_id}
+            ref={cellRef}
+          >
+            <OrderRowTitle
+              isInOrderPendingQueue={isInOrderPendingQueue}
+              index={index}
+              order={order}
+              preview={preview}
+              isSorting={isSorting}
+              vitalRefRange={vitalRefRange}
+              species={species}
+              orderWidth={orderwidth}
+              isTouchMove={isTouchMove}
+              isMobile={isMobile}
+              reset={reset}
+              setSelectedOrderPendingQueue={setSelectedOrderPendingQueue}
+              setOrderStep={setOrderStep}
+              setIsEditOrderMode={setIsEditOrderMode}
+              setSelectedChartOrder={setSelectedChartOrder}
+            />
+            <OrderRowCells
+              hoveredColumn={hoveredColumn}
+              handleColumnHover={handleColumnHover}
+              handleColumnLeave={handleColumnLeave}
+              preview={preview}
+              order={order}
+              showOrderer={showOrderer}
+              selectedTxPendingQueue={selectedTxPendingQueue}
+              orderStep={orderStep}
+              orderTimePendingQueueLength={orderTimePendingQueueLength}
+              vitalRefRange={vitalRefRange}
+              species={species}
+              setSelectedOrderPendingQueue={setSelectedOrderPendingQueue}
+              setOrderTimePendingQueue={setOrderTimePendingQueue}
+              setSelectedTxPendingQueue={setSelectedTxPendingQueue}
+              isMutationCanceled={isMutationCanceled}
+              setIsMutationCanceled={setIsMutationCanceled}
+              setTxStep={setTxStep}
+              setTxLocalState={setTxLocalState}
+            />
+          </TableRow>
+        )
+      })}
+    </>
+  )
 }

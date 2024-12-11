@@ -1,16 +1,15 @@
 import Cell from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/cell'
 import NoFecalOrUrineAlert from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/no-fecal-urine-alert'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
-import {
-  type OrderTimePendingQueue,
-  useIcuOrderStore,
-} from '@/lib/store/icu/icu-order'
-import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
+import { type OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
+import { TxLocalState } from '@/lib/store/icu/tx-mutation'
 import type { VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
-type CellsRowProps = {
+const GUIDLINE_TIMES = [2, 10, 18]
+
+type OrderRowCellsProps = {
   hoveredColumn: number | null
   handleColumnHover: (columnIndex: number) => void
   handleColumnLeave: () => void
@@ -22,6 +21,25 @@ type CellsRowProps = {
   orderTimePendingQueueLength: number
   vitalRefRange: VitalRefRange[]
   species: string
+  setSelectedOrderPendingQueue: (
+    updater:
+      | Partial<SelectedIcuOrder>[]
+      | ((prev: Partial<SelectedIcuOrder>[]) => Partial<SelectedIcuOrder>[]),
+  ) => void
+  setOrderTimePendingQueue: (
+    updater:
+      | OrderTimePendingQueue[]
+      | ((prev: OrderTimePendingQueue[]) => OrderTimePendingQueue[]),
+  ) => void
+  setSelectedTxPendingQueue: (
+    updater:
+      | OrderTimePendingQueue[]
+      | ((prev: OrderTimePendingQueue[]) => OrderTimePendingQueue[]),
+  ) => void
+  isMutationCanceled: boolean
+  setIsMutationCanceled: (isMutationCanceled: boolean) => void
+  setTxStep: (txStep: 'closed' | 'detailInsert' | 'seletctUser') => void
+  setTxLocalState: (updates: Partial<TxLocalState>) => void
 }
 
 export default function OrderRowCells({
@@ -36,20 +54,15 @@ export default function OrderRowCells({
   orderTimePendingQueueLength,
   vitalRefRange,
   species,
-}: CellsRowProps) {
+  setSelectedOrderPendingQueue,
+  setOrderTimePendingQueue,
+  setSelectedTxPendingQueue,
+  isMutationCanceled,
+  setIsMutationCanceled,
+  setTxStep,
+  setTxLocalState,
+}: OrderRowCellsProps) {
   const { order_times, order_id, treatments, order_type, order_name } = order
-  const {
-    setSelectedOrderPendingQueue,
-    setOrderTimePendingQueue,
-    setSelectedTxPendingQueue,
-  } = useIcuOrderStore()
-
-  const {
-    isMutationCanceled,
-    setIsMutationCanceled,
-    setTxStep,
-    setTxLocalState,
-  } = useTxMutationStore()
 
   const [orderTimeState, setOrderTimeState] = useState(order_times)
 
@@ -86,15 +99,12 @@ export default function OrderRowCells({
     [setOrderTimePendingQueue, selectedTxPendingQueue],
   )
 
-  const rowVitalRefRange = useMemo(() => {
-    const foundVital = vitalRefRange.find(
-      (vital) => vital.order_name === order.order_name,
-    )
-    return foundVital
-      ? foundVital[species as keyof Omit<VitalRefRange, 'order_name'>]
-      : undefined
-  }, [order.order_name, species, vitalRefRange])
-
+  const foundVital = vitalRefRange.find(
+    (vital) => vital.order_name === order.order_name,
+  )
+  const rowVitalRefRange = foundVital
+    ? foundVital[species as keyof Omit<VitalRefRange, 'order_name'>]
+    : undefined
   const noFecalOrUrineResult =
     (order.order_name === '배변' || order.order_name === '배뇨') &&
     order.treatments.length === 0
@@ -110,7 +120,12 @@ export default function OrderRowCells({
           .reverse()
           .find((treatment) => treatment.time === time)
         const isHovered = hoveredColumn === index + 1
-        const isGuidelineTime = [2, 10, 18].includes(time)
+        const isGuidelineTime = GUIDLINE_TIMES.includes(time)
+        const hasOrder = orderer !== '0'
+        const hasComment = !!tx?.tx_comment
+        const isInPendingQueue = selectedTxPendingQueue.some(
+          (t) => t.orderId === order.order_id && t.orderTime === time,
+        )
 
         return (
           <Cell
@@ -131,7 +146,6 @@ export default function OrderRowCells({
             showOrderer={showOrderer}
             isGuidelineTime={isGuidelineTime}
             setSelectedTxPendingQueue={setSelectedTxPendingQueue}
-            selectedTxPendingQueue={selectedTxPendingQueue}
             isMutationCanceled={isMutationCanceled}
             setIsMutationCanceled={setIsMutationCanceled}
             setTxStep={setTxStep}
@@ -139,6 +153,9 @@ export default function OrderRowCells({
             setSelectedOrderPendingQueue={setSelectedOrderPendingQueue}
             orderTimePendingQueueLength={orderTimePendingQueueLength}
             rowVitalRefRange={rowVitalRefRange}
+            hasOrder={hasOrder}
+            hasComment={hasComment}
+            isInPendingQueue={isInPendingQueue}
           />
         )
       })}

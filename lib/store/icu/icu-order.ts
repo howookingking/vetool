@@ -14,7 +14,7 @@ type IcuOrderState = {
     orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit',
   ) => void
 
-  isEditOrderMode?: boolean
+  isEditOrderMode: boolean
   setIsEditOrderMode: (isEditOrderMode: boolean) => void
 
   selectedChartOrder: Partial<SelectedIcuOrder>

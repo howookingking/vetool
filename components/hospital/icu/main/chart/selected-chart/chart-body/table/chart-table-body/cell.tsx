@@ -33,7 +33,6 @@ type CellProps = {
       | OrderTimePendingQueue[]
       | ((prev: OrderTimePendingQueue[]) => OrderTimePendingQueue[]),
   ) => void
-  selectedTxPendingQueue: OrderTimePendingQueue[]
   isMutationCanceled: boolean
   setIsMutationCanceled: (isMutationCanceled: boolean) => void
   setTxStep: (txStep: 'closed' | 'detailInsert' | 'seletctUser') => void
@@ -50,6 +49,9 @@ type CellProps = {
         max: number
       }
     | undefined
+  hasOrder: boolean
+  hasComment: boolean
+  isInPendingQueue: boolean
 }
 
 export default function Cell({
@@ -68,7 +70,6 @@ export default function Cell({
   toggleOrderTime,
   showOrderer,
   isGuidelineTime,
-  selectedTxPendingQueue,
   setSelectedTxPendingQueue,
   isMutationCanceled,
   setIsMutationCanceled,
@@ -77,6 +78,9 @@ export default function Cell({
   setSelectedOrderPendingQueue,
   orderTimePendingQueueLength,
   rowVitalRefRange,
+  hasComment,
+  hasOrder,
+  isInPendingQueue,
 }: CellProps) {
   const [briefTxResultInput, setBriefTxResultInput] = useState('')
   const [isFocused, setIsFocused] = useState(false)
@@ -88,12 +92,6 @@ export default function Cell({
   const { calcVitalResult, isAbnormalVital } = useAbnormalVital(
     treatment,
     rowVitalRefRange,
-  )
-
-  const hasOrder = orderer !== '0'
-  const hasComment = !!treatment?.tx_comment
-  const isInPendingQueue = selectedTxPendingQueue.some(
-    (item) => item.orderId === icuChartOrderId && item.orderTime === time,
   )
 
   useEffect(() => {
