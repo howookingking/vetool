@@ -16,9 +16,9 @@ export const useLongPress = ({
 
   const start = useCallback(
     (event: React.MouseEvent | React.TouchEvent) => {
-      if (event.type.includes('touch')) {
-        event.preventDefault()
-      }
+      // if (event.type.includes('touch')) {
+      //   event.preventDefault()
+      // }
 
       isLongPress.current = false
 
@@ -32,9 +32,9 @@ export const useLongPress = ({
 
   const end = useCallback(
     (event: React.MouseEvent | React.TouchEvent) => {
-      if (event.type.includes('touch')) {
-        event.preventDefault()
-      }
+      // if (event.type.includes('touch')) {
+      //   event.preventDefault()
+      // }
 
       if (timerRef.current) {
         clearTimeout(timerRef.current)
@@ -50,9 +50,9 @@ export const useLongPress = ({
   )
 
   const cancel = useCallback((event: React.MouseEvent | React.TouchEvent) => {
-    if (event.type.includes('touch')) {
-      event.preventDefault()
-    }
+    // if (event.type.includes('touch')) {
+    //   event.preventDefault()
+    // }
 
     if (timerRef.current) {
       clearTimeout(timerRef.current)
