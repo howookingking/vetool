@@ -31,7 +31,7 @@ export default function SortingOrderRows({
       newOrders.splice(event.newIndex as number, 0, movedOrder)
       setSortedOrders(newOrders)
     },
-    [sortedOrders],
+    [sortedOrders, setSortedOrders],
   )
 
   return (
