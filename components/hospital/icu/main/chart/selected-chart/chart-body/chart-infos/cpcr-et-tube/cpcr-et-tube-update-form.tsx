@@ -1,5 +1,3 @@
-'use client'
-
 import DialogFooterButtons from '@/components/common/dialog-footer-buttons'
 import { cpcrEtTubeSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/cpcr-et-tube/cpcr-et-tube-schema'
 import {
@@ -26,6 +24,10 @@ import { type Dispatch, type SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
+const TUBE_THICKNESS = [
+  2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10,
+]
+
 export default function CpcrEtTubeUpdateForm({
   icuIoId,
   cpcr,
@@ -37,10 +39,6 @@ export default function CpcrEtTubeUpdateForm({
   etTube: string
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>
 }) {
-  const TUBE_THICKNESS = [
-    2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10,
-  ]
-
   const [isUpdating, setIsUpdating] = useState(false)
 
   const handleUpdateCpcrEtTube = async (

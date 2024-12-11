@@ -68,7 +68,8 @@ export default function CreateOrUpdateNoticeDialog({
         color: oldNoticeColor ?? '#ffffff',
       })
     }
-  }, [isDialogOpen, form, isEdit, oldNoticeText, oldNoticeColor])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDialogOpen, isEdit, oldNoticeText, oldNoticeColor])
 
   const handleUpsertNotice = async (values: z.infer<typeof noticeSchema>) => {
     const { color, notice } = values

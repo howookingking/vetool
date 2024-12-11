@@ -53,20 +53,13 @@ export default function RerDer({
     basicHosData: { rerCalcMethod },
   } = useBasicHosDataContext()
 
-  const calculatedRer = useMemo(
-    () =>
-      calculateRer(
-        weight,
-        species as 'canine' | 'feline',
-        rerCalcMethod as 'a' | 'b',
-      ),
-    [rerCalcMethod, species, weight],
+  const calculatedRer = calculateRer(
+    weight,
+    species as 'canine' | 'feline',
+    rerCalcMethod as 'a' | 'b',
   )
 
-  const calculatedDer = useMemo(
-    () => (Number(calculatedRer) * Number(factor)).toFixed(0),
-    [calculatedRer, factor],
-  )
+  const calculatedDer = (Number(calculatedRer) * Number(factor)).toFixed(0)
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

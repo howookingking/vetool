@@ -61,9 +61,9 @@ export default function FluidOrderField({
 
     form.setValue('icu_chart_order_name', fullValue)
   }, [
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     displayFluidName,
     localFold,
-    form,
     localMaintenaceRateCalcMethod,
     localAdditives,
     watchedOrderName,
