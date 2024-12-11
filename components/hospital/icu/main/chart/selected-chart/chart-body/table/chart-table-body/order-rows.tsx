@@ -3,7 +3,6 @@ import OrderRowTitle from '@/components/hospital/icu/main/chart/selected-chart/c
 import { TableRow } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
 import useShorcutKey from '@/hooks/use-shortcut-key'
-import useVerticalGuideline from '@/hooks/use-vertical-guideline'
 import {
   OrderTimePendingQueue,
   useIcuOrderStore,
@@ -44,9 +43,9 @@ export default function OrderRows({
   isTouchMove,
   isMobile,
 }: CellsRowTitlesProps) {
-  const { handleColumnHover, handleColumnLeave, hoveredColumn } =
-    useVerticalGuideline()
-
+  // 세로 hover 가이드라인 기능 없에고 반응보기로
+  // const { handleColumnHover, handleColumnLeave, hoveredColumn } =
+  //   useVerticalGuideline()
   const {
     setOrderStep,
     setIsEditOrderMode,
@@ -109,9 +108,6 @@ export default function OrderRows({
               setSelectedChartOrder={setSelectedChartOrder}
             />
             <OrderRowCells
-              hoveredColumn={hoveredColumn}
-              handleColumnHover={handleColumnHover}
-              handleColumnLeave={handleColumnLeave}
               preview={preview}
               order={order}
               showOrderer={showOrderer}

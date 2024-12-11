@@ -122,7 +122,7 @@ export default function OrderRowTitle({
             : isSorting
               ? 'cursor-grab'
               : 'cursor-pointer',
-          isInOrderPendingQueue && 'ring-4 ring-inset',
+          isInOrderPendingQueue && 'ring-4 ring-inset ring-primary',
         )}
         style={{
           width: isTouchMove ? 200 : isMobile ? 300 : orderWidth,

@@ -10,9 +10,9 @@ import { useCallback, useEffect, useState } from 'react'
 const GUIDLINE_TIMES = [2, 10, 18]
 
 type OrderRowCellsProps = {
-  hoveredColumn: number | null
-  handleColumnHover: (columnIndex: number) => void
-  handleColumnLeave: () => void
+  // hoveredColumn: number | null
+  // handleColumnHover: (columnIndex: number) => void
+  // handleColumnLeave: () => void
   preview?: boolean
   order: SelectedIcuOrder
   showOrderer: boolean
@@ -43,9 +43,6 @@ type OrderRowCellsProps = {
 }
 
 export default function OrderRowCells({
-  handleColumnHover,
-  handleColumnLeave,
-  hoveredColumn,
   preview,
   order,
   showOrderer,
@@ -119,7 +116,6 @@ export default function OrderRowCells({
         const tx = treatments
           .reverse()
           .find((treatment) => treatment.time === time)
-        const isHovered = hoveredColumn === index + 1
         const isGuidelineTime = GUIDLINE_TIMES.includes(time)
         const hasOrder = orderer !== '0'
         const hasComment = !!tx?.tx_comment
@@ -129,9 +125,6 @@ export default function OrderRowCells({
 
         return (
           <Cell
-            isHovered={isHovered}
-            onMouseEnter={() => handleColumnHover(index + 1)}
-            onMouseLeave={handleColumnLeave}
             preview={preview}
             key={time}
             time={time}
