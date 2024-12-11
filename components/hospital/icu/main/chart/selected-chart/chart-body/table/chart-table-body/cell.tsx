@@ -84,7 +84,7 @@ export default function Cell({
     treatment,
     rowVitalRefRange,
   )
-  useCellAutofocus
+  useCellAutofocus()
 
   useEffect(() => {
     if (treatment?.tx_result || isMutationCanceled) {
