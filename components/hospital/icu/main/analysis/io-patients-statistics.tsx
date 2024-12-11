@@ -1,7 +1,9 @@
 'use client'
 
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts'
-
+import IoPatientsCalendar from '@/components/hospital/icu/main/analysis/io-patients/io-patients-calendar'
+import IoPatientsGroupSelect from '@/components/hospital/icu/main/analysis/io-patients/io-patients-group-select'
+import IoPatientsVetSelect from '@/components/hospital/icu/main/analysis/io-patients/io-patients-vet-select'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -16,42 +18,16 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart'
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { useMemo, useState } from 'react'
+  calculateDailyAverage,
+  calculateTotals,
+  filterIoPatients,
+  groupDataByDate,
+} from '@/lib/utils/analysis'
 import { IcuAnalysisData } from '@/types/icu/analysis'
-
-type ChartData = {
-  date: string
-  all: number
-  canine: number
-  feline: number
-}
-
-const transformData = (originalData: IcuAnalysisData[]) => {
-  const dataMap = new Map<string, ChartData>()
-
-  originalData.forEach((item) => {
-    const date = item.target_date
-    if (!dataMap.has(date)) {
-      dataMap.set(date, { date, all: 0, canine: 0, feline: 0 })
-    }
-
-    const data = dataMap.get(date)!
-    data.all += 1
-
-    if (item.patient.species === 'canine') data.canine += 1
-    if (item.patient.species === 'feline') data.feline += 1
-  })
-
-  return Array.from(dataMap.values()).sort((a, b) =>
-    a.date.localeCompare(b.date),
-  )
-}
+import { format } from 'date-fns'
+import { Dispatch, SetStateAction, useState } from 'react'
+import { DateRange } from 'react-day-picker'
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts'
 
 const chartConfig = {
   views: {
@@ -73,79 +49,89 @@ const chartConfig = {
 
 export default function IoPatientsStatistics({
   analysisData,
+  setStartDate,
+  setEndDate,
+  groups,
+  vets,
 }: {
   analysisData: IcuAnalysisData[]
+  setStartDate: Dispatch<SetStateAction<string>>
+  setEndDate: Dispatch<SetStateAction<string>>
+  groups: string[]
+  vets: string[]
 }) {
+  const [selectedGroup, setSelectedGroup] = useState<string | null>(null)
+  const [selectedVet, setSelectedVet] = useState<string | null>(null)
   const [activeChart, setActiveChart] =
     useState<keyof typeof chartConfig>('all')
-  const [timeRange, setTimeRange] = useState('7d')
-  const chartData = transformData(analysisData)
-
-  const filteredData = chartData.filter((item) => {
-    const date = new Date(item.date)
-    const now = new Date()
-    let daysToSubtract = 7
-
-    if (timeRange === '30d') daysToSubtract = 30
-
-    now.setDate(now.getDate() - daysToSubtract)
-
-    return date >= now
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
+    from: new Date(new Date().setDate(new Date().getDate() - 7)),
+    to: new Date(),
   })
 
-  const total = useMemo(
-    () => ({
-      all: chartData.reduce((acc, curr) => acc + curr.all, 0),
-      canine: chartData.reduce((acc, curr) => acc + curr.canine, 0),
-      feline: chartData.reduce((acc, curr) => acc + curr.feline, 0),
-    }),
-    [chartData],
+  const filteredData = filterIoPatients(
+    analysisData,
+    selectedGroup,
+    selectedVet,
   )
+  const groupedByDateData = groupDataByDate(filteredData)
+  const uniquePatientsTotal = calculateTotals(filteredData)
+  const dailyAverages = calculateDailyAverage(groupedByDateData, dateRange)
+
+  const handleDateRangeChange = (range: DateRange | undefined) => {
+    setDateRange(range)
+
+    if (range?.from && range?.to) {
+      setStartDate(format(range.from, 'yyyy-MM-dd'))
+      setEndDate(format(range.to, 'yyyy-MM-dd'))
+    }
+  }
 
   return (
     <Card className="m-2">
       <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
           <CardTitle>입원 환자 통계</CardTitle>
-          <CardDescription>지난 한 달간의 입원 환자 수</CardDescription>
+          <CardDescription>{`기간 내 일일 평균: ${dailyAverages[activeChart].toLocaleString()}마리`}</CardDescription>
         </div>
 
-        <div className="flex flex-col gap-1 px-6 py-5 sm:py-6">
-          <Select value={timeRange} onValueChange={setTimeRange}>
-            <SelectTrigger
-              className="w-[160px] rounded-lg sm:ml-auto"
-              aria-label="Select a value"
-            >
-              <SelectValue placeholder="Last 3 months" />
-            </SelectTrigger>
-            <SelectContent className="rounded-xl">
-              <SelectItem value="30d" className="rounded-lg">
-                지난 1개월
-              </SelectItem>
-              <SelectItem value="7d" className="rounded-lg">
-                지난 일주일
-              </SelectItem>
-            </SelectContent>
-          </Select>
+        <div className="flex items-center space-x-4 p-4">
+          <IoPatientsCalendar
+            dateRange={dateRange}
+            handleDateRangeChange={handleDateRangeChange}
+          />
+          <IoPatientsGroupSelect
+            groups={groups}
+            selectedGroup={selectedGroup}
+            setSelectedGroup={setSelectedGroup}
+          />
+          <IoPatientsVetSelect
+            vets={vets}
+            selectedVet={selectedVet}
+            setSelectedVet={setSelectedVet}
+          />
         </div>
 
         <div className="flex">
           {['all', 'canine', 'feline'].map((key) => {
             const chart = key as keyof typeof chartConfig
             return (
-              <button
+              <Button
                 key={chart}
+                variant="outline"
                 data-active={activeChart === chart}
-                className="flex flex-1 flex-col items-center justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
+                className="flex h-full flex-1 flex-col items-center justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
                 onClick={() => setActiveChart(chart)}
               >
                 <span className="text-xs text-muted-foreground">
                   {chartConfig[chart].label}
                 </span>
                 <span className="text-lg font-bold leading-none sm:text-3xl">
-                  {total[key as keyof typeof total].toLocaleString()}
+                  {uniquePatientsTotal[
+                    key as keyof typeof uniquePatientsTotal
+                  ].toLocaleString()}
                 </span>
-              </button>
+              </Button>
             )
           })}
         </div>
@@ -158,7 +144,7 @@ export default function IoPatientsStatistics({
         >
           <LineChart
             accessibilityLayer
-            data={filteredData}
+            data={groupedByDateData}
             margin={{
               left: 12,
               right: 12,
@@ -169,7 +155,7 @@ export default function IoPatientsStatistics({
               dataKey="date"
               tickLine={false}
               tickMargin={6}
-              minTickGap={timeRange === '7d' ? 1 : 32}
+              minTickGap={1}
               tickFormatter={(value) => {
                 const date = new Date(value)
                 return date.toLocaleDateString('ko-KR', {

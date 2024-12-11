@@ -1475,6 +1475,15 @@ export type Database = {
         }
         Returns: Json
       }
+      get_icu_analysis_data2: {
+        Args: {
+          hos_id_input: string
+          target_date_input: string
+          start_date_input: string
+          end_date_input: string
+        }
+        Returns: Json
+      }
       get_icu_bookmarked_data: {
         Args: {
           hos_id_input: string
