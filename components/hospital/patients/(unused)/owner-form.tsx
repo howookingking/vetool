@@ -1,5 +1,3 @@
-'use client'
-
 import HelperTooltip from '@/components/common/helper-tooltip'
 import { ownerFormSchema } from '@/components/hospital/patients/(unused)/owner-schema'
 import { Button } from '@/components/ui/button'

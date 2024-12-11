@@ -1,5 +1,3 @@
-'use client'
-
 import { registerIcuPatientFormSchema } from '@/components/hospital/icu/header/register-dialog/register-icu/icu-schema'
 import {
   AlertDialog,
@@ -88,7 +86,8 @@ export default function RegisterIcuForm({
       form.setValue('in_date', range.from)
       form.setValue('out_due_date', range.to)
     }
-  }, [form, range])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [range?.from, range?.to])
 
   const handleSubmit = async (
     values: z.infer<typeof registerIcuPatientFormSchema>,
