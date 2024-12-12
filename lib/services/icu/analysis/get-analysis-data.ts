@@ -12,7 +12,7 @@ export const getAnalysisData = async (
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .rpc('get_icu_analysis_data2', {
+    .rpc('get_icu_analysis_data', {
       hos_id_input: hosId,
       target_date_input: targetDate,
       start_date_input: startDate,
@@ -24,5 +24,5 @@ export const getAnalysisData = async (
     throw new Error(error.message)
   }
 
-  return data.filter((chart) => chart.patient.name !== null)
+  return data ? data.filter((chart) => chart.patient.name !== null) : []
 }

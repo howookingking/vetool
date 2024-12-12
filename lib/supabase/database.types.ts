@@ -110,7 +110,7 @@ export type Database = {
             foreignKeyName: "drug_doses_drug_id_fkey"
             columns: ["drug_id"]
             isOneToOne: false
-            referencedRelation: "drug_vetool"
+            referencedRelation: "drug\bs_raw_material"
             referencedColumns: ["drug_id"]
           },
           {
@@ -182,7 +182,7 @@ export type Database = {
             foreignKeyName: "drug_products_rows_drug_id_fkey"
             columns: ["drug_id"]
             isOneToOne: false
-            referencedRelation: "drug_vetool"
+            referencedRelation: "drug\bs_raw_material"
             referencedColumns: ["drug_id"]
           },
           {
@@ -193,36 +193,6 @@ export type Database = {
             referencedColumns: ["hos_id"]
           },
         ]
-      }
-      drug_vetool: {
-        Row: {
-          created_at: string
-          drug_id: string
-          drug_name: string
-          tag: string | null
-          vetool_drug_description: string | null
-          vetool_drug_indication: string | null
-          vetool_drug_side_effect: string | null
-        }
-        Insert: {
-          created_at?: string
-          drug_id?: string
-          drug_name: string
-          tag?: string | null
-          vetool_drug_description?: string | null
-          vetool_drug_indication?: string | null
-          vetool_drug_side_effect?: string | null
-        }
-        Update: {
-          created_at?: string
-          drug_id?: string
-          drug_name?: string
-          tag?: string | null
-          vetool_drug_description?: string | null
-          vetool_drug_indication?: string | null
-          vetool_drug_side_effect?: string | null
-        }
-        Relationships: []
       }
       drugs_hospital: {
         Row: {
@@ -257,7 +227,7 @@ export type Database = {
             foreignKeyName: "drugs_description_drug_id_fkey"
             columns: ["drug_id"]
             isOneToOne: false
-            referencedRelation: "drug_vetool"
+            referencedRelation: "drug\bs_raw_material"
             referencedColumns: ["drug_id"]
           },
           {
@@ -268,6 +238,36 @@ export type Database = {
             referencedColumns: ["hos_id"]
           },
         ]
+      }
+      "drug\bs_raw_material": {
+        Row: {
+          created_at: string
+          drug_description: string | null
+          drug_id: string
+          drug_indication: string | null
+          drug_name: string
+          drug_side_effect: string | null
+          tag: string | null
+        }
+        Insert: {
+          created_at?: string
+          drug_description?: string | null
+          drug_id?: string
+          drug_indication?: string | null
+          drug_name: string
+          drug_side_effect?: string | null
+          tag?: string | null
+        }
+        Update: {
+          created_at?: string
+          drug_description?: string | null
+          drug_id?: string
+          drug_indication?: string | null
+          drug_name?: string
+          drug_side_effect?: string | null
+          tag?: string | null
+        }
+        Relationships: []
       }
       hospital_diet_pin: {
         Row: {
@@ -814,6 +814,7 @@ export type Database = {
           icu_chart_tx_images: string[] | null
           icu_chart_tx_log: Json[] | null
           icu_chart_tx_result: string | null
+          is_crucial: boolean
           time: number
           updated_at: string | null
         }
@@ -826,6 +827,7 @@ export type Database = {
           icu_chart_tx_images?: string[] | null
           icu_chart_tx_log?: Json[] | null
           icu_chart_tx_result?: string | null
+          is_crucial?: boolean
           time: number
           updated_at?: string | null
         }
@@ -838,6 +840,7 @@ export type Database = {
           icu_chart_tx_images?: string[] | null
           icu_chart_tx_log?: Json[] | null
           icu_chart_tx_result?: string | null
+          is_crucial?: boolean
           time?: number
           updated_at?: string | null
         }
@@ -1469,13 +1472,6 @@ export type Database = {
         Returns: Json
       }
       get_icu_analysis_data: {
-        Args: {
-          hos_id_input: string
-          target_date_input: string
-        }
-        Returns: Json
-      }
-      get_icu_analysis_data2: {
         Args: {
           hos_id_input: string
           target_date_input: string

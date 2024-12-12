@@ -6,7 +6,7 @@ export const txDetailRegisterFormSchema = z.object({
     .trim()
     .min(1, { message: '처치 결과값을 입력해주세요' }),
   comment: z.string().optional(),
-  isNotificationChecked: z.boolean().default(false).optional(),
+  isCrucialChecked: z.boolean().default(false).optional(),
 })
 
 export const userLogFormSchema = z.object({
