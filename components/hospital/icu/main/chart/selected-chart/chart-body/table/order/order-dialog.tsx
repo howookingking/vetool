@@ -101,7 +101,7 @@ export default function OrderDialog({
 
         {orderStep === 'upsert' && (
           <Tabs defaultValue="default">
-            <TabsList className="grid max-w-full grid-cols-2 overflow-x-auto whitespace-nowrap">
+            <TabsList className="hidden max-w-full grid-cols-2 overflow-x-auto whitespace-nowrap md:grid">
               <TabsTrigger value="default">직접 입력</TabsTrigger>
               <TabsTrigger value="template" disabled={isEditOrderMode}>
                 템플릿 오더 추가

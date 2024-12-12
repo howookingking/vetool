@@ -10,7 +10,7 @@ export default function GotoPatchItemsButton() {
 
   return (
     <Button
-      className="absolute left-2 top-1.5 z-20 sm:left-16"
+      className="fixed left-2 top-1.5 z-20 sm:left-16"
       variant={'outline'}
       onClick={() =>
         push(`/${pathname.split('/').slice(1, 3).join('/')}/patches`)

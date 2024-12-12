@@ -1,5 +1,6 @@
 import { TableCell, TableRow } from '@/components/ui/table'
 import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
+import useIsMobile from '@/hooks/use-is-mobile'
 import {
   Home,
   Syringe,
@@ -37,11 +38,12 @@ export default function PatchItem({
   createdAt: string
 }) {
   const foundCategory = SIDEBAR_ITEMS.find((item) => item.path === category)
+  const isMobile = useIsMobile()
 
   return (
     <TableRow className="hover:bg-muted/50">
       {/* 카테고리 */}
-      <TableCell className="flex flex-col items-start gap-2 pl-2 sm:flex-row sm:items-center sm:pl-8">
+      <TableCell className="flex flex-col items-center gap-2 pl-2 md:flex-row md:pl-8">
         {
           ICON_MAPPER[
             (foundCategory?.iconName as keyof typeof ICON_MAPPER) ?? 'Monitor'
@@ -55,13 +57,13 @@ export default function PatchItem({
       </TableCell>
 
       {/* 제목 */}
-      <TableCell className="max-w-[240px] overflow-hidden truncate text-center hover:underline">
+      <TableCell className="max-w-[200px] overflow-hidden truncate text-center hover:underline">
         <Link href={`patches/${id}`}>{title}</Link>
       </TableCell>
 
       {/* 작성일 */}
-      <TableCell className="pr-2 text-right text-[10px] text-muted-foreground sm:pr-8 sm:text-sm">
-        {createdAt.slice(0, 10)}
+      <TableCell className="pr-2 text-right text-[10px] text-muted-foreground md:pr-8 md:text-sm">
+        {isMobile ? createdAt.slice(2, 10) : createdAt.slice(0, 10)}
       </TableCell>
     </TableRow>
   )
