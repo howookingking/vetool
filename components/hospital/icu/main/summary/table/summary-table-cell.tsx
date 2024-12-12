@@ -14,7 +14,6 @@ const findhasCrucialTx = (orders: SummaryOrder[], time: number): boolean =>
     const hasTx = order.treatments.some(
       (tx) => tx.time === time && tx.is_crucial,
     )
-    if (hasTx) console.log(time)
 
     return hasTx
   })

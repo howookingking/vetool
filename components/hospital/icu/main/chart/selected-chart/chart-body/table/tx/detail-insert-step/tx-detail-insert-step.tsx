@@ -156,7 +156,7 @@ export default function TxDetailInsertStep() {
                 </FormControl>
                 <div className="">
                   <FormLabel htmlFor="notification">
-                    중요한 처치입니다
+                    확인이 필요한 처치입니다
                   </FormLabel>
                 </div>
               </FormItem>
