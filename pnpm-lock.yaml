@@ -139,9 +139,6 @@ importers:
       react-hook-form:
         specifier: ^7.54.0
         version: 7.54.0(react@19.0.0-rc-02c0e824-20241028)
-      react-is:
-        specifier: 19.0.0-rc-02c0e824-20241028
-        version: 19.0.0-rc-02c0e824-20241028
       react-markdown:
         specifier: ^9.0.1
         version: 9.0.1(@types/react@18.3.16)(react@19.0.0-rc-02c0e824-20241028)
