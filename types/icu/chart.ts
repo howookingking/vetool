@@ -86,13 +86,7 @@ export type SelectedIcuOrder = {
   order_name: string
   order_type: string
   order_times: string[]
-  treatments: {
-    time: number
-    tx_id: string
-    tx_log: TxLog | null
-    tx_result: string | null
-    tx_comment: string | null
-  }[]
+  treatments: Treatment[]
   order_comment: string | null
   id: number
 }
@@ -103,6 +97,7 @@ export type Treatment = {
   tx_log: TxLog | null
   tx_result: string | null
   tx_comment: string | null
+  is_crucial: boolean
 }
 
 export type IcuSidebarIoData = {

@@ -9,6 +9,16 @@ const countPendingOrders = (orders: SummaryOrder[], time: number): number =>
     return orderTime !== '0' && !hasTx
   }).length
 
+const findhasCrucialTx = (orders: SummaryOrder[], time: number): boolean =>
+  orders.some((order) => {
+    const hasTx = order.treatments.some(
+      (tx) => tx.time === time && tx.is_crucial,
+    )
+    if (hasTx) console.log(time)
+
+    return hasTx
+  })
+
 export default function SummaryTableCell({
   time,
   orders,
@@ -19,10 +29,11 @@ export default function SummaryTableCell({
   isPatientOut: boolean
 }) {
   const pendingCount = countPendingOrders(orders, time)
+  const hasCrucialTx = findhasCrucialTx(orders, time)
 
   return (
     <TableCell
-      className="text-center"
+      className="relative text-center"
       style={{
         backgroundColor:
           pendingCount > 0
@@ -33,6 +44,10 @@ export default function SummaryTableCell({
       }}
     >
       {pendingCount}
+
+      {hasCrucialTx && (
+        <span className="absolute bottom-0 left-0 text-[10px]">❗️</span>
+      )}
     </TableCell>
   )
 }

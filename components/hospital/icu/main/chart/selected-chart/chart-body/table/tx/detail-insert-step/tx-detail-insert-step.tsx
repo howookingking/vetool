@@ -1,6 +1,7 @@
 import TxLog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/detail-insert-step/tx-log'
 import { txDetailRegisterFormSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/tx-schema'
 import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   DialogClose,
   DialogDescription,
@@ -40,7 +41,7 @@ export default function TxDetailInsertStep() {
     defaultValues: {
       result: txLocalState?.txResult ?? '',
       comment: txLocalState?.txComment ?? '',
-      isNotificationChecked: false,
+      isCrucialChecked: txLocalState?.isCrucialChecked ?? false,
     },
   })
 
@@ -52,7 +53,7 @@ export default function TxDetailInsertStep() {
     setTxLocalState({
       txResult: values.result,
       txComment: values.comment,
-      // isNotificationChecked: values.isNotificationChecked,
+      isCrucialChecked: values.isCrucialChecked,
     })
 
     setTxStep('seletctUser')
@@ -140,11 +141,11 @@ export default function TxDetailInsertStep() {
 
           {txLocalState?.txLog?.length && <TxLog logs={txLocalState?.txLog} />}
 
-          {/* <FormField
+          <FormField
             control={form.control}
-            name="isNotificationChecked"
+            name="isCrucialChecked"
             render={({ field }) => (
-              <FormItem className="flex items-start space-x-2 space-y-0">
+              <FormItem className="flex items-center space-x-2 space-y-0">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
@@ -153,12 +154,14 @@ export default function TxDetailInsertStep() {
                     name="notification"
                   />
                 </FormControl>
-                <div className="space-y-1 leading-none">
-                  <FormLabel htmlFor="notification">알림 보내기</FormLabel>
+                <div className="">
+                  <FormLabel htmlFor="notification">
+                    중요한 처치입니다
+                  </FormLabel>
                 </div>
               </FormItem>
             )}
-          /> */}
+          />
 
           <div className="flex justify-between">
             {(txLocalState?.txId || hasTxOrder) && (
