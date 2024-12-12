@@ -92,9 +92,9 @@ export default function BookmarkForm({
       })
     }
   }, [
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     bookmarkData?.template_comment,
     bookmarkData?.template_name,
-    form,
     isDialogOpen,
   ])
 

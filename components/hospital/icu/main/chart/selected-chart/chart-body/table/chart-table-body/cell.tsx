@@ -36,11 +36,6 @@ type CellProps = {
   setIsMutationCanceled: (isMutationCanceled: boolean) => void
   setTxStep: (txStep: 'closed' | 'detailInsert' | 'seletctUser') => void
   setTxLocalState: (updates: Partial<TxLocalState>) => void
-  setSelectedOrderPendingQueue: (
-    updater:
-      | Partial<SelectedIcuOrder>[]
-      | ((prev: Partial<SelectedIcuOrder>[]) => Partial<SelectedIcuOrder>[]),
-  ) => void
   orderTimePendingQueueLength: number
   rowVitalRefRange:
     | {
@@ -71,7 +66,6 @@ export default function Cell({
   setIsMutationCanceled,
   setTxStep,
   setTxLocalState,
-  setSelectedOrderPendingQueue,
   orderTimePendingQueueLength,
   rowVitalRefRange,
   hasComment,
@@ -151,7 +145,7 @@ export default function Cell({
     ],
   )
 
-  const handleUpsertBriefTxResultInput = useCallback(async () => {
+  const handleUpsertBriefTxResult = useCallback(async () => {
     if ((treatment?.tx_result ?? '') === briefTxResultInput.trim()) {
       setBriefTxResultInput('')
       return
@@ -207,7 +201,7 @@ export default function Cell({
 
   return (
     <TableCell className="handle p-0">
-      <div className="group relative [&:focus-within_.tx-result-overlay]:opacity-20">
+      <div className="relative [&:focus-within_.tx-result-overlay]:opacity-20">
         <Input
           id={`${icuChartOrderId}&${time}`}
           className={cn(
@@ -221,7 +215,7 @@ export default function Cell({
           disabled={preview}
           value={briefTxResultInput}
           onChange={(e) => setBriefTxResultInput(e.target.value)}
-          onBlur={handleUpsertBriefTxResultInput}
+          onBlur={handleUpsertBriefTxResult}
           onKeyDown={handleEnterPress}
           onContextMenu={handleRightClick}
           {...longPressProps}

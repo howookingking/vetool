@@ -70,7 +70,8 @@ export default function EditTodoDialog({
         target_user: undefined,
       })
     }
-  }, [isTodoDialogOpen, form])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isTodoDialogOpen])
 
   const handleCreateTodo = async (values: z.infer<typeof todoSchema>) => {
     const { todo_title, target_user } = values

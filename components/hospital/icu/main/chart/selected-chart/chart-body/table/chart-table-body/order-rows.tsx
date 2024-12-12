@@ -116,7 +116,6 @@ export default function OrderRows({
               orderTimePendingQueueLength={orderTimePendingQueueLength}
               vitalRefRange={vitalRefRange}
               species={species}
-              setSelectedOrderPendingQueue={setSelectedOrderPendingQueue}
               setOrderTimePendingQueue={setOrderTimePendingQueue}
               setSelectedTxPendingQueue={setSelectedTxPendingQueue}
               isMutationCanceled={isMutationCanceled}

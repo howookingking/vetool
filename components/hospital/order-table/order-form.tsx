@@ -108,6 +108,7 @@ export default function OrderForm({
       setIsSubmitting(false)
     },
     [
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       hos_id,
       selectedChartOrder.order_id,
       refresh,
@@ -118,7 +119,6 @@ export default function OrderForm({
       orderIndex,
       addTemplateOrder,
       updateTemplateOrder,
-      form,
     ],
   )
 

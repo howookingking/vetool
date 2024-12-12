@@ -21,11 +21,6 @@ type OrderRowCellsProps = {
   orderTimePendingQueueLength: number
   vitalRefRange: VitalRefRange[]
   species: string
-  setSelectedOrderPendingQueue: (
-    updater:
-      | Partial<SelectedIcuOrder>[]
-      | ((prev: Partial<SelectedIcuOrder>[]) => Partial<SelectedIcuOrder>[]),
-  ) => void
   setOrderTimePendingQueue: (
     updater:
       | OrderTimePendingQueue[]
@@ -51,7 +46,6 @@ export default function OrderRowCells({
   orderTimePendingQueueLength,
   vitalRefRange,
   species,
-  setSelectedOrderPendingQueue,
   setOrderTimePendingQueue,
   setSelectedTxPendingQueue,
   isMutationCanceled,
@@ -143,7 +137,6 @@ export default function OrderRowCells({
             setIsMutationCanceled={setIsMutationCanceled}
             setTxStep={setTxStep}
             setTxLocalState={setTxLocalState}
-            setSelectedOrderPendingQueue={setSelectedOrderPendingQueue}
             orderTimePendingQueueLength={orderTimePendingQueueLength}
             rowVitalRefRange={rowVitalRefRange}
             hasOrder={hasOrder}

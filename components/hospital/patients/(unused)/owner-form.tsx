@@ -54,7 +54,8 @@ export default function OwnerForm({
       owner_phone_number: ownerPhoneNumber,
       owner_memo: ownerMemo,
     })
-  }, [form, ownerAddress, hosOwnerId, ownerMemo, ownerName, ownerPhoneNumber])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ownerAddress, hosOwnerId, ownerMemo, ownerName, ownerPhoneNumber])
 
   const handleSubmit = async (values: z.infer<typeof ownerFormSchema>) => {
     const {
