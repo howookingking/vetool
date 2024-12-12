@@ -5,7 +5,7 @@ import DataTable from '@/components/ui/data-table'
 import type { AdminDietData } from '@/types/adimin'
 import AddAndPinDropDown from './pin/add-and-pin-dropdown'
 
-export default function DietDataTable({
+export default function DietDataTables({
   dietsData,
   hosId,
   pinnedDiets,
