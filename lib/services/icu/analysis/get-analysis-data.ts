@@ -24,5 +24,5 @@ export const getAnalysisData = async (
     throw new Error(error.message)
   }
 
-  return data.filter((chart) => chart.patient.name !== null)
+  return data ? data.filter((chart) => chart.patient.name !== null) : []
 }

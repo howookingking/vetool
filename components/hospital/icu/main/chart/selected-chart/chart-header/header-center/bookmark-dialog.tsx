@@ -15,7 +15,7 @@ import { Edit, Star } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
 
-const LazyBookmarkForm = dynamic(() => import('./bookmart-form'), {
+const LazyBookmarkForm = dynamic(() => import('./bookmark-form'), {
   ssr: false,
   loading: () => <LargeLoaderCircle className="h-[204px]" />,
 })

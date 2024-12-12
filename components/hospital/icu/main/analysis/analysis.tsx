@@ -1,5 +1,6 @@
 'use client'
 
+import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import GroupByStatistics from '@/components/hospital/icu/main/analysis/group-by-statistics'
 import IoPatientsStatistics from '@/components/hospital/icu/main/analysis/io-patients-statistics'
 import VetAssignmentStatistics from '@/components/hospital/icu/main/analysis/vet-assignment-statistics'
@@ -58,21 +59,31 @@ export default function Analysis() {
   })()
 
   return (
-    <div>
-      <IoPatientsStatistics
-        analysisData={analysisData}
-        setStartDate={setStartDate}
-        setEndDate={setEndDate}
-        groups={groups}
-        vets={vets}
-      />
+    <>
+      {analysisData.length === 0 ? (
+        <NoResultSquirrel
+          text="분석할 차트 데이터가 없습니다"
+          className="h-icu-chart-main flex-col"
+          size="lg"
+        />
+      ) : (
+        <div>
+          <IoPatientsStatistics
+            analysisData={analysisData}
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
+            groups={groups}
+            vets={vets}
+          />
 
-      <div className="grid grid-cols-2 pb-12">
-        <VetAssignmentStatistics analysisData={analysisData} />
-        <GroupByStatistics analysisData={analysisData} />
-      </div>
+          <div className="grid grid-cols-2 pb-12">
+            <VetAssignmentStatistics analysisData={analysisData} />
+            <GroupByStatistics analysisData={analysisData} />
+          </div>
 
-      {/* <IoDurationStatistics analysisData={analysisData} /> */}
-    </div>
+          {/* <IoDurationStatistics analysisData={analysisData} /> */}
+        </div>
+      )}
+    </>
   )
 }
