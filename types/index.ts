@@ -27,7 +27,6 @@ export type VetoolPatches =
 export type Params = { slug: string }
 export type DrugProductsRows =
   Database['public']['Tables']['drug_products']['Row']
-export type DrugRows = Database['public']['Tables']['drug_vetool']['Row']
 export type DrugDoses = Database['public']['Tables']['drug_doses']['Row']
 export type DrugDescription =
   Database['public']['Tables']['drugs_hospital']['Row']

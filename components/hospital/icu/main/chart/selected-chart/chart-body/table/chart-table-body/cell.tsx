@@ -110,6 +110,7 @@ export default function Cell({
     treatment?.tx_result,
     orderType,
     orderName,
+    treatment?.is_crucial,
   ])
   const longPressProps = useLongPress({
     onLongPress: handleOpenTxDetail,
