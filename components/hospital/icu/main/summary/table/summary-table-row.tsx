@@ -51,6 +51,7 @@ export default function SummaryTableRow({ summary }: { summary: SummaryData }) {
 
         <span className="shrink-0 text-xs">{hospitalizationDays}일차</span>
       </TableCell>
+
       {TIMES.map((time) => (
         <SummaryTableCell
           key={time}
