@@ -87,9 +87,7 @@ export default function OrderForm({
         updateTemplateOrder(updatedOrder, orderIndex)
         setOrderStep('closed')
       } else {
-        if (mode === 'addTemplate') {
-          addTemplateOrder(updatedOrder)
-        }
+        addTemplateOrder(updatedOrder)
 
         if (mode === 'editTemplate') {
           setOrderStep('closed')
