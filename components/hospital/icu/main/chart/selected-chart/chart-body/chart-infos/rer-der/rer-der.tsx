@@ -15,7 +15,7 @@ import { calculateRer } from '@/lib/calculators/rer'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { Zap } from 'lucide-react'
 import dynamic from 'next/dynamic'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const LazyRerDerForm = dynamic(
   () =>

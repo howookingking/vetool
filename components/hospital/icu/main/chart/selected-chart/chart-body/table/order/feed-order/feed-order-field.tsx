@@ -17,7 +17,7 @@ import { getPinnedDietData } from '@/lib/services/icu/chart/get-diets'
 import { cn } from '@/lib/utils/utils'
 import type { PinnedDiet } from '@/types/icu/chart'
 import { Calculator } from 'lucide-react'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -67,14 +67,10 @@ export default function FeedOrderField({
       .finally(() => setIsLoading(false))
   }, [hosId, species, setDiets, setIsLoading])
 
-  const mappedDietList = useMemo(
-    () =>
-      diets.map((diet) => ({
-        value: `${diet.name} (${diet.company})`,
-        label: diet.name,
-      })),
-    [diets],
-  )
+  const mappedDietList = diets.map((diet) => ({
+    value: `${diet.name} (${diet.company})`,
+    label: diet.name,
+  }))
 
   useEffect(() => {
     const foundDiet = diets.find((diet) => diet.name === searchedDiet)
@@ -93,8 +89,8 @@ export default function FeedOrderField({
     const feedOrderName = `${searchedDiet}#${localDietDescription}`
 
     form.setValue('icu_chart_order_name', feedOrderName)
-  }, [
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
     searchedDiet,
     localDietDescription,
     setLocalDietDescription,

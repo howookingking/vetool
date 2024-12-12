@@ -22,7 +22,6 @@ import { deleteIcuChartTx } from '@/lib/services/icu/chart/tx-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -45,9 +44,7 @@ export default function TxDetailInsertStep() {
     },
   })
 
-  const hasTxOrder = useMemo(() => {
-    return selectedTxPendingQueue.some((order) => order.txId)
-  }, [selectedTxPendingQueue])
+  const hasTxOrder = selectedTxPendingQueue.some((order) => order.txId)
 
   const handleNextStep = async (
     values: z.infer<typeof txDetailRegisterFormSchema>,

@@ -6,7 +6,7 @@ import {
   CommandList,
 } from '@/components/ui/command'
 import { Command as CommandPrimitive } from 'cmdk'
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import { Input } from './input'
 import { Popover, PopoverAnchor, PopoverContent } from './popover'
 import { Skeleton } from './skeleton'
@@ -38,16 +38,12 @@ export function AutoComplete<T extends string>({
 }: Props<T>) {
   const [open, setOpen] = useState(false)
 
-  const labels = useMemo(
-    () =>
-      items.reduce(
-        (acc, item) => {
-          acc[item.value] = item.label
-          return acc
-        },
-        {} as Record<string, string>,
-      ),
-    [items],
+  const labels = items.reduce(
+    (acc, item) => {
+      acc[item.value] = item.label
+      return acc
+    },
+    {} as Record<string, string>,
   )
 
   const reset = () => {

@@ -4,7 +4,6 @@ import useIsMobile from '@/hooks/use-is-mobile'
 import { cn, parsingOrderName } from '@/lib/utils/utils'
 import type { IcuOrders, IcuTxs } from '@/types'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
-import { useMemo } from 'react'
 
 type TxTableCellOrder = Pick<
   IcuOrders,
