@@ -79,7 +79,6 @@ export default function Cell({
   isInPendingQueue,
 }: CellProps) {
   const [briefTxResultInput, setBriefTxResultInput] = useState('')
-  const [isFocused, setIsFocused] = useState(false)
   const { calcVitalResult, isAbnormalVital } = useAbnormalVital(
     treatment,
     rowVitalRefRange,
@@ -208,7 +207,7 @@ export default function Cell({
 
   return (
     <TableCell className="handle p-0">
-      <div className="relative">
+      <div className="group relative [&:focus-within_.tx-result-overlay]:opacity-20">
         <Input
           id={`${icuChartOrderId}&${time}`}
           className={cn(
@@ -222,21 +221,12 @@ export default function Cell({
           disabled={preview}
           value={briefTxResultInput}
           onChange={(e) => setBriefTxResultInput(e.target.value)}
-          onBlur={() => {
-            setIsFocused(false)
-            handleUpsertBriefTxResultInput()
-          }}
+          onBlur={handleUpsertBriefTxResultInput}
           onKeyDown={handleEnterPress}
           onContextMenu={handleRightClick}
-          onFocus={() => setIsFocused(true)}
           {...longPressProps}
         />
-        <div
-          className={cn(
-            'absolute inset-0 -z-10 flex items-center justify-center',
-            isFocused && 'opacity-20',
-          )}
-        >
+        <div className="tx-result-overlay absolute inset-0 -z-10 flex items-center justify-center">
           {treatment?.tx_result ?? ''}
         </div>
 
