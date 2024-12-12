@@ -41,7 +41,12 @@ export const useLongPress = ({
       }
 
       if (!isLongPress.current && onClick) {
-        if (event.ctrlKey || event.metaKey) {
+        // Only handle Ctrl/Cmd + left click
+        if (
+          'button' in event &&
+          event.button === 0 &&
+          (event.ctrlKey || event.metaKey)
+        ) {
           onClick()
         }
       }
