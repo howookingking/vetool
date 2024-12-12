@@ -35,7 +35,7 @@ export default function IcuSettingsCard({
           type="button"
           onClick={onSubmit}
           disabled={isUpdating}
-          className="mr-auto"
+          className="ml-auto md:ml-0 md:mr-auto"
         >
           {buttonName}
           <LoaderCircle
