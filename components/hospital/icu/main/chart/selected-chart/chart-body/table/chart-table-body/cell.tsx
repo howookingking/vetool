@@ -182,8 +182,10 @@ export default function Cell({
     (e: React.MouseEvent<HTMLInputElement>) => {
       e.preventDefault()
       if (e.metaKey || e.ctrlKey) {
-        e.currentTarget.blur()
-        toggleOrderTime(icuChartOrderId, time)
+        if (e.button === 2) {
+          e.currentTarget.blur()
+          toggleOrderTime(icuChartOrderId, time)
+        }
       }
     },
     [icuChartOrderId, time, toggleOrderTime],
