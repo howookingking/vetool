@@ -1,4 +1,4 @@
-import DietDataTable from '@/components/hospital/admin/diet/diet-data-table'
+import DietDataTables from '@/components/hospital/admin/diet/diet-data-tables'
 import { getDiets, getPinnedDiets } from '@/lib/services/admin/diet/diet'
 import { getHosName } from '@/lib/services/hospital-home/get-hos-name'
 
@@ -12,7 +12,7 @@ export default async function AdminFoodSettingsPage(props: {
 
   return (
     <div className="relative">
-      <DietDataTable
+      <DietDataTables
         dietsData={dietsData}
         hosId={params.hos_id}
         pinnedDiets={pinnedDiets}
