@@ -89,8 +89,8 @@ export default function FeedOrderField({
     const feedOrderName = `${searchedDiet}#${localDietDescription}`
 
     form.setValue('icu_chart_order_name', feedOrderName)
-  }, [
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
     searchedDiet,
     localDietDescription,
     setLocalDietDescription,

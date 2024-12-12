@@ -34,7 +34,7 @@ export default function BirthDatePicker({
   const [calendarDate, setCalendarDate] = useState<Date | undefined>(undefined)
   const isInitialBirthSet = useRef(false)
 
-  const updateBirthDate = (date: Date) => {
+  const updateBirthDate = useCallback((date: Date) => {
     form.setValue('birth', date)
     setDateInput(format(date, 'yyyy-MM-dd'))
     setCalendarDate(date)
@@ -45,7 +45,8 @@ export default function BirthDatePicker({
 
     setYearInput(years > 0 ? years.toString() : '')
     setMonthInput(months > 0 ? months.toString() : '')
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     if (birth && !isInitialBirthSet.current) {

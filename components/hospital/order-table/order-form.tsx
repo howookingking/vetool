@@ -107,8 +107,8 @@ export default function OrderForm({
       reset()
       setIsSubmitting(false)
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [
-      // eslint-disable-next-line react-hooks/exhaustive-deps
       hos_id,
       selectedChartOrder.order_id,
       refresh,

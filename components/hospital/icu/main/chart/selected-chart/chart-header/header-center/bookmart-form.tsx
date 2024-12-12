@@ -91,8 +91,8 @@ export default function BookmarkForm({
         bookmark_comment: bookmarkData?.template_comment || undefined,
       })
     }
-  }, [
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
     bookmarkData?.template_comment,
     bookmarkData?.template_name,
     isDialogOpen,

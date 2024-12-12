@@ -46,8 +46,8 @@ export default function DrugFormField({
       `${drugName}#${drugDosage}#${drugRoute}#${drugTime}`,
     )
     form.setValue('icu_chart_order_comment', drugTotalAmount + drugTotalUnit)
-  }, [
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
     drugName,
     drugDosage,
     drugRoute,
