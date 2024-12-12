@@ -84,7 +84,8 @@ export default function AddTemplateOrdersButton({
 
       setSelectedOrderPendingQueue([])
     }
-  }, [isDialogOpen, form, setSelectedOrderPendingQueue])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDialogOpen, setSelectedOrderPendingQueue])
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

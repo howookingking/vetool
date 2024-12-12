@@ -3,7 +3,7 @@
 import TxTable from '@/components/hospital/icu/main/tx-table/tx-table'
 import TxTableFilter from '@/components/hospital/icu/main/tx-table/tx-table-filter'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 
 const TX_TABLE_BACKGROUD_COLORS = [
   '#fef2f2',
@@ -57,14 +57,13 @@ export default function TxTableContainer({
     }))
     .filter((data) => data.orders.length > 0)
 
-  const chartBackgroundMap = useMemo(
-    () =>
-      txTableData.reduce<{ [key: string]: string }>((acc, item, index) => {
-        acc[item.icu_charts.icu_chart_id] =
-          TX_TABLE_BACKGROUD_COLORS[index % TX_TABLE_BACKGROUD_COLORS.length]
-        return acc
-      }, {}),
-    [txTableData],
+  const chartBackgroundMap = txTableData.reduce<{ [key: string]: string }>(
+    (acc, item, index) => {
+      acc[item.icu_charts.icu_chart_id] =
+        TX_TABLE_BACKGROUD_COLORS[index % TX_TABLE_BACKGROUD_COLORS.length]
+      return acc
+    },
+    {},
   )
 
   return (

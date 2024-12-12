@@ -6,7 +6,7 @@ import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { updateOrderColor } from '@/lib/services/admin/icu/order-color'
 import type { IcuOrderColors } from '@/types/adimin'
 import { useParams, useRouter } from 'next/navigation'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useState } from 'react'
 import IcuSettingsCard from '../icu-settings-card'
 
 export default function OrderColorSetting({
@@ -38,20 +38,16 @@ export default function OrderColorSetting({
     refresh()
   }, [hos_id, localColorState, refresh])
 
-  const sortedOrders = useMemo(
-    () =>
-      Object.entries(localColorState).sort((a, b) => {
-        return (
-          DEFAULT_ICU_ORDER_TYPE.map((order) => order.value).findIndex(
-            (order) => order === a[0],
-          ) -
-          DEFAULT_ICU_ORDER_TYPE.map((order) => order.value).findIndex(
-            (order) => order === b[0],
-          )
-        )
-      }),
-    [localColorState],
-  )
+  const sortedOrders = Object.entries(localColorState).sort((a, b) => {
+    return (
+      DEFAULT_ICU_ORDER_TYPE.map((order) => order.value).findIndex(
+        (order) => order === a[0],
+      ) -
+      DEFAULT_ICU_ORDER_TYPE.map((order) => order.value).findIndex(
+        (order) => order === b[0],
+      )
+    )
+  })
 
   return (
     <IcuSettingsCard

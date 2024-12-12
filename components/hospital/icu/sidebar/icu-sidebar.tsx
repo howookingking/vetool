@@ -2,7 +2,7 @@
 
 import useIcuSidebarFilter from '@/hooks/use-icu-sidebar-filter'
 import type { IcuSidebarIoData, Vet } from '@/types/icu/chart'
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 import DesktopIcuSidebar from './desktop-icu-sidebar'
 import { MobileIcuSidebarSheet } from './mobile/mobile-icu-sidebar-sheet'
 
@@ -64,10 +64,7 @@ export default function IcuSidebar({
     [],
   )
 
-  const filteredData = useMemo(
-    () => filterData(icuSidebarData, filters),
-    [filterData, filters, icuSidebarData],
-  )
+  const filteredData = filterData(icuSidebarData, filters)
 
   return (
     <>
