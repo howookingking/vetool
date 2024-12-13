@@ -71,7 +71,7 @@ export default function TxTableCell({
       onClick={handleCellClick}
       className={cn(
         'text-center ring-inset ring-primary transition-all',
-        isOrderScheduled && 'cursor-pointer hover:ring',
+        isOrderScheduled && !isTxCompleted && 'cursor-pointer hover:ring',
       )}
     >
       <CustomTooltip
