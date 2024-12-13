@@ -34,10 +34,9 @@ export default function ChecklistInput({
 
   const handlePressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
+      if (e.nativeEvent.isComposing) return
       const target = e.currentTarget
-      setTimeout(() => {
-        target.blur()
-      }, 0)
+      target.blur()
     }
   }
 

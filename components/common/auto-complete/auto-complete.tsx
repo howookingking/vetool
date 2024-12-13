@@ -94,7 +94,7 @@ export default function Autocomplete({
       setSuggestions([])
 
       // 중간 키워드 수정 후 커서 위치 유지
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         if (inputRef.current) {
           inputRef.current.focus()
           const newCursorPosition = beforeCursor.join(', ').length
@@ -104,11 +104,15 @@ export default function Autocomplete({
           )
         }
       }, 0)
+
+      return () => clearTimeout(timeoutId) // 클린업 추가
     },
     [input, cursorPosition],
   )
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.nativeEvent.isComposing) return
+
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault()
@@ -135,9 +139,7 @@ export default function Autocomplete({
         }
         e.preventDefault()
         e.stopPropagation()
-        setTimeout(() => {
-          insertSuggestion(suggestions[selectedIndex].mainKeyword)
-        }, 0)
+        insertSuggestion(suggestions[selectedIndex].mainKeyword)
         break
     }
   }
