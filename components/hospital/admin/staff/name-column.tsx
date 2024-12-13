@@ -62,12 +62,12 @@ export default function NameColumn({
         disabled={isUpdating}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
+            if (e.nativeEvent.isComposing) return
+
             const target = e.currentTarget
-            setTimeout(() => {
-              if (target) {
-                target.blur()
-              }
-            }, 0)
+            if (target) {
+              target.blur()
+            }
           }
         }}
       />
