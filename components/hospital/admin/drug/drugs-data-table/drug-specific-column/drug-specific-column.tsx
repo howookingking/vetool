@@ -11,6 +11,8 @@ import {
 import { HosDrugDosages } from '@/types/icu/drugs'
 import DrugTags from '../drug-tags'
 import { MoreVertical } from 'lucide-react'
+import DrugSpecicSection from './drug-specific-section'
+
 export default function DrugSpecificColumn({
   drugIndication,
   drugSideEffect,
@@ -39,13 +41,13 @@ export default function DrugSpecificColumn({
           <DialogDescription />
           <DrugTags drugTags={drugTags} />
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <p>{drugDescription}</p>
-          <p>{drugIndication}</p>
-          <p>{drugSideEffect}</p>
-        </div>
+
+        <DrugSpecicSection title="Description" contents={drugDescription} />
+        <DrugSpecicSection title="Indication" contents={drugIndication} />
+        <DrugSpecicSection title="Side Effect" contents={drugSideEffect} />
+
         <DialogFooter>
-          <Button type="submit">Save changes</Button>
+          {/* <Button type="submit">Save changes</Button> */}
         </DialogFooter>
       </DialogContent>
     </Dialog>
