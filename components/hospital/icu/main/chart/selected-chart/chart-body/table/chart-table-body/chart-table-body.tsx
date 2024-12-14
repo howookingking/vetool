@@ -7,6 +7,7 @@ import OrderRows from './order-rows'
 import QuickOrderInsertInput from './quick-order-insert-input'
 
 type ChartTableBodyProps = {
+  selectedOrderPendingQueue: Partial<SelectedIcuOrder>[]
   sortedOrders: SelectedIcuOrder[]
   isSorting: boolean
   preview?: boolean
@@ -23,9 +24,13 @@ type ChartTableBodyProps = {
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   cellRef?: RefObject<HTMLTableRowElement>
   species: string
+  hosId: string
+  setOrderStep: (orderStep: 'closed' | 'upsert' | 'selectOrderer') => void
+  reset: () => void
 }
 
 export default function ChartTableBody({
+  selectedOrderPendingQueue,
   sortedOrders,
   isSorting,
   preview,
@@ -42,10 +47,16 @@ export default function ChartTableBody({
   setSortedOrders,
   cellRef,
   species,
+  hosId,
+  setOrderStep,
+  reset,
 }: ChartTableBodyProps) {
   return (
     <TableBody>
       <OrderRows
+        reset={reset}
+        selectedOrderPendingQueue={selectedOrderPendingQueue}
+        setOrderStep={setOrderStep}
         sortedOrders={sortedOrders}
         isSorting={isSorting}
         preview={preview}
@@ -59,6 +70,8 @@ export default function ChartTableBody({
         cellRef={cellRef}
         isMobile={isMobile}
         isTouchMove={isTouchMove}
+        icuChartId={icuChartId}
+        hosId={hosId}
       />
 
       {!isExport && !preview && (

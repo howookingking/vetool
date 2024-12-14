@@ -34,6 +34,7 @@ export default function FeedOrderField({
   form: UseFormReturn<z.infer<typeof orderSchema>>
   rerCalcMethod?: 'a' | 'b'
   weight?: string
+  // TODO : 기본차트 식이
   species?: string
   derCalcFactor?: number | null
   orderTime: string[]
