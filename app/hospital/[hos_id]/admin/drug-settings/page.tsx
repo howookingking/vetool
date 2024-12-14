@@ -1,18 +1,14 @@
-import { drugColumns } from '@/components/hospital/admin/drug/drug-columns'
-import DataTable from '@/components/ui/data-table'
-// import { getDrugProductDetails } from '@/lib/services/settings/drug-settings'
+import DrugsDataTable from '@/components/hospital/admin/drug/drugs-data-table/drugs-data-table'
+import { getDiets, getPinnedDiets } from '@/lib/services/admin/diet/diet'
+import { getHosName } from '@/lib/services/hospital-home/get-hos-name'
+import { getDrugs, getHosDrugs } from '@/lib/services/icu/chart/get-drugs'
 
 export default async function AdminDrugSettingsPage(props: {
   params: Promise<{ hos_id: string }>
 }) {
   const params = await props.params
-  // const data = await getDrugProductDetails(params.hos_id)
+  const hosName = await getHosName(params.hos_id)
+  const hosDrugs = await getHosDrugs(params.hos_id)
 
-  return (
-    <DataTable
-      columns={drugColumns}
-      data={[]}
-      searchPlaceHolder="약물을 검색해보세요"
-    />
-  )
+  return <DrugsDataTable hosName={hosName} hosDrugs={hosDrugs} />
 }
