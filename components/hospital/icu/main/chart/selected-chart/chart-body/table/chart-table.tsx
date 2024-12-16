@@ -1,4 +1,5 @@
 'use client'
+'use no memo'
 
 import DeleteOrdersAlertDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/delete-orders-alert-dialog'
 import TxUpsertDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/tx-upsert-dialog'
@@ -163,6 +164,7 @@ export default function ChartTable({
     condition: selectedOrderPendingQueue.length > 0,
     callback: () => setIsDeleteOrdersDialogOpen(true),
   })
+
   // --------- 다중 오더 붙여넣기, 삭제 기능 ---------
 
   return (
