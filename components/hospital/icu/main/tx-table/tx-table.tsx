@@ -2,15 +2,18 @@
 
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import PatientInfo from '@/components/hospital/common/patient-info'
+import TxUpsertDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/tx-upsert-dialog'
 import TxTableCell from '@/components/hospital/icu/main/tx-table/tx-table-cell'
+import TxTableHeader from '@/components/hospital/icu/main/tx-table/tx-table-header'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
+import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
+import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
 import { SquarePlus } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-import TxTableHeader from './tx-table-header'
 
 export default function TxTable({
   localFilterState,
@@ -24,6 +27,9 @@ export default function TxTable({
   const scrollAreaRef = useRef<HTMLDivElement>(null)
   const tableRef = useRef<HTMLTableElement>(null)
   const [isScrolled, setIsScrolled] = useState(false)
+  const { orderTimePendingQueue, setSelectedTxPendingQueue } =
+    useIcuOrderStore()
+  const { setTxStep, setTxLocalState } = useTxMutationStore()
 
   const getCurrentScrollPosition = () => {
     const currentHour = new Date().getHours() - 5
@@ -123,6 +129,10 @@ export default function TxTable({
                     time={time}
                     order={order}
                     patientId={txData.patient_id}
+                    setTxStep={setTxStep}
+                    setTxLocalState={setTxLocalState}
+                    orderTimePendingQueueLength={orderTimePendingQueue.length}
+                    setSelectedTxPendingQueue={setSelectedTxPendingQueue}
                   />
                 ))}
               </TableRow>
@@ -131,6 +141,8 @@ export default function TxTable({
         </TableBody>
       </Table>
       <ScrollBar orientation="horizontal" />
+
+      <TxUpsertDialog />
     </ScrollArea>
   )
 }
