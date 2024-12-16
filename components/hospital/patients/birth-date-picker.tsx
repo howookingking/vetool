@@ -31,13 +31,11 @@ export default function BirthDatePicker({
   const [yearInput, setYearInput] = useState('')
   const [monthInput, setMonthInput] = useState('')
   const [dateInput, setDateInput] = useState('')
-  const [calendarDate, setCalendarDate] = useState<Date | undefined>(undefined)
   const isInitialBirthSet = useRef(false)
 
   const updateBirthDate = useCallback((date: Date) => {
     form.setValue('birth', date)
     setDateInput(format(date, 'yyyy-MM-dd'))
-    setCalendarDate(date)
 
     const now = new Date()
     const years = differenceInYears(now, date)
@@ -160,7 +158,6 @@ export default function BirthDatePicker({
                     locale={ko}
                     selected={field.value}
                     mode="single"
-                    month={calendarDate}
                     onSelect={(date) => {
                       if (date) {
                         updateBirthDate(date)
