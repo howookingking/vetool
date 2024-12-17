@@ -31,12 +31,24 @@ export const getHosDrugs = async (hosId: string) => {
     .from('hos_drugs')
     .select(
       `
-          *,
-          raw_drug_id(*)
-        `,
+        *,
+        raw_drug_id(*)
+      `,
     )
     .match({ hos_id: hosId })
     .returns<HosDrugWithRawDrug[]>()
+
+  if (error) {
+    console.error(error)
+    redirect(`/error?message=${error.message}`)
+  }
+
+  return data
+}
+export const getRawDrugs = async () => {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase.from('raw_drugs').select('*')
 
   if (error) {
     console.error(error)

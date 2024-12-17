@@ -66,7 +66,7 @@ export default function TxTableCell({
     treatment?.is_crucial,
   ])
 
-  const handleCellClick = () => {
+  const handleClickMove = () => {
     if (!isOrderScheduled) return
 
     const params = new URLSearchParams(searchParams)
@@ -116,7 +116,7 @@ export default function TxTableCell({
                 className="h-6 w-6 p-4"
                 size="icon"
                 title="이동"
-                onClick={handleCellClick}
+                onClick={handleClickMove}
               >
                 <ArrowRight />
               </Button>
