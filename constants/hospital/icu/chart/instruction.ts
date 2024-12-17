@@ -192,13 +192,6 @@ export const INSTRUCTIONS = [
 
 export const INSTRUCITON_SHORTCUTS: Shortcuts[] = [
   {
-    title: '차트 복사 & 붙여넣기',
-    description:
-      "특정 차트 페이지에서 'CTRL + C'를 눌러 복사, 붙여넣기 할 차트에서 'CTRL + V'",
-    icons: ['keyboard'],
-  },
-
-  {
     title: '오더 시간 등록 / 해제',
     description: 'CTRL 누른 채 + 해당 칸 우클릭',
     icons: ['keyboard', 'mouse'],

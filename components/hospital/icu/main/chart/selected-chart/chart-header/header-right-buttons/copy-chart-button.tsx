@@ -22,13 +22,6 @@ export default function CopyChartButton({
     })
   }, [icuChartId, setCopiedChartId])
 
-  useShorcutKey({
-    keys: ['c'],
-    ignoreInput: true,
-    condition: !selectedOrderPendingQueue.length,
-    callback: handleCopy,
-  })
-
   return (
     <Button variant="ghost" size="icon" onClick={handleCopy}>
       {copiedChartId === icuChartId ? (
