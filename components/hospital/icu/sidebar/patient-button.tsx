@@ -25,13 +25,16 @@ export default function PatientButton({
       `/hospital/${hos_id}/icu/${target_date}/chart/${icuIoData.patient.patient_id}`,
     )
   }, [hos_id, target_date, icuIoData.patient.patient_id, push])
+
+  const selectedPatient = icuIoData.patient.patient_id === patient_id
+
   return (
     <Button
       variant="outline"
       size="sm"
       className={cn(
         'w-full py-7',
-        patient_id === icuIoData.patient.patient_id && 'bg-muted',
+        selectedPatient && 'border border-black bg-muted shadow-md',
       )}
       onClick={handlePatientButtonClick}
     >
