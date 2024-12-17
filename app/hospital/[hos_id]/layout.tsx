@@ -33,7 +33,7 @@ export default async function Layout(props: {
         isSuper={isSuper}
       />
 
-      <div className="ml-0 flex-1 md:ml-14">
+      <div className="ml-0 flex-1 2xl:ml-14">
         {/* 헤더 LAYOUT PLACEHOLDER*/}
         <HospitalHeader />
 

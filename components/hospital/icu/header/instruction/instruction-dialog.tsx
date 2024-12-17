@@ -28,7 +28,7 @@ export function InstructionDialog() {
 
   return (
     <Dialog>
-      <DialogTrigger asChild className="hidden xl:inline-flex">
+      <DialogTrigger asChild className="hidden 2xl:inline-flex">
         <Button variant="ghost" size="icon">
           <Info size={18} />
         </Button>

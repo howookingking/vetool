@@ -13,7 +13,7 @@ export default async function Sidebar({
   isSuper: boolean
 }) {
   return (
-    <aside className="fixed left-0 top-0 z-50 hidden h-screen w-14 border-r bg-white md:block">
+    <aside className="fixed left-0 top-0 z-50 hidden h-screen w-14 border-r bg-white 2xl:block">
       <ul>
         {SIDEBAR_ITEMS.map((item) => (
           <SidebarItem

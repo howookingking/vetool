@@ -13,7 +13,7 @@ export default async function IcuHeader({
   groupList: string[]
 }) {
   return (
-    <div className="fixed top-2 z-30 flex w-full items-center justify-center gap-2 px-2 sm:top-1.5 md:left-14 md:w-auto md:justify-start">
+    <div className="fixed top-2 z-30 flex w-full items-center justify-center gap-2 px-2 md:ml-12 md:w-auto md:justify-start 2xl:top-1.5 2xl:ml-0 2xl:w-auto">
       <InstructionDialog />
 
       <RegisterDialog hosId={hosId} vetsData={vetsData} groupList={groupList} />

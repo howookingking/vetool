@@ -37,7 +37,7 @@ export function MobileIcuSidebarSheet({
   const handleCloseMobileDrawer = () => setIsSheetOpen(false)
 
   return (
-    <div className="md:hidden">
+    <div className="2xl:hidden">
       <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <SheetTrigger asChild>
           <Button
