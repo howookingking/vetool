@@ -81,6 +81,7 @@ export default function TxSelectUserStep({
                 txComment: txLocalState?.txComment,
                 time: item.orderTime,
                 icuChartOrderId: item.orderId,
+                isCrucialChecked: txLocalState?.isCrucialChecked,
               },
               format(new Date(), 'yyyy-MM-dd'),
               updatedLogs,

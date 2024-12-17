@@ -96,6 +96,7 @@ export default function Cell({
       txId: icuChartTxId,
       time,
       txLog: treatment?.tx_log as TxLog[] | null,
+      isCrucialChecked: treatment?.is_crucial,
     })
     setTxStep('detailInsert')
   }, [
@@ -109,6 +110,7 @@ export default function Cell({
     treatment?.tx_result,
     orderType,
     orderName,
+    treatment?.is_crucial,
   ])
   const longPressProps = useLongPress({
     onLongPress: handleOpenTxDetail,
@@ -223,7 +225,6 @@ export default function Cell({
         <div className="tx-result-overlay absolute inset-0 -z-10 flex items-center justify-center">
           {treatment?.tx_result ?? ''}
         </div>
-
         {hasOrder && showOrderer && (
           <div
             className={cn(
@@ -233,13 +234,16 @@ export default function Cell({
             {orderer}
           </div>
         )}
-
         {hasComment && <TxDetailHover txComment={treatment?.tx_comment} />}
 
         {isAbnormalVital && (
           <VitalResultIndication
             result={calcVitalResult as 'below' | 'above'}
           />
+        )}
+
+        {treatment?.is_crucial && (
+          <span className="absolute bottom-0 left-0 text-[10px]">❗️</span>
         )}
       </div>
     </TableCell>

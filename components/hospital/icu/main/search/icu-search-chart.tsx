@@ -1,12 +1,9 @@
 'use client'
 
 import Autocomplete from '@/components/common/auto-complete/auto-complete'
-import HelperTooltip from '@/components/common/helper-tooltip'
 import SearchChartTable from '@/components/hospital/icu/main/search/search-chart-table'
 import SearchChartSheet from '@/components/hospital/icu/main/search/sheet/search-chart-sheet'
-import SearchTypeRadio from '@/components/hospital/icu/main/search/sheet/search-type-radio'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { searchIos } from '@/lib/services/icu/search/search-charts'
 import { useKeywordTrieStore } from '@/lib/store/hospital/keyword-trie'
 import type { SearchedIcuIos } from '@/types/icu/search'

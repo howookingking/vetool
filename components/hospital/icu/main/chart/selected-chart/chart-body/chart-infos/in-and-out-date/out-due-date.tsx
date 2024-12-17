@@ -63,8 +63,13 @@ export default function OutDueDate({
           <LogOut className="text-muted-foreground" size={16} />
 
           {outDueDateInput ? (
-            <span className="text-xs font-normal md:text-sm">
-              {format(outDueDateInput, 'yyyy-MM-dd')}
+            <span className="text-xs md:text-sm">
+              <span className="hidden text-xs font-normal md:inline md:text-sm">
+                {format(outDueDateInput, 'yyyy-MM-dd')}
+              </span>
+              <span className="md:hidden">
+                {format(outDueDateInput, 'yyyy-MM-dd')?.slice(2)}
+              </span>
             </span>
           ) : (
             <span>퇴원 예정일</span>

@@ -1,5 +1,3 @@
-'use client'
-
 import IoPatientsCalendar from '@/components/hospital/icu/main/analysis/io-patients/io-patients-calendar'
 import IoPatientsGroupSelect from '@/components/hospital/icu/main/analysis/io-patients/io-patients-group-select'
 import IoPatientsVetSelect from '@/components/hospital/icu/main/analysis/io-patients/io-patients-vet-select'

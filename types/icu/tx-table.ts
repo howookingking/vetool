@@ -1,4 +1,5 @@
-import { IcuCharts, IcuIo, IcuOrders, IcuTxs, Patients } from '..'
+import type { IcuCharts, IcuIo, IcuOrders, Patients } from '@/types'
+import type { Treatment } from '@/types/icu/chart'
 
 export type IcuTxTableData = {
   icu_charts: Pick<IcuCharts, 'icu_chart_id' | 'weight'>
@@ -14,6 +15,6 @@ export type IcuTxTableData = {
     | 'icu_chart_order_comment'
     | 'icu_chart_order_type'
   > & {
-    treatments: Pick<IcuTxs, 'time'>[]
+    treatments: Treatment[]
   })[]
 }

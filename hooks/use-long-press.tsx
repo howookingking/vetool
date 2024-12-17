@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 interface UseLongPressOptions {
   onClick?: () => void
@@ -65,6 +65,14 @@ export const useLongPress = ({
     }
 
     isLongPress.current = false
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current)
+      }
+    }
   }, [])
 
   return {

@@ -20,5 +20,6 @@ export type SummaryOrder = {
   order_times: string[]
   treatments: {
     time: number
+    is_crucial: boolean
   }[]
 }

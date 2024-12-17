@@ -22,6 +22,7 @@ export const upsertIcuTx = async (
     icu_chart_tx_result: txLocalState?.txResult,
     icu_chart_tx_log: updatedLogs,
     time: txLocalState?.time!,
+    is_crucial: txLocalState?.isCrucialChecked,
   })
 
   if (
