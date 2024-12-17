@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { transformCsvData } from '@/lib/utils/insert-patient'
+import { SearchedPatientsData } from '@/types/patients'
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
@@ -16,13 +17,13 @@ export const config = {
 export async function POST(req: NextRequest) {
   try {
     const { data, hos_id } = await req.json()
-    const header = data[1] // 실제 헤더 행
+    const header = data[0] // 실제 헤더 행
 
     // null이 아닌 데이터만 필터링하고 유효성 검사 추가
     const patientData = data
-      .slice(2, -1)
+      .slice(1, -1)
       .map((row: string[]) => {
-        const transformedRow = transformCsvData(row, header)
+        const transformedRow = transformCsvData(row, header, 'efriends')
         if (transformedRow) {
           return { ...transformedRow, hos_id }
         }
@@ -35,7 +36,16 @@ export async function POST(req: NextRequest) {
         return true
       })
 
-    if (patientData.length === 0) {
+    const uniquePatientData: any = Array.from(
+      new Map(
+        patientData.map((item: SearchedPatientsData) => [
+          `${item.hos_patient_id}-${item.birth}-${item.name}`,
+          item,
+        ]),
+      ).values(),
+    )
+
+    if (uniquePatientData.length === 0) {
       return NextResponse.json(
         { error: '유효한 데이터가 없습니다.' },
         { status: 400 },
@@ -43,9 +53,11 @@ export async function POST(req: NextRequest) {
     }
 
     const supabase = await createClient()
-    const { error } = await supabase.from('patients').upsert(patientData, {
-      onConflict: 'hos_patient_id, birth, name',
-    })
+    const { error } = await supabase
+      .from('patients')
+      .upsert(uniquePatientData, {
+        onConflict: 'hos_patient_id, birth, name',
+      })
 
     if (error) throw error
 

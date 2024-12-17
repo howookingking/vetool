@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { toast } from '@/components/ui/use-toast'
 import usePatientFileUpload from '@/hooks/use-patient-file-upload'
 import { cn } from '@/lib/utils/utils'
@@ -24,6 +25,7 @@ import { useState } from 'react'
 export default function UploadPatientArea() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
+  const [uploadType, setUploadType] = useState('intoVet')
 
   const { refresh } = useRouter()
   const { hos_id } = useParams()
@@ -84,6 +86,21 @@ export default function UploadPatientArea() {
           <DialogDescription>
             Excel 혹은 CSV 파일을 업로드하면 환자 목록을 업로드할 수 있습니다
           </DialogDescription>
+
+          <RadioGroup
+            value={uploadType}
+            onValueChange={setUploadType}
+            className="flex gap-4 py-2"
+          >
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="intoVet" id="intoVet" />
+              <Label htmlFor="intoVet">인투벳</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="efriends" id="efriends" />
+              <Label htmlFor="efriends">이프렌즈</Label>
+            </div>
+          </RadioGroup>
         </DialogHeader>
 
         <Card className="flex flex-col gap-4 border border-dashed border-gray-300 p-4">
@@ -135,7 +152,10 @@ export default function UploadPatientArea() {
             </Button>
           </DialogClose>
 
-          <Button onClick={handleUpload} disabled={!selectedFile || isLoading}>
+          <Button
+            onClick={() => handleUpload(uploadType)}
+            disabled={!selectedFile || isLoading}
+          >
             업로드
             {isLoading && (
               <LoaderCircle className="ml-2 h-4 w-4 animate-spin" />
