@@ -2,15 +2,18 @@
 
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import PatientInfo from '@/components/hospital/common/patient-info'
+import TxUpsertDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/tx-upsert-dialog'
 import TxTableCell from '@/components/hospital/icu/main/tx-table/tx-table-cell'
+import TxTableHeader from '@/components/hospital/icu/main/tx-table/tx-table-header'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
+import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
+import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
 import { SquarePlus } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-import TxTableHeader from './tx-table-header'
 
 export default function TxTable({
   localFilterState,
@@ -24,6 +27,9 @@ export default function TxTable({
   const scrollAreaRef = useRef<HTMLDivElement>(null)
   const tableRef = useRef<HTMLTableElement>(null)
   const [isScrolled, setIsScrolled] = useState(false)
+  const { orderTimePendingQueue, setSelectedTxPendingQueue } =
+    useIcuOrderStore()
+  const { setTxStep, setTxLocalState } = useTxMutationStore()
 
   const getCurrentScrollPosition = () => {
     const currentHour = new Date().getHours() - 5
@@ -72,65 +78,73 @@ export default function TxTable({
   }
 
   return (
-    <ScrollArea
-      ref={scrollAreaRef}
-      className="h-[calc(100vh-136px)] overflow-scroll whitespace-nowrap md:h-icu-chart-main md:w-[calc(100vw-250px)]"
-    >
-      <Table className="border" ref={tableRef}>
-        <TxTableHeader
-          filteredTxData={filteredTxData}
-          localFilterState={localFilterState}
-        />
+    <>
+      <ScrollArea
+        ref={scrollAreaRef}
+        className="h-[calc(100vh-136px)] overflow-scroll whitespace-nowrap md:h-icu-chart-main md:w-[calc(100vw-250px)]"
+      >
+        <Table className="border" ref={tableRef}>
+          <TxTableHeader
+            filteredTxData={filteredTxData}
+            localFilterState={localFilterState}
+          />
 
-        <TableBody>
-          {filteredTxData.flatMap((txData) =>
-            txData.orders.map((order) => (
-              <TableRow
-                key={order.icu_chart_order_id}
-                style={{
-                  background:
-                    chartBackgroundMap[txData.icu_charts.icu_chart_id],
-                }}
-                className="divide-x"
-              >
-                <TableCell className="sticky left-0 bg-white text-center shadow-md">
-                  <PatientInfo
-                    name={txData.patient.name}
-                    breed={txData.patient.breed}
-                    species={txData.patient.species}
-                    iconSize={18}
-                    col
-                  />
+          <TableBody>
+            {filteredTxData.flatMap((txData) =>
+              txData.orders.map((order) => (
+                <TableRow
+                  key={order.icu_chart_order_id}
+                  style={{
+                    background:
+                      chartBackgroundMap[txData.icu_charts.icu_chart_id],
+                  }}
+                  className="divide-x"
+                >
+                  <TableCell className="sticky left-0 bg-white text-center shadow-md">
+                    <PatientInfo
+                      name={txData.patient.name}
+                      breed={txData.patient.breed}
+                      species={txData.patient.species}
+                      iconSize={18}
+                      col
+                    />
 
-                  <div className="flex flex-col justify-center gap-1">
-                    <span className="text-xs">
-                      {txData.icu_charts.weight}kg
-                    </span>
+                    <div className="flex flex-col justify-center gap-1">
+                      <span className="text-xs">
+                        {txData.icu_charts.weight}kg
+                      </span>
 
-                    {txData.icu_io.cage && (
-                      <div className="flex items-center justify-center gap-1 text-muted-foreground">
-                        <SquarePlus size={12} />
-                        <span className="text-xs">{txData.icu_io.cage}</span>
-                      </div>
-                    )}
-                  </div>
-                </TableCell>
+                      {txData.icu_io.cage && (
+                        <div className="flex items-center justify-center gap-1 text-muted-foreground">
+                          <SquarePlus size={12} />
+                          <span className="text-xs">{txData.icu_io.cage}</span>
+                        </div>
+                      )}
+                    </div>
+                  </TableCell>
 
-                {TIMES.map((time) => (
-                  <TxTableCell
-                    patientName={txData.patient.name}
-                    key={time}
-                    time={time}
-                    order={order}
-                    patientId={txData.patient_id}
-                  />
-                ))}
-              </TableRow>
-            )),
-          )}
-        </TableBody>
-      </Table>
-      <ScrollBar orientation="horizontal" />
-    </ScrollArea>
+                  {TIMES.map((time) => (
+                    <TxTableCell
+                      patientName={txData.patient.name}
+                      key={time}
+                      time={time}
+                      order={order}
+                      patientId={txData.patient_id}
+                      setTxStep={setTxStep}
+                      setTxLocalState={setTxLocalState}
+                      orderTimePendingQueueLength={orderTimePendingQueue.length}
+                      setSelectedTxPendingQueue={setSelectedTxPendingQueue}
+                    />
+                  ))}
+                </TableRow>
+              )),
+            )}
+          </TableBody>
+        </Table>
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
+
+      <TxUpsertDialog />
+    </>
   )
 }

@@ -54,7 +54,7 @@ export default function SingleNotice({
 
   return (
     <div
-      className="relative flex items-center justify-between rounded-md border border-border px-1 py-1"
+      className="relative flex items-center justify-between gap-2 rounded-md border border-border px-2 py-2 md:px-1 md:py-1"
       style={{ backgroundColor: notice.notice_color ?? '#fff' }}
     >
       <div className="mx-2 flex w-full flex-col items-start justify-between gap-2 md:flex-row md:items-center">
@@ -83,7 +83,7 @@ export default function SingleNotice({
           </span>
         </div>
 
-        <div className="ml-auto flex shrink-0 items-center gap-1">
+        <div className="mr-auto flex shrink-0 items-center gap-1 md:ml-auto md:mr-0">
           <Image
             unoptimized
             src={notice.user_id.avatar_url ?? ''}

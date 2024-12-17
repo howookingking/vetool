@@ -34,6 +34,7 @@ export default function FeedOrderField({
   form: UseFormReturn<z.infer<typeof orderSchema>>
   rerCalcMethod?: 'a' | 'b'
   weight?: string
+  // TODO : 기본차트 식이
   species?: string
   derCalcFactor?: number | null
   orderTime: string[]
@@ -147,7 +148,7 @@ export default function FeedOrderField({
           <FormItem className="space-y-2">
             <FormLabel className="flex items-center gap-2 font-semibold">
               <span>사료*</span>
-              <HelperTooltip variant="warning">
+              <HelperTooltip variant="warning" side="right">
                 칼로리값이 정확하지 않을 수 있습니다
               </HelperTooltip>
               {showNonSelectedMessage && (

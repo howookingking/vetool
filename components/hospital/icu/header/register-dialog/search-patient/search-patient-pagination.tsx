@@ -7,6 +7,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination'
+import { cn } from '@/lib/utils/utils'
 
 export default function SearchPatientPagination({
   currentPage,
@@ -82,9 +83,10 @@ export default function SearchPatientPagination({
         <PaginationItem>
           <PaginationPrevious
             onClick={() => onPageChange(Math.max(1, currentPage - 1))}
-            className={
-              currentPage === 1 ? 'pointer-events-none opacity-50' : ''
-            }
+            className={cn(
+              'border',
+              currentPage === 1 && 'pointer-events-none border-none opacity-50',
+            )}
           />
         </PaginationItem>
 
@@ -93,9 +95,11 @@ export default function SearchPatientPagination({
         <PaginationItem>
           <PaginationNext
             onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
-            className={
-              currentPage === totalPages ? 'pointer-events-none opacity-50' : ''
-            }
+            className={cn(
+              'border',
+              currentPage === totalPages &&
+                'pointer-events-none border-none opacity-50',
+            )}
           />
         </PaginationItem>
       </PaginationContent>

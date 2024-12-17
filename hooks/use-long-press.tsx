@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 interface UseLongPressOptions {
   onClick?: () => void
@@ -24,7 +24,9 @@ export const useLongPress = ({
 
       timerRef.current = setTimeout(() => {
         isLongPress.current = true
-        onLongPress()
+        if ('button' in event && event.button === 0) {
+          onLongPress()
+        }
       }, threshold)
     },
     [onLongPress, threshold],
@@ -41,7 +43,6 @@ export const useLongPress = ({
       }
 
       if (!isLongPress.current && onClick) {
-        // Only handle Ctrl/Cmd + left click
         if (
           'button' in event &&
           event.button === 0 &&
@@ -64,6 +65,14 @@ export const useLongPress = ({
     }
 
     isLongPress.current = false
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current)
+      }
+    }
   }, [])
 
   return {

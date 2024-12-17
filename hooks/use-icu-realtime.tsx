@@ -123,16 +123,8 @@ function getLogColor(table: string): string {
       return 'blue'
     case 'icu_charts':
       return 'red'
-
     case 'icu_orders':
-      /*************  ✨ Codeium Command ⭐  *************/
-      /**
-       * Get the color for a given table's log.
-       *
-       * @param {string} table - The table name.
-       * @returns {string} The color for the given table's log.
-       */
-      /******  be861dde-2353-4b83-856c-89f6ea4f5dee  *******/ return 'green'
+      return 'green'
     case 'icu_txs':
       return 'purple'
     default:

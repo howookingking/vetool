@@ -57,7 +57,7 @@ export default function VitalRefRangeSettings({
             ...vital,
             [species]: {
               ...vital[species],
-              [type]: parseFloat(value) || 0,
+              [type]: parseFloat(value) || '',
             },
           }
         }
@@ -89,7 +89,7 @@ export default function VitalRefRangeSettings({
                       <Input
                         className="bg-white"
                         id={`${vital.order_name}-canine-min`}
-                        type="number"
+                        type="text"
                         step="0.1"
                         value={vital.canine.min}
                         onChange={(e) =>
@@ -109,7 +109,7 @@ export default function VitalRefRangeSettings({
                       <Input
                         className="bg-white"
                         id={`${vital.order_name}-canine-max`}
-                        type="number"
+                        type="text"
                         step="0.1"
                         value={vital.canine.max}
                         onChange={(e) =>
@@ -135,7 +135,7 @@ export default function VitalRefRangeSettings({
                       <Input
                         className="bg-white"
                         id={`${vital.order_name}-feline-min`}
-                        type="number"
+                        type="text"
                         step="0.1"
                         value={vital.feline.min}
                         onChange={(e) =>
@@ -155,8 +155,7 @@ export default function VitalRefRangeSettings({
                       <Input
                         className="bg-white"
                         id={`${vital.order_name}-feline-max`}
-                        type="number"
-                        step="0.1"
+                        type="text"
                         value={vital.feline.max}
                         onChange={(e) =>
                           handleChange(
@@ -182,7 +181,7 @@ export default function VitalRefRangeSettings({
           type="button"
           onClick={handleUpdateVitalRefRange}
           disabled={isUpdating}
-          className="mr-auto"
+          className="ml-auto md:ml-0 md:mr-auto"
         >
           저장
           <LoaderCircle
