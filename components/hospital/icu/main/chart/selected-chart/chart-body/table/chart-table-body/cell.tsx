@@ -222,9 +222,9 @@ export default function Cell({
           onContextMenu={handleRightClick}
           {...longPressProps}
         />
-        <div className="tx-result-overlay absolute inset-0 -z-10 flex items-center justify-center">
+        <span className="tx-result-overlay absolute inset-0 -z-10 flex items-center justify-center truncate">
           {treatment?.tx_result ?? ''}
-        </div>
+        </span>
         {hasOrder && showOrderer && (
           <div
             className={cn(

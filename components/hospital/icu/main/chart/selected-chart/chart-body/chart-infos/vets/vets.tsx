@@ -58,7 +58,7 @@ export default function Vets({
         >
           <Stethoscope size={16} className="text-muted-foreground" />
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 overflow-hidden">
             <VetName label="주치의" name={mainVet.name} />
 
             <Separator orientation="vertical" className="h-4" />
