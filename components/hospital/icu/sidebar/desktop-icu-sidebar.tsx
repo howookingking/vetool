@@ -27,7 +27,7 @@ export default function DesktopIcuSidebar({
   handleCloseMobileDrawer?: () => void
 }) {
   return (
-    <aside className="fixed z-30 hidden h-icu-chart-main w-48 shrink-0 flex-col gap-3 border-r bg-white p-2 md:flex">
+    <aside className="fixed z-30 hidden h-icu-chart-main w-48 shrink-0 flex-col gap-3 border-r bg-white p-2 2xl:flex">
       {isEmpty ? (
         <>
           <NoPatients />
