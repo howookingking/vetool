@@ -3,7 +3,6 @@ import React from 'react'
 
 export default function DrugTags({ drugTags }: { drugTags: string | null }) {
   const drugTagsArray = drugTags?.split('#').splice(1)
-  console.log(drugTagsArray)
 
   return (
     <ul className="flex items-center gap-1">
