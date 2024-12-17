@@ -476,11 +476,7 @@ export default function PatientForm({
           render={({ field }) => (
             <FormItem className="flex flex-col justify-end">
               <FormLabel>품종*</FormLabel>
-              <Popover
-                open={breedOpen}
-                onOpenChange={setBreedOpen}
-                modal={true}
-              >
+              <Popover open={breedOpen} onOpenChange={setBreedOpen} modal>
                 <PopoverTrigger asChild disabled={!watchSpecies}>
                   <FormControl>
                     <Button
@@ -546,6 +542,7 @@ export default function PatientForm({
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="gender"

@@ -11,13 +11,11 @@ export default async function AdminFoodSettingsPage(props: {
   const hosName = await getHosName(params.hos_id)
 
   return (
-    <div className="relative">
-      <DietDataTables
-        dietsData={dietsData}
-        hosId={params.hos_id}
-        pinnedDiets={pinnedDiets}
-        hosName={hosName}
-      />
-    </div>
+    <DietDataTables
+      dietsData={dietsData}
+      hosId={params.hos_id}
+      pinnedDiets={pinnedDiets}
+      hosName={hosName}
+    />
   )
 }

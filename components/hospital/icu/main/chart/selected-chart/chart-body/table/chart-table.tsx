@@ -1,5 +1,4 @@
 'use client'
-'use no memo'
 
 import DeleteOrdersAlertDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/delete-orders-alert-dialog'
 import TxUpsertDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/tx-upsert-dialog'
@@ -15,7 +14,7 @@ import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
 import { formatOrders } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
-import { RefObject, useCallback, useEffect, useState } from 'react'
+import { RefObject, useEffect, useState } from 'react'
 import ChartTableBody from './chart-table-body/chart-table-body'
 import SortingOrderRows from './chart-table-body/sorting-order-rows'
 import ChartTableHeader from './chart-table-header/chart-table-header'
@@ -42,6 +41,10 @@ export default function ChartTable({
     patient: { hos_id, species },
     target_date,
   } = chartData
+  const {
+    basicHosData: { showOrderer, vetsListData, vitalRefRange },
+  } = useBasicHosDataContext()
+  const isCommandPressed = useIsCommandPressed()
 
   const [isSorting, setIsSorting] = useState(false)
   const [sortedOrders, setSortedOrders] = useState<SelectedIcuOrder[]>(orders)
@@ -49,21 +52,17 @@ export default function ChartTable({
     useState(false)
 
   const [orderWidth, setOrderWidth] = useLocalStorage('orderWidth', 400)
+
   const {
     setOrderStep,
     reset,
     selectedTxPendingQueue,
     orderTimePendingQueue,
     selectedOrderPendingQueue,
-    copiedOrderPendingQueue,
     orderStep,
     isEditOrderMode,
   } = useIcuOrderStore()
   const isMobile = useIsMobile()
-  const {
-    basicHosData: { showOrderer, vetsListData, vitalRefRange },
-  } = useBasicHosDataContext()
-  const isCommandPressed = useIsCommandPressed()
 
   useEffect(() => {
     if (!isSorting) {
@@ -71,7 +70,7 @@ export default function ChartTable({
     }
   }, [isSorting, orders])
 
-  const handleUpsertOrderTimesWithoutOrderer = useCallback(async () => {
+  const handleUpsertOrderTimesWithoutOrderer = async () => {
     const formattedOrders = formatOrders(orderTimePendingQueue)
 
     for (const order of formattedOrders) {
@@ -99,13 +98,11 @@ export default function ChartTable({
         },
       )
     }
-
     toast({
       title: '오더시간을 변경하였습니다',
     })
-
     reset()
-  }, [hos_id, icu_chart_id, orderTimePendingQueue, orders, reset, vetsListData])
+  }
 
   // -------- 커멘드키 뗐을 때 작업 --------
   const { txStep, setTxStep } = useTxMutationStore()
@@ -133,39 +130,14 @@ export default function ChartTable({
   ])
   // ---------------------------------
 
-  // --------- 다중 오더 붙여넣기, 삭제 기능 ---------
-  const handleUpsertOrderWithoutOrderer = useCallback(async () => {
-    for (const order of copiedOrderPendingQueue) {
-      await upsertOrder(hos_id, icu_chart_id, undefined, order.order_times!, {
-        icu_chart_order_name: order.order_name!,
-        icu_chart_order_comment: order.order_comment!,
-        icu_chart_order_type: order.order_type!,
-        icu_chart_order_priority: order.id!,
-      })
-    }
-
-    toast({
-      title: '오더를 붙여넣었습니다',
-    })
-
-    reset()
-  }, [hos_id, icu_chart_id, copiedOrderPendingQueue, reset])
-
-  useShorcutKey({
-    keys: ['v'],
-    condition: copiedOrderPendingQueue.length > 0,
-    callback: showOrderer
-      ? () => setOrderStep('selectOrderer')
-      : () => handleUpsertOrderWithoutOrderer(),
-  })
-
+  // ----- 다중 오더 삭제 -----
   useShorcutKey({
     keys: ['backspace', 'delete'],
-    condition: selectedOrderPendingQueue.length > 0,
+    // 이유는 모르겠지만 selectedOrderPendingQueue.length를 메모이제이션 하는 듯. 바뀌질 않아서 삭제 확인 다일로그가 안열림
+    // condition: selectedOrderPendingQueue.length > 0,
     callback: () => setIsDeleteOrdersDialogOpen(true),
   })
-
-  // --------- 다중 오더 붙여넣기, 삭제 기능 ---------
+  // ----- 다중 오더 삭제 -----
 
   return (
     <Table className="border">
@@ -202,6 +174,9 @@ export default function ChartTable({
         />
       ) : (
         <ChartTableBody
+          reset={reset}
+          selectedOrderPendingQueue={selectedOrderPendingQueue}
+          setOrderStep={setOrderStep}
           isSorting={isSorting}
           sortedOrders={sortedOrders}
           preview={preview}
@@ -218,6 +193,7 @@ export default function ChartTable({
           setSortedOrders={setSortedOrders}
           cellRef={cellRef}
           species={species}
+          hosId={hos_id}
         />
       )}
 

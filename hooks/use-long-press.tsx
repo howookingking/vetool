@@ -24,7 +24,9 @@ export const useLongPress = ({
 
       timerRef.current = setTimeout(() => {
         isLongPress.current = true
-        onLongPress()
+        if ('button' in event && event.button === 0) {
+          onLongPress()
+        }
       }, threshold)
     },
     [onLongPress, threshold],
@@ -41,7 +43,6 @@ export const useLongPress = ({
       }
 
       if (!isLongPress.current && onClick) {
-        // Only handle Ctrl/Cmd + left click
         if (
           'button' in event &&
           event.button === 0 &&
