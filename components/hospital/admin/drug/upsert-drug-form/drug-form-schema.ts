@@ -25,7 +25,10 @@ const drugDosagesSchema = z.object({
 
 // 전체 약물 폼 스키마
 export const drugSchema = z.object({
-  raw_drug_id: z.string().min(1, { message: '약물 원료를 선택해주세요' }),
+  raw_drug_id: z
+    .string()
+    .min(1, { message: '약물 원료를 선택해주세요' })
+    .uuid(),
   hos_drug_dosages: drugDosagesSchema,
   hos_drug_description: z.string().optional(),
   hos_drug_indication: z.string().optional(),
