@@ -50,6 +50,8 @@ export default function VitalRefRangeSettings({
     type: 'min' | 'max',
     value: string,
   ) => {
+    const roundedValue = parseFloat(parseFloat(value).toFixed(2))
+
     setLocalVitalRefRangeState((prev) =>
       prev.map((vital) => {
         if (vital.order_name === orderName) {
@@ -57,7 +59,7 @@ export default function VitalRefRangeSettings({
             ...vital,
             [species]: {
               ...vital[species],
-              [type]: parseFloat(value) || '',
+              [type]: roundedValue || '',
             },
           }
         }
@@ -89,7 +91,7 @@ export default function VitalRefRangeSettings({
                       <Input
                         className="bg-white"
                         id={`${vital.order_name}-canine-min`}
-                        type="text"
+                        type="number"
                         step="0.1"
                         value={vital.canine.min}
                         onChange={(e) =>
@@ -109,7 +111,7 @@ export default function VitalRefRangeSettings({
                       <Input
                         className="bg-white"
                         id={`${vital.order_name}-canine-max`}
-                        type="text"
+                        type="number"
                         step="0.1"
                         value={vital.canine.max}
                         onChange={(e) =>
@@ -135,7 +137,7 @@ export default function VitalRefRangeSettings({
                       <Input
                         className="bg-white"
                         id={`${vital.order_name}-feline-min`}
-                        type="text"
+                        type="number"
                         step="0.1"
                         value={vital.feline.min}
                         onChange={(e) =>
@@ -155,7 +157,8 @@ export default function VitalRefRangeSettings({
                       <Input
                         className="bg-white"
                         id={`${vital.order_name}-feline-max`}
-                        type="text"
+                        type="number"
+                        step="0.1"
                         value={vital.feline.max}
                         onChange={(e) =>
                           handleChange(
