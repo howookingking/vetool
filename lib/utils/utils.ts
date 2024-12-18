@@ -340,7 +340,6 @@ export const borderedOrderClassName = (
   currentOrder: { is_bordered: boolean },
   index: number,
 ) => {
-  console.log(sortedOrders, currentOrder, index)
   const isCurrentOrderBordered = currentOrder.is_bordered
   const isNextOrderBordered = sortedOrders[index + 1]?.is_bordered
   const isPrevOrderBordered = sortedOrders[index - 1]?.is_bordered

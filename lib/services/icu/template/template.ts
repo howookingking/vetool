@@ -41,8 +41,6 @@ export const insertCustomTemplateChart = async (
 ) => {
   const supabase = await createClient()
 
-  console.log(templateOrders)
-
   const { error } = await supabase.rpc('insert_template_orders', {
     hos_id_input: hosId,
     target_date_input: targetDate,

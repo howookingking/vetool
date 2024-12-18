@@ -76,8 +76,6 @@ export default function TemplateOrdersTable({
     setIsEditOrderMode(true)
     setSelectedChartOrder(order)
     setOrderIndex(index)
-
-    console.log(order)
   }
 
   const handleSortButtonClick = async () => {

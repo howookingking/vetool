@@ -82,7 +82,7 @@ export function DrugForm({ rawDrugData }: { rawDrugData: RawDrug[] }) {
     { value: 'feline', label: 'Feline' },
   ] as const
 
-  const availableSpecies = useMemo(() => {
+  const availableSpecies = (() => {
     const selectedSpecies = fields.map((field) =>
       form.getValues(
         `hos_drug_dosages.dosages.${fields.indexOf(field)}.species`,
@@ -92,7 +92,7 @@ export function DrugForm({ rawDrugData }: { rawDrugData: RawDrug[] }) {
     return SPECIES_OPTIONS.filter(
       (option) => !selectedSpecies.includes(option.value),
     )
-  }, [fields, form.getValues])
+  })()
 
   function onSubmit(values: z.infer<typeof drugSchema>) {
     console.log(values)

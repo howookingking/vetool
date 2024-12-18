@@ -106,6 +106,7 @@ export default function OrdererSelectStep({
       selectedChartOrder.order_name,
       selectedChartOrder.order_times,
       selectedChartOrder.order_type,
+      selectedChartOrder.is_bordered,
       setOrderStep,
       refresh,
       isSubscriptionReady,
