@@ -133,7 +133,7 @@ export const getReadOnlyChartOrders = async (chartId: string) => {
   const { data, error } = await supabase
     .from('icu_orders')
     .select(
-      'icu_chart_order_id, icu_chart_order_name, icu_chart_order_comment, icu_chart_order_type, icu_chart_order_time',
+      'icu_chart_order_id, icu_chart_order_name, icu_chart_order_comment, icu_chart_order_type, icu_chart_order_time, is_bordered',
     )
     .order('icu_chart_order_priority')
     .match({ icu_chart_id: chartId })

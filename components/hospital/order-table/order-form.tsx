@@ -1,11 +1,12 @@
 'use client'
 
-import DeleteOrderAlertDialog from '@/components/hospital/order-table/delete-order-alert-dialog'
 import ChecklistOrderField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/checklist-order/checklist-order-field'
 import FeedOrderField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/feed-order/feed-order-field'
 import FluidOrderField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/fluid-order/fluid-order-field'
+import OrderBorderCheckbox from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-border-checkbox'
 import OrderFormField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-form-field'
 import { orderSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-schema'
+import DeleteOrderAlertDialog from '@/components/hospital/order-table/delete-order-alert-dialog'
 import { Button } from '@/components/ui/button'
 import { DialogClose, DialogFooter } from '@/components/ui/dialog'
 import {
@@ -17,6 +18,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { upsertDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
@@ -50,6 +52,7 @@ export default function OrderForm({
       icu_chart_order_type: selectedChartOrder.order_type ?? undefined,
       icu_chart_order_name: selectedChartOrder.order_name ?? '',
       icu_chart_order_comment: selectedChartOrder.order_comment ?? '',
+      is_bordered: selectedChartOrder.is_bordered ?? false,
     },
   })
 
@@ -62,11 +65,13 @@ export default function OrderForm({
       const trimmedOrderName = values.icu_chart_order_name.trim()
       const orderComment = values.icu_chart_order_comment ?? ''
       const orderType = values.icu_chart_order_type
+      const isBordered = values.is_bordered
       const updatedOrder = {
         order_name: trimmedOrderName,
         order_comment: orderComment,
         order_type: orderType,
         id: 999,
+        is_bordered: isBordered,
       }
 
       if (mode === 'default') {
@@ -77,6 +82,7 @@ export default function OrderForm({
             default_chart_order_name: trimmedOrderName,
             default_chart_order_comment: orderComment,
             default_chart_order_type: orderType,
+            is_bordered: isBordered,
           },
         )
 
@@ -173,6 +179,10 @@ export default function OrderForm({
         {orderType !== 'fluid' &&
           orderType !== 'feed' &&
           orderType !== 'checklist' && <OrderFormField form={form} />}
+
+        <Separator />
+
+        <OrderBorderCheckbox form={form} />
 
         <DialogFooter className="ml-auto w-full gap-2 md:gap-0">
           {isEditOrderMode && (

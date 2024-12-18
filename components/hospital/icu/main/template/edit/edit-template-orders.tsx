@@ -59,6 +59,7 @@ export default function EditTemplateOrders({
       order_type: order.icu_chart_order_type,
       order_times: order.icu_chart_order_time,
       order_comment: order.icu_chart_order_comment || null,
+      is_bordered: order.is_bordered,
     }))
 
     setTemplateOrders(formattedOrders)
@@ -91,6 +92,7 @@ export default function EditTemplateOrders({
             icu_chart_order_name: order.order_name!,
             icu_chart_order_comment: order.order_comment!,
             icu_chart_order_type: order.order_type!,
+            is_bordered: order.is_bordered,
           },
         )
       })

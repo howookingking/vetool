@@ -53,6 +53,7 @@ export default function QuickOrderInsertInput({
       order_type: orderType,
       order_times: Array(24).fill('0'),
       treatments: [],
+      is_bordered: false,
     }
 
     setSortedOrders((prev) => [...prev, newOrder])
