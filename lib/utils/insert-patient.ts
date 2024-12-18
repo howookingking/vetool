@@ -5,12 +5,16 @@ import {
 } from '@/constants/hospital/register/breed'
 
 // Date를 다뤄야하는 경우가 있으므로 클라이언트 상에서 처리해야하므로 서버 컴포넌트가 아닌 유틸 함수화
-export const transformCsvData = (row: string[], header: string[]) => {
+export const transformCsvData = (
+  row: string[],
+  header: string[],
+  uploadType: 'intoVet' | 'efriends',
+) => {
   // 먼저 hos_patient_id와 name의 인덱스와 값을 확인
-  const hosPatientIdMapping = CSV_HEADER_MAPPING.find(
+  const hosPatientIdMapping = CSV_HEADER_MAPPING[uploadType].find(
     (mapping) => mapping.dbColumn === 'hos_patient_id',
   )
-  const nameMapping = CSV_HEADER_MAPPING.find(
+  const nameMapping = CSV_HEADER_MAPPING[uploadType].find(
     (mapping) => mapping.dbColumn === 'name',
   )
 
@@ -40,10 +44,12 @@ export const transformCsvData = (row: string[], header: string[]) => {
   const transformedData: Record<string, any> = {}
 
   // Key: CSV COLUMN KOREAN 헤더!! ,Value: DB COLUMN NAME!!
-  const columnIndexes = CSV_HEADER_MAPPING.map((mapping) => ({
-    ...mapping,
-    index: header.indexOf(mapping.csvColumn),
-  })).filter((mapping) => mapping.dbColumn && mapping.index !== -1)
+  const columnIndexes = CSV_HEADER_MAPPING[uploadType]
+    .map((mapping) => ({
+      ...mapping,
+      index: header.indexOf(mapping.csvColumn),
+    }))
+    .filter((mapping) => mapping.dbColumn && mapping.index !== -1)
 
   columnIndexes.forEach(({ index, dbColumn }) => {
     // CSV <-> DB 컬럼명에 대응되는 값
@@ -70,7 +76,7 @@ export const transformCsvData = (row: string[], header: string[]) => {
         break
 
       case 'is_alive':
-        transformedData[dbColumn] = value === '정상'
+        transformedData[dbColumn] = transformIsAlive(value)
         break
 
       default:
@@ -83,6 +89,13 @@ export const transformCsvData = (row: string[], header: string[]) => {
 
   return transformedData
 }
+const transformIsAlive = (value: string): boolean => {
+  if (value === '사망' || value.toLowerCase() === 'false') {
+    return false
+  }
+
+  return true
+}
 
 const transformGender = (value: string): string => {
   const genderMap: Record<string, string> = {
@@ -90,20 +103,34 @@ const transformGender = (value: string): string => {
     Male: 'im',
     'Castrated Male': 'cm',
     'Spayed Female': 'sf',
+    'S.Female': 'sf',
+    'C.male': 'cm',
   }
 
   return genderMap[value] ?? 'un'
 }
 
 const transformBirthDate = (value: string): string => {
-  const date = new Date(value)
   const today = new Date().toISOString().split('T')[0]
 
-  if (isNaN(date.getTime())) {
-    return today
+  if (value.length === 8) {
+    const [year, month, day] = value.split('-').map((part) => Number(part))
+    const fullYear = year > 90 ? 1900 + year : 2000 + year
+
+    const date = new Date(Date.UTC(fullYear, month - 1, day))
+
+    // 유효한 날짜인지 확인
+    if (isNaN(date.getTime())) return today
+
+    return date.toISOString().split('T')[0]
   }
 
-  return value ?? today
+  const date = new Date(value)
+
+  // 유효한 날짜인지 확인
+  if (isNaN(date.getTime())) return today
+
+  return date.toISOString().split('T')[0]
 }
 
 const transformSpecies = (value: string) => {

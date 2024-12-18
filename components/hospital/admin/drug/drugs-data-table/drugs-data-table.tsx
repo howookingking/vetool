@@ -3,15 +3,19 @@
 import DataTable from '@/components/ui/data-table'
 import { HosDrugWithRawDrug } from '@/types/icu/drugs'
 import { drugColumns } from './drug-columns'
+import { AddDrugDialog } from '../upsert-drug-form/add-drug-dialog'
+import { RawDrug } from '@/types'
 
 export default function DrugsDataTable({
   hosName,
-  hosDrugs,
+  hosDrugsData,
+  rawDrugData,
 }: {
   hosName: string
-  hosDrugs: HosDrugWithRawDrug[]
+  hosDrugsData: HosDrugWithRawDrug[]
+  rawDrugData: RawDrug[]
 }) {
-  const formattedHosDrugs = hosDrugs.map((hosDrug) => ({
+  const formattedHosDrugs = hosDrugsData.map((hosDrug) => ({
     raw_drug_name: hosDrug.raw_drug_id.raw_drug_name,
     ...hosDrug,
   }))
@@ -19,13 +23,14 @@ export default function DrugsDataTable({
     <>
       <div className="mb-1 flex items-center gap-2">
         <span className="text-lg font-bold">{hosName} 약물</span>
-        {/* <AddAndPinDropDown hosId={hosId} /> */}
+        <AddDrugDialog rawDrugData={rawDrugData} />
       </div>
 
       <DataTable
         data={formattedHosDrugs}
         columns={drugColumns}
         searchPlaceHolder="원료명, 태그명으로 검색"
+        rowLength={20}
       />
     </>
   )

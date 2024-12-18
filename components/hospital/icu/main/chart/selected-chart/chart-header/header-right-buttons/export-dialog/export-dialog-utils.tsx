@@ -99,6 +99,7 @@ export const renderAndCaptureExportChartBody = (
           memoNameListData: initialIcuData.basicHosData.icu_memo_names,
           vitalRefRange: [],
           orderFontSizeData: 12,
+          timeGuidelineData: [2, 10, 18],
         }}
       >
         <ExportChartBody chartData={chartData} onRender={handleRender} />,

@@ -19,6 +19,7 @@ type BasicHosData = {
   sidebarData: IcuSidebarIoData[]
   vitalRefRange: VitalRefRange[]
   orderFontSizeData: number
+  timeGuidelineData: number[]
 }
 
 const BasicHosDataContext = createContext<IcuContextType | undefined>(undefined)

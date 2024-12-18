@@ -81,7 +81,7 @@ export default function TxTable({
     <>
       <ScrollArea
         ref={scrollAreaRef}
-        className="h-[calc(100vh-136px)] overflow-scroll whitespace-nowrap md:h-icu-chart-main md:w-[calc(100vw-250px)]"
+        className="h-[calc(100vh-136px)] overflow-scroll whitespace-nowrap 2xl:h-icu-chart-main 2xl:w-[calc(100vw-250px)]"
       >
         <Table className="border" ref={tableRef}>
           <TxTableHeader

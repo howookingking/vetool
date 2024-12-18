@@ -14,7 +14,7 @@ import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
 import { formatOrders } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
-import { RefObject, useEffect, useState } from 'react'
+import { RefObject, useCallback, useEffect, useState } from 'react'
 import ChartTableBody from './chart-table-body/chart-table-body'
 import SortingOrderRows from './chart-table-body/sorting-order-rows'
 import ChartTableHeader from './chart-table-header/chart-table-header'
@@ -42,7 +42,12 @@ export default function ChartTable({
     target_date,
   } = chartData
   const {
-    basicHosData: { showOrderer, vetsListData, vitalRefRange },
+    basicHosData: {
+      showOrderer,
+      vetsListData,
+      vitalRefRange,
+      timeGuidelineData,
+    },
   } = useBasicHosDataContext()
   const isCommandPressed = useIsCommandPressed()
 
@@ -70,7 +75,7 @@ export default function ChartTable({
     }
   }, [isSorting, orders])
 
-  const handleUpsertOrderTimesWithoutOrderer = async () => {
+  const handleUpsertOrderTimesWithoutOrderer = useCallback(async () => {
     const formattedOrders = formatOrders(orderTimePendingQueue)
 
     for (const order of formattedOrders) {
@@ -102,7 +107,7 @@ export default function ChartTable({
       title: '오더시간을 변경하였습니다',
     })
     reset()
-  }
+  }, [hos_id, icu_chart_id, orderTimePendingQueue, orders, reset, vetsListData])
 
   // -------- 커멘드키 뗐을 때 작업 --------
   const { txStep, setTxStep } = useTxMutationStore()
@@ -194,6 +199,7 @@ export default function ChartTable({
           cellRef={cellRef}
           species={species}
           hosId={hos_id}
+          timeGuidelineData={timeGuidelineData}
         />
       )}
 

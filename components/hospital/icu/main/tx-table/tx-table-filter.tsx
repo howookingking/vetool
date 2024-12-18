@@ -25,7 +25,7 @@ export default function TxTableFilter({
     <Select value={localFilterState} onValueChange={setLocalFilterState}>
       <SelectTrigger
         className={cn(
-          'md: fixed left-2 top-[54px] z-30 w-[calc(100vw-16px)] md:left-auto md:right-2 md:top-1.5 md:w-[240px]',
+          'fixed left-2 top-[54px] z-30 w-[calc(100vw-16px)] 2xl:left-auto 2xl:right-2 2xl:top-1.5 2xl:w-[240px]',
           localFilterState !== 'all' && 'pl-8',
         )}
       >

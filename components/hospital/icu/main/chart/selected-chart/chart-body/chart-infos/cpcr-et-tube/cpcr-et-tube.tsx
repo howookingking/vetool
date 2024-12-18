@@ -43,7 +43,7 @@ export default function CpcrEtTube({
         >
           <Activity className="text-muted-foreground" size={16} />
 
-          <div className="flex items-center gap-2 text-sm">
+          <div className="flex items-center gap-1.5 text-xs 2xl:gap-2 2xl:text-sm">
             <span>{cpcr}</span>
 
             <Separator

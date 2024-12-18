@@ -98,26 +98,27 @@ export default function usePatientFileUpload(
   }
 
   // 업로드 핸들러 함수
-  const handleUpload = async () => {
+  const handleUpload = async (uploadType: string) => {
     if (!selectedFile) return
 
     setIsLoading(true)
 
     const csvData = await readFileContent(selectedFile)
-    const response = await fetch(`/api/patient/upload`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data: csvData, hos_id }),
-    })
-    const result = await response.json()
 
-    if (response.status !== 200 || result.error) {
-      // toast({
-      //   title: '업로드 실패',
-      //   description: `${result.error}, 관리자에게 문의해주세요`,
-      //   variant: 'destructive',
-      // })
-      console.log(result.error)
+    if (uploadType === 'intoVet') {
+      await fetch(`/api/patient/upload/intovet`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data: csvData, hos_id }),
+      })
+    }
+
+    if (uploadType === 'efriends') {
+      await fetch(`/api/patient/upload/efriends`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data: csvData, hos_id }),
+      })
     }
 
     setIsLoading(false)
