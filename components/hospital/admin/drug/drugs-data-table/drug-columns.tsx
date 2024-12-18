@@ -25,7 +25,22 @@ export const drugColumns: ColumnDef<HosDrugWithRawDrug>[] = [
   },
 
   {
-    accessorKey: 'hos_drug_tag',
+    accessorKey: 'hos_drug_name',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          약물명
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+  },
+
+  {
+    accessorKey: 'hos_drug_tags',
     header: () => {
       return (
         <div className="flex items-center justify-center gap-2">
@@ -35,7 +50,7 @@ export const drugColumns: ColumnDef<HosDrugWithRawDrug>[] = [
       )
     },
     cell: ({ row }) => {
-      const drugTags = row.original.hos_drug_tag
+      const drugTags = row.original.hos_drug_tags
       return <DrugTagsColumn drugTags={drugTags} />
     },
   },
@@ -50,7 +65,7 @@ export const drugColumns: ColumnDef<HosDrugWithRawDrug>[] = [
       const drugDescription = row.original.hos_drug_description
       const drugDoses = row.original.hos_drug_dosages
       const rawDrugName = row.original.raw_drug_id.raw_drug_name
-      const drugTags = row.original.hos_drug_tag
+      const drugTags = row.original.hos_drug_tags
       return (
         <DrugSpecificColumn
           rawDrugName={rawDrugName}

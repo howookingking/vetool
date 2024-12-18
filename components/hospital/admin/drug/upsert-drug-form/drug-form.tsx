@@ -1,6 +1,7 @@
 'use client'
 
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
+import { drugSchema } from '@/components/hospital/admin/drug/upsert-drug-form/drug-form-schema'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -10,6 +11,7 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command'
+import { DialogClose, DialogFooter } from '@/components/ui/dialog'
 import {
   Form,
   FormControl,
@@ -34,16 +36,29 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
+import { upsertHosDrugData } from '@/lib/services/admin/drug/drug'
 import { cn } from '@/lib/utils/utils'
 import { RawDrug } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Check, ChevronsUpDown, Plus, Trash2 } from 'lucide-react'
-import { useMemo, useRef, useState } from 'react'
+import { Check, ChevronsUpDown, LoaderCircle, Plus, Trash2 } from 'lucide-react'
+import { useParams, useRouter } from 'next/navigation'
+import { useRef, useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { drugSchema } from './drug-form-schema'
+
+const SPECIES_OPTIONS = [
+  { value: 'both', label: 'Both' },
+  { value: 'canine', label: 'Canine' },
+  { value: 'feline', label: 'Feline' },
+] as const
 
 export function DrugForm({ rawDrugData }: { rawDrugData: RawDrug[] }) {
+  const [comboboxOpen, setComboboxOpen] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const { refresh } = useRouter()
+  const { hos_id } = useParams()
+
   const scrollAreaRef = useRef<HTMLDivElement>(null)
 
   const form = useForm<z.infer<typeof drugSchema>>({
@@ -71,33 +86,21 @@ export function DrugForm({ rawDrugData }: { rawDrugData: RawDrug[] }) {
     },
   })
 
+  const firstSpecies = form.watch('hos_drug_dosages.dosages.0.species')
+
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: 'hos_drug_dosages.dosages',
   })
 
-  const SPECIES_OPTIONS = [
-    { value: 'both', label: 'Both' },
-    { value: 'canine', label: 'Canine' },
-    { value: 'feline', label: 'Feline' },
-  ] as const
+  const handleSubmit = async (values: z.infer<typeof drugSchema>) => {
+    setIsSubmitting(true)
 
-  const availableSpecies = (() => {
-    const selectedSpecies = fields.map((field) =>
-      form.getValues(
-        `hos_drug_dosages.dosages.${fields.indexOf(field)}.species`,
-      ),
-    )
+    await upsertHosDrugData(values, hos_id as string)
 
-    return SPECIES_OPTIONS.filter(
-      (option) => !selectedSpecies.includes(option.value),
-    )
-  })()
-
-  function onSubmit(values: z.infer<typeof drugSchema>) {
-    console.log(values)
+    setIsSubmitting(false)
+    refresh()
   }
-  const [comboboxOpen, setComboboxOpen] = useState(false)
 
   const handleSearchInput = () => {
     // Access the ScrollArea's viewport div and scroll it to top
@@ -108,10 +111,28 @@ export function DrugForm({ rawDrugData }: { rawDrugData: RawDrug[] }) {
       viewport.scrollTop = 0
     }
   }
+  const getAvailableSpeciesOptions = (currentIndex: number) => {
+    const selectedSpecies = fields.map((field) =>
+      form.getValues(
+        `hos_drug_dosages.dosages.${fields.indexOf(field)}.species`,
+      ),
+    )
+
+    return SPECIES_OPTIONS.filter((option) => {
+      // 두 번째 SELECT OPTION에서 BOTH 제거, 이미 선택한 옵션 제거
+      if (currentIndex > 0) {
+        return (
+          option.value !== 'both' && !selectedSpecies.includes(option.value)
+        )
+      }
+
+      return !selectedSpecies.includes(option.value)
+    })
+  }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
         <div className="relative grid grid-cols-2 gap-4">
           <FormField
             control={form.control}
@@ -130,7 +151,7 @@ export function DrugForm({ rawDrugData }: { rawDrugData: RawDrug[] }) {
                         variant="outline"
                         role="combobox"
                         className={cn(
-                          'w-[400px] justify-between',
+                          'w-full justify-between',
                           !field.value && 'text-muted-foreground',
                         )}
                       >
@@ -272,42 +293,50 @@ export function DrugForm({ rawDrugData }: { rawDrugData: RawDrug[] }) {
                         <FormField
                           control={form.control}
                           name={`hos_drug_dosages.dosages.${index}.species`}
-                          render={({ field }) => (
-                            <FormItem>
-                              <div>
-                                <FormLabel>종</FormLabel>
-                              </div>
-                              <FormControl>
-                                <Select
-                                  onValueChange={field.onChange}
-                                  defaultValue={field.value}
-                                >
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="종 선택" />
-                                  </SelectTrigger>
+                          render={({ field }) => {
+                            const currentOption = SPECIES_OPTIONS.find(
+                              (option) => option.value === field.value,
+                            )
 
-                                  <SelectContent>
-                                    {SPECIES_OPTIONS.filter(
-                                      (option) =>
-                                        availableSpecies.some(
-                                          (species) =>
-                                            species.value === option.value,
-                                        ) || option.value === field.value,
-                                    ).map((option) => (
-                                      <SelectItem
-                                        key={option.value}
-                                        value={option.value}
-                                      >
-                                        {option.label}
-                                      </SelectItem>
-                                    ))}
-                                  </SelectContent>
-                                </Select>
-                              </FormControl>
+                            return (
+                              <FormItem>
+                                <div>
+                                  <FormLabel>종</FormLabel>
+                                </div>
+                                <FormControl>
+                                  <Select
+                                    onValueChange={field.onChange}
+                                    value={field.value}
+                                  >
+                                    <SelectTrigger
+                                      disabled={
+                                        fields.length === 2 && index === 0
+                                      }
+                                    >
+                                      <SelectValue placeholder="종 선택">
+                                        {currentOption?.label ?? ''}
+                                      </SelectValue>
+                                    </SelectTrigger>
 
-                              <FormMessage className="absolute" />
-                            </FormItem>
-                          )}
+                                    <SelectContent>
+                                      {getAvailableSpeciesOptions(index).map(
+                                        (option) => (
+                                          <SelectItem
+                                            key={option.value}
+                                            value={option.value}
+                                          >
+                                            {option.label}
+                                          </SelectItem>
+                                        ),
+                                      )}
+                                    </SelectContent>
+                                  </Select>
+                                </FormControl>
+
+                                <FormMessage className="absolute" />
+                              </FormItem>
+                            )
+                          }}
                         />
                       </div>
 
@@ -376,21 +405,23 @@ export function DrugForm({ rawDrugData }: { rawDrugData: RawDrug[] }) {
 
                       <div className="col-span-1 mt-2 flex justify-start">
                         {fields.length < 2 ? (
-                          <Button
-                            type="button"
-                            size="sm"
-                            variant="outline"
-                            onClick={() =>
-                              append({
-                                species: '',
-                                max: 0,
-                                min: 0,
-                                default: 0,
-                              })
-                            }
-                          >
-                            <Plus size={16} className="mr-2" /> 추가
-                          </Button>
+                          !(firstSpecies === 'both') && (
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="outline"
+                              onClick={() =>
+                                append({
+                                  species: '',
+                                  max: 0,
+                                  min: 0,
+                                  default: 0,
+                                })
+                              }
+                            >
+                              <Plus size={16} className="mr-2" /> 추가
+                            </Button>
+                          )
                         ) : (
                           <Button
                             type="button"
@@ -416,13 +447,11 @@ export function DrugForm({ rawDrugData }: { rawDrugData: RawDrug[] }) {
             name="hos_drug_description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Description 약물 설명 </FormLabel>
+                <FormLabel>약물 설명 </FormLabel>
                 <FormControl>
                   <Textarea {...field} />
                 </FormControl>
-                <FormDescription>
-                  This is your public display name.
-                </FormDescription>
+
                 <FormMessage />
               </FormItem>
             )}
@@ -433,13 +462,11 @@ export function DrugForm({ rawDrugData }: { rawDrugData: RawDrug[] }) {
             name="hos_drug_indication"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Indication 용법</FormLabel>
+                <FormLabel>용법</FormLabel>
                 <FormControl>
                   <Textarea {...field} />
                 </FormControl>
-                <FormDescription>
-                  This is your public display name.
-                </FormDescription>
+
                 <FormMessage />
               </FormItem>
             )}
@@ -452,13 +479,11 @@ export function DrugForm({ rawDrugData }: { rawDrugData: RawDrug[] }) {
             name="hos_drug_side_effect"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Side Effect 부작용</FormLabel>
+                <FormLabel>부작용</FormLabel>
                 <FormControl>
                   <Textarea {...field} />
                 </FormControl>
-                <FormDescription>
-                  This is your public display name.
-                </FormDescription>
+
                 <FormMessage />
               </FormItem>
             )}
@@ -476,16 +501,25 @@ export function DrugForm({ rawDrugData }: { rawDrugData: RawDrug[] }) {
                     placeholder="#파모티딘#가스터#파모#위장관계"
                   />
                 </FormControl>
-                <FormDescription>
-                  This is your public display name.
-                </FormDescription>
+
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
 
-        <Button type="submit">Submit</Button>
+        <DialogFooter className="ml-auto w-full gap-2 md:gap-0">
+          <DialogClose asChild>
+            <Button type="button" variant="outline" tabIndex={-1}>
+              닫기
+            </Button>
+          </DialogClose>
+
+          <Button type="submit" disabled={isSubmitting}>
+            저장
+            {isSubmitting && <LoaderCircle className="animate-spin" />}
+          </Button>
+        </DialogFooter>
       </form>
     </Form>
   )

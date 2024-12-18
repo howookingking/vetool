@@ -17,7 +17,7 @@ const drugDosagesSchema = z.object({
   dose_unit: z.string(),
   mg_per_ml: z.coerce
     .number()
-    .min(0, { message: 'mg 값은 0 이상이어야 합니다' }),
+    .min(0.1, { message: 'mg 값은 0.1 이상이어야 합니다' }),
   dosages: z
     .array(dosageSchema)
     .min(1, { message: '최소 한 개의 용량 설정이 필요합니다' }),
@@ -26,7 +26,9 @@ const drugDosagesSchema = z.object({
 // 전체 약물 폼 스키마
 export const drugSchema = z.object({
   raw_drug_id: z
-    .string()
+    .string({
+      required_error: '약물 원료를 선택해주세요',
+    })
     .min(1, { message: '약물 원료를 선택해주세요' })
     .uuid(),
   hos_drug_dosages: drugDosagesSchema,

@@ -201,8 +201,9 @@ export type Database = {
           hos_drug_dosages: Json | null
           hos_drug_id: string
           hos_drug_indication: string | null
+          hos_drug_name: string
           hos_drug_side_effect: string | null
-          hos_drug_tag: string | null
+          hos_drug_tags: string | null
           hos_id: string | null
           raw_drug_id: string
         }
@@ -212,8 +213,9 @@ export type Database = {
           hos_drug_dosages?: Json | null
           hos_drug_id?: string
           hos_drug_indication?: string | null
+          hos_drug_name?: string
           hos_drug_side_effect?: string | null
-          hos_drug_tag?: string | null
+          hos_drug_tags?: string | null
           hos_id?: string | null
           raw_drug_id: string
         }
@@ -223,8 +225,9 @@ export type Database = {
           hos_drug_dosages?: Json | null
           hos_drug_id?: string
           hos_drug_indication?: string | null
+          hos_drug_name?: string
           hos_drug_side_effect?: string | null
-          hos_drug_tag?: string | null
+          hos_drug_tags?: string | null
           hos_id?: string | null
           raw_drug_id?: string
         }
