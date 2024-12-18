@@ -334,3 +334,35 @@ export const isValidWeightOrderTx = (
 
   return false
 }
+
+export const borderedOrderClassName = (
+  sortedOrders: { is_bordered: boolean }[],
+  currentOrder: { is_bordered: boolean },
+  index: number,
+) => {
+  console.log(sortedOrders, currentOrder, index)
+  const isCurrentOrderBordered = currentOrder.is_bordered
+  const isNextOrderBordered = sortedOrders[index + 1]?.is_bordered
+  const isPrevOrderBordered = sortedOrders[index - 1]?.is_bordered
+
+  // 현재 오더가 테두리 없음이면 얼리 리턴 (빈 값)
+  if (!isCurrentOrderBordered) return {}
+
+  // 초기 스타일 설정
+  const style: React.CSSProperties = {
+    borderTop: 'none',
+    borderLeft: '1.5px solid #fb7185',
+    borderRight: '1.5px solid #fb7185',
+    borderBottom: 'none',
+  }
+
+  if (!isPrevOrderBordered) {
+    style.borderTop = '1.5px solid #fb7185'
+  }
+
+  if (!isNextOrderBordered) {
+    style.borderBottom = '1.5px solid #fb7185'
+  }
+
+  return style
+}

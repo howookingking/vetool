@@ -9,6 +9,7 @@ import {
   useIcuOrderStore,
 } from '@/lib/store/icu/icu-order'
 import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
+import { borderedOrderClassName, cn } from '@/lib/utils/utils'
 import type { VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { RefObject } from 'react'
@@ -120,9 +121,10 @@ export default function OrderRows({
         )
         return (
           <TableRow
-            className="relative w-full divide-x"
+            className={cn('relative w-full divide-x')}
             key={order.order_id}
             ref={cellRef}
+            style={borderedOrderClassName(sortedOrders, order, index)}
           >
             <OrderRowTitle
               isInOrderPendingQueue={isInOrderPendingQueue}

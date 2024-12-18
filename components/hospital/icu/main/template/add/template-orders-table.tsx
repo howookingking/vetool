@@ -76,6 +76,8 @@ export default function TemplateOrdersTable({
     setIsEditOrderMode(true)
     setSelectedChartOrder(order)
     setOrderIndex(index)
+
+    console.log(order)
   }
 
   const handleSortButtonClick = async () => {
@@ -135,6 +137,7 @@ export default function TemplateOrdersTable({
             <OrderTableRow
               key={index}
               order={order}
+              sortedOrders={sortedOrders}
               index={index}
               orderColors={orderColorsData}
               onEdit={() => handleEditOrderDialogOpen(order, index)}
@@ -156,6 +159,7 @@ export default function TemplateOrdersTable({
               <OrderTableRow
                 key={index}
                 order={order}
+                sortedOrders={sortedOrders}
                 index={index}
                 orderColors={orderColorsData}
                 onEdit={() => handleEditOrderDialogOpen(order, index)}

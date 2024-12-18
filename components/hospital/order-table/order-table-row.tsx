@@ -1,12 +1,13 @@
 import { Button } from '@/components/ui/button'
 import { TableCell, TableRow } from '@/components/ui/table'
-import { cn, parsingOrderName } from '@/lib/utils/utils'
+import { borderedOrderClassName, cn, parsingOrderName } from '@/lib/utils/utils'
 import type { IcuOrderColors } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { RefObject } from 'react'
 
 export default function OrderTableRow({
   order,
+  sortedOrders,
   index,
   orderColors,
   onEdit,
@@ -14,6 +15,7 @@ export default function OrderTableRow({
   isSorting,
 }: {
   order: SelectedIcuOrder
+  sortedOrders: SelectedIcuOrder[]
   index: number
   orderColors: IcuOrderColors
   onEdit: (order: Partial<SelectedIcuOrder>, index?: number) => void
@@ -21,7 +23,10 @@ export default function OrderTableRow({
   isSorting?: boolean
 }) {
   return (
-    <TableRow className="divide-x">
+    <TableRow
+      className={cn('divide-x')}
+      style={borderedOrderClassName(sortedOrders, order, index)}
+    >
       <TableCell
         className={cn(
           'handle group cursor-grab p-0',
@@ -41,6 +46,7 @@ export default function OrderTableRow({
               order_comment: order.order_comment,
               order_name: order.order_name,
               order_type: order.order_type,
+              is_bordered: order.is_bordered,
             })
           }
           className={cn(

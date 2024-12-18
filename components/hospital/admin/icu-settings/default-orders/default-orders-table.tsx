@@ -112,6 +112,7 @@ export default function DefaultOrdersTable({
             <OrderTableRow
               key={order.order_id}
               order={order}
+              sortedOrders={sortedOrders}
               index={index}
               orderColors={orderColorsData}
               onEdit={handleEditOrderDialogOpen}
@@ -133,6 +134,7 @@ export default function DefaultOrdersTable({
               <OrderTableRow
                 key={index}
                 order={order}
+                sortedOrders={sortedOrders}
                 index={index}
                 orderColors={orderColorsData}
                 onEdit={handleEditOrderDialogOpen}

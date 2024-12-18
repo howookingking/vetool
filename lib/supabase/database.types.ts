@@ -490,6 +490,7 @@ export type Database = {
           default_chart_order_priority: number
           default_chart_order_type: string
           hos_id: string
+          is_bordered: boolean
         }
         Insert: {
           created_at?: string
@@ -499,6 +500,7 @@ export type Database = {
           default_chart_order_priority?: number
           default_chart_order_type: string
           hos_id: string
+          is_bordered?: boolean
         }
         Update: {
           created_at?: string
@@ -508,6 +510,7 @@ export type Database = {
           default_chart_order_priority?: number
           default_chart_order_type?: string
           hos_id?: string
+          is_bordered?: boolean
         }
         Relationships: [
           {
@@ -749,6 +752,7 @@ export type Database = {
           created_at: string
           hos_id: string
           icu_chart_id: string
+          is_bordered: boolean
           template_comment: string | null
           template_id: string
           template_name: string
@@ -757,6 +761,7 @@ export type Database = {
           created_at?: string
           hos_id: string
           icu_chart_id: string
+          is_bordered?: boolean
           template_comment?: string | null
           template_id?: string
           template_name: string
@@ -765,6 +770,7 @@ export type Database = {
           created_at?: string
           hos_id?: string
           icu_chart_id?: string
+          is_bordered?: boolean
           template_comment?: string | null
           template_id?: string
           template_name?: string

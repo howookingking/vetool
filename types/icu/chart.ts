@@ -89,6 +89,7 @@ export type SelectedIcuOrder = {
   treatments: Treatment[]
   order_comment: string | null
   id: number
+  is_bordered: boolean
 }
 
 export type Treatment = {
@@ -133,6 +134,7 @@ export type IcuReadOnlyOrderData = Pick<
   | 'icu_chart_order_name'
   | 'icu_chart_order_comment'
   | 'icu_chart_order_type'
+  | 'is_bordered'
 >
 
 export type PinnedDiet = Pick<
