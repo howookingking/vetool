@@ -350,17 +350,17 @@ export const borderedOrderClassName = (
   // 초기 스타일 설정
   const style: React.CSSProperties = {
     borderTop: 'none',
-    borderLeft: '1.5px solid #fb7185',
-    borderRight: '1.5px solid #fb7185',
+    borderLeft: '2px solid #fb7185',
+    borderRight: '2px solid #fb7185',
     borderBottom: 'none',
   }
 
   if (!isPrevOrderBordered) {
-    style.borderTop = '1.5px solid #fb7185'
+    style.borderTop = '2px solid #fb7185'
   }
 
   if (!isNextOrderBordered) {
-    style.borderBottom = '1.5px solid #fb7185'
+    style.borderBottom = '2px solid #fb7185'
   }
 
   return style

@@ -23,7 +23,7 @@ export default function OrderBorderCheckbox({
           <FormControl>
             <Checkbox checked={field.value} onCheckedChange={field.onChange} />
           </FormControl>
-          <div className="space-y-1 leading-none">
+          <div className="space-y-1 leading-3">
             <FormLabel>테두리 표시</FormLabel>
           </div>
         </FormItem>
