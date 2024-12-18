@@ -7,8 +7,6 @@ import type { VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { useCallback, useEffect, useState } from 'react'
 
-const GUIDLINE_TIMES = [2, 10, 18]
-
 type OrderRowCellsProps = {
   // hoveredColumn: number | null
   // handleColumnHover: (columnIndex: number) => void
@@ -35,6 +33,7 @@ type OrderRowCellsProps = {
   setIsMutationCanceled: (isMutationCanceled: boolean) => void
   setTxStep: (txStep: 'closed' | 'detailInsert' | 'seletctUser') => void
   setTxLocalState: (updates: Partial<TxLocalState>) => void
+  timeGuidelineData: number[]
 }
 
 export default function OrderRowCells({
@@ -52,6 +51,7 @@ export default function OrderRowCells({
   setIsMutationCanceled,
   setTxStep,
   setTxLocalState,
+  timeGuidelineData,
 }: OrderRowCellsProps) {
   const { order_times, order_id, treatments, order_type, order_name } = order
 
@@ -110,7 +110,7 @@ export default function OrderRowCells({
         const tx = treatments
           .reverse()
           .find((treatment) => treatment.time === time)
-        const isGuidelineTime = GUIDLINE_TIMES.includes(time)
+        const isGuidelineTime = timeGuidelineData.includes(time)
         const hasOrder = orderer !== '0'
         const hasComment = !!tx?.tx_comment
         const isInPendingQueue = selectedTxPendingQueue.some(

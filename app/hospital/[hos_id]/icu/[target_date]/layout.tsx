@@ -30,6 +30,7 @@ export default async function IcuPageLayout(props: {
         sidebarData: icuSidebarData,
         vitalRefRange: basicHosData.vital_ref_range as VitalRefRange[],
         orderFontSizeData: basicHosData.order_font_size,
+        timeGuidelineData: basicHosData.time_guidelines,
       }}
     >
       <IcuHeader

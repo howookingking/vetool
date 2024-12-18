@@ -8,7 +8,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { convertPascalCased, getAgeFromAgeInDays } from '@/lib/utils/utils'
+import {
+  calculateAge,
+  convertPascalCased,
+  getAgeFromAgeInDays,
+} from '@/lib/utils/utils'
 import type { PatientDataTable } from '@/types/patients'
 import { Cat, Dog } from 'lucide-react'
 import dynamic from 'next/dynamic'
@@ -25,19 +29,17 @@ const LazyPatientForm = dynamic(
 
 export default function UpdatePatientDialog({
   patientData,
-  ageInDays,
   weight,
   weightMeasuredDate,
   icuChartId,
 }: {
   patientData: PatientDataTable
-  ageInDays: number
   weight: string
   weightMeasuredDate: string | null
   icuChartId: string
 }) {
   const { hos_id } = useParams()
-  const { name, breed, gender, species } = patientData
+  const { name, breed, gender, species, birth } = patientData
   const [isPatientUpdateDialogOpen, setIsPatientUpdateDialogOpen] =
     useState(false)
 
@@ -54,7 +56,7 @@ export default function UpdatePatientDialog({
           {species === 'canine' ? <Dog size={20} /> : <Cat size={20} />}
           <span>{name}</span> ·<span>{convertPascalCased(breed)}</span> ·
           <span className="uppercase">{gender}</span> ·
-          <span>{getAgeFromAgeInDays(ageInDays)} </span>
+          <span>{calculateAge(birth)} </span>
           <span>·</span>
           <span>
             {weight === '' ? '체중 입력' : `${weight}kg`}

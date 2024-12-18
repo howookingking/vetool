@@ -32,6 +32,7 @@ type CellsRowTitlesProps = {
   setOrderStep: (orderStep: 'closed' | 'upsert' | 'selectOrderer') => void
   selectedOrderPendingQueue: Partial<SelectedIcuOrder>[]
   reset: () => void
+  timeGuidelineData: number[]
 }
 
 export default function OrderRows({
@@ -53,6 +54,7 @@ export default function OrderRows({
   setOrderStep,
   selectedOrderPendingQueue,
   reset,
+  timeGuidelineData,
 }: CellsRowTitlesProps) {
   // 세로 hover 가이드라인 기능 없에고 반응보기로
   // const { handleColumnHover, handleColumnLeave, hoveredColumn } =
@@ -154,6 +156,7 @@ export default function OrderRows({
               setIsMutationCanceled={setIsMutationCanceled}
               setTxStep={setTxStep}
               setTxLocalState={setTxLocalState}
+              timeGuidelineData={timeGuidelineData}
             />
           </TableRow>
         )
