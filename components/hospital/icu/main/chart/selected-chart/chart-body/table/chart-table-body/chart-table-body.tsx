@@ -27,6 +27,7 @@ type ChartTableBodyProps = {
   hosId: string
   setOrderStep: (orderStep: 'closed' | 'upsert' | 'selectOrderer') => void
   reset: () => void
+  timeGuidelineData: number[]
 }
 
 export default function ChartTableBody({
@@ -50,6 +51,7 @@ export default function ChartTableBody({
   hosId,
   setOrderStep,
   reset,
+  timeGuidelineData,
 }: ChartTableBodyProps) {
   return (
     <TableBody>
@@ -72,6 +74,7 @@ export default function ChartTableBody({
         isTouchMove={isTouchMove}
         icuChartId={icuChartId}
         hosId={hosId}
+        timeGuidelineData={timeGuidelineData}
       />
 
       {!isExport && !preview && (

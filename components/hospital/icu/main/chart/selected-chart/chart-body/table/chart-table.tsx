@@ -42,7 +42,12 @@ export default function ChartTable({
     target_date,
   } = chartData
   const {
-    basicHosData: { showOrderer, vetsListData, vitalRefRange },
+    basicHosData: {
+      showOrderer,
+      vetsListData,
+      vitalRefRange,
+      timeGuidelineData,
+    },
   } = useBasicHosDataContext()
   const isCommandPressed = useIsCommandPressed()
 
@@ -194,6 +199,7 @@ export default function ChartTable({
           cellRef={cellRef}
           species={species}
           hosId={hos_id}
+          timeGuidelineData={timeGuidelineData}
         />
       )}
 

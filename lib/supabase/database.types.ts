@@ -296,6 +296,7 @@ export type Database = {
           plan: string
           rer_calc_method: string
           show_orderer: boolean
+          time_guidelines: number[]
           vital_ref_range: Json
         }
         Insert: {
@@ -315,6 +316,7 @@ export type Database = {
           plan?: string
           rer_calc_method?: string
           show_orderer?: boolean
+          time_guidelines?: number[]
           vital_ref_range?: Json
         }
         Update: {
@@ -334,6 +336,7 @@ export type Database = {
           plan?: string
           rer_calc_method?: string
           show_orderer?: boolean
+          time_guidelines?: number[]
           vital_ref_range?: Json
         }
         Relationships: [
@@ -644,6 +647,7 @@ export type Database = {
           icu_chart_order_priority: number
           icu_chart_order_time: string[]
           icu_chart_order_type: string
+          is_bordered: boolean
           updated_at: string
         }
         Insert: {
@@ -656,6 +660,7 @@ export type Database = {
           icu_chart_order_priority?: number
           icu_chart_order_time?: string[]
           icu_chart_order_type: string
+          is_bordered?: boolean
           updated_at?: string
         }
         Update: {
@@ -668,6 +673,7 @@ export type Database = {
           icu_chart_order_priority?: number
           icu_chart_order_time?: string[]
           icu_chart_order_type?: string
+          is_bordered?: boolean
           updated_at?: string
         }
         Relationships: [

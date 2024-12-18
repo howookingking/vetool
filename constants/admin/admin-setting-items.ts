@@ -5,6 +5,7 @@ import OrderColorTab from '@/components/hospital/admin/icu-settings/order-color/
 import OrderFontSizeTab from '@/components/hospital/admin/icu-settings/order-font-size/order-font-size-tab'
 import OrdererTab from '@/components/hospital/admin/icu-settings/orderer/orderer-tab'
 import RerCalcTab from '@/components/hospital/admin/icu-settings/rer-calc/rer-calc-tab'
+import TimeGuidelineTab from '@/components/hospital/admin/icu-settings/time-guideline/time-guideline-tab'
 import VitalRefRangeTab from '@/components/hospital/admin/icu-settings/vital-ref-range/vital-ref-range-tab'
 
 export const ADMIN_SETTING_ITEMS = [
@@ -23,5 +24,10 @@ export const ADMIN_SETTING_ITEMS = [
     label: '오더 글자 크기',
     value: 'orderFontSize',
     Component: OrderFontSizeTab,
+  },
+  {
+    label: '시간 가이드라인',
+    value: 'timeGuideLine',
+    Component: TimeGuidelineTab,
   },
 ] as const
