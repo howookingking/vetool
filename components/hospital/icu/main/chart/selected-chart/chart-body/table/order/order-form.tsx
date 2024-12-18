@@ -3,7 +3,8 @@ import FeedOrderField from '@/components/hospital/icu/main/chart/selected-chart/
 import FluidOrderField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/fluid-order/fluid-order-field'
 import OrderFormField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-form-field'
 // import DrugFormField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order-form/drug-order/drug-form-field'
-import NewFeature from '@/components/common/new-feature'
+import ChecklistOrderField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/checklist-order/checklist-order-field'
+import OrderBorderCheckbox from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-border-checkbox'
 import { orderSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-schema'
 import OrderTimeSettings from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-time-settings'
 import { Button } from '@/components/ui/button'
@@ -29,7 +30,7 @@ import { useParams } from 'next/navigation'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import ChecklistOrderField from './checklist-order/checklist-order-field'
+import { Separator } from '@/components/ui/separator'
 
 export default function OrderForm({
   hosId,
@@ -76,6 +77,7 @@ export default function OrderForm({
       icu_chart_order_type: selectedChartOrder.order_type ?? '',
       icu_chart_order_name: selectedChartOrder.order_name ?? '',
       icu_chart_order_comment: selectedChartOrder.order_comment ?? '',
+      is_bordered: selectedChartOrder.is_bordered ?? false,
     },
   })
 
@@ -88,6 +90,7 @@ export default function OrderForm({
       order_type: values.icu_chart_order_type,
       order_times: orderTime,
       order_id: selectedChartOrder.order_id,
+      is_bordered: values.is_bordered,
     })
     setOrderStep('selectOrderer')
   }
@@ -209,6 +212,10 @@ export default function OrderForm({
           setTimeTerm={setTimeTerm}
           setOrderTime={setOrderTime}
         />
+
+        <Separator />
+
+        <OrderBorderCheckbox form={form} />
 
         <DialogFooter className="ml-auto w-full gap-2 md:gap-0">
           {isEditOrderMode && (

@@ -201,8 +201,9 @@ export type Database = {
           hos_drug_dosages: Json | null
           hos_drug_id: string
           hos_drug_indication: string | null
+          hos_drug_name: string
           hos_drug_side_effect: string | null
-          hos_drug_tag: string | null
+          hos_drug_tags: string | null
           hos_id: string | null
           raw_drug_id: string
         }
@@ -212,8 +213,9 @@ export type Database = {
           hos_drug_dosages?: Json | null
           hos_drug_id?: string
           hos_drug_indication?: string | null
+          hos_drug_name?: string
           hos_drug_side_effect?: string | null
-          hos_drug_tag?: string | null
+          hos_drug_tags?: string | null
           hos_id?: string | null
           raw_drug_id: string
         }
@@ -223,8 +225,9 @@ export type Database = {
           hos_drug_dosages?: Json | null
           hos_drug_id?: string
           hos_drug_indication?: string | null
+          hos_drug_name?: string
           hos_drug_side_effect?: string | null
-          hos_drug_tag?: string | null
+          hos_drug_tags?: string | null
           hos_id?: string | null
           raw_drug_id?: string
         }
@@ -490,6 +493,7 @@ export type Database = {
           default_chart_order_priority: number
           default_chart_order_type: string
           hos_id: string
+          is_bordered: boolean
         }
         Insert: {
           created_at?: string
@@ -499,6 +503,7 @@ export type Database = {
           default_chart_order_priority?: number
           default_chart_order_type: string
           hos_id: string
+          is_bordered?: boolean
         }
         Update: {
           created_at?: string
@@ -508,6 +513,7 @@ export type Database = {
           default_chart_order_priority?: number
           default_chart_order_type?: string
           hos_id?: string
+          is_bordered?: boolean
         }
         Relationships: [
           {
@@ -749,6 +755,7 @@ export type Database = {
           created_at: string
           hos_id: string
           icu_chart_id: string
+          is_bordered: boolean
           template_comment: string | null
           template_id: string
           template_name: string
@@ -757,6 +764,7 @@ export type Database = {
           created_at?: string
           hos_id: string
           icu_chart_id: string
+          is_bordered?: boolean
           template_comment?: string | null
           template_id?: string
           template_name: string
@@ -765,6 +773,7 @@ export type Database = {
           created_at?: string
           hos_id?: string
           icu_chart_id?: string
+          is_bordered?: boolean
           template_comment?: string | null
           template_id?: string
           template_name?: string

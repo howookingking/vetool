@@ -41,6 +41,7 @@ export const upsertDefaultChartOrder = async (
     default_chart_order_name: string
     default_chart_order_comment: string
     default_chart_order_type: string
+    is_bordered?: boolean
   },
 ) => {
   const supabase = await createClient()
@@ -48,6 +49,7 @@ export const upsertDefaultChartOrder = async (
     default_chart_order_name,
     default_chart_order_comment,
     default_chart_order_type,
+    is_bordered,
   } = orderData
 
   const { error } = await supabase.from('icu_default_chart').upsert({
@@ -56,6 +58,7 @@ export const upsertDefaultChartOrder = async (
     default_chart_order_name,
     default_chart_order_comment,
     default_chart_order_type,
+    is_bordered,
   })
 
   if (error) {

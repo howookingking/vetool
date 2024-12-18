@@ -27,6 +27,7 @@ export const upsertOrder = async (
     icu_chart_order_comment: string | null
     icu_chart_order_type: string
     icu_chart_order_priority?: number
+    is_bordered?: boolean
   },
 ) => {
   const supabase = await createClient()

@@ -9,7 +9,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
-import { parsingOrderName } from '@/lib/utils/utils'
+import { borderedOrderClassName, parsingOrderName } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { IcuOrderColors } from '@/types/adimin'
 import type { IcuReadOnlyOrderData } from '@/types/icu/chart'
@@ -37,7 +37,7 @@ export default function ReadOnlyChartTable({
       </TableHeader>
 
       <TableBody>
-        {chartOrderData.map((order) => (
+        {chartOrderData.map((order, index) => (
           <TableRow className="divide-x" key={order.icu_chart_order_id}>
             <TableCell
               className="w-[320px] p-0"
@@ -52,6 +52,7 @@ export default function ReadOnlyChartTable({
                 className={
                   'flex h-11 w-[320px] cursor-not-allowed items-center justify-between rounded-none bg-transparent px-2 outline-none ring-inset ring-primary'
                 }
+                style={borderedOrderClassName(chartOrderData, order, index)}
               >
                 <span className="truncate">
                   {parsingOrderName(
