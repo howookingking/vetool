@@ -19,6 +19,7 @@ import ChartTableBody from './chart-table-body/chart-table-body'
 import SortingOrderRows from './chart-table-body/sorting-order-rows'
 import ChartTableHeader from './chart-table-header/chart-table-header'
 import AddTemplateOrderDialog from './order/template/add-template-order-dialog'
+import SelectedOrderActionDialog from './order/selected-order-action-dialog'
 
 type ChartTableProps = {
   chartData: SelectedChart
@@ -55,6 +56,8 @@ export default function ChartTable({
   const [sortedOrders, setSortedOrders] = useState<SelectedIcuOrder[]>(orders)
   const [isDeleteOrdersDialogOpen, setIsDeleteOrdersDialogOpen] =
     useState(false)
+  const [isAddTemplateDialogOpen, setIsAddTemplateDialogOpen] = useState(false)
+  const [isOrderActionDialogOpen, setIsOrderActionDialogOpen] = useState(false)
 
   const [orderWidth, setOrderWidth] = useLocalStorage('orderWidth', 400)
 
@@ -64,6 +67,8 @@ export default function ChartTable({
     selectedTxPendingQueue,
     orderTimePendingQueue,
     selectedOrderPendingQueue,
+    setSelectedOrderPendingQueue,
+    setCopiedOrderPendingQueue,
     orderStep,
     isEditOrderMode,
   } = useIcuOrderStore()
@@ -122,6 +127,11 @@ export default function ChartTable({
         setTxStep('detailInsert')
       }
     }
+
+    // 오더 다중 선택 시
+    if (!isCommandPressed && selectedOrderPendingQueue.length >= 1) {
+      setIsOrderActionDialogOpen(true)
+    }
   }, [
     handleUpsertOrderTimesWithoutOrderer,
     isCommandPressed,
@@ -132,16 +142,17 @@ export default function ChartTable({
     setTxStep,
     showOrderer,
     txStep,
+    selectedOrderPendingQueue.length,
   ])
   // ---------------------------------
 
   // ----- 다중 오더 삭제 -----
-  useShorcutKey({
-    keys: ['backspace', 'delete'],
-    // 이유는 모르겠지만 selectedOrderPendingQueue.length를 메모이제이션 하는 듯. 바뀌질 않아서 삭제 확인 다일로그가 안열림
-    // condition: selectedOrderPendingQueue.length > 0,
-    callback: () => setIsDeleteOrdersDialogOpen(true),
-  })
+  // useShorcutKey({
+  //   keys: ['backspace', 'delete'],
+  //   이유는 모르겠지만 selectedOrderPendingQueue.length를 메모이제이션 하는 듯. 바뀌질 않아서 삭제 확인 다일로그가 안열림
+  //   condition: selectedOrderPendingQueue.length > 0,
+  //   callback: () => setIsDeleteOrdersDialogOpen(true),
+  // })
   // ----- 다중 오더 삭제 -----
 
   return (
@@ -209,9 +220,24 @@ export default function ChartTable({
           <DeleteOrdersAlertDialog
             isDeleteOrdersDialogOpen={isDeleteOrdersDialogOpen}
             setIsDeleteOrdersDialogOpen={setIsDeleteOrdersDialogOpen}
+            setIsOrderActionDialogOpen={setIsOrderActionDialogOpen}
             setSortedOrders={setSortedOrders}
           />
-          <AddTemplateOrderDialog hosId={hos_id} targetDate={target_date} />
+          <AddTemplateOrderDialog
+            hosId={hos_id}
+            targetDate={target_date}
+            isAddTemplateDialogOpen={isAddTemplateDialogOpen}
+            setIsAddTemplateDialogOpen={setIsAddTemplateDialogOpen}
+          />
+          <SelectedOrderActionDialog
+            isOrderActionDialogOpen={isOrderActionDialogOpen}
+            setIsOrderActionDialogOpen={setIsOrderActionDialogOpen}
+            setIsDeleteOrdersDialogOpen={setIsDeleteOrdersDialogOpen}
+            setIsAddTemplateDialogOpen={setIsAddTemplateDialogOpen}
+            selectedOrderPendingQueue={selectedOrderPendingQueue}
+            setSelectedOrderPendingQueue={setSelectedOrderPendingQueue}
+            setCopiedOrderPendingQueue={setCopiedOrderPendingQueue}
+          />
         </>
       )}
     </Table>
