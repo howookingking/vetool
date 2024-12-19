@@ -111,3 +111,22 @@ export const reorderOrders = async (orderIds: string[]) => {
     }
   })
 }
+
+export const updateIsBordered = async (
+  icuChartOrderId: string,
+  isBordered: boolean,
+) => {
+  const supabase = await createClient()
+
+  console.log(isBordered)
+
+  const { error } = await supabase
+    .from('icu_orders')
+    .update({ is_bordered: !isBordered })
+    .match({ icu_chart_order_id: icuChartOrderId })
+
+  if (error) {
+    console.error(error)
+    redirect(`/error?message=${error.message}`)
+  }
+}

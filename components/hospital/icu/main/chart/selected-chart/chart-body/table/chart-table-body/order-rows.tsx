@@ -64,7 +64,6 @@ export default function OrderRows({
     setIsEditOrderMode,
     setSelectedChartOrder,
     setSelectedOrderPendingQueue,
-    setCopiedOrderPendingQueue,
     copiedOrderPendingQueue,
     setOrderTimePendingQueue,
     setSelectedTxPendingQueue,
@@ -77,18 +76,18 @@ export default function OrderRows({
     setTxLocalState,
   } = useTxMutationStore()
 
-  useShorcutKey({
-    keys: ['c'],
-    condition: selectedOrderPendingQueue.length > 0,
-    callback: () => {
-      setCopiedOrderPendingQueue(selectedOrderPendingQueue)
-      setSelectedOrderPendingQueue([])
-      toast({
-        title: '오더 복사 완료',
-        description: '붙여넣기 할 차트로 이동해주세요',
-      })
-    },
-  })
+  // useShorcutKey({
+  //   keys: ['c'],
+  //   condition: selectedOrderPendingQueue.length > 0,
+  //   callback: () => {
+  //     setCopiedOrderPendingQueue(selectedOrderPendingQueue)
+  //     setSelectedOrderPendingQueue([])
+  //     toast({
+  //       title: '오더 복사 완료',
+  //       description: '붙여넣기 할 차트로 이동해주세요',
+  //     })
+  //   },
+  // })
 
   useShorcutKey({
     keys: ['v'],
@@ -143,6 +142,7 @@ export default function OrderRows({
               setIsEditOrderMode={setIsEditOrderMode}
               setSelectedChartOrder={setSelectedChartOrder}
             />
+
             <OrderRowCells
               preview={preview}
               order={order}
