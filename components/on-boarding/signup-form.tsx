@@ -69,7 +69,9 @@ export function SignupForm() {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-base">성함을 입력해주세요</FormLabel>
+                <FormLabel className="text-base font-semibold">
+                  성함을 입력해주세요
+                </FormLabel>
                 <FormControl>
                   <Input placeholder="김벳툴" {...field} />
                 </FormControl>
@@ -83,7 +85,9 @@ export function SignupForm() {
             name="isVet"
             render={({ field }) => (
               <FormItem className="space-y-3">
-                <FormLabel className="text-base">수의사이신가요?</FormLabel>
+                <FormLabel className="text-base font-semibold">
+                  수의사이신가요?
+                </FormLabel>
                 <FormControl>
                   <RadioGroup
                     onValueChange={field.onChange}
@@ -117,7 +121,9 @@ export function SignupForm() {
             name="option"
             render={({ field }) => (
               <FormItem className="space-y-3">
-                <FormLabel className="text-base">동물병원 등록</FormLabel>
+                <FormLabel className="text-base font-semibold">
+                  벳툴에 새로운 동물병원 등록
+                </FormLabel>
                 <FormControl>
                   <RadioGroup
                     onValueChange={field.onChange}
@@ -126,18 +132,19 @@ export function SignupForm() {
                   >
                     <FormItem className="flex items-center space-x-3 space-y-0">
                       <FormControl>
-                        <RadioGroupItem value="select" />
-                      </FormControl>
-                      <FormLabel className="cursor-pointer">
-                        등록된 병원의 임직원으로 참여하겠습니다
-                      </FormLabel>
-                    </FormItem>
-                    <FormItem className="flex items-center space-x-3 space-y-0">
-                      <FormControl>
                         <RadioGroupItem value="create" />
                       </FormControl>
                       <FormLabel className="cursor-pointer">
-                        새로운 병원을 개설하겠습니다
+                        새로운 동물병원을 등록하겠습니다
+                      </FormLabel>
+                    </FormItem>
+
+                    <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem value="select" />
+                      </FormControl>
+                      <FormLabel className="cursor-pointer">
+                        이미 등록된 동물병원에 참여하겠습니다
                       </FormLabel>
                     </FormItem>
                   </RadioGroup>
