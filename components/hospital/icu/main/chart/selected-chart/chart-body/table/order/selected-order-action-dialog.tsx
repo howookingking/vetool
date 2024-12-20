@@ -15,6 +15,7 @@ import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { useTemplateStore } from '@/lib/store/icu/template'
 import { updateIsBordered } from '@/lib/services/icu/chart/order-mutation'
+import { useRouter } from 'next/navigation'
 
 type SelectedOrderActionDialogProps = {
   isOrderActionDialogOpen: boolean
@@ -44,6 +45,7 @@ export default function SelectedOrderActionDialog({
   setCopiedOrderPendingQueue,
 }: SelectedOrderActionDialogProps) {
   const { setTemplateOrders } = useTemplateStore()
+  const { refresh } = useRouter()
 
   useEffect(() => {
     if (!isOrderActionDialogOpen) {
@@ -93,6 +95,7 @@ export default function SelectedOrderActionDialog({
     }
 
     setIsOrderActionDialogOpen(false)
+    refresh()
   }
 
   // 오더 삭제 핸들러

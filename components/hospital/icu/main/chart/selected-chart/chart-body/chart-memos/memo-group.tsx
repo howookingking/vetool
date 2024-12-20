@@ -1,15 +1,17 @@
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
+import {
+  type Memo,
+  MEMO_COLORS,
+} from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/chart-memos'
+import MemoColorPicker from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/memo-color-picker'
 import SingleMemo from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/single-memo/single-memo'
 import { Label } from '@/components/ui/label'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
-import useIsMobile from '@/hooks/use-is-mobile'
 import { updateMemos } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { ReactSortable, Sortable } from 'react-sortablejs'
-import { type Memo, MEMO_COLORS } from './chart-memos'
-import MemoColorPicker from './memo-color-picker'
 
 export default function MemoGroup({
   memo,
@@ -28,7 +30,6 @@ export default function MemoGroup({
   const [isUpdating, setIsUpdating] = useState(false)
   const lastMemoRef = useRef<HTMLLIElement>(null)
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(false)
-  const isMobile = useIsMobile()
 
   useEffect(() => {
     setSortedMemos(memo ?? [])
@@ -167,7 +168,6 @@ export default function MemoGroup({
 
       <ScrollArea className="h-60 rounded-md border p-2">
         <ReactSortable
-          disabled={isMobile}
           list={sortedMemos}
           setList={setSortedMemos}
           className="space-y-2"
