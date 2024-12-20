@@ -14,8 +14,8 @@ export type TxLocalState = {
 } | null
 
 type IcuUpsertTxState = {
-  txStep: 'closed' | 'detailInsert' | 'seletctUser'
-  setTxStep: (txStep: 'closed' | 'detailInsert' | 'seletctUser') => void
+  txStep: 'closed' | 'detailInsert' | 'selectUser'
+  setTxStep: (txStep: 'closed' | 'detailInsert' | 'selectUser') => void
 
   txLocalState: TxLocalState
   setTxLocalState: (updates: Partial<TxLocalState>) => void
