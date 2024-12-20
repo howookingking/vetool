@@ -46,6 +46,7 @@ export default function TxDetailInsertStep() {
   })
 
   const hasTxOrder = selectedTxPendingQueue.some((order) => order.txId)
+  const hasTxLog = txLocalState?.txLog && txLocalState?.txLog?.length > 0
 
   const handleNextStep = async (
     values: z.infer<typeof txDetailRegisterFormSchema>,
@@ -56,7 +57,7 @@ export default function TxDetailInsertStep() {
       isCrucialChecked: values.isCrucialChecked,
     })
 
-    setTxStep('seletctUser')
+    setTxStep('selectUser')
   }
 
   const handleCloseClick = () => {
@@ -139,7 +140,7 @@ export default function TxDetailInsertStep() {
             onImagesChange={(newImages) => setTxImageState(newImages)}
           /> */}
 
-          {txLocalState?.txLog?.length && <TxLog logs={txLocalState?.txLog} />}
+          {hasTxLog && <TxLog logs={txLocalState?.txLog} />}
 
           <FormField
             control={form.control}
