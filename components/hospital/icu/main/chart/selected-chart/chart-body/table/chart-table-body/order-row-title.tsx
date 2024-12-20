@@ -106,7 +106,7 @@ export default function OrderRowTitle({
       )}
       style={{
         width: orderWidth,
-        background: orderColorsData[order_type as keyof IcuOrderColors],
+        // background: orderColorsData[order_type as keyof IcuOrderColors],
         transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
       }}
     >
@@ -129,11 +129,14 @@ export default function OrderRowTitle({
           transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
         }}
       >
-        <div className="flex items-center gap-1 truncate">
-          <span
-            className="font-semibold transition group-hover:underline"
-            style={{ fontSize: `${orderFontSizeData}px` }}
-          >
+        <div className="flex items-center gap-2 truncate">
+          <div
+            className="h-4 w-4 shrink-0 rounded-full border"
+            style={{
+              background: orderColorsData[order_type as keyof IcuOrderColors],
+            }}
+          />
+          <span style={{ fontSize: `${orderFontSizeData}px` }}>
             {parsingOrderName(order_type, order_name)}
           </span>
 

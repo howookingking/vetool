@@ -130,10 +130,10 @@ export default function QuickOrderInsertInput({
         value={orderType}
       >
         <SelectTrigger
-          className="h-11 w-1/2 rounded-none border-0 shadow-none ring-0 focus:ring-0"
-          style={{
-            backgroundColor: orderColorsData[orderType as keyof IcuOrderColors],
-          }}
+          className="h-11 w-1/2 rounded-none border-0 border-r px-2 shadow-none ring-0 focus:ring-0"
+          // style={{
+          //   backgroundColor: orderColorsData[orderType as keyof IcuOrderColors],
+          // }}
         >
           <SelectValue />
         </SelectTrigger>
@@ -142,12 +142,20 @@ export default function QuickOrderInsertInput({
             <SelectItem
               key={item.value}
               value={item.value}
-              style={{
-                backgroundColor: orderColorsData[item.value],
-              }}
+              // style={{
+              //   backgroundColor: orderColorsData[item.value],
+              // }}
               className="rounded-none p-1 transition hover:opacity-70"
             >
-              {item.label}
+              <div className="flex items-center gap-2">
+                <div
+                  className="h-4 w-4 rounded-full border"
+                  style={{
+                    backgroundColor: orderColorsData[item.value],
+                  }}
+                />
+                <span>{item.label}</span>
+              </div>
             </SelectItem>
           ))}
         </SelectContent>
@@ -155,7 +163,7 @@ export default function QuickOrderInsertInput({
 
       {orderType === 'checklist' ? (
         <Select onValueChange={handleSelectChange}>
-          <SelectTrigger className="h-11 rounded-none border-b-0 border-l-0 border-t-0 focus-visible:ring-0">
+          <SelectTrigger className="h-11 rounded-none border-0 border-r focus-visible:ring-0">
             <SelectValue placeholder="체크리스트 항목 선택" />
           </SelectTrigger>
 
@@ -171,7 +179,7 @@ export default function QuickOrderInsertInput({
         <div className="relative w-full">
           <Input
             className={cn(
-              'h-11 rounded-none border-b-0 border-l-0 border-t-0 focus-visible:ring-0',
+              'h-11 rounded-none border-0 border-r focus-visible:ring-0',
               isChecklistOrder && 'ring-1 ring-destructive',
             )}
             disabled={isSubmitting}

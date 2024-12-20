@@ -20,10 +20,12 @@ import { Dispatch, SetStateAction, useEffect, useRef } from 'react'
 export default function DeleteOrdersAlertDialog({
   isDeleteOrdersDialogOpen,
   setIsDeleteOrdersDialogOpen,
+  setIsOrderActionDialogOpen,
   setSortedOrders,
 }: {
   isDeleteOrdersDialogOpen: boolean
   setIsDeleteOrdersDialogOpen: Dispatch<SetStateAction<boolean>>
+  setIsOrderActionDialogOpen: Dispatch<SetStateAction<boolean>>
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
 }) {
   const { refresh } = useRouter()
@@ -50,6 +52,7 @@ export default function DeleteOrdersAlertDialog({
       title: `오더를 삭제하였습니다`,
     })
     setIsDeleteOrdersDialogOpen(false)
+    setIsOrderActionDialogOpen(false)
     reset()
 
     if (!isSubscriptionReady) {
