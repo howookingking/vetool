@@ -142,7 +142,7 @@ export default function ChartTable({
     // condition: selectedOrderPendingQueue.length > 0,
     callback: () => setIsDeleteOrdersDialogOpen(true),
   })
-  // ----- 다중 오더 삭제 -----
+  // -------------------------
 
   return (
     <Table className="border">
