@@ -131,7 +131,7 @@ export default function OrderRowTitle({
       >
         <div className="flex items-center gap-2 truncate">
           <div
-            className="h-4 w-4 shrink-0 rounded-full"
+            className="h-4 w-4 shrink-0 rounded-full border"
             style={{
               background: orderColorsData[order_type as keyof IcuOrderColors],
             }}
