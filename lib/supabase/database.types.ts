@@ -295,6 +295,7 @@ export type Database = {
           master_user_id: string
           name: string
           order_color: Json | null
+          order_color_display: string
           order_font_size: number
           plan: string
           rer_calc_method: string
@@ -315,6 +316,7 @@ export type Database = {
           master_user_id: string
           name: string
           order_color?: Json | null
+          order_color_display?: string
           order_font_size?: number
           plan?: string
           rer_calc_method?: string
@@ -335,6 +337,7 @@ export type Database = {
           master_user_id?: string
           name?: string
           order_color?: Json | null
+          order_color_display?: string
           order_font_size?: number
           plan?: string
           rer_calc_method?: string

@@ -48,7 +48,7 @@ export default function OrderRowTitle({
   const { order_comment, order_type, order_name } = order
 
   const {
-    basicHosData: { orderColorsData, orderFontSizeData },
+    basicHosData: { orderColorsData, orderFontSizeData, orderColorDisplay },
   } = useBasicHosDataContext()
 
   const handleClickOrderTitle = useCallback(
@@ -106,8 +106,13 @@ export default function OrderRowTitle({
       )}
       style={{
         width: orderWidth,
-        // background: orderColorsData[order_type as keyof IcuOrderColors],
         transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
+
+        // 오더 색 표시 방법이 full 인경우
+        background:
+          orderColorDisplay === 'full'
+            ? orderColorsData[order_type as keyof IcuOrderColors]
+            : 'transparent',
       }}
     >
       <Button
@@ -130,12 +135,16 @@ export default function OrderRowTitle({
         }}
       >
         <div className="flex items-center gap-2 truncate">
-          <div
-            className="h-4 w-4 shrink-0 rounded-full border"
-            style={{
-              background: orderColorsData[order_type as keyof IcuOrderColors],
-            }}
-          />
+          {/* 오더 색 표시 방법이 dot 인경우 */}
+          {orderColorDisplay === 'dot' && (
+            <div
+              className="h-4 w-4 shrink-0 rounded-full border"
+              style={{
+                background: orderColorsData[order_type as keyof IcuOrderColors],
+              }}
+            />
+          )}
+
           <span style={{ fontSize: `${orderFontSizeData}px` }}>
             {parsingOrderName(order_type, order_name)}
           </span>
