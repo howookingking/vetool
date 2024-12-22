@@ -72,7 +72,7 @@ const SingleMemo = React.forwardRef<HTMLLIElement, SingleMemoProps>(
 
     return (
       <li
-        className="relative flex w-full items-center gap-2 px-2"
+        className="relative flex w-full items-center px-2"
         ref={ref}
         style={{
           backgroundColor: editedMemoColor ?? MEMO_COLORS[0],

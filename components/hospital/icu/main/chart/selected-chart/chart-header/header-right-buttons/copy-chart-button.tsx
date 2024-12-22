@@ -1,6 +1,5 @@
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
-import useShorcutKey from '@/hooks/use-shortcut-key'
 import { useCopiedChartStore } from '@/lib/store/icu/copied-chart'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { Copy, CopyCheck } from 'lucide-react'
@@ -12,7 +11,6 @@ export default function CopyChartButton({
   icuChartId: string
 }) {
   const { copiedChartId, setCopiedChartId } = useCopiedChartStore()
-  const { selectedOrderPendingQueue } = useIcuOrderStore()
 
   const handleCopy = useCallback(async () => {
     setCopiedChartId(icuChartId)

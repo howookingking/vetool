@@ -20,6 +20,7 @@ type BasicHosData = {
   vitalRefRange: VitalRefRange[]
   orderFontSizeData: number
   timeGuidelineData: number[]
+  orderColorDisplay: string
 }
 
 const BasicHosDataContext = createContext<IcuContextType | undefined>(undefined)
