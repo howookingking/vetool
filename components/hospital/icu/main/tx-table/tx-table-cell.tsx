@@ -28,7 +28,7 @@ export default function TxTableCell({
       | ((prev: OrderTimePendingQueue[]) => OrderTimePendingQueue[]),
   ) => void
   setTxLocalState: (updates: Partial<TxLocalState>) => void
-  setTxStep: (txStep: 'closed' | 'detailInsert' | 'seletctUser') => void
+  setTxStep: (txStep: 'closed' | 'detailInsert' | 'selectUser') => void
 }) {
   const { hos_id, target_date } = useParams()
   const { push } = useRouter()
@@ -36,8 +36,15 @@ export default function TxTableCell({
   const searchParams = useSearchParams()
   const isMobile = useIsMobile()
   const isOrderScheduled = order.icu_chart_order_time[time - 1] !== '0'
-  const isTxCompleted = order.treatments.some((tx) => tx.time === time)
+  const isTxCompleted = order.treatments.some(
+    (tx) => tx.time === time && tx.tx_result,
+  )
   const treatment = order.treatments.reverse().find((tx) => tx.time === time)
+  const hasCrucialTx = order.treatments.some(
+    (tx) => tx.time === time && tx.is_crucial,
+  )
+
+  console.log(order.treatments)
 
   const handleOpenTxDetail = useCallback(() => {
     setTxLocalState({
@@ -82,9 +89,7 @@ export default function TxTableCell({
   const notCompletedTx = !isTxCompleted && isOrderScheduled
 
   return (
-    <TableCell
-      className={cn('text-center ring-inset ring-primary transition-all')}
-    >
+    <TableCell className="relative text-center ring-inset ring-primary transition-all">
       {notCompletedTx ? (
         <>
           <div className="flex flex-col">
@@ -124,6 +129,8 @@ export default function TxTableCell({
           </div>
         </>
       ) : null}
+
+      {hasCrucialTx && <span className="absolute bottom-0 left-0">❗️</span>}
     </TableCell>
   )
 }

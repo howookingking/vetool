@@ -34,7 +34,7 @@ type CellProps = {
   ) => void
   isMutationCanceled: boolean
   setIsMutationCanceled: (isMutationCanceled: boolean) => void
-  setTxStep: (txStep: 'closed' | 'detailInsert' | 'seletctUser') => void
+  setTxStep: (txStep: 'closed' | 'detailInsert' | 'selectUser') => void
   setTxLocalState: (updates: Partial<TxLocalState>) => void
   orderTimePendingQueueLength: number
   rowVitalRefRange:
@@ -166,7 +166,7 @@ export default function Cell({
       txLog: treatment?.tx_log as TxLog[] | null,
     })
 
-    setTxStep('seletctUser')
+    setTxStep('selectUser')
   }, [
     briefTxResultInput,
     icuChartOrderId,

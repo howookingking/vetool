@@ -29,7 +29,7 @@ export default function TxUpsertDialog() {
       <DialogContent>
         {txStep === 'detailInsert' && <TxDetailInsertStep />}
 
-        {txStep === 'seletctUser' && (
+        {txStep === 'selectUser' && (
           <TxSelectUserStep handleClose={handleClose} />
         )}
       </DialogContent>

@@ -31,7 +31,7 @@ type OrderRowCellsProps = {
   ) => void
   isMutationCanceled: boolean
   setIsMutationCanceled: (isMutationCanceled: boolean) => void
-  setTxStep: (txStep: 'closed' | 'detailInsert' | 'seletctUser') => void
+  setTxStep: (txStep: 'closed' | 'detailInsert' | 'selectUser') => void
   setTxLocalState: (updates: Partial<TxLocalState>) => void
   timeGuidelineData: number[]
 }
@@ -105,7 +105,9 @@ export default function OrderRowCells({
       {TIMES.map((time, index) => {
         const isDone =
           order_times[index] !== '0' &&
-          treatments.some((treatment) => treatment.time === time)
+          treatments.some(
+            (treatment) => treatment.time === time && treatment.tx_result,
+          )
         const orderer = orderTimeState[time - 1]
         const tx = treatments
           .reverse()

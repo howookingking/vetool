@@ -55,23 +55,30 @@ export default function TxSelectUserStep({
     async (values: z.infer<typeof userLogFormSchema>) => {
       setIsSubmitting(true)
 
-      const newLog: TxLog = {
-        result: txLocalState?.txResult ?? '',
-        name: values.userLog,
-        createdAt: format(new Date(), 'yyyy-MM-dd HH:mm'),
-      }
+      let updatedLogs = txLocalState?.txLog ?? []
 
-      if (newLog.result && newLog.result.includes('$')) {
-        newLog.result = newLog.result.split('$')[0].trim()
-      }
+      if (txLocalState?.txResult && txLocalState.txResult.trim() !== '') {
+        const newLog: TxLog = {
+          result: txLocalState.txResult,
+          name: values.userLog,
+          createdAt: format(new Date(), 'yyyy-MM-dd HH:mm'),
+        }
 
-      const updatedLogs = [...(txLocalState?.txLog ?? []), newLog]
+        if (newLog.result && newLog.result.includes('$')) {
+          newLog.result = newLog.result.split('$')[0].trim()
+        }
+
+        updatedLogs = [...updatedLogs, newLog]
+      }
 
       // 다중 Tx 입력
       if (selectedTxPendingQueue.length) {
         await Promise.all(
           selectedTxPendingQueue.map((item) => {
-            const updatedLogs = [...(item.txLog ?? []), newLog]
+            const txLogs =
+              txLocalState?.txResult && txLocalState.txResult.trim() !== ''
+                ? [...(item.txLog ?? []), ...updatedLogs]
+                : (item.txLog ?? [])
 
             return upsertIcuTx(
               hos_id as string,
@@ -84,7 +91,7 @@ export default function TxSelectUserStep({
                 isCrucialChecked: txLocalState?.isCrucialChecked,
               },
               format(new Date(), 'yyyy-MM-dd'),
-              updatedLogs,
+              txLogs,
             )
           }),
         )
