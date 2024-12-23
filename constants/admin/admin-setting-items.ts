@@ -16,7 +16,7 @@ export const ADMIN_SETTING_ITEMS = [
     Component: OrderColorTab,
   },
   { label: '메모이름', value: 'memo', Component: MemoNameTab },
-  { label: '오더자 표시', value: 'orderer', Component: OrdererTab },
+  { label: '오더자 & 처치자 표시', value: 'orderer', Component: OrdererTab },
   {
     label: '유지속도 계산법',
     value: 'maintenanceRate',
