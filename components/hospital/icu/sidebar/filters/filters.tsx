@@ -4,10 +4,12 @@ import type { Vet } from '@/types/icu/chart'
 import { RotateCcw } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useCallback } from 'react'
+import SortFilter from './sort-filter'
 
 type Filter = {
   selectedGroup: string[]
   selectedVet: string
+  selectedSort: string
 }
 
 type FiltersProps = {
@@ -27,7 +29,7 @@ export default function Filters({
   const { push } = useRouter()
 
   const resetFilters = useCallback(() => {
-    setFilters({ selectedGroup: [], selectedVet: '' })
+    setFilters({ selectedGroup: [], selectedVet: '', selectedSort: 'date' })
 
     push(pathname)
   }, [setFilters, push, pathname])
@@ -50,10 +52,18 @@ export default function Filters({
           setFilters({ ...filters, selectedGroup: group })
         }
       />
+
       <VetFilter
         vetsListData={vetsListData}
         selectedVet={filters.selectedVet}
         setSelectedVet={(vet) => setFilters({ ...filters, selectedVet: vet })}
+      />
+
+      <SortFilter
+        selectedSort={filters.selectedSort}
+        setSelectedSort={(value) =>
+          setFilters({ ...filters, selectedSort: value })
+        }
       />
     </div>
   )

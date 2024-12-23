@@ -8,9 +8,6 @@ import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { useCallback, useEffect, useState } from 'react'
 
 type OrderRowCellsProps = {
-  // hoveredColumn: number | null
-  // handleColumnHover: (columnIndex: number) => void
-  // handleColumnLeave: () => void
   preview?: boolean
   order: SelectedIcuOrder
   showOrderer: boolean
@@ -96,6 +93,7 @@ export default function OrderRowCells({
   const rowVitalRefRange = foundVital
     ? foundVital[species as keyof Omit<VitalRefRange, 'order_name'>]
     : undefined
+
   const noFecalOrUrineResult =
     (order.order_name === '배변' || order.order_name === '배뇨') &&
     order.treatments.length === 0

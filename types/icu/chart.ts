@@ -13,7 +13,10 @@ import type {
 
 export type MainAndSubVet = Pick<User, 'name' | 'avatar_url' | 'user_id'>
 
-export type Vet = Pick<User, 'avatar_url' | 'name' | 'position' | 'user_id'>
+export type Vet = Pick<
+  User,
+  'avatar_url' | 'name' | 'position' | 'user_id' | 'rank'
+>
 
 export type TxLog = {
   result: string | null
