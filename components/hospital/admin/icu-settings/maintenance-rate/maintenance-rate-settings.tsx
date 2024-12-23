@@ -35,7 +35,7 @@ export default function MaintenanceRateSettings({
 
   return (
     <IcuSettingsCard
-      title="유지속도 계산법 설정"
+      title="유지속도 계산법"
       isUpdating={isUpdating}
       onSubmit={handleUpdateMaintenanceRateCalcMethod}
     >

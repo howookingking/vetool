@@ -28,7 +28,8 @@ export default function OrdererSetting({
 
   return (
     <IcuSettingsCard
-      title="오더자 노출 설정"
+      title="오더자 표시"
+      description="어떤 수의사가 오더를 내렸는지 표시합니다"
       onSubmit={handleUpdateShowOrderer}
     >
       <div className="flex items-center space-x-2">
@@ -38,7 +39,7 @@ export default function OrdererSetting({
           onCheckedChange={setShowOrdererInput}
         />
         <Label htmlFor="orderer">
-          오더자 설정
+          오더자 표시
           <span
             className={cn(
               showOrdererInput ? 'text-green-600' : 'text-red-600',
