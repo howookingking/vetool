@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -13,12 +14,14 @@ import { ReactNode } from 'react'
 export default function IcuSettingsCard({
   children,
   title,
+  description,
   onSubmit,
   isUpdating,
   buttonName = '저장',
 }: {
   children: ReactNode
   title: string
+  description?: string
   onSubmit: () => void
   isUpdating?: boolean
   buttonName?: string
@@ -27,6 +30,7 @@ export default function IcuSettingsCard({
     <Card className="mt-2 sm:w-1/2">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
       </CardHeader>
 
       <CardContent>{children}</CardContent>

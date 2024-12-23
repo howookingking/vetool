@@ -13,6 +13,7 @@ import { useState } from 'react'
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -75,6 +76,9 @@ export default function VitalRefRangeSettings({
     <Card className="mt-2">
       <CardHeader>
         <CardTitle>바이탈 정상 범위 설정</CardTitle>
+        <CardDescription>
+          정상 범위에서 벗어난 결과값이 차트에 표시됩니다
+        </CardDescription>
       </CardHeader>
 
       <CardContent>

@@ -48,7 +48,7 @@ export default function OrderFontSetting({
 
   return (
     <IcuSettingsCard
-      title="오더 글자 크기 설정"
+      title="오더 글자 크기"
       isUpdating={isUpdating}
       onSubmit={handleUpdateOrderFontSize}
     >
