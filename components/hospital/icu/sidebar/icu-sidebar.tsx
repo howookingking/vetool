@@ -9,6 +9,7 @@ import { MobileIcuSidebarSheet } from './mobile/mobile-icu-sidebar-sheet'
 export type Filter = {
   selectedGroup: string[]
   selectedVet: string
+  selectedSort: string
 }
 
 export default function IcuSidebar({
@@ -28,6 +29,7 @@ export default function IcuSidebar({
       filters: {
         selectedGroup: string[]
         selectedVet: string
+        selectedSort: string
       },
     ) => {
       const filterByGroup = (items: IcuSidebarIoData[]) =>
@@ -54,14 +56,39 @@ export default function IcuSidebar({
         return items.filter((item) => vetFilteredIds.has(item.icu_io_id))
       }
 
-      const filteredIcuIoData = filterByVet(filterByGroup(data))
+      const filterByOption = (items: IcuSidebarIoData[]) => {
+        const option = filters.selectedSort
+        const sortedItems = [...items]
+
+        if (option === 'vet') {
+          return sortedItems.sort((a, b) => {
+            const getVetOrder = (item: IcuSidebarIoData) => {
+              const mainVet = vetsListData.find(
+                (vet) => vet.user_id === item.vets?.main_vet,
+              )
+              return mainVet?.rank || 99
+            }
+            return getVetOrder(a) - getVetOrder(b)
+          })
+        }
+
+        if (option === 'name') {
+          return sortedItems.sort((a, b) =>
+            a.patient.name.localeCompare(b.patient.name, 'ko'),
+          )
+        }
+
+        return sortedItems
+      }
+
+      const filteredIcuIoData = filterByOption(filterByVet(filterByGroup(data)))
       const excludedIcuIoData = data.filter(
         (item) => !filteredIcuIoData.includes(item),
       )
 
       return { filteredIcuIoData, excludedIcuIoData }
     },
-    [],
+    [vetsListData],
   )
 
   const filteredData = filterData(icuSidebarData, filters)

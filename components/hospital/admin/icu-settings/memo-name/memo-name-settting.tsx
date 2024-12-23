@@ -68,7 +68,8 @@ export default function MemoNameSetting({
 
   return (
     <IcuSettingsCard
-      title="메모명 변경"
+      title="메모이름"
+      description="차트 하단에 위치한 메모의 이름을 변경하실 수 있습니다"
       isUpdating={isUpdating}
       onSubmit={form.handleSubmit(handleSubmit)}
     >

@@ -35,7 +35,7 @@ export default function RerCalcSettings({
 
   return (
     <IcuSettingsCard
-      title="RER 계산법 설정"
+      title="RER 계산법"
       isUpdating={isUpdating}
       onSubmit={handleUpdateMaintenanceRateCalcMethod}
     >
