@@ -33,29 +33,39 @@ export default function TxTableContainer({
 }) {
   const [localFilterState, setLocalFilterState] = useState('all')
 
-  const filteredTxData = txTableData
-    .filter((data) => !data.icu_io.out_date)
-    .map((data) => ({
+  const filteredTxData = txTableData.map((data) => {
+    const filteredOrders = data.orders.filter((order) => {
+      // 필터가 전체가 아니고 현재 선택한 필터가 아닌 오더들은 필터링
+      if (
+        localFilterState !== 'all' &&
+        order.icu_chart_order_type !== localFilterState
+      ) {
+        return false
+      }
+
+      // 오더 시간들을 배열로 생성 [1, 3, 5, 7]
+      const orderTimes = order.icu_chart_order_time
+        .map((time, index) => (time !== '0' ? index + 1 : null))
+        .filter((time) => time !== null)
+
+      // 처치 결과가 있는 시간들을 배열로 생성 [1, 3]
+      const treatmentTimes = order.treatments.map((treatment) => {
+        if (treatment.tx_result) return treatment.time
+      })
+
+      // 아직 처치가 안된 오더의 시간을 배열로 생성 [5, 7]
+      const pendingOrderTimes = orderTimes.filter(
+        (time) => !treatmentTimes.includes(time),
+      )
+
+      return pendingOrderTimes.length > 0
+    })
+
+    return {
       ...data,
-      orders: data.orders.filter((order) => {
-        if (localFilterState && localFilterState !== 'all') {
-          if (order.icu_chart_order_type !== localFilterState) {
-            return false
-          }
-        }
-        const orderTimes = order.icu_chart_order_time
-          .map((time, index) => (time !== '0' ? index + 1 : null))
-          .filter((time): time is number => time !== null)
-        const treatmentTimes = order.treatments.map(
-          (treatment) => treatment.time,
-        )
-        const pendingOrderTimes = orderTimes.filter(
-          (time) => !treatmentTimes.includes(time),
-        )
-        return pendingOrderTimes.length > 0
-      }),
-    }))
-    .filter((data) => data.orders.length > 0)
+      orders: filteredOrders,
+    }
+  })
 
   const chartBackgroundMap = txTableData.reduce<{ [key: string]: string }>(
     (acc, item, index) => {

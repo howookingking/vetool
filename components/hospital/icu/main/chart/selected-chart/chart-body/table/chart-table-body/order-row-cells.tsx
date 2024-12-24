@@ -111,9 +111,7 @@ export default function OrderRowCells({
             (treatment) => treatment.time === time && treatment.tx_result,
           )
         const orderer = orderTimeState[time - 1]
-        const tx = treatments
-          .reverse()
-          .find((treatment) => treatment.time === time)
+        const tx = treatments.findLast((treatment) => treatment.time === time)
         const isGuidelineTime = timeGuidelineData.includes(time)
         const hasOrder = orderer !== '0'
         const hasComment = !!tx?.tx_comment

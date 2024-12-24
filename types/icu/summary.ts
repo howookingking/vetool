@@ -21,5 +21,6 @@ export type SummaryOrder = {
   treatments: {
     time: number
     is_crucial: boolean
+    icu_chart_tx_result: string | null
   }[]
 }

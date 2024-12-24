@@ -409,9 +409,6 @@ export type Database = {
           icu_io_id: string | null
           in_charge: Json | null
           main_vet: string | null
-          memo_a: Json | null
-          memo_b: Json | null
-          memo_c: Json | null
           patient_id: string | null
           sub_vet: string | null
           target_date: string
@@ -426,9 +423,6 @@ export type Database = {
           icu_io_id?: string | null
           in_charge?: Json | null
           main_vet?: string | null
-          memo_a?: Json | null
-          memo_b?: Json | null
-          memo_c?: Json | null
           patient_id?: string | null
           sub_vet?: string | null
           target_date: string
@@ -443,9 +437,6 @@ export type Database = {
           icu_io_id?: string | null
           in_charge?: Json | null
           main_vet?: string | null
-          memo_a?: Json | null
-          memo_b?: Json | null
-          memo_c?: Json | null
           patient_id?: string | null
           sub_vet?: string | null
           target_date?: string
