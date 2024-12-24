@@ -17,17 +17,17 @@ export default function SummaryTableRow({ summary }: { summary: SummaryData }) {
   const hospitalizationDays = getDaysDifference(summary.icu_io.in_date)
   const isPatientOut = summary.icu_io.out_date !== null
 
-  const handleClickRow = (patientId: string) => {
-    push(`/hospital/${hos_id}/icu/${target_date}/chart/${patientId}`)
-  }
-
   return (
     <TableRow
       className={cn(
         'cursor-pointer divide-x',
         isPatientOut && 'text-muted-foreground line-through',
       )}
-      onClick={() => handleClickRow(summary.patient_id as string)}
+      onClick={() =>
+        push(
+          `/hospital/${hos_id}/icu/${target_date}/chart/${summary.patient_id}`,
+        )
+      }
     >
       <TableCell className="flex w-[176px] items-center justify-between gap-1">
         <div className="flex flex-1 flex-col items-center gap-1">
@@ -52,14 +52,16 @@ export default function SummaryTableRow({ summary }: { summary: SummaryData }) {
         <span className="shrink-0 text-xs">{hospitalizationDays}일차</span>
       </TableCell>
 
-      {TIMES.map((time) => (
-        <SummaryTableCell
-          key={time}
-          time={time}
-          orders={orders}
-          isPatientOut={isPatientOut}
-        />
-      ))}
+      {TIMES.map((time) => {
+        return (
+          <SummaryTableCell
+            key={time}
+            time={time}
+            orders={orders}
+            isPatientOut={isPatientOut}
+          />
+        )
+      })}
     </TableRow>
   )
 }

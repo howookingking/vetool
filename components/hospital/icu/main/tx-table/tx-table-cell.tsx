@@ -1,14 +1,25 @@
 import { Button } from '@/components/ui/button'
 import { TableCell } from '@/components/ui/table'
 import useIsMobile from '@/hooks/use-is-mobile'
-import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
 import { TxLocalState } from '@/lib/store/icu/tx-mutation'
-import { cn, parsingOrderName } from '@/lib/utils/utils'
+import { parsingOrderName } from '@/lib/utils/utils'
+import { IcuOrderColors } from '@/types/adimin'
 import { TxLog } from '@/types/icu/chart'
 import { IcuTxTableData } from '@/types/icu/tx-table'
 import { ArrowRight, Edit } from 'lucide-react'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { useCallback } from 'react'
+import OrderTypeColorDot from '../../../common/order-type-color-dot'
+
+type TxTableCellProps = {
+  time: number
+  order: IcuTxTableData['orders'][number]
+  patientId: string
+  patientName: string
+  setTxLocalState: (updates: Partial<TxLocalState>) => void
+  setTxStep: (txStep: 'closed' | 'detailInsert' | 'selectUser') => void
+  orderColorsData: IcuOrderColors
+}
 
 export default function TxTableCell({
   time,
@@ -16,33 +27,23 @@ export default function TxTableCell({
   patientId,
   setTxLocalState,
   setTxStep,
-}: {
-  time: number
-  order: IcuTxTableData['orders'][number]
-  patientId: string
-  patientName: string
-  orderTimePendingQueueLength: number
-  setSelectedTxPendingQueue: (
-    updater:
-      | OrderTimePendingQueue[]
-      | ((prev: OrderTimePendingQueue[]) => OrderTimePendingQueue[]),
-  ) => void
-  setTxLocalState: (updates: Partial<TxLocalState>) => void
-  setTxStep: (txStep: 'closed' | 'detailInsert' | 'selectUser') => void
-}) {
+  orderColorsData,
+}: TxTableCellProps) {
   const { hos_id, target_date } = useParams()
   const { push } = useRouter()
-
   const searchParams = useSearchParams()
   const isMobile = useIsMobile()
+
   const isOrderScheduled = order.icu_chart_order_time[time - 1] !== '0'
   const isTxCompleted = order.treatments.some(
     (tx) => tx.time === time && tx.tx_result,
   )
-  const treatment = order.treatments.reverse().find((tx) => tx.time === time)
-  const hasCrucialTx = order.treatments.some(
+  const treatment = order.treatments.findLast((tx) => tx.time === time)
+  const isCrucialTx = order.treatments.some(
     (tx) => tx.time === time && tx.is_crucial,
   )
+  const hasComment = treatment?.tx_comment
+  const notCompletedTx = !isTxCompleted && isOrderScheduled
 
   const handleOpenTxDetail = useCallback(() => {
     setTxLocalState({
@@ -84,25 +85,36 @@ export default function TxTableCell({
     }
   }
 
-  const notCompletedTx = !isTxCompleted && isOrderScheduled
-
   return (
-    <TableCell className="relative text-center ring-inset ring-primary transition-all">
+    <TableCell className="relative px-3 py-2 text-center ring-inset ring-primary transition-all">
       {notCompletedTx ? (
         <>
-          <div className="flex flex-col">
-            <div className="flex flex-col whitespace-nowrap py-4">
-              <span className="text-sm">
-                {parsingOrderName(
-                  order.icu_chart_order_type,
-                  order.icu_chart_order_name,
-                )}
-              </span>
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-col whitespace-nowrap">
+              <div className="flex items-center justify-center gap-2">
+                <OrderTypeColorDot
+                  orderColorsData={orderColorsData}
+                  orderType={order.icu_chart_order_type}
+                />
+                <span>
+                  {parsingOrderName(
+                    order.icu_chart_order_type,
+                    order.icu_chart_order_name,
+                  )}
+                </span>
+              </div>
               <span className="text-xs text-muted-foreground">
                 {order.icu_chart_order_comment}
                 {order.icu_chart_order_type === 'fluid' && 'ml/hr'}
               </span>
             </div>
+
+            {(isCrucialTx || hasComment) && (
+              <div className="flex justify-center">
+                {isCrucialTx && <div>❗️</div>}
+                {hasComment && <div>{treatment.tx_comment}</div>}
+              </div>
+            )}
 
             <div className="flex justify-center gap-1.5">
               <Button
@@ -127,8 +139,6 @@ export default function TxTableCell({
           </div>
         </>
       ) : null}
-
-      {hasCrucialTx && <span className="absolute bottom-0 left-0">❗️</span>}
     </TableCell>
   )
 }
