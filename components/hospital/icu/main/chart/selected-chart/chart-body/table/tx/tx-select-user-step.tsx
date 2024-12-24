@@ -9,7 +9,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { useUpsertTx } from '@/hooks/use-upsert-tx'
+import useUpsertTx from '@/hooks/use-upsert-tx'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useRealtimeSubscriptionStore } from '@/lib/store/icu/realtime-subscription'
 import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
@@ -34,6 +34,14 @@ export default function TxSelectUserStep({
   const { isSubscriptionReady } = useRealtimeSubscriptionStore()
   const { refresh } = useRouter()
   const { hos_id } = useParams()
+
+  const { isSubmitting, upsertTx, upsertMultipleTx } = useUpsertTx({
+    hosId: hos_id as string,
+    onSuccess: () => {
+      handleClose()
+      if (!isSubscriptionReady) refresh()
+    },
+  })
 
   const { isSubmitting, upsertTx, upsertMultipleTx } = useUpsertTx({
     hosId: hos_id as string,
@@ -77,22 +85,12 @@ export default function TxSelectUserStep({
 
       // 다중 Tx 입력
       if (selectedTxPendingQueue.length) {
-        const txStates = selectedTxPendingQueue.map((item) => ({
-          state: {
-            txId: item.txId,
-            txResult: txLocalState?.txResult,
-            txComment: txLocalState?.txComment,
-            time: item.orderTime,
-            icuChartOrderId: item.orderId,
-            isCrucialChecked: txLocalState?.isCrucialChecked,
-          },
-          logs:
-            txLocalState?.txResult && txLocalState.txResult.trim() !== ''
-              ? [...(item.txLog ?? []), ...updatedLogs]
-              : (item.txLog ?? []),
-        }))
-
-        await upsertMultipleTx(txStates)
+        await upsertMultipleTx(selectedTxPendingQueue, {
+          result: txLocalState?.txResult,
+          comment: txLocalState?.txComment,
+          isCrucialChecked: txLocalState?.isCrucialChecked,
+          updatedLogs,
+        })
 
         return
       }

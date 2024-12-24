@@ -3,14 +3,15 @@ import { VitalResultIndication } from '@/components/hospital/icu/main/chart/sele
 import { Input } from '@/components/ui/input'
 import { TableCell } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
+import { toast } from '@/components/ui/use-toast'
 import useAbnormalVital from '@/hooks/use-abnormal-vital'
 import useCellAutofocus from '@/hooks/use-cell-autofocus'
 import { useLongPress } from '@/hooks/use-long-press'
-import { upsertIcuTx } from '@/lib/services/icu/chart/tx-mutation'
+import useUpsertTx from '@/hooks/use-upsert-tx'
 import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
 import { TxLocalState } from '@/lib/store/icu/tx-mutation'
 import { cn } from '@/lib/utils/utils'
-import type { SelectedIcuOrder, Treatment, TxLog } from '@/types/icu/chart'
+import type { Treatment, TxLog } from '@/types/icu/chart'
 import { format } from 'date-fns'
 import React, { useCallback, useEffect, useState } from 'react'
 
@@ -19,6 +20,7 @@ type CellProps = {
   // onMouseEnter: (columnIndex: number) => void
   // onMouseLeave: () => void
   time: number
+  hosId: string
   hosId: string
   treatment?: Treatment
   icuChartOrderId: string
@@ -30,6 +32,7 @@ type CellProps = {
   orderName: string
   toggleOrderTime: (orderId: string, time: number) => void
   showOrderer: boolean
+  showTxUser: boolean
   showTxUser: boolean
   isGuidelineTime: boolean
   setSelectedTxPendingQueue: (
@@ -55,6 +58,7 @@ type CellProps = {
 
 export default function Cell({
   hosId,
+  hosId,
   time,
   treatment,
   icuChartOrderId,
@@ -66,6 +70,7 @@ export default function Cell({
   orderName,
   toggleOrderTime,
   showOrderer,
+  showTxUser,
   showTxUser,
   isGuidelineTime,
   setSelectedTxPendingQueue,
@@ -80,10 +85,12 @@ export default function Cell({
   isInPendingQueue,
 }: CellProps) {
   const [briefTxResultInput, setBriefTxResultInput] = useState('')
+  const { upsertTx } = useUpsertTx({ hosId })
   const { calcVitalResult, isAbnormalVital } = useAbnormalVital(
     treatment,
     rowVitalRefRange,
   )
+
   useCellAutofocus()
 
   useEffect(() => {
@@ -141,6 +148,7 @@ export default function Cell({
               orderId,
               orderTime: time,
               txLog: treatment?.tx_log as TxLog[] | null,
+              isCrucialChecked: treatment?.is_crucial,
             },
           ]
         }
@@ -160,10 +168,13 @@ export default function Cell({
       return
     }
 
+
     if (icuChartTxId && briefTxResultInput.trim() === '') {
       setBriefTxResultInput('')
       return
     }
+
+    const txData = {
 
     const txData = {
       icuChartOrderId,
@@ -172,29 +183,29 @@ export default function Cell({
       time,
       txResult: briefTxResultInput.replace(/^"|"$/g, '').trim(),
       txComment: '',
+      txComment: '',
       txId: icuChartTxId,
       txLog: treatment?.tx_log as TxLog[] | null,
+    }
     }
 
     if (showTxUser) {
       setTxLocalState(txData)
       setTxStep('selectUser')
     } else {
-      const updatedLogs = txData.txLog ?? []
+      let updatedLogs = txData.txLog ?? []
 
-      if (txData.txResult && txData.txResult.includes('$')) {
-        const [result, comment] = txData.txResult.split('$')
+      if (txData.txResult && txData.txResult.trim() !== '') {
+        const newLog = {
+          result: txData.txResult,
+          name: '-',
+          createdAt: format(new Date(), 'yyyy-MM-dd HH:mm'),
+        }
 
-        txData.txResult = result.trim()
-        txData.txComment = comment.trim()
+        updatedLogs = [...updatedLogs, newLog]
       }
 
-      await upsertIcuTx(
-        hosId,
-        txData,
-        format(new Date(), 'yyyy-MM-dd'),
-        updatedLogs,
-      )
+      await upsertTx(txData, updatedLogs)
 
       toast({
         title: '처치 내역이 업데이트 되었습니다',

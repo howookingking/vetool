@@ -7,7 +7,11 @@ import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
 import { useCallback } from 'react'
 
-export default function TxUpsertDialog() {
+export default function TxUpsertDialog({
+  showTxUser,
+}: {
+  showTxUser: boolean
+}) {
   const {
     txStep,
     setTxStep,
@@ -27,7 +31,9 @@ export default function TxUpsertDialog() {
   return (
     <Dialog open={txStep !== 'closed'} onOpenChange={handleClose}>
       <DialogContent>
-        {txStep === 'detailInsert' && <TxDetailInsertStep />}
+        {txStep === 'detailInsert' && (
+          <TxDetailInsertStep showTxUser={showTxUser} />
+        )}
 
         {txStep === 'selectUser' && (
           <TxSelectUserStep handleClose={handleClose} />
