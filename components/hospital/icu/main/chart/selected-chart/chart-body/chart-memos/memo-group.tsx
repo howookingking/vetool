@@ -16,12 +16,12 @@ import { ReactSortable, Sortable } from 'react-sortablejs'
 export default function MemoGroup({
   memo,
   memoIndex,
-  icuChartId,
+  icuIoId,
   memoName,
 }: {
   memo: Memo[] | null
   memoIndex: number
-  icuChartId: string
+  icuIoId: string
   memoName: string
 }) {
   const [sortedMemos, setSortedMemos] = useState<Memo[]>(memo ?? [])
@@ -60,10 +60,10 @@ export default function MemoGroup({
           break
       }
 
-      await updateMemos(updateMemoQuery, icuChartId)
+      await updateMemos(updateMemoQuery, icuIoId)
       setIsUpdating(false)
     },
-    [icuChartId, memoIndex],
+    [icuIoId, memoIndex],
   )
 
   const handleAddMemo = useCallback(async () => {
