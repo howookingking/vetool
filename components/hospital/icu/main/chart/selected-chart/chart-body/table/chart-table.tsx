@@ -217,7 +217,7 @@ export default function ChartTable({
 
       {!isExport && (
         <>
-          <TxUpsertDialog />
+          <TxUpsertDialog showTxUser={showTxUser} />
           <DeleteOrdersAlertDialog
             isDeleteOrdersDialogOpen={isDeleteOrdersDialogOpen}
             setIsDeleteOrdersDialogOpen={setIsDeleteOrdersDialogOpen}
