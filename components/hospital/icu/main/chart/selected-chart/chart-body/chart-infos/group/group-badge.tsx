@@ -6,7 +6,7 @@ export default function GroupBadge({
   currentGroups: string[]
 }) {
   return (
-    <ul className="flex items-center gap-1">
+    <ul className="flex items-center gap-1 truncate">
       {currentGroups.map((group) => (
         <li key={group}>
           <Badge variant="outline" className="m-0">
