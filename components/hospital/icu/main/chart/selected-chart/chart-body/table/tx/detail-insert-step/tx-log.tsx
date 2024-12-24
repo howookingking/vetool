@@ -16,7 +16,7 @@ export default function TxLog({ logs }: { logs?: TxLog[] | null }) {
           <AccordionTrigger className="py-1">
             <div className="flex w-full items-center py-2">
               <div className="w-2/5 text-center">결과</div>
-              <div className="w-1/5 pl-6 text-center">담당자</div>
+              <div className="w-1/5 pl-6 text-center">처치자</div>
               <div className="w-2/5 pr-8 text-right">시간</div>
             </div>
           </AccordionTrigger>
