@@ -91,6 +91,7 @@ export const renderAndCaptureExportChartBody = (
           rerCalcMethod: 'a',
           maintenanceRateCalcMethod: 'b',
           showOrderer: true,
+          showTxUser: true,
           vetsListData: initialIcuData.vetsListData,
           groupListData: initialIcuData.basicHosData.group_list,
           sidebarData: initialIcuData.icuSidebarData ?? [],

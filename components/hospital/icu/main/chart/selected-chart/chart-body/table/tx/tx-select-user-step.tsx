@@ -43,14 +43,6 @@ export default function TxSelectUserStep({
     },
   })
 
-  const { isSubmitting, upsertTx, upsertMultipleTx } = useUpsertTx({
-    hosId: hos_id as string,
-    onSuccess: () => {
-      handleClose()
-      if (!isSubscriptionReady) refresh()
-    },
-  })
-
   const inputRef = useRef<HTMLInputElement>(null)
   useEffect(() => {
     if (inputRef.current) {

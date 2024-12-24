@@ -3,7 +3,6 @@ import { VitalResultIndication } from '@/components/hospital/icu/main/chart/sele
 import { Input } from '@/components/ui/input'
 import { TableCell } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
-import { toast } from '@/components/ui/use-toast'
 import useAbnormalVital from '@/hooks/use-abnormal-vital'
 import useCellAutofocus from '@/hooks/use-cell-autofocus'
 import { useLongPress } from '@/hooks/use-long-press'
@@ -21,7 +20,6 @@ type CellProps = {
   // onMouseLeave: () => void
   time: number
   hosId: string
-  hosId: string
   treatment?: Treatment
   icuChartOrderId: string
   isDone: boolean
@@ -32,7 +30,6 @@ type CellProps = {
   orderName: string
   toggleOrderTime: (orderId: string, time: number) => void
   showOrderer: boolean
-  showTxUser: boolean
   showTxUser: boolean
   isGuidelineTime: boolean
   setSelectedTxPendingQueue: (
@@ -58,7 +55,6 @@ type CellProps = {
 
 export default function Cell({
   hosId,
-  hosId,
   time,
   treatment,
   icuChartOrderId,
@@ -70,7 +66,6 @@ export default function Cell({
   orderName,
   toggleOrderTime,
   showOrderer,
-  showTxUser,
   showTxUser,
   isGuidelineTime,
   setSelectedTxPendingQueue,
@@ -159,6 +154,7 @@ export default function Cell({
       icuChartTxId,
       treatment?.tx_log,
       orderTimePendingQueueLength,
+      treatment?.is_crucial,
     ],
   )
 
@@ -168,25 +164,19 @@ export default function Cell({
       return
     }
 
-
     if (icuChartTxId && briefTxResultInput.trim() === '') {
       setBriefTxResultInput('')
       return
     }
 
     const txData = {
-
-    const txData = {
       icuChartOrderId,
       icuChartOrderType: orderType,
-      icuChartOrderName: orderName,
       time,
       txResult: briefTxResultInput.replace(/^"|"$/g, '').trim(),
       txComment: '',
-      txComment: '',
       txId: icuChartTxId,
       txLog: treatment?.tx_log as TxLog[] | null,
-    }
     }
 
     if (showTxUser) {
@@ -221,8 +211,8 @@ export default function Cell({
     treatment?.tx_result,
     treatment?.tx_log,
     orderType,
-    orderName,
     showTxUser,
+    upsertTx,
   ])
 
   const handleRightClick = useCallback(
