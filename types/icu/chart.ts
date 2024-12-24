@@ -49,9 +49,6 @@ export type SelectedChartPatient = Omit<Patients, 'owner_id'>
 
 export type SelectedChart = Pick<
   IcuCharts,
-  | 'memo_a'
-  | 'memo_b'
-  | 'memo_c'
   | 'weight'
   | 'weight_measured_date'
   | 'target_date'
