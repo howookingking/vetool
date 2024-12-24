@@ -187,7 +187,7 @@ export default function Cell({
 
       if (txData.txResult && txData.txResult.trim() !== '') {
         const newLog = {
-          result: txData.txResult,
+          result: txData.txResult.split('$')[0].trim(),
           name: '-',
           createdAt: format(new Date(), 'yyyy-MM-dd HH:mm'),
         }
