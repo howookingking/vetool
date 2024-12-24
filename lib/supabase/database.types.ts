@@ -544,6 +544,9 @@ export type Database = {
           icu_io_id: string
           icu_io_tags: string | null
           in_date: string
+          memo_a: Json | null
+          memo_b: Json | null
+          memo_c: Json | null
           out_date: string | null
           out_due_date: string | null
           patient_id: string
@@ -560,6 +563,9 @@ export type Database = {
           icu_io_id?: string
           icu_io_tags?: string | null
           in_date: string
+          memo_a?: Json | null
+          memo_b?: Json | null
+          memo_c?: Json | null
           out_date?: string | null
           out_due_date?: string | null
           patient_id: string
@@ -576,6 +582,9 @@ export type Database = {
           icu_io_id?: string
           icu_io_tags?: string | null
           in_date?: string
+          memo_a?: Json | null
+          memo_b?: Json | null
+          memo_c?: Json | null
           out_date?: string | null
           out_due_date?: string | null
           patient_id?: string

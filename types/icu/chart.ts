@@ -41,6 +41,9 @@ export type SelectedChartIcuIo = Pick<
   | 'cpcr'
   | 'group_list'
   | 'cage'
+  | 'memo_a'
+  | 'memo_b'
+  | 'memo_c'
 >
 export type SelectedChartPatient = Omit<Patients, 'owner_id'>
 
