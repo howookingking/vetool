@@ -96,6 +96,8 @@ export default function TxDetailInsertStep({
           result: values.result,
           comment: values.comment,
           isCrucialChecked: values.isCrucialChecked,
+          orderName: txLocalState?.icuChartOrderName,
+          orderType: txLocalState?.icuChartOrderType,
           updatedLogs,
         })
         return
