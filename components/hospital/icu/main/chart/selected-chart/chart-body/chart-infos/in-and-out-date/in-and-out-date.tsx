@@ -16,14 +16,22 @@ export default function InAndOutDate({
   const isPatientOut = outDate !== null
 
   return (
-    <div className="flex w-full gap-2">
-      <Indate inDate={inDate} />
+    <div className="grid w-full grid-cols-2 gap-2">
+      <div className="col-span-1">
+        <Indate inDate={inDate} />
+      </div>
 
-      {isPatientOut ? (
-        <OutDate outDate={outDate} />
-      ) : (
-        <OutDueDate outDueDate={outDueDate} icuIoId={icuIoId} inDate={inDate} />
-      )}
+      <div className="col-span-1">
+        {isPatientOut ? (
+          <OutDate outDate={outDate} />
+        ) : (
+          <OutDueDate
+            outDueDate={outDueDate}
+            icuIoId={icuIoId}
+            inDate={inDate}
+          />
+        )}
+      </div>
     </div>
   )
 }

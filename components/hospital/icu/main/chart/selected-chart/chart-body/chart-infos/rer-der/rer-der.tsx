@@ -71,7 +71,7 @@ export default function RerDer({
           <Label className="text-xs text-muted-foreground" htmlFor="ownerName">
             <Zap size={16} className="text-muted-foreground" />
           </Label>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 truncate">
             <div className="flex items-center gap-2">
               <span className="hidden text-xs text-muted-foreground md:block">
                 RER

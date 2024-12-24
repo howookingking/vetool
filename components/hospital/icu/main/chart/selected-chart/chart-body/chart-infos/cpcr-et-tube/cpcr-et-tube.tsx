@@ -39,11 +39,11 @@ export default function CpcrEtTube({
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="flex w-full items-center justify-start gap-2 px-2"
+          className="flex w-full items-center justify-start gap-2 truncate px-2"
         >
           <Activity className="text-muted-foreground" size={16} />
 
-          <div className="flex items-center gap-1.5 text-xs 2xl:gap-2 2xl:text-sm">
+          <div className="flex items-center gap-1.5 truncate text-xs 2xl:gap-2 2xl:text-sm">
             <span>{cpcr}</span>
 
             <Separator
