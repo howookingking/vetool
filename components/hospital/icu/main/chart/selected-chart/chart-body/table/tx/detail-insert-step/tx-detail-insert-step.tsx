@@ -19,14 +19,22 @@ import {
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
+import useUpsertTx from '@/hooks/use-upsert-tx'
 import { deleteIcuChartTx } from '@/lib/services/icu/chart/tx-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { format } from 'date-fns'
+import { LoaderCircle } from 'lucide-react'
+import { useParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-export default function TxDetailInsertStep() {
+export default function TxDetailInsertStep({
+  showTxUser,
+}: {
+  showTxUser: boolean
+}) {
   const {
     setTxStep,
     txLocalState,
@@ -35,6 +43,7 @@ export default function TxDetailInsertStep() {
     reset: txLocalStateReset,
   } = useTxMutationStore()
   const { selectedTxPendingQueue, reset: orderQueueReset } = useIcuOrderStore()
+  const { hos_id } = useParams()
 
   const form = useForm<z.infer<typeof txDetailRegisterFormSchema>>({
     resolver: zodResolver(txDetailRegisterFormSchema),
@@ -48,16 +57,61 @@ export default function TxDetailInsertStep() {
   const hasTxOrder = selectedTxPendingQueue.some((order) => order.txId)
   const hasTxLog = txLocalState?.txLog && txLocalState?.txLog?.length > 0
 
-  const handleNextStep = async (
+  const { isSubmitting, upsertTx, upsertMultipleTx } = useUpsertTx({
+    hosId: hos_id as string,
+    onSuccess: () => {
+      setTxStep('closed')
+      txLocalStateReset()
+      orderQueueReset()
+    },
+  })
+
+  const handleSubmit = async (
     values: z.infer<typeof txDetailRegisterFormSchema>,
   ) => {
-    setTxLocalState({
-      txResult: values.result,
-      txComment: values.comment,
-      isCrucialChecked: values.isCrucialChecked,
-    })
+    if (showTxUser) {
+      setTxLocalState({
+        txResult: values.result,
+        txComment: values.comment,
+        isCrucialChecked: values.isCrucialChecked,
+      })
 
-    setTxStep('selectUser')
+      setTxStep('selectUser')
+    } else {
+      let updatedLogs = txLocalState?.txLog ?? []
+
+      if (values?.result && values.result.trim() !== '') {
+        const newLog = {
+          result: values.result,
+          name: '-',
+          createdAt: format(new Date(), 'yyyy-MM-dd HH:mm'),
+        }
+
+        updatedLogs = [...updatedLogs, newLog]
+      }
+
+      // 다중 Tx 입력
+      if (selectedTxPendingQueue.length) {
+        await upsertMultipleTx(selectedTxPendingQueue, {
+          result: values.result,
+          comment: values.comment,
+          isCrucialChecked: values.isCrucialChecked,
+          updatedLogs,
+        })
+        return
+      }
+
+      // 단일 Tx 입력
+      await upsertTx(
+        {
+          ...txLocalState,
+          txResult: values.result,
+          txComment: values.comment,
+          isCrucialChecked: values.isCrucialChecked,
+        },
+        updatedLogs,
+      )
+    }
   }
 
   const handleCloseClick = () => {
@@ -95,7 +149,7 @@ export default function TxDetailInsertStep() {
 
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(handleNextStep)}
+          onSubmit={form.handleSubmit(handleSubmit)}
           className="flex flex-col gap-4"
         >
           <FormField
@@ -186,7 +240,12 @@ export default function TxDetailInsertStep() {
                   닫기
                 </Button>
               </DialogClose>
-              <Button type="submit">다음</Button>
+              <Button type="submit" disabled={isSubmitting}>
+                {showTxUser ? '다음' : '확인'}
+                {isSubmitting && (
+                  <LoaderCircle className="h-4 w-4 animate-spin" />
+                )}
+              </Button>
             </div>
           </div>
         </form>

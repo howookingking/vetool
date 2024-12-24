@@ -300,6 +300,7 @@ export type Database = {
           plan: string
           rer_calc_method: string
           show_orderer: boolean
+          show_tx_user: boolean
           time_guidelines: number[]
           vital_ref_range: Json
         }
@@ -321,6 +322,7 @@ export type Database = {
           plan?: string
           rer_calc_method?: string
           show_orderer?: boolean
+          show_tx_user?: boolean
           time_guidelines?: number[]
           vital_ref_range?: Json
         }
@@ -342,6 +344,7 @@ export type Database = {
           plan?: string
           rer_calc_method?: string
           show_orderer?: boolean
+          show_tx_user?: boolean
           time_guidelines?: number[]
           vital_ref_range?: Json
         }

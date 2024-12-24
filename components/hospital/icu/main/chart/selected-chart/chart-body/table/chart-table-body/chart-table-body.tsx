@@ -13,6 +13,7 @@ type ChartTableBodyProps = {
   preview?: boolean
   vitalRefRange: VitalRefRange[]
   showOrderer: boolean
+  showTxUser: boolean
   selectedTxPendingQueue: OrderTimePendingQueue[]
   orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit'
   orderTimePendingQueue: OrderTimePendingQueue[]
@@ -37,6 +38,7 @@ export default function ChartTableBody({
   preview,
   vitalRefRange,
   showOrderer,
+  showTxUser,
   selectedTxPendingQueue,
   orderStep,
   orderTimePendingQueue,
@@ -65,6 +67,7 @@ export default function ChartTableBody({
         vitalRefRange={vitalRefRange}
         species={species}
         showOrderer={showOrderer}
+        showTxUser={showTxUser}
         selectedTxPendingQueue={selectedTxPendingQueue}
         orderStep={orderStep}
         orderTimePendingQueueLength={orderTimePendingQueue.length}
