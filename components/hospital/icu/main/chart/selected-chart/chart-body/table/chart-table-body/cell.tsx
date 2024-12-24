@@ -129,6 +129,7 @@ export default function Cell({
   const toggleCellInQueue = useCallback(
     (orderId: string, time: number) => {
       if (orderTimePendingQueueLength > 0) return
+
       setSelectedTxPendingQueue((prev) => {
         const existingIndex = prev.findIndex(
           (item) => item.orderId === orderId && item.orderTime === time,
@@ -148,13 +149,24 @@ export default function Cell({
           ]
         }
       })
+
+      setTxLocalState({
+        icuChartOrderId,
+        icuChartOrderType: orderType,
+        icuChartOrderName: orderName,
+      })
     },
+
     [
       setSelectedTxPendingQueue,
       icuChartTxId,
       treatment?.tx_log,
       orderTimePendingQueueLength,
       treatment?.is_crucial,
+      setTxLocalState,
+      orderName,
+      orderType,
+      icuChartOrderId,
     ],
   )
 
@@ -172,6 +184,7 @@ export default function Cell({
     const txData = {
       icuChartOrderId,
       icuChartOrderType: orderType,
+      icuChartOrderName: orderName,
       time,
       txResult: briefTxResultInput.replace(/^"|"$/g, '').trim(),
       txComment: '',
@@ -213,6 +226,7 @@ export default function Cell({
     orderType,
     showTxUser,
     upsertTx,
+    orderName,
   ])
 
   const handleRightClick = useCallback(
