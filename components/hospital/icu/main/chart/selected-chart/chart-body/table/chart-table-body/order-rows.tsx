@@ -19,6 +19,7 @@ type CellsRowTitlesProps = {
   isSorting: boolean
   preview?: boolean
   showOrderer: boolean
+  showTxUser: boolean
   selectedTxPendingQueue: OrderTimePendingQueue[]
   orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit'
   orderTimePendingQueueLength: number
@@ -41,6 +42,7 @@ export default function OrderRows({
   isSorting,
   preview,
   showOrderer,
+  showTxUser,
   selectedTxPendingQueue,
   orderStep,
   orderTimePendingQueueLength,
@@ -131,9 +133,11 @@ export default function OrderRows({
             />
 
             <OrderRowCells
+              hosId={hosId}
               preview={preview}
               order={order}
               showOrderer={showOrderer}
+              showTxUser={showTxUser}
               selectedTxPendingQueue={selectedTxPendingQueue}
               orderStep={orderStep}
               orderTimePendingQueueLength={orderTimePendingQueueLength}

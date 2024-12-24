@@ -37,7 +37,7 @@ export default async function Layout(props: {
         {/* 헤더 LAYOUT PLACEHOLDER*/}
         <HospitalHeader />
 
-        <main className="mt-12 w-screen md:w-auto">{props.children}</main>
+        <main className="mt-12 w-screen xl:w-auto">{props.children}</main>
       </div>
 
       <Feedback />

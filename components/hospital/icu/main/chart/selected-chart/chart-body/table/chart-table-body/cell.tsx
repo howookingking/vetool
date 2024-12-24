@@ -2,13 +2,16 @@ import { TxDetailHover } from '@/components/hospital/icu/main/chart/selected-cha
 import { VitalResultIndication } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/vital-result-indication'
 import { Input } from '@/components/ui/input'
 import { TableCell } from '@/components/ui/table'
+import { toast } from '@/components/ui/use-toast'
 import useAbnormalVital from '@/hooks/use-abnormal-vital'
 import useCellAutofocus from '@/hooks/use-cell-autofocus'
 import { useLongPress } from '@/hooks/use-long-press'
+import useUpsertTx from '@/hooks/use-upsert-tx'
 import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
 import { TxLocalState } from '@/lib/store/icu/tx-mutation'
 import { cn } from '@/lib/utils/utils'
-import type { SelectedIcuOrder, Treatment, TxLog } from '@/types/icu/chart'
+import type { Treatment, TxLog } from '@/types/icu/chart'
+import { format } from 'date-fns'
 import React, { useCallback, useEffect, useState } from 'react'
 
 type CellProps = {
@@ -16,6 +19,7 @@ type CellProps = {
   // onMouseEnter: (columnIndex: number) => void
   // onMouseLeave: () => void
   time: number
+  hosId: string
   treatment?: Treatment
   icuChartOrderId: string
   isDone: boolean
@@ -26,6 +30,7 @@ type CellProps = {
   orderName: string
   toggleOrderTime: (orderId: string, time: number) => void
   showOrderer: boolean
+  showTxUser: boolean
   isGuidelineTime: boolean
   setSelectedTxPendingQueue: (
     updater:
@@ -49,6 +54,7 @@ type CellProps = {
 }
 
 export default function Cell({
+  hosId,
   time,
   treatment,
   icuChartOrderId,
@@ -60,6 +66,7 @@ export default function Cell({
   orderName,
   toggleOrderTime,
   showOrderer,
+  showTxUser,
   isGuidelineTime,
   setSelectedTxPendingQueue,
   isMutationCanceled,
@@ -73,10 +80,12 @@ export default function Cell({
   isInPendingQueue,
 }: CellProps) {
   const [briefTxResultInput, setBriefTxResultInput] = useState('')
+  const { upsertTx } = useUpsertTx({ hosId })
   const { calcVitalResult, isAbnormalVital } = useAbnormalVital(
     treatment,
     rowVitalRefRange,
   )
+
   useCellAutofocus()
 
   useEffect(() => {
@@ -120,6 +129,7 @@ export default function Cell({
   const toggleCellInQueue = useCallback(
     (orderId: string, time: number) => {
       if (orderTimePendingQueueLength > 0) return
+
       setSelectedTxPendingQueue((prev) => {
         const existingIndex = prev.findIndex(
           (item) => item.orderId === orderId && item.orderTime === time,
@@ -134,16 +144,29 @@ export default function Cell({
               orderId,
               orderTime: time,
               txLog: treatment?.tx_log as TxLog[] | null,
+              isCrucialChecked: treatment?.is_crucial,
             },
           ]
         }
       })
+
+      setTxLocalState({
+        icuChartOrderId,
+        icuChartOrderType: orderType,
+        icuChartOrderName: orderName,
+      })
     },
+
     [
       setSelectedTxPendingQueue,
       icuChartTxId,
       treatment?.tx_log,
       orderTimePendingQueueLength,
+      treatment?.is_crucial,
+      setTxLocalState,
+      orderName,
+      orderType,
+      icuChartOrderId,
     ],
   )
 
@@ -152,21 +175,45 @@ export default function Cell({
       setBriefTxResultInput('')
       return
     }
+
     if (icuChartTxId && briefTxResultInput.trim() === '') {
       setBriefTxResultInput('')
       return
     }
-    setTxLocalState({
+
+    const txData = {
       icuChartOrderId,
       icuChartOrderType: orderType,
       icuChartOrderName: orderName,
       time,
       txResult: briefTxResultInput.replace(/^"|"$/g, '').trim(),
+      txComment: '',
       txId: icuChartTxId,
       txLog: treatment?.tx_log as TxLog[] | null,
-    })
+    }
 
-    setTxStep('selectUser')
+    if (showTxUser) {
+      setTxLocalState(txData)
+      setTxStep('selectUser')
+    } else {
+      let updatedLogs = txData.txLog ?? []
+
+      if (txData.txResult && txData.txResult.trim() !== '') {
+        const newLog = {
+          result: txData.txResult.split('$')[0].trim(),
+          name: '-',
+          createdAt: format(new Date(), 'yyyy-MM-dd HH:mm'),
+        }
+
+        updatedLogs = [...updatedLogs, newLog]
+      }
+
+      await upsertTx(txData, updatedLogs)
+
+      toast({
+        title: '처치 내역이 업데이트 되었습니다',
+      })
+    }
   }, [
     briefTxResultInput,
     icuChartOrderId,
@@ -177,6 +224,8 @@ export default function Cell({
     treatment?.tx_result,
     treatment?.tx_log,
     orderType,
+    showTxUser,
+    upsertTx,
     orderName,
   ])
 

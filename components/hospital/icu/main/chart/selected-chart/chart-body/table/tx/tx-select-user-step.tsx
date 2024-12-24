@@ -9,8 +9,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { toast } from '@/components/ui/use-toast'
-import { upsertIcuTx } from '@/lib/services/icu/chart/tx-mutation'
+import useUpsertTx from '@/hooks/use-upsert-tx'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useRealtimeSubscriptionStore } from '@/lib/store/icu/realtime-subscription'
 import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
@@ -21,7 +20,7 @@ import { DialogDescription } from '@radix-ui/react-dialog'
 import { format } from 'date-fns'
 import { LoaderCircle } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -30,12 +29,19 @@ export default function TxSelectUserStep({
 }: {
   handleClose: () => void
 }) {
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const { txLocalState } = useTxMutationStore()
   const { selectedTxPendingQueue } = useIcuOrderStore()
   const { isSubscriptionReady } = useRealtimeSubscriptionStore()
   const { refresh } = useRouter()
   const { hos_id } = useParams()
+
+  const { isSubmitting, upsertTx, upsertMultipleTx } = useUpsertTx({
+    hosId: hos_id as string,
+    onSuccess: () => {
+      handleClose()
+      if (!isSubscriptionReady) refresh()
+    },
+  })
 
   const inputRef = useRef<HTMLInputElement>(null)
   useEffect(() => {
@@ -53,8 +59,6 @@ export default function TxSelectUserStep({
 
   const handleUpsertTx = useCallback(
     async (values: z.infer<typeof userLogFormSchema>) => {
-      setIsSubmitting(true)
-
       let updatedLogs = txLocalState?.txLog ?? []
 
       if (txLocalState?.txResult && txLocalState.txResult.trim() !== '') {
@@ -73,83 +77,22 @@ export default function TxSelectUserStep({
 
       // 다중 Tx 입력
       if (selectedTxPendingQueue.length) {
-        await Promise.all(
-          selectedTxPendingQueue.map((item) => {
-            const txLogs =
-              txLocalState?.txResult && txLocalState.txResult.trim() !== ''
-                ? [...(item.txLog ?? []), ...updatedLogs]
-                : (item.txLog ?? [])
-
-            return upsertIcuTx(
-              hos_id as string,
-              {
-                txId: item.txId,
-                txResult: txLocalState?.txResult,
-                txComment: txLocalState?.txComment,
-                time: item.orderTime,
-                icuChartOrderId: item.orderId,
-                isCrucialChecked: txLocalState?.isCrucialChecked,
-              },
-              format(new Date(), 'yyyy-MM-dd'),
-              txLogs,
-            )
-          }),
-        )
-        // orderQueueReset()
-        // setTxStep('closed')
-        handleClose()
-        toast({ title: '처치 내역이 업데이트 되었습니다' })
-
-        if (!isSubscriptionReady) refresh()
-        return
-      }
-
-      // 단일 간편 코멘트($) 입력한 경우
-      if (txLocalState?.txResult?.includes('$')) {
-        const [result, comment] = txLocalState.txResult.split('$')
-
-        await upsertIcuTx(
-          hos_id as string,
-          {
-            ...txLocalState,
-            txResult: result.trim(),
-            txComment: comment.trim(),
-          },
-          format(new Date(), 'yyyy-MM-dd'),
+        await upsertMultipleTx(selectedTxPendingQueue, {
+          result: txLocalState?.txResult,
+          comment: txLocalState?.txComment,
+          isCrucialChecked: txLocalState?.isCrucialChecked,
+          orderName: txLocalState?.icuChartOrderName,
+          orderType: txLocalState?.icuChartOrderType,
           updatedLogs,
-        )
-
-        handleClose()
-        toast({ title: '처치 내역이 업데이트 되었습니다' })
-
-        if (!isSubscriptionReady) refresh()
+        })
 
         return
       }
 
-      // 단일 Tx 일반적인 경우
-      await upsertIcuTx(
-        hos_id as string,
-        txLocalState,
-        format(new Date(), 'yyyy-MM-dd'),
-        updatedLogs,
-      )
-
-      handleClose()
-      toast({
-        title: '처치 내역이 업데이트 되었습니다',
-      })
-
-      if (!isSubscriptionReady) refresh()
+      // 단일 Tx 입력
+      await upsertTx(txLocalState, updatedLogs)
     },
-    [
-      hos_id,
-      txLocalState,
-      selectedTxPendingQueue,
-      isSubscriptionReady,
-      refresh,
-      handleClose,
-    ],
+    [txLocalState, selectedTxPendingQueue, upsertTx, upsertMultipleTx],
   )
 
   return (

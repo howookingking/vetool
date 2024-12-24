@@ -32,6 +32,9 @@ export default function TxTable({
   } = useBasicHosDataContext()
 
   const { setTxStep, setTxLocalState } = useTxMutationStore()
+  const {
+    basicHosData: { showTxUser },
+  } = useBasicHosDataContext()
 
   const getCurrentScrollPosition = () => {
     const currentHour = new Date().getHours() - 5
@@ -146,7 +149,7 @@ export default function TxTable({
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
 
-      <TxUpsertDialog />
+      <TxUpsertDialog showTxUser={showTxUser} />
     </>
   )
 }
