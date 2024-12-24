@@ -81,6 +81,8 @@ export default function TxSelectUserStep({
           result: txLocalState?.txResult,
           comment: txLocalState?.txComment,
           isCrucialChecked: txLocalState?.isCrucialChecked,
+          orderName: txLocalState?.icuChartOrderName,
+          orderType: txLocalState?.icuChartOrderType,
           updatedLogs,
         })
 

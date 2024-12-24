@@ -44,6 +44,8 @@ export default function useUpsertTx({ hosId, onSuccess }: TxUpdateOptions) {
       result?: string | null
       comment?: string | null
       isCrucialChecked?: boolean
+      orderName?: string
+      orderType?: string
       updatedLogs: TxLog[]
     },
   ) => {
@@ -58,6 +60,8 @@ export default function useUpsertTx({ hosId, onSuccess }: TxUpdateOptions) {
         time: item.orderTime,
         icuChartOrderId: item.orderId,
         isCrucialChecked: values.isCrucialChecked,
+        icuChartOrderName: values.orderName,
+        icuChartOrderType: values.orderType,
       },
       logs:
         values.result && values.result.trim() !== ''

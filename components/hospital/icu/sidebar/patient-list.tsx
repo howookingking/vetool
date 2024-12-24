@@ -18,7 +18,7 @@ export default function PatientList({
   const fileteredPatientCount = filteredIcuIoData.length
 
   return (
-    <div className="h-[calc(100vh-210px)] flex-col gap-3 overflow-y-auto md:h-auto">
+    <div className="h-[calc(100vh-270px)] flex-col gap-3 overflow-y-auto">
       {fileteredPatientCount > 0 ? (
         <ul className="flex flex-col gap-2">
           <span className="text-xs font-bold text-muted-foreground">
@@ -27,7 +27,7 @@ export default function PatientList({
           {filteredIcuIoData.map((icuIoData) => (
             <li
               key={icuIoData.icu_io_id}
-              className="w-full"
+              className="w-full last:mb-4"
               onClick={handleCloseMobileDrawer}
             >
               <PatientButton

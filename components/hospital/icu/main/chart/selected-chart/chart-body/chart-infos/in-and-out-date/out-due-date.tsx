@@ -56,23 +56,23 @@ export default function OutDueDate({
         <Button
           variant={'outline'}
           className={cn(
-            'flex w-full items-center justify-start gap-2 px-2',
+            'flex w-full items-center justify-start gap-2 whitespace-pre-wrap px-2',
             !outDueDateInput && 'text-muted-foreground',
           )}
         >
           <LogOut className="text-muted-foreground" size={16} />
 
           {outDueDateInput ? (
-            <span className="text-xs md:text-sm">
-              <span className="hidden text-xs font-normal md:inline md:text-sm">
+            <span className="truncate text-xs 2xl:text-sm">
+              <span className="hidden 2xl:inline">
                 {format(outDueDateInput, 'yyyy-MM-dd')}
               </span>
-              <span className="md:hidden">
-                {format(outDueDateInput, 'yyyy-MM-dd')?.slice(2)}
+              <span className="2xl:hidden">
+                {format(outDueDateInput, 'yy-MM-dd')}
               </span>
             </span>
           ) : (
-            <span>퇴원 예정일</span>
+            <span className="truncate text-xs 2xl:text-sm">퇴원 예정일</span>
           )}
         </Button>
       </PopoverTrigger>
