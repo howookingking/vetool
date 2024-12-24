@@ -103,7 +103,7 @@ export default function TxDetailInsertStep() {
             name="result"
             render={({ field }) => (
               <FormItem className="relative">
-                <FormLabel className="">처치 결과*</FormLabel>
+                <FormLabel className="">처치 결과</FormLabel>
                 <FormControl>
                   <Input
                     {...field}

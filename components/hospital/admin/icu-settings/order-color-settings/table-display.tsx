@@ -1,3 +1,4 @@
+import OrderTypeColorDot from '@/components/hospital/common/order-type-color-dot'
 import {
   Table,
   TableBody,
@@ -71,14 +72,9 @@ export default function TableDisplay({
               >
                 <div className="flex items-center gap-2">
                   {localColorDisplayMethod === 'dot' && (
-                    <div
-                      className="h-4 w-4 shrink-0 rounded-full border"
-                      style={{
-                        background:
-                          localColorState[
-                            order.orderType as keyof IcuOrderColors
-                          ],
-                      }}
+                    <OrderTypeColorDot
+                      orderColorsData={localColorState}
+                      orderType={order.orderType}
                     />
                   )}
                   <span>{order.orderTitle}</span>

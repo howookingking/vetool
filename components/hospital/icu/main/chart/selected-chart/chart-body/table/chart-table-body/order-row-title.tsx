@@ -1,3 +1,4 @@
+import OrderTypeColorDot from '@/components/hospital/common/order-type-color-dot'
 import { Button } from '@/components/ui/button'
 import { TableCell } from '@/components/ui/table'
 import { cn, parsingOrderName, renderOrderSubComment } from '@/lib/utils/utils'
@@ -137,11 +138,9 @@ export default function OrderRowTitle({
         <div className="flex items-center gap-2 truncate">
           {/* 오더 색 표시 방법이 dot 인경우 */}
           {orderColorDisplay === 'dot' && (
-            <div
-              className="h-4 w-4 shrink-0 rounded-full border"
-              style={{
-                background: orderColorsData[order_type as keyof IcuOrderColors],
-              }}
+            <OrderTypeColorDot
+              orderColorsData={orderColorsData}
+              orderType={order_type}
             />
           )}
 

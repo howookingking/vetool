@@ -9,8 +9,8 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
-import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
 import { SquarePlus } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
@@ -27,13 +27,16 @@ export default function TxTable({
   const scrollAreaRef = useRef<HTMLDivElement>(null)
   const tableRef = useRef<HTMLTableElement>(null)
   const [isScrolled, setIsScrolled] = useState(false)
-  const { orderTimePendingQueue, setSelectedTxPendingQueue } =
-    useIcuOrderStore()
+  const {
+    basicHosData: { orderColorsData },
+  } = useBasicHosDataContext()
+
   const { setTxStep, setTxLocalState } = useTxMutationStore()
 
   const getCurrentScrollPosition = () => {
     const currentHour = new Date().getHours() - 5
     if (!tableRef.current) return 0
+    if (currentHour <= 5) return 0
     const headerCells = Array.from(tableRef.current.querySelectorAll('th'))
     return headerCells.slice(1, currentHour + 1).reduce((total, cell) => {
       return total + cell.offsetWidth
@@ -61,7 +64,7 @@ export default function TxTable({
     }, 100)
 
     return () => clearTimeout(timeoutId)
-  }, [filteredTxData, isScrolled])
+  }, [isScrolled])
 
   const orderType = DEFAULT_ICU_ORDER_TYPE.find(
     (orderType) => orderType.value === localFilterState,
@@ -100,7 +103,7 @@ export default function TxTable({
                   }}
                   className="divide-x"
                 >
-                  <TableCell className="sticky left-0 bg-white text-center shadow-md">
+                  <TableCell className="sticky left-0 z-20 bg-white text-center shadow-md">
                     <PatientInfo
                       name={txData.patient.name}
                       breed={txData.patient.breed}
@@ -132,8 +135,7 @@ export default function TxTable({
                       patientId={txData.patient_id}
                       setTxStep={setTxStep}
                       setTxLocalState={setTxLocalState}
-                      orderTimePendingQueueLength={orderTimePendingQueue.length}
-                      setSelectedTxPendingQueue={setSelectedTxPendingQueue}
+                      orderColorsData={orderColorsData}
                     />
                   ))}
                 </TableRow>
