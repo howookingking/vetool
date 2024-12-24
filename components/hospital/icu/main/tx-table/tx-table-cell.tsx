@@ -44,8 +44,6 @@ export default function TxTableCell({
     (tx) => tx.time === time && tx.is_crucial,
   )
 
-  console.log(order.treatments)
-
   const handleOpenTxDetail = useCallback(() => {
     setTxLocalState({
       icuChartOrderId: order.icu_chart_order_id,

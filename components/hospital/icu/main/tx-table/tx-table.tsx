@@ -11,6 +11,7 @@ import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
 import { SquarePlus } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
@@ -30,6 +31,9 @@ export default function TxTable({
   const { orderTimePendingQueue, setSelectedTxPendingQueue } =
     useIcuOrderStore()
   const { setTxStep, setTxLocalState } = useTxMutationStore()
+  const {
+    basicHosData: { showTxUser },
+  } = useBasicHosDataContext()
 
   const getCurrentScrollPosition = () => {
     const currentHour = new Date().getHours() - 5
@@ -144,7 +148,7 @@ export default function TxTable({
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
 
-      <TxUpsertDialog />
+      <TxUpsertDialog showTxUser={showTxUser} />
     </>
   )
 }

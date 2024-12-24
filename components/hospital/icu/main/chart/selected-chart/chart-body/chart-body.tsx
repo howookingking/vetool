@@ -8,7 +8,8 @@ import useIsMobile from '@/hooks/use-is-mobile'
 import type { SelectedChart } from '@/types/icu/chart'
 
 export default function ChartBody({ chartData }: { chartData: SelectedChart }) {
-  const { memo_a, memo_b, memo_c, icu_chart_id } = chartData
+  const { icu_io } = chartData
+  const { memo_a, memo_b, memo_c, icu_io_id } = icu_io
   const isMobile = useIsMobile()
 
   return (
@@ -24,7 +25,7 @@ export default function ChartBody({ chartData }: { chartData: SelectedChart }) {
         memoA={memo_a as Memo[] | null}
         memoB={memo_b as Memo[] | null}
         memoC={memo_c as Memo[] | null}
-        icuChartId={icu_chart_id}
+        icuIoId={icu_io_id}
       />
     </div>
   )

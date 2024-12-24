@@ -44,6 +44,7 @@ export default function ChartTable({
   const {
     basicHosData: {
       showOrderer,
+      showTxUser,
       vetsListData,
       vitalRefRange,
       timeGuidelineData,
@@ -197,6 +198,7 @@ export default function ChartTable({
           preview={preview}
           vitalRefRange={vitalRefRange}
           showOrderer={showOrderer}
+          showTxUser={showTxUser}
           selectedTxPendingQueue={selectedTxPendingQueue}
           orderStep={orderStep}
           orderTimePendingQueue={orderTimePendingQueue}
@@ -215,7 +217,7 @@ export default function ChartTable({
 
       {!isExport && (
         <>
-          <TxUpsertDialog />
+          <TxUpsertDialog showTxUser={showTxUser} />
           <DeleteOrdersAlertDialog
             isDeleteOrdersDialogOpen={isDeleteOrdersDialogOpen}
             setIsDeleteOrdersDialogOpen={setIsDeleteOrdersDialogOpen}

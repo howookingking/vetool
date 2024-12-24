@@ -8,9 +8,11 @@ import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { useCallback, useEffect, useState } from 'react'
 
 type OrderRowCellsProps = {
+  hosId: string
   preview?: boolean
   order: SelectedIcuOrder
   showOrderer: boolean
+  showTxUser: boolean
   selectedTxPendingQueue: OrderTimePendingQueue[]
   orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit'
   orderTimePendingQueueLength: number
@@ -34,9 +36,11 @@ type OrderRowCellsProps = {
 }
 
 export default function OrderRowCells({
+  hosId,
   preview,
   order,
   showOrderer,
+  showTxUser,
   selectedTxPendingQueue,
   orderStep,
   orderTimePendingQueueLength,
@@ -119,6 +123,7 @@ export default function OrderRowCells({
 
         return (
           <Cell
+            hosId={hosId}
             preview={preview}
             key={time}
             time={time}
@@ -131,6 +136,7 @@ export default function OrderRowCells({
             icuChartTxId={tx?.tx_id}
             toggleOrderTime={toggleOrderTime}
             showOrderer={showOrderer}
+            showTxUser={showTxUser}
             isGuidelineTime={isGuidelineTime}
             setSelectedTxPendingQueue={setSelectedTxPendingQueue}
             isMutationCanceled={isMutationCanceled}

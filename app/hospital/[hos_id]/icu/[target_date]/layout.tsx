@@ -25,6 +25,7 @@ export default async function IcuPageLayout(props: {
         orderColorsData: basicHosData.order_color as IcuOrderColors,
         memoNameListData: basicHosData.icu_memo_names,
         showOrderer: basicHosData.show_orderer,
+        showTxUser: basicHosData.show_tx_user,
         maintenanceRateCalcMethod: basicHosData.maintenance_rate_calc_method,
         rerCalcMethod: basicHosData.rer_calc_method as 'a' | 'b',
         sidebarData: icuSidebarData,

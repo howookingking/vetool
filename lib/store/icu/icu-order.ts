@@ -6,6 +6,7 @@ export type OrderTimePendingQueue = {
   orderId: string
   txId?: string
   txLog?: TxLog[] | null
+  isCrucialChecked?: boolean
 }
 
 type IcuOrderState = {
