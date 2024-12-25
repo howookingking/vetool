@@ -25,6 +25,11 @@ const VITALS = [
     title: '심박수',
     isActive: false,
   },
+  {
+    id: 4,
+    title: '활력',
+    isActive: false,
+  },
 ]
 
 export default function VitalChartSidebar({
@@ -35,7 +40,7 @@ export default function VitalChartSidebar({
   setCurrentVital: (vital: string) => void
 }) {
   return (
-    <aside className="flex w-[160px] justify-between">
+    <aside className="flex h-full w-[160px] justify-between">
       <div className="flex h-full w-full flex-col">
         <div className="flex h-12 items-center justify-center gap-1 font-bold shadow-sm">
           <SquareActivity />
