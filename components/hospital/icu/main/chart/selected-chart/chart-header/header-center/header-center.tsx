@@ -1,16 +1,7 @@
-import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import BookmarkDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-center/bookmark-dialog'
 import UpdatePatientDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-center/update-patient-dialog'
+import VitalChartDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-center/vital-chart/vital-chart-dialog'
 import type { SelectedChart } from '@/types/icu/chart'
-import dynamic from 'next/dynamic'
-
-const LazyVitalChartDialog = dynamic(
-  () => import('./vital-chart/vital-chart-dialog'),
-  {
-    ssr: false,
-    loading: () => <LargeLoaderCircle className="h-[300px]" />,
-  },
-)
 
 export default function HeaderCenter({
   chartData,
@@ -33,7 +24,7 @@ export default function HeaderCenter({
         icuChartId={chartData.icu_chart_id}
       />
 
-      <LazyVitalChartDialog />
+      <VitalChartDialog patientId={patient.patient_id} />
     </div>
   )
 }

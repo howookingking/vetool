@@ -149,3 +149,8 @@ export type PrevIoChartData = {
   icu_chart_id: string
   target_date: string | null
 }
+
+export type VitalChartData = {
+  vitalId: number
+  value: number
+}
