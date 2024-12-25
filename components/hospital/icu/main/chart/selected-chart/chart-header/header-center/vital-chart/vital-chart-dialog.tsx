@@ -24,7 +24,7 @@ export default function VitalChartDialog({ patientId }: { patientId: string }) {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="icon">
+        <Button variant="ghost" size="icon" className="hidden xl:inline-flex">
           <BarChartBig size={18} />
         </Button>
       </DialogTrigger>
