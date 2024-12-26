@@ -1309,7 +1309,7 @@ export type Database = {
           description: string
           error_json: Json
           is_server: boolean
-          user_id: string | null
+          user_id: string
           vetool_error_id: string
         }
         Insert: {
@@ -1317,7 +1317,7 @@ export type Database = {
           description: string
           error_json: Json
           is_server: boolean
-          user_id?: string | null
+          user_id?: string
           vetool_error_id?: string
         }
         Update: {
@@ -1325,7 +1325,7 @@ export type Database = {
           description?: string
           error_json?: Json
           is_server?: boolean
-          user_id?: string | null
+          user_id?: string
           vetool_error_id?: string
         }
         Relationships: [

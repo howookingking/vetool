@@ -1,6 +1,5 @@
 'use server'
 
-import { getSupabaseUser } from '@/lib/services/auth/authorization'
 import { createClient } from '@/lib/supabase/server'
 import type { UserFeedbackType } from '@/types/vetool'
 import { redirect } from 'next/navigation'
@@ -10,12 +9,10 @@ export const sendFeedback = async (
   feedbackDescription: string,
 ) => {
   const supabase = await createClient()
-  const authUser = await getSupabaseUser()
 
   const { error } = await supabase.from('vetool_feedbacks').insert({
     feedback_category: feedbackCategory,
     feedback_description: feedbackDescription,
-    user_id: authUser?.id,
   })
 
   if (error) {

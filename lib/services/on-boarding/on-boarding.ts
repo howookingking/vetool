@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation'
 
 export const getUserAppoval = async () => {
   const supabase = await createClient()
-  const authUser = await getSupabaseUser()
+  const supabaseUser = await getSupabaseUser()
 
   const { data, error } = await supabase
     .from('user_approvals')
@@ -18,7 +18,7 @@ export const getUserAppoval = async () => {
         `,
     )
     .match({
-      user_id: authUser?.id,
+      user_id: supabaseUser?.id,
     })
     .returns<UserApprovalHosJoined>()
     .single()

@@ -1,9 +1,6 @@
 import DesktopAdminSidebar from '@/components/hospital/admin/desktop-admin-sidebar'
 import MobileAdminSidebar from '@/components/hospital/admin/mobile-admin-sidebar'
-import {
-  checkIsAdmin,
-  getSupabaseUser,
-} from '@/lib/services/auth/authorization'
+import { getVetoolUserData } from '@/lib/services/auth/authorization'
 import { redirect } from 'next/navigation'
 
 export default async function AdminLayout(props: {
@@ -11,10 +8,9 @@ export default async function AdminLayout(props: {
   params: Promise<{ hos_id: string }>
 }) {
   const params = await props.params
-  const supabaseUser = await getSupabaseUser()
-  const isAdmin = await checkIsAdmin(supabaseUser.id)
+  const vetoolUser = await getVetoolUserData()
 
-  if (!isAdmin) {
+  if (!vetoolUser.is_admin) {
     redirect(`/hospital/${params.hos_id}`)
   }
 
