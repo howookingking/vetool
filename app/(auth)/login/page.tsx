@@ -1,12 +1,20 @@
 import VetoolLogo from '@/components/common/vetool-logo'
 import GoogleLoginButton from '@/components/login/google-login-button'
+import { Button } from '@/components/ui/button'
 import logoWhite from '@/public/logo-white.svg'
+import { Home } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
 export default async function LoginPage() {
   return (
     <div className="flex h-screen">
+      <Button className="absolute left-4 top-4" variant="outline" asChild>
+        <Link href="/">
+          <Home />
+          홈으로
+        </Link>
+      </Button>
       <div className="flex h-screen w-full flex-col items-center justify-center gap-10 p-10 md:w-2/5">
         <VetoolLogo className="md:hidden" />
         <h2 className="text-2xl font-bold tracking-wider">

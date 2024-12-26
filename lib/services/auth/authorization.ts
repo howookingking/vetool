@@ -7,11 +7,11 @@ export async function getSupabaseUser() {
   const supabase = await createClient()
   const {
     data: { user: supabaseUser },
-    error,
+    error: supabaseUserError,
   } = await supabase.auth.getUser()
 
-  if (error) {
-    console.error(error)
+  if (supabaseUserError) {
+    console.error(supabaseUserError)
     redirect('/login')
   }
 

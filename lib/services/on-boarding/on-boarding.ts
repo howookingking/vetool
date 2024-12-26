@@ -40,8 +40,6 @@ export const cancelApproval = async (userApprovalId: string) => {
     console.error(error)
     throw new Error(error.message)
   }
-
-  redirect('/')
 }
 
 export const getHospitals = async () => {

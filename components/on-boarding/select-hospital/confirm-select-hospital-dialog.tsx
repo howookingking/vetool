@@ -42,7 +42,7 @@ export default function ConfirmSelectHospitalDialog({
     })
     setIsSubmitting(false)
     setIsOpen(false)
-    push('/')
+    push('/on-boarding/approval-waiting')
   }
 
   return (

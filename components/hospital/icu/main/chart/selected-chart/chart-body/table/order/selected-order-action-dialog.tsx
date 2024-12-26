@@ -61,7 +61,7 @@ export default function SelectedOrderActionDialog({
 
       toast({
         title: '오더 복사 완료',
-        description: '붙여넣기 할 차트로 이동해주세요',
+        description: '붙여넣기 할 차트로 이동하여 ctrl + v',
       })
     }
 
