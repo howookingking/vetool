@@ -117,17 +117,18 @@ export default function ChartTable({
   // -------- 커멘드키 뗐을 때 작업 --------
   const { txStep, setTxStep } = useTxMutationStore()
   useEffect(() => {
+    // 오더 시간 선택
     if (!isCommandPressed && orderTimePendingQueue.length >= 1) {
       showOrderer
         ? setOrderStep('selectOrderer')
         : handleUpsertOrderTimesWithoutOrderer()
     }
+    // 다중 처치 결과 입력
     if (!isCommandPressed && selectedTxPendingQueue.length >= 1) {
       if (txStep === 'closed') {
         setTxStep('detailInsert')
       }
     }
-
     // 오더 다중 선택 시
     if (!isCommandPressed && selectedOrderPendingQueue.length >= 1) {
       setIsOrderActionDialogOpen(true)
@@ -145,15 +146,6 @@ export default function ChartTable({
     selectedOrderPendingQueue.length,
   ])
   // ---------------------------------
-
-  // ----- 다중 오더 삭제 -----
-  // useShorcutKey({
-  //   keys: ['backspace', 'delete'],
-  //   이유는 모르겠지만 selectedOrderPendingQueue.length를 메모이제이션 하는 듯. 바뀌질 않아서 삭제 확인 다일로그가 안열림
-  //   condition: selectedOrderPendingQueue.length > 0,
-  //   callback: () => setIsDeleteOrdersDialogOpen(true),
-  // })
-  // ----- 다중 오더 삭제 -----
 
   return (
     <Table className="border">
