@@ -20,6 +20,7 @@ export default function ApprovalWaitingContents({
     e.preventDefault()
     setCanceling(true)
     await cancelApproval(userApprovalData.user_approval_id)
+    await logout()
   }
 
   const handleLogout = async (e: React.FormEvent) => {
@@ -29,10 +30,14 @@ export default function ApprovalWaitingContents({
   }
 
   return (
-    <div>
-      <span className="text-xl font-bold">{userApprovalData.hos_id.name}</span>
-      에서 승인 대기중입니다
-      <div className="mt-4 flex gap-4">
+    <div className="flex flex-col items-center gap-3">
+      <div>
+        <span className="pr-1 text-xl font-bold">
+          {userApprovalData.hos_id.name}
+        </span>
+        에서 승인 대기중입니다
+      </div>
+      <div className="flex gap-2">
         <form onSubmit={handleCancelApproval}>
           <input
             type="text"
