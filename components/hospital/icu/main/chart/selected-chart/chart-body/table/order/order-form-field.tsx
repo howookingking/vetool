@@ -22,7 +22,9 @@ export default function OrderFormField({
         name="icu_chart_order_name"
         render={({ field }) => (
           <FormItem className="w-full space-y-2">
-            <FormLabel className="font-semibold">오더명*</FormLabel>
+            <FormLabel className="font-semibold">
+              오더명 <span className="text-destructive">*</span>
+            </FormLabel>
             <FormControl>
               <Input
                 placeholder={`${'오더에 대한 이름을 입력해주세요'}`}

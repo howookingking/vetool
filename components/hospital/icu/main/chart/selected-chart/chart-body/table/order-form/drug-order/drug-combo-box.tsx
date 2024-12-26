@@ -43,7 +43,7 @@ export default function DrugComboBox({
   return (
     <Popover open={isPopoverOpen} onOpenChange={setIsPopOverOpen}>
       <Label htmlFor="drugName" className="h-5">
-        약물명*
+        약물명 <span className="text-destructive">*</span>
       </Label>
       <PopoverTrigger asChild style={{ marginTop: 0 }}>
         <Button

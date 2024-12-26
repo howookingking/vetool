@@ -393,7 +393,9 @@ export default function PatientForm({
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="name">환자 이름*</FormLabel>
+              <FormLabel htmlFor="name">
+                환자 이름 <span className="text-destructive">*</span>
+              </FormLabel>
               <FormControl>
                 <Input
                   {...field}
@@ -413,7 +415,9 @@ export default function PatientForm({
           render={({ field }) => (
             <FormItem className="flex flex-col justify-end">
               <div className="flex items-center gap-2">
-                <FormLabel>환자 번호*</FormLabel>
+                <FormLabel>
+                  환자 번호 <span className="text-destructive">*</span>
+                </FormLabel>
                 <HelperTooltip>메인차트에 등록되어있는 환자번호</HelperTooltip>
               </div>
               <FormControl>
@@ -438,7 +442,9 @@ export default function PatientForm({
           name="species"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>종*</FormLabel>
+              <FormLabel>
+                종 <span className="text-destructive">*</span>
+              </FormLabel>
               <Select
                 onValueChange={(value) => {
                   field.onChange(value)
@@ -476,7 +482,9 @@ export default function PatientForm({
           name="breed"
           render={({ field }) => (
             <FormItem className="flex flex-col justify-end">
-              <FormLabel>품종*</FormLabel>
+              <FormLabel>
+                품종 <span className="text-destructive">*</span>
+              </FormLabel>
               <Popover open={breedOpen} onOpenChange={setBreedOpen} modal>
                 <PopoverTrigger asChild disabled={!watchSpecies}>
                   <FormControl>
@@ -549,7 +557,9 @@ export default function PatientForm({
           name="gender"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>성별*</FormLabel>
+              <FormLabel>
+                성별 <span className="text-destructive">*</span>
+              </FormLabel>
               <Select
                 onValueChange={field.onChange}
                 defaultValue={field.value}
