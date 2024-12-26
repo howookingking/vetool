@@ -1,4 +1,5 @@
 'use client'
+'use no memo'
 
 import HelperTooltip from '@/components/common/helper-tooltip'
 import BirthDatePicker from '@/components/hospital/patients/birth-date-picker'
