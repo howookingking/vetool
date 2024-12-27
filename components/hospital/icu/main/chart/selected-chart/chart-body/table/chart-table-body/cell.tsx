@@ -257,7 +257,6 @@ export default function Cell({
           id={`${icuChartOrderId}&${time}`}
           className={cn(
             isGuidelineTime && 'bg-amber-300/10',
-            // isHovered && 'bg-muted/50',
             hasOrder && 'bg-rose-400/10',
             isDone && 'bg-emerald-400/10',
             isInPendingQueue && 'ring-2 ring-primary',
@@ -271,7 +270,7 @@ export default function Cell({
           onContextMenu={handleRightClick}
           {...longPressProps}
         />
-        <span className="tx-result-overlay absolute inset-0 -z-10 flex items-center justify-center truncate">
+        <span className="tx-result-overlay absolute inset-0 -z-10 flex items-center justify-center">
           {treatment?.tx_result ?? ''}
         </span>
         {hasOrder && showOrderer && (

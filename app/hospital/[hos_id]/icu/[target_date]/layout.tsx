@@ -1,9 +1,7 @@
 import IcuFooter from '@/components/hospital/icu/footer/icu-footer'
 import IcuHeader from '@/components/hospital/icu/header/icu-header'
 import IcuSidebar from '@/components/hospital/icu/sidebar/icu-sidebar'
-import { getVetoolUserData } from '@/lib/services/auth/authorization'
 import { getIcuData } from '@/lib/services/icu/get-icu-data'
-import { redirectToOwnHospital } from '@/lib/utils/utils'
 import { BasicHosDataProvider } from '@/providers/basic-hos-data-context-provider'
 import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
 import React from 'react'
@@ -14,8 +12,9 @@ export default async function IcuPageLayout(props: {
 }) {
   const params = await props.params
 
-  const vetoolUser = await getVetoolUserData()
-  redirectToOwnHospital(vetoolUser, params.hos_id, vetoolUser.is_super)
+  // 다른 방법 모색
+  // const vetoolUser = await getVetoolUserData()
+  // redirectToOwnHospital(vetoolUser, params.hos_id, vetoolUser.is_super)
 
   const { basicHosData, icuSidebarData, vetsListData } = await getIcuData(
     params.hos_id,
