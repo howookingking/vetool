@@ -7,6 +7,7 @@ import {
 type VitalDataPoint = {
   date: string
   value: number
+  vitalName: string
 }
 
 export default function VitalChartTooltip({
@@ -28,8 +29,8 @@ export default function VitalChartTooltip({
         </div>
 
         <div>
-          <span className="pr-2 text-muted-foreground">체중:</span>
-          <span className="font-medium">{data.value}kg</span>
+          <span className="pr-2 text-muted-foreground">{`${data.vitalName}:`}</span>
+          <span className="font-medium">{data.value}</span>
         </div>
       </div>
     </div>

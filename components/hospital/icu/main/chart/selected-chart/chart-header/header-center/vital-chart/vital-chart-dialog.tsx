@@ -12,24 +12,30 @@ import { BarChartBig } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
 
-const LazyVitalChartContent = dynamic(() => import('./vital-chart-content'), {
+const LazyVitalChart = dynamic(() => import('./vital-chart'), {
   ssr: false,
   loading: () => <LargeLoaderCircle />,
 })
 
-export default function VitalChartDialog({ patientId }: { patientId: string }) {
+export default function VitalChartDialog({
+  patientId,
+  inDate,
+}: {
+  patientId: string
+  inDate: string
+}) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [currentVital, setCurrentVital] = useState('체중')
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="icon" className="hidden xl:inline-flex">
+        <Button variant="ghost" size="icon" className="hidden lg:inline-flex">
           <BarChartBig size={18} />
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="flex h-[720px] sm:max-h-[720px] sm:max-w-[1400px]">
+      <DialogContent className="flex h-[90vh] w-[90vw] max-w-[90vw]">
         <DialogTitle className="hidden" />
         <DialogDescription className="hidden" />
 
@@ -38,9 +44,10 @@ export default function VitalChartDialog({ patientId }: { patientId: string }) {
           setCurrentVital={setCurrentVital}
         />
 
-        <LazyVitalChartContent
+        <LazyVitalChart
           currentVital={currentVital}
           patientId={patientId}
+          inDate={inDate}
         />
       </DialogContent>
     </Dialog>

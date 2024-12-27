@@ -19,7 +19,6 @@ import {
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
 import { updateWeightData } from '@/lib/services/icu/chart/vitals'
-import type { VitalChartData } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'

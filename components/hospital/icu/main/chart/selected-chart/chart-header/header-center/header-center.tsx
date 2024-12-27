@@ -8,7 +8,7 @@ export default function HeaderCenter({
 }: {
   chartData: SelectedChart
 }) {
-  const { patient, weight, weight_measured_date } = chartData
+  const { patient, weight, weight_measured_date, icu_io } = chartData
 
   return (
     <div className="flex w-full flex-wrap items-center justify-center gap-2 rounded-md bg-muted p-2 text-xs md:h-12 md:bg-transparent md:text-sm">
@@ -24,7 +24,10 @@ export default function HeaderCenter({
         icuChartId={chartData.icu_chart_id}
       />
 
-      <VitalChartDialog patientId={patient.patient_id} />
+      <VitalChartDialog
+        patientId={patient.patient_id}
+        inDate={icu_io.in_date}
+      />
     </div>
   )
 }

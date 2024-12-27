@@ -1,36 +1,8 @@
 import { cn } from '@/lib/utils/utils'
-
 import { Button } from '@/components/ui/button'
 import { SquareActivity } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
-
-const VITALS = [
-  {
-    id: 0,
-    title: '체중',
-    isActive: true,
-  },
-  {
-    id: 1,
-    title: '혈압',
-    isActive: true,
-  },
-  {
-    id: 2,
-    title: '호흡수',
-    isActive: false,
-  },
-  {
-    id: 3,
-    title: '심박수',
-    isActive: false,
-  },
-  {
-    id: 4,
-    title: '활력',
-    isActive: false,
-  },
-]
+import { VITALS } from '@/constants/hospital/icu/chart/vital'
 
 export default function VitalChartSidebar({
   currentVital,
@@ -40,7 +12,7 @@ export default function VitalChartSidebar({
   setCurrentVital: (vital: string) => void
 }) {
   return (
-    <aside className="flex h-full w-[160px] justify-between">
+    <aside className="flex h-full min-w-[160px] justify-between">
       <div className="flex h-full w-full flex-col">
         <div className="flex h-12 items-center justify-center gap-1 font-bold shadow-sm">
           <SquareActivity />
