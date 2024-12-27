@@ -25,12 +25,6 @@ export const VITALS = [
     isActive: true,
     initialLength: 10,
   },
-  {
-    id: 4,
-    title: '활력',
-    isActive: true,
-    initialLength: 10,
-  },
 ] as const
 
 export const CHART_CONFIG = {
