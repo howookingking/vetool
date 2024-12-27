@@ -27,6 +27,15 @@ export default function useUpsertTx({ hosId, onSuccess }: TxUpdateOptions) {
       txState.txComment = comment.trim()
     }
 
+    // checklist에 'kg' 단위 입력 시 단위 제거
+    // 'checklist'라는 orderType은 불변하지만, 오더명은 가변하므로 orderType으로 체크
+    if (
+      txState.icuChartOrderType === 'checklist' &&
+      txState.txResult?.includes('kg')
+    ) {
+      txState.txResult = txState.txResult?.replace('kg', '')
+    }
+
     await upsertIcuTx(hosId, txState, format(new Date(), 'yyyy-MM-dd'), logs)
 
     toast({
