@@ -21,17 +21,12 @@ export default async function Layout(props: {
 }) {
   const params = await props.params
   const vetoolUser = await getVetoolUserData()
-  const isSuper = vetoolUser.is_super
 
   return (
     <div className="flex h-screen">
-      <Sidebar hosId={params.hos_id} userData={vetoolUser} isSuper={isSuper} />
+      <Sidebar hosId={params.hos_id} vetoolUser={vetoolUser} />
 
-      <MobileSidebar
-        hosId={params.hos_id}
-        userData={vetoolUser}
-        isSuper={isSuper}
-      />
+      <MobileSidebar hosId={params.hos_id} vetoolUser={vetoolUser} />
 
       <div className="ml-0 flex-1 2xl:ml-14">
         {/* 헤더 LAYOUT PLACEHOLDER*/}

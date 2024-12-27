@@ -4,6 +4,8 @@ import { type ClassValue, clsx } from 'clsx'
 import { differenceInDays, isValid, parseISO } from 'date-fns'
 import { twMerge } from 'tailwind-merge'
 import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
+import { redirect } from 'next/navigation'
+import { VetoolUser } from '@/types'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -362,4 +364,21 @@ export const borderedOrderClassName = (
   }
 
   return style
+}
+
+/**
+ * 자신이 등록된 병원이 아닌 다른 병원 url을 접근하려고 할 때 자기병원으로 이동하게 하는 함수. 슈퍼게정은 무시
+ * @param vetoolUser 벳툴 사용자 객체
+ * @param currentUrlHosId 현 url의 병원 아이디
+ * @param isSuper 슈퍼계정 사용자 여부
+ */
+export const redirectToOwnHospital = (
+  vetoolUser: VetoolUser,
+  currentUrlHosId: string,
+  isSuper: boolean,
+) => {
+  if (isSuper) return
+  if (vetoolUser.hos_id !== currentUrlHosId) {
+    redirect(`/hospital/${vetoolUser.hos_id}`)
+  }
 }

@@ -10,7 +10,7 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
-import type { UserProfile } from '@/types'
+import type { VetoolUser } from '@/types'
 import { Menu } from 'lucide-react'
 import { useState } from 'react'
 import MobileSidebarItem from './mobile-sidebar-item'
@@ -18,12 +18,10 @@ import SidebarUserInfo from './sidebar-user-info'
 
 export default function MobileSidebar({
   hosId,
-  userData,
-  isSuper,
+  vetoolUser,
 }: {
   hosId: string
-  userData: UserProfile
-  isSuper: boolean
+  vetoolUser: VetoolUser
 }) {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
 
@@ -48,7 +46,7 @@ export default function MobileSidebar({
                 hosId={hosId}
                 item={item}
                 setIsSheetOpen={setIsSheetOpen}
-                isSuper={isSuper}
+                isSuper={vetoolUser.is_super}
               />
             )
           })}
@@ -56,7 +54,7 @@ export default function MobileSidebar({
 
         <SidebarUserInfo
           hosId={hosId}
-          userData={userData}
+          vetoolUser={vetoolUser}
           mobile
           setIsSheetOpen={setIsSheetOpen}
         />
