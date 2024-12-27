@@ -3,18 +3,16 @@ import VitalChartTooltip from '@/components/hospital/icu/main/chart/selected-cha
 import { ChartContainer, ChartTooltip } from '@/components/ui/chart'
 import { CHART_CONFIG } from '@/constants/hospital/icu/chart/vital'
 import type { VitalChartData } from '@/types/icu/chart'
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from 'recharts'
+import { LineChart, Line, CartesianGrid, LabelList, XAxis } from 'recharts'
 
 export default function VitalChartContent({
   formattedData,
   displayCount,
-  handleBarClick,
   currentVital,
   inDate,
 }: {
   formattedData: VitalChartData[]
   displayCount: number
-  handleBarClick: (value: any) => void
   currentVital: string
   inDate: string
 }) {
@@ -24,14 +22,14 @@ export default function VitalChartContent({
 
   return (
     <ChartContainer config={CHART_CONFIG} className="h-[70vh] w-full">
-      <BarChart
+      <LineChart
         data={formattedData}
         margin={{
           top: 42,
-          left: 30,
+          left: 88,
           bottom: 32,
+          right: 48,
         }}
-        barSize={48}
       >
         <CartesianGrid vertical={false} />
 
@@ -42,8 +40,8 @@ export default function VitalChartContent({
           tickMargin={14}
           tick={
             <VitalChartDateTick
-              x={0}
-              y={0}
+              x={16}
+              y={16}
               payload={{ value: '' }}
               inDate={inDate}
             />
@@ -51,12 +49,13 @@ export default function VitalChartContent({
         />
 
         <ChartTooltip cursor={false} content={<VitalChartTooltip />} />
-        <Bar
+        <Line
+          type="monotone"
           dataKey="value"
-          fill={barColor}
-          radius={8}
-          cursor="pointer"
-          onClick={(value) => handleBarClick(value)}
+          stroke={barColor}
+          strokeWidth={3}
+          dot={{ r: 4, fill: barColor }}
+          activeDot={{ r: 6 }}
           isAnimationActive={false}
         >
           {displayCount <= 15 && (
@@ -65,12 +64,12 @@ export default function VitalChartContent({
               position="top"
               offset={12}
               className="fill-foreground"
-              fontSize={16}
+              fontSize={14}
               formatter={(value: number) => `${value}`}
             />
           )}
-        </Bar>
-      </BarChart>
+        </Line>
+      </LineChart>
     </ChartContainer>
   )
 }

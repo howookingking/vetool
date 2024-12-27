@@ -37,9 +37,6 @@ export default function VitalChart({
   const [isLoading, setIsLoading] = useState(false)
   const [vitalData, setVitalData] = useState<Record<string, VitalData[]>>({})
   const [displayCount, setDisplayCount] = useState<number>(initialLength)
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [selectedVitalData, setSelectedVitalData] =
-    useState<VitalChartBarData | null>(null)
 
   useEffect(() => {
     setDisplayCount(initialLength)
@@ -100,6 +97,7 @@ export default function VitalChart({
       })
       .filter((item) => item !== null)
       .slice(0, displayCount)
+      .reverse()
   }, [currentVital, vitalData, displayCount])
 
   const hasMoreData = (() => {
@@ -108,11 +106,6 @@ export default function VitalChart({
 
   const handleLoadMore = () => {
     setDisplayCount((prev: number) => prev + initialLength)
-  }
-
-  const handleBarClick = (vitalData: VitalChartBarData) => {
-    setSelectedVitalData(vitalData)
-    setIsDialogOpen(true)
   }
 
   return (
@@ -155,21 +148,11 @@ export default function VitalChart({
               <VitalChartContent
                 formattedData={formattedData}
                 displayCount={displayCount}
-                handleBarClick={handleBarClick}
                 currentVital={currentVital}
                 inDate={inDate}
               />
             </CardContent>
           </Card>
-
-          <UpdateVitalDialog
-            currentVital={currentVital}
-            patientId={patientId}
-            isDialogOpen={isDialogOpen}
-            setIsDialogOpen={setIsDialogOpen}
-            vitalId={selectedVitalData?.vitalId}
-            defaultValue={selectedVitalData?.value?.toString()}
-          />
         </>
       ) : (
         <div className="flex h-full items-center justify-center">

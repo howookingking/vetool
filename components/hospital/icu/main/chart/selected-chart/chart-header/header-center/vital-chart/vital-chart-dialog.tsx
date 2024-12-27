@@ -35,7 +35,7 @@ export default function VitalChartDialog({
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="flex h-[90vh] w-[90vw] max-w-[90vw]">
+      <DialogContent className="flex h-[90vh] w-[95vw] max-w-[95vw]">
         <DialogTitle className="hidden" />
         <DialogDescription className="hidden" />
 

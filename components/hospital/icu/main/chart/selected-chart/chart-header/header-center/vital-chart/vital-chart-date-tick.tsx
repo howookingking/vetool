@@ -18,9 +18,9 @@ export default function VitalChartDateTick({
     getDaysDifference(inDate) - getDaysDifference(datePart) + 1
 
   return (
-    <g transform={`translate(${x},${y})`} className="text-xs">
+    <g transform={`translate(${x},${y})`}>
       <Text x={0} y={0} dy={16} textAnchor="middle" fill="#666">
-        {datePart + ' ' + timePart}
+        {datePart.slice(2) + ' ' + timePart}
       </Text>
 
       <Text x={0} y={20} dy={16} textAnchor="middle" fill="#666">
