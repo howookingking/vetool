@@ -122,7 +122,7 @@ export default function VitalChart({
                 <div className="space-y-2">
                   <CardTitle>{currentVital} 변화 추이</CardTitle>
                   <CardDescription>
-                    최근부터 입원일까지 {formattedData.length}개의 데이터
+                    최근 {formattedData.length}개의 데이터
                     {currentVital === '호흡수' && (
                       <span className="pl-1 text-muted-foreground">
                         (panting은 200으로 표시됩니다)
