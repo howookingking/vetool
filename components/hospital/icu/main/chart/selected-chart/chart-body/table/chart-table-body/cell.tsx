@@ -251,8 +251,8 @@ export default function Cell({
   )
 
   return (
-    <TableCell className="handle p-0">
-      <div className="relative [&:focus-within_.tx-result-overlay]:opacity-20">
+    <TableCell className="handle group p-0">
+      <div className="relative [&:focus-within_.tx-result-overlay]:opacity-30">
         <Input
           id={`${icuChartOrderId}&${time}`}
           className={cn(
@@ -270,7 +270,7 @@ export default function Cell({
           onContextMenu={handleRightClick}
           {...longPressProps}
         />
-        <span className="tx-result-overlay absolute inset-0 -z-10 flex items-center justify-center">
+        <span className="tx-result-overlay absolute inset-0 -z-10 flex items-center justify-center overflow-hidden whitespace-nowrap group-hover:overflow-visible">
           {treatment?.tx_result ?? ''}
         </span>
         {hasOrder && showOrderer && (
