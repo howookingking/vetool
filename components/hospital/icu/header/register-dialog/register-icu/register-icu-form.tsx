@@ -104,13 +104,10 @@ export default function RegisterIcuForm({
         hosId,
         registeringPatient!.patientId,
         registeringPatient!.birth,
-        '',
-        '',
         format(in_date, 'yyyy-MM-dd'),
         out_due_date ? format(out_due_date, 'yyyy-MM-dd') : '',
         group_list,
         main_vet,
-        undefined,
       )
 
       toast({

@@ -1,6 +1,6 @@
 import IcuHeaderDateSelector from '@/components/hospital/icu/header/date-picker/header-date-selector'
+import RegisterDialog from '@/components/hospital/icu/header/register-dialog/register-dialog'
 import type { Vet } from '@/types/icu/chart'
-import RegisterDialog from './register-dialog/register-dialog'
 
 export default async function IcuHeader({
   hosId,

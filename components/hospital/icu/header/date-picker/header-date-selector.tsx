@@ -67,6 +67,7 @@ export default function HeaderDateSelector() {
         size="icon"
         variant="outline"
         className="h-6 w-6 rounded-full"
+        aria-label="이전 날짜로 이동"
       >
         <ArrowLeftIcon />
       </Button>
@@ -84,6 +85,7 @@ export default function HeaderDateSelector() {
         size="icon"
         variant="outline"
         className="h-6 w-6 rounded-full"
+        aria-label="다음 날짜로 이동"
       >
         <ArrowRightIcon />
       </Button>
@@ -94,6 +96,7 @@ export default function HeaderDateSelector() {
           size="sm"
           variant="outline"
           className="px-2"
+          aria-label="오늘 날짜로 이동"
         >
           오늘로
         </Button>

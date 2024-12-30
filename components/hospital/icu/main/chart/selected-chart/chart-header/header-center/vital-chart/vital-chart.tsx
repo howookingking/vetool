@@ -1,6 +1,5 @@
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
-import UpdateVitalDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-center/vital-chart/update-vital-dialog'
 import VitalChartContent from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-center/vital-chart/vital-chart-content'
 import { Button } from '@/components/ui/button'
 import {
@@ -13,13 +12,8 @@ import {
 import { VITALS } from '@/constants/hospital/icu/chart/vital'
 import { getVitalTxData, getWeightData } from '@/lib/services/icu/chart/vitals'
 import { parseVitalValue } from '@/lib/utils/analysis'
-import type {
-  VitalChartBarData,
-  VitalChartData,
-  VitalData,
-} from '@/types/icu/chart'
+import type { VitalChartData, VitalData } from '@/types/icu/chart'
 import { format } from 'date-fns'
-import { Loader2 } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 
 export default function VitalChart({
@@ -55,6 +49,7 @@ export default function VitalChart({
       switch (currentVital) {
         case '체중':
           fetchedVitalData = await getWeightData(patientId, inDate)
+
           break
 
         default:
@@ -76,7 +71,7 @@ export default function VitalChart({
     }
 
     fetchVitalData()
-  }, [currentVital, patientId, vitalData, inDate])
+  }, [currentVital, patientId, vitalData, inDate, initialLength])
 
   // 차트 데이터 포맷 변환 및 정렬
   const formattedData: VitalChartData[] = useMemo(() => {

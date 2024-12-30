@@ -166,6 +166,7 @@ export default function Autocomplete({
         onBlur={() => handleUpdate!(input)}
         disabled={isUpdating}
         placeholder={placeholder ?? ''}
+        aria-label={label}
       />
 
       {suggestions.length > 0 && (

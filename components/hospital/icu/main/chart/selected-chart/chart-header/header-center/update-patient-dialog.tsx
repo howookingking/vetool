@@ -1,3 +1,5 @@
+'use client'
+
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import { Button } from '@/components/ui/button'
 import {
@@ -8,11 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import {
-  calculateAge,
-  convertPascalCased,
-  getAgeFromAgeInDays,
-} from '@/lib/utils/utils'
+import { calculateAge, convertPascalCased } from '@/lib/utils/utils'
 import type { PatientDataTable } from '@/types/patients'
 import { Cat, Dog } from 'lucide-react'
 import dynamic from 'next/dynamic'

@@ -176,3 +176,9 @@ export type VitalData = {
   body_weight?: string | null
   created_at: string
 }
+
+export type Filter = {
+  selectedGroup: string[]
+  selectedVet: string
+  selectedSort: string
+}

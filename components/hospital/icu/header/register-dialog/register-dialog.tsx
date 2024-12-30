@@ -128,9 +128,10 @@ export default function RegisterDialog({
             {step === 'patientRegister' && (
               <LazyPatientForm
                 mode="registerFromIcuRoute"
-                setStep={setStep}
                 hosId={hosId}
                 setIsPatientRegisterDialogOpen={setIsRegisterDialogOpen}
+                mainVetId={vetsData[0].user_id}
+                mainGroup={groupList[0]}
               />
             )}
             {step === 'icuRegister' && (
