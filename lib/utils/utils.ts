@@ -1,5 +1,5 @@
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
-import { SelectedIcuOrder } from '@/types/icu/chart'
+import { IcuSidebarIoData, SelectedIcuOrder, Vet } from '@/types/icu/chart'
 import { type ClassValue, clsx } from 'clsx'
 import { differenceInDays, isValid, parseISO } from 'date-fns'
 import { twMerge } from 'tailwind-merge'
@@ -362,4 +362,64 @@ export const borderedOrderClassName = (
   }
 
   return style
+}
+
+export const filterData = (
+  data: IcuSidebarIoData[],
+  filters: {
+    selectedGroup: string[]
+    selectedVet: string
+    selectedSort: string
+  },
+  vetsListData: Vet[],
+) => {
+  let filtered = [...data]
+
+  // 그룹 필터
+  if (filters.selectedGroup.length > 0) {
+    filtered = filtered.filter((item) =>
+      filters.selectedGroup.some((group) => item.group_list.includes(group)),
+    )
+  }
+
+  // 수의사 필터
+  if (filters.selectedVet) {
+    filtered = filtered.filter(
+      (item) =>
+        item.vets?.main_vet === filters.selectedVet ||
+        item.vets?.sub_vet === filters.selectedVet,
+    )
+  }
+
+  // 정렬 옵션 적용
+  // 1. 수의사별 정렬
+  if (filters.selectedSort === 'vet') {
+    const rankMap = Object.fromEntries(
+      vetsListData.map((vet) => [vet.user_id, vet.rank]),
+    )
+
+    filtered.sort((a, b) => {
+      const rankA = rankMap[a.vets?.main_vet ?? ''] ?? 99
+      const rankB = rankMap[b.vets?.main_vet ?? ''] ?? 99
+      return rankA - rankB
+    })
+  }
+
+  // 2. 환자명 정렬
+  if (filters.selectedSort === 'name') {
+    filtered.sort((a, b) => a.patient.name.localeCompare(b.patient.name, 'ko'))
+  }
+
+  // 최종으로 퇴원 환자 후미로 정렬
+  filtered.sort((a, b) => {
+    if (a.out_date === null && b.out_date === null) return 0
+    if (a.out_date === null) return -1
+    if (b.out_date === null) return 1
+    return 0
+  })
+
+  return {
+    filteredIcuIoData: filtered,
+    excludedIcuIoData: data.filter((item) => !filtered.includes(item)),
+  }
 }
