@@ -1,4 +1,5 @@
 'use client'
+'use no memo'
 
 import { newHospitalFormSchema } from '@/components/on-boarding/create-hospital/hospital-schema'
 import { Button } from '@/components/ui/button'

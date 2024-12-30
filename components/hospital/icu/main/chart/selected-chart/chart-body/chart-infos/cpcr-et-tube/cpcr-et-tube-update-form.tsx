@@ -1,3 +1,5 @@
+'use no memo'
+
 import DialogFooterButtons from '@/components/common/dialog-footer-buttons'
 import { cpcrEtTubeSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/cpcr-et-tube/cpcr-et-tube-schema'
 import {

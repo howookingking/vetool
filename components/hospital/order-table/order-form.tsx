@@ -1,4 +1,5 @@
 'use client'
+'use no memo'
 
 import ChecklistOrderField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/checklist-order/checklist-order-field'
 import FeedOrderField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/feed-order/feed-order-field'
