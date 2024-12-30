@@ -508,7 +508,7 @@ export default function PatientForm({
                 품종 <span className="text-destructive">*</span>
               </FormLabel>
               <Popover open={breedOpen} onOpenChange={setBreedOpen} modal>
-                <PopoverTrigger asChild disabled={!watchSpecies}>
+                <PopoverTrigger asChild>
                   <FormControl>
                     <Button
                       variant="outline"
@@ -545,10 +545,10 @@ export default function PatientForm({
                       <ScrollArea className="h-64">
                         <CommandEmpty>해당 품종 검색 결과 없음.</CommandEmpty>
                         <CommandGroup>
-                          {BREEDS.map((breed) => (
+                          {[...CANINE_BREEDS, ...FELINE_BREEDS].map((breed) => (
                             <CommandItem
                               value={breed.eng + '#' + breed.kor}
-                              key={breed.id}
+                              key={breed.id + breed.eng}
                               onSelect={field.onChange}
                               className="text-xs"
                             >
