@@ -1,16 +1,16 @@
 import { staffColumns } from '@/components/hospital/admin/staff/staff-columns'
 import DataTable from '@/components/ui/data-table'
 import { getStaffs } from '@/lib/services/admin/staff/staff'
-import { getSupabaseUser } from '@/lib/services/auth/authorization'
+import { getVetoolUserData } from '@/lib/services/auth/authorization'
 import type { HospitalUserDataTable } from '@/types/adimin'
 
 export default async function AdminStaffPage(props: {
   params: Promise<{ hos_id: string }>
 }) {
   const params = await props.params
-  const supabaseUser = await getSupabaseUser()
+  const vetoolUser = await getVetoolUserData()
   const staffs = await getStaffs(params.hos_id)
-  const isMaster = staffs[0].hos_id.master_user_id === supabaseUser.id
+  const isMaster = staffs[0].hos_id.master_user_id === vetoolUser.user_id
 
   const staffsTableData: HospitalUserDataTable[] = staffs.map((user) => ({
     group: user.group,

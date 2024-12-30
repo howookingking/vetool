@@ -1309,7 +1309,7 @@ export type Database = {
           description: string
           error_json: Json
           is_server: boolean
-          user_id: string | null
+          user_id: string
           vetool_error_id: string
         }
         Insert: {
@@ -1317,7 +1317,7 @@ export type Database = {
           description: string
           error_json: Json
           is_server: boolean
-          user_id?: string | null
+          user_id?: string
           vetool_error_id?: string
         }
         Update: {
@@ -1325,7 +1325,7 @@ export type Database = {
           description?: string
           error_json?: Json
           is_server?: boolean
-          user_id?: string | null
+          user_id?: string
           vetool_error_id?: string
         }
         Relationships: [
@@ -1571,6 +1571,13 @@ export type Database = {
       get_icu_visitable_patients: {
         Args: {
           hos_id_input: string
+          target_date_input: string
+        }
+        Returns: Json
+      }
+      get_icu_vital_tx_data: {
+        Args: {
+          patient_id_input: string
           target_date_input: string
         }
         Returns: Json

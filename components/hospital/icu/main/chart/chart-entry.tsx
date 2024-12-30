@@ -1,9 +1,6 @@
-'use client'
-
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import AddChartDialogs from '@/components/hospital/icu/main/chart/add-chart-dialogs/add-chart-dialogs'
 import Chart from '@/components/hospital/icu/main/chart/chart'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedChart } from '@/types/icu/chart'
 
 export default function ChartEntry({
@@ -13,11 +10,8 @@ export default function ChartEntry({
   chartData: SelectedChart
   patientId: string
 }) {
-  const {
-    basicHosData: { sidebarData },
-  } = useBasicHosDataContext()
-
-  const hasIcuIo = sidebarData.find((io) => io.patient.patient_id === patientId)
+  // chartData에서 icu_io가 있는지 확인하여 hasIcuIo 판단
+  const hasIcuIo = chartData?.icu_io?.icu_io_id !== undefined
 
   // 입원 전 or 퇴원 후
   if (!chartData && !hasIcuIo) {

@@ -21,9 +21,9 @@ export default function PatientList({
     <div className="h-[calc(100vh-270px)] flex-col gap-3 overflow-y-auto">
       {fileteredPatientCount > 0 ? (
         <ul className="flex flex-col gap-2">
-          <span className="text-xs font-bold text-muted-foreground">
+          <li className="text-xs font-bold text-muted-foreground">
             입원환자 ({fileteredPatientCount})
-          </span>
+          </li>
           {filteredIcuIoData.map((icuIoData) => (
             <li
               key={icuIoData.icu_io_id}
@@ -48,9 +48,9 @@ export default function PatientList({
           <Separator className="my-3" />
 
           <ul className="flex flex-col gap-2">
-            <span className="text-xs font-bold text-muted-foreground">
+            <li className="text-xs font-bold text-muted-foreground">
               필터링 제외 ({excludedIcuIoData.length})
-            </span>
+            </li>
             {excludedIcuIoData.map((icuIoData) => (
               <li
                 key={icuIoData.icu_io_id}

@@ -13,25 +13,19 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { logout } from '@/lib/services/auth/authentication'
 import { cn } from '@/lib/utils/utils'
+import { VetoolUser } from '@/types'
 import { Crown, User } from 'lucide-react'
 import Link from 'next/link'
 import { Dispatch, SetStateAction } from 'react'
 
 export default function SidebarUserInfo({
   hosId,
-  userData,
+  vetoolUser,
   mobile,
   setIsSheetOpen,
 }: {
   hosId: string
-  userData: {
-    email: string | null
-    name: string
-    avatar_url: string | null
-    position: string
-    is_admin: boolean
-    user_id: string
-  }
+  vetoolUser: VetoolUser
   mobile?: boolean
   setIsSheetOpen?: Dispatch<SetStateAction<boolean>>
 }) {
@@ -43,10 +37,10 @@ export default function SidebarUserInfo({
             <Avatar>
               <AvatarImage
                 loading="lazy"
-                src={userData.avatar_url ?? ''}
-                alt={userData.name}
+                src={vetoolUser.avatar_url ?? ''}
+                alt={vetoolUser.name}
               />
-              <AvatarFallback>{userData.name.substring(0, 2)}</AvatarFallback>
+              <AvatarFallback>{vetoolUser.name.substring(0, 2)}</AvatarFallback>
             </Avatar>
           </div>
         </DropdownMenuTrigger>
@@ -54,12 +48,12 @@ export default function SidebarUserInfo({
         <DropdownMenuContent className="w-56" side="top">
           <DropdownMenuLabel>
             <div className="text-center">
-              {userData.name} - {userData.position}
+              {vetoolUser.name} - {vetoolUser.position}
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            {userData.is_admin && (
+            {vetoolUser.is_admin && (
               <DropdownMenuItem
                 asChild
                 onClick={() => setIsSheetOpen && setIsSheetOpen(false)}

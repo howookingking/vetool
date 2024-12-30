@@ -6,6 +6,7 @@ import { getVetoolUserData } from '@/lib/services/auth/authorization'
 import { getHosList } from '@/lib/services/hospital-home/get-hos-name'
 import { getTodos } from '@/lib/services/hospital-home/todo'
 import { getPatchTitlesData } from '@/lib/services/super/patch/patch'
+import { redirectToOwnHospital } from '@/lib/utils/utils'
 
 export default async function HospitalHomePage(props: {
   params: Promise<{ hos_id: string }>
@@ -16,6 +17,8 @@ export default async function HospitalHomePage(props: {
   const patchTitlesData = await getPatchTitlesData()
   const vetoolUser = await getVetoolUserData()
   const isSuper = vetoolUser.is_super
+
+  redirectToOwnHospital(vetoolUser, params.hos_id, isSuper)
 
   return (
     <div className="flex w-full flex-col gap-2 p-2 md:flex-row">

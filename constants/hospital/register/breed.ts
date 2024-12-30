@@ -1194,8 +1194,13 @@ export const CANINE_BREEDS = [
   },
   {
     id: 237,
-    kor: 'Polish Greyhound(폴리쉬 그레이 하운드)',
+    kor: '폴리쉬 그레이 하운드',
     eng: 'POLISH GREYHOUND',
+  },
+  {
+    id: 238,
+    kor: '아메리칸 불리',
+    eng: 'AMERICAN BULLY',
   },
 ] as const
 

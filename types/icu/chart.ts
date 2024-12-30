@@ -7,6 +7,7 @@ import type {
   IcuNotification,
   IcuOrders,
   IcuTemplate,
+  IcuTxs,
   Patients,
   User,
 } from '@/types'
@@ -148,4 +149,36 @@ export type PinnedDiet = Pick<
 export type PrevIoChartData = {
   icu_chart_id: string
   target_date: string | null
+}
+
+export type VitalChartBarData = {
+  vitalId: number
+  value: number
+}
+
+export type VitalChartData = {
+  date: string
+  value: number
+  vitalId: string | undefined
+  vitalName: string
+}
+
+export type VitalTxData = Pick<
+  IcuTxs,
+  'icu_chart_tx_id' | 'icu_chart_tx_result' | 'created_at'
+> &
+  Pick<IcuOrders, 'icu_chart_order_name'>
+
+export type VitalData = {
+  icu_chart_tx_id?: string
+  icu_chart_order_name?: string
+  icu_chart_tx_result?: string | null
+  body_weight?: string | null
+  created_at: string
+}
+
+export type Filter = {
+  selectedGroup: string[]
+  selectedVet: string
+  selectedSort: string
 }

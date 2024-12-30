@@ -2,8 +2,9 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import { cache } from 'react'
 
-export async function getSupabaseUser() {
+export const getSupabaseUser = cache(async () => {
   const supabase = await createClient()
   const {
     data: { user: supabaseUser },
@@ -20,43 +21,34 @@ export async function getSupabaseUser() {
   }
 
   return supabaseUser
-}
+})
 
-export async function checkIsAdmin(userId: string) {
-  const supabase = await createClient()
-
-  const { data: vetoolUserData, error } = await supabase
-    .from('users')
-    .select('is_admin')
-    .match({ user_id: userId })
-    .single()
-
-  if (error) {
-    console.error(error)
-    redirect(`/error?message=${error.message}`)
-  }
-
-  const isAdmin = vetoolUserData.is_admin
-
-  return isAdmin
-}
-
-export const getVetoolUserData = async () => {
+export const getVetoolUserData = cache(async () => {
   const supabase = await createClient()
   const supabaseUser = await getSupabaseUser()
 
-  const { data: vetoolUserData, error: vetoolUserDataError } = await supabase
+  const { data: vetoolUser, error: vetoolUserError } = await supabase
     .from('users')
     .select(
-      'email, name, avatar_url, position, is_admin, user_id, hos_id, is_super',
+      `
+        email,
+        name, 
+        avatar_url, 
+        position, 
+        is_admin, 
+        user_id, 
+        hos_id, 
+        is_super, 
+        is_admin
+      `,
     )
     .match({ user_id: supabaseUser.id })
     .single()
 
-  if (vetoolUserDataError) {
-    console.error(vetoolUserDataError)
-    redirect(`/error?message=${vetoolUserDataError.message}`)
+  if (vetoolUserError) {
+    console.error(vetoolUserError)
+    redirect(`/error?message=${vetoolUserError.message}`)
   }
 
-  return vetoolUserData
-}
+  return vetoolUser
+})

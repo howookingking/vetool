@@ -82,7 +82,14 @@ export type AuthUser = {
   }[]
 }
 
-export type UserProfile = Pick<
+export type VetoolUser = Pick<
   User,
-  'email' | 'name' | 'avatar_url' | 'position' | 'is_admin' | 'user_id'
+  | 'email'
+  | 'name'
+  | 'avatar_url'
+  | 'position'
+  | 'is_admin'
+  | 'user_id'
+  | 'is_super'
+  | 'hos_id'
 >

@@ -1,3 +1,4 @@
+import MobileSidebar from '@/components/hospital/icu/sidebar/mobile/mobile-icu-sidebar'
 import { Button } from '@/components/ui/button'
 import {
   Sheet,
@@ -7,12 +8,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import { IcuSidebarIoData, Vet } from '@/types/icu/chart'
+import type { Filter, IcuSidebarIoData, Vet } from '@/types/icu/chart'
 import { Menu } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
-import { Filter } from '../icu-sidebar'
-import MobileSidebar from './mobile-icu-sidebar'
 
 export function MobileIcuSidebarSheet({
   hosGroupList,

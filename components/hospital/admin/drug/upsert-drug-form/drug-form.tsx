@@ -139,7 +139,9 @@ export function DrugForm({ rawDrugData }: { rawDrugData: RawDrug[] }) {
             name="raw_drug_id"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>약물 원료명*</FormLabel>
+                <FormLabel>
+                  약물 원료명 <span className="text-destructive">*</span>
+                </FormLabel>
                 <Popover
                   open={comboboxOpen}
                   onOpenChange={setComboboxOpen}
@@ -239,7 +241,9 @@ export function DrugForm({ rawDrugData }: { rawDrugData: RawDrug[] }) {
             name="hos_drug_name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>약물명*</FormLabel>
+                <FormLabel>
+                  약물명 <span className="text-destructive">*</span>
+                </FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -249,16 +253,16 @@ export function DrugForm({ rawDrugData }: { rawDrugData: RawDrug[] }) {
           />
         </div>
 
-        {/* 약물 용량 */}
         <FormField
           control={form.control}
           name="hos_drug_dosages"
           render={() => (
             <FormItem>
-              <FormLabel>약물 용량 설정*</FormLabel>
+              <FormLabel>
+                약물 용량 설정 <span className="text-destructive">*</span>
+              </FormLabel>
               <FormControl>
                 <div className="space-y-8">
-                  {/* 1. mg/ml */}
                   <div className="grid grid-cols-9 gap-4">
                     <div className="relative col-span-2">
                       <FormField
@@ -288,7 +292,6 @@ export function DrugForm({ rawDrugData }: { rawDrugData: RawDrug[] }) {
                       key={field.id}
                       className="grid grid-cols-9 items-end gap-4"
                     >
-                      {/* 종 선택 */}
                       <div className="col-span-2 space-y-2">
                         <FormField
                           control={form.control}
@@ -340,7 +343,6 @@ export function DrugForm({ rawDrugData }: { rawDrugData: RawDrug[] }) {
                         />
                       </div>
 
-                      {/* 기본 용량 선택 */}
                       <div className="relative col-span-2 space-y-2">
                         <FormField
                           control={form.control}
@@ -363,7 +365,6 @@ export function DrugForm({ rawDrugData }: { rawDrugData: RawDrug[] }) {
                         </span>
                       </div>
 
-                      {/* 최소 용량 선택 */}
                       <div className="relative col-span-2 space-y-2">
                         <FormField
                           control={form.control}
@@ -383,7 +384,6 @@ export function DrugForm({ rawDrugData }: { rawDrugData: RawDrug[] }) {
                         </span>
                       </div>
 
-                      {/* 최대 용량 선택 */}
                       <div className="relative col-span-2 space-y-2">
                         <FormField
                           control={form.control}

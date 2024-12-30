@@ -11,7 +11,6 @@ import {
 } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { getSupabaseUser } from '@/lib/services/auth/authorization'
 import { sendErrorFeedback } from '@/lib/services/error-feedback/error-feedback'
 import { cn } from '@/lib/utils/utils'
 import {
@@ -22,7 +21,7 @@ import {
   Send,
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { use, useEffect, useState } from 'react'
+import { use, useState } from 'react'
 
 export default function ErrorPage(props: {
   searchParams: Promise<{ message: string; hosId: string }>
@@ -30,18 +29,9 @@ export default function ErrorPage(props: {
   const searchParams = use(props.searchParams)
   const { message, hosId } = searchParams
   const { replace } = useRouter()
-  const [userId, setUserId] = useState<string>()
   const [description, setDescription] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
-
-  useEffect(() => {
-    const getUserId = async () => {
-      const user = await getSupabaseUser()
-      setUserId(user?.id)
-    }
-    getUserId()
-  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -52,12 +42,7 @@ export default function ErrorPage(props: {
 
     setIsSubmitting(true)
 
-    await sendErrorFeedback(
-      userId!,
-      description,
-      false,
-      JSON.stringify(errorInfo),
-    )
+    await sendErrorFeedback(description, false, JSON.stringify(errorInfo))
 
     setIsSubmitting(false)
     setIsSubmitted(true)

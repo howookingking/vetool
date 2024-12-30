@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 import { useCopiedChartStore } from '@/lib/store/icu/copied-chart'
@@ -15,7 +17,7 @@ export default function CopyChartButton({
     setCopiedChartId(icuChartId)
     toast({
       title: '차트 복사 완료',
-      description: '붙여넣기 할 차트로 이동해주세요',
+      description: '붙여넣기를 실행할 빈 차트로 이동해주세요',
     })
   }, [icuChartId, setCopiedChartId])
 

@@ -72,6 +72,7 @@ export const getPatchTitlesData = async () => {
     .from('vetool_patches')
     .select('patch_id, patch_title')
     .order('created_at', { ascending: false })
+    .limit(5)
 
   if (error) {
     console.error(error)

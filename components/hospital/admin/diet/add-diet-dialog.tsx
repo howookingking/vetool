@@ -136,7 +136,9 @@ export default function AddDietDialog({
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>사료명*</FormLabel>
+                  <FormLabel>
+                    사료명 <span className="text-destructive">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder="사료명 입력" {...field} />
                   </FormControl>
@@ -171,7 +173,9 @@ export default function AddDietDialog({
                 name="company"
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel>제조사*</FormLabel>
+                    <FormLabel>
+                      제조사 <span className="text-destructive">*</span>
+                    </FormLabel>
                     <FormControl>
                       <Input
                         placeholder="제조사 입력"
@@ -190,7 +194,9 @@ export default function AddDietDialog({
                 name="species"
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel>종*</FormLabel>
+                    <FormLabel>
+                      종 <span className="text-destructive">*</span>
+                    </FormLabel>
                     <FormControl>
                       <Select
                         onValueChange={(value) => {
@@ -236,7 +242,9 @@ export default function AddDietDialog({
                 name="unit"
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel>단위*</FormLabel>
+                    <FormLabel>
+                      단위 <span className="text-destructive">*</span>
+                    </FormLabel>
                     <FormControl>
                       <Select
                         onValueChange={(value) => {
@@ -277,7 +285,9 @@ export default function AddDietDialog({
                 name="mass_vol"
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel>단위당 칼로리*</FormLabel>
+                    <FormLabel>
+                      단위당 칼로리 <span className="text-destructive">*</span>
+                    </FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input

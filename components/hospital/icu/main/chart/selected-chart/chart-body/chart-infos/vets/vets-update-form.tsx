@@ -1,6 +1,3 @@
-'use client'
-
-import DialogFooterButtons from '@/components/common/dialog-footer-buttons'
 import { vetsFormSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/vets/vets-schema'
 import { Button } from '@/components/ui/button'
 import {
@@ -107,7 +104,9 @@ export default function VetsUpdateForm({
           name="main_vet"
           render={({ field }) => (
             <FormItem className="col-span-3">
-              <FormLabel>주치의*</FormLabel>
+              <FormLabel>
+                주치의 <span className="text-destructive">*</span>
+              </FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger

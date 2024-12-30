@@ -83,7 +83,9 @@ export default function OwnerForm({
           name="owner_name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>보호자 이름*</FormLabel>
+              <FormLabel>
+                보호자 이름 <span className="text-destructive">*</span>
+              </FormLabel>
               <FormControl>
                 <Input {...field} className="h-8 text-sm" />
               </FormControl>
@@ -97,7 +99,9 @@ export default function OwnerForm({
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <div className="flex flex-1 items-center gap-2">
-                <FormLabel>보호자 번호*</FormLabel>
+                <FormLabel>
+                  보호자 번호 <span className="text-destructive">*</span>
+                </FormLabel>
                 <HelperTooltip>
                   메인차트에 등록된 고유한 보호자 등록번호를 입력해주세요
                 </HelperTooltip>

@@ -7,8 +7,6 @@ export default async function SuperPage() {
   const hosList = await getHosList()
   const vetoolUser = await getVetoolUserData()
   const isSuper = vetoolUser.is_super
-  // const { date } = await searchParams
-
   if (!isSuper) {
     redirect('/')
   }

@@ -77,7 +77,9 @@ export default function IcuFooter({
       )}
     >
       <ul className="flex h-10 items-center gap-1 pl-1 md:gap-2">
-        <RealtimeStatus isSubscriptionReady={isSubscriptionReady} />
+        <li>
+          <RealtimeStatus isSubscriptionReady={isSubscriptionReady} />
+        </li>
 
         {FOOTER_MAIN_VIEW_MENUS.map(({ label, value }) => (
           <li

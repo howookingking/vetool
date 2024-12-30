@@ -71,6 +71,7 @@ export default function SidebarItem({
           )}
           variant="ghost"
           disabled={!isReady}
+          aria-label={name}
         >
           {ICON_MAPPER[iconName as keyof typeof ICON_MAPPER]}
         </Button>
