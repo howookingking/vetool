@@ -1,10 +1,9 @@
+import Filters from '@/components/hospital/icu/sidebar/filters/filters'
+import NoPatients from '@/components/hospital/icu/sidebar/no-patients'
+import PatientList from '@/components/hospital/icu/sidebar/patient-list'
 import { Separator } from '@/components/ui/separator'
-import type { IcuSidebarIoData, Vet } from '@/types/icu/chart'
+import type { Filter, IcuSidebarIoData, Vet } from '@/types/icu/chart'
 import type { Dispatch, SetStateAction } from 'react'
-import Filters from '../filters/filters'
-import type { Filter } from '../icu-sidebar'
-import NoPatients from '../no-patients'
-import PatientList from '../patient-list'
 
 export default function MobileSidebar({
   isEmpty,

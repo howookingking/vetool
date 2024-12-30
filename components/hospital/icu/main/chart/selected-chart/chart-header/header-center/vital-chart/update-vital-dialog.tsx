@@ -53,7 +53,7 @@ export default function UpdateVitalDialog({
     if (defaultValue) {
       form.setValue('weight', defaultValue)
     }
-  }, [defaultValue])
+  }, [defaultValue, form])
 
   const handleSubmit = async (values: z.infer<typeof vitalChartFormSchema>) => {
     setIsSubmitting(true)

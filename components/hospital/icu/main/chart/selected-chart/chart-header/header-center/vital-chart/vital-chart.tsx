@@ -71,7 +71,7 @@ export default function VitalChart({
     }
 
     fetchVitalData()
-  }, [currentVital, patientId, vitalData, inDate])
+  }, [currentVital, patientId, vitalData, inDate, initialLength])
 
   // 차트 데이터 포맷 변환 및 정렬
   const formattedData: VitalChartData[] = useMemo(() => {
