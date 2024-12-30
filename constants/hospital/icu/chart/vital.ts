@@ -25,6 +25,12 @@ export const VITALS = [
     isActive: true,
     initialLength: 10,
   },
+  {
+    id: 4,
+    title: '체온',
+    isActive: true,
+    initialLength: 10,
+  },
 ] as const
 
 export const CHART_CONFIG = {
@@ -45,7 +51,7 @@ export const CHART_CONFIG = {
     color: 'hsl(var(--chart-4))',
   },
   vitality: {
-    label: '활력',
+    label: '체온',
     color: 'hsl(var(--chart-5))',
   },
 } satisfies ChartConfig

@@ -1,3 +1,5 @@
+'use client'
+
 import ChartTable from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table'
 import { Button } from '@/components/ui/button'
 import {
@@ -12,7 +14,6 @@ import type { SelectedChart } from '@/types/icu/chart'
 import { Fullscreen } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-// import PinchZoomContainer from '../../pinch-zoom-container'
 
 export default function MobileChartTable({
   chartData,

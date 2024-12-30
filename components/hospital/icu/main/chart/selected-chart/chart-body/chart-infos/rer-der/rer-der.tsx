@@ -1,3 +1,5 @@
+'use client'
+
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import RerDerToolTip from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/rer-der/rer-der-tool-tip'
 import { Button } from '@/components/ui/button'

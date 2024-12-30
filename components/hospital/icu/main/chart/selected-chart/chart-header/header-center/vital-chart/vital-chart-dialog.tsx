@@ -1,3 +1,5 @@
+'use client'
+
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import VitalChartSidebar from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-center/vital-chart/vital-chart-sidebar'
 import { Button } from '@/components/ui/button'
