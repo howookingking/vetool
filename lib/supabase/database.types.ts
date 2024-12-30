@@ -1575,6 +1575,13 @@ export type Database = {
         }
         Returns: Json
       }
+      get_icu_vital_tx_data: {
+        Args: {
+          patient_id_input: string
+          target_date_input: string
+        }
+        Returns: Json
+      }
       get_not_out_due_patients: {
         Args: {
           hos_id_input: string

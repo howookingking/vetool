@@ -60,11 +60,11 @@ export default function OrdererSelectStep({
   const isSingleTx = orderTimePendingQueue.length === 0
   const isPendingOrder = copiedOrderPendingQueue.length > 0
 
-  const selectRef = useRef<HTMLButtonElement>(null)
+  const okButtonRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
-    if (selectRef.current) {
-      selectRef.current.focus()
+    if (okButtonRef.current) {
+      okButtonRef.current.focus()
     }
   }, [])
 
@@ -251,7 +251,6 @@ export default function OrdererSelectStep({
                       'h-8 text-sm',
                       !field.value && 'text-muted-foreground',
                     )}
-                    ref={selectRef}
                   >
                     <SelectValue placeholder="수의사를 선택해주세요" />
                   </SelectTrigger>
@@ -298,7 +297,12 @@ export default function OrdererSelectStep({
           >
             뒤로
           </Button>
-          <Button type="submit" disabled={isUpdating} className="ml-auto">
+          <Button
+            type="submit"
+            disabled={isUpdating}
+            className="ml-auto"
+            ref={okButtonRef}
+          >
             확인
             <LoaderCircle
               className={cn(isUpdating ? 'ml-2 animate-spin' : 'hidden')}
