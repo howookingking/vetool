@@ -41,9 +41,13 @@ import { z } from 'zod'
 export default function AddDietDialog({
   dietData,
   isEdit,
+  isOpen,
+  onOpenChange,
 }: {
   dietData?: AdminDietData
   isEdit?: boolean
+  isOpen?: boolean
+  onOpenChange?: (open: boolean) => void
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -89,12 +93,27 @@ export default function AddDietDialog({
   }
 
   return (
-    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+    <Dialog
+      open={isOpen || isDialogOpen}
+      onOpenChange={(open) => {
+        if (onOpenChange) {
+          onOpenChange(open)
+        }
+        setIsDialogOpen(open)
+      }}
+    >
       <DialogTrigger asChild>
         <Button
           size="icon"
           variant={isEdit ? 'ghost' : 'default'}
-          className={cn(isEdit ? 'inline-flex' : 'h-6 w-6 rounded-full', '')}
+          className={cn(
+            isEdit
+              ? 'inline-flex'
+              : onOpenChange
+                ? 'hidden'
+                : 'h-6 w-6 rounded-full',
+            '',
+          )}
         >
           {isEdit ? <Edit size={16} /> : <Plus size={18} />}
         </Button>
