@@ -1,3 +1,5 @@
+'use client'
+
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import WarningMessage from '@/components/common/warning-message'
 import { Button } from '@/components/ui/button'
@@ -23,15 +25,16 @@ export default function DeleteChartDialog({
   icuChartId,
   name,
   icuIoId,
-  isFirstChart,
+  inDate,
 }: {
   icuChartId: string
   name: string
   icuIoId: string
-  isFirstChart: boolean
+  inDate: string
 }) {
   const { target_date } = useParams()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const isFirstChart = inDate === target_date
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

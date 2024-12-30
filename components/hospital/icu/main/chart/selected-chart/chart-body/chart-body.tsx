@@ -1,3 +1,5 @@
+'use client'
+
 import ChartInfos from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/chart-infos'
 import ChartMemos, {
   type Memo,
@@ -11,6 +13,7 @@ export default function ChartBody({ chartData }: { chartData: SelectedChart }) {
   const { icu_io } = chartData
   const { memo_a, memo_b, memo_c, icu_io_id } = icu_io
   const isMobile = useIsMobile()
+  
 
   return (
     <div className="flex flex-col gap-2">
