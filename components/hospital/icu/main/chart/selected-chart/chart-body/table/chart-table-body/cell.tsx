@@ -269,6 +269,7 @@ export default function Cell({
           onBlur={handleUpsertBriefTxResult}
           onKeyDown={handleEnterPress}
           onContextMenu={handleRightClick}
+          aria-label="처치 결과 입력"
           {...longPressProps}
         />
         <span className="tx-result-overlay absolute inset-0 -z-10 flex items-center justify-center truncate">
