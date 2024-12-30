@@ -96,7 +96,9 @@ export default function BirthDatePicker({
       name="birth"
       render={({ field }) => (
         <FormItem className="flex flex-col justify-end">
-          <FormLabel>생년월일*</FormLabel>
+          <FormLabel>
+            생년월일 <span className="text-destructive">*</span>
+          </FormLabel>
           <div className="flex flex-col items-center gap-2 sm:flex-row">
             {/* 직접 입력 */}
             <div className="flex w-full items-center justify-between gap-2">

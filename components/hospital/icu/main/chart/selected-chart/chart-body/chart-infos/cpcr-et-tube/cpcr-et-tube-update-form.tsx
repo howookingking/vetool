@@ -78,7 +78,9 @@ export default function CpcrEtTubeUpdateForm({
           name="cpcr"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>CPCR*</FormLabel>
+              <FormLabel>
+                CPCR <span className="text-destructive">*</span>
+              </FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger

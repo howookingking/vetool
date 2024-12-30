@@ -92,7 +92,9 @@ export default function FluidOrderField({
                 species ? 'md:w-1/2' : 'w-full',
               )}
             >
-              <FormLabel className="font-semibold">수액 종류*</FormLabel>
+              <FormLabel className="font-semibold">
+                수액 종류 <span className="text-destructive">*</span>
+              </FormLabel>
               <FormControl>
                 <AutoComplete
                   selectedValue={field.value}

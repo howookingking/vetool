@@ -1,16 +1,14 @@
 import SidebarItem from '@/components/hospital/sidebar/sidebar-item'
 import SidebarUserInfo from '@/components/hospital/sidebar/sidebar-user-info'
 import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
-import type { UserProfile } from '@/types'
+import type { VetoolUser } from '@/types'
 
 export default async function Sidebar({
   hosId,
-  userData,
-  isSuper,
+  vetoolUser,
 }: {
   hosId: string
-  userData: UserProfile
-  isSuper: boolean
+  vetoolUser: VetoolUser
 }) {
   return (
     <aside className="fixed left-0 top-0 z-50 hidden h-screen w-14 border-r bg-white 2xl:block">
@@ -22,12 +20,12 @@ export default async function Sidebar({
             iconName={item.iconName}
             key={item.name}
             isReady={item.isReady}
-            isSuper={isSuper}
+            isSuper={vetoolUser.is_super}
           />
         ))}
       </ul>
 
-      <SidebarUserInfo hosId={hosId} userData={userData} />
+      <SidebarUserInfo hosId={hosId} vetoolUser={vetoolUser} />
     </aside>
   )
 }

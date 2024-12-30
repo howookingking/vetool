@@ -12,6 +12,26 @@ export default async function IcuPageLayout(props: {
 }) {
   const params = await props.params
 
+  // RLS 사용할 경우
+  // TO authenticated
+  // USING (
+  //     hos_id = (
+  //         SELECT hos_id
+  //         FROM users
+  //         WHERE auth.uid() = users.user_id
+  //     )
+  //     OR
+  //     EXISTS (
+  //         SELECT 1
+  //         FROM users
+  //         WHERE auth.uid() = users.user_id
+  //         AND is_super = true
+  //     )
+  // )
+  // 일단 아래 코드 비활성화
+  // const vetoolUser = await getVetoolUserData()
+  // redirectToOwnHospital(vetoolUser, params.hos_id, vetoolUser.is_super)
+
   const { basicHosData, icuSidebarData, vetsListData } = await getIcuData(
     params.hos_id,
     params.target_date,

@@ -61,7 +61,7 @@ export default function SelectedOrderActionDialog({
 
       toast({
         title: '오더 복사 완료',
-        description: '붙여넣기 할 차트로 이동하여 ctrl + v',
+        description: '붙여넣기 할 차트로 이동하여 ctrl + v를 눌러주세요',
       })
     }
 
@@ -104,6 +104,29 @@ export default function SelectedOrderActionDialog({
     setIsDeleteOrdersDialogOpen(true)
   }
 
+  const MULTIPLE_ORDER_ACTIONS = [
+    {
+      name: '오더 복사',
+      icon: <Copy />,
+      onClick: handleCopyOrder,
+    },
+    {
+      name: '템플릿으로 저장',
+      icon: <BookmarkPlus />,
+      onClick: handleTemplateOrder,
+    },
+    {
+      name: '테두리 표시 변경',
+      icon: <Square />,
+      onClick: handleBorderOrder,
+    },
+    {
+      name: '오더 삭제',
+      icon: <Trash2 />,
+      onClick: handleDeleteOrder,
+    },
+  ]
+
   return (
     <Dialog
       open={isOrderActionDialogOpen}
@@ -117,47 +140,17 @@ export default function SelectedOrderActionDialog({
           <DialogDescription />
         </DialogHeader>
 
-        <Button
-          onClick={handleCopyOrder}
-          className="mt-4 flex items-center justify-start gap-2 text-base"
-          variant="ghost"
-        >
-          <Copy size={24} />
-          오더 복사
-        </Button>
-
-        <Separator orientation="horizontal" />
-
-        <Button
-          onClick={handleTemplateOrder}
-          className="flex items-center justify-start gap-2 text-base"
-          variant="ghost"
-        >
-          <BookmarkPlus size={24} />
-          템플릿으로 저장
-        </Button>
-
-        <Separator orientation="horizontal" />
-
-        <Button
-          onClick={handleBorderOrder}
-          className="flex items-center justify-start gap-2 text-base"
-          variant="ghost"
-        >
-          <Square size={24} />
-          테두리 표시 변경
-        </Button>
-
-        <Separator orientation="horizontal" />
-
-        <Button
-          onClick={handleDeleteOrder}
-          className="flex items-center justify-start gap-2 text-base"
-          variant="ghost"
-        >
-          <Trash2 size={24} />
-          오더 삭제
-        </Button>
+        {MULTIPLE_ORDER_ACTIONS.map((action) => (
+          <Button
+            key={action.name}
+            onClick={action.onClick}
+            className="flex items-center justify-start gap-2 py-5 text-base"
+            variant="outline"
+          >
+            {action.icon}
+            {action.name}
+          </Button>
+        ))}
 
         <DialogFooter className="ml-auto w-full gap-2 md:gap-0">
           <DialogClose asChild>

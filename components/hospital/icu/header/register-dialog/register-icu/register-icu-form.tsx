@@ -157,7 +157,10 @@ export default function RegisterIcuForm({
           name="in_date"
           render={({ field }) => (
             <FormItem className="flex flex-col gap-2">
-              <FormLabel>입원일 ~ 퇴원 예정일 선택*</FormLabel>
+              <FormLabel>
+                입원일 ~ 퇴원 예정일 선택{' '}
+                <span className="text-destructive">*</span>
+              </FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -239,7 +242,9 @@ export default function RegisterIcuForm({
           name="main_vet"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>주치의*</FormLabel>
+              <FormLabel>
+                주치의 <span className="text-destructive">*</span>
+              </FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger

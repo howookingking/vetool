@@ -108,7 +108,9 @@ export default function AddTemplateOrdersButton({
               name="template_name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>템플릿 이름*</FormLabel>
+                  <FormLabel>
+                    템플릿 이름 <span className="text-destructive">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}

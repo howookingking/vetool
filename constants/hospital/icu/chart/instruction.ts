@@ -193,32 +193,13 @@ export const INSTRUCTIONS = [
 export const INSTRUCITON_SHORTCUTS: Shortcuts[] = [
   {
     title: '오더 시간 등록 / 해제',
-    description: 'CTRL 누른 채 + 해당 칸 우클릭',
+    description: 'CTRL 누른 채 + 해당 칸 오른쪽 클릭',
     icons: ['keyboard', 'mouse'],
   },
   {
     title: '다수의 처치에 동일한 결과값 입력',
     description:
       "해당하는 처치 칸들을 'CTRL 누른 채 + 좌클릭', 모두 선택하여 CTRL 해제, 입력창에 결과 값 입력",
-    icons: ['keyboard', 'mouse'],
-  },
-  {
-    title: '오더 복사 & 붙여넣기',
-    description:
-      "원하는 오더를 'CTRL 누른 채 + 좌클릭'하여 선택, 'CTRL + C'를 눌러 복사, 붙여넣을 차트에서 'CTRL + V'",
-    icons: ['keyboard', 'mouse'],
-  },
-  {
-    title: '오더 템플릿 빠르게 만들기',
-    description:
-      "템플릿으로 저장하고자 하는 오더를 'CTRL 누른 채로 +  좌클릭'하여 모두 선택, 'CTRL + A'",
-    icons: ['keyboard', 'mouse'],
-  },
-
-  {
-    title: '오더 순서 변경',
-    description:
-      "'CTRL + S'를 눌러 오더 순서 변경 모드 진입, 드래그 앤 드롭으로 순서 변경 후 'CTRL + S",
     icons: ['keyboard', 'mouse'],
   },
 ] as const

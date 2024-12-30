@@ -146,15 +146,6 @@ export default function ChartTable({
   ])
   // ---------------------------------
 
-  // ----- 다중 오더 삭제 -----
-  // useShorcutKey({
-  //   keys: ['backspace', 'delete'],
-  //   이유는 모르겠지만 selectedOrderPendingQueue.length를 메모이제이션 하는 듯. 바뀌질 않아서 삭제 확인 다일로그가 안열림
-  //   condition: selectedOrderPendingQueue.length > 0,
-  //   callback: () => setIsDeleteOrdersDialogOpen(true),
-  // })
-  // ----- 다중 오더 삭제 -----
-
   return (
     <Table className="border">
       {/* 소팅버튼, 오더목록, 오더추가 버튼, 오더너비조절 버튼, 시간 */}

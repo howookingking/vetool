@@ -119,7 +119,9 @@ export default function EditTodoDialog({
               name="todo_title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>TODO*</FormLabel>
+                  <FormLabel>
+                    TODO <span className="text-destructive">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}

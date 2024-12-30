@@ -106,7 +106,9 @@ export default function BookmarkForm({
           name="bookmark_name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>북마크 이름*</FormLabel>
+              <FormLabel>
+                북마크 이름 <span className="text-destructive">*</span>
+              </FormLabel>
               <FormControl>
                 <Input
                   {...field}

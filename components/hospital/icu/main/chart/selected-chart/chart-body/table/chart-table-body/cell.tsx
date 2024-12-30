@@ -15,9 +15,6 @@ import { format } from 'date-fns'
 import React, { useCallback, useEffect, useState } from 'react'
 
 type CellProps = {
-  // isHovered: boolean
-  // onMouseEnter: (columnIndex: number) => void
-  // onMouseLeave: () => void
   time: number
   hosId: string
   treatment?: Treatment
@@ -126,51 +123,37 @@ export default function Cell({
     onClick: () => toggleCellInQueue(icuChartOrderId, time),
   })
 
-  const toggleCellInQueue = useCallback(
-    (orderId: string, time: number) => {
-      if (orderTimePendingQueueLength > 0) return
+  const toggleCellInQueue = (orderId: string, time: number) => {
+    if (orderTimePendingQueueLength > 0) return
 
-      setSelectedTxPendingQueue((prev) => {
-        const existingIndex = prev.findIndex(
-          (item) => item.orderId === orderId && item.orderTime === time,
-        )
-        if (existingIndex !== -1) {
-          return prev.filter((_, index) => index !== existingIndex)
-        } else {
-          return [
-            ...prev,
-            {
-              txId: icuChartTxId,
-              orderId,
-              orderTime: time,
-              txLog: treatment?.tx_log as TxLog[] | null,
-              isCrucialChecked: treatment?.is_crucial,
-            },
-          ]
-        }
-      })
+    setSelectedTxPendingQueue((prev) => {
+      const existingIndex = prev.findIndex(
+        (item) => item.orderId === orderId && item.orderTime === time,
+      )
+      if (existingIndex !== -1) {
+        return prev.filter((_, index) => index !== existingIndex)
+      } else {
+        return [
+          ...prev,
+          {
+            txId: icuChartTxId,
+            orderId,
+            orderTime: time,
+            txLog: treatment?.tx_log as TxLog[] | null,
+            isCrucialChecked: treatment?.is_crucial,
+          },
+        ]
+      }
+    })
 
-      setTxLocalState({
-        icuChartOrderId,
-        icuChartOrderType: orderType,
-        icuChartOrderName: orderName,
-      })
-    },
-
-    [
-      setSelectedTxPendingQueue,
-      icuChartTxId,
-      treatment?.tx_log,
-      orderTimePendingQueueLength,
-      treatment?.is_crucial,
-      setTxLocalState,
-      orderName,
-      orderType,
+    setTxLocalState({
       icuChartOrderId,
-    ],
-  )
+      icuChartOrderType: orderType,
+      icuChartOrderName: orderName,
+    })
+  }
 
-  const handleUpsertBriefTxResult = useCallback(async () => {
+  const handleUpsertBriefTxResult = async () => {
     if ((treatment?.tx_result ?? '') === briefTxResultInput.trim()) {
       setBriefTxResultInput('')
       return
@@ -214,50 +197,37 @@ export default function Cell({
         title: '처치 내역이 업데이트 되었습니다',
       })
     }
-  }, [
-    briefTxResultInput,
-    icuChartOrderId,
-    icuChartTxId,
-    setTxStep,
-    setTxLocalState,
-    time,
-    treatment?.tx_result,
-    treatment?.tx_log,
-    orderType,
-    showTxUser,
-    upsertTx,
-    orderName,
-  ])
+  }
 
-  const handleRightClick = useCallback(
-    (e: React.MouseEvent<HTMLInputElement>) => {
-      e.preventDefault()
-      if (e.metaKey || e.ctrlKey) {
-        e.currentTarget.blur()
-        toggleOrderTime(icuChartOrderId, time)
-      }
-    },
-    [icuChartOrderId, time, toggleOrderTime],
-  )
+  const handleRightClick = (e: React.MouseEvent<HTMLInputElement>) => {
+    e.preventDefault()
+    if (e.metaKey || e.ctrlKey) {
+      e.currentTarget.blur()
+      toggleOrderTime(icuChartOrderId, time)
+    }
+  }
 
-  const handleEnterPress = useCallback(
-    (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === 'Enter') {
-        const target = e.currentTarget
-        setTimeout(() => target?.blur(), 0)
-      }
-    },
-    [],
-  )
+  const handleEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      const target = e.currentTarget
+      setTimeout(() => target?.blur(), 0)
+    }
+  }
 
   return (
-    <TableCell className="handle p-0">
-      <div className="relative [&:focus-within_.tx-result-overlay]:opacity-20">
+    <TableCell className="handle group p-0">
+      <div
+        className={cn(
+          briefTxResultInput.length > 0
+            ? '[&:focus-within_.tx-result-overlay]:opacity-20'
+            : '[&:focus-within_.tx-result-overlay]:opacity-50',
+          'relative [&:focus-within_.tx-result-overlay]:overflow-visible',
+        )}
+      >
         <Input
           id={`${icuChartOrderId}&${time}`}
           className={cn(
             isGuidelineTime && 'bg-amber-300/10',
-            // isHovered && 'bg-muted/50',
             hasOrder && 'bg-rose-400/10',
             isDone && 'bg-emerald-400/10',
             isInPendingQueue && 'ring-2 ring-primary',
@@ -272,7 +242,7 @@ export default function Cell({
           aria-label="처치 결과 입력"
           {...longPressProps}
         />
-        <span className="tx-result-overlay absolute inset-0 -z-10 flex items-center justify-center truncate">
+        <span className="tx-result-overlay absolute inset-0 -z-10 flex items-center justify-center overflow-hidden whitespace-pre group-hover:overflow-visible">
           {treatment?.tx_result ?? ''}
         </span>
         {hasOrder && showOrderer && (
