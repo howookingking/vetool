@@ -1,8 +1,5 @@
 import Feedback from '@/components/hospital/feedback/feedback'
-import HospitalHeader from '@/components/hospital/header/hospital-header'
-import MobileSidebar from '@/components/hospital/sidebar/mobile-sidebar'
-import Sidebar from '@/components/hospital/sidebar/sidebar'
-import { getVetoolUserData } from '@/lib/services/auth/authorization'
+import HospitalSidebar from '@/components/hospital/sidebar/hospital-sidebar'
 import { getHosName } from '@/lib/services/hospital-home/get-hos-name'
 
 export async function generateMetadata(props: {
@@ -20,20 +17,12 @@ export default async function Layout(props: {
   params: Promise<{ hos_id: string }>
 }) {
   const params = await props.params
-  const vetoolUser = await getVetoolUserData()
 
   return (
     <div className="flex h-screen">
-      <Sidebar hosId={params.hos_id} vetoolUser={vetoolUser} />
+      <HospitalSidebar hosId={params.hos_id} />
 
-      <MobileSidebar hosId={params.hos_id} vetoolUser={vetoolUser} />
-
-      <div className="ml-0 flex-1 2xl:ml-14">
-        {/* 헤더 LAYOUT PLACEHOLDER*/}
-        <HospitalHeader />
-
-        <main className="mt-12 w-screen xl:w-auto">{props.children}</main>
-      </div>
+      <main className="ml-0 flex-1 2xl:ml-14">{props.children}</main>
 
       <Feedback />
     </div>
