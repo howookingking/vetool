@@ -1,3 +1,4 @@
+import { registerPatientFormSchema } from '@/components/hospital/patients/patient-schema'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
@@ -18,7 +19,6 @@ import { Calendar as CalendarIcon } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
-import { registerPatientFormSchema } from './patient-schema'
 
 export default function BirthDatePicker({
   form,
@@ -158,7 +158,7 @@ export default function BirthDatePicker({
                     fromYear={1900}
                     toYear={new Date().getFullYear()}
                     locale={ko}
-                    selected={field.value}
+                    selected={field.value || birth}
                     mode="single"
                     onSelect={(date) => {
                       if (date) {
