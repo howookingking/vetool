@@ -17,7 +17,8 @@ export default function PatientSelectButton({
   birth: string
   patientName: string
 }) {
-  const { setStep, setRegisteringPatient } = useIcuRegisterStore()
+  const { setRegisteringPatient, setIsConfirmDialogOpen } =
+    useIcuRegisterStore()
   const [isLoading, setIsLoading] = useState(false)
   const { target_date } = useParams()
 
@@ -50,13 +51,14 @@ export default function PatientSelectButton({
       return
     }
 
-    setStep('icuRegister')
     setRegisteringPatient({
       patientId,
       birth,
       patientName,
       ageInDays: getDaysSince(birth),
     })
+
+    setIsConfirmDialogOpen(true)
   }
 
   return (
