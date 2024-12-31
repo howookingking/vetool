@@ -4,19 +4,31 @@ type Patient = {
   patientId: string
   birth: string
   patientName: string
-  ageInDays: number
+  ageInDays?: number
+  species?: string
+  breed?: string
+  gender?: string
+  microchipNo?: string
+  memo?: string
+  weight?: string
+  ownerName?: string
+  ownerId?: string
+  hosPatientId?: string
 }
 
 type IcuRegisterStore = {
   registeringPatient: Patient | null
   setRegisteringPatient: (patient: Patient) => void
-  step: 'patientRegister' | 'icuRegister' | 'patientSearch'
-  setStep: (step: 'patientRegister' | 'icuRegister' | 'patientSearch') => void
+
+  isConfirmDialogOpen: boolean
+  setIsConfirmDialogOpen: (open: boolean) => void
+
   reset: () => void
 }
 
 export const useIcuRegisterStore = create<IcuRegisterStore>((set) => ({
   registeringPatient: null,
+
   setRegisteringPatient: (patient) =>
     set({
       registeringPatient: {
@@ -24,9 +36,20 @@ export const useIcuRegisterStore = create<IcuRegisterStore>((set) => ({
         birth: patient.birth,
         patientName: patient.patientName,
         ageInDays: patient.ageInDays,
+        species: patient.species,
+        breed: patient.breed,
+        gender: patient.gender,
+        microchipNo: patient.microchipNo,
+        memo: patient.memo,
+        weight: patient.weight,
+        ownerName: patient.ownerName,
+        ownerId: patient.ownerId,
+        hosPatientId: patient.hosPatientId,
       },
     }),
-  step: 'patientSearch',
-  setStep: (step) => set({ step }),
-  reset: () => set({ registeringPatient: null, step: 'patientSearch' }),
+
+  isConfirmDialogOpen: false,
+  setIsConfirmDialogOpen: (open) => set({ isConfirmDialogOpen: open }),
+
+  reset: () => set({ registeringPatient: null }),
 }))
