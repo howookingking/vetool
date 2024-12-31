@@ -1,4 +1,4 @@
-import { registerIcuPatientFormSchema } from '@/components/hospital/icu/header/register-dialog/register-icu/icu-schema'
+import { registerIcuPatientFormSchema } from '@/components/hospital/icu/header/register-dialog/(unused)/icu-schema'
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -46,6 +46,7 @@ import { useEffect, useState } from 'react'
 import { DateRange } from 'react-day-picker'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
+import RegisterIcuConfirmDialog from '../register-icu-confirm-dialog'
 
 export default function RegisterIcuForm({
   hosId,
@@ -69,7 +70,7 @@ export default function RegisterIcuForm({
   })
 
   const { push } = useRouter()
-  const { setStep, registeringPatient } = useIcuRegisterStore()
+  const { registeringPatient } = useIcuRegisterStore()
 
   const form = useForm<z.infer<typeof registerIcuPatientFormSchema>>({
     resolver: zodResolver(registerIcuPatientFormSchema),
@@ -137,11 +138,9 @@ export default function RegisterIcuForm({
 
   const handlePreviousButtonClick = () => {
     if (tab === 'search') {
-      setStep('patientSearch')
       return
     }
     if (tab === 'register') {
-      setStep('patientRegister')
       return
     }
   }
@@ -299,29 +298,6 @@ export default function RegisterIcuForm({
               className={cn(isSubmitting ? 'ml-2 animate-spin' : 'hidden')}
             />
           </Button>
-
-          <AlertDialog>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>입원 등록</AlertDialogTitle>
-                <AlertDialogDescription>
-                  {format(range?.from ?? new Date(), 'yyyy-MM-dd')} 날짜로
-                  입원하시겠습니까?
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <Button type="submit" disabled={isSubmitting}>
-                  확인
-                  <LoaderCircle
-                    className={cn(
-                      isSubmitting ? 'ml-2 animate-spin' : 'hidden',
-                    )}
-                  />
-                </Button>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
         </div>
       </form>
     </Form>
