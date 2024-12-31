@@ -9,12 +9,13 @@ import { useIcuRegisterStore } from '@/lib/store/icu/icu-register'
 import { cn } from '@/lib/utils/utils'
 import type { Vet } from '@/types/icu/chart'
 import dynamic from 'next/dynamic'
-import { useCallback, useState } from 'react'
+import { useParams } from 'next/navigation'
+import { useState } from 'react'
 
-const LazyRegisterIcuForm = dynamic(
+const LazyRegisterIcuConfirmDialog = dynamic(
   () =>
     import(
-      '@/components/hospital/icu/header/register-dialog/register-icu/register-icu-form'
+      '@/components/hospital/icu/header/register-dialog/register-icu-confirm-dialog'
     ),
   {
     ssr: false,
@@ -49,31 +50,33 @@ export default function RegisterDialog({
   vetsData: Vet[]
 }) {
   const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false)
-  const { step, setStep, reset } = useIcuRegisterStore()
   const [tab, setTab] = useState('search')
 
-  const handleTabValueChange = useCallback(
-    (value: string) => {
-      if (value === 'search') {
-        setTab('search')
-        setStep('patientSearch')
-        return
-      }
+  const { target_date } = useParams()
+  const { reset, isConfirmDialogOpen, setIsConfirmDialogOpen } =
+    useIcuRegisterStore()
 
-      if (value === 'register') {
-        setTab('register')
-        setStep('patientRegister')
-        return
-      }
-    },
-    [setTab, setStep],
-  )
+  const defaultGroup = groupList[0]
+  const defaultVetId = vetsData[0].user_id
 
-  const handleCloseDialog = useCallback(() => {
+  const handleTabValueChange = (value: string) => {
+    if (value === 'search') {
+      setTab('search')
+      return
+    }
+
+    if (value === 'register') {
+      setTab('register')
+      return
+    }
+  }
+
+  const handleCloseDialog = () => {
     setIsRegisterDialogOpen(false)
+    setIsConfirmDialogOpen(false)
     setTab('search')
     reset()
-  }, [setIsRegisterDialogOpen, reset])
+  }
 
   return (
     <Dialog open={isRegisterDialogOpen} onOpenChange={setIsRegisterDialogOpen}>
@@ -82,21 +85,19 @@ export default function RegisterDialog({
       </DialogTrigger>
 
       <DialogContent
-        className="flex flex-col sm:max-w-[1200px]"
+        className={cn('flex flex-col sm:max-w-[1200px]')}
         onInteractOutside={(e) => {
           e.preventDefault()
         }}
       >
-        <RegisterDialogHeader step={step} />
+        <RegisterDialogHeader tab={tab} targetDate={target_date as string} />
 
         <Tabs
           defaultValue="search"
           onValueChange={handleTabValueChange}
           value={tab}
         >
-          <TabsList
-            className={cn('mb-2 w-full', step === 'icuRegister' && 'hidden')}
-          >
+          <TabsList className="mb-2 w-full">
             <TabsTrigger value="search" className="w-full">
               환자 조회
             </TabsTrigger>
@@ -106,46 +107,28 @@ export default function RegisterDialog({
           </TabsList>
 
           <TabsContent value="search">
-            {step === 'patientSearch' && (
-              <LazySearchPatientContainer
-                itemsPerPage={8}
-                isIcu
-                hosId={hosId}
-              />
-            )}
-            {step === 'icuRegister' && (
-              <LazyRegisterIcuForm
-                handleCloseDialog={handleCloseDialog}
-                hosId={hosId}
-                groupList={groupList}
-                vetsData={vetsData}
-                tab={tab}
-              />
-            )}
+            <LazySearchPatientContainer itemsPerPage={8} hosId={hosId} isIcu />
           </TabsContent>
 
           <TabsContent value="register">
-            {step === 'patientRegister' && (
-              <LazyPatientForm
-                mode="registerFromIcuRoute"
-                hosId={hosId}
-                setIsPatientRegisterDialogOpen={setIsRegisterDialogOpen}
-                mainVetId={vetsData[0].user_id}
-                mainGroup={groupList[0]}
-              />
-            )}
-            {step === 'icuRegister' && (
-              <LazyRegisterIcuForm
-                handleCloseDialog={handleCloseDialog}
-                hosId={hosId}
-                groupList={groupList}
-                vetsData={vetsData}
-                tab={tab}
-              />
-            )}
+            <LazyPatientForm
+              mode="registerFromIcuRoute"
+              hosId={hosId}
+              setIsPatientRegisterDialogOpen={setIsRegisterDialogOpen}
+              setIsConfirmDialogOpen={setIsConfirmDialogOpen}
+            />
           </TabsContent>
         </Tabs>
       </DialogContent>
+
+      <LazyRegisterIcuConfirmDialog
+        handleCloseDialog={handleCloseDialog}
+        isConfirmDialogOpen={isConfirmDialogOpen}
+        setIsConfirmDialogOpen={setIsConfirmDialogOpen}
+        hosId={hosId}
+        defaultMainVetId={defaultVetId}
+        defaultMainGroup={defaultGroup}
+      />
     </Dialog>
   )
 }

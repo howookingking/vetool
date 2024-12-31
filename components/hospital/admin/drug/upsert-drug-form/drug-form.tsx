@@ -1,4 +1,5 @@
 'use client'
+'use no memo'
 
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import { drugSchema } from '@/components/hospital/admin/drug/upsert-drug-form/drug-form-schema'

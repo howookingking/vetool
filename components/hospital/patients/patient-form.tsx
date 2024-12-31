@@ -1,4 +1,5 @@
 'use client'
+'use no memo'
 
 import HelperTooltip from '@/components/common/helper-tooltip'
 import BirthDatePicker from '@/components/hospital/patients/birth-date-picker'
@@ -41,20 +42,20 @@ import {
   FELINE_BREEDS,
   SEX,
 } from '@/constants/hospital/register/breed'
-import { registerIcuPatient } from '@/lib/services/icu/register-icu-patient'
 import {
   insertPatient,
   isHosPatientIdDuplicated,
   updatePatientFromIcu,
   updatePatientFromPatientRoute,
 } from '@/lib/services/patient/patient'
-import { changeTargetDateInUrl, cn } from '@/lib/utils/utils'
+import { useIcuRegisterStore } from '@/lib/store/icu/icu-register'
+import { cn } from '@/lib/utils/utils'
 import type { SearchedPatientsData } from '@/types/patients'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons'
 import { format } from 'date-fns'
 import { LoaderCircle } from 'lucide-react'
-import { useParams, usePathname, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDebouncedCallback } from 'use-debounce'
@@ -71,49 +72,45 @@ type RegisterFromPatientRoute = BaseProps & {
   weight?: null
   weightMeasuredDate?: null
   setIsPatientUpdateDialogOpen?: null
+  setIsConfirmDialogOpen?: null
   icuChartId?: null
   setIsEdited?: Dispatch<SetStateAction<boolean>>
-  mainVetId?: string
-  mainGroup?: string
 }
 
 type UpdateFromPatientRoute = BaseProps & {
   mode: 'updateFromPatientRoute'
   editingPatient: SearchedPatientsData
   setIsPatientRegisterDialogOpen?: null
+  setIsConfirmDialogOpen?: null
   weight: string
   weightMeasuredDate: string
   setIsPatientUpdateDialogOpen: Dispatch<SetStateAction<boolean>>
   icuChartId?: null
   setIsEdited?: Dispatch<SetStateAction<boolean>>
-  mainVetId?: string
-  mainGroup?: string
 }
 
 type RegisterFromIcuRoute = BaseProps & {
   mode: 'registerFromIcuRoute'
   setIsPatientRegisterDialogOpen: Dispatch<SetStateAction<boolean>>
+  setIsConfirmDialogOpen?: (isOpen: boolean) => void
   editingPatient?: null
   weight?: null
   weightMeasuredDate?: null
   setIsPatientUpdateDialogOpen?: null
   icuChartId?: null
   setIsEdited?: Dispatch<SetStateAction<boolean>>
-  mainVetId?: string
-  mainGroup?: string
 }
 
 type UpdateFromIcuRoute = BaseProps & {
   mode: 'updateFromIcuRoute'
   editingPatient: SearchedPatientsData
   setIsPatientRegisterDialogOpen?: null
+  setIsConfirmDialogOpen?: null
   weight: string
   weightMeasuredDate: string | null
   setIsPatientUpdateDialogOpen: Dispatch<SetStateAction<boolean>>
   icuChartId: string
   setIsEdited?: Dispatch<SetStateAction<boolean>>
-  mainVetId?: string
-  mainGroup?: string
 }
 
 type PatientFormProps =
@@ -126,14 +123,13 @@ export default function PatientForm({
   hosId,
   mode,
   setIsPatientRegisterDialogOpen,
+  setIsConfirmDialogOpen,
   editingPatient,
   weight,
   weightMeasuredDate,
   setIsPatientUpdateDialogOpen,
   icuChartId,
   setIsEdited,
-  mainVetId,
-  mainGroup,
 }: PatientFormProps) {
   const isEdit =
     mode === 'updateFromPatientRoute' || mode === 'updateFromIcuRoute'
@@ -143,9 +139,8 @@ export default function PatientForm({
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDuplicatedId, setIsDuplicatedId] = useState(false)
 
-  const { refresh, push } = useRouter()
-  const { target_date } = useParams()
-  const path = usePathname()
+  const { refresh } = useRouter()
+  const { registeringPatient, setRegisteringPatient } = useIcuRegisterStore()
 
   let defaultBreed: string
 
@@ -231,6 +226,7 @@ export default function PatientForm({
   const handleRegister = async (
     values: z.infer<typeof registerPatientFormSchema>,
   ) => {
+    // 0. 환자 번호 중복 확인
     if (isDuplicatedId) return
 
     setIsSubmitting(true)
@@ -249,7 +245,7 @@ export default function PatientForm({
       weight,
     } = values
 
-    // 환자 등록
+    // 1. 환자 등록
     const patientId = await insertPatient(
       {
         birth: format(birth, 'yyyy-MM-dd'),
@@ -268,43 +264,34 @@ export default function PatientForm({
     )
 
     toast({
-      title: isRegisterFromIcuRoute
-        ? '입원 환자가 등록되었습니다'
-        : '환자가 등록되었습니다',
+      title: '환자가 등록되었습니다',
     })
 
-    setIsPatientRegisterDialogOpen!(false)
-    setIsSubmitting(false)
-    refresh()
+    // 2. 환자 등록 완료 및 다음 스텝
+    if (!isRegisterFromIcuRoute) {
+      setIsPatientRegisterDialogOpen!(false)
 
-    // 입원 등록
-    if (isRegisterFromIcuRoute) {
-      await registerIcuPatient(
-        hosId,
+      refresh()
+    } else {
+      setIsConfirmDialogOpen!(true)
+
+      setRegisteringPatient({
         patientId,
-        format(values.birth, 'yyyy-MM-dd'),
-        target_date as string,
-        '',
-        [mainGroup as string],
-        mainVetId as string,
-      )
-
-      const splittedPath = path.split('/')
-      if (splittedPath[6]) {
-        splittedPath[splittedPath.length - 1] = patientId
-      } else {
-        splittedPath[5] = 'chart'
-        splittedPath.push(patientId)
-      }
-
-      const newPatientPath = splittedPath.join('/')
-      const newPath = changeTargetDateInUrl(
-        newPatientPath,
-        target_date as string,
-      )
-
-      push(newPath)
+        birth: format(values.birth, 'yyyy-MM-dd'),
+        patientName: values.name,
+        hosPatientId: values.hos_patient_id,
+        species: values.species,
+        breed: values.breed,
+        gender: values.gender,
+        microchipNo: values.microchip_no,
+        memo: values.memo,
+        weight: values.weight,
+        ownerName: values.owner_name,
+        ownerId: values.hos_owner_id,
+      })
     }
+
+    setIsSubmitting(false)
   }
 
   const handleUpdate = async (
@@ -617,7 +604,11 @@ export default function PatientForm({
 
         <BirthDatePicker
           form={form}
-          birth={isEdit ? new Date(editingPatient?.birth!) : undefined}
+          birth={
+            isEdit
+              ? new Date(editingPatient?.birth!)
+              : new Date(registeringPatient?.birth ?? new Date())
+          }
         />
 
         <FormField
@@ -704,7 +695,7 @@ export default function PatientForm({
           />
         </div>
 
-        <div className="col-span-2 ml-auto flex gap-2">
+        <div className="col-span-2 ml-auto flex gap-2 pt-8">
           <Button
             tabIndex={-1}
             type="button"
