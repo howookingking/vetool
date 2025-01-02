@@ -20,7 +20,7 @@ export default function TxTable({
   filteredTxData,
   chartBackgroundMap,
 }: {
-  localFilterState: string
+  localFilterState: string[]
   filteredTxData: IcuTxTableData[]
   chartBackgroundMap: Record<string, string>
 }) {
@@ -69,9 +69,10 @@ export default function TxTable({
     return () => clearTimeout(timeoutId)
   }, [isScrolled])
 
-  const orderType = DEFAULT_ICU_ORDER_TYPE.find(
-    (orderType) => orderType.value === localFilterState,
-  )?.label
+  const orderType = localFilterState.map(
+    (orderType) =>
+      DEFAULT_ICU_ORDER_TYPE.find((type) => type.value === orderType)?.label,
+  )
 
   if (filteredTxData.length === 0) {
     return (

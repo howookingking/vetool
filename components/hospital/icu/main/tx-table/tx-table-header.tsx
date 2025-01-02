@@ -10,14 +10,14 @@ export default function TxTableHeader({
   localFilterState,
   filteredTxData,
 }: {
-  localFilterState: string
+  localFilterState: string[]
   filteredTxData: IcuTxTableData[]
 }) {
   const [copiedTxTime, setCopiedTxTime] = useState<number | null>()
 
   const handleTimeTxTextCopy = useCallback(
     (time: number) => {
-      const title = `${time}시 ${DEFAULT_ICU_ORDER_TYPE.find((order) => order.value === localFilterState)?.label ?? '전체'} 처치`
+      const title = `${time}시 ${localFilterState.map((order) => DEFAULT_ICU_ORDER_TYPE.find((type) => type.value === order)?.label ?? '전체').join(', ')} 처치`
 
       const filteredTimeTxData = filteredTxData
         .map((data) => ({
@@ -62,7 +62,7 @@ export default function TxTableHeader({
   )
 
   return (
-    <TableHeader className="sticky top-0 z-10 bg-white shadow-sm">
+    <TableHeader className="sticky top-0 z-30 bg-white shadow-sm">
       <TableRow>
         <TableHead className="w-[120px] text-center">환자목록</TableHead>
 
