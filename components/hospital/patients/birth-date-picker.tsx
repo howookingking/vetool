@@ -50,10 +50,10 @@ export default function BirthDatePicker({
   )
 
   useEffect(() => {
-    if (birth) {
-      updateBirthDate(birth)
-    }
-  }, [birth, updateBirthDate])
+    if (birth) updateBirthDate(birth)
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     if (isDatePick.current) return
