@@ -109,21 +109,16 @@ export const getDaysDifference = (dateString: string) => {
   return diffDays
 }
 
-export const getYesterdayTodayTomorrow = (now: Date = new Date()) => {
-  const koreaTime = new Date(
-    now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }),
-  )
-
-  const today = new Date(koreaTime)
-  const yesterday = new Date(koreaTime)
-  yesterday.setDate(today.getDate() - 1)
-  const tomorrow = new Date(koreaTime)
-  tomorrow.setDate(today.getDate() + 1)
+export const getConsecutiveDays = (selectedDate: Date) => {
+  const dayBefore = new Date(selectedDate)
+  dayBefore.setDate(selectedDate.getDate() - 1)
+  const dayAfter = new Date(selectedDate)
+  dayAfter.setDate(selectedDate.getDate() + 1)
 
   return {
-    yesterday: formatDate(yesterday),
-    today: formatDate(today),
-    tomorrow: formatDate(tomorrow),
+    dayBefore: formatDate(dayBefore),
+    seletctedDay: formatDate(selectedDate),
+    dayAfter: formatDate(dayAfter),
   }
 }
 
