@@ -28,7 +28,7 @@ import { toast } from '@/components/ui/use-toast'
 import { createNotice, updateNotice } from '@/lib/services/hospital-home/notice'
 import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Edit2, LoaderCircle, Plus } from 'lucide-react'
+import { Edit, LoaderCircle, Plus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -69,7 +69,7 @@ export default function UpsertNoticeDialog({
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDialogOpen, isEdit, oldNoticeText, oldNoticeColor])
+  }, [isDialogOpen])
 
   const handleUpsertNotice = async (values: z.infer<typeof noticeSchema>) => {
     const { color, notice } = values
@@ -93,8 +93,13 @@ export default function UpsertNoticeDialog({
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         {isEdit ? (
-          <Button size="icon" className="h-6 w-6 rounded-full" variant="ghost">
-            <Edit2 />
+          <Button size="icon" className="h-6 w-6" variant="ghost">
+            <Edit
+              style={{
+                width: '14px',
+                height: '14px',
+              }}
+            />
           </Button>
         ) : (
           <Button

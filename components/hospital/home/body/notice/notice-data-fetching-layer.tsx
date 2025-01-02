@@ -6,7 +6,7 @@ export default async function NoticeDataFetchingLayer({
 }: {
   hosId: string
 }) {
-  // 1초 넣읍시다
+  // purposefully added delay to show skeleton loader, don't remove
   await new Promise((resolve) => setTimeout(resolve, 1000))
   const noticesData = await getNotices(hosId)
 
