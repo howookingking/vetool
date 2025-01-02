@@ -1,10 +1,17 @@
 'use server'
 
-import { PatchDetailData, PatchFormProps } from '@/types/vetool'
+import type {
+  PatchDetailData,
+  PatchFormProps,
+  PatchListProps,
+} from '@/types/vetool'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
-export const createPatchNote = async (patchData: PatchFormProps) => {
+export const createPatchNote = async (
+  patchData: PatchFormProps,
+  isDraft?: boolean,
+) => {
   const supabase = await createClient()
 
   const { feedback_id, patch_title, patch_content, patch_category } = patchData
@@ -14,6 +21,7 @@ export const createPatchNote = async (patchData: PatchFormProps) => {
     patch_title,
     patch_content,
     patch_category,
+    is_draft: isDraft,
   })
 
   if (error) {
@@ -27,9 +35,9 @@ export const getPatchList = async () => {
 
   const { data, error } = await supabase
     .from('vetool_patches')
-    .select('patch_id, patch_title, patch_category, created_at')
+    .select('patch_id, patch_title, patch_category, created_at, is_draft')
     .order('created_at', { ascending: false })
-
+    .returns<PatchListProps[]>()
   if (error) {
     console.error(error)
     redirect(`/error?message=${error.message}`)
@@ -71,6 +79,7 @@ export const getPatchTitlesData = async () => {
   const { data, error } = await supabase
     .from('vetool_patches')
     .select('patch_id, patch_title')
+    .match({ is_draft: false })
     .order('created_at', { ascending: false })
     .limit(5)
 

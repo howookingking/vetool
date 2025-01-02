@@ -10,7 +10,13 @@ import {
 } from '@/components/ui/table'
 import { PatchListProps } from '@/types/vetool'
 
-export default function PatchItems({ patches }: { patches: PatchListProps[] }) {
+export default function PatchItems({
+  patches,
+  isSuper,
+}: {
+  patches: PatchListProps[]
+  isSuper: boolean
+}) {
   return (
     <div className="space-y-4 p-2 md:p-4">
       <span className="relative z-10 mb-3 pl-2 text-lg font-bold md:p-0 md:text-xl">
@@ -41,6 +47,8 @@ export default function PatchItems({ patches }: { patches: PatchListProps[] }) {
                 title={patch.patch_title}
                 category={patch.patch_category}
                 createdAt={patch.created_at}
+                isDraft={patch.is_draft}
+                isSuper={isSuper}
               />
             ))}
           </TableBody>

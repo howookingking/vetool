@@ -1,6 +1,7 @@
 import { TableCell, TableRow } from '@/components/ui/table'
 import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
 import useIsMobile from '@/hooks/use-is-mobile'
+import { cn } from '@/lib/utils/utils'
 import {
   Home,
   Syringe,
@@ -31,17 +32,23 @@ export default function PatchItem({
   category,
   title,
   createdAt,
+  isDraft,
+  isSuper,
 }: {
   id: string
   category: string
   title: string
   createdAt: string
+  isDraft: boolean
+  isSuper: boolean
 }) {
   const foundCategory = SIDEBAR_ITEMS.find((item) => item.path === category)
   const isMobile = useIsMobile()
 
   return (
-    <TableRow className="hover:bg-muted/50">
+    <TableRow
+      className={cn('hover:bg-muted/50', isDraft && !isSuper && 'hidden')}
+    >
       {/* 카테고리 */}
       <TableCell className="flex flex-col items-center gap-2 pl-2 md:flex-row md:pl-8">
         {
@@ -57,8 +64,15 @@ export default function PatchItem({
       </TableCell>
 
       {/* 제목 */}
-      <TableCell className="max-w-[200px] overflow-hidden truncate text-center hover:underline">
-        <Link href={`patches/${id}`}>{title}</Link>
+      <TableCell
+        className={cn(
+          'max-w-[200px] overflow-hidden truncate text-center hover:underline',
+          isDraft && isSuper && 'text-rose-500',
+        )}
+      >
+        <Link href={`patches/${id}`}>
+          {isDraft && isSuper ? ` (임시저장) ${title}` : title}
+        </Link>
       </TableCell>
 
       {/* 작성일 */}

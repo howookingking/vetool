@@ -8,7 +8,10 @@ export type ErrorFeedbackType = VetoolErrors & {
   user_id: { hos_id: { city: string; name: string } }
 }
 
-export type PatchFormProps = Omit<VetoolPatches, 'patch_id' | 'created_at'>
+export type PatchFormProps = Omit<
+  VetoolPatches,
+  'patch_id' | 'created_at' | 'is_draft'
+>
 
 export type PatchListProps = Omit<
   VetoolPatches,
