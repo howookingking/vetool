@@ -31,29 +31,33 @@ export default function BirthDatePicker({
   const [yearInput, setYearInput] = useState('')
   const [monthInput, setMonthInput] = useState('')
   const [dateInput, setDateInput] = useState('')
-  const isInitialBirthSet = useRef(false)
 
-  const updateBirthDate = useCallback((date: Date) => {
-    form.setValue('birth', date)
-    setDateInput(format(date, 'yyyy-MM-dd'))
+  const isDatePick = useRef(true)
 
-    const now = new Date()
-    const years = differenceInYears(now, date)
-    const months = differenceInMonths(now, date) % 12
+  const updateBirthDate = useCallback(
+    (date: Date) => {
+      form.setValue('birth', date)
+      setDateInput(format(date, 'yyyy-MM-dd'))
 
-    setYearInput(years > 0 ? years.toString() : '')
-    setMonthInput(months > 0 ? months.toString() : '')
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+      const now = new Date()
+      const years = differenceInYears(now, date)
+      const months = differenceInMonths(now, date) % 12
+
+      setYearInput(years > 0 ? years.toString() : '')
+      setMonthInput(months > 0 ? months.toString() : '')
+    },
+    [form],
+  )
 
   useEffect(() => {
-    if (birth && !isInitialBirthSet.current) {
+    if (birth) {
       updateBirthDate(birth)
-      isInitialBirthSet.current = true
     }
   }, [birth, updateBirthDate])
 
   useEffect(() => {
+    if (isDatePick.current) return
+
     // 직접 N살 N개월을  입력하는 경우
     if (yearInput || monthInput) {
       const now = new Date()
@@ -78,6 +82,7 @@ export default function BirthDatePicker({
   const handleYearInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     if (value.length > 2 || Number(value) < 0) return
+    isDatePick.current = false
 
     setYearInput(value)
   }
@@ -86,7 +91,7 @@ export default function BirthDatePicker({
   const handleMonthInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     if (Number(value) > 12 || Number(value) < 0) return
-
+    isDatePick.current = false
     setMonthInput(value)
   }
 
@@ -159,11 +164,13 @@ export default function BirthDatePicker({
                     toYear={new Date().getFullYear()}
                     locale={ko}
                     selected={field.value || birth}
+                    defaultMonth={field.value || birth}
                     mode="single"
                     onSelect={(date) => {
                       if (date) {
                         updateBirthDate(date)
                         setIsPopoverOpen(false)
+                        isDatePick.current = true
                       }
                     }}
                     disabled={(date) =>
