@@ -1,47 +1,9 @@
+import UserAvatar from '@/components/hospital/common/user-avatar'
+import { parseTextWithUrls } from '@/lib/utils/utils'
 import type { NoticeWithUser } from '@/types/hospital/notice'
 import { GripVertical } from 'lucide-react'
-import Image from 'next/image'
 import { NoticeColorType } from './notice-schema'
 import UpsertNoticeDialog from './upsert-notice-dialog'
-
-// Function to detect URLs in text and split into parts
-const parseTextWithUrls = (text: string) => {
-  // Updated regex to catch URLs with or without protocol
-  const urlRegex =
-    /(https?:\/\/[^\s]+|www\.[^\s]+|\b[a-zA-Z0-9][a-zA-Z0-9-]+\.[a-zA-Z]{2,}\b)/g
-  const parts = []
-  let lastIndex = 0
-  let match
-
-  while ((match = urlRegex.exec(text)) !== null) {
-    // Add text before URL
-    if (match.index > lastIndex) {
-      parts.push({
-        type: 'text',
-        content: text.slice(lastIndex, match.index),
-      })
-    }
-    // Add URL with appropriate protocol
-    const url = match[0]
-    const urlWithProtocol = url.startsWith('http') ? url : `https://${url}`
-    parts.push({
-      type: 'url',
-      content: url,
-      href: urlWithProtocol,
-    })
-    lastIndex = match.index + match[0].length
-  }
-
-  // Add remaining text
-  if (lastIndex < text.length) {
-    parts.push({
-      type: 'text',
-      content: text.slice(lastIndex),
-    })
-  }
-
-  return parts
-}
 
 export default function SingleNotice({
   hosId,
@@ -54,10 +16,10 @@ export default function SingleNotice({
 
   return (
     <div
-      className="relative flex items-center justify-between gap-2 rounded-md border border-border px-2 py-2 md:px-1 md:py-1"
+      className="relative flex items-center justify-between rounded-md border border-border px-2 py-2 md:px-1 md:py-1"
       style={{ backgroundColor: notice.notice_color ?? '#fff' }}
     >
-      <div className="mx-2 flex w-full flex-col items-start justify-between gap-2 md:flex-row md:items-center">
+      <div className="mx-2 flex w-full flex-col items-start justify-between gap-1 md:flex-row md:items-center">
         <div className="flex items-center gap-2">
           <GripVertical
             className="handle z-20 hidden shrink-0 md:block"
@@ -83,18 +45,13 @@ export default function SingleNotice({
           </span>
         </div>
 
-        <div className="mr-auto flex shrink-0 items-center gap-1 md:ml-auto md:mr-0">
-          <Image
-            unoptimized
-            src={notice.user_id.avatar_url ?? ''}
+        <div className="mr-auto flex shrink-0 items-center gap-1 text-muted-foreground md:ml-auto md:mr-0">
+          <UserAvatar
+            src={notice.user_id.avatar_url}
             alt={notice.user_id.name}
-            width={20}
-            height={20}
-            className="rounded-full"
-            priority
           />
           <span className="text-sm">{notice.user_id.name}</span>
-          <span className="ml-2 text-sm">{notice.created_at.slice(0, 10)}</span>
+          <span className="text-sm">{notice.created_at.slice(0, 10)}</span>
         </div>
       </div>
 

@@ -442,3 +442,42 @@ export const filterData = (
     excludedIcuIoData: data.filter((item) => !filtered.includes(item)),
   }
 }
+
+// Function to detect URLs in text and split into parts
+export const parseTextWithUrls = (text: string) => {
+  // Updated regex to catch URLs with or without protocol
+  const urlRegex =
+    /(https?:\/\/[^\s]+|www\.[^\s]+|\b[a-zA-Z0-9][a-zA-Z0-9-]+\.[a-zA-Z]{2,}\b)/g
+  const parts = []
+  let lastIndex = 0
+  let match
+
+  while ((match = urlRegex.exec(text)) !== null) {
+    // Add text before URL
+    if (match.index > lastIndex) {
+      parts.push({
+        type: 'text',
+        content: text.slice(lastIndex, match.index),
+      })
+    }
+    // Add URL with appropriate protocol
+    const url = match[0]
+    const urlWithProtocol = url.startsWith('http') ? url : `https://${url}`
+    parts.push({
+      type: 'url',
+      content: url,
+      href: urlWithProtocol,
+    })
+    lastIndex = match.index + match[0].length
+  }
+
+  // Add remaining text
+  if (lastIndex < text.length) {
+    parts.push({
+      type: 'text',
+      content: text.slice(lastIndex),
+    })
+  }
+
+  return parts
+}
