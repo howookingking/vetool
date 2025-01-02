@@ -10,7 +10,6 @@ export default function ChartHeader({
   return (
     <header className="left-0 top-0 z-20 w-full xl:fixed">
       <HeaderCenter chartData={chartData} />
-
       <HeaderRightButtons chartData={chartData} />
     </header>
   )

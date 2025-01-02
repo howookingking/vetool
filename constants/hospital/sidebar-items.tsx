@@ -1,50 +1,61 @@
+import {
+  BarChart4,
+  Building,
+  HeartPulse,
+  Home,
+  ListChecks,
+  PawPrint,
+  Slice,
+  Syringe,
+} from 'lucide-react'
+
 export const SIDEBAR_ITEMS = [
   {
     name: '병원 홈',
     path: '',
-    iconName: 'Home',
     isReady: true,
+    icon: <Home />,
   },
   {
     name: '환자목록',
     path: 'patients',
-    iconName: 'PawPrint',
     isReady: true,
+    icon: <PawPrint />,
   },
   {
     name: '입원차트',
     path: 'icu',
-    iconName: 'Syringe',
     isReady: true,
+    icon: <Syringe />,
   },
   {
     name: '외과차트',
     path: 'surgery',
-    iconName: 'Slice',
     isReady: false,
+    icon: <Slice />,
   },
   {
     name: '심초차트',
     path: 'echocardio',
-    iconName: 'HeartPulse',
     isReady: false,
+    icon: <HeartPulse />,
   },
   {
     name: '건강검진차트',
     path: 'checkup',
-    iconName: 'ListChecks',
     isReady: false,
+    icon: <ListChecks />,
   },
   {
     name: '데이터분석',
     path: 'analytics',
-    iconName: 'BarChart4',
     isReady: false,
+    icon: <BarChart4 />,
   },
   {
     name: '벳툴',
     path: 'super',
-    iconName: 'Building',
     isReady: true,
+    icon: <Building />,
   },
 ] as const

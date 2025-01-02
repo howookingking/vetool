@@ -28,8 +28,7 @@ export default function PatchesCarousel({
       setCurrentIndex((prevIndex) =>
         prevIndex >= patchTitlesData.length - 1 ? 0 : prevIndex + 1,
       )
-    }, 5000) // Increased to 5s to better see the animation
-
+    }, 5000)
     return () => clearInterval(interval)
   }, [patchTitlesData.length, isPaused])
 
@@ -38,9 +37,9 @@ export default function PatchesCarousel({
   }
 
   return (
-    <div className="fixed left-0 right-0 top-1 z-30 mx-auto h-10 w-[300px] sm:w-[400px]">
+    <div className="h-10 w-[300px]">
       <div
-        className="group relative flex h-full items-center overflow-hidden rounded-md bg-background px-3 transition-all duration-300 hover:bg-accent hover:shadow-md"
+        className="group relative flex h-full items-center overflow-hidden rounded-md border bg-background px-3 transition-all duration-300 hover:bg-accent"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >

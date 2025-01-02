@@ -19,14 +19,14 @@ import { ChevronsUpDown } from 'lucide-react'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-export default function HospitalSelector({
+export default function SuperHospitalSelector({
   hosList,
 }: {
   hosList: HosListData[]
 }) {
   const { hos_id } = useParams()
   const pathname = usePathname()
-  const router = useRouter()
+  const { push } = useRouter()
   const currentHosName = hosList.find(
     (hospital) => hospital.hos_id === hos_id,
   )?.name
@@ -47,18 +47,18 @@ export default function HospitalSelector({
         /\/hospital\/[^\/]+/,
         `/hospital/${selectedHospital.hos_id}`,
       )
-      router.push(newPath)
+      push(newPath)
     }
   }
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild className="fixed top-1.5 z-30">
+      <PopoverTrigger asChild>
         <Button
           variant="ghost"
           role="combobox"
           aria-expanded={open}
-          className="w-[18rem] justify-between rounded-none border-b-2 border-primary"
+          className="justify-between"
         >
           {value
             ? hosList.find((hospital) => hospital.name === value)?.name

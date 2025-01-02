@@ -51,11 +51,7 @@ export default function PatchItem({
     >
       {/* 카테고리 */}
       <TableCell className="flex flex-col items-center gap-2 pl-2 md:flex-row md:pl-8">
-        {
-          ICON_MAPPER[
-            (foundCategory?.iconName as keyof typeof ICON_MAPPER) ?? 'Monitor'
-          ]
-        }
+        {foundCategory?.icon}
         {
           <span className="text-xs text-muted-foreground">
             {foundCategory?.name ?? '전체'}

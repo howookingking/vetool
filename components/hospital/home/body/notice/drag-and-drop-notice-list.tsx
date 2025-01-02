@@ -1,12 +1,12 @@
 'use client'
 
 import NoResult from '@/components/common/no-result'
-import SingleNotice from '@/components/hospital/home/notice/single-notice'
 import { reorderNotices } from '@/lib/services/hospital-home/notice'
 import type { NoticeWithUser } from '@/types/hospital/notice'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { ReactSortable, Sortable } from 'react-sortablejs'
+import SingleNotice from './single-notice'
 
 export default function DragAndDropNoticeList({
   noticesData,

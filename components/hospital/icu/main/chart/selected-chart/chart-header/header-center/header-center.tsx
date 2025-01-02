@@ -11,7 +11,7 @@ export default function HeaderCenter({
   const { patient, weight, weight_measured_date, icu_io } = chartData
 
   return (
-    <div className="flex w-full flex-wrap items-center justify-center gap-2 rounded-md bg-muted p-2 text-xs md:h-12 md:bg-transparent md:text-sm">
+    <div className="flex w-full flex-wrap items-center justify-center gap-0.5 rounded-md bg-muted p-2 text-xs md:h-12 md:bg-transparent md:text-sm">
       <BookmarkDialog
         icuChartId={chartData.icu_chart_id}
         bookmarkData={chartData.template}
