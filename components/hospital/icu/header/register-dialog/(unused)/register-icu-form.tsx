@@ -1,13 +1,7 @@
+// 입원 간소화해서 이 단계 생략 unused!!
+
+import UserAvatar from '@/components/hospital/common/user-avatar'
 import { registerIcuPatientFormSchema } from '@/components/hospital/icu/header/register-dialog/(unused)/icu-schema'
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -40,13 +34,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { CalendarIcon, LoaderCircle } from 'lucide-react'
-import Image from 'next/image'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { DateRange } from 'react-day-picker'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
-import RegisterIcuConfirmDialog from '../register-icu-confirm-dialog'
 
 export default function RegisterIcuForm({
   hosId,
@@ -263,14 +255,7 @@ export default function RegisterIcuForm({
                       id={vet.user_id}
                     >
                       <div className="flex items-center gap-2">
-                        <Image
-                          unoptimized
-                          src={vet.avatar_url ?? ''}
-                          alt={vet.name}
-                          width={20}
-                          height={20}
-                          className="rounded-full"
-                        />
+                        <UserAvatar src={vet.avatar_url} alt={vet.name} />
                         <span>{vet.name}</span>
                         <span className="text-xs">({vet.position})</span>
                       </div>

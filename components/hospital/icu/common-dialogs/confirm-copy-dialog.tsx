@@ -23,6 +23,7 @@ import { LoaderCircle } from 'lucide-react'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
+import UserAvatar from '../../common/user-avatar'
 
 export function ConfirmCopyDialog({
   setTemplateDialogOpen,
@@ -96,14 +97,7 @@ export function ConfirmCopyDialog({
                     >
                       <div className="flex items-center gap-2">
                         {vet.avatar_url && (
-                          <Image
-                            unoptimized
-                            src={vet.avatar_url ?? ''}
-                            alt={vet.name}
-                            width={20}
-                            height={20}
-                            className="rounded-full"
-                          />
+                          <UserAvatar src={vet.avatar_url} alt={vet.name} />
                         )}
                         <span>{vet.name}</span>
                         {vet.position && (

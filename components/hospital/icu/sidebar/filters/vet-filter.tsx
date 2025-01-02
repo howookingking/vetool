@@ -1,3 +1,4 @@
+import UserAvatar from '@/components/hospital/common/user-avatar'
 import { Command } from '@/components/ui/command'
 import {
   Select,
@@ -59,14 +60,7 @@ export default function VetFilter({
             {vetsListData.map((vet) => (
               <SelectItem key={vet.user_id} value={vet.user_id}>
                 <div className="flex items-center gap-1">
-                  <Image
-                    unoptimized
-                    src={vet.avatar_url ?? ''}
-                    alt={vet.name}
-                    width={20}
-                    height={20}
-                    className="rounded-full"
-                  />
+                  <UserAvatar src={vet.avatar_url} alt={vet.name} />
                   {vet.name}
                 </div>
               </SelectItem>

@@ -30,6 +30,7 @@ import { CopyCheck, LoaderCircle } from 'lucide-react'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import { useCallback, useState } from 'react'
+
 export default function PasteCopiedChartDialog() {
   const { target_date, patient_id } = useParams()
   const { copiedChartId, reset } = useCopiedChartStore()
