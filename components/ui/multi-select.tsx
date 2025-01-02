@@ -85,7 +85,7 @@ const MultiSelector = ({
         onValueChange([...value, val])
       }
     },
-    [value],
+    [value, onValueChange],
   )
 
   const handleSelect = React.useCallback(
