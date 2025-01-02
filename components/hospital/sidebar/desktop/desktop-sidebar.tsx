@@ -1,9 +1,11 @@
-import SidebarItem from '@/components/hospital/sidebar/sidebar-item'
+'use client'
+
+import SidebarItem from '@/components/hospital/sidebar/desktop/desktop-sidebar-item'
 import SidebarUserInfo from '@/components/hospital/sidebar/sidebar-user-info'
 import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
 import type { VetoolUser } from '@/types'
 
-export default async function Sidebar({
+export default function DesktopSidebar({
   hosId,
   vetoolUser,
 }: {
@@ -17,9 +19,9 @@ export default async function Sidebar({
           <SidebarItem
             name={item.name}
             path={item.path}
-            iconName={item.iconName}
             key={item.name}
             isReady={item.isReady}
+            icon={item.icon}
             isSuper={vetoolUser.is_super}
           />
         ))}

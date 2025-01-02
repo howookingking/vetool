@@ -1,5 +1,6 @@
 'use client'
 
+import UserAvatar from '@/components/hospital/common/user-avatar'
 import { ordererSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/orderer/orderer-schema'
 import { Button } from '@/components/ui/button'
 import {
@@ -264,14 +265,7 @@ export default function OrdererSelectStep({
                     >
                       <div className="flex items-center gap-2">
                         {vet.avatar_url && (
-                          <Image
-                            unoptimized
-                            src={vet.avatar_url ?? ''}
-                            alt={vet.name}
-                            width={20}
-                            height={20}
-                            className="rounded-full"
-                          />
+                          <UserAvatar src={vet.avatar_url} alt={vet.name} />
                         )}
                         <span>{vet.name}</span>
                         {vet.position && (

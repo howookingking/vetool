@@ -1,6 +1,3 @@
-'use client'
-
-import { todoSchema } from '@/components/hospital/home/todo/todo-schema'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -21,38 +18,48 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
-import { createTodo } from '@/lib/services/hospital-home/todo'
-import { cn } from '@/lib/utils/utils'
+import { upsertTodo } from '@/lib/services/hospital-home/todo'
+import { cn, formatDate } from '@/lib/utils/utils'
+import type { ClientTodo } from '@/types/hospital/todo'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { LoaderCircle, Plus } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { Edit, LoaderCircle, Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import DeleteTodoDialog from './delete-todo-dialog'
+import { todoSchema } from './todo-schema'
 
-export default function CreateTodoDialog({
+export default function UpsertTodoDialog({
   hosId,
-  type,
   date,
+  isEdit,
+  refetch,
+  todo,
 }: {
   hosId: string
-  type: '어제' | '오늘' | '내일' | ''
-  date: string
+  date: Date
+  isEdit?: boolean
+  refetch: () => Promise<void>
+  todo?: ClientTodo
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const { refresh } = useRouter()
 
   const form = useForm<z.infer<typeof todoSchema>>({
     resolver: zodResolver(todoSchema),
-    defaultValues: {
-      todo_title: undefined,
-      target_user: undefined,
-    },
+    defaultValues: isEdit
+      ? {
+          target_user: todo?.target_user!,
+          todo_title: todo?.todo_title,
+        }
+      : {
+          todo_title: undefined,
+          target_user: undefined,
+        },
   })
 
   useEffect(() => {
-    if (!isDialogOpen) {
+    if (!isDialogOpen && !isEdit) {
       form.reset({
         todo_title: undefined,
         target_user: undefined,
@@ -61,35 +68,50 @@ export default function CreateTodoDialog({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDialogOpen])
 
-  const handleCreateTodo = async (values: z.infer<typeof todoSchema>) => {
+  const handleUpsertTodo = async (values: z.infer<typeof todoSchema>) => {
     const { todo_title, target_user } = values
     setIsSubmitting(true)
 
-    await createTodo(todo_title, target_user, date, hosId)
+    await upsertTodo(todo_title, target_user, formatDate(date), hosId, todo?.id)
 
     toast({
       title: 'TODO를 추가하였습니다',
     })
     setIsDialogOpen(false)
     setIsSubmitting(false)
-    refresh()
+    await refetch()
   }
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button variant="default" size="icon" className="h-6 w-6 rounded-full">
-          <Plus size={14} />
-        </Button>
+        {isEdit ? (
+          <Button size="icon" className="h-6 w-6" variant="ghost">
+            <Edit
+              style={{
+                width: '14px',
+                height: '14px',
+              }}
+            />
+          </Button>
+        ) : (
+          <Button
+            variant="default"
+            size="icon"
+            className="h-6 w-6 rounded-full"
+          >
+            <Plus size={14} />
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[480px]">
         <DialogHeader>
-          <DialogTitle>{type} TODO 추가</DialogTitle>
+          <DialogTitle>TODO 추가</DialogTitle>
           <DialogDescription>새로운 TODO를 추가해주세요</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(handleCreateTodo)}
+            onSubmit={form.handleSubmit(handleUpsertTodo)}
             className="flex flex-col gap-4"
           >
             <FormField
@@ -133,18 +155,30 @@ export default function CreateTodoDialog({
               )}
             />
 
-            <div className="ml-auto">
-              <DialogClose asChild>
-                <Button variant="outline" tabIndex={-1}>
-                  취소
-                </Button>
-              </DialogClose>
-              <Button type="submit" className="ml-2" disabled={isSubmitting}>
-                등록
-                <LoaderCircle
-                  className={cn(isSubmitting ? 'ml-2 animate-spin' : 'hidden')}
+            <div className="flex justify-between">
+              {isEdit && (
+                <DeleteTodoDialog
+                  todoId={todo!.id}
+                  setIsDialogOpen={setIsDialogOpen}
+                  refetch={refetch}
                 />
-              </Button>
+              )}
+
+              <div className="ml-auto">
+                <DialogClose asChild>
+                  <Button variant="outline" tabIndex={-1}>
+                    취소
+                  </Button>
+                </DialogClose>
+                <Button type="submit" className="ml-2" disabled={isSubmitting}>
+                  등록
+                  <LoaderCircle
+                    className={cn(
+                      isSubmitting ? 'ml-2 animate-spin' : 'hidden',
+                    )}
+                  />
+                </Button>
+              </div>
             </div>
           </form>
         </Form>

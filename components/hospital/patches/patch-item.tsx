@@ -1,30 +1,7 @@
 import { TableCell, TableRow } from '@/components/ui/table'
 import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
 import useIsMobile from '@/hooks/use-is-mobile'
-import {
-  Home,
-  Syringe,
-  Slice,
-  HeartPulse,
-  ListChecks,
-  BarChart4,
-  PawPrint,
-  Building,
-  Monitor,
-} from 'lucide-react'
 import Link from 'next/link'
-
-const ICON_MAPPER = {
-  Home: <Home size={18} />,
-  Syringe: <Syringe size={18} />,
-  Slice: <Slice size={18} />,
-  HeartPulse: <HeartPulse size={18} />,
-  ListChecks: <ListChecks size={18} />,
-  BarChart4: <BarChart4 size={18} />,
-  PawPrint: <PawPrint size={18} />,
-  Building: <Building size={18} />,
-  Monitor: <Monitor size={18} />,
-}
 
 export default function PatchItem({
   id,
@@ -44,11 +21,7 @@ export default function PatchItem({
     <TableRow className="hover:bg-muted/50">
       {/* 카테고리 */}
       <TableCell className="flex flex-col items-center gap-2 pl-2 md:flex-row md:pl-8">
-        {
-          ICON_MAPPER[
-            (foundCategory?.iconName as keyof typeof ICON_MAPPER) ?? 'Monitor'
-          ]
-        }
+        {foundCategory?.icon}
         {
           <span className="text-xs text-muted-foreground">
             {foundCategory?.name ?? '전체'}

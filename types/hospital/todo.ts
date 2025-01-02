@@ -1,2 +1,3 @@
 import { Todo } from '@/types'
-export type QueriedTodo = Omit<Todo, 'created_at' | 'hos_id'>
+
+export type ClientTodo = Omit<Todo, 'created_at' | 'hos_id'>

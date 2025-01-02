@@ -13,8 +13,8 @@ import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
 import type { VetoolUser } from '@/types'
 import { Menu } from 'lucide-react'
 import { useState } from 'react'
+import SidebarUserInfo from '../sidebar-user-info'
 import MobileSidebarItem from './mobile-sidebar-item'
-import SidebarUserInfo from './sidebar-user-info'
 
 export default function MobileSidebar({
   hosId,
@@ -39,17 +39,18 @@ export default function MobileSidebar({
         </SheetHeader>
 
         <ul className="z-50">
-          {SIDEBAR_ITEMS.map((item) => {
-            return (
-              <MobileSidebarItem
-                key={item.name}
-                hosId={hosId}
-                item={item}
-                setIsSheetOpen={setIsSheetOpen}
-                isSuper={vetoolUser.is_super}
-              />
-            )
-          })}
+          {SIDEBAR_ITEMS.map((item) => (
+            <MobileSidebarItem
+              key={item.name}
+              isReady={item.isReady}
+              hosId={hosId}
+              name={item.name}
+              path={item.path}
+              icon={item.icon}
+              setIsSheetOpen={setIsSheetOpen}
+              isSuper={vetoolUser.is_super}
+            />
+          ))}
         </ul>
 
         <SidebarUserInfo

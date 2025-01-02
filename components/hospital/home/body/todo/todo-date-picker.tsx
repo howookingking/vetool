@@ -5,10 +5,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { cn, formatDate } from '@/lib/utils/utils'
+import { formatDate } from '@/lib/utils/utils'
 import { ko } from 'date-fns/locale'
 import { CalendarDays } from 'lucide-react'
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 
 export default function TodoDatePicker({
   selectedDate,
@@ -17,29 +17,24 @@ export default function TodoDatePicker({
   selectedDate: Date
   setSelectedDate: Dispatch<SetStateAction<Date>>
 }) {
-  const today = new Date()
-
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   const handleSelectDate = (date?: Date) => {
     setSelectedDate(date || new Date())
+    setIsPopoverOpen(false)
   }
 
   return (
-    <Popover>
+    <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
       <PopoverTrigger asChild>
-        <Button
-          variant="ghost"
-          className={cn('justify-start text-left font-normal')}
-        >
-          <CalendarDays className="h-3 w-3" />
-          <span className="ml-2 text-xs">{formatDate(selectedDate)}</span>
+        <Button variant="ghost">
+          <CalendarDays />
+          <span>{formatDate(selectedDate)}</span>
         </Button>
       </PopoverTrigger>
+
       <PopoverContent className="w-auto p-0">
         <Calendar
           className="text-sm"
-          styles={{
-            button: { fontSize: 12 },
-          }}
           captionLayout="dropdown-buttons"
           showOutsideDays
           fixedWeeks
@@ -48,7 +43,6 @@ export default function TodoDatePicker({
           initialFocus
           selected={selectedDate}
           onSelect={handleSelectDate}
-          disabled={(date) => date > today || date < new Date('2024-01-01')}
           defaultMonth={selectedDate}
         />
       </PopoverContent>
