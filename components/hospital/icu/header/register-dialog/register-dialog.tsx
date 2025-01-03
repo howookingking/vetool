@@ -42,12 +42,12 @@ const LazySearchPatientContainer = dynamic(
 
 export default function RegisterDialog({
   hosId,
-  groupList,
-  vetsData,
+  hosGroupList,
+  vetsListData,
 }: {
   hosId: string
-  groupList: string[]
-  vetsData: Vet[]
+  hosGroupList: string[]
+  vetsListData: Vet[]
 }) {
   const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false)
   const [tab, setTab] = useState('search')
@@ -56,8 +56,8 @@ export default function RegisterDialog({
   const { reset, isConfirmDialogOpen, setIsConfirmDialogOpen } =
     useIcuRegisterStore()
 
-  const defaultGroup = groupList[0]
-  const defaultVetId = vetsData[0].user_id
+  const defaultGroup = hosGroupList[0]
+  const defaultVetId = vetsListData[0].user_id
 
   const handleTabValueChange = (value: string) => {
     if (value === 'search') {
@@ -80,8 +80,8 @@ export default function RegisterDialog({
 
   return (
     <Dialog open={isRegisterDialogOpen} onOpenChange={setIsRegisterDialogOpen}>
-      <DialogTrigger asChild className="hidden md:block">
-        <Button size="sm">환자 입원</Button>
+      <DialogTrigger asChild className="hidden md:flex">
+        <Button>환자 입원</Button>
       </DialogTrigger>
 
       <DialogContent

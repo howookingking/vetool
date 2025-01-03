@@ -1,5 +1,4 @@
 import IcuFooter from '@/components/hospital/icu/footer/icu-footer'
-import IcuHeader from '@/components/hospital/icu/header/icu-header'
 import IcuSidebar from '@/components/hospital/icu/sidebar/icu-sidebar'
 import { getIcuData } from '@/lib/services/icu/get-icu-data'
 import { BasicHosDataProvider } from '@/providers/basic-hos-data-context-provider'
@@ -55,14 +54,15 @@ export default async function IcuPageLayout(props: {
         orderColorDisplay: basicHosData.order_color_display,
       }}
     >
-      <IcuHeader
+      {/* <IcuHeader
         hosId={params.hos_id}
         groupList={basicHosData.group_list}
         vetsData={vetsListData}
-      />
+      /> */}
 
       <div className="flex h-icu-chart-main">
         <IcuSidebar
+          hosId={params.hos_id}
           hosGroupList={basicHosData.group_list}
           icuSidebarData={icuSidebarData}
           vetsListData={vetsListData}

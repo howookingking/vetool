@@ -7,8 +7,10 @@ export default function Summary({
   summaryData: SummaryData[]
 }) {
   return (
-    <div className="h-icu-chart overflow-auto p-2 pb-[48px]">
-      <SummaryTable summaryData={summaryData} />
+    <div className="mt-12 2xl:mt-0">
+      <div className="relative h-[calc(100vh-88px)] overflow-auto">
+        <SummaryTable summaryData={summaryData} />
+      </div>
     </div>
   )
 }

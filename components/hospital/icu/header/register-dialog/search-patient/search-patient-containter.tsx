@@ -1,5 +1,6 @@
 'use client'
 
+import PatientRegisterButtons from '@/components/hospital/icu/header/register-dialog/search-patient/patient-register-buttons'
 import SearchPatientPagination from '@/components/hospital/icu/header/register-dialog/search-patient/search-patient-pagination'
 import SearchPatientTable from '@/components/hospital/icu/header/register-dialog/search-patient/search-patient-table'
 import { Input } from '@/components/ui/input'
@@ -91,12 +92,16 @@ export default function SearchPatientContainer({
 
   return (
     <div className="flex flex-col gap-2">
-      <Input
-        placeholder="환자 번호, 환자명, 보호자명을 검색하세요"
-        value={inputValue}
-        onChange={handleInputChange}
-        id="search-chart"
-      />
+      <div className="flex justify-between gap-2">
+        <Input
+          placeholder="환자 번호, 환자명, 보호자명을 검색하세요"
+          value={inputValue}
+          onChange={handleInputChange}
+          id="search-chart"
+        />
+
+        {!isIcu && <PatientRegisterButtons hosId={hosId} />}
+      </div>
 
       <SearchPatientTable
         isSearching={isSearching}

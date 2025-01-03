@@ -15,18 +15,6 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 
-const ICON_MAPPER = {
-  Home: <Home size={18} />,
-  Syringe: <Syringe size={18} />,
-  Slice: <Slice size={18} />,
-  HeartPulse: <HeartPulse size={18} />,
-  ListChecks: <ListChecks size={18} />,
-  BarChart4: <BarChart4 size={18} />,
-  PawPrint: <PawPrint size={18} />,
-  Building: <Building size={18} />,
-  Monitor: <Monitor size={18} />,
-}
-
 export default function PatchItem({
   id,
   category,

@@ -56,51 +56,55 @@ export default function HeaderDateSelector() {
     [targetDate, updateDate],
   )
 
-  const handleMoveToToday = useCallback(() => {
-    updateDate(new Date())
-  }, [updateDate])
+  // const handleMoveToToday = useCallback(() => {
+  //   updateDate(new Date())
+  // }, [updateDate])
 
   return (
-    <div className="flex h-8 items-center gap-3">
-      <Button
-        onClick={() => handleUpdateDate(-1)}
-        size="icon"
-        variant="outline"
-        className="h-6 w-6 rounded-full"
-        aria-label="이전 날짜로 이동"
-      >
-        <ArrowLeftIcon />
-      </Button>
+    <div className="flex h-12 flex-col items-center justify-center gap-2">
+      <div className="flex items-center gap-2">
+        <Button
+          onClick={() => handleUpdateDate(-1)}
+          size="icon"
+          variant="outline"
+          className="h-6 w-6 rounded-full"
+          aria-label="이전 날짜로 이동"
+        >
+          <ArrowLeftIcon />
+        </Button>
 
-      <div className="flex items-center gap-1">
-        <span className="min-w-20">{format(targetDate, 'yyyy-MM-dd')}</span>
-        <IcuHeaderDatePicker
-          targetDate={format(targetDate, 'yyyy-MM-dd')}
-          setIsSubscriptionReady={setIsSubscriptionReady}
-        />
+        <div className="flex items-center gap-1">
+          <span className="min-w-20 text-sm">
+            {format(targetDate, 'yyyy-MM-dd')}
+          </span>
+          <IcuHeaderDatePicker
+            targetDate={format(targetDate, 'yyyy-MM-dd')}
+            setIsSubscriptionReady={setIsSubscriptionReady}
+          />
+        </div>
+
+        <Button
+          onClick={() => handleUpdateDate(1)}
+          size="icon"
+          variant="outline"
+          className="h-6 w-6 rounded-full"
+          aria-label="다음 날짜로 이동"
+        >
+          <ArrowRightIcon />
+        </Button>
       </div>
 
-      <Button
-        onClick={() => handleUpdateDate(1)}
-        size="icon"
-        variant="outline"
-        className="h-6 w-6 rounded-full"
-        aria-label="다음 날짜로 이동"
-      >
-        <ArrowRightIcon />
-      </Button>
-      {!isToday(targetDate) && (
+      {/* <div className="flex w-full">
         <Button
           onClick={handleMoveToToday}
           type="button"
-          size="sm"
           variant="outline"
-          className="px-2"
+          className={`w-full ${isToday(targetDate) ? 'invisible' : 'visible'}`}
           aria-label="오늘 날짜로 이동"
         >
           오늘로
         </Button>
-      )}
+      </div> */}
     </div>
   )
 }

@@ -1,5 +1,7 @@
 'use client'
 
+import MobileSidebarItem from '@/components/hospital/sidebar/mobile/mobile-sidebar-item'
+import SidebarUserInfo from '@/components/hospital/sidebar/sidebar-user-info'
 import { Button } from '@/components/ui/button'
 import {
   Sheet,
@@ -13,8 +15,6 @@ import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
 import type { VetoolUser } from '@/types'
 import { Menu } from 'lucide-react'
 import { useState } from 'react'
-import SidebarUserInfo from '../sidebar-user-info'
-import MobileSidebarItem from './mobile-sidebar-item'
 
 export default function MobileSidebar({
   hosId,

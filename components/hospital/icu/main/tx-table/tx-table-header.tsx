@@ -1,10 +1,10 @@
+import TimeTxTextCopy from '@/components/hospital/icu/main/tx-table/time-tx-text-copy'
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { IcuTxTableData } from '@/types/icu/tx-table'
 import { useCallback, useState } from 'react'
-import TimeTxTextCopy from './time-tx-text-copy'
 
 export default function TxTableHeader({
   localFilterState,
