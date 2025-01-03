@@ -1,78 +1,64 @@
 import UserAvatar from '@/components/hospital/common/user-avatar'
-import { Command } from '@/components/ui/command'
+import { Button } from '@/components/ui/button'
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarTrigger,
+} from '@/components/ui/menubar'
+import { cn } from '@/lib/utils/utils'
 import type { Vet } from '@/types/icu/chart'
-import Image from 'next/image'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { Stethoscope, User } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
 
 export default function VetFilter({
   vetsListData,
   selectedVet,
-  setSelectedVet,
+  onVetSelect,
 }: {
   vetsListData: Vet[]
   selectedVet: string
-  setSelectedVet: (vet: string) => void
+  onVetSelect: (vet: string) => void
 }) {
-  const path = usePathname()
   const searchParams = useSearchParams()
-  const currentParams = new URLSearchParams(searchParams.toString())
-
-  const [isSelectorOpen, setIsSelectorOpen] = useState(false)
-
-  const { push } = useRouter()
-
-  const handleValueChange = (value: string) => {
-    if (value === 'reset') {
-      currentParams.delete('vet')
-      setSelectedVet('')
-    } else {
-      currentParams.set('vet', value)
-      setSelectedVet(value)
-    }
-
-    const newUrl = `${path}${currentParams.toString() ? '?' : ''}${currentParams.toString()}`
-
-    push(newUrl)
-  }
+  const isReset = !searchParams.get('vet')
 
   return (
-    <Select
-      open={isSelectorOpen}
-      onOpenChange={setIsSelectorOpen}
-      onValueChange={handleValueChange}
-      value={selectedVet}
-    >
-      <SelectTrigger className="flex h-8 w-full justify-center gap-1">
-        <SelectValue placeholder="수의사" />
-      </SelectTrigger>
-      <SelectContent className="p-0">
-        <Command>
-          <SelectGroup>
-            {vetsListData.map((vet) => (
-              <SelectItem key={vet.user_id} value={vet.user_id}>
-                <div className="flex items-center gap-1">
-                  <UserAvatar src={vet.avatar_url} alt={vet.name} />
-                  {vet.name}
-                </div>
-              </SelectItem>
-            ))}
-            <SelectItem value="reset">
-              <div className="text-center text-muted-foreground">
-                선택 초기화
-              </div>
-            </SelectItem>
-          </SelectGroup>
-        </Command>
-      </SelectContent>
-    </Select>
+    <MenubarMenu>
+      <MenubarTrigger className="flex w-full justify-center gap-1" asChild>
+        <Button
+          variant="ghost"
+          size="icon"
+          className={cn(!isReset && 'animate-pulse bg-primary')}
+        >
+          <Stethoscope />
+        </Button>
+      </MenubarTrigger>
+
+      <MenubarContent align="center">
+        {vetsListData.map((vet) => (
+          <MenubarItem
+            key={vet.user_id}
+            onClick={() => onVetSelect(vet.user_id)}
+            className={cn(
+              'flex items-center justify-between',
+              selectedVet === vet.user_id && 'bg-muted',
+            )}
+          >
+            <div className="flex items-center gap-1">
+              <UserAvatar src={vet.avatar_url} alt={vet.name} />
+              {vet.name}
+            </div>
+
+            {selectedVet === vet.user_id && <span>✓</span>}
+          </MenubarItem>
+        ))}
+        <MenubarSeparator />
+        <MenubarItem onClick={() => onVetSelect('reset')}>
+          <div className="text-center text-muted-foreground">선택 초기화</div>
+        </MenubarItem>
+      </MenubarContent>
+    </MenubarMenu>
   )
 }

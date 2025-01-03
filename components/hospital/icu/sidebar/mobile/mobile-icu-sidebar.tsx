@@ -4,6 +4,7 @@ import PatientList from '@/components/hospital/icu/sidebar/patient-list'
 import { Separator } from '@/components/ui/separator'
 import type { Filter, IcuSidebarIoData, Vet } from '@/types/icu/chart'
 import type { Dispatch, SetStateAction } from 'react'
+import HeaderDateSelector from '../../header/date-picker/header-date-selector'
 
 export default function MobileSidebar({
   isEmpty,
@@ -32,11 +33,23 @@ export default function MobileSidebar({
       ) : (
         <div className="flex h-full flex-col gap-3 p-2">
           <div className="flex-none">
+            <HeaderDateSelector />
+
             <Filters
               hosGroupList={hosGroupList}
-              setFilters={setFilters}
-              filters={filters}
               vetsListData={vetsListData}
+              selectedGroup={filters.selectedGroup}
+              setSelectedGroup={(group) =>
+                setFilters({ ...filters, selectedGroup: group })
+              }
+              selectedVet={filters.selectedVet}
+              setSelectedVet={(vet) =>
+                setFilters({ ...filters, selectedVet: vet })
+              }
+              selectedSort={filters.selectedSort}
+              setSelectedSort={(sort) =>
+                setFilters({ ...filters, selectedSort: sort })
+              }
             />
           </div>
 

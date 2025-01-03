@@ -10,7 +10,6 @@ import {
 } from '@/components/ui/sheet'
 import type { Filter, IcuSidebarIoData, Vet } from '@/types/icu/chart'
 import { Menu } from 'lucide-react'
-import { useParams } from 'next/navigation'
 import { useState } from 'react'
 
 export function MobileIcuSidebarSheet({
@@ -31,7 +30,6 @@ export function MobileIcuSidebarSheet({
   setFilters: React.Dispatch<React.SetStateAction<Filter>>
   filters: Filter
 }) {
-  const { target_date } = useParams()
   const [isSheetOpen, setIsSheetOpen] = useState(false)
   const handleCloseMobileDrawer = () => setIsSheetOpen(false)
 
@@ -48,7 +46,7 @@ export function MobileIcuSidebarSheet({
         </SheetTrigger>
         <SheetContent side="left" className="p-4">
           <SheetHeader>
-            <SheetTitle>{target_date}</SheetTitle>
+            <SheetTitle />
             <SheetDescription />
           </SheetHeader>
 

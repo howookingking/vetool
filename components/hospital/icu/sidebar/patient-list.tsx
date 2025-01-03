@@ -1,12 +1,14 @@
 import PatientButton from '@/components/hospital/icu/sidebar/patient-button'
 import { Separator } from '@/components/ui/separator'
 import type { IcuSidebarIoData, Vet } from '@/types/icu/chart'
+import { RotateCcw } from 'lucide-react'
 
 type IcuSidebarContentProps = {
   filteredIcuIoData: IcuSidebarIoData[]
   excludedIcuIoData: IcuSidebarIoData[]
   vetsListData: Vet[]
   handleCloseMobileDrawer?: () => void
+  resetFilters: () => void
 }
 
 export default function PatientList({
@@ -14,15 +16,24 @@ export default function PatientList({
   excludedIcuIoData,
   vetsListData,
   handleCloseMobileDrawer,
+  resetFilters,
 }: IcuSidebarContentProps) {
   const fileteredPatientCount = filteredIcuIoData.length
 
   return (
-    <div className="h-[calc(100vh-270px)] flex-col gap-3 overflow-y-auto">
+    <div className="flex-col gap-3 overflow-y-auto">
       {fileteredPatientCount > 0 ? (
-        <ul className="flex flex-col gap-2">
-          <li className="text-xs font-bold text-muted-foreground">
-            입원환자 ({fileteredPatientCount})
+        <ul className="flex max-h-[calc(100vh-120px)] flex-col gap-2 overflow-y-scroll">
+          <li className="flex items-center justify-between text-xs font-bold text-muted-foreground">
+            <span className="font-bold">
+              입원환자 ({fileteredPatientCount})
+            </span>
+
+            <RotateCcw
+              size={14}
+              onClick={resetFilters}
+              className="cursor-pointer transition hover:text-primary"
+            />
           </li>
           {filteredIcuIoData.map((icuIoData) => (
             <li
@@ -47,7 +58,7 @@ export default function PatientList({
         <>
           <Separator className="my-3" />
 
-          <ul className="flex flex-col gap-2">
+          <ul className="flex flex-col gap-2 overflow-y-scroll pb-12">
             <li className="text-xs font-bold text-muted-foreground">
               필터링 제외 ({excludedIcuIoData.length})
             </li>

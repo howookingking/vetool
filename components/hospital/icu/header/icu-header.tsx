@@ -1,22 +1,8 @@
 import IcuHeaderDateSelector from '@/components/hospital/icu/header/date-picker/header-date-selector'
-import RegisterDialog from '@/components/hospital/icu/header/register-dialog/register-dialog'
-import type { Vet } from '@/types/icu/chart'
 
-export default async function IcuHeader({
-  hosId,
-  vetsData,
-  groupList,
-}: {
-  hosId: string
-  vetsData: Vet[]
-  groupList: string[]
-}) {
+export default async function IcuHeader() {
   return (
-    <div className="fixed top-2 z-30 flex w-full items-center justify-center gap-2 px-2 xl:ml-12 xl:w-auto xl:justify-start 2xl:top-1.5 2xl:ml-0 2xl:w-auto">
-      {/* 단축키 안내 다이얼로그 삭제 */}
-      {/* <InstructionDialog /> */}
-
-      <RegisterDialog hosId={hosId} vetsData={vetsData} groupList={groupList} />
+    <div className="z-30 flex w-full items-center justify-center gap-2 bg-white xl:ml-16 xl:w-auto xl:justify-start 2xl:hidden">
       <IcuHeaderDateSelector />
     </div>
   )

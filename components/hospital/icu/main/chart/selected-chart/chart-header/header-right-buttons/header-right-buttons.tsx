@@ -11,7 +11,7 @@ export default function HeaderRightButtons({
 }) {
   const { icu_chart_id, icu_io, patient } = chartData
   return (
-    <div className="absolute right-2 top-1.5 hidden gap-1 xl:mr-10 xl:flex 2xl:mr-0">
+    <div className="hidden justify-end gap-1 md:mr-10 md:flex 2xl:mr-0">
       <CopyChartButton icuChartId={icu_chart_id} />
 
       <OutPatientDialog chartData={chartData} />

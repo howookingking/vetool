@@ -7,10 +7,12 @@ import { filterData } from '@/lib/utils/utils'
 import type { IcuSidebarIoData, Vet } from '@/types/icu/chart'
 
 export default function IcuSidebar({
+  hosId,
   icuSidebarData,
   vetsListData,
   hosGroupList,
 }: {
+  hosId: string
   icuSidebarData: IcuSidebarIoData[]
   vetsListData: Vet[]
   hosGroupList: string[]
@@ -22,6 +24,7 @@ export default function IcuSidebar({
   return (
     <>
       <DesktopIcuSidebar
+        hosId={hosId}
         hosGroupList={hosGroupList}
         vetsListData={vetsListData}
         filteredData={filteredData}

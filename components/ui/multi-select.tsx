@@ -312,14 +312,29 @@ const MultiSelectorInput = forwardRef<
 
 MultiSelectorInput.displayName = 'MultiSelectorInput'
 
+interface MultiSelectorContentProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  direction?: 'up' | 'down'
+}
+
 const MultiSelectorContent = forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ children }, ref) => {
+  MultiSelectorContentProps
+>(({ children, direction = 'down', ...props }, ref) => {
   const { open } = useMultiSelect()
   return (
-    <div ref={ref} className="relative">
-      {open && children}
+    <div ref={ref} {...props}>
+      {open && (
+        <div
+          className={cn(
+            'absolute w-full',
+            direction === 'up' && 'bottom-full mb-1',
+            direction === 'down' && 'top-full mt-1',
+          )}
+        >
+          {children}
+        </div>
+      )}
     </div>
   )
 })

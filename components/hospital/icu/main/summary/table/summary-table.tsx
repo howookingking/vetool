@@ -17,7 +17,7 @@ export default function SummaryTable({
 }) {
   return (
     <Table className="border">
-      <TableHeader>
+      <TableHeader className="sticky top-0 z-30 bg-white shadow-sm">
         <TableRow>
           <TableHead className="w-[160px] text-center">환자목록</TableHead>
 

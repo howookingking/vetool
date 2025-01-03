@@ -33,16 +33,17 @@ export default function TxTableFilter({
       onValuesChange={setLocalFilterState}
       className="w-full"
     >
-      <MultiSelectorTrigger
-        className={cn(
-          'fixed left-2 top-[48px] z-40 w-[calc(100vw-16px)] 2xl:left-auto 2xl:right-2 2xl:top-[-4px] 2xl:w-[640px]',
-        )}
-      >
-        <MultiSelectorInput placeholder="오더 타입 선택" />
-      </MultiSelectorTrigger>
+      <div className="absolute bottom-12 right-1 z-40 w-[320px] md:right-4">
+        <MultiSelectorTrigger className="relative">
+          <MultiSelectorInput placeholder="오더 타입 선택" />
+        </MultiSelectorTrigger>
+      </div>
 
-      <MultiSelectorContent>
-        <MultiSelectorList className="fixed left-2 top-[104px] z-40 w-[calc(100vw-16px)] 2xl:left-auto 2xl:right-2 2xl:top-12 2xl:w-[640px]">
+      <MultiSelectorContent
+        direction="up"
+        className="absolute bottom-[328px] right-1 z-40 w-[320px] md:right-4"
+      >
+        <MultiSelectorList>
           <MultiSelectorReset />
           {DEFAULT_ICU_ORDER_TYPE.map((type) => (
             <MultiSelectorItem
