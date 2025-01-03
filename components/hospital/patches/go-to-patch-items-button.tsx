@@ -10,14 +10,13 @@ export default function GotoPatchItemsButton() {
 
   return (
     <Button
-      className="fixed left-2 top-1.5 z-20 sm:left-16"
+      className="fixed left-6 top-6 z-20 h-10 w-10 rounded-full bg-white shadow-md transition-all hover:bg-muted sm:left-20"
       variant={'outline'}
       onClick={() =>
         push(`/${pathname.split('/').slice(1, 3).join('/')}/patches`)
       }
     >
-      <Menu />
-      패치목록
+      <Menu className="h-5 w-5 text-gray-600" />
     </Button>
   )
 }
