@@ -43,7 +43,7 @@ export const createNotice = async (
     hos_id: hosId,
     notice_color: colorInput,
     notice_text: noticeInput,
-    notice_order: 999,
+    notice_order: 0,
   })
 
   if (error) {
