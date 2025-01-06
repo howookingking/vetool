@@ -6,9 +6,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { MEMO_COLORS } from '@/constants/hospital/icu/chart/colors'
 import { Check } from 'lucide-react'
 import { Dispatch, SetStateAction, useState } from 'react'
-import { MEMO_COLORS } from './chart-memos'
 
 export default function MemoColorPicker({
   memoColor,

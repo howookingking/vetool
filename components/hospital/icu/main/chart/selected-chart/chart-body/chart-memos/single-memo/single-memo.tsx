@@ -1,12 +1,10 @@
-import {
-  type Memo,
-  MEMO_COLORS,
-} from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/chart-memos'
 import MemoColorPicker from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/memo-color-picker'
 import DeleteMemoDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/single-memo/delete-memo-dialog'
 import MemoTimeStamp from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/single-memo/memo-time-stamp'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
+import { MEMO_COLORS } from '@/constants/hospital/icu/chart/colors'
+import type { Memo } from '@/types/icu/chart'
 import { Check, GripVertical, Pencil } from 'lucide-react'
 import React, { useEffect, useRef, useState } from 'react'
 

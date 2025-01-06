@@ -74,9 +74,6 @@ export default function HeaderDateSelector() {
         </Button>
 
         <div className="flex items-center gap-1">
-          <span className="min-w-20 text-sm">
-            {format(targetDate, 'yyyy-MM-dd')}
-          </span>
           <IcuHeaderDatePicker
             targetDate={format(targetDate, 'yyyy-MM-dd')}
             setIsSubscriptionReady={setIsSubscriptionReady}
