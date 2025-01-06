@@ -24,7 +24,7 @@ export const getNotices = async (hosId: string) => {
     )
     .match({ hos_id: hosId })
     .order('notice_order', { ascending: true })
-    .order('created_at', { ascending: true })
+    .order('created_at', { ascending: false })
     .returns<NoticeWithUser[]>()
 
   if (error) {
@@ -91,7 +91,7 @@ export const reorderNotices = async (noticeIds: string[]) => {
   noticeIds.forEach(async (noticeId, index) => {
     const { error } = await supabase
       .from('notices')
-      .update({ notice_order: index })
+      .update({ notice_order: index + 1 })
       .match({ id: noticeId })
 
     if (error) {

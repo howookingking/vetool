@@ -50,3 +50,11 @@ export const ORDER_COLORS = {
   violet400: '#a78bfa',
   purple400: '#c084fc',
 } as const
+
+export const MEMO_COLORS = [
+  '#fef9c3', // yellow-100
+  '#d1fae5', // emerald-100
+  '#e0f2fe', // sky-100
+  '#ede9fe', // violet-100
+  '#fce7f3', // pink-100
+] as const

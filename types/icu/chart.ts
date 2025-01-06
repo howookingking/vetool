@@ -182,3 +182,12 @@ export type Filter = {
   selectedVet: string
   selectedSort: string
 }
+
+export type Memo = {
+  id: string
+  memo: string
+  create_timestamp: string
+  edit_timestamp: string | null
+  color: string
+  chosen?: boolean
+}
