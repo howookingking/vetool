@@ -8,7 +8,6 @@ import {
 import { changeTargetDateInUrl } from '@/lib/utils/utils'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
-import { CalendarDays } from 'lucide-react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 
@@ -38,14 +37,11 @@ export default function HeaderDatePicker({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="flex h-6 w-6 items-center justify-center rounded-full"
-        >
-          <CalendarDays className="h-3 w-3" />
+        <Button className="min-w-20 px-1.5 text-base" variant="ghost">
+          {format(targetDate, 'yyyy-MM-dd')}
         </Button>
       </PopoverTrigger>
+
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar
           className="text-sm"
