@@ -20,7 +20,7 @@ export default function Feedback() {
   const [isFeedbackPopoverOpen, setIsPopoverFeedbackOpen] = useState(false)
 
   return (
-    <div className="fixed bottom-1 right-1 z-20">
+    <div className="fixed bottom-1 right-1 z-40">
       <Popover
         open={isFeedbackPopoverOpen}
         onOpenChange={setIsPopoverFeedbackOpen}

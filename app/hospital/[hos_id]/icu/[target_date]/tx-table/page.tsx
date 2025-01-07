@@ -16,7 +16,7 @@ export default async function TxTablePage(props: {
     return (
       <NoResultSquirrel
         text="실행할 처치가 없습니다"
-        className="h-icu-chart-main flex-col"
+        className="h-desktop flex-col"
         size="lg"
       />
     )

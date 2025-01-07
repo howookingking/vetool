@@ -76,17 +76,17 @@ export default function TxTableContainer({
   )
 
   return (
-    <div className="mt-12 2xl:mt-0 2xl:w-auto">
+    <>
+      <TxTableFilter
+        localFilterState={localFilterState}
+        setLocalFilterState={setLocalFilterState}
+      />
+
       <TxTable
         localFilterState={localFilterState}
         filteredTxData={filteredTxData}
         chartBackgroundMap={chartBackgroundMap}
       />
-
-      <TxTableFilter
-        localFilterState={localFilterState}
-        setLocalFilterState={setLocalFilterState}
-      />
-    </div>
+    </>
   )
 }
