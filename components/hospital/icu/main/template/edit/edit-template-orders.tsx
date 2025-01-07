@@ -43,28 +43,28 @@ export default function EditTemplateOrders({
     Partial<SelectedIcuOrder>[]
   >([])
 
-  const fetchOrders = async () => {
-    setIsEditing(true)
-
-    const orders = await getOrder(chartId)
-    const formattedOrders = orders.map((order) => ({
-      order_id: order.icu_chart_order_id,
-      order_name: order.icu_chart_order_name,
-      order_type: order.icu_chart_order_type,
-      order_times: order.icu_chart_order_time,
-      order_comment: order.icu_chart_order_comment || null,
-      is_bordered: order.is_bordered,
-    }))
-
-    setTemplateOrders(formattedOrders)
-    setInitialOrders(formattedOrders)
-
-    setIsEditing(false)
-  }
-
   useEffect(() => {
+    const fetchOrders = async () => {
+      setIsEditing(true)
+
+      const orders = await getOrder(chartId)
+      const formattedOrders = orders.map((order) => ({
+        order_id: order.icu_chart_order_id,
+        order_name: order.icu_chart_order_name,
+        order_type: order.icu_chart_order_type,
+        order_times: order.icu_chart_order_time,
+        order_comment: order.icu_chart_order_comment || null,
+        is_bordered: order.is_bordered,
+      }))
+
+      setTemplateOrders(formattedOrders)
+      setInitialOrders(formattedOrders)
+
+      setIsEditing(false)
+    }
+
     fetchOrders()
-  }, [fetchOrders])
+  }, [chartId, setTemplateOrders])
 
   const handleNextButtonClick = async () => {
     const hasChanges =
