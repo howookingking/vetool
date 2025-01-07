@@ -81,7 +81,9 @@ export default function RegisterDialog({
   return (
     <Dialog open={isRegisterDialogOpen} onOpenChange={setIsRegisterDialogOpen}>
       <DialogTrigger asChild className="hidden md:flex">
-        <Button>환자 입원</Button>
+        <Button size="sm" className="shrink-0 text-sm">
+          환자 입원
+        </Button>
       </DialogTrigger>
 
       <DialogContent

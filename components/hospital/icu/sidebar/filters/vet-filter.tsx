@@ -9,34 +9,38 @@ import {
 } from '@/components/ui/menubar'
 import { cn } from '@/lib/utils/utils'
 import type { Vet } from '@/types/icu/chart'
-import { Stethoscope, User } from 'lucide-react'
+import { Stethoscope } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
+
+type VetFilterProps = {
+  vetsListData: Vet[]
+  selectedVet: string
+  onVetSelect: (vet: string) => void
+}
 
 export default function VetFilter({
   vetsListData,
   selectedVet,
   onVetSelect,
-}: {
-  vetsListData: Vet[]
-  selectedVet: string
-  onVetSelect: (vet: string) => void
-}) {
+}: VetFilterProps) {
   const searchParams = useSearchParams()
   const isReset = !searchParams.get('vet')
 
   return (
     <MenubarMenu>
-      <MenubarTrigger className="flex w-full justify-center gap-1" asChild>
+      <MenubarTrigger asChild>
         <Button
           variant="ghost"
-          size="icon"
-          className={cn(!isReset && 'animate-pulse bg-primary')}
+          className={cn(
+            !isReset && 'bg-primary text-white',
+            'h-[30px] w-full rounded-none',
+          )}
         >
           <Stethoscope />
         </Button>
       </MenubarTrigger>
 
-      <MenubarContent align="center">
+      <MenubarContent align="start" className="min-w-[100px]">
         {vetsListData.map((vet) => (
           <MenubarItem
             key={vet.user_id}

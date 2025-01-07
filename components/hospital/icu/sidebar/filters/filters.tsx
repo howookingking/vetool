@@ -1,20 +1,13 @@
-import UserAvatar from '@/components/hospital/common/user-avatar'
 import GroupFilter from '@/components/hospital/icu/sidebar/filters/group-filter'
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarTrigger,
-} from '@/components/ui/menubar'
+import { Menubar } from '@/components/ui/menubar'
 import type { Vet } from '@/types/icu/chart'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
-import VetFilter from './vet-filter'
+import ResetFilters from './reset-filters'
 import SortFilter from './sort-filter'
+import VetFilter from './vet-filter'
 
-type Filters = {
+type FiltersProps = {
   hosGroupList: string[]
   vetsListData: Vet[]
   selectedGroup: string[]
@@ -23,6 +16,7 @@ type Filters = {
   setSelectedVet: (vet: string) => void
   selectedSort: string
   setSelectedSort: (value: string) => void
+  resetFilters: () => void
 }
 
 export default function Filters({
@@ -34,7 +28,8 @@ export default function Filters({
   setSelectedVet,
   selectedSort,
   setSelectedSort,
-}: Filters) {
+  resetFilters,
+}: FiltersProps) {
   const path = usePathname()
   const searchParams = useSearchParams()
   const currentParams = new URLSearchParams(searchParams.toString())
@@ -91,7 +86,7 @@ export default function Filters({
   }
 
   return (
-    <Menubar className="border-none p-0">
+    <Menubar className="flex h-8 space-x-0 p-0">
       <GroupFilter
         hosGroupList={hosGroupList}
         selectedGroup={selectedGroup}
@@ -105,6 +100,8 @@ export default function Filters({
       />
 
       <SortFilter onSortSelect={handleSortSelect} />
+
+      <ResetFilters resetFilters={resetFilters} />
     </Menubar>
   )
 }

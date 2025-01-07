@@ -14,12 +14,12 @@ export default function SortFilter({
 }) {
   return (
     <MenubarMenu>
-      <MenubarTrigger className="flex w-full justify-center gap-1" asChild>
-        <Button variant="ghost" size="icon">
+      <MenubarTrigger asChild>
+        <Button variant="ghost" className="h-[30px] w-full rounded-none">
           <ArrowDownNarrowWide />
         </Button>
       </MenubarTrigger>
-      <MenubarContent align="end">
+      <MenubarContent align="center" className="min-w-[100px]">
         <MenubarItem onClick={() => onSortSelect('date')}>입원일순</MenubarItem>
         <MenubarItem onClick={() => onSortSelect('vet')}>수의사순</MenubarItem>
         <MenubarItem onClick={() => onSortSelect('name')}>

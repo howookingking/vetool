@@ -18,7 +18,6 @@ export default function IcuSidebar({
   hosGroupList: string[]
 }) {
   const { filters, setFilters } = useIcuSidebarFilter()
-
   const filteredData = filterData(icuSidebarData, filters, vetsListData)
 
   return (

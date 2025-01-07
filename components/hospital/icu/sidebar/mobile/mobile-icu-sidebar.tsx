@@ -1,21 +1,14 @@
 import Filters from '@/components/hospital/icu/sidebar/filters/filters'
-import NoPatients from '@/components/hospital/icu/sidebar/no-patients'
+
+import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import PatientList from '@/components/hospital/icu/sidebar/patient-list'
 import { Separator } from '@/components/ui/separator'
 import type { Filter, IcuSidebarIoData, Vet } from '@/types/icu/chart'
-import type { Dispatch, SetStateAction } from 'react'
-import HeaderDateSelector from '../../header/date-picker/header-date-selector'
 import { usePathname, useRouter } from 'next/navigation'
+import type { Dispatch, SetStateAction } from 'react'
+import IcuDateSelector from '../date-selector/icu-date-selector'
 
-export default function MobileSidebar({
-  isEmpty,
-  setFilters,
-  filters,
-  hosGroupList,
-  handleCloseMobileDrawer,
-  filteredData,
-  vetsListData,
-}: {
+type MobileSidebarProps = {
   isEmpty: boolean
   setFilters: Dispatch<SetStateAction<Filter>>
   filters: Filter
@@ -26,7 +19,17 @@ export default function MobileSidebar({
     excludedIcuIoData: IcuSidebarIoData[]
   }
   vetsListData: Vet[]
-}) {
+}
+
+export default function MobileSidebar({
+  isEmpty,
+  setFilters,
+  filters,
+  hosGroupList,
+  handleCloseMobileDrawer,
+  filteredData,
+  vetsListData,
+}: MobileSidebarProps) {
   const pathname = usePathname()
   const { push } = useRouter()
 
@@ -39,11 +42,14 @@ export default function MobileSidebar({
   return (
     <aside className="flex h-full flex-col">
       {isEmpty ? (
-        <NoPatients />
+        <NoResultSquirrel
+          text="입원환자가 없습니다"
+          className="mt-10 flex-col"
+        />
       ) : (
         <div className="flex h-full flex-col gap-3 p-2">
           <div className="flex-none">
-            <HeaderDateSelector />
+            <IcuDateSelector />
 
             <Filters
               hosGroupList={hosGroupList}
@@ -60,6 +66,7 @@ export default function MobileSidebar({
               setSelectedSort={(sort) =>
                 setFilters({ ...filters, selectedSort: sort })
               }
+              resetFilters={resetFilters}
             />
           </div>
 
@@ -71,7 +78,6 @@ export default function MobileSidebar({
               excludedIcuIoData={filteredData.excludedIcuIoData}
               vetsListData={vetsListData}
               handleCloseMobileDrawer={handleCloseMobileDrawer}
-              resetFilters={resetFilters}
             />
           </div>
         </div>

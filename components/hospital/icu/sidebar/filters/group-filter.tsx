@@ -4,6 +4,7 @@ import {
   MenubarContent,
   MenubarItem,
   MenubarMenu,
+  MenubarSeparator,
   MenubarTrigger,
 } from '@/components/ui/menubar'
 import { cn } from '@/lib/utils/utils'
@@ -24,21 +25,23 @@ export default function GroupFilter({
 
   return (
     <MenubarMenu>
-      <MenubarTrigger className="flex w-full justify-center gap-1" asChild>
+      <MenubarTrigger asChild>
         <Button
           variant="ghost"
-          size="icon"
-          className={cn(!isReset && 'animate-pulse bg-primary')}
+          className={cn(
+            !isReset && 'bg-primary text-white',
+            'h-[30px] w-full rounded-r-none',
+          )}
         >
           <Component />
         </Button>
       </MenubarTrigger>
 
-      <MenubarContent>
+      <MenubarContent align="start" className="min-w-[100px]" hideWhenDetached>
         {hosGroupList.map((group) => (
           <MenubarItem
             key={group}
-            className="flex items-center gap-2"
+            className="flex items-center gap-1.5"
             onClick={(e) => {
               e.preventDefault()
               onGroupChange(group)
@@ -48,6 +51,10 @@ export default function GroupFilter({
             <span>{group}</span>
           </MenubarItem>
         ))}
+        {/* <MenubarSeparator /> */}
+        {/* <MenubarItem>
+          <div className="text-center text-muted-foreground">선택 초기화</div>
+        </MenubarItem> */}
       </MenubarContent>
     </MenubarMenu>
   )
