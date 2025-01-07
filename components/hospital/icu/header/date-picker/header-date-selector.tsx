@@ -6,14 +6,14 @@ import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useRealtimeSubscriptionStore } from '@/lib/store/icu/realtime-subscription'
 import { changeTargetDateInUrl } from '@/lib/utils/utils'
 import { ArrowLeftIcon, ArrowRightIcon } from '@radix-ui/react-icons'
-import { addDays, format, isToday } from 'date-fns'
+import { addDays, format } from 'date-fns'
 import {
   useParams,
   usePathname,
   useRouter,
   useSearchParams,
 } from 'next/navigation'
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 
 export default function HeaderDateSelector() {
   const searchParams = useSearchParams()
@@ -27,34 +27,22 @@ export default function HeaderDateSelector() {
     new Date(params.target_date as string),
   )
 
-  const updateDate = useCallback(
-    (newDate: Date) => {
-      const newDateString = format(newDate, 'yyyy-MM-dd')
-      const newPath = changeTargetDateInUrl(
-        pathname,
-        newDateString,
-        new URLSearchParams(searchParams),
-      )
-      router.push(newPath)
-      setTargetDate(newDate)
-      setSelectedOrderPendingQueue([])
-      setIsSubscriptionReady(false)
-    },
-    [
+  const updateDate = (newDate: Date) => {
+    const newDateString = format(newDate, 'yyyy-MM-dd')
+    const newPath = changeTargetDateInUrl(
       pathname,
-      router,
-      searchParams,
-      setSelectedOrderPendingQueue,
-      setIsSubscriptionReady,
-    ],
-  )
+      newDateString,
+      new URLSearchParams(searchParams),
+    )
+    router.push(newPath)
+    setTargetDate(newDate)
+    setSelectedOrderPendingQueue([])
+    setIsSubscriptionReady(false)
+  }
 
-  const handleUpdateDate = useCallback(
-    (days: number) => {
-      updateDate(addDays(targetDate, days))
-    },
-    [targetDate, updateDate],
-  )
+  const handleUpdateDate = (days: number) => {
+    updateDate(addDays(targetDate, days))
+  }
 
   // const handleMoveToToday = useCallback(() => {
   //   updateDate(new Date())

@@ -1,4 +1,3 @@
-import { userLogFormSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/tx-schema'
 import { Button } from '@/components/ui/button'
 import { DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import {
@@ -10,6 +9,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import useUpsertTx from '@/hooks/use-upsert-tx'
+import { userLogFormSchema } from '@/lib/schemas/icu/chart/tx-schema'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useRealtimeSubscriptionStore } from '@/lib/store/icu/realtime-subscription'
 import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'

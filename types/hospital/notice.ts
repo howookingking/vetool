@@ -1,3 +1,4 @@
+import { NOTICE_COLORS } from '@/constants/hospital/icu/chart/colors'
 import { Notice, User } from '@/types'
 
 export type NoticeWithUser = Omit<
@@ -10,3 +11,5 @@ export type NoticeWithUser = Omit<
 export type SortableNotice = NoticeWithUser & {
   id: number
 }
+
+export type NoticeColorType = (typeof NOTICE_COLORS)[number]

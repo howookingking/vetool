@@ -1,7 +1,6 @@
 'use no memo'
 
 import TxLog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/detail-insert-step/tx-log'
-import { txDetailRegisterFormSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/tx-schema'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -22,6 +21,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
 import useUpsertTx from '@/hooks/use-upsert-tx'
+import { txDetailRegisterFormSchema } from '@/lib/schemas/icu/chart/tx-schema'
 import { deleteIcuChartTx } from '@/lib/services/icu/chart/tx-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'

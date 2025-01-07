@@ -1,5 +1,4 @@
 import type { Keyword } from '@/types/hospital/keywords'
-import { useCallback } from 'react'
 
 export default function Suggestions({
   suggestions,
@@ -12,12 +11,9 @@ export default function Suggestions({
   selectedIndex: number
   setSelectedIndex: (index: number) => void
 }) {
-  const handleSuggestionClick = useCallback(
-    (suggestion: Keyword) => {
-      insertSuggestion(suggestion.mainKeyword)
-    },
-    [insertSuggestion],
-  )
+  const handleSuggestionClick = (suggestion: Keyword) => {
+    insertSuggestion(suggestion.mainKeyword)
+  }
 
   // onClick시에 prevent default해도 input요소의 포커스가 풀림
   const handleMouseDown = (

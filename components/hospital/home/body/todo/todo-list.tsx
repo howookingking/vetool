@@ -1,8 +1,8 @@
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
+import SingleTodo from '@/components/hospital/home/body/todo/single-todo'
+import UpsertTodoDialog from '@/components/hospital/home/body/todo/upsert-todo-dialog'
 import { formatDate } from '@/lib/utils/utils'
 import type { ClientTodo } from '@/types/hospital/todo'
-import SingleTodo from './single-todo'
-import UpsertTodoDialog from './upsert-todo-dialog'
 
 export default function TodoList({
   date,

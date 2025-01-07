@@ -1,4 +1,3 @@
-import { vitalChartFormSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-center/vital-chart/vital-chart-form-schema'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -18,6 +17,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
+import { vitalChartSchema } from '@/lib/schemas/icu/chart/vital-chart-schema'
 import { updateWeightData } from '@/lib/services/icu/chart/vitals'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
@@ -42,8 +42,8 @@ export default function UpdateVitalDialog({
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const form = useForm<z.infer<typeof vitalChartFormSchema>>({
-    resolver: zodResolver(vitalChartFormSchema),
+  const form = useForm<z.infer<typeof vitalChartSchema>>({
+    resolver: zodResolver(vitalChartSchema),
     defaultValues: {
       weight: defaultValue || '0',
     },
@@ -55,7 +55,7 @@ export default function UpdateVitalDialog({
     }
   }, [defaultValue, form])
 
-  const handleSubmit = async (values: z.infer<typeof vitalChartFormSchema>) => {
+  const handleSubmit = async (values: z.infer<typeof vitalChartSchema>) => {
     setIsSubmitting(true)
 
     await updateWeightData(patientId, values.weight, vitalId)

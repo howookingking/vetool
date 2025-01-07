@@ -2,7 +2,6 @@
 'use no memo'
 
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
-import { drugSchema } from '@/components/hospital/admin/drug/upsert-drug-form/drug-form-schema'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -37,6 +36,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
+import { drugSchema } from '@/lib/schemas/admin/admin-schema'
 import { upsertHosDrugData } from '@/lib/services/admin/drug/drug'
 import { cn } from '@/lib/utils/utils'
 import { RawDrug } from '@/types'

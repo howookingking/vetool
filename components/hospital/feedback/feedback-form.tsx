@@ -16,6 +16,10 @@ import {
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
+import {
+  FEEDBACK_CATEGORY_ENUM,
+  feedbackFormSchema,
+} from '@/lib/schemas/feedback/feedback-schema'
 import { sendFeedback } from '@/lib/services/super/feedback/feedback'
 import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -23,10 +27,6 @@ import { LoaderCircle, X } from 'lucide-react'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import {
-  FEEDBACK_CATEGORY_ENUM,
-  feedbackFormSchema,
-} from './feedback-form-schema'
 
 export default function FeedbackForm({
   setIsPopoverFeedbackOpen,

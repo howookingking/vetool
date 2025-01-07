@@ -9,13 +9,13 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { toast } from '@/components/ui/use-toast'
+import { groupCheckFormSchema } from '@/lib/schemas/icu/chart/chart-info-schema'
 import { updateGroup } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { groupCheckFormSchema } from './group-schema'
 
 export default function GroupForm({
   isDialogOpen,

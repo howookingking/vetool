@@ -3,7 +3,6 @@ import { cn, convertPascalCased } from '@/lib/utils/utils'
 import type { IcuSidebarIoData, Vet } from '@/types/icu/chart'
 import { Cat, Dog, Stethoscope, User } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
-import { useCallback } from 'react'
 
 export default function PatientButton({
   icuIoData,
@@ -20,11 +19,11 @@ export default function PatientButton({
     (vet) => vet.user_id === icuIoData.vets?.main_vet,
   )?.name
 
-  const handlePatientButtonClick = useCallback(() => {
+  const handlePatientButtonClick = () => {
     push(
       `/hospital/${hos_id}/icu/${target_date}/chart/${icuIoData.patient.patient_id}`,
     )
-  }, [hos_id, target_date, icuIoData.patient.patient_id, push])
+  }
 
   const selectedPatient = icuIoData.patient.patient_id === patient_id
 

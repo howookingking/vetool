@@ -1,4 +1,3 @@
-import { FEEDBACK_CATEGORY_ENUM } from '@/components/hospital/feedback/feedback-form-schema'
 import {
   Card,
   CardContent,
@@ -13,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { FEEDBACK_CATEGORY_ENUM } from '@/lib/schemas/feedback/feedback-schema'
 
 export default function FeedbackFilter({
   value,

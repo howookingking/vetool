@@ -1,7 +1,6 @@
 'use client'
 'use no memo'
 
-import { newHospitalFormSchema } from '@/components/on-boarding/create-hospital/hospital-schema'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -21,6 +20,7 @@ import {
 } from '@/components/ui/select'
 import { toast } from '@/components/ui/use-toast'
 import { ADDRESS } from '@/constants/hospital/create/address'
+import { newHospitalFormSchema } from '@/lib/schemas/on-boarding/on-boarding-schema'
 import { createHospital } from '@/lib/services/on-boarding/on-boarding'
 import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'

@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const vitalChartFormSchema = z.object({
+export const vitalChartSchema = z.object({
   weight: z
     .string()
     .min(1, '값을 입력해주세요')
