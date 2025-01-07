@@ -1,5 +1,6 @@
 'use client'
 
+import DeleteNoticeButton from '@/components/hospital/home/body/notice/delete-notice-button'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -25,16 +26,17 @@ import {
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
+import { NOTICE_COLORS } from '@/constants/hospital/icu/chart/colors'
+import { noticeSchema } from '@/lib/schemas/icu/icu-schema'
 import { createNotice, updateNotice } from '@/lib/services/hospital-home/notice'
 import { cn } from '@/lib/utils/utils'
+import type { NoticeColorType } from '@/types/hospital/notice'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Edit, LoaderCircle, Plus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import DeleteNoticeButton from './delete-notice-button'
-import { NOTICE_COLORS, NoticeColorType, noticeSchema } from './notice-schema'
 
 export default function UpsertNoticeDialog({
   hosId,

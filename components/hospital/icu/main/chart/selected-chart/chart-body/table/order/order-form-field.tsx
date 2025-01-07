@@ -6,9 +6,9 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { orderSchema } from '@/lib/schemas/icu/chart/order-schema'
 import { UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
-import { orderSchema } from './order-schema'
 
 export default function OrderFormField({
   form,

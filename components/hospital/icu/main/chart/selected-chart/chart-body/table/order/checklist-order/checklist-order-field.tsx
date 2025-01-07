@@ -6,6 +6,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -14,11 +15,10 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { CHECKLIST_ORDERS } from '@/constants/hospital/icu/chart/order'
+import { orderSchema } from '@/lib/schemas/icu/chart/order-schema'
+import { ChangeEvent, useState } from 'react'
 import type { UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
-import { orderSchema } from '../order-schema'
-import { Label } from '@/components/ui/label'
-import { ChangeEvent, useState } from 'react'
 
 export default function ChecklistOrderField({
   form,

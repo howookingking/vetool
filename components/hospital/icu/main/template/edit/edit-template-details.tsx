@@ -1,4 +1,3 @@
-import { templateFormSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-center/weght-bookmark-schema'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -17,6 +16,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
+import { templateFormSchema } from '@/lib/schemas/icu/chart/template-schema'
 import { updateTemplate } from '@/lib/services/icu/template/template'
 import { useTemplateStore } from '@/lib/store/icu/template'
 import { cn } from '@/lib/utils/utils'

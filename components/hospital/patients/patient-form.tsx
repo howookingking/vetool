@@ -3,7 +3,6 @@
 
 import HelperTooltip from '@/components/common/helper-tooltip'
 import BirthDatePicker from '@/components/hospital/patients/birth-date-picker'
-import { registerPatientFormSchema } from '@/components/hospital/patients/patient-schema'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -42,6 +41,7 @@ import {
   FELINE_BREEDS,
   SEX,
 } from '@/constants/hospital/register/breed'
+import { registerPatientFormSchema } from '@/lib/schemas/patient/patient-schema'
 import {
   insertPatient,
   isHosPatientIdDuplicated,
