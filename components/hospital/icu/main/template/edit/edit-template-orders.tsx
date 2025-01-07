@@ -15,13 +15,7 @@ import { getOrder, upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import { useTemplateStore } from '@/lib/store/icu/template'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { useParams } from 'next/navigation'
-import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
 export default function EditTemplateOrders({
   chartId,
@@ -49,7 +43,7 @@ export default function EditTemplateOrders({
     Partial<SelectedIcuOrder>[]
   >([])
 
-  const fetchOrders = useCallback(async () => {
+  const fetchOrders = async () => {
     setIsEditing(true)
 
     const orders = await getOrder(chartId)
@@ -66,7 +60,7 @@ export default function EditTemplateOrders({
     setInitialOrders(formattedOrders)
 
     setIsEditing(false)
-  }, [chartId, setTemplateOrders])
+  }
 
   useEffect(() => {
     fetchOrders()

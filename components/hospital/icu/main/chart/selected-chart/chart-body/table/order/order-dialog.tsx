@@ -1,4 +1,5 @@
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
+import OrdererSelectStep from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/orderer/orderer-select-step'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -12,8 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import type { Patient, SelectedIcuOrder } from '@/types/icu/chart'
 import { Plus } from 'lucide-react'
 import dynamic from 'next/dynamic'
-import { Dispatch, SetStateAction, useCallback } from 'react'
-import OrdererSelectStep from './orderer/orderer-select-step'
+import { Dispatch, SetStateAction } from 'react'
 
 const LazyOrderForm = dynamic(() => import('./order-form'), {
   ssr: false,
@@ -64,14 +64,14 @@ export default function OrderDialog({
   mainVetName,
   derCalcFactor,
 }: OrderDialogProps) {
-  const handleOpenChange = useCallback(() => {
+  const handleOpenChange = () => {
     if (orderStep === 'closed') {
       setOrderStep('upsert')
     } else {
       setOrderStep('closed')
     }
     reset()
-  }, [orderStep, setOrderStep, reset])
+  }
 
   return (
     <Dialog open={orderStep !== 'closed'} onOpenChange={handleOpenChange}>

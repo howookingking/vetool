@@ -13,7 +13,6 @@ import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 import { updateOutDueDate } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { X } from 'lucide-react'
-import { useCallback } from 'react'
 
 export function CancelOutDue({
   icuIoId,
@@ -22,13 +21,13 @@ export function CancelOutDue({
   icuIoId: string
   isDischarged: boolean
 }) {
-  const handleUpdateOutDueDate = useCallback(async () => {
+  const handleUpdateOutDueDate = async () => {
     await updateOutDueDate(icuIoId, null)
 
     toast({
       title: '퇴원예정일을 취소하였습니다',
     })
-  }, [icuIoId])
+  }
 
   return (
     <AlertDialog>
