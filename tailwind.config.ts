@@ -132,6 +132,8 @@ const config = {
       height: {
         'exclude-header': 'calc(100vh - 48px)',
         'icu-chart-main': 'calc(100vh - 40px)',
+        desktop: 'calc(100vh - 40px)',
+        mobile: 'calc(100vh - 88px)',
       },
     },
   },

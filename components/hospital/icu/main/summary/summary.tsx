@@ -7,10 +7,8 @@ export default function Summary({
   summaryData: SummaryData[]
 }) {
   return (
-    <div className="mt-12 2xl:mt-0">
-      <div className="relative h-[calc(100vh-88px)] overflow-auto">
-        <SummaryTable summaryData={summaryData} />
-      </div>
+    <div className="2xl:h-desktop h-mobile mt-12 overflow-auto 2xl:mt-0">
+      <SummaryTable summaryData={summaryData} />
     </div>
   )
 }
