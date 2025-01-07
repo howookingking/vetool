@@ -58,7 +58,7 @@ export default function ChartTableHeader({
   } = chartData
 
   return (
-    <TableHeader className="sticky -top-3 z-20 bg-white shadow-sm">
+    <TableHeader className="sticky top-0 z-20 bg-white shadow-sm">
       <TableRow>
         <TableHead
           className="flex items-center justify-between px-0.5 text-center"

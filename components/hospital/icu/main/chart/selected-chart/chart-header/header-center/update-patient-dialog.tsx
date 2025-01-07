@@ -49,11 +49,14 @@ export default function UpdatePatientDialog({
       <DialogTrigger asChild>
         <Button
           variant="ghost"
-          className="flex h-auto flex-wrap items-center gap-1.5 px-2 text-xs font-semibold md:py-1 md:text-sm 2xl:gap-3 2xl:text-base"
+          className="flex w-full items-center gap-2 px-2 text-xs font-semibold md:text-sm 2xl:text-base"
         >
           {species === 'canine' ? <Dog size={20} /> : <Cat size={20} />}
-          <span>{name}</span> ·<span>{convertPascalCased(breed)}</span> ·
-          <span className="uppercase">{gender}</span> ·
+          <span>{name}</span>·
+          <span className="w-12 truncate sm:w-auto">
+            {convertPascalCased(breed)}
+          </span>
+          ·<span className="uppercase">{gender}</span>·
           <span>{calculateAge(birth)} </span>
           <span>·</span>
           <span>

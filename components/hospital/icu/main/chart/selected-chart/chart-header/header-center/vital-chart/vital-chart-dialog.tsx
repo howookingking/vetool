@@ -32,7 +32,7 @@ export default function VitalChartDialog({
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="icon" className="hidden lg:inline-flex">
+        <Button variant="ghost" size="icon" className="hidden shrink-0 md:flex">
           <BarChartBig size={18} />
         </Button>
       </DialogTrigger>

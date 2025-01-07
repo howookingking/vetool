@@ -7,7 +7,7 @@ export default function Chart({ chartData }: { chartData: SelectedChart }) {
   const isPatientOut = chartData?.icu_io?.out_date !== null
 
   return (
-    <div className="flex h-full flex-col gap-4 overflow-auto px-2 pb-2 pt-0 md:gap-2 2xl:p-2">
+    <div className="flex h-desktop flex-col overflow-auto">
       <ChartHeader chartData={chartData} />
       <ChartBody chartData={chartData} />
 

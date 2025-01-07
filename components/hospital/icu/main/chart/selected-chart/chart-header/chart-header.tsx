@@ -8,7 +8,7 @@ export default function ChartHeader({
   chartData: SelectedChart
 }) {
   return (
-    <header className="sticky top-0 z-30 flex items-center justify-between border-b bg-white 2xl:relative 2xl:mx-0 2xl:max-w-full 2xl:bg-transparent 2xl:pb-2">
+    <header className="relative flex items-center justify-between">
       <HeaderCenter chartData={chartData} />
       <HeaderRightButtons chartData={chartData} />
     </header>
