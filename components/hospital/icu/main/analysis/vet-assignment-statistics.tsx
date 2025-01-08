@@ -65,7 +65,7 @@ export default function VetAssignmentStatistics({
   }, [analysisData])
 
   return (
-    <Card className="ml-2 mr-1">
+    <Card>
       <CardHeader>
         <CardTitle>환자 담당 통계</CardTitle>
         <CardDescription>주치의별 주치의-부주치의 담당 통계</CardDescription>

@@ -67,7 +67,7 @@ export default function Analysis() {
           size="lg"
         />
       ) : (
-        <div>
+        <div className="grid grid-cols-2 gap-2">
           <IoPatientsStatistics
             analysisData={analysisData}
             setStartDate={setStartDate}
@@ -76,7 +76,7 @@ export default function Analysis() {
             vets={vets}
           />
 
-          <div className="grid grid-cols-2 pb-12">
+          <div className="col-span-2 grid grid-cols-2 gap-2 pb-12">
             <VetAssignmentStatistics analysisData={analysisData} />
             <GroupByStatistics analysisData={analysisData} />
           </div>

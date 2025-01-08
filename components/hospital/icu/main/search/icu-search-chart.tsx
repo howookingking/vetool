@@ -21,7 +21,6 @@ export type SearchOptions = {
 export default function IcuSearchChart() {
   const { hos_id } = useParams()
   const { trie } = useKeywordTrieStore()
-
   const [inputValue, setInputValue] = useState('')
   const [isSearching, setIsSearching] = useState(false)
   const [searchedIcuIos, setSearchedIcuIos] = useState<SearchedIcuIos[]>([])
@@ -50,7 +49,7 @@ export default function IcuSearchChart() {
       }
       return value
     },
-    [searchOptions.searchType, trie],
+    [trie, searchOptions.searchType],
   )
 
   const performSearch = useDebouncedCallback(async (searchValue: string) => {
@@ -85,11 +84,10 @@ export default function IcuSearchChart() {
   }, [searchOptions, inputValue, getSearchValue, performSearch])
 
   return (
-    <div className="flex flex-col gap-2 p-2">
+    <div className="flex flex-col gap-2">
       <div className="relative flex items-center gap-4 pr-2">
         <Button
           type="button"
-          onClick={() => {}}
           variant={'ghost'}
           className="absolute left-0 top-0 z-10 p-2"
         >

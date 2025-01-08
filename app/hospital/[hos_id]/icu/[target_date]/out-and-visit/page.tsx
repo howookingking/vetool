@@ -14,7 +14,7 @@ export default async function OutAndVisitPage(props: {
 }) {
   const params = await props.params
   return (
-    <div className="flex h-screen flex-col p-2">
+    <div className="mt-12 flex h-mobile flex-col border-t p-2 2xl:mt-0 2xl:h-desktop 2xl:border-0">
       <div className="flex-1">
         <div className="mb-1 flex items-center gap-2 font-semibold">
           <span>퇴원차트</span>

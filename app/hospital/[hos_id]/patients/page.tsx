@@ -1,4 +1,4 @@
-import SearchPatientContainer from '@/components/hospital/icu/header/register-dialog/search-patient/search-patient-containter'
+import SearchPatientContainer from '@/components/hospital/icu/sidebar/register-dialog/search-patient/search-patient-containter'
 
 export default async function HospitalPatientsPage(props: {
   params: Promise<{ hos_id: string }>

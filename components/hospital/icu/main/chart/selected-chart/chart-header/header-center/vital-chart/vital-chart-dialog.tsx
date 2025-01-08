@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { BarChartBig } from 'lucide-react'
+import { LineChart } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
 
@@ -33,7 +33,7 @@ export default function VitalChartDialog({
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon" className="hidden shrink-0 md:flex">
-          <BarChartBig size={18} />
+          <LineChart size={18} />
         </Button>
       </DialogTrigger>
 

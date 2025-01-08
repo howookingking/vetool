@@ -67,7 +67,7 @@ export default function GroupByStatistics({
   }, [analysisData])
 
   return (
-    <Card className="ml-1 mr-2 flex flex-col">
+    <Card className="flex flex-col">
       <CardHeader className="pb-0">
         <CardTitle>병과별 환자 통계</CardTitle>
         {/* <CardDescription>January - June 2024</CardDescription> */}
