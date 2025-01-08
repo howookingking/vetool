@@ -23,6 +23,15 @@ export default function TxTableFilter({
     basicHosData: { orderColorsData },
   } = useBasicHosDataContext()
 
+  const handleTriggerMultiSelect = () => {
+    const inputElement = document.querySelector(
+      '[placeholder="오더 타입"]',
+    ) as HTMLInputElement
+    if (inputElement) {
+      inputElement.focus()
+    }
+  }
+
   return (
     <div className="flex h-12 justify-center">
       <MultiSelector
@@ -34,12 +43,15 @@ export default function TxTableFilter({
         onValuesChange={setLocalFilterState}
         className="relative h-12 w-[280px] rounded-none md:w-[560px]"
       >
-        <MultiSelectorTrigger className="relative my-auto rounded-md p-0">
+        <MultiSelectorTrigger
+          className="relative my-auto cursor-pointer rounded-md p-0"
+          onClick={handleTriggerMultiSelect}
+        >
           <MultiSelectorInput
             placeholder="오더 타입"
             className="cursor-pointer p-2 px-3"
           />
-          <ChevronDown className="absolute right-2 top-3 z-10" size={14} />
+          <ChevronDown className="absolute right-2 top-3" size={14} />
         </MultiSelectorTrigger>
 
         <MultiSelectorContent
