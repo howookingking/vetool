@@ -209,7 +209,7 @@ const MultiSelector = ({
       <Command
         onKeyDown={handleKeyDown}
         className={cn(
-          'flex flex-col space-y-2 overflow-visible bg-transparent',
+          'flex flex-col overflow-visible bg-transparent',
           className,
         )}
         dir={dir}
@@ -236,9 +236,9 @@ const MultiSelectorTrigger = forwardRef<
     <div
       ref={ref}
       className={cn(
-        'flex flex-wrap gap-1 rounded-lg bg-background p-2 ring-1 ring-muted',
+        'flex items-center rounded-md bg-background ring-1 ring-muted transition hover:shadow-md',
         {
-          'ring-1 focus-within:ring-ring': activeIndex === -1,
+          'focus-within:ring-ring': activeIndex === -1,
         },
         className,
       )}
@@ -248,12 +248,12 @@ const MultiSelectorTrigger = forwardRef<
         <Badge
           key={item}
           className={cn(
-            'flex items-center gap-1 px-1',
+            'ml-1 flex items-center gap-1 px-1',
             activeIndex === index && 'ring-2 ring-muted-foreground',
           )}
           variant={'secondary'}
         >
-          <span className="text-xs">
+          <span className="shrink-0 text-xs">
             {options.find((option) => option.value === item)?.label || item}
           </span>
           <button
@@ -302,7 +302,7 @@ const MultiSelectorInput = forwardRef<
       onFocus={() => setOpen(true)}
       onClick={() => setActiveIndex(-1)}
       className={cn(
-        'ml-2 flex-1 bg-transparent outline-none placeholder:text-muted-foreground',
+        'flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground',
         className,
         activeIndex !== -1 && 'caret-transparent',
       )}

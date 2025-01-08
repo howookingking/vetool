@@ -7,7 +7,6 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
-import { cn } from '@/lib/utils/utils'
 import type { SummaryData } from '@/types/icu/summary'
 
 export default function SummaryTable({
@@ -16,13 +15,13 @@ export default function SummaryTable({
   summaryData: SummaryData[]
 }) {
   return (
-    <Table className="border">
+    <Table className="border border-l-0">
       <TableHeader className="sticky top-0 z-30 bg-white shadow-sm">
         <TableRow>
           <TableHead className="w-[160px] text-center">환자목록</TableHead>
 
           {TIMES.map((time) => (
-            <TableHead className={cn('border text-center')} key={time}>
+            <TableHead className="border border-t-0 text-center" key={time}>
               {time.toString().padStart(2, '0')}
             </TableHead>
           ))}

@@ -37,11 +37,11 @@ export default function BookmarkDialog({
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      <DialogTrigger asChild className="hidden md:inline-flex">
-        <Button variant="ghost" size="icon">
+      <DialogTrigger asChild>
+        <Button variant="ghost" size="icon" className="hidden shrink-0 md:flex">
           {icon === 'star' && (
             <Star
-              style={{ width: '24px', height: '24px' }}
+              size={18}
               className={cn(
                 'text-amber-300',
                 bookmarkData?.template_id!! && 'fill-amber-300',

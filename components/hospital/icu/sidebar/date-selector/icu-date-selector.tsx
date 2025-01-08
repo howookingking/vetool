@@ -1,6 +1,5 @@
 'use client'
 
-import IcuHeaderDatePicker from '@/components/hospital/icu/header/date-picker/header-date-picker'
 import { Button } from '@/components/ui/button'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useRealtimeSubscriptionStore } from '@/lib/store/icu/realtime-subscription'
@@ -14,8 +13,9 @@ import {
   useSearchParams,
 } from 'next/navigation'
 import { useState } from 'react'
+import IcuDatePicker from './icu-date-picker'
 
-export default function HeaderDateSelector() {
+export default function IcuDateSelector() {
   const searchParams = useSearchParams()
   const params = useParams()
   const pathname = usePathname()
@@ -49,35 +49,31 @@ export default function HeaderDateSelector() {
   // }, [updateDate])
 
   return (
-    <div className="flex h-12 flex-col items-center justify-center gap-2">
-      <div className="flex items-center gap-2">
-        <Button
-          onClick={() => handleUpdateDate(-1)}
-          size="icon"
-          variant="outline"
-          className="h-6 w-6 rounded-full"
-          aria-label="이전 날짜로 이동"
-        >
-          <ArrowLeftIcon />
-        </Button>
+    <div className="flex items-center justify-center gap-1">
+      <Button
+        onClick={() => handleUpdateDate(-1)}
+        size="icon"
+        variant="outline"
+        className="h-6 w-6 rounded-full"
+        aria-label="이전 날짜로 이동"
+      >
+        <ArrowLeftIcon />
+      </Button>
 
-        <div className="flex items-center gap-1">
-          <IcuHeaderDatePicker
-            targetDate={format(targetDate, 'yyyy-MM-dd')}
-            setIsSubscriptionReady={setIsSubscriptionReady}
-          />
-        </div>
+      <IcuDatePicker
+        targetDate={format(targetDate, 'yyyy-MM-dd')}
+        setIsSubscriptionReady={setIsSubscriptionReady}
+      />
 
-        <Button
-          onClick={() => handleUpdateDate(1)}
-          size="icon"
-          variant="outline"
-          className="h-6 w-6 rounded-full"
-          aria-label="다음 날짜로 이동"
-        >
-          <ArrowRightIcon />
-        </Button>
-      </div>
+      <Button
+        onClick={() => handleUpdateDate(1)}
+        size="icon"
+        variant="outline"
+        className="h-6 w-6 rounded-full"
+        aria-label="다음 날짜로 이동"
+      >
+        <ArrowRightIcon />
+      </Button>
 
       {/* <div className="flex w-full">
         <Button

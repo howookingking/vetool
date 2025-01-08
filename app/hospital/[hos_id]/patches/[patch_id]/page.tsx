@@ -14,8 +14,8 @@ export default async function HospitalPatchPage(props: {
   if (!patchDetailData) {
     return (
       <NoResultSquirrel
-        className="h-icu-chart-main"
-        text={'패치 노트가 존재하지 않습니다'}
+        className="h-screen"
+        text="패치 노트가 존재하지 않습니다"
       />
     )
   }

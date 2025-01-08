@@ -11,7 +11,7 @@ import { ko } from 'date-fns/locale'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 
-export default function HeaderDatePicker({
+export default function IcuDatePicker({
   targetDate,
   setIsSubscriptionReady,
 }: {
@@ -37,7 +37,10 @@ export default function HeaderDatePicker({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button className="min-w-20 px-1.5 text-base" variant="ghost">
+        <Button
+          className="h-8 px-2 py-0 text-base font-semibold"
+          variant="ghost"
+        >
           {format(targetDate, 'yyyy-MM-dd')}
         </Button>
       </PopoverTrigger>

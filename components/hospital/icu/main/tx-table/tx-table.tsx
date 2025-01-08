@@ -78,7 +78,7 @@ export default function TxTable({
     return (
       <NoResultSquirrel
         text={`모든 ${orderType ?? ''} 처치를 완료했습니다`}
-        className="h-icu-chart-main flex-col"
+        className="h-screen flex-col"
         size="lg"
       />
     )
@@ -88,9 +88,9 @@ export default function TxTable({
     <>
       <ScrollArea
         ref={scrollAreaRef}
-        className="h-[calc(100vh-92px)] overflow-scroll whitespace-nowrap 2xl:h-icu-chart-main 2xl:w-[calc(100vw-250px)]"
+        className="h-mobile overflow-scroll whitespace-nowrap 2xl:w-[calc(100vw-250px)]"
       >
-        <Table className="border" ref={tableRef}>
+        <Table className="border border-l-0" ref={tableRef}>
           <TxTableHeader
             filteredTxData={filteredTxData}
             localFilterState={localFilterState}

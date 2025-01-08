@@ -63,11 +63,11 @@ export default function Analysis() {
       {analysisData.length === 0 ? (
         <NoResultSquirrel
           text="분석할 차트 데이터가 없습니다"
-          className="h-icu-chart-main flex-col"
+          className="h-screen flex-col"
           size="lg"
         />
       ) : (
-        <div>
+        <div className="grid grid-cols-2 gap-2">
           <IoPatientsStatistics
             analysisData={analysisData}
             setStartDate={setStartDate}
@@ -76,7 +76,7 @@ export default function Analysis() {
             vets={vets}
           />
 
-          <div className="grid grid-cols-2 pb-12">
+          <div className="col-span-2 grid grid-cols-2 gap-2 pb-12">
             <VetAssignmentStatistics analysisData={analysisData} />
             <GroupByStatistics analysisData={analysisData} />
           </div>

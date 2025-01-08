@@ -19,7 +19,7 @@ export default function Template({
   const { isTemplateDialogOpen } = useTemplateStore()
 
   return (
-    <Tabs defaultValue="search" className="p-2">
+    <Tabs defaultValue="search">
       <TabsList className="grid grid-cols-2">
         <TabsTrigger value="search">템플릿 검색</TabsTrigger>
         <TabsTrigger value="add">템플릿 추가</TabsTrigger>

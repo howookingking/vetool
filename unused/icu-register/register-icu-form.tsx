@@ -1,7 +1,6 @@
 // 입원 간소화해서 이 단계 생략 unused!!
 
 import UserAvatar from '@/components/hospital/common/user-avatar'
-import { registerIcuPatientFormSchema } from '@/components/hospital/icu/header/register-dialog/(unused)/icu-schema'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -39,6 +38,7 @@ import { useEffect, useState } from 'react'
 import { DateRange } from 'react-day-picker'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
+import { registerIcuPatientFormSchema } from './icu-schema'
 
 export default function RegisterIcuForm({
   hosId,

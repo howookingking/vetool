@@ -54,13 +54,7 @@ export default async function IcuPageLayout(props: {
         orderColorDisplay: basicHosData.order_color_display,
       }}
     >
-      {/* <IcuHeader
-        hosId={params.hos_id}
-        groupList={basicHosData.group_list}
-        vetsData={vetsListData}
-      /> */}
-
-      <div className="flex h-icu-chart-main">
+      <div className="h-desktop flex">
         <IcuSidebar
           hosId={params.hos_id}
           hosGroupList={basicHosData.group_list}

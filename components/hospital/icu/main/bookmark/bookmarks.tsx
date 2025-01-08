@@ -14,13 +14,13 @@ export default function Bookmarks({
   const { isPreviewDialogOpen } = usePreviewDialogStore()
 
   return (
-    <div className="p-2">
+    <>
       <DataTable
         columns={bookmarkColumns}
         data={bookmarkedChartData || []}
         searchPlaceHolder="북마크 이름, 설명으로 검색"
       />
       {isPreviewDialogOpen && <PreviewDialog />}
-    </div>
+    </>
   )
 }

@@ -1,8 +1,5 @@
 'use client'
 
-import PatientRegisterButtons from '@/components/hospital/icu/header/register-dialog/search-patient/patient-register-buttons'
-import SearchPatientPagination from '@/components/hospital/icu/header/register-dialog/search-patient/search-patient-pagination'
-import SearchPatientTable from '@/components/hospital/icu/header/register-dialog/search-patient/search-patient-table'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
@@ -13,6 +10,9 @@ import type { PaginatedData, SearchedPatientsData } from '@/types/patients'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
+import PatientRegisterButtons from './patient-register-buttons'
+import SearchPatientPagination from './search-patient-pagination'
+import SearchPatientTable from './search-patient-table'
 
 export default function SearchPatientContainer({
   itemsPerPage,

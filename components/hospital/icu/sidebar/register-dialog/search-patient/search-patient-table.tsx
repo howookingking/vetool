@@ -1,6 +1,5 @@
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import NoResult from '@/components/common/no-result'
-import SearchPatientTableRow from '@/components/hospital/icu/header/register-dialog/search-patient/search-patient-table-row'
 import {
   Table,
   TableBody,
@@ -11,6 +10,7 @@ import {
 } from '@/components/ui/table'
 import type { SearchedPatientsData } from '@/types/patients'
 import { Dispatch, SetStateAction } from 'react'
+import SearchPatientTableRow from './search-patient-table-row'
 
 export default function SearchPatientTable({
   isSearching,

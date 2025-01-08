@@ -1,5 +1,5 @@
-import InstructionShortcutItem from '@/components/hospital/icu/header/instruction(unused)/instruction-shortcut-item'
 import { INSTRUCITON_SHORTCUTS } from '@/constants/hospital/icu/chart/instruction'
+import InstructionShortcutItem from './instruction-shortcut-item'
 
 export default function InstructionShortcutContent() {
   return (
