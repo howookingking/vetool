@@ -1,7 +1,6 @@
 'use client'
 
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
-import RegisterDialogHeader from '@/components/hospital/icu/header/register-dialog/register-dialog-header'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -11,11 +10,12 @@ import type { Vet } from '@/types/icu/chart'
 import dynamic from 'next/dynamic'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
+import RegisterDialogHeader from './register-dialog-header'
 
 const LazyRegisterIcuConfirmDialog = dynamic(
   () =>
     import(
-      '@/components/hospital/icu/header/register-dialog/register-icu-confirm-dialog'
+      '@/components/hospital/icu/sidebar/register-dialog/register-icu-confirm-dialog'
     ),
   {
     ssr: false,
@@ -32,7 +32,7 @@ const LazyPatientForm = dynamic(
 const LazySearchPatientContainer = dynamic(
   () =>
     import(
-      '@/components/hospital/icu/header/register-dialog/search-patient/search-patient-containter'
+      '@/components/hospital/icu/sidebar/register-dialog/search-patient/search-patient-containter'
     ),
   {
     ssr: false,
