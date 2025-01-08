@@ -1,6 +1,5 @@
-import Filters from '@/components/hospital/icu/sidebar/filters/filters'
-
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
+import Filters from '@/components/hospital/icu/sidebar/filters/filters'
 import PatientList from '@/components/hospital/icu/sidebar/patient-list'
 import { Separator } from '@/components/ui/separator'
 import type { Filter, IcuSidebarIoData, Vet } from '@/types/icu/chart'
@@ -35,7 +34,6 @@ export default function MobileSidebar({
 
   const resetFilters = () => {
     setFilters({ selectedGroup: [], selectedVet: '', selectedSort: 'date' })
-
     push(pathname)
   }
 
@@ -48,38 +46,34 @@ export default function MobileSidebar({
         />
       ) : (
         <div className="flex h-full flex-col gap-3 p-2">
-          <div className="flex-none">
-            <IcuDateSelector />
+          <IcuDateSelector />
 
-            <Filters
-              hosGroupList={hosGroupList}
-              vetsListData={vetsListData}
-              selectedGroup={filters.selectedGroup}
-              setSelectedGroup={(group) =>
-                setFilters({ ...filters, selectedGroup: group })
-              }
-              selectedVet={filters.selectedVet}
-              setSelectedVet={(vet) =>
-                setFilters({ ...filters, selectedVet: vet })
-              }
-              selectedSort={filters.selectedSort}
-              setSelectedSort={(sort) =>
-                setFilters({ ...filters, selectedSort: sort })
-              }
-              resetFilters={resetFilters}
-            />
-          </div>
+          <Filters
+            hosGroupList={hosGroupList}
+            vetsListData={vetsListData}
+            selectedGroup={filters.selectedGroup}
+            setSelectedGroup={(group) =>
+              setFilters({ ...filters, selectedGroup: group })
+            }
+            selectedVet={filters.selectedVet}
+            setSelectedVet={(vet) =>
+              setFilters({ ...filters, selectedVet: vet })
+            }
+            selectedSort={filters.selectedSort}
+            setSelectedSort={(sort) =>
+              setFilters({ ...filters, selectedSort: sort })
+            }
+            resetFilters={resetFilters}
+          />
 
-          <Separator className="flex-none" />
+          <Separator />
 
-          <div className="flex-grow overflow-y-auto">
-            <PatientList
-              filteredIcuIoData={filteredData.filteredIcuIoData}
-              excludedIcuIoData={filteredData.excludedIcuIoData}
-              vetsListData={vetsListData}
-              handleCloseMobileDrawer={handleCloseMobileDrawer}
-            />
-          </div>
+          <PatientList
+            filteredIcuIoData={filteredData.filteredIcuIoData}
+            excludedIcuIoData={filteredData.excludedIcuIoData}
+            vetsListData={vetsListData}
+            handleCloseMobileDrawer={handleCloseMobileDrawer}
+          />
         </div>
       )}
     </aside>
