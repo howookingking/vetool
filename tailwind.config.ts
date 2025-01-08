@@ -135,6 +135,9 @@ const config = {
         desktop: 'calc(100vh - 40px)', // icu footer만 제외
         mobile: 'calc(100vh - 88px)', // icu header(모바일 혹은 처치표 필터) 제외
       },
+      width: {
+        'exclude-sidebar': 'calc(100vw - 250px)',
+      },
     },
   },
   plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],

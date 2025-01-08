@@ -8,9 +8,9 @@ export default function ChartHeader({
   chartData: SelectedChart
 }) {
   return (
-    <header className="relative flex items-center justify-between">
+    <div className="w-exclude-sidebar fixed z-50 bg-white">
       <HeaderCenter chartData={chartData} />
       <HeaderRightButtons chartData={chartData} />
-    </header>
+    </div>
   )
 }
