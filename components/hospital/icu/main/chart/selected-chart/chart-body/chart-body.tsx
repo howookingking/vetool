@@ -13,7 +13,7 @@ export default function ChartBody({ chartData }: { chartData: SelectedChart }) {
   const isMobile = useIsMobile()
 
   return (
-    <div className="mt-12 flex flex-col gap-2 p-2 pt-0">
+    <div className="mt-12 flex flex-col gap-2 p-2 2xl:pt-0">
       <ChartInfos chartData={chartData} />
 
       {isMobile ? (

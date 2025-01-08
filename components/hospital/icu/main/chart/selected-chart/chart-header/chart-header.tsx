@@ -8,7 +8,7 @@ export default function ChartHeader({
   chartData: SelectedChart
 }) {
   return (
-    <div className="w-exclude-sidebar fixed z-50 bg-white">
+    <div className="2xl:w-exclude-sidebar fixed z-30 w-full border-b bg-white 2xl:border-b-0">
       <HeaderCenter chartData={chartData} />
       <HeaderRightButtons chartData={chartData} />
     </div>
