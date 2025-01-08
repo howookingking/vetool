@@ -63,7 +63,7 @@ export default function Analysis() {
       {analysisData.length === 0 ? (
         <NoResultSquirrel
           text="분석할 차트 데이터가 없습니다"
-          className="h-icu-chart-main flex-col"
+          className="h-screen flex-col"
           size="lg"
         />
       ) : (

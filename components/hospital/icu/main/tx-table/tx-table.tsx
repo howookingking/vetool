@@ -78,7 +78,7 @@ export default function TxTable({
     return (
       <NoResultSquirrel
         text={`모든 ${orderType ?? ''} 처치를 완료했습니다`}
-        className="h-icu-chart-main flex-col"
+        className="h-screen flex-col"
         size="lg"
       />
     )

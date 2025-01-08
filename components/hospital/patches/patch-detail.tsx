@@ -19,10 +19,7 @@ export default function PatchDetail({
   } = patchDetailData
 
   return (
-    <Card
-      className="max-h-icu-chart-main divide-y overflow-y-scroll rounded-lg"
-      style={{ margin: 0 }}
-    >
+    <Card className="divide-y rounded-lg" style={{ margin: 0 }}>
       {/* 헤더 섹션 */}
       <div className="p-6">
         <div className="flex items-center justify-center">
