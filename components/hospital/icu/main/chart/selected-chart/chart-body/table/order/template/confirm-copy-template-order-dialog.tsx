@@ -23,8 +23,7 @@ import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { DialogDescription } from '@radix-ui/react-dialog'
 import { LoaderCircle } from 'lucide-react'
-import Image from 'next/image'
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 
 export default function ConfirmCopyTemplateOrderDialog({
   icuChartId,
@@ -40,7 +39,7 @@ export default function ConfirmCopyTemplateOrderDialog({
   const [orderer, setOrderer] = useState(vetsListData[0].name)
   const [isPending, setIsPending] = useState(false)
 
-  const handleConfirmCopy = useCallback(async () => {
+  const handleConfirmCopy = async () => {
     setIsPending(true)
     await upsertTemplateOrders(template.icu_chart_id!, icuChartId)
 
@@ -52,13 +51,7 @@ export default function ConfirmCopyTemplateOrderDialog({
     reset()
     setIsTemplateDialogOpen(false)
     setOrderStep('closed')
-  }, [
-    template.icu_chart_id,
-    icuChartId,
-    reset,
-    setIsTemplateDialogOpen,
-    setOrderStep,
-  ])
+  }
 
   return (
     <Dialog open={isTemplateDialogOpen} onOpenChange={setIsTemplateDialogOpen}>

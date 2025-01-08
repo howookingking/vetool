@@ -1,4 +1,3 @@
-import { orderSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-schema'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
   FormControl,
@@ -6,6 +5,7 @@ import {
   FormItem,
   FormLabel,
 } from '@/components/ui/form'
+import { orderSchema } from '@/lib/schemas/icu/chart/order-schema'
 import { UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 

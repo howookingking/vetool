@@ -1,10 +1,10 @@
+import OrderWidthButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/order-width-button'
+import SortingButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/sorting-button'
+import OrderDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-dialog'
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
 import { Dispatch, SetStateAction } from 'react'
-import OrderDialog from '../order/order-dialog'
-import OrderWidthButton from './order-width-button'
-import SortingButton from './sorting-button'
 
 type ChartTableHeaderProps = {
   preview?: boolean

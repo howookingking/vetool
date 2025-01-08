@@ -58,3 +58,15 @@ export const MEMO_COLORS = [
   '#ede9fe', // violet-100
   '#fce7f3', // pink-100
 ] as const
+
+export const NOTICE_COLORS = [
+  '#ffffff',
+  '#fecaca',
+  '#fed7aa',
+  '#fef08a',
+  '#d9f99d',
+  '#a7f3d0',
+  '#a5f3fc',
+  '#bfdbfe',
+  '#ddd6fe',
+] as const

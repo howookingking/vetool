@@ -1,4 +1,3 @@
-import { registerPatientFormSchema } from '@/components/hospital/patients/patient-schema'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
@@ -13,6 +12,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { registerPatientFormSchema } from '@/lib/schemas/patient/patient-schema'
 import { differenceInMonths, differenceInYears, format } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { Calendar as CalendarIcon } from 'lucide-react'
