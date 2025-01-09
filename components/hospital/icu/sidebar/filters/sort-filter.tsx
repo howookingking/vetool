@@ -23,7 +23,7 @@ export default function SortFilter({
         </Button>
       </MenubarTrigger>
 
-      <MenubarContent align="end" className="min-w-[144px]">
+      <MenubarContent align="start" className="min-w-[120px]">
         {SORT_FILTER_ITEMS.map((item) => (
           <MenubarItem
             key={item.value}

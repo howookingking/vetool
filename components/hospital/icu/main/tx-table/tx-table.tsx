@@ -77,8 +77,6 @@ export default function TxTable({
       DEFAULT_ICU_ORDER_TYPE.find((type) => type.value === orderType)?.label,
   )
 
-  console.log(filteredTxData)
-
   if (!hasOrder) {
     return (
       <NoResultSquirrel

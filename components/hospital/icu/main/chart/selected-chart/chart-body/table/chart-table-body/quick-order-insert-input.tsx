@@ -18,7 +18,6 @@ import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import { useRealtimeSubscriptionStore } from '@/lib/store/icu/realtime-subscription'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { IcuOrderColors } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { useParams, useRouter } from 'next/navigation'
 import { Dispatch, SetStateAction, useState } from 'react'
@@ -129,12 +128,7 @@ export default function QuickOrderInsertInput({
         }}
         value={orderType}
       >
-        <SelectTrigger
-          className="h-11 w-1/2 rounded-none border-0 border-r px-2 shadow-none ring-0 focus:ring-0"
-          // style={{
-          //   backgroundColor: orderColorsData[orderType as keyof IcuOrderColors],
-          // }}
-        >
+        <SelectTrigger className="h-11 w-1/2 rounded-none border-0 border-r px-2 shadow-none ring-0 focus:ring-0">
           <SelectValue />
         </SelectTrigger>
         <SelectContent className="p-0">
@@ -142,9 +136,6 @@ export default function QuickOrderInsertInput({
             <SelectItem
               key={item.value}
               value={item.value}
-              // style={{
-              //   backgroundColor: orderColorsData[item.value],
-              // }}
               className="rounded-none p-1 transition hover:opacity-70"
             >
               <div className="flex items-center gap-2">
