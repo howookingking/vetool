@@ -21,7 +21,7 @@ export const getWeightData = async (patientId: string, inDate: string) => {
     .order('created_at', { ascending: false })
 
   if (weightDataError) {
-    console.log(weightDataError)
+    console.error(weightDataError)
     redirect(`/error?message=${weightDataError.message}`)
   }
 

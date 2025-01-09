@@ -40,7 +40,7 @@ export default function VetFilter({
         </Button>
       </MenubarTrigger>
 
-      <MenubarContent align="start" className="min-w-[144px]">
+      <MenubarContent align="start" className="min-w-[120px]">
         {vetsListData.map((vet) => (
           <MenubarItem
             key={vet.user_id}

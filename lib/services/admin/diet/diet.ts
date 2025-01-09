@@ -32,7 +32,7 @@ export const getDiets = async (hosId: string) => {
     .returns<AdminDietData[]>()
 
   if (dietDataError) {
-    console.log(dietDataError)
+    console.error(dietDataError)
     redirect(`/error?message=${dietDataError.message}`)
   }
 

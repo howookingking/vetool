@@ -13,7 +13,7 @@ export const getDrugProductDetails = async (hosId: string) => {
       .returns<DrugProductDetail[]>()
 
   if (drugProductDetailsDataError) {
-    console.log(drugProductDetailsDataError)
+    console.error(drugProductDetailsDataError)
     redirect(`/error/?message=${drugProductDetailsDataError.message}`)
   }
 

@@ -118,8 +118,6 @@ export const updateIsBordered = async (
 ) => {
   const supabase = await createClient()
 
-  console.log(isBordered)
-
   const { error } = await supabase
     .from('icu_orders')
     .update({ is_bordered: !isBordered })
