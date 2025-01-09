@@ -35,3 +35,29 @@ export const ADMIN_SETTING_ITEMS = [
     Component: TimeGuidelineTab,
   },
 ] as const
+
+export const ORDER_FONT_SIZES = {
+  14: {
+    title: '14px',
+    desc: '12px',
+  },
+  16: {
+    title: '16px',
+    desc: '14px',
+  },
+  18: {
+    title: '18px',
+    desc: '16px',
+  },
+} as const
+
+export const TIME_GUIDELINES_SAMPLE_ORDERS = [
+  {
+    orderTitle: 'AMC IV',
+    orderComment: '1ml',
+  },
+  {
+    orderTitle: 'Esomeprazole SC',
+    orderComment: '1ml',
+  },
+] as const

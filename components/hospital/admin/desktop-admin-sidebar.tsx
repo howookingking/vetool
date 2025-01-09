@@ -13,6 +13,7 @@ export default function DesktopAdminSidebar() {
             icon={item.icon}
             name={item.name}
             path={item.path}
+            isResponsive={item.isResponsive}
             isReady={item.isReady}
           />
         ))}

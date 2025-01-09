@@ -11,12 +11,14 @@ export default function AdminSidebarItem({
   path,
   icon: Icon,
   isReady,
+  isResponsive,
   setIsSheetOpen,
 }: {
   name: string
   path: string
   icon: LucideIcon
   isReady: boolean
+  isResponsive: boolean
   setIsSheetOpen?: React.Dispatch<React.SetStateAction<boolean>>
 }) {
   const pathname = usePathname()
@@ -28,6 +30,7 @@ export default function AdminSidebarItem({
         className={cn(
           'flex w-full items-center justify-start gap-3 px-2',
           !isReady && 'pointer-events-none opacity-50',
+          !isResponsive && 'hidden md:flex',
         )}
         variant="ghost"
         asChild

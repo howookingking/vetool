@@ -41,6 +41,7 @@ export default function MobileAdminSidebar() {
                 name={item.name}
                 path={item.path}
                 isReady={item.isReady}
+                isResponsive={item.isResponsive}
                 setIsSheetOpen={setIsSheetOpen}
               />
             ))}
