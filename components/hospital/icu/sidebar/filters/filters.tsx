@@ -1,11 +1,10 @@
 import GroupFilter from '@/components/hospital/icu/sidebar/filters/group-filter'
+import ResetFilters from '@/components/hospital/icu/sidebar/filters/reset-filters'
+import SortFilter from '@/components/hospital/icu/sidebar/filters/sort-filter'
+import VetFilter from '@/components/hospital/icu/sidebar/filters/vet-filter'
 import { Menubar } from '@/components/ui/menubar'
 import type { Vet } from '@/types/icu/chart'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
-import ResetFilters from './reset-filters'
-import SortFilter from './sort-filter'
-import VetFilter from './vet-filter'
 
 type FiltersProps = {
   hosGroupList: string[]
@@ -36,18 +35,12 @@ export default function Filters({
 
   const { push } = useRouter()
 
-  const [tempSelectedGroup, setTempSelectedGroup] =
-    useState<string[]>(selectedGroup)
-
   // 그룹 변경 메소드 (GroupFilter)
   const handleGroupChange = (group: string) => {
-    const newGroups = tempSelectedGroup.includes(group)
-      ? tempSelectedGroup.filter(
-          (selectedGroup: string) => selectedGroup !== group,
-        )
-      : [...tempSelectedGroup, group]
+    const newGroups = selectedGroup.includes(group)
+      ? selectedGroup.filter((selectedGroup: string) => selectedGroup !== group)
+      : [...selectedGroup, group]
 
-    setTempSelectedGroup(newGroups)
     setSelectedGroup(newGroups)
 
     if (newGroups.length) {
@@ -99,7 +92,7 @@ export default function Filters({
         onVetSelect={handleVetSelect}
       />
 
-      <SortFilter onSortSelect={handleSortSelect} />
+      <SortFilter selectedSort={selectedSort} onSortSelect={handleSortSelect} />
 
       <ResetFilters resetFilters={resetFilters} />
     </Menubar>
