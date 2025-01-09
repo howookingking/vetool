@@ -1,26 +1,11 @@
-'use client'
-
 import IcuSettingsCard from '@/components/hospital/admin/icu-settings/icu-settings-card'
+import OrderRadioItem from '@/components/hospital/admin/icu-settings/order-font-size/order-radio-item'
 import { RadioGroup } from '@/components/ui/radio-group'
 import { toast } from '@/components/ui/use-toast'
-import { useState } from 'react'
-import OrderRadioItem from './order-radio-item'
+import { ORDER_FONT_SIZES } from '@/constants/admin/admin-setting-items'
 import { updateOrderFontSize } from '@/lib/services/admin/icu/order-font-size'
-
-const ORDER_FONT_SIZES = {
-  14: {
-    title: '14px',
-    desc: '12px',
-  },
-  16: {
-    title: '16px',
-    desc: '14px',
-  },
-  18: {
-    title: '18px',
-    desc: '16px',
-  },
-}
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 export default function OrderFontSetting({
   hosId,
@@ -29,10 +14,12 @@ export default function OrderFontSetting({
   hosId: string
   orderFontSize: number
 }) {
+  const { refresh } = useRouter()
+
+  const [isUpdating, setIsUpdating] = useState(false)
   const [selectedFontSize, setSelectedFontSize] = useState(
     orderFontSize.toString(),
   )
-  const [isUpdating, setIsUpdating] = useState(false)
 
   const handleUpdateOrderFontSize = async () => {
     setIsUpdating(true)
@@ -44,6 +31,7 @@ export default function OrderFontSetting({
     })
 
     setIsUpdating(false)
+    refresh()
   }
 
   return (

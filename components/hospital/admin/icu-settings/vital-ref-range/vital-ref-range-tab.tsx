@@ -1,14 +1,14 @@
-import { getVitalRefRange } from '@/lib/services/admin/icu/vital-ref-range'
-import type { VitalRefRange } from '@/types/adimin'
-import VitalRefRangeSettings from './vital-ref-range-settings'
+'use client'
 
-export default async function VitalRefRangeTab({ hosId }: { hosId: string }) {
-  const vitalRefRangeData = await getVitalRefRange(hosId)
+import VitalRefRangeSettings from '@/components/hospital/admin/icu-settings/vital-ref-range/vital-ref-range-settings'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
+
+export default function VitalRefRangeTab({ hosId }: { hosId: string }) {
+  const {
+    basicHosData: { vitalRefRange },
+  } = useBasicHosDataContext()
 
   return (
-    <VitalRefRangeSettings
-      hosId={hosId}
-      vitalRefRangeData={vitalRefRangeData as VitalRefRange[]}
-    />
+    <VitalRefRangeSettings hosId={hosId} vitalRefRangeData={vitalRefRange} />
   )
 }

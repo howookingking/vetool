@@ -1,8 +1,12 @@
-import { getMemoNames } from '@/lib/services/admin/icu/memo-name'
-import MemoNameSetting from './memo-name-settting'
+'use client'
 
-export default async function MemoNameTab({ hosId }: { hosId: string }) {
-  const memoNames = await getMemoNames(hosId)
+import MemoNameSetting from '@/components/hospital/admin/icu-settings/memo-name/memo-name-settting'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 
-  return <MemoNameSetting memoNames={memoNames} />
+export default function MemoNameTab() {
+  const {
+    basicHosData: { memoNameListData },
+  } = useBasicHosDataContext()
+
+  return <MemoNameSetting memoNames={memoNameListData} />
 }

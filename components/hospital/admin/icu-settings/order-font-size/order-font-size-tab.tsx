@@ -1,8 +1,14 @@
+'use client'
+
 import OrderFontSizeSetting from '@/components/hospital/admin/icu-settings/order-font-size/order-font-size-setting'
-import { getHosOrderFontSize } from '@/lib/services/admin/icu/order-font-size'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 
-export default async function OrderFontTab({ hosId }: { hosId: string }) {
-  const orderFontSize = await getHosOrderFontSize(hosId)
+export default function OrderFontTab({ hosId }: { hosId: string }) {
+  const {
+    basicHosData: { orderFontSizeData },
+  } = useBasicHosDataContext()
 
-  return <OrderFontSizeSetting hosId={hosId} orderFontSize={orderFontSize} />
+  return (
+    <OrderFontSizeSetting hosId={hosId} orderFontSize={orderFontSizeData} />
+  )
 }
