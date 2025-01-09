@@ -1,43 +1,79 @@
+import NoResultSquirrel from '@/components/common/no-result-squirrel'
+import IcuDateSelector from '@/components/hospital/icu/sidebar/date-selector/icu-date-selector'
 import Filters from '@/components/hospital/icu/sidebar/filters/filters'
-import NoPatients from '@/components/hospital/icu/sidebar/no-patients'
 import PatientList from '@/components/hospital/icu/sidebar/patient-list'
+import RegisterDialog from '@/components/hospital/icu/sidebar/register-dialog/register-dialog'
 import { Separator } from '@/components/ui/separator'
 import type { Filter, IcuSidebarIoData, Vet } from '@/types/icu/chart'
+import { usePathname, useRouter } from 'next/navigation'
 import { type Dispatch, type SetStateAction } from 'react'
 
-export default function DesktopIcuSidebar({
-  filteredData,
-  vetsListData,
-  hosGroupList,
-  isEmpty,
-  setFilters,
-  filters,
-  handleCloseMobileDrawer,
-}: {
+type DesktopIcuSidebarProps = {
+  hosId: string
+  vetsListData: Vet[]
+  hosGroupList: string[]
   filteredData: {
     filteredIcuIoData: IcuSidebarIoData[]
     excludedIcuIoData: IcuSidebarIoData[]
   }
-  vetsListData: Vet[]
-  hosGroupList: string[]
   isEmpty: boolean
   setFilters: Dispatch<SetStateAction<Filter>>
   filters: Filter
   handleCloseMobileDrawer?: () => void
-}) {
+}
+
+export default function DesktopIcuSidebar({
+  hosId,
+  vetsListData,
+  hosGroupList,
+  filteredData,
+  isEmpty,
+  setFilters,
+  filters,
+  handleCloseMobileDrawer,
+}: DesktopIcuSidebarProps) {
+  const pathname = usePathname()
+  const { push } = useRouter()
+
+  const resetFilters = () => {
+    setFilters({ selectedGroup: [], selectedVet: '', selectedSort: 'date' })
+    push(pathname)
+  }
+
   return (
-    <aside className="fixed z-30 hidden h-icu-chart-main w-48 shrink-0 flex-col gap-3 border-r bg-white p-2 2xl:flex">
+    <aside className="fixed z-40 hidden h-desktop w-48 shrink-0 flex-col gap-2 border-r bg-white px-2 pb-0 pt-2 2xl:flex">
+      <IcuDateSelector />
+
+      <RegisterDialog
+        hosId={hosId}
+        vetsListData={vetsListData}
+        hosGroupList={hosGroupList}
+      />
+
       {isEmpty ? (
-        <>
-          <NoPatients />
-        </>
+        <NoResultSquirrel
+          text="입원환자 없음"
+          className="mt-20 flex-col"
+          size="md"
+        />
       ) : (
         <>
           <Filters
             hosGroupList={hosGroupList}
-            setFilters={setFilters}
-            filters={filters}
             vetsListData={vetsListData}
+            selectedGroup={filters.selectedGroup}
+            setSelectedGroup={(group) =>
+              setFilters({ ...filters, selectedGroup: group })
+            }
+            selectedVet={filters.selectedVet}
+            setSelectedVet={(vet) =>
+              setFilters({ ...filters, selectedVet: vet })
+            }
+            selectedSort={filters.selectedSort}
+            setSelectedSort={(sort) =>
+              setFilters({ ...filters, selectedSort: sort })
+            }
+            resetFilters={resetFilters}
           />
 
           <Separator />

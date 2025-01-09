@@ -1,6 +1,7 @@
 import { TableCell, TableRow } from '@/components/ui/table'
 import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
 import useIsMobile from '@/hooks/use-is-mobile'
+import { cn } from '@/lib/utils/utils'
 import {
   Home,
   Syringe,
@@ -14,41 +15,31 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 
-const ICON_MAPPER = {
-  Home: <Home size={18} />,
-  Syringe: <Syringe size={18} />,
-  Slice: <Slice size={18} />,
-  HeartPulse: <HeartPulse size={18} />,
-  ListChecks: <ListChecks size={18} />,
-  BarChart4: <BarChart4 size={18} />,
-  PawPrint: <PawPrint size={18} />,
-  Building: <Building size={18} />,
-  Monitor: <Monitor size={18} />,
-}
-
 export default function PatchItem({
   id,
   category,
   title,
   createdAt,
+  isDraft,
+  isSuper,
 }: {
   id: string
   category: string
   title: string
   createdAt: string
+  isDraft: boolean
+  isSuper: boolean
 }) {
   const foundCategory = SIDEBAR_ITEMS.find((item) => item.path === category)
   const isMobile = useIsMobile()
 
   return (
-    <TableRow className="hover:bg-muted/50">
+    <TableRow
+      className={cn('hover:bg-muted/50', isDraft && !isSuper && 'hidden')}
+    >
       {/* 카테고리 */}
       <TableCell className="flex flex-col items-center gap-2 pl-2 md:flex-row md:pl-8">
-        {
-          ICON_MAPPER[
-            (foundCategory?.iconName as keyof typeof ICON_MAPPER) ?? 'Monitor'
-          ]
-        }
+        {foundCategory?.icon}
         {
           <span className="text-xs text-muted-foreground">
             {foundCategory?.name ?? '전체'}
@@ -57,8 +48,15 @@ export default function PatchItem({
       </TableCell>
 
       {/* 제목 */}
-      <TableCell className="max-w-[200px] overflow-hidden truncate text-center hover:underline">
-        <Link href={`patches/${id}`}>{title}</Link>
+      <TableCell
+        className={cn(
+          'max-w-[200px] overflow-hidden truncate text-center hover:underline',
+          isDraft && isSuper && 'text-rose-500',
+        )}
+      >
+        <Link href={`patches/${id}`}>
+          {isDraft && isSuper ? ` (임시저장) ${title}` : title}
+        </Link>
       </TableCell>
 
       {/* 작성일 */}

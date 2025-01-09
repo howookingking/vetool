@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
+import { bookmarkFormSchema } from '@/lib/schemas/icu/chart/bookmark-schema'
 import {
   deleteTemplateChart,
   upsertTemplateChart,
@@ -22,7 +23,6 @@ import { useParams, useRouter } from 'next/navigation'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { bookmarkFormSchema } from './bookmark-form-schema'
 
 export default function BookmarkForm({
   bookmarkData,

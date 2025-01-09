@@ -1377,6 +1377,7 @@ export type Database = {
         Row: {
           created_at: string
           feedback_id: string | null
+          is_draft: boolean
           patch_category: string
           patch_content: string
           patch_id: string
@@ -1385,6 +1386,7 @@ export type Database = {
         Insert: {
           created_at?: string
           feedback_id?: string | null
+          is_draft?: boolean
           patch_category?: string
           patch_content: string
           patch_id?: string
@@ -1393,6 +1395,7 @@ export type Database = {
         Update: {
           created_at?: string
           feedback_id?: string | null
+          is_draft?: boolean
           patch_category?: string
           patch_content?: string
           patch_id?: string

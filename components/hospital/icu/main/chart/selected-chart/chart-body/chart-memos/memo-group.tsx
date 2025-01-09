@@ -1,16 +1,14 @@
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
-import {
-  type Memo,
-  MEMO_COLORS,
-} from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/chart-memos'
 import MemoColorPicker from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/memo-color-picker'
 import SingleMemo from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/single-memo/single-memo'
 import { Label } from '@/components/ui/label'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
+import { MEMO_COLORS } from '@/constants/hospital/icu/chart/colors'
 import { updateMemos } from '@/lib/services/icu/chart/update-icu-chart-infos'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import type { Memo } from '@/types/icu/chart'
+import { useEffect, useRef, useState } from 'react'
 import { ReactSortable, Sortable } from 'react-sortablejs'
 
 export default function MemoGroup({
@@ -18,18 +16,22 @@ export default function MemoGroup({
   memoIndex,
   icuIoId,
   memoName,
+  sortMemoMethod,
 }: {
   memo: Memo[] | null
   memoIndex: number
   icuIoId: string
   memoName: string
+  sortMemoMethod: string
 }) {
   const [sortedMemos, setSortedMemos] = useState<Memo[]>(memo ?? [])
   const [memoInput, setMemoInput] = useState('')
   const [memoColor, setMemoColor] = useState<string>(MEMO_COLORS[0])
   const [isUpdating, setIsUpdating] = useState(false)
-  const lastMemoRef = useRef<HTMLLIElement>(null)
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(false)
+  const [shouldScrollToTop, setShouldScrollToTop] = useState(false)
+  const lastMemoRef = useRef<HTMLLIElement>(null)
+  const firstMemoRef = useRef<HTMLLIElement>(null)
 
   useEffect(() => {
     setSortedMemos(memo ?? [])
@@ -40,33 +42,34 @@ export default function MemoGroup({
       lastMemoRef.current.scrollIntoView({ behavior: 'smooth' })
       setShouldScrollToBottom(false)
     }
-  }, [sortedMemos, shouldScrollToBottom])
+    if (shouldScrollToTop && firstMemoRef.current) {
+      firstMemoRef.current.scrollIntoView({ behavior: 'smooth' })
+      setShouldScrollToTop(false)
+    }
+  }, [sortedMemos, shouldScrollToBottom, shouldScrollToTop])
 
-  const handleUpdateDbMemo = useCallback(
-    async (updatedMemos: Memo[]) => {
-      setIsUpdating(true)
+  const handleUpdateDbMemo = async (updatedMemos: Memo[]) => {
+    setIsUpdating(true)
 
-      let updateMemoQuery = {}
+    let updateMemoQuery = {}
 
-      switch (memoIndex) {
-        case 0:
-          updateMemoQuery = { memo_a: updatedMemos }
-          break
-        case 1:
-          updateMemoQuery = { memo_b: updatedMemos }
-          break
-        case 2:
-          updateMemoQuery = { memo_c: updatedMemos }
-          break
-      }
+    switch (memoIndex) {
+      case 0:
+        updateMemoQuery = { memo_a: updatedMemos }
+        break
+      case 1:
+        updateMemoQuery = { memo_b: updatedMemos }
+        break
+      case 2:
+        updateMemoQuery = { memo_c: updatedMemos }
+        break
+    }
 
-      await updateMemos(updateMemoQuery, icuIoId)
-      setIsUpdating(false)
-    },
-    [icuIoId, memoIndex],
-  )
+    await updateMemos(updateMemoQuery, icuIoId)
+    setIsUpdating(false)
+  }
 
-  const handleAddMemo = useCallback(async () => {
+  const handleAddMemo = async () => {
     if (memoInput.trim() === '') return
 
     const createdAt = new Date().toISOString()
@@ -79,84 +82,69 @@ export default function MemoGroup({
       color: memoColor,
     }
 
-    const updatedMemos = [...sortedMemos, newMemo]
+    const updatedMemos =
+      sortMemoMethod === 'desc'
+        ? [newMemo, ...sortedMemos]
+        : [...sortedMemos, newMemo]
+
     setSortedMemos(updatedMemos)
-
     setMemoInput('')
-
     await handleUpdateDbMemo(updatedMemos)
 
-    setShouldScrollToBottom(true)
+    setShouldScrollToBottom(sortMemoMethod === 'asc')
+    setShouldScrollToTop(sortMemoMethod === 'desc')
 
     toast({
       title: `${memoName}에 새 메모를 추가했습니다`,
     })
-  }, [
-    handleUpdateDbMemo,
-    memoColor,
-    memoInput,
-    memoName,
-    sortedMemos,
-    setMemoInput,
-  ])
+  }
 
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault()
-        handleAddMemo()
-      }
-    },
-    [handleAddMemo],
-  )
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      handleAddMemo()
+    }
+  }
 
-  const handleEditMemo = useCallback(
-    async (editedMemo: Memo, memoIndex: number) => {
-      const editedMemos = sortedMemos.map((memo, index) =>
-        index === memoIndex
-          ? {
-              ...editedMemo,
-              edit_timestamp: new Date().toISOString(),
-            }
-          : memo,
-      )
-      setSortedMemos(editedMemos)
+  const handleEditMemo = async (editedMemo: Memo, memoIndex: number) => {
+    const editedMemos = sortedMemos.map((memo, index) =>
+      index === memoIndex
+        ? {
+            ...editedMemo,
+            edit_timestamp: new Date().toISOString(),
+          }
+        : memo,
+    )
+    setSortedMemos(editedMemos)
 
-      await handleUpdateDbMemo(editedMemos)
+    await handleUpdateDbMemo(editedMemos)
 
-      toast({
-        title: `메모가 수정되었습니다`,
-      })
-    },
-    [handleUpdateDbMemo, sortedMemos],
-  )
+    toast({
+      title: `메모가 수정되었습니다`,
+    })
+  }
 
-  const handleDeleteMemo = useCallback(
-    async (entryIndex: number) => {
-      const updatedEntries = sortedMemos.filter(
-        (_, index) => index !== entryIndex,
-      )
-      setSortedMemos(updatedEntries)
+  const handleDeleteMemo = async (entryIndex: number) => {
+    const updatedEntries = sortedMemos.filter(
+      (_, index) => index !== entryIndex,
+    )
+    setSortedMemos(updatedEntries)
 
-      await handleUpdateDbMemo(updatedEntries)
-      toast({
-        title: `메모가 삭제되었습니다`,
-      })
-    },
-    [handleUpdateDbMemo, sortedMemos],
-  )
+    await handleUpdateDbMemo(updatedEntries)
+    toast({
+      title: `메모가 삭제되었습니다`,
+    })
+  }
 
-  const handleReorder = useCallback(
-    async (event: Sortable.SortableEvent) => {
-      let newOrder = [...sortedMemos]
-      const [movedItem] = newOrder.splice(event.oldIndex as number, 1)
-      newOrder.splice(event.newIndex as number, 0, movedItem)
+  const handleReorder = async (event: Sortable.SortableEvent) => {
+    let newOrder = [...sortedMemos]
+    const [movedItem] = newOrder.splice(event.oldIndex as number, 1)
+    newOrder.splice(event.newIndex as number, 0, movedItem)
 
-      setSortedMemos(newOrder)
-      await handleUpdateDbMemo(newOrder)
-    },
-    [sortedMemos, handleUpdateDbMemo],
-  )
+    setSortedMemos(newOrder)
+    await handleUpdateDbMemo(newOrder)
+  }
+
   return (
     <div className="relative flex w-full flex-col gap-1">
       <Label
@@ -185,7 +173,13 @@ export default function MemoGroup({
                 memoIndex={index}
                 handleEditMemo={handleEditMemo}
                 onDelete={() => handleDeleteMemo(index)}
-                ref={index === sortedMemos.length - 1 ? lastMemoRef : null}
+                ref={
+                  index === sortedMemos.length - 1
+                    ? lastMemoRef
+                    : index === 0
+                      ? firstMemoRef
+                      : null
+                }
               />
             ))
           )}

@@ -1,59 +1,86 @@
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+  MultiSelector,
+  MultiSelectorContent,
+  MultiSelectorInput,
+  MultiSelectorItem,
+  MultiSelectorList,
+  MultiSelectorReset,
+  MultiSelectorTrigger,
+} from '@/components/ui/multi-select'
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
-import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
+import { ChevronDown } from 'lucide-react'
 import { Dispatch, SetStateAction } from 'react'
 
 export default function TxTableFilter({
   localFilterState,
   setLocalFilterState,
 }: {
-  localFilterState: string
-  setLocalFilterState: Dispatch<SetStateAction<string>>
+  localFilterState: string[]
+  setLocalFilterState: Dispatch<SetStateAction<string[]>>
 }) {
   const {
     basicHosData: { orderColorsData },
   } = useBasicHosDataContext()
 
+  const handleTriggerMultiSelect = () => {
+    const inputElement = document.querySelector(
+      '[placeholder="오더 타입"]',
+    ) as HTMLInputElement
+    if (inputElement) {
+      inputElement.focus()
+    }
+  }
+
   return (
-    <Select value={localFilterState} onValueChange={setLocalFilterState}>
-      <SelectTrigger
-        className={cn(
-          'fixed left-2 top-[54px] z-30 w-[calc(100vw-16px)] 2xl:left-auto 2xl:right-2 2xl:top-1.5 2xl:w-[240px]',
-        )}
+    <div className="flex h-12 justify-center">
+      <MultiSelector
+        values={localFilterState}
+        options={DEFAULT_ICU_ORDER_TYPE.map((type) => ({
+          value: type.value,
+          label: type.label,
+        }))}
+        onValuesChange={setLocalFilterState}
+        className="relative h-12 w-[280px] rounded-none md:w-[560px]"
       >
-        <SelectValue />
-      </SelectTrigger>
+        <MultiSelectorTrigger
+          className="relative my-auto cursor-pointer rounded-md p-0"
+          onClick={handleTriggerMultiSelect}
+        >
+          <MultiSelectorInput
+            placeholder="오더 타입"
+            className="cursor-pointer p-2 px-3"
+          />
+          <ChevronDown className="absolute right-2 top-3" size={14} />
+        </MultiSelectorTrigger>
 
-      <SelectContent>
-        <SelectItem key="all" value="all">
-          전체
-        </SelectItem>
-
-        {DEFAULT_ICU_ORDER_TYPE.map((type) => (
-          <SelectItem
-            key={type.value}
-            value={type.value}
-            className="rounded-none transition hover:opacity-70"
-          >
-            <div className="flex items-center gap-2">
-              <div
-                className="h-4 w-4 rounded-full border"
-                style={{
-                  backgroundColor: orderColorsData[type.value],
-                }}
-              />
-              {type.label}
-            </div>
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+        <MultiSelectorContent
+          direction="down"
+          className="absolute left-0 top-10 z-40 w-full"
+        >
+          <MultiSelectorList>
+            <MultiSelectorReset />
+            {DEFAULT_ICU_ORDER_TYPE.map((type) => (
+              <MultiSelectorItem
+                key={type.value}
+                value={type.value}
+                label={type.label}
+                className="rounded-none transition hover:opacity-70"
+              >
+                <div className="flex items-center gap-2">
+                  <div
+                    className="h-4 w-4 rounded-full border"
+                    style={{
+                      backgroundColor: orderColorsData[type.value],
+                    }}
+                  />
+                  {type.label}
+                </div>
+              </MultiSelectorItem>
+            ))}
+          </MultiSelectorList>
+        </MultiSelectorContent>
+      </MultiSelector>
+    </div>
   )
 }

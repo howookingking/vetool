@@ -1,3 +1,4 @@
+import UserAvatar from '@/components/hospital/common/user-avatar'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -22,8 +23,7 @@ import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { DialogDescription } from '@radix-ui/react-dialog'
 import { LoaderCircle } from 'lucide-react'
-import Image from 'next/image'
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 
 export default function ConfirmCopyTemplateOrderDialog({
   icuChartId,
@@ -39,7 +39,7 @@ export default function ConfirmCopyTemplateOrderDialog({
   const [orderer, setOrderer] = useState(vetsListData[0].name)
   const [isPending, setIsPending] = useState(false)
 
-  const handleConfirmCopy = useCallback(async () => {
+  const handleConfirmCopy = async () => {
     setIsPending(true)
     await upsertTemplateOrders(template.icu_chart_id!, icuChartId)
 
@@ -51,13 +51,7 @@ export default function ConfirmCopyTemplateOrderDialog({
     reset()
     setIsTemplateDialogOpen(false)
     setOrderStep('closed')
-  }, [
-    template.icu_chart_id,
-    icuChartId,
-    reset,
-    setIsTemplateDialogOpen,
-    setOrderStep,
-  ])
+  }
 
   return (
     <Dialog open={isTemplateDialogOpen} onOpenChange={setIsTemplateDialogOpen}>
@@ -86,14 +80,7 @@ export default function ConfirmCopyTemplateOrderDialog({
                     >
                       <div className="flex items-center gap-2">
                         {vet.avatar_url && (
-                          <Image
-                            unoptimized
-                            src={vet.avatar_url ?? ''}
-                            alt={vet.name}
-                            width={20}
-                            height={20}
-                            className="rounded-full"
-                          />
+                          <UserAvatar src={vet.avatar_url} alt={vet.name} />
                         )}
                         <span>{vet.name}</span>
                         {vet.position && (

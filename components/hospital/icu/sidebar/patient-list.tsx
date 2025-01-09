@@ -16,18 +16,22 @@ export default function PatientList({
   handleCloseMobileDrawer,
 }: IcuSidebarContentProps) {
   const fileteredPatientCount = filteredIcuIoData.length
+  const excludedPatientCount = excludedIcuIoData.length
 
   return (
-    <div className="h-[calc(100vh-270px)] flex-col gap-3 overflow-y-auto">
+    <div className="flex-col gap-3 overflow-y-auto">
       {fileteredPatientCount > 0 ? (
-        <ul className="flex flex-col gap-2">
-          <li className="text-xs font-bold text-muted-foreground">
-            입원환자 ({fileteredPatientCount})
+        <ul className="flex flex-col gap-2 overflow-y-scroll">
+          <li className="flex items-center justify-between text-xs font-bold text-muted-foreground">
+            <span className="font-bold">
+              입원환자 ({fileteredPatientCount})
+            </span>
           </li>
+
           {filteredIcuIoData.map((icuIoData) => (
             <li
               key={icuIoData.icu_io_id}
-              className="w-full last:mb-4"
+              className="w-full last:mb-2"
               onClick={handleCloseMobileDrawer}
             >
               <PatientButton
@@ -43,18 +47,18 @@ export default function PatientList({
         </span>
       )}
 
-      {excludedIcuIoData.length > 0 && (
+      {excludedPatientCount > 0 && (
         <>
           <Separator className="my-3" />
 
-          <ul className="flex flex-col gap-2">
+          <ul className="flex flex-col gap-2 overflow-y-scroll">
             <li className="text-xs font-bold text-muted-foreground">
-              필터링 제외 ({excludedIcuIoData.length})
+              필터링 제외 ({excludedPatientCount})
             </li>
             {excludedIcuIoData.map((icuIoData) => (
               <li
                 key={icuIoData.icu_io_id}
-                className="w-full"
+                className="w-full last:mb-2"
                 onClick={handleCloseMobileDrawer}
               >
                 <PatientButton

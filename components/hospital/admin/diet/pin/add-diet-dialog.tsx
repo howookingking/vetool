@@ -1,6 +1,6 @@
 'use client'
 
-import { dietSchema } from '@/components/hospital/admin/diet/diet-schema'
+import { dietSchema } from '@/lib/schemas/admin/admin-schema'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,

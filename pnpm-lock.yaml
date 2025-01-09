@@ -49,6 +49,9 @@ importers:
       '@radix-ui/react-label':
         specifier: ^2.1.1
         version: 2.1.1(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
+      '@radix-ui/react-menubar':
+        specifier: ^1.1.4
+        version: 1.1.4(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
       '@radix-ui/react-popover':
         specifier: ^1.1.4
         version: 1.1.4(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
@@ -118,6 +121,9 @@ importers:
       jspdf:
         specifier: ^2.5.2
         version: 2.5.2
+      lucide:
+        specifier: ^0.469.0
+        version: 0.469.0
       lucide-react:
         specifier: ^0.379.0
         version: 0.379.0(react@19.0.0-rc-02c0e824-20241028)
@@ -1025,6 +1031,19 @@ packages:
 
   '@radix-ui/react-menu@2.1.4':
     resolution: {integrity: sha512-BnOgVoL6YYdHAG6DtXONaR29Eq4nvbi8rutrV/xlr3RQCMMb3yqP85Qiw/3NReozrSW+4dfLkK+rc1hb4wPU/A==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: 19.0.0-rc-02c0e824-20241028
+      react-dom: 19.0.0-rc-02c0e824-20241028
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+
+  '@radix-ui/react-menubar@1.1.4':
+    resolution: {integrity: sha512-+KMpi7VAZuB46+1LD7a30zb5IxyzLgC8m8j42gk3N4TUCcViNQdX8FhoH1HDvYiA8quuqcek4R4bYpPn/SY1GA==}
     peerDependencies:
       '@types/react': '*'
       '@types/react-dom': '*'
@@ -2751,6 +2770,9 @@ packages:
     resolution: {integrity: sha512-KcdeVPqmhRldldAAgptb8FjIunM2x2Zy26ZBh1RsEUcdLIvsEmbcw7KpzFYUy5BbpGeWhPu9Z9J5YXfStiXwhg==}
     peerDependencies:
       react: 19.0.0-rc-02c0e824-20241028
+
+  lucide@0.469.0:
+    resolution: {integrity: sha512-ZmMtOekJ6g1UFqTvV9aWbkk+u/QxpfDpgUrbNj8jJEK+CtBdHVQ4akCA0TcTyeOvnL8RWo271UzFTimBRT0gKw==}
 
   markdown-table@3.0.4:
     resolution: {integrity: sha512-wiYz4+JrLyb/DqW2hkFJxP7Vd7JuTDm77fvbM8VfEQdmSMqcImWeeRbHwZjBjIFki/VaMK2BhFi7oUUZeM5bqw==}
@@ -4692,6 +4714,24 @@ snapshots:
       '@types/react': 18.3.18
       '@types/react-dom': 18.3.5(@types/react@18.3.18)
 
+  '@radix-ui/react-menubar@1.1.4(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)':
+    dependencies:
+      '@radix-ui/primitive': 1.1.1
+      '@radix-ui/react-collection': 1.1.1(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
+      '@radix-ui/react-compose-refs': 1.1.1(@types/react@18.3.18)(react@19.0.0-rc-02c0e824-20241028)
+      '@radix-ui/react-context': 1.1.1(@types/react@18.3.18)(react@19.0.0-rc-02c0e824-20241028)
+      '@radix-ui/react-direction': 1.1.0(@types/react@18.3.18)(react@19.0.0-rc-02c0e824-20241028)
+      '@radix-ui/react-id': 1.1.0(@types/react@18.3.18)(react@19.0.0-rc-02c0e824-20241028)
+      '@radix-ui/react-menu': 2.1.4(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
+      '@radix-ui/react-primitive': 2.0.1(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
+      '@radix-ui/react-roving-focus': 1.1.1(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
+      '@radix-ui/react-use-controllable-state': 1.1.0(@types/react@18.3.18)(react@19.0.0-rc-02c0e824-20241028)
+      react: 19.0.0-rc-02c0e824-20241028
+      react-dom: 19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028)
+    optionalDependencies:
+      '@types/react': 18.3.18
+      '@types/react-dom': 18.3.5(@types/react@18.3.18)
+
   '@radix-ui/react-popover@1.1.4(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)':
     dependencies:
       '@radix-ui/primitive': 1.1.1
@@ -5959,7 +5999,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.18.2(eslint@9.17.0(jiti@1.21.7))(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0)(eslint@9.17.0(jiti@1.21.7)))(eslint@9.17.0(jiti@1.21.7)):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.18.2(eslint@9.17.0(jiti@1.21.7))(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0)(eslint@9.17.0(jiti@1.21.7)):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
@@ -5981,7 +6021,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.17.0(jiti@1.21.7)
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.18.2(eslint@9.17.0(jiti@1.21.7))(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0)(eslint@9.17.0(jiti@1.21.7)))(eslint@9.17.0(jiti@1.21.7))
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.18.2(eslint@9.17.0(jiti@1.21.7))(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0)(eslint@9.17.0(jiti@1.21.7))
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -6616,6 +6656,8 @@ snapshots:
   lucide-react@0.379.0(react@19.0.0-rc-02c0e824-20241028):
     dependencies:
       react: 19.0.0-rc-02c0e824-20241028
+
+  lucide@0.469.0: {}
 
   markdown-table@3.0.4: {}
 

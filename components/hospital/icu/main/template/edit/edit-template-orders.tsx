@@ -15,13 +15,7 @@ import { getOrder, upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import { useTemplateStore } from '@/lib/store/icu/template'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { useParams } from 'next/navigation'
-import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
 export default function EditTemplateOrders({
   chartId,
@@ -49,28 +43,28 @@ export default function EditTemplateOrders({
     Partial<SelectedIcuOrder>[]
   >([])
 
-  const fetchOrders = useCallback(async () => {
-    setIsEditing(true)
-
-    const orders = await getOrder(chartId)
-    const formattedOrders = orders.map((order) => ({
-      order_id: order.icu_chart_order_id,
-      order_name: order.icu_chart_order_name,
-      order_type: order.icu_chart_order_type,
-      order_times: order.icu_chart_order_time,
-      order_comment: order.icu_chart_order_comment || null,
-      is_bordered: order.is_bordered,
-    }))
-
-    setTemplateOrders(formattedOrders)
-    setInitialOrders(formattedOrders)
-
-    setIsEditing(false)
-  }, [chartId, setTemplateOrders])
-
   useEffect(() => {
+    const fetchOrders = async () => {
+      setIsEditing(true)
+
+      const orders = await getOrder(chartId)
+      const formattedOrders = orders.map((order) => ({
+        order_id: order.icu_chart_order_id,
+        order_name: order.icu_chart_order_name,
+        order_type: order.icu_chart_order_type,
+        order_times: order.icu_chart_order_time,
+        order_comment: order.icu_chart_order_comment || null,
+        is_bordered: order.is_bordered,
+      }))
+
+      setTemplateOrders(formattedOrders)
+      setInitialOrders(formattedOrders)
+
+      setIsEditing(false)
+    }
+
     fetchOrders()
-  }, [fetchOrders])
+  }, [chartId, setTemplateOrders])
 
   const handleNextButtonClick = async () => {
     const hasChanges =

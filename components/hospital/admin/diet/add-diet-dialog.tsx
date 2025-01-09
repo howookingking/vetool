@@ -1,6 +1,5 @@
 'use client'
 
-import { dietSchema } from '@/components/hospital/admin/diet/diet-schema'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -28,6 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { dietSchema } from '@/lib/schemas/admin/admin-schema'
 import { upsertDietData } from '@/lib/services/admin/diet/diet'
 import { cn } from '@/lib/utils/utils'
 import type { AdminDietData } from '@/types/adimin'

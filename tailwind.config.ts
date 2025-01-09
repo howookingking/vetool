@@ -131,7 +131,11 @@ const config = {
       },
       height: {
         'exclude-header': 'calc(100vh - 48px)',
-        'icu-chart-main': 'calc(100vh - 88px)',
+        desktop: 'calc(100vh - 40px)', // icu footer만 제외
+        mobile: 'calc(100vh - 88px)', // icu header(모바일 혹은 처치표 필터) 제외
+      },
+      width: {
+        'exclude-sidebar': 'calc(100vw - 250px)',
       },
     },
   },

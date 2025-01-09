@@ -1,7 +1,6 @@
 'use no memo'
 
 import DialogFooterButtons from '@/components/common/dialog-footer-buttons'
-import { cpcrEtTubeSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/cpcr-et-tube/cpcr-et-tube-schema'
 import {
   Form,
   FormControl,
@@ -19,6 +18,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { toast } from '@/components/ui/use-toast'
+import { cpcrEtTubeSchema } from '@/lib/schemas/icu/chart/chart-info-schema'
 import { updateCpcrEtTube } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'

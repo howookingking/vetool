@@ -1,4 +1,4 @@
-import { vetsFormSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/vets/vets-schema'
+import UserAvatar from '@/components/hospital/common/user-avatar'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { toast } from '@/components/ui/use-toast'
+import { vetsFormSchema } from '@/lib/schemas/icu/chart/chart-info-schema'
 import { updateMainSubVet } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { Json } from '@/lib/supabase/database.types'
 import { cn } from '@/lib/utils/utils'
@@ -23,7 +24,6 @@ import { IcuChartsInCharge } from '@/types/adimin'
 import type { MainAndSubVet, Vet } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
-import Image from 'next/image'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
@@ -122,14 +122,7 @@ export default function VetsUpdateForm({
                   {vetsList.map((vet) => (
                     <SelectItem key={vet.user_id} value={vet.user_id}>
                       <div className="flex items-center gap-2">
-                        <Image
-                          unoptimized
-                          src={vet.avatar_url ?? ''}
-                          alt={vet.name}
-                          width={20}
-                          height={20}
-                          className="rounded-full"
-                        />
+                        <UserAvatar alt={vet.name} src={vet.avatar_url} />
                         <span>{vet.name}</span>
                         <span className="text-xs">({vet.position})</span>
                       </div>
@@ -179,14 +172,7 @@ export default function VetsUpdateForm({
                     >
                       <div className="flex items-center gap-2">
                         {vet.avatar_url && (
-                          <Image
-                            unoptimized
-                            src={vet.avatar_url ?? ''}
-                            alt={vet.name}
-                            width={20}
-                            height={20}
-                            className="rounded-full"
-                          />
+                          <UserAvatar src={vet.avatar_url} alt={vet.name} />
                         )}
 
                         <span>{vet.name}</span>
@@ -237,14 +223,7 @@ export default function VetsUpdateForm({
                     >
                       <div className="flex items-center gap-2">
                         {vet.avatar_url && (
-                          <Image
-                            unoptimized
-                            src={vet.avatar_url ?? ''}
-                            alt={vet.name}
-                            width={20}
-                            height={20}
-                            className="rounded-full"
-                          />
+                          <UserAvatar src={vet.avatar_url} alt={vet.name} />
                         )}
 
                         <span>{vet.name}</span>
@@ -295,14 +274,7 @@ export default function VetsUpdateForm({
                     >
                       <div className="flex items-center gap-2">
                         {vet.avatar_url && (
-                          <Image
-                            unoptimized
-                            src={vet.avatar_url ?? ''}
-                            alt={vet.name}
-                            width={20}
-                            height={20}
-                            className="rounded-full"
-                          />
+                          <UserAvatar src={vet.avatar_url} alt={vet.name} />
                         )}
 
                         <span>{vet.name}</span>
@@ -353,14 +325,7 @@ export default function VetsUpdateForm({
                     >
                       <div className="flex items-center gap-2">
                         {vet.avatar_url && (
-                          <Image
-                            unoptimized
-                            src={vet.avatar_url ?? ''}
-                            alt={vet.name}
-                            width={20}
-                            height={20}
-                            className="rounded-full"
-                          />
+                          <UserAvatar src={vet.avatar_url} alt={vet.name} />
                         )}
 
                         <span>{vet.name}</span>
@@ -414,14 +379,7 @@ export default function VetsUpdateForm({
                     >
                       <div className="flex items-center gap-2">
                         {vet.avatar_url && (
-                          <Image
-                            unoptimized
-                            src={vet.avatar_url ?? ''}
-                            alt={vet.name}
-                            width={20}
-                            height={20}
-                            className="rounded-full"
-                          />
+                          <UserAvatar src={vet.avatar_url} alt={vet.name} />
                         )}
 
                         <span>{vet.name}</span>
@@ -475,14 +433,7 @@ export default function VetsUpdateForm({
                     >
                       <div className="flex items-center gap-2">
                         {vet.avatar_url && (
-                          <Image
-                            unoptimized
-                            src={vet.avatar_url ?? ''}
-                            alt={vet.name}
-                            width={20}
-                            height={20}
-                            className="rounded-full"
-                          />
+                          <UserAvatar src={vet.avatar_url} alt={vet.name} />
                         )}
 
                         <span>{vet.name}</span>
@@ -536,14 +487,7 @@ export default function VetsUpdateForm({
                     >
                       <div className="flex items-center gap-2">
                         {vet.avatar_url && (
-                          <Image
-                            unoptimized
-                            src={vet.avatar_url ?? ''}
-                            alt={vet.name}
-                            width={20}
-                            height={20}
-                            className="rounded-full"
-                          />
+                          <UserAvatar src={vet.avatar_url} alt={vet.name} />
                         )}
 
                         <span>{vet.name}</span>

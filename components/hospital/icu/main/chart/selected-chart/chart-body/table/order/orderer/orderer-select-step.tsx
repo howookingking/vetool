@@ -1,6 +1,6 @@
 'use client'
 
-import { ordererSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/orderer/orderer-schema'
+import UserAvatar from '@/components/hospital/common/user-avatar'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { toast } from '@/components/ui/use-toast'
+import { ordererSchema } from '@/lib/schemas/icu/chart/order-schema'
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useRealtimeSubscriptionStore } from '@/lib/store/icu/realtime-subscription'
@@ -26,7 +27,6 @@ import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provi
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
-import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -264,14 +264,7 @@ export default function OrdererSelectStep({
                     >
                       <div className="flex items-center gap-2">
                         {vet.avatar_url && (
-                          <Image
-                            unoptimized
-                            src={vet.avatar_url ?? ''}
-                            alt={vet.name}
-                            width={20}
-                            height={20}
-                            className="rounded-full"
-                          />
+                          <UserAvatar src={vet.avatar_url} alt={vet.name} />
                         )}
                         <span>{vet.name}</span>
                         {vet.position && (

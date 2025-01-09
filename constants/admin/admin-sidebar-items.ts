@@ -30,7 +30,7 @@ export const ADMIN_SIDEBAR_ITEMS = [
     name: '약물설정',
     path: 'drug-settings',
     icon: Pill,
-    isReady: true,
+    isReady: false,
   },
   {
     name: '사료설정',

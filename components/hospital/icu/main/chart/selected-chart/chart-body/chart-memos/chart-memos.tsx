@@ -2,26 +2,12 @@
 
 import HideAndShowButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/hide-and-show-button'
 import MemoGroup from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/memo-group'
+import SortMemoButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/sort-memo-button'
 import { Separator } from '@/components/ui/separator'
+import useLocalStorage from '@/hooks/use-local-storage'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
+import type { Memo } from '@/types/icu/chart'
 import { useState } from 'react'
-
-export type Memo = {
-  id: string
-  memo: string
-  create_timestamp: string
-  edit_timestamp: string | null
-  color: string
-  chosen?: boolean
-}
-
-export const MEMO_COLORS = [
-  '#fef9c3', // yellow-100
-  '#d1fae5', // emerald-100
-  '#e0f2fe', // sky-100
-  '#ede9fe', // violet-100
-  '#fce7f3', // pink-100
-] as const
 
 export default function ChartMemos({
   memoA,
@@ -35,6 +21,8 @@ export default function ChartMemos({
   icuIoId: string
 }) {
   const [showMemos, setShowMemos] = useState(true)
+  const [sortMemoMethod, setSortMemoMethod] = useLocalStorage('sort', 'desc')
+
   const {
     basicHosData: { memoNameListData },
   } = useBasicHosDataContext()
@@ -48,6 +36,7 @@ export default function ChartMemos({
             memoIndex={0}
             icuIoId={icuIoId}
             memoName={memoNameListData[0]}
+            sortMemoMethod={sortMemoMethod}
           />
 
           <Separator className="mt-4 md:hidden" />
@@ -57,6 +46,7 @@ export default function ChartMemos({
             memoIndex={1}
             icuIoId={icuIoId}
             memoName={memoNameListData[1]}
+            sortMemoMethod={sortMemoMethod}
           />
 
           <Separator className="mt-4 md:hidden" />
@@ -66,10 +56,15 @@ export default function ChartMemos({
             memoIndex={2}
             icuIoId={icuIoId}
             memoName={memoNameListData[2]}
+            sortMemoMethod={sortMemoMethod}
           />
         </div>
       )}
 
+      <SortMemoButton
+        sortMemoMethod={sortMemoMethod}
+        setSortMemoMethod={setSortMemoMethod}
+      />
       <HideAndShowButton setShowMemos={setShowMemos} showMemos={showMemos} />
     </div>
   )

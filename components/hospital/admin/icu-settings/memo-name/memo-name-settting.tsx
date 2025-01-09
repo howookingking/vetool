@@ -1,7 +1,6 @@
 'use client'
 
 import IcuSettingsCard from '@/components/hospital/admin/icu-settings/icu-settings-card'
-import { memoNameFormSchema } from '@/components/hospital/admin/icu-settings/memo-name/memo-name-schema'
 import {
   Form,
   FormControl,
@@ -13,6 +12,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
+import { memoNameFormSchema } from '@/lib/schemas/admin/admin-schema'
 import { updateMemoNames } from '@/lib/services/admin/icu/memo-name'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useParams, useRouter } from 'next/navigation'

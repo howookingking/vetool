@@ -17,7 +17,7 @@ export const getDrugs = async (hosId: string) => {
       .returns<DrugProductsJoined[]>()
 
   if (searchedDrugDataError) {
-    console.log(searchedDrugDataError)
+    console.error(searchedDrugDataError)
     redirect(`/error?message=${searchedDrugDataError.message}`)
   }
 

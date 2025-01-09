@@ -88,6 +88,18 @@ export default function PatchForm({
     })
   }
 
+  const handleSave = async () => {
+    setIsSubmitting(true)
+
+    await createPatchNote(formData, true)
+
+    toast({
+      title: '패치노트가 임시저장되었습니다',
+    })
+
+    setIsSubmitting(false)
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -183,6 +195,18 @@ export default function PatchForm({
         </div>
 
         <div className="flex justify-end space-x-4">
+          <Button
+            type="button"
+            disabled={isSubmitting}
+            variant="outline"
+            onClick={handleSave}
+          >
+            임시 저장
+            <LoaderCircle
+              className={cn(isSubmitting ? 'ml-2 animate-spin' : 'hidden')}
+            />
+          </Button>
+
           <Button type="button" disabled={isSubmitting} onClick={handleSubmit}>
             등록
             <LoaderCircle

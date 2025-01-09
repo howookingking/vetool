@@ -1,6 +1,5 @@
 import HelperTooltip from '@/components/common/helper-tooltip'
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
-import { orderSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-schema'
 import { AutoComplete } from '@/components/ui/auto-complete'
 import { Button } from '@/components/ui/button'
 import {
@@ -13,6 +12,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { calculateRer } from '@/lib/calculators/rer'
+import { orderSchema } from '@/lib/schemas/icu/chart/order-schema'
 import { getPinnedDietData } from '@/lib/services/icu/chart/get-diets'
 import { cn } from '@/lib/utils/utils'
 import type { PinnedDiet } from '@/types/icu/chart'

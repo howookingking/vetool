@@ -8,7 +8,7 @@ export default function ChartDefaultPage() {
   return (
     <NoResultSquirrel
       text={isMobile ? '👆 환자를 선택해주세요' : '👈 환자를 선택해주세요'}
-      className="h-icu-chart-main flex-col"
+      className="h-screen flex-col"
       size="lg"
     />
   )

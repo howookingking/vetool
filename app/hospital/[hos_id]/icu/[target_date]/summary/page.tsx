@@ -15,7 +15,7 @@ export default async function SummaryPage(props: {
     return (
       <NoResultSquirrel
         text="등록된 환자가 없습니다"
-        className="h-icu-chart-main flex-col"
+        className="h-screen flex-col"
         size="lg"
       />
     )

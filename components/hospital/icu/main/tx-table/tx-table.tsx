@@ -19,13 +19,16 @@ export default function TxTable({
   localFilterState,
   filteredTxData,
   chartBackgroundMap,
+  hasOrder,
 }: {
-  localFilterState: string
+  localFilterState: string[]
   filteredTxData: IcuTxTableData[]
   chartBackgroundMap: Record<string, string>
+  hasOrder: boolean
 }) {
   const scrollAreaRef = useRef<HTMLDivElement>(null)
   const tableRef = useRef<HTMLTableElement>(null)
+
   const [isScrolled, setIsScrolled] = useState(false)
   const {
     basicHosData: { orderColorsData },
@@ -69,15 +72,16 @@ export default function TxTable({
     return () => clearTimeout(timeoutId)
   }, [isScrolled])
 
-  const orderType = DEFAULT_ICU_ORDER_TYPE.find(
-    (orderType) => orderType.value === localFilterState,
-  )?.label
+  const orderType = localFilterState.map(
+    (orderType) =>
+      DEFAULT_ICU_ORDER_TYPE.find((type) => type.value === orderType)?.label,
+  )
 
-  if (filteredTxData.length === 0) {
+  if (!hasOrder) {
     return (
       <NoResultSquirrel
         text={`모든 ${orderType ?? ''} 처치를 완료했습니다`}
-        className="h-icu-chart-main flex-col"
+        className="h-screen flex-col"
         size="lg"
       />
     )
@@ -87,9 +91,9 @@ export default function TxTable({
     <>
       <ScrollArea
         ref={scrollAreaRef}
-        className="h-[calc(100vh-136px)] overflow-scroll whitespace-nowrap 2xl:h-icu-chart-main 2xl:w-[calc(100vw-250px)]"
+        className="h-mobile overflow-scroll whitespace-nowrap 2xl:w-[calc(100vw-250px)]"
       >
-        <Table className="border" ref={tableRef}>
+        <Table className="border border-l-0" ref={tableRef}>
           <TxTableHeader
             filteredTxData={filteredTxData}
             localFilterState={localFilterState}

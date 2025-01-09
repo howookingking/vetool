@@ -73,9 +73,3 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-
-/* 특정 컴퓨터에서 커서 사라지는 현상 */
-input,
-textarea {
-  cursor: text !important;
-}

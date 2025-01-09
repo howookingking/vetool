@@ -7,7 +7,7 @@ export default function Summary({
   summaryData: SummaryData[]
 }) {
   return (
-    <div className="h-icu-chart overflow-auto p-2 pb-[48px]">
+    <div className="2xl:h-desktop h-mobile mt-12 overflow-auto 2xl:mt-0">
       <SummaryTable summaryData={summaryData} />
     </div>
   )

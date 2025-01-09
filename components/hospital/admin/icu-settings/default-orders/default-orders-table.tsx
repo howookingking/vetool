@@ -15,7 +15,7 @@ import { hasOrderSortingChanges } from '@/lib/utils/utils'
 import type { IcuOrderColors } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { useRouter } from 'next/navigation'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Sortable } from 'react-sortablejs'
 
 export default function DefaultOrdersTable({
@@ -43,14 +43,14 @@ export default function DefaultOrdersTable({
     setSortedOrders(defaultChartOrders)
   }, [defaultChartOrders])
 
-  const handleOpenChange = useCallback(() => {
+  const handleOpenChange = () => {
     if (orderStep === 'closed') {
       setOrderStep('upsert')
     } else {
       setOrderStep('closed')
     }
     reset()
-  }, [orderStep, setOrderStep, reset])
+  }
 
   const handleEditOrderDialogOpen = (order: Partial<SelectedIcuOrder>) => {
     setOrderStep('upsert')

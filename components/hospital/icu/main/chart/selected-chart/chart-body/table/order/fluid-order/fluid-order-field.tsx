@@ -1,7 +1,6 @@
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import WarningMessage from '@/components/common/warning-message'
 import FluidToolTip from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/fluid-order/fluid-tool-tip'
-import { orderSchema } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-schema'
 import { AutoComplete } from '@/components/ui/auto-complete'
 import { Button } from '@/components/ui/button'
 import {
@@ -24,6 +23,7 @@ import {
 } from '@/components/ui/select'
 import { FLUIDS } from '@/constants/hospital/icu/chart/fluid'
 import { calculatedMaintenaceRate } from '@/lib/calculators/maintenace-rate'
+import { orderSchema } from '@/lib/schemas/icu/chart/order-schema'
 import { cn } from '@/lib/utils/utils'
 import { Calculator } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'

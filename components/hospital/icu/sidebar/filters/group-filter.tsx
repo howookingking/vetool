@@ -1,109 +1,60 @@
-import GroupBadge from '@/components/hospital/icu/sidebar/filters/group-badge'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarTrigger,
+} from '@/components/ui/menubar'
+import { cn } from '@/lib/utils/utils'
+import { Component } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
 
 export default function GroupFilter({
   hosGroupList,
   selectedGroup,
-  setSelectedGroup,
+  onGroupChange,
 }: {
   hosGroupList: string[]
   selectedGroup: string[]
-  setSelectedGroup: (group: string[]) => void
+  onGroupChange: (group: string) => void
 }) {
-  const path = usePathname()
   const searchParams = useSearchParams()
-  const currentParams = new URLSearchParams(searchParams.toString())
-
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [tempSelectedGroup, setTempSelectedGroup] = useState<string[]>([])
-
-  const { push } = useRouter()
-
-  const handleCheckboxChange = (group: string) => {
-    setTempSelectedGroup((prevGroups) =>
-      prevGroups.includes(group)
-        ? prevGroups.filter((value) => value !== group)
-        : [...prevGroups, group],
-    )
-  }
-
-  const handleResetClick = () => {
-    setTempSelectedGroup([])
-
-    currentParams.delete('group')
-    const newUrl = `${path}${currentParams.toString() ? '?' : ''}${currentParams.toString()}`
-
-    push(newUrl)
-  }
-
-  const handleOkButtonClick = () => {
-    setSelectedGroup(tempSelectedGroup)
-    setIsDialogOpen(false)
-    currentParams.set('group', tempSelectedGroup.join(','))
-    const newUrl = `${path}${currentParams.toString() ? '?' : ''}${currentParams.toString()}`
-
-    push(newUrl)
-  }
-
-  useEffect(() => {
-    setTempSelectedGroup(selectedGroup)
-  }, [selectedGroup])
+  const isReset = !searchParams.get('group')
 
   return (
-    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline" className="flex h-auto w-full px-1 py-[5px]">
-          {selectedGroup.length ? (
-            <GroupBadge currentGroups={selectedGroup} />
-          ) : (
-            '그룹선택'
+    <MenubarMenu>
+      <MenubarTrigger asChild>
+        <Button
+          variant="ghost"
+          className={cn(
+            !isReset && 'bg-primary text-white',
+            'h-[30px] w-full rounded-r-none',
           )}
+        >
+          <Component />
         </Button>
-      </DialogTrigger>
+      </MenubarTrigger>
 
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>그룹 선택</DialogTitle>
-          <DialogDescription>
-            &quot;또는(or)&quot; 조건으로 필터링됩니다
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-2">
-          {hosGroupList.map((group) => (
-            <div key={group} className="flex items-center gap-2">
-              <Checkbox
-                id={group}
-                onCheckedChange={() => handleCheckboxChange(group)}
-                checked={tempSelectedGroup.includes(group)}
-              />
-              <label htmlFor={group} className="cursor-pointer text-sm">
-                {group}
-              </label>
-            </div>
-          ))}
-        </div>
-
-        <DialogFooter className="flex gap-2 md:gap-0">
-          <Button variant="outline" onClick={handleResetClick}>
-            초기화
-          </Button>
-          <Button type="button" onClick={handleOkButtonClick}>
-            확인
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+      <MenubarContent align="start" className="min-w-[120px]" hideWhenDetached>
+        {hosGroupList.map((group) => (
+          <MenubarItem
+            key={group}
+            className="flex items-center gap-1.5"
+            onClick={(e) => {
+              e.preventDefault()
+              onGroupChange(group)
+            }}
+          >
+            <Checkbox checked={selectedGroup.includes(group)} />
+            <span>{group}</span>
+          </MenubarItem>
+        ))}
+        {/* <MenubarSeparator /> */}
+        {/* <MenubarItem>
+          <div className="text-center text-muted-foreground">선택 초기화</div>
+        </MenubarItem> */}
+      </MenubarContent>
+    </MenubarMenu>
   )
 }

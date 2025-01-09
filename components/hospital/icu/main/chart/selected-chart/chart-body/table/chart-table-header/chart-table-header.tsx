@@ -1,10 +1,11 @@
+import OrderWidthButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/order-width-button'
+import SortingButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/sorting-button'
+import OrderDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-dialog'
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
+import { cn } from '@/lib/utils/utils'
 import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
 import { Dispatch, SetStateAction } from 'react'
-import OrderDialog from '../order/order-dialog'
-import OrderWidthButton from './order-width-button'
-import SortingButton from './sorting-button'
 
 type ChartTableHeaderProps = {
   preview?: boolean
@@ -58,7 +59,12 @@ export default function ChartTableHeader({
   } = chartData
 
   return (
-    <TableHeader className="sticky -top-3 z-20 bg-white shadow-sm">
+    <TableHeader
+      className={cn(
+        preview || isMobile ? 'top-0' : 'top-12',
+        'sticky z-20 bg-white shadow-sm',
+      )}
+    >
       <TableRow>
         <TableHead
           className="flex items-center justify-between px-0.5 text-center"

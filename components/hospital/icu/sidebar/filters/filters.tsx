@@ -1,70 +1,100 @@
 import GroupFilter from '@/components/hospital/icu/sidebar/filters/group-filter'
+import ResetFilters from '@/components/hospital/icu/sidebar/filters/reset-filters'
+import SortFilter from '@/components/hospital/icu/sidebar/filters/sort-filter'
 import VetFilter from '@/components/hospital/icu/sidebar/filters/vet-filter'
+import { Menubar } from '@/components/ui/menubar'
 import type { Vet } from '@/types/icu/chart'
-import { RotateCcw } from 'lucide-react'
-import { usePathname, useRouter } from 'next/navigation'
-import React, { useCallback } from 'react'
-import SortFilter from './sort-filter'
-
-type Filter = {
-  selectedGroup: string[]
-  selectedVet: string
-  selectedSort: string
-}
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 type FiltersProps = {
-  filters: Filter
-  setFilters: React.Dispatch<React.SetStateAction<Filter>>
-  vetsListData: Vet[]
   hosGroupList: string[]
+  vetsListData: Vet[]
+  selectedGroup: string[]
+  setSelectedGroup: (group: string[]) => void
+  selectedVet: string
+  setSelectedVet: (vet: string) => void
+  selectedSort: string
+  setSelectedSort: (value: string) => void
+  resetFilters: () => void
 }
 
 export default function Filters({
-  filters,
-  setFilters,
-  vetsListData,
   hosGroupList,
+  vetsListData,
+  selectedGroup,
+  setSelectedGroup,
+  selectedVet,
+  setSelectedVet,
+  selectedSort,
+  setSelectedSort,
+  resetFilters,
 }: FiltersProps) {
-  const pathname = usePathname()
+  const path = usePathname()
+  const searchParams = useSearchParams()
+  const currentParams = new URLSearchParams(searchParams.toString())
+
   const { push } = useRouter()
 
-  const resetFilters = useCallback(() => {
-    setFilters({ selectedGroup: [], selectedVet: '', selectedSort: 'date' })
+  // 그룹 변경 메소드 (GroupFilter)
+  const handleGroupChange = (group: string) => {
+    const newGroups = selectedGroup.includes(group)
+      ? selectedGroup.filter((selectedGroup: string) => selectedGroup !== group)
+      : [...selectedGroup, group]
 
-    push(pathname)
-  }, [setFilters, push, pathname])
+    setSelectedGroup(newGroups)
+
+    if (newGroups.length) {
+      currentParams.set('group', newGroups.join(','))
+    } else {
+      currentParams.delete('group')
+    }
+
+    updateUrl()
+  }
+
+  // 수의사 선택 메소드 (VetFilter)
+  const handleVetSelect = (vetId: string) => {
+    if (vetId === 'reset') {
+      currentParams.delete('vet')
+      setSelectedVet('')
+    } else {
+      currentParams.set('vet', vetId)
+      setSelectedVet(vetId)
+    }
+
+    updateUrl()
+  }
+
+  // 정렬 변경 메소드 (SortFilter)
+  const handleSortSelect = (value: string) => {
+    currentParams.set('sort', value)
+    setSelectedSort(value)
+    updateUrl()
+  }
+
+  const updateUrl = () => {
+    const newUrl = `${path}${currentParams.toString() ? '?' : ''}${currentParams.toString()}`
+
+    push(newUrl)
+  }
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center justify-between">
-        <span className="text-xs font-bold text-muted-foreground">필터</span>
-        <RotateCcw
-          size={14}
-          onClick={resetFilters}
-          className="cursor-pointer transition hover:text-primary"
-        />
-      </div>
-
+    <Menubar className="flex h-8 space-x-0 p-0">
       <GroupFilter
         hosGroupList={hosGroupList}
-        selectedGroup={filters.selectedGroup}
-        setSelectedGroup={(group) =>
-          setFilters({ ...filters, selectedGroup: group })
-        }
+        selectedGroup={selectedGroup}
+        onGroupChange={handleGroupChange}
       />
 
       <VetFilter
         vetsListData={vetsListData}
-        selectedVet={filters.selectedVet}
-        setSelectedVet={(vet) => setFilters({ ...filters, selectedVet: vet })}
+        selectedVet={selectedVet}
+        onVetSelect={handleVetSelect}
       />
 
-      <SortFilter
-        selectedSort={filters.selectedSort}
-        setSelectedSort={(value) =>
-          setFilters({ ...filters, selectedSort: value })
-        }
-      />
-    </div>
+      <SortFilter selectedSort={selectedSort} onSortSelect={handleSortSelect} />
+
+      <ResetFilters resetFilters={resetFilters} />
+    </Menubar>
   )
 }
