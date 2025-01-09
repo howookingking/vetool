@@ -59,3 +59,9 @@ export const SIDEBAR_ITEMS = [
     icon: <Building />,
   },
 ] as const
+
+export const SORT_FILTER_ITEMS = [
+  { label: '입원일순', value: 'date' },
+  { label: '수의사순', value: 'vet' },
+  { label: '환자 가나다순', value: 'name' },
+]
