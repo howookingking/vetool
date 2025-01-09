@@ -1,6 +1,8 @@
+import OrderTitleContent from '@/components/hospital/common/order-title-content'
 import { Button } from '@/components/ui/button'
 import { TableCell, TableRow } from '@/components/ui/table'
-import { borderedOrderClassName, cn, parsingOrderName } from '@/lib/utils/utils'
+import { borderedOrderClassName, cn } from '@/lib/utils/utils'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { IcuOrderColors } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { RefObject } from 'react'
@@ -9,7 +11,6 @@ export default function OrderTableRow({
   order,
   sortedOrders,
   index,
-  orderColors,
   onEdit,
   orderRef,
   isSorting,
@@ -17,11 +18,14 @@ export default function OrderTableRow({
   order: SelectedIcuOrder
   sortedOrders: SelectedIcuOrder[]
   index: number
-  orderColors: IcuOrderColors
   onEdit: (order: Partial<SelectedIcuOrder>, index?: number) => void
   orderRef: RefObject<HTMLTableCellElement>
   isSorting?: boolean
 }) {
+  const {
+    basicHosData: { orderColorsData, orderColorDisplay },
+  } = useBasicHosDataContext()
+
   return (
     <TableRow
       className={cn('divide-x')}
@@ -35,7 +39,10 @@ export default function OrderTableRow({
         )}
         ref={orderRef}
         style={{
-          background: orderColors[order.order_type as keyof IcuOrderColors],
+          background:
+            orderColorDisplay === 'full'
+              ? orderColorsData[order.order_type as keyof IcuOrderColors]
+              : 'transparent',
         }}
       >
         <Button
@@ -50,16 +57,15 @@ export default function OrderTableRow({
             })
           }
           className={cn(
-            'flex w-full justify-between rounded-none bg-transparent px-2',
+            'flex w-full rounded-none bg-transparent px-2',
             isSorting ? 'cursor-grab' : 'cursor-pointer',
           )}
         >
-          <span className="truncate">
-            {parsingOrderName(order.order_type, order.order_name)}
-          </span>
-          <span className="text-xs text-muted-foreground">
-            {order.order_comment}
-          </span>
+          <OrderTitleContent
+            orderType={order.order_type}
+            orderName={order.order_name}
+            orderComment={order.order_comment}
+          />
         </Button>
       </TableCell>
     </TableRow>

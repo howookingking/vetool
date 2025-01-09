@@ -1,5 +1,6 @@
 'use client'
 
+import OrderTitleContent from '@/components/hospital/common/order-title-content'
 import {
   Table,
   TableBody,
@@ -9,7 +10,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
-import { borderedOrderClassName, parsingOrderName } from '@/lib/utils/utils'
+import { borderedOrderClassName } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { IcuOrderColors } from '@/types/adimin'
 import type { IcuReadOnlyOrderData } from '@/types/icu/chart'
@@ -20,7 +21,7 @@ export default function ReadOnlyChartTable({
   chartOrderData: IcuReadOnlyOrderData[]
 }) {
   const {
-    basicHosData: { orderColorsData },
+    basicHosData: { orderColorsData, orderColorDisplay },
   } = useBasicHosDataContext()
 
   return (
@@ -43,9 +44,11 @@ export default function ReadOnlyChartTable({
               className="w-[320px] p-0"
               style={{
                 background:
-                  orderColorsData[
-                    order.icu_chart_order_type as keyof IcuOrderColors
-                  ],
+                  orderColorDisplay === 'full'
+                    ? orderColorsData[
+                        order.icu_chart_order_type as keyof IcuOrderColors
+                      ]
+                    : 'transparent',
               }}
             >
               <div
@@ -54,16 +57,12 @@ export default function ReadOnlyChartTable({
                 }
                 style={borderedOrderClassName(chartOrderData, order, index)}
               >
-                <span className="truncate">
-                  {parsingOrderName(
-                    order.icu_chart_order_type,
-                    order.icu_chart_order_name,
-                  )}
-                </span>
-                <span className="min-w-16 truncate text-right text-xs text-muted-foreground">
-                  {order.icu_chart_order_comment}
-                  {order.icu_chart_order_type === 'fluid' && 'ml/hr'}
-                </span>
+                <OrderTitleContent
+                  orderType={order.icu_chart_order_type}
+                  orderName={order.icu_chart_order_name}
+                  orderComment={order.icu_chart_order_comment}
+                  isTouchMove={true}
+                />
               </div>
             </TableCell>
 

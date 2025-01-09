@@ -305,9 +305,9 @@ export const formatOrderName = (name: string, type: string) => {
   return name.replaceAll('#', ' ')
 }
 
-export const renderOrderSubComment = (order: SelectedIcuOrder) => {
-  if (order.order_type === 'fluid') return 'ml/hr'
-  if (order.order_type === 'feed') return '/회'
+export const renderOrderSubComment = (orderType: string) => {
+  if (orderType === 'fluid') return 'ml/hr'
+  if (orderType === 'feed') return '/회'
 }
 
 export const isValidWeightOrderTx = (
