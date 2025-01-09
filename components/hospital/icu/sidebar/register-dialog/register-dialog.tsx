@@ -19,7 +19,6 @@ const LazyRegisterIcuConfirmDialog = dynamic(
     ),
   {
     ssr: false,
-    loading: () => <LargeLoaderCircle className="h-[356px]" />,
   },
 )
 const LazyPatientForm = dynamic(

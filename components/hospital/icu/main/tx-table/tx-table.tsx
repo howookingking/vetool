@@ -19,13 +19,16 @@ export default function TxTable({
   localFilterState,
   filteredTxData,
   chartBackgroundMap,
+  hasOrder,
 }: {
   localFilterState: string[]
   filteredTxData: IcuTxTableData[]
   chartBackgroundMap: Record<string, string>
+  hasOrder: boolean
 }) {
   const scrollAreaRef = useRef<HTMLDivElement>(null)
   const tableRef = useRef<HTMLTableElement>(null)
+
   const [isScrolled, setIsScrolled] = useState(false)
   const {
     basicHosData: { orderColorsData },
@@ -74,7 +77,9 @@ export default function TxTable({
       DEFAULT_ICU_ORDER_TYPE.find((type) => type.value === orderType)?.label,
   )
 
-  if (filteredTxData.length === 0) {
+  console.log(filteredTxData)
+
+  if (!hasOrder) {
     return (
       <NoResultSquirrel
         text={`모든 ${orderType ?? ''} 처치를 완료했습니다`}
