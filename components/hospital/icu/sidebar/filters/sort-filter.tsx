@@ -5,11 +5,14 @@ import {
   MenubarMenu,
   MenubarTrigger,
 } from '@/components/ui/menubar'
+import { SORT_FILTER_ITEMS } from '@/constants/hospital/sidebar-items'
 import { ArrowDownNarrowWide } from 'lucide-react'
 
 export default function SortFilter({
+  selectedSort,
   onSortSelect,
 }: {
+  selectedSort: string
   onSortSelect: (value: string) => void
 }) {
   return (
@@ -19,12 +22,19 @@ export default function SortFilter({
           <ArrowDownNarrowWide />
         </Button>
       </MenubarTrigger>
-      <MenubarContent align="center" className="min-w-[100px]">
-        <MenubarItem onClick={() => onSortSelect('date')}>입원일순</MenubarItem>
-        <MenubarItem onClick={() => onSortSelect('vet')}>수의사순</MenubarItem>
-        <MenubarItem onClick={() => onSortSelect('name')}>
-          환자 가나다순
-        </MenubarItem>
+
+      <MenubarContent align="end" className="min-w-[144px]">
+        {SORT_FILTER_ITEMS.map((item) => (
+          <MenubarItem
+            key={item.value}
+            onClick={() => onSortSelect(item.value)}
+            className={'flex items-center justify-between'}
+          >
+            <span>{item.label}</span>
+
+            {selectedSort === item.value && <span>✓</span>}
+          </MenubarItem>
+        ))}
       </MenubarContent>
     </MenubarMenu>
   )
