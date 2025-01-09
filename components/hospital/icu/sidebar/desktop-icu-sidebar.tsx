@@ -1,12 +1,12 @@
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
+import IcuDateSelector from '@/components/hospital/icu/sidebar/date-selector/icu-date-selector'
 import Filters from '@/components/hospital/icu/sidebar/filters/filters'
 import PatientList from '@/components/hospital/icu/sidebar/patient-list'
+import RegisterDialog from '@/components/hospital/icu/sidebar/register-dialog/register-dialog'
 import { Separator } from '@/components/ui/separator'
 import type { Filter, IcuSidebarIoData, Vet } from '@/types/icu/chart'
 import { usePathname, useRouter } from 'next/navigation'
 import { type Dispatch, type SetStateAction } from 'react'
-import IcuDateSelector from './date-selector/icu-date-selector'
-import RegisterDialog from './register-dialog/register-dialog'
 
 type DesktopIcuSidebarProps = {
   hosId: string
