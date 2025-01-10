@@ -1,11 +1,10 @@
-'use client'
-
 import IcuSettingsCard from '@/components/hospital/admin/icu-settings/icu-settings-card'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { toast } from '@/components/ui/use-toast'
 import { updateOrdererSetting } from '@/lib/services/admin/icu/orderer'
 import { cn } from '@/lib/utils/utils'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 export default function OrdererSetting({
@@ -17,16 +16,24 @@ export default function OrdererSetting({
   showOrderer: boolean
   showTxUser: boolean
 }) {
+  const { refresh } = useRouter()
+
+  const [isUpdating, setIsUpdating] = useState(false)
   const [showOrdererInput, setShowOrdererInput] = useState(showOrderer)
   const [showTxUserInput, setShowTxUserInput] = useState(showTxUser)
 
   const handleUpdateShowOrderer = async () => {
+    setIsUpdating(true)
+
     await updateOrdererSetting(hosId, showOrdererInput, showTxUserInput)
 
     toast({
       title: '오더자 & 처치자 설정',
       description: '오더자 & 처치자 설정을 변경하였습니다',
     })
+
+    setIsUpdating(false)
+    refresh()
   }
 
   return (
@@ -34,6 +41,7 @@ export default function OrdererSetting({
       title="오더자 입력 & 처치자 설정"
       description="OFF시 오더자 입력 또는 처치자 입력 단계를 생략합니다"
       onSubmit={handleUpdateShowOrderer}
+      isUpdating={isUpdating}
     >
       <div className="space-y-4">
         <div className="flex items-center space-x-2">

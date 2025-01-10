@@ -1,8 +1,12 @@
-import { getOrdererSetting } from '@/lib/services/admin/icu/orderer'
-import OrdererSetting from './orderer-setting'
+'use client'
 
-export default async function OrdererTab({ hosId }: { hosId: string }) {
-  const { showOrderer, showTxUser } = await getOrdererSetting(hosId)
+import OrdererSetting from '@/components/hospital/admin/icu-settings/orderer/orderer-setting'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
+
+export default function OrdererTab({ hosId }: { hosId: string }) {
+  const {
+    basicHosData: { showOrderer, showTxUser },
+  } = useBasicHosDataContext()
 
   return (
     <OrdererSetting

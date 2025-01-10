@@ -44,9 +44,7 @@ export default function TemplateOrdersTable({
     setIsEditOrderMode,
     reset,
   } = useIcuOrderStore()
-  const {
-    basicHosData: { orderColorsData },
-  } = useBasicHosDataContext()
+
   const [sortedOrders, setSortedOrders] = useState<SelectedIcuOrder[]>([])
 
   useEffect(() => {
@@ -137,7 +135,6 @@ export default function TemplateOrdersTable({
               order={order}
               sortedOrders={sortedOrders}
               index={index}
-              orderColors={orderColorsData}
               onEdit={() => handleEditOrderDialogOpen(order, index)}
               orderRef={orderRef}
               isSorting
@@ -159,7 +156,6 @@ export default function TemplateOrdersTable({
                 order={order}
                 sortedOrders={sortedOrders}
                 index={index}
-                orderColors={orderColorsData}
                 onEdit={() => handleEditOrderDialogOpen(order, index)}
                 orderRef={orderRef}
               />

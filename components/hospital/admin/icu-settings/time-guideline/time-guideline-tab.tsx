@@ -1,9 +1,14 @@
-import { getHosTimeGuidelines } from '@/lib/services/admin/icu/time-guidelines'
+'use client'
+
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { TimeGuideLinSettings } from './time-guideline-settings'
 
-export default async function TimeGuidelineTab({ hosId }: { hosId: string }) {
-  const hosGuidelineData = await getHosTimeGuidelines(hosId)
+export default function TimeGuidelineTab({ hosId }: { hosId: string }) {
+  const {
+    basicHosData: { timeGuidelineData },
+  } = useBasicHosDataContext()
+
   return (
-    <TimeGuideLinSettings hosGuidelineData={hosGuidelineData} hosId={hosId} />
+    <TimeGuideLinSettings hosId={hosId} hosGuidelineData={timeGuidelineData} />
   )
 }

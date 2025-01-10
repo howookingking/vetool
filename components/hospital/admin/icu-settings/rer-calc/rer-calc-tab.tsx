@@ -1,8 +1,12 @@
-import { getRerCalcMethod } from '@/lib/services/admin/icu/rer-calc'
-import RerCalcSettings from './rer-calc-settings'
+'use client'
 
-export default async function RerCalcTab({ hosId }: { hosId: string }) {
-  const rerCalcMethodData = await getRerCalcMethod(hosId)
+import RerCalcSettings from '@/components/hospital/admin/icu-settings/rer-calc/rer-calc-settings'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 
-  return <RerCalcSettings hosId={hosId} rerCalcMethodData={rerCalcMethodData} />
+export default function RerCalcTab({ hosId }: { hosId: string }) {
+  const {
+    basicHosData: { rerCalcMethod },
+  } = useBasicHosDataContext()
+
+  return <RerCalcSettings hosId={hosId} rerCalcMethodData={rerCalcMethod} />
 }
