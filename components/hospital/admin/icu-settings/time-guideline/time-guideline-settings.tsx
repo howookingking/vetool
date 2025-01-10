@@ -15,6 +15,9 @@ import { updateHosTimeGuidelines } from '@/lib/services/admin/icu/time-guideline
 import { cn } from '@/lib/utils/utils'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
+import OrderTypeColorDot from '@/components/hospital/common/order-type-color-dot'
+import { IcuOrderColors } from '@/types/adimin'
 
 export function TimeGuideLinSettings({
   hosGuidelineData,
@@ -27,6 +30,9 @@ export function TimeGuideLinSettings({
   const [locaTimeGuideline, setLocalTimeGuideline] = useState(hosGuidelineData)
 
   const { refresh } = useRouter()
+  const {
+    basicHosData: { orderColorDisplay, orderColorsData, orderFontSizeData },
+  } = useBasicHosDataContext()
 
   const handleSubmit = async () => {
     setIsUpdating(true)
@@ -50,7 +56,7 @@ export function TimeGuideLinSettings({
       <Table className="border">
         <TableHeader className="bg-white shadow-sm">
           <TableRow>
-            <TableHead className="w-[200px] text-center">오더목록</TableHead>
+            <TableHead className="w-[240px] text-center">오더목록</TableHead>
             {TIMES.map((time) => (
               <TableHead key={time} className="border text-center">
                 {time.toString().padStart(2, '0')}
@@ -65,12 +71,35 @@ export function TimeGuideLinSettings({
               key={order.orderTitle}
               className="relative w-full divide-x"
             >
-              <TableCell className="flex justify-between bg-[#f0fdf4] font-medium">
-                <span>{order.orderTitle}</span>
-                <span className="text-right text-xs font-semibold text-muted-foreground">
+              <TableCell
+                className="flex justify-between font-medium"
+                style={{
+                  background:
+                    orderColorDisplay === 'full'
+                      ? orderColorsData['injection' as keyof IcuOrderColors]
+                      : 'transparent',
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  {orderColorDisplay === 'dot' && (
+                    <OrderTypeColorDot
+                      orderColorsData={orderColorsData}
+                      orderType={'injection'}
+                    />
+                  )}
+                  <span style={{ fontSize: `${orderFontSizeData}px` }}>
+                    {order.orderTitle}
+                  </span>
+                </div>
+
+                <span
+                  className="text-right text-xs font-semibold text-muted-foreground"
+                  style={{ fontSize: `${orderFontSizeData - 2}px` }}
+                >
                   {order.orderComment}
                 </span>
               </TableCell>
+
               {TIMES.map((time) => {
                 const isGuidelineTime = locaTimeGuideline.includes(time)
                 return (
