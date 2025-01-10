@@ -101,8 +101,6 @@ export default function OrderForm({
   ) => {
     setIsUpdating(true)
 
-    console.log(orderTime)
-
     await upsertOrder(
       hos_id as string,
       icuChartId,

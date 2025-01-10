@@ -61,7 +61,7 @@ export default function ChartTableHeader({
   return (
     <TableHeader
       className={cn(
-        preview ? 'top-0' : 'top-12',
+        preview || isMobile ? 'top-0' : 'top-12',
         'sticky z-20 bg-white shadow-sm',
       )}
     >

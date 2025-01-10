@@ -5,6 +5,7 @@ import { TableCell } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
 import useAbnormalVital from '@/hooks/use-abnormal-vital'
 import useCellAutofocus from '@/hooks/use-cell-autofocus'
+import useIsMobile from '@/hooks/use-is-mobile'
 import { useLongPress } from '@/hooks/use-long-press'
 import useUpsertTx from '@/hooks/use-upsert-tx'
 import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
@@ -82,6 +83,7 @@ export default function Cell({
     treatment,
     rowVitalRefRange,
   )
+  const isMobile = useIsMobile()
 
   useCellAutofocus()
 
@@ -121,6 +123,7 @@ export default function Cell({
   const longPressProps = useLongPress({
     onLongPress: handleOpenTxDetail,
     onClick: () => toggleCellInQueue(icuChartOrderId, time),
+    threshold: isMobile ? 1000 : 500,
   })
 
   const toggleCellInQueue = (orderId: string, time: number) => {

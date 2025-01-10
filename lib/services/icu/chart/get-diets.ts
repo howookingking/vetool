@@ -15,7 +15,7 @@ export const getPinnedDietData = async (hosId: string, species: string) => {
     .returns<PinnedDiet[]>()
 
   if (dietsDataError) {
-    console.log(dietsDataError)
+    console.error(dietsDataError)
     redirect(`/error?message=${dietsDataError.message}`)
   }
 

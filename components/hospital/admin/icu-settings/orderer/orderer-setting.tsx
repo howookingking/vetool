@@ -38,10 +38,10 @@ export default function OrdererSetting({
 
   return (
     <IcuSettingsCard
-      title="오더자 & 처치자 표시"
-      description="어떤 수의사가 오더를 내렸는지, 어떤 사용자가 처치를 했는지 표시합니다"
-      isUpdating={isUpdating}
+      title="오더자 입력 & 처치자 설정"
+      description="OFF시 오더자 입력 또는 처치자 입력 단계를 생략합니다"
       onSubmit={handleUpdateShowOrderer}
+      isUpdating={isUpdating}
     >
       <div className="space-y-4">
         <div className="flex items-center space-x-2">
@@ -51,7 +51,7 @@ export default function OrdererSetting({
             onCheckedChange={setShowOrdererInput}
           />
           <Label htmlFor="orderer">
-            오더자 표시
+            오더자 입력 단계
             <span
               className={cn(
                 showOrdererInput ? 'text-green-600' : 'text-red-600',
@@ -70,7 +70,7 @@ export default function OrdererSetting({
             onCheckedChange={setShowTxUserInput}
           />
           <Label htmlFor="txUser">
-            처치자 표시
+            처치자 입력 단계
             <span
               className={cn(
                 showTxUserInput ? 'text-green-600' : 'text-red-600',

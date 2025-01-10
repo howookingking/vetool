@@ -36,7 +36,7 @@ export default function GroupFilter({
         </Button>
       </MenubarTrigger>
 
-      <MenubarContent align="start" className="min-w-[100px]" hideWhenDetached>
+      <MenubarContent align="start" className="min-w-[120px]" hideWhenDetached>
         {hosGroupList.map((group) => (
           <MenubarItem
             key={group}
