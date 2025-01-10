@@ -191,3 +191,9 @@ export type Memo = {
   color: string
   chosen?: boolean
 }
+
+export type FilterState = {
+  selectedGroup: string[]
+  selectedVet: string
+  selectedSort: string
+}
