@@ -4,72 +4,68 @@ import SortFilter from '@/components/hospital/icu/sidebar/filters/sort-filter'
 import VetFilter from '@/components/hospital/icu/sidebar/filters/vet-filter'
 import { Menubar } from '@/components/ui/menubar'
 import { DEFAULT_FILTER_STATE } from '@/constants/hospital/icu/chart/filters'
-import useLocalStorage from '@/hooks/use-local-storage'
-import type { Vet } from '@/types/icu/chart'
+import type { Filter, Vet } from '@/types/icu/chart'
 
 export default function Filters({
   hosGroupList,
   vetsListData,
+  filters,
+  setFilters,
 }: {
   hosGroupList: string[]
   vetsListData: Vet[]
+  filters: Filter
+  setFilters: (filters: Filter) => void
 }) {
-  const [filterState, setFilterState] = useLocalStorage(
-    `patientFilter`,
-    DEFAULT_FILTER_STATE,
-  )
-
   // 그룹 다중 선택 로직
   const handleGroupChange = (group: string) => {
-    const newGroups = filterState.selectedGroup.includes(group)
-      ? filterState.selectedGroup.filter(
-          (selectedGroup) => selectedGroup !== group,
-        )
-      : [...filterState.selectedGroup, group]
+    const newGroups = filters.selectedGroup.includes(group)
+      ? filters.selectedGroup.filter((selectedGroup) => selectedGroup !== group)
+      : [...filters.selectedGroup, group]
 
-    setFilterState({
-      ...filterState,
+    setFilters({
+      ...filters,
       selectedGroup: newGroups,
     })
   }
 
   // 수의사 선택 로직
   const handleVetSelect = (vetId: string) => {
-    setFilterState({
-      ...filterState,
+    setFilters({
+      ...filters,
       selectedVet: vetId === 'reset' ? '' : vetId,
     })
   }
 
   // 환자 정렬 방식 로직
   const handleSortSelect = (value: string) => {
-    setFilterState({
-      ...filterState,
+    setFilters({
+      ...filters,
       selectedSort: value,
     })
   }
 
   // 필터 리셋 로직
   const resetFilters = () => {
-    setFilterState(DEFAULT_FILTER_STATE)
+    setFilters(DEFAULT_FILTER_STATE)
   }
 
   return (
     <Menubar className="flex h-8 space-x-0 p-0">
       <GroupFilter
         hosGroupList={hosGroupList}
-        selectedGroup={filterState.selectedGroup}
+        selectedGroup={filters.selectedGroup}
         onGroupChange={handleGroupChange}
       />
 
       <VetFilter
         vetsListData={vetsListData}
-        selectedVet={filterState.selectedVet}
+        selectedVet={filters.selectedVet}
         onVetSelect={handleVetSelect}
       />
 
       <SortFilter
-        selectedSort={filterState.selectedSort}
+        selectedSort={filters.selectedSort}
         onSortSelect={handleSortSelect}
       />
 

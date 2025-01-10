@@ -4,7 +4,7 @@ import Filters from '@/components/hospital/icu/sidebar/filters/filters'
 import PatientList from '@/components/hospital/icu/sidebar/patient-list'
 import RegisterDialog from '@/components/hospital/icu/sidebar/register-dialog/register-dialog'
 import { Separator } from '@/components/ui/separator'
-import type { IcuSidebarIoData, Vet } from '@/types/icu/chart'
+import type { Filter, IcuSidebarIoData, Vet } from '@/types/icu/chart'
 
 type DesktopIcuSidebarProps = {
   hosId: string
@@ -16,6 +16,8 @@ type DesktopIcuSidebarProps = {
   }
   isEmpty: boolean
   handleCloseMobileDrawer?: () => void
+  filters: Filter
+  setFilters: (filters: Filter) => void
 }
 
 export default function DesktopIcuSidebar({
@@ -25,6 +27,8 @@ export default function DesktopIcuSidebar({
   filteredData,
   isEmpty,
   handleCloseMobileDrawer,
+  filters,
+  setFilters,
 }: DesktopIcuSidebarProps) {
   return (
     <aside className="fixed z-40 hidden h-desktop w-48 shrink-0 flex-col gap-2 border-r bg-white px-2 pb-0 pt-2 2xl:flex">
@@ -44,7 +48,12 @@ export default function DesktopIcuSidebar({
         />
       ) : (
         <>
-          <Filters hosGroupList={hosGroupList} vetsListData={vetsListData} />
+          <Filters
+            hosGroupList={hosGroupList}
+            vetsListData={vetsListData}
+            filters={filters}
+            setFilters={setFilters}
+          />
 
           <Separator />
 
