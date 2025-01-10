@@ -6,8 +6,6 @@ import PreviewDialog from '@/components/hospital/icu/common-dialogs/preview/prev
 import { pasteBookmarkColumns } from '@/components/hospital/icu/main/chart/add-chart-dialogs/bookmark/paste-bookmark-columns'
 import { Button } from '@/components/ui/button'
 import DataTable from '@/components/ui/data-table'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-
 import {
   Dialog,
   DialogClose,
@@ -17,10 +15,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { getTemplateCharts } from '@/lib/services/icu/template/template'
 import { useCopiedChartStore } from '@/lib/store/icu/copied-chart'
 import { usePreviewDialogStore } from '@/lib/store/icu/preview-dialog'
-import { useRealtimeSubscriptionStore } from '@/lib/store/icu/realtime-subscription'
 import type { TemplateChart } from '@/types/icu/template'
 import { LoaderCircle, Star } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
@@ -30,12 +28,11 @@ export default function AddBookmarkChartDialog() {
   const { isPreviewDialogOpen } = usePreviewDialogStore()
   const { isConfirmCopyDialogOpen } = useCopiedChartStore()
   const { hos_id } = useParams()
+  const { refresh } = useRouter()
   const [bookmarkCharts, setBookmarkCharts] = useState<TemplateChart[]>([])
   const [templateCharts, setTemplateCharts] = useState<TemplateChart[]>([])
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const { isSubscriptionReady } = useRealtimeSubscriptionStore()
-  const { refresh } = useRouter()
 
   const handleOpenTemplateDialog = async () => {
     setIsLoading(true)
@@ -55,7 +52,7 @@ export default function AddBookmarkChartDialog() {
 
     setIsLoading(false)
     setIsDialogOpen(!isDialogOpen)
-    if (!isSubscriptionReady) refresh()
+    refresh()
   }
 
   return (

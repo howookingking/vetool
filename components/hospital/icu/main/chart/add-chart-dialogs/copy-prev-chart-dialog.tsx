@@ -13,7 +13,6 @@ import {
 } from '@/components/ui/dialog'
 import { toast } from '@/components/ui/use-toast'
 import { copyPrevChart } from '@/lib/services/icu/chart/add-icu-chart'
-import { useRealtimeSubscriptionStore } from '@/lib/store/icu/realtime-subscription'
 import { cn } from '@/lib/utils/utils'
 import { ClipboardPaste, LoaderCircle } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
@@ -23,7 +22,6 @@ export default function CopyPrevChartDialog() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const { patient_id, target_date } = useParams()
-  const { isSubscriptionReady } = useRealtimeSubscriptionStore()
   const { refresh } = useRouter()
 
   const handleCopyPrevSelectedChart = async () => {
@@ -49,7 +47,7 @@ export default function CopyPrevChartDialog() {
     })
     setIsLoading(false)
     setIsDialogOpen(false)
-    if (!isSubscriptionReady) refresh()
+    refresh()
   }
 
   return (

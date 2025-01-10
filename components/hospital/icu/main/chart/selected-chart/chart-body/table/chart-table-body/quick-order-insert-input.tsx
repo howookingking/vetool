@@ -15,7 +15,6 @@ import {
   type OrderType,
 } from '@/constants/hospital/icu/chart/order'
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
-import { useRealtimeSubscriptionStore } from '@/lib/store/icu/realtime-subscription'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
@@ -36,7 +35,6 @@ export default function QuickOrderInsertInput({
   } = useBasicHosDataContext()
   const { hos_id } = useParams()
   const { refresh } = useRouter()
-  const { isSubscriptionReady } = useRealtimeSubscriptionStore()
   const [quickOrderInput, setQuickOrderInput] = useState('')
   const [orderType, setOrderType] = useState('manual')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -72,15 +70,13 @@ export default function QuickOrderInsertInput({
       },
     )
 
-    setQuickOrderInput('')
-    setIsSubmitting(false)
-    setIsChecklistOrder(false)
-
     toast({
       title: `${orderName} 오더를 생성하였습니다`,
     })
 
-    if (!isSubscriptionReady) refresh()
+    setQuickOrderInput('')
+    setIsSubmitting(false)
+    setIsChecklistOrder(false)
   }
 
   const handleSubmit = async (e: React.KeyboardEvent<HTMLInputElement>) => {

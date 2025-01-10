@@ -11,13 +11,7 @@ import { ko } from 'date-fns/locale'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 
-export default function IcuDatePicker({
-  targetDate,
-  setIsSubscriptionReady,
-}: {
-  targetDate: string
-  setIsSubscriptionReady: (isSubscriptionReady: boolean) => void
-}) {
+export default function IcuDatePicker({ targetDate }: { targetDate: string }) {
   const { push } = useRouter()
   const [open, setOpen] = useState(false)
   const searchParams = useSearchParams()
@@ -30,7 +24,6 @@ export default function IcuDatePicker({
       const newPath = changeTargetDateInUrl(path, formattedDate, params)
       push(newPath)
       setOpen(false)
-      setIsSubscriptionReady(false)
     }
   }
 

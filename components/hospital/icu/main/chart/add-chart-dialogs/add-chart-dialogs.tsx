@@ -9,25 +9,35 @@ import { getPrevIoChartData } from '@/lib/services/icu/chart/get-icu-chart'
 import type { PrevIoChartData, SelectedChart } from '@/types/icu/chart'
 import { useEffect, useState } from 'react'
 
+type AddChartDialogsProps = {
+  chartData: SelectedChart
+} & (
+  | {
+      firstChart: true
+      patientId: string
+    }
+  | {
+      firstChart?: false
+      patientId?: never
+    }
+)
+
 export default function AddChartDialogs({
   chartData,
   patientId,
-}: {
-  chartData?: SelectedChart
-  patientId?: string
-}) {
-  const isFirstChart = chartData && chartData.orders.length === 0
-
+  firstChart,
+}: AddChartDialogsProps) {
   const [prevIoChartData, setPrevIoChartData] =
     useState<PrevIoChartData | null>(null)
+
   useEffect(() => {
-    if (!isFirstChart) return
+    if (!firstChart) return
     getPrevIoChartData(patientId!).then(setPrevIoChartData)
-  }, [patientId, isFirstChart])
+  }, [patientId, firstChart])
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-5 px-5 py-5 ring md:flex-row md:gap-10 lg:px-32">
-      {isFirstChart ? (
+      {firstChart ? (
         <AddDefaultChartDialog chartData={chartData} />
       ) : (
         <CopyPrevChartDialog />
