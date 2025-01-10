@@ -8,27 +8,25 @@ import {
 } from '@/components/ui/menubar'
 import { cn } from '@/lib/utils/utils'
 import { Component } from 'lucide-react'
-import { useSearchParams } from 'next/navigation'
+
+type GroupFilterProps = {
+  hosGroupList: string[]
+  selectedGroup: string[]
+  onGroupChange: (group: string) => void
+}
 
 export default function GroupFilter({
   hosGroupList,
   selectedGroup,
   onGroupChange,
-}: {
-  hosGroupList: string[]
-  selectedGroup: string[]
-  onGroupChange: (group: string) => void
-}) {
-  const searchParams = useSearchParams()
-  const isReset = !searchParams.get('group')
-
+}: GroupFilterProps) {
   return (
     <MenubarMenu>
       <MenubarTrigger asChild>
         <Button
           variant="ghost"
           className={cn(
-            !isReset && 'bg-primary text-white',
+            selectedGroup.length > 0 && 'bg-primary text-white',
             'h-[30px] w-full rounded-r-none',
           )}
         >
@@ -50,10 +48,6 @@ export default function GroupFilter({
             <span>{group}</span>
           </MenubarItem>
         ))}
-        {/* <MenubarSeparator /> */}
-        {/* <MenubarItem>
-          <div className="text-center text-muted-foreground">선택 초기화</div>
-        </MenubarItem> */}
       </MenubarContent>
     </MenubarMenu>
   )
