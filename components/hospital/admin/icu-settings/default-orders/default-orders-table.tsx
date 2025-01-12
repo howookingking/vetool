@@ -12,7 +12,6 @@ import { toast } from '@/components/ui/use-toast'
 import { reorderDefaultOrders } from '@/lib/services/admin/icu/default-orders'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { hasOrderSortingChanges } from '@/lib/utils/utils'
-import type { IcuOrderColors } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
@@ -20,10 +19,8 @@ import { Sortable } from 'react-sortablejs'
 
 export default function DefaultOrdersTable({
   defaultChartOrders,
-  orderColorsData,
 }: {
   defaultChartOrders: SelectedIcuOrder[] | []
-  orderColorsData: IcuOrderColors
 }) {
   const lastOrderRef = useRef<HTMLTableCellElement>(null)
   const { refresh } = useRouter()
@@ -91,7 +88,7 @@ export default function DefaultOrdersTable({
   }
 
   return (
-    <Table className="h-full max-w-3xl border">
+    <Table className="h-full max-w-3xl border border-2">
       <OrderTableHeader isSorting={isSorting} onClick={handleSortButtonClick}>
         <OrderDialog
           isOpen={orderStep !== 'closed'}
@@ -114,7 +111,6 @@ export default function DefaultOrdersTable({
               order={order}
               sortedOrders={sortedOrders}
               index={index}
-              orderColors={orderColorsData}
               onEdit={handleEditOrderDialogOpen}
               orderRef={lastOrderRef}
               isSorting={isSorting}
@@ -136,7 +132,6 @@ export default function DefaultOrdersTable({
                 order={order}
                 sortedOrders={sortedOrders}
                 index={index}
-                orderColors={orderColorsData}
                 onEdit={handleEditOrderDialogOpen}
                 orderRef={lastOrderRef}
               />

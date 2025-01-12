@@ -3,96 +3,71 @@ import ResetFilters from '@/components/hospital/icu/sidebar/filters/reset-filter
 import SortFilter from '@/components/hospital/icu/sidebar/filters/sort-filter'
 import VetFilter from '@/components/hospital/icu/sidebar/filters/vet-filter'
 import { Menubar } from '@/components/ui/menubar'
-import type { Vet } from '@/types/icu/chart'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-
-type FiltersProps = {
-  hosGroupList: string[]
-  vetsListData: Vet[]
-  selectedGroup: string[]
-  setSelectedGroup: (group: string[]) => void
-  selectedVet: string
-  setSelectedVet: (vet: string) => void
-  selectedSort: string
-  setSelectedSort: (value: string) => void
-  resetFilters: () => void
-}
+import { DEFAULT_FILTER_STATE } from '@/constants/hospital/icu/chart/filters'
+import type { Filter, Vet } from '@/types/icu/chart'
 
 export default function Filters({
   hosGroupList,
   vetsListData,
-  selectedGroup,
-  setSelectedGroup,
-  selectedVet,
-  setSelectedVet,
-  selectedSort,
-  setSelectedSort,
-  resetFilters,
-}: FiltersProps) {
-  const path = usePathname()
-  const searchParams = useSearchParams()
-  const currentParams = new URLSearchParams(searchParams.toString())
-
-  const { push } = useRouter()
-
-  // 그룹 변경 메소드 (GroupFilter)
+  filters,
+  setFilters,
+}: {
+  hosGroupList: string[]
+  vetsListData: Vet[]
+  filters: Filter
+  setFilters: (filters: Filter) => void
+}) {
+  // 그룹 다중 선택 로직
   const handleGroupChange = (group: string) => {
-    const newGroups = selectedGroup.includes(group)
-      ? selectedGroup.filter((selectedGroup: string) => selectedGroup !== group)
-      : [...selectedGroup, group]
+    const newGroups = filters.selectedGroup.includes(group)
+      ? filters.selectedGroup.filter((selectedGroup) => selectedGroup !== group)
+      : [...filters.selectedGroup, group]
 
-    setSelectedGroup(newGroups)
-
-    if (newGroups.length) {
-      currentParams.set('group', newGroups.join(','))
-    } else {
-      currentParams.delete('group')
-    }
-
-    updateUrl()
+    setFilters({
+      ...filters,
+      selectedGroup: newGroups,
+    })
   }
 
-  // 수의사 선택 메소드 (VetFilter)
+  // 수의사 선택 로직
   const handleVetSelect = (vetId: string) => {
-    if (vetId === 'reset') {
-      currentParams.delete('vet')
-      setSelectedVet('')
-    } else {
-      currentParams.set('vet', vetId)
-      setSelectedVet(vetId)
-    }
-
-    updateUrl()
+    setFilters({
+      ...filters,
+      selectedVet: vetId === 'reset' ? '' : vetId,
+    })
   }
 
-  // 정렬 변경 메소드 (SortFilter)
+  // 환자 정렬 방식 로직
   const handleSortSelect = (value: string) => {
-    currentParams.set('sort', value)
-    setSelectedSort(value)
-    updateUrl()
+    setFilters({
+      ...filters,
+      selectedSort: value,
+    })
   }
 
-  const updateUrl = () => {
-    const newUrl = `${path}${currentParams.toString() ? '?' : ''}${currentParams.toString()}`
-
-    push(newUrl)
+  // 필터 리셋 로직
+  const resetFilters = () => {
+    setFilters(DEFAULT_FILTER_STATE)
   }
 
   return (
     <Menubar className="flex h-8 space-x-0 p-0">
       <GroupFilter
         hosGroupList={hosGroupList}
-        selectedGroup={selectedGroup}
+        selectedGroup={filters.selectedGroup}
         onGroupChange={handleGroupChange}
       />
 
       <VetFilter
         vetsListData={vetsListData}
-        selectedVet={selectedVet}
+        selectedVet={filters.selectedVet}
         onVetSelect={handleVetSelect}
       />
 
-      <SortFilter selectedSort={selectedSort} onSortSelect={handleSortSelect} />
+      <SortFilter
+        selectedSort={filters.selectedSort}
+        onSortSelect={handleSortSelect}
+      />
 
       <ResetFilters resetFilters={resetFilters} />
     </Menubar>

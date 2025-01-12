@@ -1,13 +1,17 @@
-import { getMaintenaceRateCalcMethod } from '@/lib/services/admin/icu/maintenance-rate'
-import MaintenanceRateSettings from './maintenance-rate-settings'
+'use client'
 
-export default async function MaintenanceRateTab({ hosId }: { hosId: string }) {
-  const maintenaceRateCalcMethodData = await getMaintenaceRateCalcMethod(hosId)
+import MaintenanceRateSettings from '@/components/hospital/admin/icu-settings/maintenance-rate/maintenance-rate-settings'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
+
+export default function MaintenanceRateTab({ hosId }: { hosId: string }) {
+  const {
+    basicHosData: { maintenanceRateCalcMethod },
+  } = useBasicHosDataContext()
 
   return (
     <MaintenanceRateSettings
       hosId={hosId}
-      maintenaceRateCalcMethodData={maintenaceRateCalcMethodData}
+      maintenaceRateCalcMethodData={maintenanceRateCalcMethod}
     />
   )
 }

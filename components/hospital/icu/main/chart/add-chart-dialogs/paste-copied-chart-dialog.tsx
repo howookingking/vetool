@@ -23,7 +23,6 @@ import { toast } from '@/components/ui/use-toast'
 import useShorcutKey from '@/hooks/use-shortcut-key'
 import { pasteChart } from '@/lib/services/icu/chart/paste-chart'
 import { useCopiedChartStore } from '@/lib/store/icu/copied-chart'
-import { useRealtimeSubscriptionStore } from '@/lib/store/icu/realtime-subscription'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { CopyCheck, LoaderCircle } from 'lucide-react'
@@ -40,10 +39,9 @@ export default function PasteCopiedChartDialog() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [orderer, setOrderer] = useState(vetsListData[0].name)
   const [isLoading, setIsLoading] = useState(false)
-  const { isSubscriptionReady } = useRealtimeSubscriptionStore()
   const { refresh } = useRouter()
 
-  const handlePasteCopiedChart = useCallback(async () => {
+  const handlePasteCopiedChart = async () => {
     if (!copiedChartId) {
       setIsDialogOpen(false)
 
@@ -72,21 +70,8 @@ export default function PasteCopiedChartDialog() {
     setIsLoading(false)
     setIsDialogOpen(false)
     reset()
-    if (!isSubscriptionReady) refresh()
-  }, [
-    copiedChartId,
-    patient_id,
-    reset,
-    target_date,
-    orderer,
-    isSubscriptionReady,
-    refresh,
-  ])
-
-  useShorcutKey({
-    keys: ['v'],
-    callback: () => setIsDialogOpen(true),
-  })
+    refresh()
+  }
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

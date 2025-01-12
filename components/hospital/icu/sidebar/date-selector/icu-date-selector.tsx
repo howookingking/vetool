@@ -2,7 +2,6 @@
 
 import { Button } from '@/components/ui/button'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
-import { useRealtimeSubscriptionStore } from '@/lib/store/icu/realtime-subscription'
 import { changeTargetDateInUrl } from '@/lib/utils/utils'
 import { ArrowLeftIcon, ArrowRightIcon } from '@radix-ui/react-icons'
 import { addDays, format } from 'date-fns'
@@ -21,7 +20,6 @@ export default function IcuDateSelector() {
   const pathname = usePathname()
   const router = useRouter()
   const { setSelectedOrderPendingQueue } = useIcuOrderStore()
-  const { setIsSubscriptionReady } = useRealtimeSubscriptionStore()
 
   const [targetDate, setTargetDate] = useState(
     new Date(params.target_date as string),
@@ -37,7 +35,6 @@ export default function IcuDateSelector() {
     router.push(newPath)
     setTargetDate(newDate)
     setSelectedOrderPendingQueue([])
-    setIsSubscriptionReady(false)
   }
 
   const handleUpdateDate = (days: number) => {
@@ -60,10 +57,7 @@ export default function IcuDateSelector() {
         <ArrowLeftIcon />
       </Button>
 
-      <IcuDatePicker
-        targetDate={format(targetDate, 'yyyy-MM-dd')}
-        setIsSubscriptionReady={setIsSubscriptionReady}
-      />
+      <IcuDatePicker targetDate={format(targetDate, 'yyyy-MM-dd')} />
 
       <Button
         onClick={() => handleUpdateDate(1)}

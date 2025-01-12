@@ -1,16 +1,13 @@
-import { useRealtimeSubscriptionStore } from '@/lib/store/icu/realtime-subscription'
 import { createClient } from '@/lib/supabase/client'
 import type { RealtimeChannel } from '@supabase/supabase-js'
 import { useRouter } from 'next/navigation'
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 
-const supabase = createClient()
-const TABLES = ['icu_io', 'icu_charts', 'icu_orders', 'icu_txs'] as const
-
 export function useIcuRealtime(hosId: string) {
+  const [isRealtimeReady, setIsRealtimeReady] = useState(false)
+  const supabase = createClient()
   const subscriptionRef = useRef<RealtimeChannel | null>(null)
-  const { setIsSubscriptionReady } = useRealtimeSubscriptionStore()
   const { refresh } = useRouter()
 
   const debouncedRefresh = useDebouncedCallback(() => {
@@ -75,11 +72,12 @@ export function useIcuRealtime(hosId: string) {
       if (status === 'SUBSCRIBED') {
         console.log('Subscribed to all tables')
         setTimeout(() => {
-          setIsSubscriptionReady(true)
-        }, 5000)
+          setIsRealtimeReady(true)
+        }, 1000)
       } else {
         console.log('Subscription failed with status:', status)
-        setIsSubscriptionReady(false)
+        // setIsSubscriptionReady(false)
+        setIsRealtimeReady(false)
       }
     })
   }, [hosId, handleChange])
@@ -89,7 +87,8 @@ export function useIcuRealtime(hosId: string) {
       console.log('Unsubscribing from channel...')
       supabase.removeChannel(subscriptionRef.current)
       subscriptionRef.current = null
-      setIsSubscriptionReady(false)
+      // setIsSubscriptionReady(false)
+      setIsRealtimeReady(false)
     }
   }, [])
 
@@ -115,6 +114,8 @@ export function useIcuRealtime(hosId: string) {
       document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
   }, [handleVisibilityChange, subscribeToChannel, unsubscribe])
+
+  return isRealtimeReady
 }
 
 function getLogColor(table: string): string {
@@ -131,3 +132,5 @@ function getLogColor(table: string): string {
       return 'gray'
   }
 }
+
+const TABLES = ['icu_io', 'icu_charts', 'icu_orders', 'icu_txs'] as const

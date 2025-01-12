@@ -1,18 +1,19 @@
-import { getHosOrderColorSettings } from '@/lib/services/admin/icu/order-color'
-import type { IcuOrderColors } from '@/types/adimin'
+'use client'
+
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import OrderColorSettings from './order-color-settings'
 
-export default async function OrderColorTab({ hosId }: { hosId: string }) {
-  const orderColorSettings = await getHosOrderColorSettings(hosId)
+export default function OrderColorTab() {
+  const {
+    basicHosData: { orderColorsData, orderColorDisplay },
+  } = useBasicHosDataContext()
 
   return (
     <OrderColorSettings
-      orderColorSettings={
-        orderColorSettings as {
-          order_color: IcuOrderColors
-          order_color_display: string
-        }
-      }
+      orderColorSettings={{
+        order_color: orderColorsData,
+        order_color_display: orderColorDisplay,
+      }}
     />
   )
 }

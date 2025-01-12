@@ -1,5 +1,3 @@
-'use client'
-
 import { toast } from '@/components/ui/use-toast'
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { updateOrderColorSettings } from '@/lib/services/admin/icu/order-color'
@@ -19,15 +17,16 @@ export default function OrderColorSettings({
     order_color_display: string
   }
 }) {
-  const { hos_id } = useParams()
-  const { refresh } = useRouter()
+  const [isUpdating, setIsUpdating] = useState(false)
   const [localColorState, setLocalColorState] = useState(
     orderColorSettings.order_color,
   )
   const [localColorDisplayMethod, setLocalColorDisplayMethod] = useState(
     orderColorSettings.order_color_display,
   )
-  const [isUpdating, setIsUpdating] = useState(false)
+
+  const { hos_id } = useParams()
+  const { refresh } = useRouter()
 
   const handleOrderColor = (orderType: string, color: string) => {
     setLocalColorState({ ...localColorState, [orderType]: color })

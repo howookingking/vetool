@@ -1,12 +1,8 @@
-'use client'
-
-import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { toast } from '@/components/ui/use-toast'
 import { updateRerCalcMethod } from '@/lib/services/admin/icu/rer-calc'
 import { cn } from '@/lib/utils/utils'
-import { LoaderCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import IcuSettingsCard from '../icu-settings-card'
@@ -27,7 +23,7 @@ export default function RerCalcSettings({
     setIsUpdating(true)
     await updateRerCalcMethod(hosId, localMaintenaceRateCalcMethod)
     toast({
-      title: '수정되었습니다',
+      title: 'RER 계산법이 수정되었습니다',
     })
     setIsUpdating(false)
     refresh()

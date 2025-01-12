@@ -22,12 +22,10 @@ import {
 } from '@/components/ui/select'
 import { toast } from '@/components/ui/use-toast'
 import { pasteChart } from '@/lib/services/icu/chart/paste-chart'
-import { useRealtimeSubscriptionStore } from '@/lib/store/icu/realtime-subscription'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { PrevIoChartData } from '@/types/icu/chart'
 import { CalendarPlus, LoaderCircle } from 'lucide-react'
-import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -38,7 +36,6 @@ export default function CopyPrevIoChartDialog({
 }) {
   const { refresh } = useRouter()
   const { patient_id, target_date } = useParams()
-  const { isSubscriptionReady } = useRealtimeSubscriptionStore()
   const {
     basicHosData: { vetsListData, showOrderer },
   } = useBasicHosDataContext()
@@ -64,7 +61,7 @@ export default function CopyPrevIoChartDialog({
 
     setIsLoading(false)
     setIsDialogOpen(false)
-    if (!isSubscriptionReady) refresh()
+    refresh()
   }
 
   const handleOrdererChange = (value: string) => {

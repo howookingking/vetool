@@ -1,15 +1,11 @@
-'use client'
-
-import { Button } from '@/components/ui/button'
+import IcuSettingsCard from '@/components/hospital/admin/icu-settings/icu-settings-card'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { toast } from '@/components/ui/use-toast'
 import { updateMaintenanceRateCalcMethod } from '@/lib/services/admin/icu/maintenance-rate'
 import { cn } from '@/lib/utils/utils'
-import { LoaderCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import IcuSettingsCard from '../icu-settings-card'
 
 export default function MaintenanceRateSettings({
   hosId,
@@ -18,9 +14,10 @@ export default function MaintenanceRateSettings({
   hosId: string
   maintenaceRateCalcMethodData: string
 }) {
+  const [isUpdating, setIsUpdating] = useState(false)
   const [localMaintenaceRateCalcMethod, setLocalMaintenaceRateCalcMethod] =
     useState(maintenaceRateCalcMethodData)
-  const [isUpdating, setIsUpdating] = useState(false)
+
   const { refresh } = useRouter()
 
   const handleUpdateMaintenanceRateCalcMethod = async () => {

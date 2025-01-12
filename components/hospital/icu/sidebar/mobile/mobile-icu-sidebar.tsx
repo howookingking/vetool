@@ -51,19 +51,8 @@ export default function MobileSidebar({
           <Filters
             hosGroupList={hosGroupList}
             vetsListData={vetsListData}
-            selectedGroup={filters.selectedGroup}
-            setSelectedGroup={(group) =>
-              setFilters({ ...filters, selectedGroup: group })
-            }
-            selectedVet={filters.selectedVet}
-            setSelectedVet={(vet) =>
-              setFilters({ ...filters, selectedVet: vet })
-            }
-            selectedSort={filters.selectedSort}
-            setSelectedSort={(sort) =>
-              setFilters({ ...filters, selectedSort: sort })
-            }
-            resetFilters={resetFilters}
+            filters={filters}
+            setFilters={setFilters}
           />
 
           <Separator />

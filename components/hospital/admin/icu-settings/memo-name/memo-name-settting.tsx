@@ -1,5 +1,3 @@
-'use client'
-
 import IcuSettingsCard from '@/components/hospital/admin/icu-settings/icu-settings-card'
 import {
   Form,

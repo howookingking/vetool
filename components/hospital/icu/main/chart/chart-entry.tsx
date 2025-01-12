@@ -16,7 +16,6 @@ export default function ChartEntry({
   const {
     basicHosData: { sidebarData },
   } = useBasicHosDataContext()
-
   const hasIcuIo = sidebarData.find((io) => io.patient.patient_id === patientId)
 
   // 입원 전 or 퇴원 후
@@ -36,13 +35,15 @@ export default function ChartEntry({
   }
 
   // io가 있고 chart가 없음 => 첫날 차트가 아님
-  if (!chartData) {
+  if (hasIcuIo && !chartData) {
     return <AddChartDialogs chartData={chartData} />
   }
 
   // io가 있고 chart가 있고 order가 없는 경우 => 첫날차트
-  if (chartData.orders.length === 0) {
-    return <AddChartDialogs chartData={chartData} patientId={patientId} />
+  if (hasIcuIo && chartData && chartData.orders.length === 0) {
+    return (
+      <AddChartDialogs chartData={chartData} patientId={patientId} firstChart />
+    )
   }
 
   // io가 있고 chart가 있고 order가 있음 => 정상차트

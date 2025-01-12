@@ -11,7 +11,6 @@ import {
 } from '@/components/ui/dialog'
 import { toast } from '@/components/ui/use-toast'
 import { registerDefaultChart } from '@/lib/services/icu/chart/add-icu-chart'
-import { useRealtimeSubscriptionStore } from '@/lib/store/icu/realtime-subscription'
 import { cn } from '@/lib/utils/utils'
 import type { SelectedChart } from '@/types/icu/chart'
 import { File, LoaderCircle } from 'lucide-react'
@@ -21,28 +20,28 @@ import { useState } from 'react'
 export default function AddDefaultChartDialog({
   chartData,
 }: {
-  chartData?: SelectedChart
+  chartData: SelectedChart
 }) {
   const { hos_id } = useParams()
+  const { refresh } = useRouter()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const { isSubscriptionReady } = useRealtimeSubscriptionStore()
-  const { refresh } = useRouter()
 
   const handleAddDefaultChart = async () => {
     setIsLoading(true)
+
     await registerDefaultChart(
       hos_id as string,
-      chartData?.icu_chart_id as string,
+      chartData.icu_chart_id as string,
     )
 
     toast({
       title: '기본형식의 차트를 생성했습니다',
     })
+
     setIsLoading(false)
     setIsDialogOpen(false)
-
-    if (!isSubscriptionReady) refresh()
+    refresh()
   }
 
   return (

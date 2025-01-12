@@ -7,12 +7,9 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { getDefaultChartOrders } from '@/lib/services/admin/icu/default-orders'
-import { getHosOrderColor } from '@/lib/services/admin/icu/order-color'
-import type { IcuOrderColors } from '@/types/adimin'
 
 export default async function DefaultOrdersTab({ hosId }: { hosId: string }) {
   const defaultChartOrders = await getDefaultChartOrders(hosId)
-  const orderColor = await getHosOrderColor(hosId)
 
   return (
     <Card className="mt-2 sm:w-1/2">
@@ -22,10 +19,7 @@ export default async function DefaultOrdersTab({ hosId }: { hosId: string }) {
       </CardHeader>
 
       <CardContent>
-        <DefaultOrderTable
-          defaultChartOrders={defaultChartOrders}
-          orderColorsData={orderColor as IcuOrderColors}
-        />
+        <DefaultOrderTable defaultChartOrders={defaultChartOrders} />
       </CardContent>
     </Card>
   )

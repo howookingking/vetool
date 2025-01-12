@@ -18,6 +18,7 @@ export default function IcuSettingsCard({
   onSubmit,
   isUpdating,
   buttonName = '저장',
+  cardWidth = 'sm:w-1/2',
 }: {
   children: ReactNode
   title: string
@@ -25,9 +26,10 @@ export default function IcuSettingsCard({
   onSubmit: () => void
   isUpdating?: boolean
   buttonName?: string
+  cardWidth?: string
 }) {
   return (
-    <Card className="mt-2 sm:w-1/2">
+    <Card className={cn('mt-2', cardWidth)}>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>

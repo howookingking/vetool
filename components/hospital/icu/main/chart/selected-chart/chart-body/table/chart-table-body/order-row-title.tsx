@@ -1,7 +1,7 @@
-import OrderTypeColorDot from '@/components/hospital/common/order-type-color-dot'
+import OrderTitleContent from '@/components/hospital/common/order-title-content'
 import { Button } from '@/components/ui/button'
 import { TableCell } from '@/components/ui/table'
-import { cn, parsingOrderName, renderOrderSubComment } from '@/lib/utils/utils'
+import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
@@ -49,7 +49,7 @@ export default function OrderRowTitle({
   const { order_comment, order_type, order_name } = order
 
   const {
-    basicHosData: { orderColorsData, orderFontSizeData, orderColorDisplay },
+    basicHosData: { orderColorsData, orderColorDisplay },
   } = useBasicHosDataContext()
 
   const handleClickOrderTitle = useCallback(
@@ -135,35 +135,13 @@ export default function OrderRowTitle({
           transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
         }}
       >
-        <div className="flex items-center gap-2 truncate">
-          {/* 오더 색 표시 방법이 dot 인경우 */}
-          {orderColorDisplay === 'dot' && (
-            <OrderTypeColorDot
-              orderColorsData={orderColorsData}
-              orderType={order_type}
-            />
-          )}
-
-          <span style={{ fontSize: `${orderFontSizeData}px` }}>
-            {parsingOrderName(order_type, order_name)}
-          </span>
-
-          {rowVitalRefRange && (
-            <span className="text-xs text-muted-foreground">
-              ({rowVitalRefRange.min}~{rowVitalRefRange.max})
-            </span>
-          )}
-        </div>
-
-        {!isTouchMove && (
-          <span
-            className="min-w-16 truncate text-right text-xs font-semibold text-muted-foreground"
-            style={{ fontSize: `${orderFontSizeData - 2}px` }}
-          >
-            {order_comment}
-            {renderOrderSubComment(order)}
-          </span>
-        )}
+        <OrderTitleContent
+          orderType={order_type}
+          orderName={order_name}
+          orderComment={order_comment}
+          vitalRefRange={rowVitalRefRange}
+          isTouchMove={isTouchMove}
+        />
       </Button>
     </TableCell>
   )
