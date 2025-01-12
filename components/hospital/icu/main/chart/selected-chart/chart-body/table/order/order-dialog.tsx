@@ -10,6 +10,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { type OrderStep } from '@/lib/store/icu/icu-order'
 import type { Patient, SelectedIcuOrder } from '@/types/icu/chart'
 import { Plus } from 'lucide-react'
 import dynamic from 'next/dynamic'
@@ -35,11 +36,9 @@ type OrderDialogProps = {
   patient: Patient
   weight: string
   ageInDays: number
-  orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit'
+  orderStep: OrderStep
   isEditOrderMode?: boolean
-  setOrderStep: (
-    orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit',
-  ) => void
+  setOrderStep: (orderStep: OrderStep) => void
   reset: () => void
   isExport?: boolean
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>

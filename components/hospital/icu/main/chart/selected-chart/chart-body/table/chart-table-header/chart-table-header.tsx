@@ -3,6 +3,7 @@ import SortingButton from '@/components/hospital/icu/main/chart/selected-chart/c
 import OrderDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-dialog'
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
+import { type OrderStep } from '@/lib/store/icu/icu-order'
 import { cn } from '@/lib/utils/utils'
 import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
 import { Dispatch, SetStateAction } from 'react'
@@ -15,12 +16,10 @@ type ChartTableHeaderProps = {
   setIsSorting: Dispatch<SetStateAction<boolean>>
   hosId: string
   showOrderer: boolean
-  orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit'
+  orderStep: OrderStep
   reset: () => void
   isEditOrderMode?: boolean
-  setOrderStep: (
-    orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit',
-  ) => void
+  setOrderStep: (orderStep: OrderStep) => void
   isExport?: boolean
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   orderWidth: number

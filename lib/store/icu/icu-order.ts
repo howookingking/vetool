@@ -9,11 +9,11 @@ export type OrderTimePendingQueue = {
   isCrucialChecked?: boolean
 }
 
+export type OrderStep = 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit'
+
 type IcuOrderState = {
-  orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit'
-  setOrderStep: (
-    orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit',
-  ) => void
+  orderStep: OrderStep
+  setOrderStep: (orderStep: OrderStep) => void
 
   isEditOrderMode: boolean
   setIsEditOrderMode: (isEditOrderMode: boolean) => void

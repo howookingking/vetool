@@ -5,6 +5,7 @@ import { toast } from '@/components/ui/use-toast'
 import useShorcutKey from '@/hooks/use-shortcut-key'
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import {
+  type OrderStep,
   OrderTimePendingQueue,
   useIcuOrderStore,
 } from '@/lib/store/icu/icu-order'
@@ -21,7 +22,7 @@ type CellsRowTitlesProps = {
   showOrderer: boolean
   showTxUser: boolean
   selectedTxPendingQueue: OrderTimePendingQueue[]
-  orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit'
+  orderStep: OrderStep
   orderTimePendingQueueLength: number
   vitalRefRange: VitalRefRange[]
   species: string

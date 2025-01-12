@@ -1,5 +1,8 @@
 import { TableBody, TableCell, TableRow } from '@/components/ui/table'
-import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
+import {
+  type OrderStep,
+  OrderTimePendingQueue,
+} from '@/lib/store/icu/icu-order'
 import type { VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { Dispatch, RefObject, SetStateAction } from 'react'
@@ -15,7 +18,7 @@ type ChartTableBodyProps = {
   showOrderer: boolean
   showTxUser: boolean
   selectedTxPendingQueue: OrderTimePendingQueue[]
-  orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit'
+  orderStep: OrderStep
   orderTimePendingQueue: OrderTimePendingQueue[]
   orderWidth: number
   isMobile: boolean
