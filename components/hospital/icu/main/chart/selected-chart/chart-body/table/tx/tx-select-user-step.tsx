@@ -11,7 +11,6 @@ import { Input } from '@/components/ui/input'
 import useUpsertTx from '@/hooks/use-upsert-tx'
 import { userLogFormSchema } from '@/lib/schemas/icu/chart/tx-schema'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
-import { useRealtimeSubscriptionStore } from '@/lib/store/icu/realtime-subscription'
 import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
 import { cn } from '@/lib/utils/utils'
 import type { TxLog } from '@/types/icu/chart'
@@ -31,16 +30,12 @@ export default function TxSelectUserStep({
 }) {
   const { txLocalState } = useTxMutationStore()
   const { selectedTxPendingQueue } = useIcuOrderStore()
-  const { isSubscriptionReady } = useRealtimeSubscriptionStore()
   const { refresh } = useRouter()
   const { hos_id } = useParams()
 
   const { isSubmitting, upsertTx, upsertMultipleTx } = useUpsertTx({
     hosId: hos_id as string,
-    onSuccess: () => {
-      handleClose()
-      if (!isSubscriptionReady) refresh()
-    },
+    onSuccess: () => handleClose(),
   })
 
   const inputRef = useRef<HTMLInputElement>(null)

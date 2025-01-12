@@ -1,3 +1,5 @@
+// 삭제 예정
+
 import { create } from 'zustand'
 
 type RealtimeSubscriptionState = {

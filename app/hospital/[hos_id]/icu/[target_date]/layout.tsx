@@ -9,8 +9,7 @@ export default async function IcuPageLayout(props: {
   children: React.ReactNode
   params: Promise<{ target_date: string; hos_id: string }>
 }) {
-  const params = await props.params
-
+  // 자신의 병원에만 접근가능
   // RLS 사용할 경우
   // TO authenticated
   // USING (
@@ -31,43 +30,46 @@ export default async function IcuPageLayout(props: {
   // const vetoolUser = await getVetoolUserData()
   // redirectToOwnHospital(vetoolUser, params.hos_id, vetoolUser.is_super)
 
+  const { hos_id, target_date } = await props.params
   const { basicHosData, icuSidebarData, vetsListData } = await getIcuData(
-    params.hos_id,
-    params.target_date,
+    hos_id,
+    target_date,
   )
 
   return (
-    <BasicHosDataProvider
-      basicHosData={{
-        vetsListData: vetsListData,
-        groupListData: basicHosData.group_list,
-        orderColorsData: basicHosData.order_color as IcuOrderColors,
-        memoNameListData: basicHosData.icu_memo_names,
-        showOrderer: basicHosData.show_orderer,
-        showTxUser: basicHosData.show_tx_user,
-        maintenanceRateCalcMethod: basicHosData.maintenance_rate_calc_method,
-        rerCalcMethod: basicHosData.rer_calc_method as 'a' | 'b',
-        sidebarData: icuSidebarData,
-        vitalRefRange: basicHosData.vital_ref_range as VitalRefRange[],
-        orderFontSizeData: basicHosData.order_font_size,
-        timeGuidelineData: basicHosData.time_guidelines,
-        orderColorDisplay: basicHosData.order_color_display,
-      }}
-    >
-      <div className="h-desktop flex">
-        <IcuSidebar
-          hosId={params.hos_id}
-          hosGroupList={basicHosData.group_list}
-          icuSidebarData={icuSidebarData}
-          vetsListData={vetsListData}
-        />
+    <>
+      <BasicHosDataProvider
+        basicHosData={{
+          vetsListData: vetsListData,
+          groupListData: basicHosData.group_list,
+          orderColorsData: basicHosData.order_color as IcuOrderColors,
+          memoNameListData: basicHosData.icu_memo_names,
+          showOrderer: basicHosData.show_orderer,
+          showTxUser: basicHosData.show_tx_user,
+          maintenanceRateCalcMethod: basicHosData.maintenance_rate_calc_method,
+          rerCalcMethod: basicHosData.rer_calc_method as 'a' | 'b',
+          sidebarData: icuSidebarData,
+          vitalRefRange: basicHosData.vital_ref_range as VitalRefRange[],
+          orderFontSizeData: basicHosData.order_font_size,
+          timeGuidelineData: basicHosData.time_guidelines,
+          orderColorDisplay: basicHosData.order_color_display,
+        }}
+      >
+        <div className="flex h-desktop">
+          <IcuSidebar
+            hosId={hos_id}
+            hosGroupList={basicHosData.group_list}
+            icuSidebarData={icuSidebarData}
+            vetsListData={vetsListData}
+          />
 
-        <div className="ml-0 w-screen flex-1 2xl:ml-48 2xl:w-auto">
-          {props.children}
+          <div className="ml-0 w-screen flex-1 2xl:ml-48 2xl:w-auto">
+            {props.children}
+          </div>
         </div>
-      </div>
+      </BasicHosDataProvider>
 
-      <IcuFooter hosId={params.hos_id} targetDate={params.target_date} />
-    </BasicHosDataProvider>
+      <IcuFooter hosId={hos_id} targetDate={target_date} />
+    </>
   )
 }
