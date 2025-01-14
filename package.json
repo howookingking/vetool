@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "type": "npx supabase gen types typescript --project-id ognykpkimfcqlhtttlss > lib/supabase/database.types.ts",
+    "db": "npx supabase db pull",
     "https": "next dev --experimental-https"
   },
   "dependencies": {
