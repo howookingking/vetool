@@ -12,7 +12,7 @@ import type { SelectedChart } from '@/types/icu/chart'
 export default function ChartInfos({
   chartData,
 }: {
-  chartData: SelectedChart
+  chartData: Omit<SelectedChart, 'orders'>
 }) {
   const {
     icu_io,

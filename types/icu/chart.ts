@@ -139,7 +139,9 @@ export type IcuReadOnlyOrderData = Pick<
   | 'icu_chart_order_comment'
   | 'icu_chart_order_type'
   | 'is_bordered'
->
+> & {
+  treatments?: Treatment[]
+}
 
 export type PinnedDiet = Pick<
   Diet,
@@ -190,4 +192,8 @@ export type Memo = {
   edit_timestamp: string | null
   color: string
   chosen?: boolean
+}
+
+export type IcuShareData = Omit<SelectedChart, 'orders'> & {
+  orders: IcuReadOnlyOrderData[]
 }
