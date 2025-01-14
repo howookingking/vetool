@@ -88,7 +88,7 @@ export default function DefaultOrdersTable({
   }
 
   return (
-    <Table className="h-full max-w-3xl border border-2">
+    <Table className="h-full max-w-3xl border">
       <OrderTableHeader isSorting={isSorting} onClick={handleSortButtonClick}>
         <OrderDialog
           isOpen={orderStep !== 'closed'}

@@ -1,11 +1,14 @@
 import OrderTypeColorDot from '@/components/hospital/common/order-type-color-dot'
 import { parsingOrderName, renderOrderSubComment } from '@/lib/utils/utils'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
+import type { IcuOrderColors } from '@/types/adimin'
 
 type OrderTitleContentProps = {
   orderType: string
   orderName: string
   orderComment: string | null
+  orderColorDisplay: string
+  orderColorsData: IcuOrderColors
+  orderFontSizeData: number
   isTouchMove?: boolean
   vitalRefRange?: {
     min: number
@@ -17,13 +20,12 @@ export default function OrderTitleContent({
   orderType,
   orderName,
   orderComment,
+  orderColorDisplay,
+  orderColorsData,
+  orderFontSizeData,
   isTouchMove,
   vitalRefRange,
 }: OrderTitleContentProps) {
-  const {
-    basicHosData: { orderColorDisplay, orderColorsData, orderFontSizeData },
-  } = useBasicHosDataContext()
-
   return (
     <div className="flex w-full items-center justify-between gap-2 truncate">
       <div className="flex items-center gap-2">
