@@ -456,3 +456,11 @@ export const parseTextWithUrls = (text: string) => {
 
   return parts
 }
+
+// 미디어 파일 확장자 검사
+export const isVideoFile = (url?: string) => {
+  if (!url) return false
+
+  const videoExtensions = ['.mov', '.mp4', '.mp3', '.avi', '.webm']
+  return videoExtensions.some((ext) => url.toLowerCase().endsWith(ext))
+}

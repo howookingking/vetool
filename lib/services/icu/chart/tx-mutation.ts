@@ -6,6 +6,8 @@ import { isValidWeightOrderTx } from '@/lib/utils/utils'
 import type { TxLog } from '@/types/icu/chart'
 import { redirect } from 'next/navigation'
 
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL
+
 export const upsertIcuTx = async (
   hosId: string,
   txLocalState: TxLocalState,
@@ -14,16 +16,19 @@ export const upsertIcuTx = async (
 ) => {
   const supabase = await createClient()
 
-  const { error } = await supabase.from('icu_txs').upsert({
-    hos_id: hosId,
-    icu_chart_tx_id: txLocalState?.txId,
-    icu_chart_order_id: txLocalState?.icuChartOrderId,
-    icu_chart_tx_comment: txLocalState?.txComment,
-    icu_chart_tx_result: txLocalState?.txResult,
-    icu_chart_tx_log: updatedLogs,
-    time: txLocalState?.time!,
-    is_crucial: txLocalState?.isCrucialChecked,
-  })
+  const { data, error } = await supabase
+    .from('icu_txs')
+    .upsert({
+      hos_id: hosId,
+      icu_chart_tx_id: txLocalState?.txId,
+      icu_chart_order_id: txLocalState?.icuChartOrderId,
+      icu_chart_tx_comment: txLocalState?.txComment,
+      icu_chart_tx_result: txLocalState?.txResult,
+      icu_chart_tx_log: updatedLogs,
+      time: txLocalState?.time!,
+      is_crucial: txLocalState?.isCrucialChecked,
+    })
+    .select('icu_chart_tx_id')
 
   if (
     isValidWeightOrderTx(
@@ -50,6 +55,11 @@ export const upsertIcuTx = async (
   if (error) {
     console.error(error)
     redirect(`/error?message=${error.message}`)
+  }
+
+  // 이미지가 존재한다면 업로드
+  if (txLocalState?.txImages && txLocalState.txImages.length > 0) {
+    await uploadTxImages(txLocalState.txImages, data[0].icu_chart_tx_id)
   }
 }
 
@@ -96,5 +106,30 @@ export const updateTxWeight = async (
   if (vitalsError) {
     console.error(vitalsError)
     redirect(`/error?message=${vitalsError.message}`)
+  }
+}
+
+async function uploadTxImages(txImages: File[], txId: string) {
+  try {
+    // 1. FormData 선언
+    const formData = new FormData()
+
+    // 2. FormData에 이미지, 라우트, id 추가
+    txImages.forEach((file) => formData.append('files', file))
+    formData.append('route', 'icu')
+    formData.append('id', txId)
+
+    // 3. 이미지 업로드
+    const response = await fetch(`${baseUrl}/api/image`, {
+      method: 'POST',
+      body: formData,
+    })
+
+    if (!response.ok) {
+      throw new Error('이미지 업로드에 실패했습니다')
+    }
+  } catch (error) {
+    console.error('이미지 업로드 중 오류:', error)
+    redirect(`/error?message=이미지 업로드 중 오류가 발생했습니다`)
   }
 }

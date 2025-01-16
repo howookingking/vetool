@@ -31,6 +31,7 @@ import { LoaderCircle } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import TxImageContainer from './images/tx-image-container'
 
 export default function TxDetailInsertStep({
   showTxUser,
@@ -46,7 +47,6 @@ export default function TxDetailInsertStep({
   } = useTxMutationStore()
   const { selectedTxPendingQueue, reset: orderQueueReset } = useIcuOrderStore()
   const { hos_id } = useParams()
-
   const form = useForm<z.infer<typeof txDetailRegisterFormSchema>>({
     resolver: zodResolver(txDetailRegisterFormSchema),
     defaultValues: {
@@ -192,11 +192,10 @@ export default function TxDetailInsertStep({
             )}
           />
 
-          {/* <IcuChartTxImageInput
-            txId={txLocalState?.txId}
-            images={txImageState ?? []}
-            onImagesChange={(newImages) => setTxImageState(newImages)}
-          /> */}
+          <TxImageContainer
+            txLocalState={txLocalState}
+            setTxLocalState={setTxLocalState}
+          />
 
           {hasTxLog && <TxLog logs={txLocalState?.txLog} />}
 

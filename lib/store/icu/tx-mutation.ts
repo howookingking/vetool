@@ -11,6 +11,7 @@ export type TxLocalState = {
   isCrucialChecked?: boolean
   icuChartOrderType?: string
   icuChartOrderName?: string
+  txImages?: File[]
 } | null
 
 type IcuUpsertTxState = {
@@ -19,9 +20,6 @@ type IcuUpsertTxState = {
 
   txLocalState: TxLocalState
   setTxLocalState: (updates: Partial<TxLocalState>) => void
-
-  // txImageState: File[] | null
-  // setTxImageState: (txImageState: File[] | null) => void
 
   isDeleting: boolean
   setIsDeleting: (isDeleting: boolean) => void
@@ -39,9 +37,6 @@ export const useTxMutationStore = create<IcuUpsertTxState>((set) => ({
   txLocalState: null,
   setTxLocalState: (updates) =>
     set((state) => ({ txLocalState: { ...state.txLocalState, ...updates } })),
-
-  // txImageState: null,
-  // setTxImageState: (txImageState) => set({ txImageState }),
 
   isDeleting: false,
   setIsDeleting: (isDeleting) => set({ isDeleting }),
