@@ -1,3 +1,4 @@
+import IcuSettingsCard from '@/components/hospital/admin/icu-settings/icu-settings-card'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { toast } from '@/components/ui/use-toast'
@@ -5,7 +6,6 @@ import { updateRerCalcMethod } from '@/lib/services/admin/icu/rer-calc'
 import { cn } from '@/lib/utils/utils'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import IcuSettingsCard from '../icu-settings-card'
 
 export default function RerCalcSettings({
   hosId,

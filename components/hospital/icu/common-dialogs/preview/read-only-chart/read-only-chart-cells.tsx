@@ -25,12 +25,6 @@ export default function ReadOnlyChartCells({
                 {tx?.tx_result}
               </span>
 
-              {hasOrder && (
-                <div className="absolute bottom-0.5 right-0.5 -z-10 text-[10px] leading-none text-muted-foreground">
-                  {orderer}
-                </div>
-              )}
-
               {hasComment && <TxDetailHover txComment={tx.tx_comment} />}
             </div>
           </TableCell>

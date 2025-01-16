@@ -1,11 +1,7 @@
 'use no memo'
 
 import DeleteOrderAlertDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/delete-order-alert-dialog'
-import FeedOrderField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/feed-order/feed-order-field'
-import FluidOrderField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/fluid-order/fluid-order-field'
 import OrderFormField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-form-field'
-// import DrugFormField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order-form/drug-order/drug-form-field'
-import ChecklistOrderField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/checklist-order/checklist-order-field'
 import OrderBorderCheckbox from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-border-checkbox'
 import OrderTimeSettings from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-time-settings'
 import { Button } from '@/components/ui/button'
@@ -21,7 +17,10 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
-import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
+import {
+  DEFAULT_ICU_ORDER_TYPE,
+  DEFAULT_ORDER_LABEL,
+} from '@/constants/hospital/icu/chart/order'
 import { orderSchema } from '@/lib/schemas/icu/chart/order-schema'
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
@@ -35,22 +34,12 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 export default function OrderForm({
-  hosId,
   showOrderer,
   icuChartId,
-  weight,
-  species,
-  ageInDays,
-  derCalcFactor,
   setSortedOrders,
 }: {
-  hosId: string
   showOrderer: boolean
   icuChartId: string
-  weight: string
-  species: string
-  ageInDays: number
-  derCalcFactor: number | null
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
 }) {
   const {
@@ -63,7 +52,7 @@ export default function OrderForm({
 
   const { hos_id } = useParams()
   const {
-    basicHosData: { vetsListData, maintenanceRateCalcMethod, rerCalcMethod },
+    basicHosData: { vetsListData },
   } = useBasicHosDataContext()
 
   const [isUpdating, setIsUpdating] = useState(false)
@@ -140,6 +129,9 @@ export default function OrderForm({
     }
   }, [form, startTime, timeTerm])
 
+  const orderLabel =
+    DEFAULT_ORDER_LABEL[orderType as keyof typeof DEFAULT_ORDER_LABEL]
+
   return (
     <Form {...form}>
       <form
@@ -180,34 +172,7 @@ export default function OrderForm({
           )}
         />
 
-        {orderType === 'checklist' && <ChecklistOrderField form={form} />}
-
-        {orderType === 'fluid' && (
-          <FluidOrderField
-            form={form}
-            maintenanceRateCalcMethod={maintenanceRateCalcMethod}
-            species={species}
-            ageInDays={ageInDays}
-            weight={weight}
-          />
-        )}
-
-        {orderType === 'feed' && (
-          <FeedOrderField
-            hosId={hosId}
-            form={form}
-            rerCalcMethod={rerCalcMethod}
-            weight={weight}
-            species={species}
-            derCalcFactor={derCalcFactor}
-            orderTime={orderTime}
-          />
-        )}
-        {/* {orderType === 'injection' && <DrugFormField form={form} />} */}
-
-        {orderType !== 'fluid' &&
-          orderType !== 'feed' &&
-          orderType !== 'checklist' && <OrderFormField form={form} />}
+        <OrderFormField form={form} orderLabel={orderLabel} />
 
         <OrderTimeSettings
           startTime={startTime}
@@ -216,6 +181,7 @@ export default function OrderForm({
           setStartTime={setStartTime}
           setTimeTerm={setTimeTerm}
           setOrderTime={setOrderTime}
+          orderLabel={orderLabel}
         />
 
         <Separator />

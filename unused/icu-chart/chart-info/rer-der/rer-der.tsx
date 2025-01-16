@@ -1,7 +1,7 @@
 'use client'
 
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
-import RerDerToolTip from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/rer-der/rer-der-tool-tip'
+import RerDerToolTip from '@/unused/icu-chart/chart-info/rer-der/rer-der-tool-tip'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -20,10 +20,7 @@ import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
 
 const LazyRerDerForm = dynamic(
-  () =>
-    import(
-      '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/rer-der/rer-der-form'
-    ),
+  () => import('@/unused/icu-chart/chart-info/rer-der/rer-der-form'),
   {
     ssr: false,
     loading: () => <LargeLoaderCircle className="h-[80px]" />,

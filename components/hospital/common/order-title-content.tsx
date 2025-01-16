@@ -1,5 +1,4 @@
 import OrderTypeColorDot from '@/components/hospital/common/order-type-color-dot'
-import { parsingOrderName, renderOrderSubComment } from '@/lib/utils/utils'
 import type { IcuOrderColors } from '@/types/adimin'
 
 type OrderTitleContentProps = {
@@ -36,9 +35,7 @@ export default function OrderTitleContent({
           />
         )}
 
-        <span style={{ fontSize: `${orderFontSizeData}px` }}>
-          {parsingOrderName(orderType, orderName)}
-        </span>
+        <span style={{ fontSize: `${orderFontSizeData}px` }}>{orderName}</span>
 
         {vitalRefRange && (
           <span className="text-xs text-muted-foreground">
@@ -54,7 +51,6 @@ export default function OrderTitleContent({
             style={{ fontSize: `${orderFontSizeData - 2}px` }}
           >
             {orderComment}
-            {renderOrderSubComment(orderType)}
           </span>
         )}
       </div>

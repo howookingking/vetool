@@ -59,10 +59,8 @@ export default function OrderRowCells({
   const [orderTimeState, setOrderTimeState] = useState(order_times)
 
   useEffect(() => {
-    if (orderStep === 'closed' && orderTimePendingQueueLength === 0) {
-      setOrderTimeState(order_times)
-    }
-  }, [order_times, orderStep, orderTimePendingQueueLength])
+    setOrderTimeState(order_times)
+  }, [order_times])
 
   const toggleOrderTime = useCallback(
     (orderId: string, time: number) => {

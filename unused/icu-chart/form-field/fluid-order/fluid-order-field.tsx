@@ -1,6 +1,6 @@
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import WarningMessage from '@/components/common/warning-message'
-import FluidToolTip from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/fluid-order/fluid-tool-tip'
+import FluidToolTip from '@/unused/icu-chart/form-field/fluid-order/fluid-tool-tip'
 import { AutoComplete } from '@/components/ui/auto-complete'
 import { Button } from '@/components/ui/button'
 import {

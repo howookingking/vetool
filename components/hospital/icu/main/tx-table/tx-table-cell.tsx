@@ -2,7 +2,6 @@ import { Button } from '@/components/ui/button'
 import { TableCell } from '@/components/ui/table'
 import useIsMobile from '@/hooks/use-is-mobile'
 import { TxLocalState } from '@/lib/store/icu/tx-mutation'
-import { parsingOrderName } from '@/lib/utils/utils'
 import { IcuOrderColors } from '@/types/adimin'
 import { TxLog } from '@/types/icu/chart'
 import { IcuTxTableData } from '@/types/icu/tx-table'
@@ -96,12 +95,7 @@ export default function TxTableCell({
                   orderColorsData={orderColorsData}
                   orderType={order.icu_chart_order_type}
                 />
-                <span>
-                  {parsingOrderName(
-                    order.icu_chart_order_type,
-                    order.icu_chart_order_name,
-                  )}
-                </span>
+                <span>{order.icu_chart_order_name}</span>
               </div>
               <span className="text-xs text-muted-foreground">
                 {order.icu_chart_order_comment}

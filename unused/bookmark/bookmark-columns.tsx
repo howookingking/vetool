@@ -1,8 +1,8 @@
 'use client'
 
 import PreviewButton from '@/components/hospital/icu/common-dialogs/preview/preview-button'
-import DeleteBookmarkDialog from '@/components/hospital/icu/main/bookmark/delete-bookmark-dialog'
-import BookmarkDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-center/bookmark-dialog'
+import DeleteBookmarkDialog from '@/unused/bookmark/delete-bookmark-dialog'
+import BookmarkDialog from '@/unused/bookmark/bookmark-dialog'
 import GotoIcuButton from '@/components/hospital/icu/main/template/table/goto-icu-button'
 import { Button } from '@/components/ui/button'
 import type { TemplateChart } from '@/types/icu/template'
