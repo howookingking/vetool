@@ -1,4 +1,4 @@
-import Bookmarks from '@/components/hospital/icu/main/bookmark/bookmarks'
+import Bookmarks from '@/unused/bookmark/bookmarks'
 import { getBookmarkedChartData } from '@/lib/services/icu/bookmark/bookmark'
 
 export default async function BookmarkPage(props: {
