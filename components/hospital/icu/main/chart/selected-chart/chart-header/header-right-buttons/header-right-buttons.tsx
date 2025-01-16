@@ -22,11 +22,13 @@ export default function HeaderRightButtons({
 
   return (
     <div className="absolute right-2 top-2 hidden gap-1 2xl:flex">
-      <ShareChartButton
-        icuIoId={icu_io.icu_io_id}
-        targetDate={target_date}
-        mainVetName={mainVetName}
-      />
+      {!icu_io.out_date && (
+        <ShareChartButton
+          icuIoId={icu_io.icu_io_id}
+          targetDate={target_date}
+          mainVetName={mainVetName}
+        />
+      )}
 
       <CopyChartButton icuChartId={icu_chart_id} />
 

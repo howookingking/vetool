@@ -1,9 +1,9 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
+import { Button } from '@/components/ui/button'
+import { ArrowLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, Home } from 'lucide-react'
 
 export default function IcuShareNoResult({ text }: { text: string }) {
   const router = useRouter()
@@ -16,10 +16,6 @@ export default function IcuShareNoResult({ text }: { text: string }) {
         <Button onClick={() => router.back()}>
           <ArrowLeft />
           뒤로가기
-        </Button>
-        <Button variant="outline" onClick={() => router.push('/')}>
-          <Home />
-          홈으로
         </Button>
       </div>
     </div>
