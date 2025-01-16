@@ -19,6 +19,7 @@ import { formatOrders } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
 import { RefObject, useCallback, useEffect, useState } from 'react'
+import OrderDialog from './order/order-dialog'
 
 type ChartTableProps = {
   chartData: SelectedChart
@@ -35,12 +36,7 @@ export default function ChartTable({
   cellRef,
   isTouchMove,
 }: ChartTableProps) {
-  const {
-    icu_chart_id,
-    orders,
-    patient: { hos_id, species },
-    target_date,
-  } = chartData
+  const { icu_chart_id, orders, patient, target_date } = chartData
   const {
     basicHosData: {
       showOrderer,
@@ -51,6 +47,7 @@ export default function ChartTable({
     },
   } = useBasicHosDataContext()
   const isCommandPressed = useIsCommandPressed()
+  const { hos_id } = patient
 
   const [isSorting, setIsSorting] = useState(false)
   const [sortedOrders, setSortedOrders] = useState<SelectedIcuOrder[]>(orders)
@@ -151,15 +148,10 @@ export default function ChartTable({
       {/* 소팅버튼, 오더목록, 오더추가 버튼, 오더너비조절 버튼, 시간 */}
       <ChartTableHeader
         chartData={chartData}
-        hosId={hos_id}
         isSorting={isSorting}
         setIsSorting={setIsSorting}
         preview={preview}
         sortedOrders={sortedOrders}
-        showOrderer={showOrderer}
-        orderStep={orderStep}
-        reset={reset}
-        isEditOrderMode={isEditOrderMode}
         setOrderStep={setOrderStep}
         isExport={isExport}
         setSortedOrders={setSortedOrders}
@@ -177,7 +169,7 @@ export default function ChartTable({
           preview={preview}
           setSortedOrders={setSortedOrders}
           sortedOrders={sortedOrders}
-          species={species}
+          species={patient.species}
         />
       ) : (
         <ChartTableBody
@@ -200,8 +192,8 @@ export default function ChartTable({
           icuChartId={icu_chart_id}
           setSortedOrders={setSortedOrders}
           cellRef={cellRef}
-          species={species}
-          hosId={hos_id}
+          species={patient.species}
+          hosId={patient.hos_id}
           timeGuidelineData={timeGuidelineData}
         />
       )}
@@ -216,7 +208,7 @@ export default function ChartTable({
             setSortedOrders={setSortedOrders}
           />
           <AddTemplateOrderDialog
-            hosId={hos_id}
+            hosId={patient.hos_id}
             targetDate={target_date}
             isAddTemplateDialogOpen={isAddTemplateDialogOpen}
             setIsAddTemplateDialogOpen={setIsAddTemplateDialogOpen}
@@ -229,6 +221,20 @@ export default function ChartTable({
             selectedOrderPendingQueue={selectedOrderPendingQueue}
             setSelectedOrderPendingQueue={setSelectedOrderPendingQueue}
             setCopiedOrderPendingQueue={setCopiedOrderPendingQueue}
+          />
+          <OrderDialog
+            hosId={patient.hos_id}
+            icuChartId={icu_chart_id}
+            orders={orders}
+            showOrderer={showOrderer}
+            orderStep={orderStep}
+            reset={reset}
+            isEditOrderMode={isEditOrderMode}
+            setOrderStep={setOrderStep}
+            isExport={isExport}
+            setSortedOrders={setSortedOrders}
+            mainVetName={chartData.main_vet.name}
+            derCalcFactor={chartData.der_calc_factor}
           />
         </>
       )}

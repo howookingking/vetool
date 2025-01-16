@@ -1,17 +1,13 @@
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import OrdererSelectStep from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/orderer/orderer-select-step'
-import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import type { Patient, SelectedIcuOrder } from '@/types/icu/chart'
-import { Plus } from 'lucide-react'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
 import dynamic from 'next/dynamic'
 import { Dispatch, SetStateAction } from 'react'
 
@@ -19,7 +15,7 @@ const LazyOrderForm = dynamic(() => import('./order-form'), {
   ssr: false,
   loading: () => <LargeLoaderCircle className="h-[388px]" />,
 })
-const LazyTemplateTabContent = dynamic(
+const LazyTemplateTable = dynamic(
   () => import('./template/template-tab-content'),
   {
     ssr: false,
@@ -32,9 +28,6 @@ type OrderDialogProps = {
   icuChartId: string
   orders: SelectedIcuOrder[]
   showOrderer: boolean
-  patient: Patient
-  weight: string
-  ageInDays: number
   orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit'
   isEditOrderMode?: boolean
   setOrderStep: (
@@ -52,9 +45,6 @@ export default function OrderDialog({
   icuChartId,
   orders,
   showOrderer,
-  patient,
-  weight,
-  ageInDays,
   orderStep,
   isEditOrderMode,
   setOrderStep,
@@ -62,7 +52,6 @@ export default function OrderDialog({
   isExport,
   setSortedOrders,
   mainVetName,
-  derCalcFactor,
 }: OrderDialogProps) {
   const handleOpenChange = () => {
     if (orderStep === 'closed') {
@@ -75,16 +64,6 @@ export default function OrderDialog({
 
   return (
     <Dialog open={orderStep !== 'closed'} onOpenChange={handleOpenChange}>
-      <DialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={handleOpenChange}
-          className="shrink-0"
-        >
-          <Plus size={18} />
-        </Button>
-      </DialogTrigger>
       <DialogContent className="max-w-3xl overflow-x-auto">
         <DialogHeader>
           {orderStep === 'upsert' && (
@@ -99,37 +78,46 @@ export default function OrderDialog({
           <DialogDescription />
         </DialogHeader>
 
-        {orderStep === 'upsert' && (
-          <Tabs defaultValue="default">
-            <TabsList className="hidden max-w-full grid-cols-2 overflow-x-auto whitespace-nowrap md:grid">
-              <TabsTrigger value="default">직접 입력</TabsTrigger>
-              <TabsTrigger value="template" disabled={isEditOrderMode}>
-                템플릿 오더 추가
-              </TabsTrigger>
-            </TabsList>
+        {orderStep === 'upsert' &&
+          // <Tabs defaultValue="default">
+          //   <TabsList
+          //     className={cn(
+          //       'hidden max-w-full grid-cols-1 overflow-x-auto whitespace-nowrap md:grid',
+          //     )}
+          //   >
+          //     {isEditOrderMode ? (
+          //       <TabsTrigger value="default">직접 입력</TabsTrigger>
+          //     ) : (
+          //       <TabsTrigger value="template">템플릿 오더 추가</TabsTrigger>
+          //     )}
+          //   </TabsList>
 
-            {/* 오더 직접 추가 (기본값) */}
-            <TabsContent value="default">
-              {!isExport && (
-                <LazyOrderForm
-                  hosId={hosId}
-                  showOrderer={showOrderer}
-                  icuChartId={icuChartId}
-                  species={patient.species}
-                  weight={weight}
-                  ageInDays={ageInDays}
-                  derCalcFactor={derCalcFactor}
-                  setSortedOrders={setSortedOrders}
-                />
-              )}
-            </TabsContent>
+          //   {/* 오더 직접 추가 (기본값) */}
+          //   <TabsContent value="default">
+          //     {!isExport && (
+          //       <LazyOrderForm
+          //         showOrderer={showOrderer}
+          //         icuChartId={icuChartId}
+          //         setSortedOrders={setSortedOrders}
+          //       />
+          //     )}
+          //   </TabsContent>
 
-            {/* 템플릿 오더 추가 */}
-            <TabsContent value="template">
-              <LazyTemplateTabContent hosId={hosId} icuChartId={icuChartId} />
-            </TabsContent>
-          </Tabs>
-        )}
+          //   {/* 템플릿 오더 추가 */}
+          //   <TabsContent value="template">
+          //     <LazyTemplateTabContent hosId={hosId} icuChartId={icuChartId} />
+          //   </TabsContent>
+          // </Tabs>
+
+          (isEditOrderMode ? (
+            <LazyOrderForm
+              showOrderer={showOrderer}
+              icuChartId={icuChartId}
+              setSortedOrders={setSortedOrders}
+            />
+          ) : (
+            <LazyTemplateTable hosId={hosId} icuChartId={icuChartId} />
+          ))}
 
         {orderStep === 'selectOrderer' && (
           <OrdererSelectStep
