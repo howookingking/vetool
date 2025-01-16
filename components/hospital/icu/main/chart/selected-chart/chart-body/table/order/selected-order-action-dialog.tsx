@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useEffect } from 'react'
-import { Copy, BookmarkPlus, Square, Trash2 } from 'lucide-react'
+import { Copy, Bookmark, Square, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -11,7 +11,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
-import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { useTemplateStore } from '@/lib/store/icu/template'
 import { updateIsBordered } from '@/lib/services/icu/chart/order-mutation'
@@ -112,7 +111,7 @@ export default function SelectedOrderActionDialog({
     },
     {
       name: '템플릿으로 저장',
-      icon: <BookmarkPlus />,
+      icon: <Bookmark />,
       onClick: handleTemplateOrder,
     },
     {
