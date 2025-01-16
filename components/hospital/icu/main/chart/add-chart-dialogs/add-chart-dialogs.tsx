@@ -1,7 +1,7 @@
 'use client'
 
 import AddDefaultChartDialog from '@/components/hospital/icu/main/chart/add-chart-dialogs/add-default-chart-dialog'
-import AddBookmarkChartDialog from '@/components/hospital/icu/main/chart/add-chart-dialogs/bookmark/add-bookmark-chart-dialog'
+import AddTemplateOrderDialog from '@/components/hospital/icu/main/chart/add-chart-dialogs/template/add-template-order-dialog'
 import CopyPrevChartDialog from '@/components/hospital/icu/main/chart/add-chart-dialogs/copy-prev-chart-dialog'
 import CopyPrevIoChartDialog from '@/components/hospital/icu/main/chart/add-chart-dialogs/copy-prev-io-chart-dialog'
 import PasteCopiedChartDialog from '@/components/hospital/icu/main/chart/add-chart-dialogs/paste-copied-chart-dialog'
@@ -49,7 +49,7 @@ export default function AddChartDialogs({
 
       <PasteCopiedChartDialog />
 
-      <AddBookmarkChartDialog />
+      <AddTemplateOrderDialog />
     </div>
   )
 }
