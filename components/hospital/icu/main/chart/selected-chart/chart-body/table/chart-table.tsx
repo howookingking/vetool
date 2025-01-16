@@ -72,10 +72,14 @@ export default function ChartTable({
   const isMobile = useIsMobile()
 
   useEffect(() => {
-    if (!isSorting) {
-      setSortedOrders(orders)
+    setSortedOrders(orders)
+  }, [orders])
+
+  useEffect(() => {
+    if (isSorting) {
+      setSortedOrders((prev) => prev)
     }
-  }, [isSorting, orders])
+  }, [isSorting, sortedOrders])
 
   const handleUpsertOrderTimesWithoutOrderer = useCallback(async () => {
     const formattedOrders = formatOrders(orderTimePendingQueue)

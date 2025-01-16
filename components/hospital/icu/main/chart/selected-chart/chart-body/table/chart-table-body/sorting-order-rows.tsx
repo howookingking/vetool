@@ -1,9 +1,9 @@
+import OrderRowTitle from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-row-title'
+import SortableOrderWrapper from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/sortable-order-wrapper'
 import { TableRow } from '@/components/ui/table'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { Dispatch, SetStateAction, useCallback } from 'react'
 import type { Sortable } from 'react-sortablejs'
-import SortableOrderWrapper from '../order/sortable-order-wrapper'
-import OrderRowTitle from './order-row-title'
 
 type SortingRowsProps = {
   sortedOrders: SelectedIcuOrder[]
@@ -31,6 +31,7 @@ export default function SortingOrderRows({
       newOrders.splice(event.newIndex as number, 0, movedOrder)
       setSortedOrders(newOrders)
     },
+
     [sortedOrders, setSortedOrders],
   )
 
