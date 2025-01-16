@@ -150,6 +150,16 @@ export const QUICKORDER_PLACEHOLDER = {
   feed: '사료명$회당급여량',
 } as const
 
+export const DEFAULT_ORDER_LABEL = {
+  checklist: '체크리스트',
+  fluid: '수액',
+  injection: '주사',
+  po: '경구',
+  test: '검사',
+  manual: '기타',
+  feed: '사료',
+} as const
+
 export const CHECKLIST_ORDER_NAMES = [
   '산소포화도',
   '체온',
