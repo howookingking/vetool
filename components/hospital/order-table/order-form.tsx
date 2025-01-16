@@ -1,9 +1,6 @@
 'use client'
 'use no memo'
 
-import ChecklistOrderField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/checklist-order/checklist-order-field'
-import FeedOrderField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/feed-order/feed-order-field'
-import FluidOrderField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/fluid-order/fluid-order-field'
 import OrderBorderCheckbox from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-border-checkbox'
 import OrderFormField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-form-field'
 import DeleteOrderAlertDialog from '@/components/hospital/order-table/delete-order-alert-dialog'
@@ -20,7 +17,10 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
-import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
+import {
+  DEFAULT_ICU_ORDER_TYPE,
+  DEFAULT_ORDER_LABEL,
+} from '@/constants/hospital/icu/chart/order'
 import { orderSchema } from '@/lib/schemas/icu/chart/order-schema'
 import { upsertDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
@@ -127,6 +127,9 @@ export default function OrderForm({
     ],
   )
 
+  const orderLabel =
+    DEFAULT_ORDER_LABEL[orderType as keyof typeof DEFAULT_ORDER_LABEL]
+
   return (
     <Form {...form}>
       <form
@@ -167,21 +170,7 @@ export default function OrderForm({
           )}
         />
 
-        {orderType === 'checklist' && <ChecklistOrderField form={form} />}
-
-        {orderType === 'fluid' && <FluidOrderField form={form} />}
-
-        {orderType === 'feed' && (
-          <FeedOrderField
-            hosId={hos_id as string}
-            form={form}
-            orderTime={new Array(24).fill('0')}
-          />
-        )}
-
-        {orderType !== 'fluid' &&
-          orderType !== 'feed' &&
-          orderType !== 'checklist' && <OrderFormField form={form} />}
+        <OrderFormField form={form} orderLabel={orderLabel} />
 
         <Separator />
 

@@ -39,11 +39,6 @@ const FOOTER_MAIN_VIEW_MENUS = [
     hideInMobile: true,
   },
   {
-    label: '북마크',
-    value: 'bookmark',
-    hideInMobile: true,
-  },
-  {
     label: '입원 통계',
     value: 'analysis',
     hideInMobile: true,

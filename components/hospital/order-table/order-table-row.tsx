@@ -23,7 +23,7 @@ export default function OrderTableRow({
   isSorting?: boolean
 }) {
   const {
-    basicHosData: { orderColorsData, orderColorDisplay },
+    basicHosData: { orderColorsData, orderColorDisplay, orderFontSizeData },
   } = useBasicHosDataContext()
 
   return (
@@ -65,6 +65,9 @@ export default function OrderTableRow({
             orderType={order.order_type}
             orderName={order.order_name}
             orderComment={order.order_comment}
+            orderColorDisplay={orderColorDisplay}
+            orderColorsData={orderColorsData}
+            orderFontSizeData={orderFontSizeData}
           />
         </Button>
       </TableCell>
