@@ -29,10 +29,6 @@ export default async function IcuSharePage(props: {
     return <IcuShareNoResult text="해당 환자의 입원 기록이 존재하지 않습니다" />
   }
 
-  if (shareData.icu_io.out_date) {
-    return <IcuShareNoResult text="이미 퇴원한 환자입니다" />
-  }
-
   const { orders: chartOrderData, ...chartData } = shareData
 
   return (

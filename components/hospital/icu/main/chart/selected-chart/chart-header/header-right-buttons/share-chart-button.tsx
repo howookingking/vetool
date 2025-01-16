@@ -64,8 +64,6 @@ export default function ShareChartButton({
           <DialogDescription>
             입원기간 동안의 차트를 외부에 링크로 공유할 수 있습니다
             <br />
-            퇴원 시 공유 페이지가 만료됩니다
-            <br />
             <br />
             1. 클립보드에 복사: 공유 페이지 링크가 클립보드에 복사됩니다
             <br />
