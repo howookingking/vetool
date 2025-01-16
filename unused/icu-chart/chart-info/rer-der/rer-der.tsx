@@ -48,14 +48,14 @@ export default function RerDer({
     setFactor(derCalcFactor ? derCalcFactor.toString() : '')
   }, [derCalcFactor])
 
-  const {
-    basicHosData: { rerCalcMethod },
-  } = useBasicHosDataContext()
+  // const {
+  //   basicHosData: { rerCalcMethod },
+  // } = useBasicHosDataContext()
 
   const calculatedRer = calculateRer(
     weight,
     species as 'canine' | 'feline',
-    rerCalcMethod as 'a' | 'b',
+    'a',
   )
 
   const calculatedDer = (Number(calculatedRer) * Number(factor)).toFixed(0)
@@ -95,7 +95,7 @@ export default function RerDer({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <span>RER & DER</span>
-            <RerDerToolTip rerCalcMethod={rerCalcMethod as 'a' | 'b'} />
+            <RerDerToolTip rerCalcMethod={'a'} />
           </DialogTitle>
           <DialogDescription />
         </DialogHeader>
