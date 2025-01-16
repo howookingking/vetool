@@ -72,7 +72,10 @@ export default function ChartTable({
   const isMobile = useIsMobile()
 
   useEffect(() => {
-    setSortedOrders(orders)
+    if (!isSorting) {
+      setSortedOrders(orders)
+    }
+    // eslint-disable-next-line
   }, [orders])
 
   useEffect(() => {
