@@ -40,7 +40,7 @@ export const ADMIN_SIDEBAR_ITEMS = [
     name: '사료설정',
     path: 'diet-settings',
     icon: Utensils,
-    isReady: true,
+    isReady: false,
     isResponsive: false,
   },
   {
