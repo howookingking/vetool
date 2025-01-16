@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { useCopiedChartStore } from '@/lib/store/icu/copied-chart'
 import { Check } from 'lucide-react'
 
-export default function PasteBookmarkButton({ chartId }: { chartId: string }) {
+export default function PasteTemplateButton({ chartId }: { chartId: string }) {
   const { setIsConfirmCopyDialogOpen, setCopiedChartId } = useCopiedChartStore()
 
   const handleSelect = async () => {
