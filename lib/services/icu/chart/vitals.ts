@@ -4,30 +4,6 @@ import { createClient } from '@/lib/supabase/server'
 import { VitalTxData } from '@/types/icu/chart'
 import { redirect } from 'next/navigation'
 
-/**
- * 입원일 이후의 몸무게 바이탈 데이터를 가져옵니다.
- * @param patientId - 환자 ID
- * @param inDate - 입원일
- * @returns 몸무게 바이탈 데이터
- */
-export const getWeightData = async (patientId: string, inDate: string) => {
-  const supabase = await createClient()
-
-  const { data: weightData, error: weightDataError } = await supabase
-    .from('vitals')
-    .select('body_weight, created_at, vital_id')
-    .match({ patient_id: patientId })
-    .gte('created_at', inDate)
-    .order('created_at', { ascending: false })
-
-  if (weightDataError) {
-    console.error(weightDataError)
-    redirect(`/error?message=${weightDataError.message}`)
-  }
-
-  return weightData ?? []
-}
-
 export const updateWeightData = async (
   patientId: string,
   weight: string,
