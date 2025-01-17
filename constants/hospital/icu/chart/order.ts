@@ -107,6 +107,10 @@ export const CHECKLIST_ORDERS = [
     orderName: 'SPO2',
     orderComment: '',
   },
+  {
+    orderName: '혈당',
+    orderComment: '',
+  },
 ] as const
 
 export const DEFAULT_ICU_ORDER_TYPE = [
@@ -180,6 +184,7 @@ export const CHECKLIST_ORDER_NAMES = [
   'SPO2',
   '대변',
   '소변',
+  '혈당',
 ] as const
 
 export type OrderType = (typeof DEFAULT_ICU_ORDER_TYPE)[number]['value']
