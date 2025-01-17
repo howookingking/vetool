@@ -69,71 +69,69 @@ const SingleMemo = React.forwardRef<HTMLLIElement, SingleMemoProps>(
     }
 
     return (
-      <ul className="m-0 list-none p-0">
-        <li
-          className="relative flex w-full items-center px-2"
-          ref={ref}
-          style={{
-            backgroundColor: editedMemoColor ?? MEMO_COLORS[0],
-          }}
-        >
-          <GripVertical
-            className="handle z-20 block shrink-0"
-            size={16}
-            cursor="grab"
-          />
+      <li
+        className="relative flex w-full items-center px-2"
+        ref={ref}
+        style={{
+          backgroundColor: editedMemoColor ?? MEMO_COLORS[0],
+        }}
+      >
+        <GripVertical
+          className="handle z-20 block shrink-0"
+          size={16}
+          cursor="grab"
+        />
 
-          <div className="group flex w-full gap-2 rounded-sm p-2 pt-1">
-            <div className="flex w-full flex-col gap-1">
-              <div className="flex items-center justify-between">
-                <MemoTimeStamp
-                  editedCreateTimestamp={editedCreateTimestamp}
-                  isEditMode={isEditMode}
-                  setEditedCreateTimestamp={setEditedCreateTimestamp}
-                  editTimestamp={memo.edit_timestamp}
-                />
+        <div className="group flex w-full gap-2 rounded-sm p-2 pt-1">
+          <div className="flex w-full flex-col gap-1">
+            <div className="flex items-center justify-between">
+              <MemoTimeStamp
+                editedCreateTimestamp={editedCreateTimestamp}
+                isEditMode={isEditMode}
+                setEditedCreateTimestamp={setEditedCreateTimestamp}
+                editTimestamp={memo.edit_timestamp}
+              />
 
-                {!isEditMode && (
-                  <div className="absolute right-1.5 top-1.5 flex cursor-pointer items-center gap-2 text-muted-foreground opacity-0 transition duration-300 group-hover:opacity-100 group-focus:opacity-100">
-                    <Pencil
-                      size={14}
-                      onClick={() => setIsEditMode(true)}
-                      className="hover:opacity-70"
-                    />
-
-                    <DeleteMemoDialog onDelete={onDelete} />
-                  </div>
-                )}
-              </div>
-
-              {isEditMode ? (
-                <div className="relative">
-                  <Textarea
-                    value={editedMemo}
-                    onChange={(e) => setEditedMemo(e.target.value)}
-                    className="min-h-8 overflow-hidden px-1 py-0.5 pr-7 text-sm"
-                    ref={editingTextAreaRef}
-                    onKeyDown={handleKeyDown}
-                  />
-                  <MemoColorPicker
-                    memoColor={editedMemoColor}
-                    setMemoColor={setEditedMemoColor}
-                  />
-                  <Check
+              {!isEditMode && (
+                <div className="absolute right-1.5 top-1.5 flex cursor-pointer items-center gap-2 text-muted-foreground opacity-0 transition duration-300 group-hover:opacity-100 group-focus:opacity-100">
+                  <Pencil
                     size={14}
-                    onClick={handleUpdateSingleMemo}
-                    className="absolute -top-5 right-0 cursor-pointer hover:opacity-70"
+                    onClick={() => setIsEditMode(true)}
+                    className="hover:opacity-70"
                   />
+
+                  <DeleteMemoDialog onDelete={onDelete} />
                 </div>
-              ) : (
-                <p className="mr-2 whitespace-pre-wrap break-all text-sm">
-                  {memo.memo}
-                </p>
               )}
             </div>
+
+            {isEditMode ? (
+              <div className="relative">
+                <Textarea
+                  value={editedMemo}
+                  onChange={(e) => setEditedMemo(e.target.value)}
+                  className="min-h-8 overflow-hidden px-1 py-0.5 pr-7 text-sm"
+                  ref={editingTextAreaRef}
+                  onKeyDown={handleKeyDown}
+                />
+                <MemoColorPicker
+                  memoColor={editedMemoColor}
+                  setMemoColor={setEditedMemoColor}
+                />
+                <Check
+                  size={14}
+                  onClick={handleUpdateSingleMemo}
+                  className="absolute -top-5 right-0 cursor-pointer hover:opacity-70"
+                />
+              </div>
+            ) : (
+              <p className="mr-2 whitespace-pre-wrap break-all text-sm">
+                {memo.memo}
+              </p>
+            )}
           </div>
-        </li>
-      </ul>
+        </div>
+      </li>
     )
   },
 )
