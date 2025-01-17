@@ -39,7 +39,10 @@ export default function IcuShareHeader({ targetDate }: { targetDate: string }) {
   }
 
   return (
-    <div className="flex items-center justify-center gap-1 2xl:justify-start">
+    <div
+      className="mx-auto inline-flex items-center justify-center gap-1 2xl:mx-0 2xl:w-fit 2xl:justify-start"
+      data-guide="date-picker"
+    >
       <Button
         onClick={() => handleUpdateDate(-1)}
         size="icon"
