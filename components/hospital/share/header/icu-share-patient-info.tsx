@@ -16,7 +16,10 @@ export default function IcuSharePatientInfo({
   const { name, breed, gender, species, birth } = patientData
 
   return (
-    <div className="flex flex-grow justify-center gap-2 px-2 font-semibold md:text-sm 2xl:text-base">
+    <div
+      className="mx-auto inline-flex w-fit items-center justify-center gap-2 px-2 font-semibold md:text-sm 2xl:text-base"
+      data-helper="patient-info"
+    >
       {species === 'canine' ? <Dog size={20} /> : <Cat size={20} />}
       <span>{name}</span>·
       <span className="truncate sm:w-auto">{convertPascalCased(breed)}</span>·

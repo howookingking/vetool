@@ -7,28 +7,31 @@ export default function InAndOutDate({
   inDate,
   outDueDate,
   outDate,
+  noIcon,
 }: {
   icuIoId: string
   inDate: string
   outDueDate: string | null
   outDate: string | null
+  noIcon?: boolean
 }) {
   const isPatientOut = outDate !== null
 
   return (
     <div className="grid w-full grid-cols-2 gap-2">
       <div className="col-span-1">
-        <Indate inDate={inDate} />
+        <Indate inDate={inDate} noIcon={noIcon} />
       </div>
 
       <div className="col-span-1">
         {isPatientOut ? (
-          <OutDate outDate={outDate} />
+          <OutDate outDate={outDate} noIcon={noIcon} />
         ) : (
           <OutDueDate
             outDueDate={outDueDate}
             icuIoId={icuIoId}
             inDate={inDate}
+            noIcon={noIcon}
           />
         )}
       </div>

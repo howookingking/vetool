@@ -64,6 +64,7 @@ export default function ReadOnlyChartTable({
             className="relative divide-x"
             key={order.icu_chart_order_id}
             style={borderedOrderClassName(chartOrderData, order, index)}
+            data-helper="order-list"
           >
             <ReadOnlyChartRowTitle
               order={order}

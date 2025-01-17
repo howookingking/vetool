@@ -4,6 +4,8 @@ import IcuShareHeader from '@/components/hospital/share/header/icu-share-header'
 import IcuShareNoResult from '@/components/hospital/share/icu-share-no-result'
 import { DEFAULT_SHARE_ORDER_COLOR } from '@/constants/hospital/icu/chart/colors'
 import { getIcuShareData } from '@/lib/services/share/share'
+import HighlightGuide from '@/components/ui/highlight-guide'
+import { HELPER_STEPS } from '@/constants/hospital/share'
 
 export default async function IcuSharePage(props: {
   params: Promise<{ icu_io_id: string }>
@@ -33,6 +35,8 @@ export default async function IcuSharePage(props: {
 
   return (
     <div className="flex flex-col gap-4">
+      <HighlightGuide steps={HELPER_STEPS} className="right-4" />
+
       <IcuShareHeader chartData={chartData} targetDate={targetDate as string} />
       <IcuShareChartInfos chartData={chartData} mainVetName={mainVetName} />
       <ReadOnlyChartTable

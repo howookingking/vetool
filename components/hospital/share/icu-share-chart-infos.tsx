@@ -16,13 +16,17 @@ export default function IcuShareChartInfos({
   const { icu_io, patient } = chartData
 
   return (
-    <div className="pointer-events-none grid cursor-not-allowed grid-cols-8 gap-2 md:grid-cols-11">
+    <div
+      data-helper="chart-info"
+      className="pointer-events-none grid cursor-not-allowed grid-cols-8 gap-2 md:grid-cols-11"
+    >
       <div className="col-span-8 md:col-span-6">
         <InAndOutDate
           icuIoId={icu_io.icu_io_id}
           inDate={icu_io.in_date}
           outDueDate={icu_io.out_due_date}
           outDate={icu_io.out_date}
+          noIcon
         />
       </div>
 
