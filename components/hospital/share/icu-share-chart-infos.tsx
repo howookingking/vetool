@@ -17,7 +17,7 @@ export default function IcuShareChartInfos({
 
   return (
     <div
-      data-helper="chart-info"
+      data-guide="chart-info"
       className="pointer-events-none grid cursor-not-allowed grid-cols-8 gap-2 md:grid-cols-11"
     >
       <div className="col-span-8 md:col-span-6">

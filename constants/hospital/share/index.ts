@@ -1,4 +1,4 @@
-export const HELPER_STEPS = [
+export const SHARE_GUIDE_STEPS = [
   {
     target: 'date-picker',
     title: '날짜 선택',

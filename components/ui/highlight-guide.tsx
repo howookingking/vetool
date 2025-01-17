@@ -3,14 +3,14 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Indicator } from '@/components/ui/indicator'
-import { HELPER_STEPS } from '@/constants/hospital/share'
+import { SHARE_GUIDE_STEPS } from '@/constants/hospital/share'
 import useLocalStorage from '@/hooks/use-local-storage'
 import { cn } from '@/lib/utils/utils'
 import { CircleHelp, X } from 'lucide-react'
 import { useEffect, useState, useCallback } from 'react'
 
 type HighlightGuideProps = {
-  steps: typeof HELPER_STEPS
+  steps: typeof SHARE_GUIDE_STEPS
   className?: string
 }
 
@@ -25,13 +25,13 @@ export default function HighlightGuide({
   // highlightTarget 함수를 useCallback으로 감싸기
   const highlightTarget = useCallback(() => {
     // 이전 하이라이트 초기화
-    document.querySelectorAll('[data-helper]').forEach((element) => {
+    document.querySelectorAll('[data-guide]').forEach((element) => {
       element.classList.remove('relative', 'z-50', 'bg-background')
     })
 
     // 현재 타겟 하이라이트
     const currentTarget = document.querySelector(
-      `[data-helper="${steps[currentStep].target}"]`,
+      `[data-guide="${steps[currentStep].target}"]`,
     )
     if (currentTarget) {
       currentTarget.classList.add('relative', 'z-50', 'bg-background')
@@ -47,7 +47,7 @@ export default function HighlightGuide({
   // 가이드 종료 시 하이라이트 제거
   useEffect(() => {
     if (!isOpen) {
-      document.querySelectorAll('[data-helper]').forEach((el) => {
+      document.querySelectorAll('[data-guide]').forEach((el) => {
         el.classList.remove('relative', 'z-50', 'bg-background')
       })
     }
