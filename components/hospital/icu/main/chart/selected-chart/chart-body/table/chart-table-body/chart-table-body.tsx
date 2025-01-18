@@ -1,3 +1,5 @@
+import OrderRows from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-rows'
+import QuickOrderInsertInput from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/quick-order-insert-input'
 import { TableBody, TableCell, TableRow } from '@/components/ui/table'
 import {
   type OrderStep,
@@ -6,8 +8,6 @@ import {
 import type { VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { Dispatch, RefObject, SetStateAction } from 'react'
-import OrderRows from './order-rows'
-import QuickOrderInsertInput from './quick-order-insert-input'
 
 type ChartTableBodyProps = {
   selectedOrderPendingQueue: Partial<SelectedIcuOrder>[]
@@ -90,6 +90,14 @@ export default function ChartTableBody({
               icuChartId={icuChartId}
               setSortedOrders={setSortedOrders}
             />
+          </TableCell>
+
+          <TableCell className="relative">
+            <div className="absolute bottom-3 left-2 hidden whitespace-nowrap text-muted-foreground md:block">
+              CTRL + 우클릭으로{' '}
+              <span className="mx-2 bg-rose-400/10 p-1">형광펜</span>
+              칠을 할 수 있습니다
+            </div>
           </TableCell>
         </TableRow>
       )}

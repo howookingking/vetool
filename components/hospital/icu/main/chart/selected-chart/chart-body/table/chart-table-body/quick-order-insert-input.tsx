@@ -15,10 +15,12 @@ import {
   type OrderType,
 } from '@/constants/hospital/icu/chart/order'
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
+import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
-import { useParams, useRouter } from 'next/navigation'
+import { Plus } from 'lucide-react'
+import { useParams } from 'next/navigation'
 import { Dispatch, SetStateAction, useState } from 'react'
 
 type QuickOrderInsertInputProps = {
@@ -34,11 +36,12 @@ export default function QuickOrderInsertInput({
     basicHosData: { orderColorsData },
   } = useBasicHosDataContext()
   const { hos_id } = useParams()
-  const { refresh } = useRouter()
   const [quickOrderInput, setQuickOrderInput] = useState('')
   const [orderType, setOrderType] = useState('manual')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isChecklistOrder, setIsChecklistOrder] = useState(false)
+
+  const { setOrderStep } = useIcuOrderStore()
 
   const createOrder = async (orderName: string, orderDescription: string) => {
     // 빠른 오더를 생성하고, 기존 오더 배열에 추가
@@ -98,8 +101,19 @@ export default function QuickOrderInsertInput({
     await createOrder(orderName, orderDescription ?? '')
   }
 
+  const handleOrderTypeChange = async (selectedValue: string) => {
+    setOrderType(selectedValue)
+    setIsChecklistOrder(false)
+
+    if (selectedValue === 'template') {
+      setOrderStep('upsert')
+      setOrderType('manual')
+      return
+    }
+  }
+
   // 체크리스트 SELECT onChange
-  const handleSelectChange = async (selectedValue: string) => {
+  const handleCheckListValueChange = async (selectedValue: string) => {
     const selectedOrder = CHECKLIST_ORDERS.find(
       (order) => order.orderName === selectedValue,
     )
@@ -117,13 +131,7 @@ export default function QuickOrderInsertInput({
 
   return (
     <div className="relative hidden items-center md:flex">
-      <Select
-        onValueChange={(value) => {
-          setOrderType(value)
-          setIsChecklistOrder(false)
-        }}
-        value={orderType}
-      >
+      <Select onValueChange={handleOrderTypeChange} value={orderType}>
         <SelectTrigger className="h-11 w-1/2 rounded-none border-0 border-r px-2 shadow-none ring-0 focus:ring-0">
           <SelectValue />
         </SelectTrigger>
@@ -145,11 +153,21 @@ export default function QuickOrderInsertInput({
               </div>
             </SelectItem>
           ))}
+
+          <SelectItem
+            value="template"
+            className="rounded-none p-1 transition hover:opacity-70"
+          >
+            <div className="flex items-center gap-2">
+              <Plus className="h-4 w-4" />
+              <span>템플릿</span>
+            </div>
+          </SelectItem>
         </SelectContent>
       </Select>
 
       {orderType === 'checklist' ? (
-        <Select onValueChange={handleSelectChange}>
+        <Select onValueChange={handleCheckListValueChange}>
           <SelectTrigger className="h-11 rounded-none border-0 border-r focus-visible:ring-0">
             <SelectValue placeholder="체크리스트 항목 선택" />
           </SelectTrigger>

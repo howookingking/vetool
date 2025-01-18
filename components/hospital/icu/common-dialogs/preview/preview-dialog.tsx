@@ -1,4 +1,4 @@
-import ReadOnlyChartTable from '@/components/hospital/icu/common-dialogs/preview/read-only-chart-table'
+import ReadOnlyChartTable from '@/components/hospital/icu/common-dialogs/preview/read-only-chart/read-only-chart-table'
 import ChartTable from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table'
 import {
   Dialog,
@@ -9,11 +9,15 @@ import {
 import { useCopiedChartStore } from '@/lib/store/icu/copied-chart'
 import { usePreviewDialogStore } from '@/lib/store/icu/preview-dialog'
 import { DialogDescription } from '@radix-ui/react-dialog'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 
 export default function PreviewDialog() {
   const { copiedChart, readOnlyOrders, isReadOnly, setIsReadOnly } =
     useCopiedChartStore()
   const { isPreviewDialogOpen, setPreviewDialogOpen } = usePreviewDialogStore()
+  const {
+    basicHosData: { orderColorsData, orderColorDisplay, orderFontSizeData },
+  } = useBasicHosDataContext()
 
   const handleOpenPreviewDialog = (isOpen: boolean) => {
     setPreviewDialogOpen(isOpen)
@@ -30,7 +34,12 @@ export default function PreviewDialog() {
 
         <div className="max-h-[800px] overflow-y-auto">
           {isReadOnly ? (
-            <ReadOnlyChartTable chartOrderData={readOnlyOrders!} />
+            <ReadOnlyChartTable
+              chartOrderData={readOnlyOrders!}
+              orderColorsData={orderColorsData}
+              orderColorDisplay={orderColorDisplay}
+              orderFontSizeData={orderFontSizeData}
+            />
           ) : (
             <ChartTable preview chartData={copiedChart!} />
           )}

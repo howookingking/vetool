@@ -120,7 +120,11 @@ export const parseVitalValue = (
 
   switch (currentVital) {
     case '체중':
-      return parseWithDefault(item?.body_weight)
+      if (result?.includes('kg')) {
+        return parseWithDefault(result.split('kg')[0])
+      }
+
+      return parseWithDefault(result)
 
     case '심박수':
     case '활력':

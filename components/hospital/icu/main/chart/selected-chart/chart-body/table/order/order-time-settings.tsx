@@ -16,6 +16,7 @@ import {
 import type { Dispatch, SetStateAction } from 'react'
 
 type OrderTimeSettingsProps = {
+  orderLabel: string
   startTime: string
   timeTerm: string
   orderTime: string[]
@@ -25,6 +26,7 @@ type OrderTimeSettingsProps = {
 }
 
 export default function OrderTimeSettings({
+  orderLabel,
   startTime,
   timeTerm,
   orderTime,
@@ -58,7 +60,9 @@ export default function OrderTimeSettings({
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-2">
-        <span className="text-sm font-semibold">오더 시간 설정</span>
+        <span className="text-sm font-semibold">
+          {orderLabel} 오더 시간 설정
+        </span>
         <HelperTooltip side="right">
           표에서 ctrl + 우클릭 으로도 설정이 가능합니다
         </HelperTooltip>

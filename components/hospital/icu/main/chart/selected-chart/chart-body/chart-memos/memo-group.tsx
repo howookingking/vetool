@@ -154,7 +154,7 @@ export default function MemoGroup({
         {memoName} ({sortedMemos.length})
       </Label>
 
-      <ScrollArea className="h-60 rounded-md border p-2">
+      <ScrollArea className="h-60 border p-2">
         <ReactSortable
           list={sortedMemos}
           setList={setSortedMemos}

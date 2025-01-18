@@ -31,6 +31,12 @@ export const VITALS = [
     isActive: true,
     initialLength: 10,
   },
+  {
+    id: 5,
+    title: '혈당',
+    isActive: true,
+    initialLength: 10,
+  },
 ] as const
 
 export const CHART_CONFIG = {

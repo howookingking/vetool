@@ -1,6 +1,5 @@
 import OrderWidthButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/order-width-button'
 import SortingButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/sorting-button'
-import OrderDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-dialog'
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { type OrderStep } from '@/lib/store/icu/icu-order'
@@ -20,9 +19,9 @@ type ChartTableHeaderProps = {
   reset: () => void
   isEditOrderMode?: boolean
   setOrderStep: (orderStep: OrderStep) => void
+  orderWidth: number
   isExport?: boolean
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
-  orderWidth: number
   setOrderWidth: Dispatch<SetStateAction<number>>
   isMobile: boolean
   isTouchMove?: boolean
@@ -34,29 +33,11 @@ export default function ChartTableHeader({
   sortedOrders,
   isSorting,
   setIsSorting,
-  hosId,
-  showOrderer,
-  orderStep,
-  reset,
-  isEditOrderMode,
-  setOrderStep,
-  isExport,
-  setSortedOrders,
   orderWidth,
   setOrderWidth,
   isMobile,
   isTouchMove,
 }: ChartTableHeaderProps) {
-  const {
-    icu_chart_id,
-    orders,
-    patient,
-    weight,
-    main_vet,
-    der_calc_factor,
-    icu_io: { age_in_days },
-  } = chartData
-
   return (
     <TableHeader
       className={cn(
@@ -82,28 +63,6 @@ export default function ChartTableHeader({
           )}
 
           <span className="w-full text-center">오더 목록</span>
-
-          {!preview && !isSorting && (
-            <>
-              <OrderDialog
-                hosId={hosId}
-                icuChartId={icu_chart_id}
-                orders={orders}
-                showOrderer={showOrderer}
-                patient={patient}
-                weight={weight}
-                ageInDays={age_in_days}
-                orderStep={orderStep}
-                reset={reset}
-                isEditOrderMode={isEditOrderMode}
-                setOrderStep={setOrderStep}
-                isExport={isExport}
-                setSortedOrders={setSortedOrders}
-                mainVetName={main_vet.name}
-                derCalcFactor={der_calc_factor}
-              />
-            </>
-          )}
 
           {!isSorting && (
             <OrderWidthButton

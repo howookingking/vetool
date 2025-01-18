@@ -1,10 +1,9 @@
 import HelperTooltip from '@/components/common/helper-tooltip'
-import DrugComboBox from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order-form/drug-order/drug-combo-box'
-import DrugDoseInput from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order-form/drug-order/drug-dose-input'
-import DrugDoseUnitRadio from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order-form/drug-order/drug-dose-unit-radio'
-import DrugSelectField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order-form/drug-order/drug-select-field'
+// import DrugComboBox from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order-form/drug-order/drug-combo-box'
+// import DrugDoseInput from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order-form/drug-order/drug-dose-input'
+// import DrugDoseUnitRadio from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order-form/drug-order/drug-dose-unit-radio'
+// import DrugSelectField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order-form/drug-order/drug-select-field'
 import { orderSchema } from '@/lib/schemas/icu/chart/order-schema'
-import { calculateTotalDrugAmount } from '@/lib/utils/utils'
 import { useCallback, useEffect, useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
@@ -74,19 +73,19 @@ export default function DrugFormField({
   const getTotalAmount = useCallback(() => {
     if (!drugMassVolume || !weight) return
 
-    return calculateTotalDrugAmount(
-      weight,
-      drugDosage,
-      drugTotalUnit,
-      drugMassVolume,
-    )
+    // return calculateTotalDrugAmount(
+    //   weight,
+    //   drugDosage,
+    //   drugTotalUnit,
+    //   drugMassVolume,
+    // )
   }, [drugDosage, drugMassVolume, drugTotalUnit, weight])
 
   useEffect(() => {
     if (isAutoCalculate && drugMassVolume) {
       const totalAmount = getTotalAmount()
 
-      if (totalAmount) setDrugTotalAmount(totalAmount)
+      // if (totalAmount) setDrugTotalAmount(totalAmount)
     }
   }, [drugMassVolume, getTotalAmount, isAutoCalculate])
 
@@ -107,7 +106,7 @@ export default function DrugFormField({
 
   return (
     <div>
-      <DrugComboBox
+      {/* <DrugComboBox
         drugName={drugName}
         setDrugName={setDrugName}
         setDrugMassVolume={setDrugMassVolume}
@@ -169,7 +168,7 @@ export default function DrugFormField({
             />
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   )
 }

@@ -107,6 +107,10 @@ export const CHECKLIST_ORDERS = [
     orderName: 'SPO2',
     orderComment: '',
   },
+  {
+    orderName: '혈당',
+    orderComment: '',
+  },
 ] as const
 
 export const DEFAULT_ICU_ORDER_TYPE = [
@@ -150,6 +154,16 @@ export const QUICKORDER_PLACEHOLDER = {
   feed: '사료명$회당급여량',
 } as const
 
+export const DEFAULT_ORDER_LABEL = {
+  checklist: '체크리스트',
+  fluid: '수액',
+  injection: '주사',
+  po: '경구',
+  test: '검사',
+  manual: '기타',
+  feed: '사료',
+} as const
+
 export const CHECKLIST_ORDER_NAMES = [
   '산소포화도',
   '체온',
@@ -170,6 +184,7 @@ export const CHECKLIST_ORDER_NAMES = [
   'SPO2',
   '대변',
   '소변',
+  '혈당',
 ] as const
 
 export type OrderType = (typeof DEFAULT_ICU_ORDER_TYPE)[number]['value']

@@ -1,7 +1,7 @@
 'use client'
 
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
-import RerDerToolTip from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/rer-der/rer-der-tool-tip'
+import RerDerToolTip from '@/unused/icu-chart/chart-info/rer-der/rer-der-tool-tip'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -20,10 +20,7 @@ import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
 
 const LazyRerDerForm = dynamic(
-  () =>
-    import(
-      '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/rer-der/rer-der-form'
-    ),
+  () => import('@/unused/icu-chart/chart-info/rer-der/rer-der-form'),
   {
     ssr: false,
     loading: () => <LargeLoaderCircle className="h-[80px]" />,
@@ -51,14 +48,14 @@ export default function RerDer({
     setFactor(derCalcFactor ? derCalcFactor.toString() : '')
   }, [derCalcFactor])
 
-  const {
-    basicHosData: { rerCalcMethod },
-  } = useBasicHosDataContext()
+  // const {
+  //   basicHosData: { rerCalcMethod },
+  // } = useBasicHosDataContext()
 
   const calculatedRer = calculateRer(
     weight,
     species as 'canine' | 'feline',
-    rerCalcMethod as 'a' | 'b',
+    'a',
   )
 
   const calculatedDer = (Number(calculatedRer) * Number(factor)).toFixed(0)
@@ -98,7 +95,7 @@ export default function RerDer({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <span>RER & DER</span>
-            <RerDerToolTip rerCalcMethod={rerCalcMethod as 'a' | 'b'} />
+            <RerDerToolTip rerCalcMethod={'a'} />
           </DialogTitle>
           <DialogDescription />
         </DialogHeader>

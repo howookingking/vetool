@@ -49,7 +49,7 @@ export default function OrderRowTitle({
   const { order_comment, order_type, order_name } = order
 
   const {
-    basicHosData: { orderColorsData, orderColorDisplay },
+    basicHosData: { orderColorsData, orderColorDisplay, orderFontSizeData },
   } = useBasicHosDataContext()
 
   const handleClickOrderTitle = useCallback(
@@ -139,6 +139,9 @@ export default function OrderRowTitle({
           orderType={order_type}
           orderName={order_name}
           orderComment={order_comment}
+          orderColorDisplay={orderColorDisplay}
+          orderColorsData={orderColorsData}
+          orderFontSizeData={orderFontSizeData}
           vitalRefRange={rowVitalRefRange}
           isTouchMove={isTouchMove}
         />
