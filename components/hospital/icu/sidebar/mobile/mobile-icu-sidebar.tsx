@@ -1,11 +1,10 @@
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
+import IcuDateSelector from '@/components/hospital/icu/sidebar/date-selector/icu-date-selector'
 import Filters from '@/components/hospital/icu/sidebar/filters/filters'
 import PatientList from '@/components/hospital/icu/sidebar/patient-list'
 import { Separator } from '@/components/ui/separator'
 import type { Filter, IcuSidebarIoData, Vet } from '@/types/icu/chart'
-import { usePathname, useRouter } from 'next/navigation'
 import type { Dispatch, SetStateAction } from 'react'
-import IcuDateSelector from '../date-selector/icu-date-selector'
 
 type MobileSidebarProps = {
   isEmpty: boolean
@@ -16,6 +15,7 @@ type MobileSidebarProps = {
   filteredData: {
     filteredIcuIoData: IcuSidebarIoData[]
     excludedIcuIoData: IcuSidebarIoData[]
+    filteredIoPatientCount: number
   }
   vetsListData: Vet[]
 }
@@ -29,14 +29,6 @@ export default function MobileSidebar({
   filteredData,
   vetsListData,
 }: MobileSidebarProps) {
-  const pathname = usePathname()
-  const { push } = useRouter()
-
-  const resetFilters = () => {
-    setFilters({ selectedGroup: [], selectedVet: '', selectedSort: 'date' })
-    push(pathname)
-  }
-
   return (
     <aside className="flex h-full flex-col">
       {isEmpty ? (
@@ -58,8 +50,7 @@ export default function MobileSidebar({
           <Separator />
 
           <PatientList
-            filteredIcuIoData={filteredData.filteredIcuIoData}
-            excludedIcuIoData={filteredData.excludedIcuIoData}
+            filteredData={filteredData}
             vetsListData={vetsListData}
             handleCloseMobileDrawer={handleCloseMobileDrawer}
           />

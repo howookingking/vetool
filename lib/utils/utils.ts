@@ -382,6 +382,19 @@ export const filterData = (
     filtered.sort((a, b) => a.patient.name.localeCompare(b.patient.name, 'ko'))
   }
 
+  // 3. 응급도순 정렬
+  if (filters.selectedSort === 'urgency') {
+    filtered.sort((a, b) => {
+      if (a.vets === null && b.vets === null) return 0
+      if (a.vets === null) return 1
+      if (b.vets === null) return -1
+
+      const urgencyA = a.vets.urgency ?? 0
+      const urgencyB = b.vets.urgency ?? 0
+      return urgencyB - urgencyA
+    })
+  }
+
   // 최종으로 퇴원 환자 후미로 정렬
   filtered.sort((a, b) => {
     if (a.out_date === null && b.out_date === null) return 0
@@ -390,9 +403,12 @@ export const filterData = (
     return 0
   })
 
+  const filteredIoPatients = filtered.filter((item) => item.out_date === null)
+
   return {
     filteredIcuIoData: filtered,
     excludedIcuIoData: data.filter((item) => !filtered.includes(item)),
+    filteredIoPatientCount: filteredIoPatients.length,
   }
 }
 

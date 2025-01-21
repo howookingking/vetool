@@ -10,7 +10,6 @@ import {
 import { cn } from '@/lib/utils/utils'
 import type { Vet } from '@/types/icu/chart'
 import { Stethoscope } from 'lucide-react'
-import { useSearchParams } from 'next/navigation'
 
 type VetFilterProps = {
   vetsListData: Vet[]
@@ -23,16 +22,13 @@ export default function VetFilter({
   selectedVet,
   onVetSelect,
 }: VetFilterProps) {
-  const searchParams = useSearchParams()
-  const isReset = !searchParams.get('vet')
-
   return (
     <MenubarMenu>
       <MenubarTrigger asChild>
         <Button
           variant="ghost"
           className={cn(
-            !isReset && 'bg-primary text-white',
+            selectedVet.length > 0 && 'bg-primary text-white',
             'h-[30px] w-full rounded-none',
           )}
         >

@@ -31,6 +31,7 @@ export default function Autocomplete({
   defaultValue,
   isUpdating,
   placeholder,
+  isShare,
 }: {
   className?: string
   label?: string
@@ -38,6 +39,7 @@ export default function Autocomplete({
   defaultValue?: string
   isUpdating?: boolean
   placeholder?: string
+  isShare?: boolean
 }) {
   const { trie } = useKeywordTrieStore()
   const [input, setInput] = useState(defaultValue ?? '')
@@ -178,9 +180,11 @@ export default function Autocomplete({
         />
       )}
 
-      <HelperTooltip className="absolute right-2 top-2">
-        키워드는 콤마로 구분됩니다
-      </HelperTooltip>
+      {!isShare && (
+        <HelperTooltip className="absolute right-2 top-2">
+          키워드는 콤마로 구분됩니다
+        </HelperTooltip>
+      )}
     </div>
   )
 }

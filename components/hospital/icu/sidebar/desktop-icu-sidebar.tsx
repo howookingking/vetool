@@ -13,6 +13,7 @@ type DesktopIcuSidebarProps = {
   filteredData: {
     filteredIcuIoData: IcuSidebarIoData[]
     excludedIcuIoData: IcuSidebarIoData[]
+    filteredIoPatientCount: number
   }
   isEmpty: boolean
   handleCloseMobileDrawer?: () => void
@@ -58,8 +59,7 @@ export default function DesktopIcuSidebar({
           <Separator />
 
           <PatientList
-            filteredIcuIoData={filteredData.filteredIcuIoData}
-            excludedIcuIoData={filteredData.excludedIcuIoData}
+            filteredData={filteredData}
             vetsListData={vetsListData}
             handleCloseMobileDrawer={handleCloseMobileDrawer}
           />

@@ -18,7 +18,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { DialogDescription } from '@radix-ui/react-dialog'
 import { format } from 'date-fns'
 import { LoaderCircle } from 'lucide-react'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import { useCallback, useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -30,9 +30,7 @@ export default function TxSelectUserStep({
 }) {
   const { txLocalState } = useTxMutationStore()
   const { selectedTxPendingQueue } = useIcuOrderStore()
-  const { refresh } = useRouter()
   const { hos_id } = useParams()
-
   const { isSubmitting, upsertTx, upsertMultipleTx } = useUpsertTx({
     hosId: hos_id as string,
     onSuccess: () => handleClose(),

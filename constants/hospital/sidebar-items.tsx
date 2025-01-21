@@ -64,4 +64,5 @@ export const SORT_FILTER_ITEMS = [
   { label: '입원일순', value: 'date' },
   { label: '수의사순', value: 'vet' },
   { label: '가나다순', value: 'name' },
+  { label: '응급도순', value: 'urgency' },
 ]

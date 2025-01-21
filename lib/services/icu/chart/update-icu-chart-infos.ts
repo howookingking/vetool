@@ -212,3 +212,17 @@ export const updateCage = async (icuIoId: string, cage: string) => {
     redirect(`/error/?message=${error.message}`)
   }
 }
+
+export const updateUrgency = async (icuChartId: string, urgency: number) => {
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from('icu_charts')
+    .update({ urgency })
+    .match({ icu_chart_id: icuChartId })
+
+  if (error) {
+    console.error(error)
+    redirect(`/error/?message=${error.message}`)
+  }
+}
