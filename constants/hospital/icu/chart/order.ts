@@ -71,11 +71,11 @@ export const CHECKLIST_ORDERS = [
   '심박수(P)',
   '호흡수(R)',
   '혈압(BP)',
+  '체중(BW)',
   '활력',
   '구토',
   '배변',
   '배뇨',
-  '체중',
   'SPO2',
   '혈당',
 ] as const
@@ -111,16 +111,6 @@ export const DEFAULT_ICU_ORDER_TYPE = [
   },
 ] as const
 
-// export const QUICKORDER_PLACEHOLDER = {
-//   checklist: '체크리스트',
-//   fluid: '수액명$수액속도',
-//   injection: '주사제$용량',
-//   po: '경구제$경구제오더설명',
-//   test: '검사명$검사설명',
-//   manual: '오더명$오더설명',
-//   feed: '사료명$회당급여량',
-// } as const
-
 export const DEFAULT_ORDER_LABEL = {
   checklist: '체크리스트',
   fluid: '수액',
@@ -149,6 +139,7 @@ export const CHECKLIST_ORDER_CANDIDATES = [
   '체중',
   '몸무게',
   'SPO2',
+  'spo2',
   '대변',
   '소변',
   '혈당',

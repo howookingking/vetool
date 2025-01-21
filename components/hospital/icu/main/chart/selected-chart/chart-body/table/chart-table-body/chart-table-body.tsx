@@ -89,6 +89,7 @@ export default function ChartTableBody({
             <QuickOrderInsertInput
               icuChartId={icuChartId}
               setSortedOrders={setSortedOrders}
+              sortedOrders={sortedOrders}
             />
           </TableCell>
 

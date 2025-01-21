@@ -24,27 +24,47 @@ import { Dispatch, SetStateAction, useState } from 'react'
 type QuickOrderInsertInputProps = {
   icuChartId: string
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
+  sortedOrders: SelectedIcuOrder[]
+}
+
+interface OrderData {
+  orderName: string
+  orderDescription: string
+}
+
+function getAvailableChecklistOrders(orders: SelectedIcuOrder[]) {
+  const currentChecklistTypeOrderNames = orders
+    .filter((order) => order.order_type === 'checklist')
+    .map((order) => order.order_name)
+
+  return CHECKLIST_ORDERS.filter(
+    (order) => !currentChecklistTypeOrderNames.includes(order),
+  )
 }
 
 export default function QuickOrderInsertInput({
   icuChartId,
   setSortedOrders,
+  sortedOrders,
 }: QuickOrderInsertInputProps) {
+  const { hos_id } = useParams()
+  const { setOrderStep } = useIcuOrderStore()
   const {
     basicHosData: { orderColorsData },
   } = useBasicHosDataContext()
-  const { setOrderStep } = useIcuOrderStore()
-  const { hos_id } = useParams()
 
   const [quickOrderInput, setQuickOrderInput] = useState('')
   const [orderType, setOrderType] = useState('manual')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isChecklistOrder, setIsChecklistOrder] = useState(false)
 
+  const availableCheckListOrders = getAvailableChecklistOrders(sortedOrders)
+
   const createOrder = async (orderName: string, orderDescription: string) => {
+    setIsSubmitting(true)
+
     const emptyOrderTimes = Array(24).fill('0')
 
-    // 빠른 오더를 생성하고, 기존 오더 배열에 추가
     const newOrder = {
       id: 1,
       order_id: `temp_order_id_${new Date().getTime()}`,
@@ -58,7 +78,6 @@ export default function QuickOrderInsertInput({
 
     setSortedOrders((prev) => [...prev, newOrder])
 
-    // 빠른 오더가 포함된 오더를 UPSERT
     await upsertOrder(
       hos_id as string,
       icuChartId,
@@ -82,14 +101,14 @@ export default function QuickOrderInsertInput({
     setIsChecklistOrder(false)
   }
 
-  const handleSubmit = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // '체중' 입력 -> '체중중' 오류
-    if (e.nativeEvent.isComposing || e.key !== 'Enter') return
-    if (!quickOrderInput) return
+  const handleEnter = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // 맥OS 한글 마지막 중복입력 에러
+    if (e.nativeEvent.isComposing || e.key !== 'Enter' || !quickOrderInput)
+      return
 
     const [orderName, orderDescription] = quickOrderInput.split('$')
 
-    // 체크리스트의 INPUT을 입력했을 경우(혈당, bg, 혈압 등...)
+    // 체크리스트후보군을 INPUT에 입력했을 경우(혈당, bg, 혈압 등...) 체크리스트애 있음을 안내
     if (
       CHECKLIST_ORDER_CANDIDATES.some((name) =>
         name.includes(orderName.toLowerCase()),
@@ -101,26 +120,18 @@ export default function QuickOrderInsertInput({
       return
     }
 
-    setIsSubmitting(true)
     await createOrder(orderName, orderDescription ?? '')
   }
 
   const handleOrderTypeChange = async (selectedValue: string) => {
-    setOrderType(selectedValue)
-    setIsChecklistOrder(false)
-
     if (selectedValue === 'template') {
       setOrderStep('upsert')
       setOrderType('manual')
       return
     }
-  }
 
-  // 체크리스트 SELECT onChange
-  const handleCheckListValueChange = async (selectedValue: string) => {
-    setQuickOrderInput(selectedValue)
-
-    await createOrder(selectedValue, '')
+    setOrderType(selectedValue)
+    setIsChecklistOrder(false)
   }
 
   return (
@@ -130,7 +141,11 @@ export default function QuickOrderInsertInput({
           <SelectValue />
         </SelectTrigger>
         <SelectContent className="p-0">
-          {DEFAULT_ICU_ORDER_TYPE.map((item) => (
+          {DEFAULT_ICU_ORDER_TYPE.filter((order) =>
+            availableCheckListOrders.length > 0
+              ? order
+              : order.value !== 'checklist',
+          ).map((item) => (
             <SelectItem
               key={item.value}
               value={item.value}
@@ -159,13 +174,13 @@ export default function QuickOrderInsertInput({
       </Select>
 
       {orderType === 'checklist' && (
-        <Select onValueChange={handleCheckListValueChange}>
+        <Select onValueChange={async (value) => await createOrder(value, '')}>
           <SelectTrigger className="h-11 w-full rounded-none border-0 border-r ring-0 focus-visible:ring-0">
             <SelectValue placeholder="체크리스트 항목 선택" />
           </SelectTrigger>
 
           <SelectContent>
-            {CHECKLIST_ORDERS.map((order) => (
+            {availableCheckListOrders.map((order) => (
               <SelectItem key={order} value={order}>
                 {order}
               </SelectItem>
@@ -181,7 +196,7 @@ export default function QuickOrderInsertInput({
           placeholder="오더명$오더설명"
           value={isSubmitting ? '등록 중' : quickOrderInput}
           onChange={(e) => setQuickOrderInput(e.target.value)}
-          onKeyDown={handleSubmit}
+          onKeyDown={handleEnter}
         />
       )}
 
