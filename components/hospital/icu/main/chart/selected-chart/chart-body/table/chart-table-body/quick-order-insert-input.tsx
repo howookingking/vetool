@@ -19,7 +19,7 @@ import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provi
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { Plus } from 'lucide-react'
 import { useParams } from 'next/navigation'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
 type QuickOrderInsertInputProps = {
   icuChartId: string
@@ -133,6 +133,13 @@ export default function QuickOrderInsertInput({
     setOrderType(selectedValue)
     setIsChecklistOrder(false)
   }
+
+  // checklist 오더가 더이상 없는 경우 manual로 바꾸기
+  useEffect(() => {
+    if (availableCheckListOrders.length === 0) {
+      setOrderType('manual')
+    }
+  }, [availableCheckListOrders.length])
 
   return (
     <div className="relative hidden w-full items-center md:flex">
