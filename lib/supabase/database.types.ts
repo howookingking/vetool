@@ -412,6 +412,7 @@ export type Database = {
           patient_id: string | null
           sub_vet: string | null
           target_date: string
+          urgency: number | null
           weight: string
           weight_measured_date: string | null
         }
@@ -426,6 +427,7 @@ export type Database = {
           patient_id?: string | null
           sub_vet?: string | null
           target_date: string
+          urgency?: number | null
           weight?: string
           weight_measured_date?: string | null
         }
@@ -440,6 +442,7 @@ export type Database = {
           patient_id?: string | null
           sub_vet?: string | null
           target_date?: string
+          urgency?: number | null
           weight?: string
           weight_measured_date?: string | null
         }

@@ -6,6 +6,7 @@ import Group from '@/components/hospital/icu/main/chart/selected-chart/chart-bod
 import InAndOutDate from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/in-and-out-date/in-and-out-date'
 import OwnerName from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/owner-name'
 import Vets from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/vets/vets'
+import Urgency from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/urgency/urgency'
 import type { SelectedChart } from '@/types/icu/chart'
 
 export default function ChartInfos({
@@ -20,8 +21,7 @@ export default function ChartInfos({
     sub_vet,
     icu_chart_id,
     in_charge,
-    weight,
-    der_calc_factor,
+    urgency,
   } = chartData
 
   return (
@@ -63,7 +63,11 @@ export default function ChartInfos({
         <Cage cage={icu_io.cage ?? ''} icuIoId={icu_io.icu_io_id} />
       </div>
 
-      <div className="col-span-8 md:order-none md:col-span-3">
+      <div className="col-span-3 md:order-none md:col-span-1">
+        <Urgency urgency={urgency} icuChartId={icu_chart_id} />
+      </div>
+
+      <div className="col-span-5 md:order-none md:col-span-2">
         <Group currentGroups={icu_io.group_list} icuIoId={icu_io.icu_io_id} />
       </div>
 
