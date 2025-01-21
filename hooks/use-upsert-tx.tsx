@@ -78,7 +78,16 @@ export default function useUpsertTx({ hosId, onSuccess }: TxUpdateOptions) {
           : (item.txLog ?? []),
     }))
 
-    await Promise.all(txStates.map(({ state, logs }) => upsertTx(state, logs)))
+    await Promise.all(
+      txStates.map(({ state, logs }) =>
+        upsertIcuTx(hosId, state, format(new Date(), 'yyyy-MM-dd'), logs),
+      ),
+    )
+
+    toast({
+      title: '처치 내역이 업데이트 되었습니다',
+    })
+
     onSuccess?.()
     setIsSubmitting(false)
   }
