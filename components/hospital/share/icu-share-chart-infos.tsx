@@ -31,7 +31,11 @@ export default function IcuShareChartInfos({
       </div>
 
       <div className="order-last col-span-8 md:order-none md:col-span-5">
-        <Diagnosis diagnosis={icu_io.icu_io_dx} icuIoId={icu_io.icu_io_id} />
+        <Diagnosis
+          diagnosis={icu_io.icu_io_dx}
+          icuIoId={icu_io.icu_io_id}
+          isShare
+        />
       </div>
 
       <div className="col-span-4 md:order-none md:col-span-3">
@@ -62,6 +66,7 @@ export default function IcuShareChartInfos({
         <ChiefComplaint
           chiefComplaint={icu_io.icu_io_cc}
           icuIoId={icu_io.icu_io_id}
+          isShare
         />
       </div>
     </div>

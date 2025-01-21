@@ -14,7 +14,11 @@ import { Calendar } from '@/components/ui/calendar'
 import { ko } from 'date-fns/locale'
 import { useState } from 'react'
 
-export default function IcuShareHeader({ targetDate }: { targetDate: string }) {
+export default function IcuShareDatePicker({
+  targetDate,
+}: {
+  targetDate: string
+}) {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false)
 
   const router = useRouter()
@@ -40,7 +44,7 @@ export default function IcuShareHeader({ targetDate }: { targetDate: string }) {
 
   return (
     <div
-      className="mx-auto inline-flex items-center justify-center gap-1 2xl:mx-0 2xl:w-fit 2xl:justify-start"
+      className="2xl:ml-42 mx-auto inline-flex items-center justify-center gap-0 sm:gap-1 2xl:w-fit 2xl:justify-start"
       data-guide="date-picker"
     >
       <Button
@@ -56,7 +60,7 @@ export default function IcuShareHeader({ targetDate }: { targetDate: string }) {
       <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
         <PopoverTrigger asChild>
           <Button
-            className="h-8 px-2 py-0 text-base font-semibold"
+            className="h-8 px-2 py-0 text-sm font-semibold sm:text-base"
             variant="ghost"
           >
             {format(targetDate, 'yyyy-MM-dd')}

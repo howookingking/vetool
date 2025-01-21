@@ -17,7 +17,7 @@ export default function IcuSharePatientInfo({
 
   return (
     <div
-      className="mx-auto inline-flex w-fit items-center justify-center gap-2 px-2 font-semibold md:text-sm 2xl:text-base"
+      className="mx-auto inline-flex w-fit items-center justify-center gap-2 px-2 text-xs font-semibold md:text-sm 2xl:text-base"
       data-guide="patient-info"
     >
       {species === 'canine' ? <Dog size={20} /> : <Cat size={20} />}
