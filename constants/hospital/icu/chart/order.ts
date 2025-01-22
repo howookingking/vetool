@@ -146,7 +146,12 @@ export const CHECKLIST_ORDER_CANDIDATES = [
   'bg',
   'blood glucose',
   '간이혈당',
-  'wb',
+  'bw',
+  't',
+  'p',
+  'r',
+  'bp',
+  '도플러',
 ] as const
 
 export type OrderType = (typeof DEFAULT_ICU_ORDER_TYPE)[number]['value']

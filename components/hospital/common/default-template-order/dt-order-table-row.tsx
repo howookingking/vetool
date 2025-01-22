@@ -7,7 +7,7 @@ import type { IcuOrderColors } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { RefObject } from 'react'
 
-export default function OrderTableRow({
+export default function DtOrderTableRow({
   order,
   sortedOrders,
   index,

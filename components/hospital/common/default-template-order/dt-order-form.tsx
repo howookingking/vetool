@@ -3,7 +3,7 @@
 
 import OrderBorderCheckbox from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-border-checkbox'
 import OrderFormField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-form-field'
-import DeleteOrderAlertDialog from '@/components/hospital/order-table/delete-order-alert-dialog'
+import DeleteDtOrderAlertDialog from '@/components/hospital/common/default-template-order/delete-dt-order-alert-dialog'
 import { Button } from '@/components/ui/button'
 import { DialogClose, DialogFooter } from '@/components/ui/dialog'
 import {
@@ -33,7 +33,7 @@ import { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-export default function OrderForm({
+export default function DtOrderForm({
   mode,
 }: {
   mode: 'default' | 'addTemplate' | 'editTemplate'
@@ -178,7 +178,7 @@ export default function OrderForm({
         <OrderBorderCheckbox form={form} />
 
         <DialogFooter className="ml-auto w-full gap-2 md:gap-0">
-          <DeleteOrderAlertDialog
+          <DeleteDtOrderAlertDialog
             selectedChartOrder={selectedChartOrder}
             setOrderStep={setOrderStep}
             mode={mode}

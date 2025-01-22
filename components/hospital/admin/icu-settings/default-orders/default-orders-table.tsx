@@ -3,10 +3,10 @@
 
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import SortableOrderWrapper from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/sortable-order-wrapper'
-import OrderDialog from '@/components/hospital/order-table/order-dialog'
-import OrderForm from '@/components/hospital/order-table/order-form'
-import OrderTableHeader from '@/components/hospital/order-table/order-table-header'
-import OrderTableRow from '@/components/hospital/order-table/order-table-row'
+import DtOrderDialog from '@/components/hospital/common/default-template-order/dt-order-dialog'
+import DtOrderForm from '@/components/hospital/common/default-template-order/dt-order-form'
+import DtOrderTableHeader from '@/components/hospital/common/default-template-order/dt-order-table-header'
+import DtOrderTableRow from '@/components/hospital/common/default-template-order/dt-order-table-row'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
 import { reorderDefaultOrders } from '@/lib/services/admin/icu/default-orders'
@@ -17,11 +17,13 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { Sortable } from 'react-sortablejs'
 
+type DefaultOrdersTableProps = {
+  defaultChartOrders: SelectedIcuOrder[]
+}
+
 export default function DefaultOrdersTable({
   defaultChartOrders,
-}: {
-  defaultChartOrders: SelectedIcuOrder[] | []
-}) {
+}: DefaultOrdersTableProps) {
   const { refresh } = useRouter()
 
   const { orderStep, setOrderStep, setSelectedChartOrder, reset } =
@@ -83,15 +85,15 @@ export default function DefaultOrdersTable({
   }
 
   return (
-    <Table className="h-full max-w-3xl border">
-      <OrderTableHeader isSorting={isSorting} onClick={handleSortButtonClick}>
-        <OrderDialog
+    <Table className="border">
+      <DtOrderTableHeader isSorting={isSorting} onClick={handleSortButtonClick}>
+        <DtOrderDialog
           isOpen={orderStep !== 'closed'}
           onOpenChange={handleOpenChange}
         >
-          <OrderForm mode="default" />
-        </OrderDialog>
-      </OrderTableHeader>
+          <DtOrderForm mode="default" />
+        </DtOrderDialog>
+      </DtOrderTableHeader>
 
       {isSorting ? (
         <SortableOrderWrapper
@@ -100,7 +102,7 @@ export default function DefaultOrdersTable({
           onSortEnd={handleReorder}
         >
           {sortedOrders.map((order, index) => (
-            <OrderTableRow
+            <DtOrderTableRow
               key={order.order_id}
               order={order}
               sortedOrders={sortedOrders}
@@ -121,7 +123,7 @@ export default function DefaultOrdersTable({
             </TableRow>
           ) : (
             sortedOrders.map((order, index) => (
-              <OrderTableRow
+              <DtOrderTableRow
                 key={index}
                 order={order}
                 sortedOrders={sortedOrders}

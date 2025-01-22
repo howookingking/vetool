@@ -19,7 +19,7 @@ import { useTemplateStore } from '@/lib/store/icu/template'
 import { type SelectedIcuOrder } from '@/types/icu/chart'
 import { useRouter } from 'next/navigation'
 
-export default function DeleteOrderAlertDialog({
+export default function DeleteDtOrderAlertDialog({
   selectedChartOrder,
   setOrderStep,
   mode,

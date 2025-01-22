@@ -151,7 +151,7 @@ export default function ChartTable({
 
   return (
     <Table className="border">
-      {/* 소팅버튼, 오더목록, 오더추가 버튼, 오더너비조절 버튼, 시간 */}
+      {/* 소팅버튼, 오더목록, 오더너비조절 버튼, 시간 */}
       <ChartTableHeader
         chartData={chartData}
         isSorting={isSorting}
