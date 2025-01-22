@@ -75,7 +75,7 @@ export default function OutDueDate({
           )}
 
           {outDueDateInput ? (
-            <span className="truncate text-xs 2xl:text-sm">
+            <span className="truncate text-xs sm:text-sm">
               <span className="hidden 2xl:inline">
                 {format(outDueDateInput, 'yyyy-MM-dd')}
               </span>
@@ -84,7 +84,7 @@ export default function OutDueDate({
               </span>
             </span>
           ) : (
-            <span className="truncate text-xs 2xl:text-sm">
+            <span className="truncate text-xs sm:text-sm">
               {noIcon ? '미정' : '퇴원 예정일'}
             </span>
           )}

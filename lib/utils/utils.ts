@@ -1,11 +1,11 @@
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
-import { VetoolUser } from '@/types'
-import type {
-  Filter,
-  IcuSidebarIoData,
-  SelectedIcuOrder,
-  Vet,
+import { type VetoolUser } from '@/types'
+import {
+  type Filter,
+  type IcuSidebarIoData,
+  type SelectedIcuOrder,
+  type Vet,
 } from '@/types/icu/chart'
 import { type ClassValue, clsx } from 'clsx'
 import { differenceInDays, isValid, parseISO } from 'date-fns'
@@ -134,11 +134,17 @@ export const formatDate = (date: Date) => {
   return `${year}-${month}-${day}`
 }
 
-// stringifiedHashtagKeywords('사과, 바나나') => '#사과#바나나'
+// stringifiedHashtagKeywords('사과(apple), banana') => '#apple#banana'
 export const hashtagKeyword = (stringKeywords: string) => {
   return stringKeywords
     .split(',')
-    .map((keyword) => `#${keyword.trim()}`)
+    .map((keyword) => {
+      const trimmed = keyword.trim()
+      const match = trimmed.match(/\((.*?)\)/)
+
+      if (match) return `#${match[1]}`
+      return `#${trimmed}`
+    })
     .join('')
 }
 

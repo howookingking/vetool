@@ -17,7 +17,7 @@ export default function OutDate({
       ) : (
         <LogOut className="text-muted-foreground" size={16} />
       )}
-      <span className="truncate text-xs 2xl:text-sm">
+      <span className="truncate text-xs sm:text-sm">
         <span className="2xl:hidden">{outDate?.slice(2)}</span>
         <span className="hidden 2xl:inline">{outDate}</span>
       </span>

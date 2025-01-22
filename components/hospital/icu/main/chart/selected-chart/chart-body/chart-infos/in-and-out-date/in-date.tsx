@@ -18,7 +18,7 @@ export default function Indate({
         <LogIn className="shrink-0 text-muted-foreground" size={16} />
       )}
 
-      <span className="truncate text-xs 2xl:text-sm">
+      <span className="truncate text-xs sm:text-sm">
         <span className="hidden 2xl:inline">{inDate}</span>
 
         <span className="2xl:hidden">{inDate.slice(2)}</span>

@@ -1,5 +1,6 @@
 'use client'
 
+import Suggestions from '@/components/common/auto-complete/suggestions'
 import HelperTooltip from '@/components/common/helper-tooltip'
 import { Input } from '@/components/ui/input'
 import { useOutsideClick } from '@/hooks/use-outside-click'
@@ -15,14 +16,6 @@ import {
   useState,
 } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-import Suggestions from './suggestions'
-
-const getWordAtCursor = (keywords: string, position: number) => {
-  const leftPart = keywords.slice(0, position).split(/,\s*/)
-  const rightPart = keywords.slice(position).split(/,\s*/)
-  const wordAtCursor = (leftPart[leftPart.length - 1] + rightPart[0]).trim()
-  return wordAtCursor
-}
 
 export default function Autocomplete({
   className,
@@ -42,6 +35,7 @@ export default function Autocomplete({
   isShare?: boolean
 }) {
   const { trie } = useKeywordTrieStore()
+
   const [input, setInput] = useState(defaultValue ?? '')
   const [suggestions, setSuggestions] = useState<Keyword[]>([])
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -57,6 +51,13 @@ export default function Autocomplete({
   useEffect(() => {
     setInput(defaultValue ?? '')
   }, [defaultValue])
+
+  const getWordAtCursor = (keywords: string, position: number) => {
+    const leftPart = keywords.slice(0, position).split(/,\s*/)
+    const rightPart = keywords.slice(position).split(/,\s*/)
+    const wordAtCursor = (leftPart[leftPart.length - 1] + rightPart[0]).trim()
+    return wordAtCursor
+  }
 
   const debouncedSearch = useDebouncedCallback(
     (inputValue: string, cursorPos: number) => {
@@ -87,10 +88,17 @@ export default function Autocomplete({
   )
 
   const insertSuggestion = useCallback(
-    (suggestion: string) => {
+    (suggestion: Keyword) => {
       const beforeCursor = input.slice(0, cursorPosition).split(/,\s*/)
       const afterCursor = input.slice(cursorPosition).split(/,\s*/)
-      beforeCursor[beforeCursor.length - 1] = suggestion
+
+      const hasKorean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(
+        beforeCursor[beforeCursor.length - 1],
+      )
+      beforeCursor[beforeCursor.length - 1] = hasKorean
+        ? `${suggestion.keyword}(${suggestion.mainKeyword})`
+        : suggestion.keyword
+
       const newInput = [...beforeCursor, ...afterCursor.slice(1)].join(', ')
       setInput(newInput)
       setSuggestions([])
@@ -141,7 +149,7 @@ export default function Autocomplete({
         }
         e.preventDefault()
         e.stopPropagation()
-        insertSuggestion(suggestions[selectedIndex].mainKeyword)
+        insertSuggestion(suggestions[selectedIndex])
         break
     }
   }

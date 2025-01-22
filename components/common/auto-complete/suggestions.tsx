@@ -7,12 +7,12 @@ export default function Suggestions({
   setSelectedIndex,
 }: {
   suggestions: Keyword[]
-  insertSuggestion: (keyword: string) => void
+  insertSuggestion: (keyword: Keyword) => void
   selectedIndex: number
   setSelectedIndex: (index: number) => void
 }) {
   const handleSuggestionClick = (suggestion: Keyword) => {
-    insertSuggestion(suggestion.mainKeyword)
+    insertSuggestion(suggestion)
   }
 
   // onClick시에 prevent default해도 input요소의 포커스가 풀림
