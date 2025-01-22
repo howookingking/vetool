@@ -29,7 +29,7 @@ type ChartTableBodyProps = {
   cellRef?: RefObject<HTMLTableRowElement>
   species: string
   hosId: string
-  setOrderStep: (orderStep: 'closed' | 'upsert' | 'selectOrderer') => void
+  setOrderStep: (orderStep: OrderStep) => void
   reset: () => void
   timeGuidelineData: number[]
 }

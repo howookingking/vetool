@@ -19,7 +19,7 @@ import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import {
   DEFAULT_ICU_ORDER_TYPE,
-  DEFAULT_ORDER_LABEL,
+  DEFAULT_ICU_ORDER_TYPE_DIC,
 } from '@/constants/hospital/icu/chart/order'
 import { orderSchema } from '@/lib/schemas/icu/chart/order-schema'
 import { upsertDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
@@ -40,7 +40,7 @@ export default function OrderForm({
 }) {
   const { hos_id } = useParams()
   const { refresh } = useRouter()
-  const { setOrderStep, selectedChartOrder, isEditOrderMode, reset } =
+  const { setOrderStep, selectedChartOrder, reset, orderStep } =
     useIcuOrderStore()
   const { addTemplateOrder, updateTemplateOrder, orderIndex } =
     useTemplateStore()
@@ -90,10 +90,10 @@ export default function OrderForm({
         setOrderStep('closed')
       }
 
-      if (isEditOrderMode) {
+      if (orderStep === 'edit') {
         updateTemplateOrder(updatedOrder, orderIndex)
         setOrderStep('closed')
-      } else {
+      } else if (orderStep === 'template') {
         addTemplateOrder(updatedOrder)
 
         if (mode === 'editTemplate') {
@@ -120,7 +120,6 @@ export default function OrderForm({
       reset,
       setOrderStep,
       mode,
-      isEditOrderMode,
       orderIndex,
       addTemplateOrder,
       updateTemplateOrder,
@@ -128,7 +127,9 @@ export default function OrderForm({
   )
 
   const orderLabel =
-    DEFAULT_ORDER_LABEL[orderType as keyof typeof DEFAULT_ORDER_LABEL]
+    DEFAULT_ICU_ORDER_TYPE_DIC[
+      orderType as keyof typeof DEFAULT_ICU_ORDER_TYPE_DIC
+    ]
 
   return (
     <Form {...form}>
@@ -170,20 +171,18 @@ export default function OrderForm({
           )}
         />
 
-        <OrderFormField form={form} orderLabel={orderLabel} />
+        <OrderFormField form={form} />
 
         <Separator />
 
         <OrderBorderCheckbox form={form} />
 
         <DialogFooter className="ml-auto w-full gap-2 md:gap-0">
-          {isEditOrderMode && (
-            <DeleteOrderAlertDialog
-              selectedChartOrder={selectedChartOrder}
-              setOrderStep={setOrderStep}
-              mode={mode}
-            />
-          )}
+          <DeleteOrderAlertDialog
+            selectedChartOrder={selectedChartOrder}
+            setOrderStep={setOrderStep}
+            mode={mode}
+          />
 
           <DialogClose asChild>
             <Button type="button" variant="outline" tabIndex={-1}>
@@ -192,7 +191,6 @@ export default function OrderForm({
           </DialogClose>
 
           <Button type="submit" disabled={isSubmitting}>
-            {isEditOrderMode ? '변경' : '추가'}
             <LoaderCircle
               className={cn(isSubmitting ? 'ml-2 animate-spin' : 'hidden')}
             />

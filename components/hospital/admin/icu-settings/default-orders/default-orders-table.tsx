@@ -12,7 +12,7 @@ import { toast } from '@/components/ui/use-toast'
 import { reorderDefaultOrders } from '@/lib/services/admin/icu/default-orders'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { hasOrderSortingChanges } from '@/lib/utils/utils'
-import type { SelectedIcuOrder } from '@/types/icu/chart'
+import { type SelectedIcuOrder } from '@/types/icu/chart'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { Sortable } from 'react-sortablejs'
@@ -22,19 +22,15 @@ export default function DefaultOrdersTable({
 }: {
   defaultChartOrders: SelectedIcuOrder[] | []
 }) {
-  const lastOrderRef = useRef<HTMLTableCellElement>(null)
   const { refresh } = useRouter()
-  const {
-    orderStep,
-    setOrderStep,
-    setSelectedChartOrder,
-    isEditOrderMode,
-    setIsEditOrderMode,
-    reset,
-  } = useIcuOrderStore()
-  const [isSorting, setIsSorting] = useState(false)
+
+  const { orderStep, setOrderStep, setSelectedChartOrder, reset } =
+    useIcuOrderStore()
+
   const [sortedOrders, setSortedOrders] =
     useState<SelectedIcuOrder[]>(defaultChartOrders)
+  const [isSorting, setIsSorting] = useState(false)
+  const lastOrderRef = useRef<HTMLTableCellElement>(null)
 
   useEffect(() => {
     setSortedOrders(defaultChartOrders)
@@ -42,7 +38,7 @@ export default function DefaultOrdersTable({
 
   const handleOpenChange = () => {
     if (orderStep === 'closed') {
-      setOrderStep('upsert')
+      setOrderStep('edit')
     } else {
       setOrderStep('closed')
     }
@@ -50,8 +46,7 @@ export default function DefaultOrdersTable({
   }
 
   const handleEditOrderDialogOpen = (order: Partial<SelectedIcuOrder>) => {
-    setOrderStep('upsert')
-    setIsEditOrderMode(true)
+    setOrderStep('edit')
     setSelectedChartOrder(order)
   }
 
@@ -93,7 +88,6 @@ export default function DefaultOrdersTable({
         <OrderDialog
           isOpen={orderStep !== 'closed'}
           onOpenChange={handleOpenChange}
-          isEditOrderMode={isEditOrderMode}
         >
           <OrderForm mode="default" />
         </OrderDialog>

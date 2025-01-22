@@ -111,14 +111,14 @@ export const DEFAULT_ICU_ORDER_TYPE = [
   },
 ] as const
 
-export const DEFAULT_ORDER_LABEL = {
+export const DEFAULT_ICU_ORDER_TYPE_DIC = {
   checklist: '체크리스트',
   fluid: '수액',
   injection: '주사',
   po: '경구',
   test: '검사',
   manual: '기타',
-  feed: '사료',
+  feed: '식이',
 } as const
 
 export const CHECKLIST_ORDER_CANDIDATES = [
@@ -145,6 +145,8 @@ export const CHECKLIST_ORDER_CANDIDATES = [
   '혈당',
   'bg',
   'blood glucose',
+  '간이혈당',
+  'wb',
 ] as const
 
 export type OrderType = (typeof DEFAULT_ICU_ORDER_TYPE)[number]['value']

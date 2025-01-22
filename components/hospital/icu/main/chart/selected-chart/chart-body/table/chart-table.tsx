@@ -17,8 +17,8 @@ import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
 import { formatOrders } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
-import { RefObject, useCallback, useEffect, useState } from 'react'
+import { type SelectedChart, type SelectedIcuOrder } from '@/types/icu/chart'
+import { type RefObject, useCallback, useEffect, useState } from 'react'
 import OrderDialog from './order/order-dialog'
 
 type ChartTableProps = {
@@ -37,6 +37,8 @@ export default function ChartTable({
   isTouchMove,
 }: ChartTableProps) {
   const { icu_chart_id, orders, patient, target_date } = chartData
+  const { hos_id } = patient
+
   const {
     basicHosData: {
       showOrderer,
@@ -44,20 +46,11 @@ export default function ChartTable({
       vetsListData,
       vitalRefRange,
       timeGuidelineData,
+      orderColorsData,
     },
   } = useBasicHosDataContext()
   const isCommandPressed = useIsCommandPressed()
-  const { hos_id } = patient
-
-  const [isSorting, setIsSorting] = useState(false)
-  const [sortedOrders, setSortedOrders] = useState<SelectedIcuOrder[]>(orders)
-  const [isDeleteOrdersDialogOpen, setIsDeleteOrdersDialogOpen] =
-    useState(false)
-  const [isAddTemplateDialogOpen, setIsAddTemplateDialogOpen] = useState(false)
-  const [isOrderActionDialogOpen, setIsOrderActionDialogOpen] = useState(false)
-
   const [orderWidth, setOrderWidth] = useLocalStorage('orderWidth', 400)
-
   const {
     setOrderStep,
     reset,
@@ -67,9 +60,17 @@ export default function ChartTable({
     setSelectedOrderPendingQueue,
     setCopiedOrderPendingQueue,
     orderStep,
-    isEditOrderMode,
+    selectedChartOrder,
   } = useIcuOrderStore()
   const isMobile = useIsMobile()
+  const { txStep, setTxStep } = useTxMutationStore()
+
+  const [isSorting, setIsSorting] = useState(false)
+  const [sortedOrders, setSortedOrders] = useState<SelectedIcuOrder[]>(orders)
+  const [isDeleteOrdersDialogOpen, setIsDeleteOrdersDialogOpen] =
+    useState(false)
+  const [isAddTemplateDialogOpen, setIsAddTemplateDialogOpen] = useState(false)
+  const [isOrderActionDialogOpen, setIsOrderActionDialogOpen] = useState(false)
 
   useEffect(() => {
     if (!isSorting) {
@@ -119,8 +120,6 @@ export default function ChartTable({
   }, [hos_id, icu_chart_id, orderTimePendingQueue, orders, reset, vetsListData])
 
   // -------- 커멘드키 뗐을 때 작업 --------
-  const { txStep, setTxStep } = useTxMutationStore()
-
   useEffect(() => {
     if (!isCommandPressed) {
       if (orderTimePendingQueue.length >= 1) {
@@ -236,12 +235,11 @@ export default function ChartTable({
             showOrderer={showOrderer}
             orderStep={orderStep}
             reset={reset}
-            isEditOrderMode={isEditOrderMode}
             setOrderStep={setOrderStep}
-            isExport={isExport}
             setSortedOrders={setSortedOrders}
             mainVetName={chartData.main_vet.name}
-            derCalcFactor={chartData.der_calc_factor}
+            selectedChartOrder={selectedChartOrder}
+            orderColorsData={orderColorsData}
           />
         </>
       )}

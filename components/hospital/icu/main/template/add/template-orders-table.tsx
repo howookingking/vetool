@@ -10,7 +10,6 @@ import { reorderOrders } from '@/lib/services/icu/chart/order-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useTemplateStore } from '@/lib/store/icu/template'
 import { hasOrderSortingChanges } from '@/lib/utils/utils'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import {
   Dispatch,
@@ -36,14 +35,8 @@ export default function TemplateOrdersTable({
   const orderRef = useRef<HTMLTableCellElement>(null)
   const { templateOrders, setTemplateOrders, setOrderIndex } =
     useTemplateStore()
-  const {
-    orderStep,
-    setOrderStep,
-    setSelectedChartOrder,
-    isEditOrderMode,
-    setIsEditOrderMode,
-    reset,
-  } = useIcuOrderStore()
+  const { orderStep, setOrderStep, setSelectedChartOrder, reset } =
+    useIcuOrderStore()
 
   const [sortedOrders, setSortedOrders] = useState<SelectedIcuOrder[]>([])
 
@@ -59,7 +52,7 @@ export default function TemplateOrdersTable({
 
   const handleOpenChange = useCallback(() => {
     if (orderStep === 'closed') {
-      setOrderStep('upsert')
+      setOrderStep('edit')
     } else {
       setOrderStep('closed')
     }
@@ -70,8 +63,7 @@ export default function TemplateOrdersTable({
     order: Partial<SelectedIcuOrder>,
     index?: number,
   ) => {
-    setOrderStep('upsert')
-    setIsEditOrderMode(true)
+    setOrderStep('edit')
     setSelectedChartOrder(order)
     setOrderIndex(index)
   }
@@ -117,7 +109,6 @@ export default function TemplateOrdersTable({
         <OrderDialog
           isOpen={orderStep !== 'closed'}
           onOpenChange={handleOpenChange}
-          isEditOrderMode={isEditOrderMode}
         >
           <OrderForm mode={editTemplateMode ? 'editTemplate' : 'addTemplate'} />
         </OrderDialog>

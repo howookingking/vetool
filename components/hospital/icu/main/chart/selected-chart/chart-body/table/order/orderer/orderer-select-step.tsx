@@ -50,7 +50,6 @@ export default function OrdererSelectStep({
     selectedChartOrder,
     orderTimePendingQueue,
     copiedOrderPendingQueue,
-    isEditOrderMode,
     setOrderStep,
   } = useIcuOrderStore()
 
@@ -85,7 +84,7 @@ export default function OrdererSelectStep({
       )
 
       toast({
-        title: `${selectedChartOrder.order_name!.split('#')[0]} 오더를 ${isEditOrderMode ? '수정' : '추가'} 하였습니다`,
+        title: `${selectedChartOrder.order_name!.split('#')[0]} 오더를 수정하였습니다`,
       })
       reset()
       setOrderStep('closed')
@@ -94,7 +93,6 @@ export default function OrdererSelectStep({
     [
       hos_id,
       icuChartId,
-      isEditOrderMode,
       reset,
       selectedChartOrder.order_comment,
       selectedChartOrder.order_id,
@@ -260,7 +258,7 @@ export default function OrdererSelectStep({
 
         <div className="flex justify-between">
           <Button
-            onClick={() => setOrderStep('upsert')}
+            onClick={() => setOrderStep('edit')}
             variant="outline"
             type="button"
             className={isSingleTx ? '' : 'hidden'}

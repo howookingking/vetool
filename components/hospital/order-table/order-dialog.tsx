@@ -14,12 +14,10 @@ export default function OrderDialog({
   isOpen,
   onOpenChange,
   children,
-  isEditOrderMode,
 }: {
   isOpen: boolean
   onOpenChange: (isOpen: boolean) => void
   children: ReactNode
-  isEditOrderMode?: boolean
 }) {
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -34,7 +32,7 @@ export default function OrderDialog({
       </DialogTrigger>
       <DialogContent className="max-w-3xl">
         <DialogHeader>
-          <DialogTitle>오더 {isEditOrderMode ? '수정' : '추가'}</DialogTitle>
+          <DialogTitle>오더 수정</DialogTitle>
           <DialogDescription />
         </DialogHeader>
         {isOpen ? children : null}

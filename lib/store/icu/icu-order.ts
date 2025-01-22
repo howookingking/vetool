@@ -9,14 +9,11 @@ export type OrderTimePendingQueue = {
   isCrucialChecked?: boolean
 }
 
-export type OrderStep = 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit'
+export type OrderStep = 'closed' | 'edit' | 'template' | 'selectOrderer'
 
 type IcuOrderState = {
   orderStep: OrderStep
   setOrderStep: (orderStep: OrderStep) => void
-
-  isEditOrderMode: boolean
-  setIsEditOrderMode: (isEditOrderMode: boolean) => void
 
   selectedChartOrder: Partial<SelectedIcuOrder>
   setSelectedChartOrder: (chartOrder: Partial<SelectedIcuOrder>) => void
@@ -55,9 +52,6 @@ type IcuOrderState = {
 export const useIcuOrderStore = create<IcuOrderState>((set) => ({
   orderStep: 'closed',
   setOrderStep: (orderStep) => set({ orderStep }),
-
-  isEditOrderMode: false,
-  setIsEditOrderMode: (isEditOrderMode) => set({ isEditOrderMode }),
 
   selectedChartOrder: {} as Partial<SelectedIcuOrder>,
   setSelectedChartOrder: (selectedChartOrder) => set({ selectedChartOrder }),
@@ -100,7 +94,6 @@ export const useIcuOrderStore = create<IcuOrderState>((set) => ({
 
   reset: () =>
     set({
-      isEditOrderMode: false,
       selectedChartOrder: {} as Partial<SelectedIcuOrder>,
       orderTimePendingQueue: [],
       selectedTxPendingQueue: [],

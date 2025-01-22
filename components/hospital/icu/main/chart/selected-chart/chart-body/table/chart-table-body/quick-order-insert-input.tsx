@@ -125,7 +125,7 @@ export default function QuickOrderInsertInput({
 
   const handleOrderTypeChange = async (selectedValue: string) => {
     if (selectedValue === 'template') {
-      setOrderStep('upsert')
+      setOrderStep('template')
       setOrderType('manual')
       return
     }

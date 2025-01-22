@@ -14,8 +14,9 @@ import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 import { deleteDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
 import { deleteOrder } from '@/lib/services/icu/chart/order-mutation'
+import { type OrderStep } from '@/lib/store/icu/icu-order'
 import { useTemplateStore } from '@/lib/store/icu/template'
-import type { SelectedIcuOrder } from '@/types/icu/chart'
+import { type SelectedIcuOrder } from '@/types/icu/chart'
 import { useRouter } from 'next/navigation'
 
 export default function DeleteOrderAlertDialog({
@@ -24,7 +25,7 @@ export default function DeleteOrderAlertDialog({
   mode,
 }: {
   selectedChartOrder: Partial<SelectedIcuOrder>
-  setOrderStep: (orderStep: 'closed' | 'upsert' | 'selectOrderer') => void
+  setOrderStep: (orderStep: OrderStep) => void
   mode: 'default' | 'addTemplate' | 'editTemplate'
 }) {
   const { refresh } = useRouter()

@@ -13,10 +13,6 @@ type ChartTableHeaderProps = {
   sortedOrders: SelectedIcuOrder[]
   isSorting: boolean
   setIsSorting: Dispatch<SetStateAction<boolean>>
-  hosId: string
-  showOrderer: boolean
-  orderStep: OrderStep
-  reset: () => void
   isEditOrderMode?: boolean
   setOrderStep: (orderStep: OrderStep) => void
   orderWidth: number

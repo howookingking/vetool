@@ -1,4 +1,5 @@
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
+import OrderTypeColorDot from '@/components/hospital/common/order-type-color-dot'
 import OrdererSelectStep from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/orderer/orderer-select-step'
 import {
   Dialog,
@@ -7,10 +8,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import { DEFAULT_ICU_ORDER_TYPE_DIC } from '@/constants/hospital/icu/chart/order'
 import { type OrderStep } from '@/lib/store/icu/icu-order'
-import type { Patient, SelectedIcuOrder } from '@/types/icu/chart'
+import { IcuOrderColors } from '@/types/adimin'
+import { type SelectedIcuOrder } from '@/types/icu/chart'
 import dynamic from 'next/dynamic'
-import { Dispatch, SetStateAction } from 'react'
+import { type Dispatch, type SetStateAction } from 'react'
 
 const LazyOrderForm = dynamic(() => import('./order-form'), {
   ssr: false,
@@ -29,17 +32,13 @@ type OrderDialogProps = {
   icuChartId: string
   orders: SelectedIcuOrder[]
   showOrderer: boolean
-  patient: Patient
-  weight: string
-  ageInDays: number
   orderStep: OrderStep
-  isEditOrderMode?: boolean
   setOrderStep: (orderStep: OrderStep) => void
   reset: () => void
-  isExport?: boolean
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   mainVetName: string
-  derCalcFactor: number | null
+  selectedChartOrder: Partial<SelectedIcuOrder>
+  orderColorsData: IcuOrderColors
 }
 
 export default function OrderDialog({
@@ -48,16 +47,16 @@ export default function OrderDialog({
   orders,
   showOrderer,
   orderStep,
-  isEditOrderMode,
   setOrderStep,
   reset,
-  isExport,
   setSortedOrders,
   mainVetName,
+  selectedChartOrder,
+  orderColorsData,
 }: OrderDialogProps) {
   const handleOpenChange = () => {
     if (orderStep === 'closed') {
-      setOrderStep('upsert')
+      setOrderStep('edit')
     } else {
       setOrderStep('closed')
     }
@@ -68,58 +67,44 @@ export default function OrderDialog({
     <Dialog open={orderStep !== 'closed'} onOpenChange={handleOpenChange}>
       <DialogContent className="max-w-3xl overflow-x-auto">
         <DialogHeader>
-          {orderStep === 'upsert' && (
-            <DialogTitle>오더 {isEditOrderMode ? '수정' : '추가'}</DialogTitle>
+          {orderStep === 'edit' && (
+            <DialogTitle className="flex items-center gap-2">
+              <OrderTypeColorDot
+                orderColorsData={orderColorsData}
+                orderType={selectedChartOrder.order_type!}
+              />
+              <span>
+                {
+                  DEFAULT_ICU_ORDER_TYPE_DIC[
+                    selectedChartOrder.order_type as keyof typeof DEFAULT_ICU_ORDER_TYPE_DIC
+                  ]
+                }
+                오더 수정
+              </span>
+            </DialogTitle>
           )}
-          {orderStep === 'multipleEdit' && (
-            <DialogTitle>오더 복사 / 오더 삭제</DialogTitle>
-          )}
+
           {orderStep === 'selectOrderer' && (
             <DialogTitle>수의사 선택</DialogTitle>
+          )}
+
+          {orderStep === 'template' && (
+            <DialogTitle>템플릿 오더 추가</DialogTitle>
           )}
           <DialogDescription />
         </DialogHeader>
 
-        {orderStep === 'upsert' &&
-          // <Tabs defaultValue="default">
-          //   <TabsList
-          //     className={cn(
-          //       'hidden max-w-full grid-cols-1 overflow-x-auto whitespace-nowrap md:grid',
-          //     )}
-          //   >
-          //     {isEditOrderMode ? (
-          //       <TabsTrigger value="default">직접 입력</TabsTrigger>
-          //     ) : (
-          //       <TabsTrigger value="template">템플릿 오더 추가</TabsTrigger>
-          //     )}
-          //   </TabsList>
+        {orderStep === 'edit' && (
+          <LazyOrderForm
+            showOrderer={showOrderer}
+            icuChartId={icuChartId}
+            setSortedOrders={setSortedOrders}
+          />
+        )}
 
-          //   {/* 오더 직접 추가 (기본값) */}
-          //   <TabsContent value="default">
-          //     {!isExport && (
-          //       <LazyOrderForm
-          //         showOrderer={showOrderer}
-          //         icuChartId={icuChartId}
-          //         setSortedOrders={setSortedOrders}
-          //       />
-          //     )}
-          //   </TabsContent>
-
-          //   {/* 템플릿 오더 추가 */}
-          //   <TabsContent value="template">
-          //     <LazyTemplateTabContent hosId={hosId} icuChartId={icuChartId} />
-          //   </TabsContent>
-          // </Tabs>
-
-          (isEditOrderMode ? (
-            <LazyOrderForm
-              showOrderer={showOrderer}
-              icuChartId={icuChartId}
-              setSortedOrders={setSortedOrders}
-            />
-          ) : (
-            <LazyTemplateTable hosId={hosId} icuChartId={icuChartId} />
-          ))}
+        {orderStep === 'template' && (
+          <LazyTemplateTable hosId={hosId} icuChartId={icuChartId} />
+        )}
 
         {orderStep === 'selectOrderer' && (
           <OrdererSelectStep
