@@ -6,7 +6,7 @@ import SearchChartSheet from '@/components/hospital/icu/main/search/sheet/search
 import { Button } from '@/components/ui/button'
 import { searchIos } from '@/lib/services/icu/search/search-charts'
 import { useKeywordTrieStore } from '@/lib/store/hospital/keyword-trie'
-import type { SearchedIcuIos } from '@/types/icu/search'
+import { type SearchedIcuIos } from '@/types/icu/search'
 import { Search } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
@@ -20,7 +20,9 @@ export type SearchOptions = {
 
 export default function IcuSearchChart() {
   const { hos_id } = useParams()
+
   const { trie } = useKeywordTrieStore()
+
   const [inputValue, setInputValue] = useState('')
   const [isSearching, setIsSearching] = useState(false)
   const [searchedIcuIos, setSearchedIcuIos] = useState<SearchedIcuIos[]>([])
@@ -69,7 +71,10 @@ export default function IcuSearchChart() {
   }, 600)
 
   const handleInputChange = (value: string) => {
-    const trimmedValue = value.trim()
+    let trimmedValue = value.trim()
+    if (trimmedValue.includes('(')) {
+      trimmedValue = trimmedValue.split('(')[1].slice(0, -1)
+    }
     const searchedValue = getSearchValue(trimmedValue)
 
     setInputValue(trimmedValue)
