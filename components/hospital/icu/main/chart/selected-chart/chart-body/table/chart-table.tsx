@@ -49,8 +49,11 @@ export default function ChartTable({
       orderColorsData,
     },
   } = useBasicHosDataContext()
+
   const isCommandPressed = useIsCommandPressed()
+
   const [orderWidth, setOrderWidth] = useLocalStorage('orderWidth', 400)
+
   const {
     setOrderStep,
     reset,
@@ -62,6 +65,7 @@ export default function ChartTable({
     orderStep,
     selectedChartOrder,
   } = useIcuOrderStore()
+
   const isMobile = useIsMobile()
   const { txStep, setTxStep } = useTxMutationStore()
 
@@ -151,7 +155,7 @@ export default function ChartTable({
 
   return (
     <Table className="border">
-      {/* 소팅버튼, 오더목록, 오더추가 버튼, 오더너비조절 버튼, 시간 */}
+      {/* 소팅버튼, 오더목록, 오더너비조절 버튼, 시간 */}
       <ChartTableHeader
         chartData={chartData}
         isSorting={isSorting}
@@ -215,10 +219,11 @@ export default function ChartTable({
           />
           <AddTemplateOrderDialog
             hosId={patient.hos_id}
-            targetDate={target_date}
             isAddTemplateDialogOpen={isAddTemplateDialogOpen}
             setIsAddTemplateDialogOpen={setIsAddTemplateDialogOpen}
+            setIsOrderActionDialogOpen={setIsOrderActionDialogOpen}
           />
+
           <SelectedOrderActionDialog
             isOrderActionDialogOpen={isOrderActionDialogOpen}
             setIsOrderActionDialogOpen={setIsOrderActionDialogOpen}

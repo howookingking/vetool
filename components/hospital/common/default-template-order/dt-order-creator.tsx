@@ -150,7 +150,7 @@ export default function DtOrderCreator({
         <Input
           className="h-11 rounded-none border-0 border-r focus-visible:ring-0"
           disabled={isSubmitting}
-          placeholder="오더명$오더설명"
+          placeholder="오더명$오더설명 + ENTER"
           value={isSubmitting ? '등록 중' : newOrderInput}
           onChange={(e) => setNewOrderInput(e.target.value)}
           onKeyDown={handleEnter}

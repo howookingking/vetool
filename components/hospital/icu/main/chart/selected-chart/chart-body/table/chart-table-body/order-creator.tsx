@@ -1,4 +1,5 @@
 import OrderTypeColorDot from '@/components/hospital/common/order-type-color-dot'
+import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
   Select,
@@ -196,7 +197,7 @@ export default function OrderCreator({
         <Input
           className="h-11 rounded-none border-0 border-r focus-visible:ring-0"
           disabled={isSubmitting}
-          placeholder="오더명$오더설명"
+          placeholder="오더명$오더설명 + ENTER"
           value={isSubmitting ? '등록 중' : quickOrderInput}
           onChange={(e) => setQuickOrderInput(e.target.value)}
           onKeyDown={handleEnter}

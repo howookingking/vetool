@@ -1,10 +1,10 @@
-import { IcuOrders, IcuTemplate, Patients } from '@/types'
+import { type IcuTemplate, type Patients } from '@/types'
 
 export type TemplateChart = Pick<
   IcuTemplate,
   'template_id' | 'template_name' | 'template_comment'
 > & {
   icu_chart_id: string
-  target_date: string
+  created_at: string
   patient: Pick<Patients, 'name' | 'patient_id'>
 }

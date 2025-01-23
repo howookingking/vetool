@@ -58,7 +58,7 @@ export default function ChartTableHeader({
             />
           )}
 
-          <span className="text-center">오더 목록</span>
+          <span className="w-full text-center">오더 목록</span>
 
           <OrderWidthButton
             orderWidth={orderWidth as [300, 400, 500, 600][number]}

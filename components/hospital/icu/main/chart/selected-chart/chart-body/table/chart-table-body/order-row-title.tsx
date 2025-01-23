@@ -116,7 +116,7 @@ export default function OrderRowTitle({
       <Button
         disabled={isOptimisticOrder}
         variant="ghost"
-        onClick={isSorting ? undefined : handleClickOrderTitle}
+        onClick={isSorting || preview ? undefined : handleClickOrderTitle}
         className={cn(
           'group flex h-11 justify-between rounded-none bg-transparent px-2 outline-none transition duration-300 hover:scale-[97%] hover:bg-transparent',
           isOptimisticOrder && 'animate-bounce',

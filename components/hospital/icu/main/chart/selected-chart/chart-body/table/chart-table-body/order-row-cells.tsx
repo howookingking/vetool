@@ -149,7 +149,7 @@ export default function OrderRowCells({
         )
       })}
 
-      {noFecalOrUrineResult && (
+      {noFecalOrUrineResult && !preview && (
         <NoFecalOrUrineAlert orderName={order.order_name} />
       )}
     </>
