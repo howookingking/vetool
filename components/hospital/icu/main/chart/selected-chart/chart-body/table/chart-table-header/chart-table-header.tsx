@@ -4,8 +4,8 @@ import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { type OrderStep } from '@/lib/store/icu/icu-order'
 import { cn } from '@/lib/utils/utils'
-import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
-import { Dispatch, SetStateAction } from 'react'
+import { type SelectedChart, type SelectedIcuOrder } from '@/types/icu/chart'
+import { type Dispatch, type SetStateAction } from 'react'
 
 type ChartTableHeaderProps = {
   preview?: boolean
@@ -51,22 +51,20 @@ export default function ChartTableHeader({
         >
           {!preview && (
             <SortingButton
-              chartData={chartData}
+              prevOrders={chartData.orders}
               sortedOrders={sortedOrders}
               isSorting={isSorting}
               setIsSorting={setIsSorting}
             />
           )}
 
-          <span className="w-full text-center">오더 목록</span>
+          <span className="text-center">오더 목록</span>
 
-          {!isSorting && (
-            <OrderWidthButton
-              orderWidth={orderWidth as [300, 400, 500, 600][number]}
-              setOrderWidth={setOrderWidth}
-              isMobile={isMobile}
-            />
-          )}
+          <OrderWidthButton
+            orderWidth={orderWidth as [300, 400, 500, 600][number]}
+            setOrderWidth={setOrderWidth}
+            isMobile={isMobile}
+          />
         </TableHead>
 
         {TIMES.map((time) => (

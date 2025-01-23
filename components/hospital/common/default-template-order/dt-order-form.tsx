@@ -1,187 +1,86 @@
-'use client'
-'use no memo'
-
 import OrderBorderCheckbox from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-border-checkbox'
 import OrderFormField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-form-field'
-import DeleteDtOrderAlertDialog from '@/components/hospital/common/default-template-order/delete-dt-order-alert-dialog'
 import { Button } from '@/components/ui/button'
 import { DialogClose, DialogFooter } from '@/components/ui/dialog'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Separator } from '@/components/ui/separator'
+import { Form } from '@/components/ui/form'
 import { toast } from '@/components/ui/use-toast'
-import {
-  DEFAULT_ICU_ORDER_TYPE,
-  DEFAULT_ICU_ORDER_TYPE_DIC,
-} from '@/constants/hospital/icu/chart/order'
 import { orderSchema } from '@/lib/schemas/icu/chart/order-schema'
 import { upsertDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
-import { useTemplateStore } from '@/lib/store/icu/template'
 import { cn } from '@/lib/utils/utils'
+import { type SelectedIcuOrder } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
-import { useCallback, useState } from 'react'
+import { type Dispatch, type SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import DtDeleteOrderAlertDialog from './dt-delete-order-alert-dialog'
 
 export default function DtOrderForm({
-  mode,
+  setSortedOrders,
 }: {
-  mode: 'default' | 'addTemplate' | 'editTemplate'
+  setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
 }) {
   const { hos_id } = useParams()
   const { refresh } = useRouter()
-  const { setOrderStep, selectedChartOrder, reset, orderStep } =
-    useIcuOrderStore()
-  const { addTemplateOrder, updateTemplateOrder, orderIndex } =
-    useTemplateStore()
 
-  const [isSubmitting, setIsSubmitting] = useState(false)
-
+  const { setOrderStep, selectedChartOrder, reset } = useIcuOrderStore()
   const form = useForm<z.infer<typeof orderSchema>>({
     resolver: zodResolver(orderSchema),
     defaultValues: {
-      icu_chart_order_type: selectedChartOrder.order_type ?? undefined,
-      icu_chart_order_name: selectedChartOrder.order_name ?? '',
+      icu_chart_order_type: selectedChartOrder.order_type,
+      icu_chart_order_name: selectedChartOrder.order_name,
       icu_chart_order_comment: selectedChartOrder.order_comment ?? '',
       is_bordered: selectedChartOrder.is_bordered ?? false,
     },
   })
 
-  const orderType = form.watch('icu_chart_order_type')
+  const [isUpdating, setIsUpdating] = useState(false)
 
-  const handleSubmit = useCallback(
-    async (values: z.infer<typeof orderSchema>) => {
-      setIsSubmitting(true)
+  const handleSubmit = async (values: z.infer<typeof orderSchema>) => {
+    setIsUpdating(true)
+    const trimmedOrderName = values.icu_chart_order_name.trim()
+    const orderComment = values.icu_chart_order_comment ?? ''
+    const orderType = values.icu_chart_order_type
+    const isBordered = values.is_bordered
 
-      const trimmedOrderName = values.icu_chart_order_name.trim()
-      const orderComment = values.icu_chart_order_comment ?? ''
-      const orderType = values.icu_chart_order_type
-      const isBordered = values.is_bordered
-      const updatedOrder = {
-        order_name: trimmedOrderName,
-        order_comment: orderComment,
-        order_type: orderType,
-        id: 999,
-        is_bordered: isBordered,
-      }
-
-      if (mode === 'default') {
-        await upsertDefaultChartOrder(
-          hos_id as string,
-          selectedChartOrder.order_id,
-          {
-            default_chart_order_name: trimmedOrderName,
-            default_chart_order_comment: orderComment,
-            default_chart_order_type: orderType,
-            is_bordered: isBordered,
-          },
-        )
-
-        setOrderStep('closed')
-      }
-
-      if (orderStep === 'edit') {
-        updateTemplateOrder(updatedOrder, orderIndex)
-        setOrderStep('closed')
-      } else if (orderStep === 'template') {
-        addTemplateOrder(updatedOrder)
-
-        if (mode === 'editTemplate') {
-          setOrderStep('closed')
-        }
-      }
-
-      refresh()
-
-      toast({
-        title: `오더를 추가하였습니다`,
-      })
-
-      form.resetField('icu_chart_order_name')
-      form.resetField('icu_chart_order_comment')
-      reset()
-      setIsSubmitting(false)
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [
-      hos_id,
+    await upsertDefaultChartOrder(
+      hos_id as string,
       selectedChartOrder.order_id,
-      refresh,
-      reset,
-      setOrderStep,
-      mode,
-      orderIndex,
-      addTemplateOrder,
-      updateTemplateOrder,
-    ],
-  )
+      {
+        default_chart_order_name: trimmedOrderName,
+        default_chart_order_comment: orderComment,
+        default_chart_order_type: orderType,
+        is_bordered: isBordered,
+      },
+    )
 
-  const orderLabel =
-    DEFAULT_ICU_ORDER_TYPE_DIC[
-      orderType as keyof typeof DEFAULT_ICU_ORDER_TYPE_DIC
-    ]
+    toast({
+      title: '오더를 수정 하였습니다',
+    })
+
+    reset()
+    setOrderStep('closed')
+    setIsUpdating(false)
+    refresh()
+  }
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
-        className="flex flex-col space-y-4"
+        className="flex flex-col gap-4"
       >
-        <FormField
-          control={form.control}
-          name="icu_chart_order_type"
-          render={({ field }) => (
-            <FormItem className="space-y-2">
-              <FormLabel className="font-semibold">
-                오더 타입 <span className="text-destructive">*</span>
-              </FormLabel>
-              <FormControl>
-                <RadioGroup
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  className="flex flex-wrap gap-4"
-                >
-                  {DEFAULT_ICU_ORDER_TYPE.map((item) => (
-                    <FormItem
-                      key={item.value}
-                      className="flex items-center space-x-1 space-y-0"
-                    >
-                      <FormControl>
-                        <RadioGroupItem value={item.value} />
-                      </FormControl>
-                      <FormLabel className="font-normal">
-                        {item.label}
-                      </FormLabel>
-                    </FormItem>
-                  ))}
-                </RadioGroup>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
         <OrderFormField form={form} />
-
-        <Separator />
 
         <OrderBorderCheckbox form={form} />
 
         <DialogFooter className="ml-auto w-full gap-2 md:gap-0">
-          <DeleteDtOrderAlertDialog
+          <DtDeleteOrderAlertDialog
             selectedChartOrder={selectedChartOrder}
             setOrderStep={setOrderStep}
-            mode={mode}
+            setSortedOrders={setSortedOrders}
           />
 
           <DialogClose asChild>
@@ -190,9 +89,10 @@ export default function DtOrderForm({
             </Button>
           </DialogClose>
 
-          <Button type="submit" disabled={isSubmitting}>
+          <Button type="submit" disabled={isUpdating}>
+            확인
             <LoaderCircle
-              className={cn(isSubmitting ? 'ml-2 animate-spin' : 'hidden')}
+              className={cn(isUpdating ? 'animate-spin' : 'hidden')}
             />
           </Button>
         </DialogFooter>

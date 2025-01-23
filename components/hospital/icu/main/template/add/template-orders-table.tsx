@@ -1,9 +1,6 @@
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
+
 import SortableOrderWrapper from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/sortable-order-wrapper'
-import DtOrderDialog from '@/components/hospital/common/default-template-order/dt-order-dialog'
-import DtOrderForm from '@/components/hospital/common/default-template-order/dt-order-form'
-import DtOrderTableHeader from '@/components/hospital/common/default-template-order/dt-order-table-header'
-import DtOrderTableRow from '@/components/hospital/common/default-template-order/dt-order-table-row'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
 import { reorderOrders } from '@/lib/services/icu/chart/order-mutation'
@@ -105,7 +102,7 @@ export default function TemplateOrdersTable({
 
   return (
     <Table className="h-full border">
-      <DtOrderTableHeader
+      {/* <DtOrderTableHeader
         isSorting={isSorting!}
         onClick={handleSortButtonClick}
       >
@@ -158,7 +155,7 @@ export default function TemplateOrdersTable({
             ))
           )}
         </TableBody>
-      )}
+      )} */}
     </Table>
   )
 }

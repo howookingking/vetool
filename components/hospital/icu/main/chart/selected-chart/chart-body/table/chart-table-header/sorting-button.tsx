@@ -1,43 +1,51 @@
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 import useShorcutKey from '@/hooks/use-shortcut-key'
+import { reorderDefaultOrders } from '@/lib/services/admin/icu/default-orders'
 import { reorderOrders } from '@/lib/services/icu/chart/order-mutation'
 import { cn, hasOrderSortingChanges } from '@/lib/utils/utils'
-import { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
+import { type SelectedIcuOrder } from '@/types/icu/chart'
 import { ArrowUpDown } from 'lucide-react'
-import React, { useCallback } from 'react'
+import { type Dispatch, type SetStateAction } from 'react'
 
 type SortingButtonProps = {
   isSorting: boolean
-  chartData: SelectedChart
+  prevOrders: SelectedIcuOrder[]
   sortedOrders: SelectedIcuOrder[]
-  setIsSorting: React.Dispatch<React.SetStateAction<boolean>>
+  setIsSorting: Dispatch<SetStateAction<boolean>>
+  isDt?: boolean
 }
 
 export default function SortingButton({
   isSorting,
-  chartData,
+  prevOrders,
   sortedOrders,
   setIsSorting,
+  isDt,
 }: SortingButtonProps) {
-  const handleSortButtonClick = useCallback(async () => {
+  const handleSortButtonClick = async () => {
     if (!isSorting) {
       toast({
-        title: '오더를 드래그 앤 드롭하여 순서를 변경해주세요',
+        title: '오더를 Drag & Drop 하여 순서를 변경해주세요',
       })
       setIsSorting(true)
     }
-    if (isSorting && !hasOrderSortingChanges(chartData.orders, sortedOrders)) {
+    if (isSorting && !hasOrderSortingChanges(prevOrders, sortedOrders)) {
       setIsSorting(false)
       return
     }
     if (isSorting) {
       const orderIds = sortedOrders.map((order) => order.order_id)
-      await reorderOrders(orderIds)
+
+      // default, template
+      isDt
+        ? await reorderDefaultOrders(orderIds)
+        : await reorderOrders(orderIds)
+
       setIsSorting(false)
       toast({ title: '오더 순서를 변경하였습니다' })
     }
-  }, [chartData.orders, isSorting, sortedOrders, setIsSorting])
+  }
 
   useShorcutKey({
     keys: ['s'],

@@ -16,20 +16,15 @@ import {
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import type { SelectedIcuOrder } from '@/types/icu/chart'
+import { type SelectedIcuOrder } from '@/types/icu/chart'
 import { Plus } from 'lucide-react'
 import { useParams } from 'next/navigation'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 
-type QuickOrderInsertInputProps = {
+type OrderCreator = {
   icuChartId: string
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   sortedOrders: SelectedIcuOrder[]
-}
-
-interface OrderData {
-  orderName: string
-  orderDescription: string
 }
 
 function getAvailableChecklistOrders(orders: SelectedIcuOrder[]) {
@@ -42,12 +37,13 @@ function getAvailableChecklistOrders(orders: SelectedIcuOrder[]) {
   )
 }
 
-export default function QuickOrderInsertInput({
+export default function OrderCreator({
   icuChartId,
   setSortedOrders,
   sortedOrders,
-}: QuickOrderInsertInputProps) {
+}: OrderCreator) {
   const { hos_id } = useParams()
+
   const { setOrderStep } = useIcuOrderStore()
   const {
     basicHosData: { orderColorsData },

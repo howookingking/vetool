@@ -1,41 +1,54 @@
-import { Button } from '@/components/ui/button'
+import OrderTypeColorDot from '@/components/hospital/common/order-type-color-dot'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog'
-import { Plus } from 'lucide-react'
-import { ReactNode } from 'react'
+import { DEFAULT_ICU_ORDER_TYPE_DIC } from '@/constants/hospital/icu/chart/order'
+import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
+import { type SelectedIcuOrder } from '@/types/icu/chart'
+import { type Dispatch, type SetStateAction } from 'react'
+import DtOrderForm from './dt-order-form'
 
 export default function DtOrderDialog({
-  isOpen,
-  onOpenChange,
-  children,
+  setSortedOrders,
 }: {
-  isOpen: boolean
-  onOpenChange: (isOpen: boolean) => void
-  children: ReactNode
+  setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
 }) {
+  const { orderStep, setOrderStep, selectedChartOrder } = useIcuOrderStore()
+  const {
+    basicHosData: { orderColorsData },
+  } = useBasicHosDataContext()
+
+  const handleOpenChange = () =>
+    orderStep === 'closed' ? setOrderStep('edit') : setOrderStep('closed')
+
   return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="absolute right-1 top-0.5"
-        >
-          <Plus size={18} />
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="max-w-3xl">
+    <Dialog open={orderStep !== 'closed'} onOpenChange={handleOpenChange}>
+      <DialogContent className="max-w-3xl overflow-x-auto">
         <DialogHeader>
-          <DialogTitle>오더 수정</DialogTitle>
+          <DialogTitle className="flex items-center gap-2">
+            <OrderTypeColorDot
+              orderColorsData={orderColorsData}
+              orderType={selectedChartOrder.order_type!}
+            />
+            <span>
+              {
+                DEFAULT_ICU_ORDER_TYPE_DIC[
+                  selectedChartOrder.order_type as keyof typeof DEFAULT_ICU_ORDER_TYPE_DIC
+                ]
+              }
+              오더 수정
+            </span>
+          </DialogTitle>
+
           <DialogDescription />
         </DialogHeader>
-        {isOpen ? children : null}
+
+        <DtOrderForm setSortedOrders={setSortedOrders} />
       </DialogContent>
     </Dialog>
   )
