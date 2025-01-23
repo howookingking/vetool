@@ -18,34 +18,29 @@ import {
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
 import { templateFormSchema } from '@/lib/schemas/icu/chart/template-schema'
-import { insertCustomTemplateChart } from '@/lib/services/icu/template/template'
+import { insertTemplateChart } from '@/lib/services/icu/template/template'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
-import { useTemplateStore } from '@/lib/store/icu/template'
 import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-export default function AddTemplateOrderDialog({
-  hosId,
-  targetDate,
-  isAddTemplateDialogOpen,
-  setIsAddTemplateDialogOpen,
-}: {
+type AddTemplateOrderDialogProps = {
   hosId: string
-  targetDate: string
   isAddTemplateDialogOpen: boolean
   setIsAddTemplateDialogOpen: Dispatch<SetStateAction<boolean>>
-}) {
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const { templateOrders, setTemplateOrders, reset } = useTemplateStore()
-  const { selectedOrderPendingQueue, setSelectedOrderPendingQueue } =
-    useIcuOrderStore()
+  setIsOrderActionDialogOpen: Dispatch<SetStateAction<boolean>>
+}
 
-  // 템플릿 페이지에서 만든 템플릿 오더
-  const templateOrdersLength = templateOrders.length
+export default function AddTemplateOrderDialog({
+  hosId,
+  isAddTemplateDialogOpen,
+  setIsAddTemplateDialogOpen,
+  setIsOrderActionDialogOpen,
+}: AddTemplateOrderDialogProps) {
+  const { selectedOrderPendingQueue, reset: orderReset } = useIcuOrderStore()
 
   const form = useForm<z.infer<typeof templateFormSchema>>({
     resolver: zodResolver(templateFormSchema),
@@ -55,13 +50,14 @@ export default function AddTemplateOrderDialog({
     },
   })
 
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
   const handleSubmit = async (values: z.infer<typeof templateFormSchema>) => {
     setIsSubmitting(true)
 
-    await insertCustomTemplateChart(
+    await insertTemplateChart(
       hosId,
-      targetDate,
-      templateOrders,
+      selectedOrderPendingQueue,
       values.template_name,
       values.template_comment,
     )
@@ -72,7 +68,8 @@ export default function AddTemplateOrderDialog({
 
     setIsSubmitting(false)
     setIsAddTemplateDialogOpen(false)
-    reset()
+    setIsOrderActionDialogOpen(false)
+    orderReset()
   }
 
   useEffect(() => {
@@ -81,10 +78,8 @@ export default function AddTemplateOrderDialog({
         template_name: undefined,
         template_comment: undefined,
       })
-      setSelectedOrderPendingQueue([])
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAddTemplateDialogOpen])
+  }, [isAddTemplateDialogOpen, form, orderReset])
 
   return (
     <Dialog
@@ -94,7 +89,7 @@ export default function AddTemplateOrderDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>템플릿 저장</DialogTitle>
-          <DialogDescription>{`${selectedOrderPendingQueue.length || templateOrdersLength}개의 오더를 저장합니다`}</DialogDescription>
+          <DialogDescription>{`${selectedOrderPendingQueue.length || selectedOrderPendingQueue.length}개의 오더를 저장합니다`}</DialogDescription>
         </DialogHeader>
 
         <Form {...form}>

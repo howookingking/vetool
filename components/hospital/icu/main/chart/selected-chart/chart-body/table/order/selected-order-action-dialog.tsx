@@ -1,20 +1,17 @@
-import { Dispatch, SetStateAction, useEffect } from 'react'
-import { Copy, Bookmark, Square, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { toast } from '@/components/ui/use-toast'
-import { useTemplateStore } from '@/lib/store/icu/template'
 import { updateIsBordered } from '@/lib/services/icu/chart/order-mutation'
+import { type SelectedIcuOrder } from '@/types/icu/chart'
+import { Bookmark, Copy, Square, Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { type Dispatch, type SetStateAction, useEffect } from 'react'
 
 type SelectedOrderActionDialogProps = {
   isOrderActionDialogOpen: boolean
@@ -43,7 +40,6 @@ export default function SelectedOrderActionDialog({
   setSelectedOrderPendingQueue,
   setCopiedOrderPendingQueue,
 }: SelectedOrderActionDialogProps) {
-  const { setTemplateOrders } = useTemplateStore()
   const { refresh } = useRouter()
 
   useEffect(() => {
@@ -68,19 +64,6 @@ export default function SelectedOrderActionDialog({
     setIsOrderActionDialogOpen(false)
   }
 
-  // 오더 템플릿 저장 핸들러
-  const handleTemplateOrder = () => {
-    if (selectedOrderPendingQueue.length > 0) {
-      setTemplateOrders(selectedOrderPendingQueue)
-
-      // 템플릿 추가 Dialog Open
-      setIsAddTemplateDialogOpen(true)
-    }
-
-    // Dialog close
-    setIsOrderActionDialogOpen(false)
-  }
-
   const handleBorderOrder = async () => {
     if (selectedOrderPendingQueue.length > 0) {
       selectedOrderPendingQueue.forEach(async (order) => {
@@ -97,12 +80,6 @@ export default function SelectedOrderActionDialog({
     refresh()
   }
 
-  // 오더 삭제 핸들러
-  const handleDeleteOrder = () => {
-    // 오더 삭제 Dialog Open
-    setIsDeleteOrdersDialogOpen(true)
-  }
-
   const MULTIPLE_ORDER_ACTIONS = [
     {
       name: '오더 복사',
@@ -112,7 +89,7 @@ export default function SelectedOrderActionDialog({
     {
       name: '템플릿으로 저장',
       icon: <Bookmark />,
-      onClick: handleTemplateOrder,
+      onClick: () => setIsAddTemplateDialogOpen(true),
     },
     {
       name: '테두리 표시 변경',
@@ -122,7 +99,7 @@ export default function SelectedOrderActionDialog({
     {
       name: '오더 삭제',
       icon: <Trash2 />,
-      onClick: handleDeleteOrder,
+      onClick: () => setIsDeleteOrdersDialogOpen(true),
     },
   ]
 
@@ -150,14 +127,6 @@ export default function SelectedOrderActionDialog({
             {action.name}
           </Button>
         ))}
-
-        <DialogFooter className="ml-auto w-full gap-2 md:gap-0">
-          <DialogClose asChild>
-            <Button type="button" variant="outline" tabIndex={-1}>
-              닫기
-            </Button>
-          </DialogClose>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   )

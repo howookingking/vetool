@@ -6,5 +6,4 @@ export type TemplateChart = Pick<
 > & {
   icu_chart_id: string
   created_at: string
-  patient: Pick<Patients, 'name' | 'patient_id'>
 }

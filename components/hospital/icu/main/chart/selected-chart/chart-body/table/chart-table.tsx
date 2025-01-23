@@ -211,12 +211,14 @@ export default function ChartTable({
       {!isExport && (
         <>
           <TxUpsertDialog showTxUser={showTxUser} />
+
           <DeleteOrdersAlertDialog
             isDeleteOrdersDialogOpen={isDeleteOrdersDialogOpen}
             setIsDeleteOrdersDialogOpen={setIsDeleteOrdersDialogOpen}
             setIsOrderActionDialogOpen={setIsOrderActionDialogOpen}
             setSortedOrders={setSortedOrders}
           />
+
           <AddTemplateOrderDialog
             hosId={patient.hos_id}
             isAddTemplateDialogOpen={isAddTemplateDialogOpen}
@@ -233,6 +235,7 @@ export default function ChartTable({
             setSelectedOrderPendingQueue={setSelectedOrderPendingQueue}
             setCopiedOrderPendingQueue={setCopiedOrderPendingQueue}
           />
+
           <OrderDialog
             hosId={patient.hos_id}
             icuChartId={icu_chart_id}
