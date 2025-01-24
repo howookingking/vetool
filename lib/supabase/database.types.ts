@@ -807,6 +807,7 @@ export type Database = {
       icu_txs: {
         Row: {
           created_at: string
+          has_images: boolean | null
           hos_id: string
           icu_chart_order_id: string | null
           icu_chart_tx_comment: string | null
@@ -820,6 +821,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          has_images?: boolean | null
           hos_id: string
           icu_chart_order_id?: string | null
           icu_chart_tx_comment?: string | null
@@ -833,6 +835,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          has_images?: boolean | null
           hos_id?: string
           icu_chart_order_id?: string | null
           icu_chart_tx_comment?: string | null

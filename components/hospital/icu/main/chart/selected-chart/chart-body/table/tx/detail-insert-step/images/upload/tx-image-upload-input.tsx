@@ -3,33 +3,41 @@ import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils/utils'
 import { useRef, useState } from 'react'
 
+type TxImageUploadInputProps = {
+  images: File[]
+  onImagesChange: (newImages: File[]) => void
+  bucketImagesCount: number
+}
+
 /**
  * 이미지 업로드 Drag & Drop 영역
  */
 export default function TxImageUploadInput({
   images,
   onImagesChange,
-}: {
-  images: File[]
-  onImagesChange: (newImages: File[]) => void
-}) {
+  bucketImagesCount,
+}: TxImageUploadInputProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [isDragging, setIsDragging] = useState(false)
+  const [showWarning, setShowWarning] = useState(false)
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
+    setShowWarning(false)
 
     if (files) {
+      if (files.length + bucketImagesCount > 10) {
+        setShowWarning(true)
+        return
+      }
+
       const newImages = [...images]
 
       Array.from(files).forEach(async (file) => {
         const reader = new FileReader()
 
         newImages.push(file)
-        if (newImages.length > 5) newImages.shift()
-
         onImagesChange(newImages)
-
         reader.readAsDataURL(file)
       })
     }
@@ -74,9 +82,16 @@ export default function TxImageUploadInput({
           className="hidden"
           multiple
         />
-        <span className="px-4 text-gray-500">
-          이미지 파일을 드래그하거나 클릭하여 선택하세요 (최대 10개)
-        </span>
+
+        {showWarning ? (
+          <span className="px-4 text-destructive">
+            🚨 파일은 최대 10개까지 업로드 가능합니다.
+          </span>
+        ) : (
+          <span className="px-4 text-gray-500">
+            이미지 파일을 드래그하거나 클릭하여 선택하세요 (최대 10개)
+          </span>
+        )}
       </Label>
     </div>
   )

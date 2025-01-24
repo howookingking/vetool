@@ -12,6 +12,7 @@ export type TxLocalState = {
   icuChartOrderType?: string
   icuChartOrderName?: string
   txImages?: File[]
+  bucketImagesLength?: number
 } | null
 
 type IcuUpsertTxState = {

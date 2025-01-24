@@ -27,6 +27,10 @@ export const upsertIcuTx = async (
       icu_chart_tx_log: updatedLogs,
       time: txLocalState?.time!,
       is_crucial: txLocalState?.isCrucialChecked,
+      has_images: Boolean(
+        (txLocalState?.txImages?.length || 0) +
+          (txLocalState?.bucketImagesLength || 0),
+      ),
     })
     .select('icu_chart_tx_id')
 
@@ -58,8 +62,15 @@ export const upsertIcuTx = async (
   }
 
   // 이미지가 존재한다면 업로드
-  if (txLocalState?.txImages && txLocalState.txImages.length > 0) {
-    await uploadTxImages(txLocalState.txImages, data[0].icu_chart_tx_id)
+  if (
+    txLocalState?.bucketImagesLength ||
+    (txLocalState?.txImages && txLocalState.txImages.length > 0)
+  ) {
+    await uploadTxImages(
+      txLocalState.txImages || [],
+      data[0].icu_chart_tx_id,
+      txLocalState.bucketImagesLength?.toString() || '0',
+    )
   }
 }
 
@@ -109,8 +120,14 @@ export const updateTxWeight = async (
   }
 }
 
-async function uploadTxImages(txImages: File[], txId: string) {
+export const uploadTxImages = async (
+  txImages: File[],
+  txId: string,
+  startIndex: string,
+) => {
   try {
+    if (txImages.length === 0) return
+
     // 1. FormData 선언
     const formData = new FormData()
 
@@ -118,6 +135,7 @@ async function uploadTxImages(txImages: File[], txId: string) {
     txImages.forEach((file) => formData.append('files', file))
     formData.append('route', 'icu')
     formData.append('id', txId)
+    formData.append('startIndex', startIndex)
 
     // 3. 이미지 업로드
     const response = await fetch(`${baseUrl}/api/image`, {
