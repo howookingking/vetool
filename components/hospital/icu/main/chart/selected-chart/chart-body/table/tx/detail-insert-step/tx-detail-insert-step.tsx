@@ -97,7 +97,7 @@ export default function TxDetailInsertStep({
     fetchImages()
 
     return () => setBucketImages([])
-  }, [txLocalState?.txId])
+  }, [txLocalState, setTxLocalState])
 
   const handleSubmit = async (
     values: z.infer<typeof txDetailRegisterFormSchema>,

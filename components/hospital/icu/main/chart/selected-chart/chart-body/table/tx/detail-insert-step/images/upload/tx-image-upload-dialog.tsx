@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { type TxLocalState } from '@/lib/store/icu/tx-mutation'
-import { Image } from 'lucide-react'
+import { Image as ImageIcon } from 'lucide-react'
 
 type TxImageUploadDialogProps = {
   bucketImagesCount: number
@@ -33,7 +33,7 @@ export default function TxImageUploadDialog({
     <Dialog open={isUploadDialogOpen} onOpenChange={setIsUploadDialogOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">
-          <Image /> 이미지 업로드
+          <ImageIcon /> 이미지 업로드
         </Button>
       </DialogTrigger>
       <DialogContent>

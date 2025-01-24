@@ -13,7 +13,7 @@ import { TxLocalState } from '@/lib/store/icu/tx-mutation'
 import { cn } from '@/lib/utils/utils'
 import type { Treatment, TxLog } from '@/types/icu/chart'
 import { format } from 'date-fns'
-import { Image } from 'lucide-react'
+import { Image as ImageIcon } from 'lucide-react'
 import React, { useCallback, useEffect, useState } from 'react'
 
 type CellProps = {
@@ -272,7 +272,7 @@ export default function Cell({
 
         {treatment?.has_images && (
           <div className="absolute right-0.5 top-0.5 text-pink-500">
-            <Image size={14} strokeWidth={2} />
+            <ImageIcon size={14} strokeWidth={2} />
           </div>
         )}
       </div>
