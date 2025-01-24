@@ -1,13 +1,16 @@
-'use client'
-
 import PreviewButton from '@/components/hospital/icu/common-dialogs/preview/preview-button'
 import { Button } from '@/components/ui/button'
-import { TemplateChart } from '@/types/icu/template'
-import { ColumnDef } from '@tanstack/react-table'
+import { type TemplateChart } from '@/types/icu/template'
+import { type ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown } from 'lucide-react'
+import { type Dispatch, type SetStateAction } from 'react'
 import PasteTemplateButton from './paste-template-button'
 
-export const templateColumns: ColumnDef<TemplateChart>[] = [
+export const templateColumns = (
+  setIsDialogOpen: Dispatch<SetStateAction<boolean>>,
+  tableHeader?: boolean,
+  chartId?: string,
+): ColumnDef<TemplateChart>[] => [
   {
     accessorKey: 'template_name',
     header: ({ column }) => {
@@ -72,8 +75,15 @@ export const templateColumns: ColumnDef<TemplateChart>[] = [
     accessorKey: 'action',
     header: '선택',
     cell: ({ row }) => {
-      const chartId = row.original.icu_chart_id
-      return <PasteTemplateButton chartId={chartId} />
+      const templateChartId = row.original.icu_chart_id
+      return (
+        <PasteTemplateButton
+          templateChartId={templateChartId}
+          setIsDialogOpen={setIsDialogOpen}
+          tableHeader={tableHeader}
+          chartId={chartId}
+        />
+      )
     },
   },
 ]

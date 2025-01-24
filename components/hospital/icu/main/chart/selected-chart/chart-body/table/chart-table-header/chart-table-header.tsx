@@ -6,6 +6,7 @@ import { type OrderStep } from '@/lib/store/icu/icu-order'
 import { cn } from '@/lib/utils/utils'
 import { type SelectedChart, type SelectedIcuOrder } from '@/types/icu/chart'
 import { type Dispatch, type SetStateAction } from 'react'
+import PasteTemplateOrderDialog from '../../../../paste-chart-dialogs/template/paste-template-order-dialog'
 
 type ChartTableHeaderProps = {
   preview?: boolean
@@ -21,6 +22,7 @@ type ChartTableHeaderProps = {
   setOrderWidth: Dispatch<SetStateAction<number>>
   isMobile: boolean
   isTouchMove?: boolean
+  chartId?: string
 }
 
 export default function ChartTableHeader({
@@ -33,6 +35,7 @@ export default function ChartTableHeader({
   setOrderWidth,
   isMobile,
   isTouchMove,
+  chartId,
 }: ChartTableHeaderProps) {
   return (
     <TableHeader
@@ -59,6 +62,10 @@ export default function ChartTableHeader({
           )}
 
           <span className="w-full text-center">오더 목록</span>
+
+          {!preview && (
+            <PasteTemplateOrderDialog tableHeader chartId={chartId} />
+          )}
 
           <OrderWidthButton
             orderWidth={orderWidth as [300, 400, 500, 600][number]}

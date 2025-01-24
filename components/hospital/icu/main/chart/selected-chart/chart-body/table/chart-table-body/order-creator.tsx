@@ -1,5 +1,4 @@
 import OrderTypeColorDot from '@/components/hospital/common/order-type-color-dot'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
   Select,
@@ -18,7 +17,6 @@ import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { type SelectedIcuOrder } from '@/types/icu/chart'
-import { Plus } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 
@@ -120,13 +118,7 @@ export default function OrderCreator({
     await createOrder(orderName, orderDescription ?? '')
   }
 
-  const handleOrderTypeChange = async (selectedValue: string) => {
-    if (selectedValue === 'template') {
-      setOrderStep('template')
-      setOrderType('manual')
-      return
-    }
-
+  const handleOrderTypeChange = (selectedValue: string) => {
     setOrderType(selectedValue)
     setIsChecklistOrder(false)
   }
@@ -164,16 +156,6 @@ export default function OrderCreator({
               </div>
             </SelectItem>
           ))}
-
-          <SelectItem
-            value="template"
-            className="rounded-none p-1 transition hover:opacity-70"
-          >
-            <div className="flex items-center gap-2">
-              <Plus className="h-4 w-4" />
-              <span>템플릿</span>
-            </div>
-          </SelectItem>
         </SelectContent>
       </Select>
 

@@ -7,17 +7,34 @@ import { Eye, LoaderCircle } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 
-export default function PreviewButton({
-  targetDate,
-  patientId,
-  chartId,
-  isTemplate,
-}: {
-  targetDate: string | null
+interface BasePreviewButtonProps {
+  isTemplate: boolean
+}
+
+interface PatientPreviewProps extends BasePreviewButtonProps {
+  isTemplate: false
+  targetDate: string
   patientId: string
-  chartId?: string
-  isTemplate?: boolean
-}) {
+  chartId?: never
+}
+
+interface TemplatePreviewProps extends BasePreviewButtonProps {
+  isTemplate: true
+  chartId: string
+  targetDate?: never
+  patientId?: never
+}
+
+type PreviewButtonProps = PatientPreviewProps | TemplatePreviewProps
+
+async function fetchChartData(props: PreviewButtonProps, hosId: string) {
+  if (props.isTemplate) {
+    return await getTemplateChart(props.chartId)
+  }
+  return await getIcuChart(hosId, props.targetDate, props.patientId)
+}
+
+export default function PreviewButton(props: PreviewButtonProps) {
   const { hos_id } = useParams()
 
   const { setPreviewDialogOpen } = usePreviewDialogStore()
@@ -28,19 +45,8 @@ export default function PreviewButton({
   const handleOpenPreviewDialog = async () => {
     setIsPreviewing(true)
 
-    let fetchedChartData = null
-
-    if (isTemplate) {
-      fetchedChartData = await getTemplateChart(chartId!)
-    } else {
-      fetchedChartData = await getIcuChart(
-        hos_id as string,
-        targetDate,
-        patientId!,
-      )
-    }
-
-    setCopiedChart(fetchedChartData)
+    const chartData = await fetchChartData(props, hos_id as string)
+    setCopiedChart(chartData)
 
     setPreviewDialogOpen(true)
     setIsPreviewing(false)

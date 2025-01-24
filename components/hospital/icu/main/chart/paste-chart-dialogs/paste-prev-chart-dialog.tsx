@@ -64,7 +64,7 @@ export default function PastePrevChartDialog() {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>전일 차트 복사</DialogTitle>
+          <DialogTitle>전일 차트 붙여넣기</DialogTitle>
           <DialogDescription>
             전일 차트를 복사하여 {target_date} 차트가 생성됩니다
           </DialogDescription>

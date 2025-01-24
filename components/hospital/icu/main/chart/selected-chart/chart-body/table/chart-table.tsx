@@ -160,6 +160,7 @@ export default function ChartTable({
         setOrderWidth={setOrderWidth}
         isTouchMove={isTouchMove}
         isMobile={isMobile}
+        chartId={icu_chart_id}
       />
 
       {isSorting ? (
@@ -214,7 +215,6 @@ export default function ChartTable({
           {/* 템플릿오더 붙여넣기**, 오더자선택, 오더수정 */}
           {/* **템플릿오더 붙여넣기 = 차트에 템플릿오더를 넣음, 템플릿오더 추가 = 템플릿 db 추가,  */}
           <OrderDialog
-            hosId={patient.hos_id}
             icuChartId={icu_chart_id}
             orders={orders}
             showOrderer={showOrderer}

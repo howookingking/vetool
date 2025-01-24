@@ -43,7 +43,7 @@ export default function ExportPdfButton({
     await handleExport(
       icu_io_id,
       patient_id,
-      target_date,
+      target_date!,
       hos_id as string,
       (canvases) => {
         const pdf = generatePdf(canvases)

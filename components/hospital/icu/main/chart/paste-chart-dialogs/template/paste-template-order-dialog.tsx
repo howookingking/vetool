@@ -19,7 +19,15 @@ import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import { templateColumns } from './template-columns'
 
-export default function PasteTemplateOrderDialog() {
+type PasteTemplateOrderDialogProps = {
+  tableHeader?: boolean
+  chartId?: string
+}
+
+export default function PasteTemplateOrderDialog({
+  tableHeader,
+  chartId,
+}: PasteTemplateOrderDialogProps) {
   const { hos_id } = useParams()
 
   const [templateCharts, setTemplateCharts] = useState<TemplateChart[]>([])
@@ -38,25 +46,38 @@ export default function PasteTemplateOrderDialog() {
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      <Button
-        variant="outline"
-        className="hidden h-1/3 w-full items-center justify-center gap-2 md:flex md:h-1/3 md:w-2/3 lg:w-1/2"
-        onClick={handleOpenTemplateDialog}
-        disabled={isLoading}
-      >
-        <Bookmark size={20} />
-        <span>템플릿 붙여넣기</span>
-        {isLoading && <LoaderCircle className="ml-2 h-4 w-4 animate-spin" />}
-      </Button>
+      {tableHeader ? (
+        <Button
+          size="icon"
+          variant="ghost"
+          className="shrink-0"
+          onClick={handleOpenTemplateDialog}
+          disabled={isLoading}
+        >
+          {isLoading ? <LoaderCircle className="animate-spin" /> : <Bookmark />}
+        </Button>
+      ) : (
+        <Button
+          variant="outline"
+          className="justify-centeritems-center hidden h-1/3 w-full items-center justify-center gap-2 md:flex md:h-1/3 md:w-2/3 lg:w-1/2"
+          onClick={handleOpenTemplateDialog}
+          disabled={isLoading}
+        >
+          <Bookmark size={20} />
+
+          {!tableHeader && <span>템플릿 붙여넣기</span>}
+          {isLoading && <LoaderCircle className="ml-2 h-4 w-4 animate-spin" />}
+        </Button>
+      )}
 
       <DialogContent className="md:max-w-[1200px]">
         <DialogHeader>
           <DialogTitle>템플릿 붙여넣기</DialogTitle>
-          <DialogDescription>복사할 템플릿을 선택해주세요</DialogDescription>
+          <DialogDescription>붙여넣을 템플릿을 선택해주세요</DialogDescription>
         </DialogHeader>
 
         <DataTable
-          columns={templateColumns}
+          columns={templateColumns(setIsDialogOpen, tableHeader, chartId)}
           data={templateCharts ?? []}
           searchPlaceHolder="템플릿 이름 · 템플릿 설명 검색"
         />

@@ -9,7 +9,7 @@ export type OrderTimePendingQueue = {
   isCrucialChecked?: boolean
 }
 
-export type OrderStep = 'closed' | 'edit' | 'template' | 'selectOrderer'
+export type OrderStep = 'closed' | 'edit' | 'selectOrderer'
 
 type IcuOrderState = {
   orderStep: OrderStep

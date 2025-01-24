@@ -23,7 +23,7 @@ import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { cn, formatOrders } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import type { SelectedIcuOrder } from '@/types/icu/chart'
+import { type SelectedIcuOrder } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
 import { useParams } from 'next/navigation'
@@ -31,17 +31,19 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
+type OrdererSelectStepProps = {
+  icuChartId: string
+  mainVetName: string
+  orders: SelectedIcuOrder[]
+}
+
 export default function OrdererSelectStep({
   icuChartId,
   mainVetName,
   orders,
-}: {
-  icuChartId: string
-  mainVetName: string
-  orders: SelectedIcuOrder[]
-}) {
-  const [isUpdating, setIsUpdating] = useState(false)
+}: OrdererSelectStepProps) {
   const { hos_id } = useParams()
+
   const {
     basicHosData: { vetsListData },
   } = useBasicHosDataContext()
@@ -56,8 +58,9 @@ export default function OrdererSelectStep({
   const isSingleTx = orderTimePendingQueue.length === 0
   const isPendingOrder = copiedOrderPendingQueue.length > 0
 
-  const okButtonRef = useRef<HTMLButtonElement>(null)
+  const [isUpdating, setIsUpdating] = useState(false)
 
+  const okButtonRef = useRef<HTMLButtonElement>(null)
   useEffect(() => {
     if (okButtonRef.current) {
       okButtonRef.current.focus()

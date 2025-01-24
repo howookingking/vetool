@@ -16,8 +16,9 @@ export default function IcuChartRow({
       <TableCell className="text-center">{chart.target_date}</TableCell>
       <TableCell className="text-center">
         <PreviewButton
+          isTemplate={false}
           patientId={chart.patient_id!}
-          targetDate={chart.target_date}
+          targetDate={chart.target_date!}
         />
       </TableCell>
       <TableCell className="text-center">

@@ -52,39 +52,39 @@ export const bookmarkColumns: ColumnDef<TemplateChart>[] = [
       )
     },
   },
-  {
-    id: 'preview',
-    header: '미리보기',
-    cell: ({ row }) => {
-      const chartId = row.original.icu_chart_id
-      const targetDate = row.original.target_date
-      const patientId = row.original.patient.patient_id
+  // {
+  //   id: 'preview',
+  //   header: '미리보기',
+  //   cell: ({ row }) => {
+  //     const chartId = row.original.icu_chart_id
+  //     const targetDate = row.original.created_at
+  //     const patientId = row.original.patient.patient_id
 
-      return (
-        <div className="flex justify-center">
-          <PreviewButton
-            chartId={chartId}
-            patientId={patientId}
-            targetDate={targetDate}
-          />
-        </div>
-      )
-    },
-  },
-  {
-    id: 'action',
-    header: '이동',
-    cell: ({ row }) => {
-      const patientId = row.original.patient.patient_id
-      const targetDate = row.original.target_date
+  //     return (
+  //       <div className="flex justify-center">
+  //         <PreviewButton
+  //           chartId={chartId}
+  //           patientId={patientId}
+  //           targetDate={targetDate}
+  //         />
+  //       </div>
+  //     )
+  //   },
+  // },
+  // {
+  //   id: 'action',
+  //   header: '이동',
+  //   cell: ({ row }) => {
+  //     const patientId = row.original.patient.patient_id
+  //     const targetDate = row.original.target_date
 
-      return (
-        <div className="flex justify-center">
-          <GotoIcuButton patientId={patientId} targetDate={targetDate} />
-        </div>
-      )
-    },
-  },
+  //     return (
+  //       <div className="flex justify-center">
+  //         <GotoIcuButton patientId={patientId} targetDate={targetDate} />
+  //       </div>
+  //     )
+  //   },
+  // },
   {
     id: 'edit',
     header: '수정',

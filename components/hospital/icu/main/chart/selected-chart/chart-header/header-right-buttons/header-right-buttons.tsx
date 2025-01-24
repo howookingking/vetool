@@ -24,7 +24,7 @@ export default function HeaderRightButtons({
     <div className="absolute right-2 top-2 hidden gap-1 2xl:flex">
       <ShareChartButton
         icuIoId={icu_io.icu_io_id}
-        targetDate={target_date}
+        targetDate={target_date!}
         mainVetName={mainVetName}
       />
 

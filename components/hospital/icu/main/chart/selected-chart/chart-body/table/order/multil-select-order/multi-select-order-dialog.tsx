@@ -24,11 +24,19 @@ export default function MultiSelectOrderDialog({
   setIsMultiSelectOrderDialogOpen,
   setSortedOrders,
 }: MultiSelectOrderDialogProps) {
-  const { selectedOrderPendingQueue } = useIcuOrderStore()
+  const { selectedOrderPendingQueue, reset: orderReset } = useIcuOrderStore()
+
+  const handleDialogOpenChange = (open: boolean) => {
+    setIsMultiSelectOrderDialogOpen(open)
+    if (!open) {
+      orderReset()
+    }
+  }
+
   return (
     <Dialog
       open={isMultiSelectOrderDialogOpen}
-      onOpenChange={setIsMultiSelectOrderDialogOpen}
+      onOpenChange={handleDialogOpenChange}
     >
       <DialogContent>
         <DialogHeader>

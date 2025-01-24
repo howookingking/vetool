@@ -1,16 +1,27 @@
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
+import { pasteTemplateOrders } from '@/lib/services/icu/chart/order-mutation'
 import { pasteChart } from '@/lib/services/icu/chart/paste-chart'
-import { useCopiedChartStore } from '@/lib/store/icu/copied-chart'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { Check, LoaderCircle } from 'lucide-react'
 import { useParams } from 'next/navigation'
-import { useState } from 'react'
+import { type Dispatch, type SetStateAction, useState } from 'react'
 
-export default function PasteTemplateButton({ chartId }: { chartId: string }) {
+type PasteTemplateButtonProps = {
+  templateChartId: string
+  setIsDialogOpen: Dispatch<SetStateAction<boolean>>
+  tableHeader?: boolean // 이미 차트가 생성된 후 템플릿 오더를 추가하는 경우
+  chartId?: string
+}
+
+export default function PasteTemplateButton({
+  templateChartId,
+  setIsDialogOpen,
+  tableHeader,
+  chartId,
+}: PasteTemplateButtonProps) {
   const { target_date, patient_id } = useParams()
 
-  const { reset } = useCopiedChartStore()
   const {
     basicHosData: { vetsListData },
   } = useBasicHosDataContext()
@@ -20,19 +31,23 @@ export default function PasteTemplateButton({ chartId }: { chartId: string }) {
   const handlePasteSelectedTemplate = async () => {
     setIsLoading(true)
 
-    await pasteChart(
-      patient_id as string,
-      chartId!,
-      target_date as string,
-      vetsListData[0].name,
-    )
+    // tableHeader : 이미 생성된 차트에서 템플릿오더를 추가
+    // !tableHeader : 익일차트 혹은 첫차트에서 템플릿 오더를 추가하는 경우
+    tableHeader
+      ? await pasteTemplateOrders(templateChartId, chartId!)
+      : await pasteChart(
+          patient_id as string,
+          templateChartId,
+          target_date as string,
+          vetsListData[0].name,
+        )
 
     toast({
-      title: '차트를 생성하였습니다',
+      title: '템플릿 오더를 붙여넣었습니다',
     })
 
     setIsLoading(false)
-    reset()
+    setIsDialogOpen(false)
   }
 
   return (
