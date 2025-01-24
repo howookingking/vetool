@@ -70,27 +70,27 @@ export const templateColumns: ColumnDef<TemplateChart>[] = [
       )
     },
   },
-  {
-    id: 'action',
-    header: '수정',
-    cell: ({ row }) => {
-      const chartId = row.original.icu_chart_id
-      const templateName = row.original.template_name
-      const templateComment = row.original.template_comment
-      const templateId = row.original.template_id
+  // {
+  //   id: 'action',
+  //   header: '수정',
+  //   cell: ({ row }) => {
+  //     const chartId = row.original.icu_chart_id
+  //     const templateName = row.original.template_name
+  //     const templateComment = row.original.template_comment
+  //     const templateId = row.original.template_id
 
-      return (
-        <div className="flex justify-center">
-          <EditTemplateButton
-            chartId={chartId}
-            templateId={templateId}
-            templateName={templateName}
-            templateComment={templateComment}
-          />
-        </div>
-      )
-    },
-  },
+  //     return (
+  //       <div className="flex justify-center">
+  //         <EditTemplateButton
+  //           chartId={chartId}
+  //           templateId={templateId}
+  //           templateName={templateName}
+  //           templateComment={templateComment}
+  //         />
+  //       </div>
+  //     )
+  //   },
+  // },
   {
     id: 'delete',
     header: '삭제',
