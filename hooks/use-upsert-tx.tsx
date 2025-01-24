@@ -56,6 +56,8 @@ export default function useUpsertTx({ hosId, onSuccess }: TxUpdateOptions) {
       orderName?: string
       orderType?: string
       updatedLogs: TxLog[]
+      txImages?: File[]
+      bucketImagesLength?: number
     },
   ) => {
     if (isSubmitting) return
@@ -71,6 +73,8 @@ export default function useUpsertTx({ hosId, onSuccess }: TxUpdateOptions) {
         isCrucialChecked: values.isCrucialChecked,
         icuChartOrderName: values.orderName,
         icuChartOrderType: values.orderType,
+        txImages: values.txImages,
+        bucketImagesLength: values.bucketImagesLength,
       },
       logs:
         values.result && values.result.trim() !== ''

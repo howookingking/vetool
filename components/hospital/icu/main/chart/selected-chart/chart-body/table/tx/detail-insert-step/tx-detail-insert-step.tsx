@@ -97,7 +97,9 @@ export default function TxDetailInsertStep({
     fetchImages()
 
     return () => setBucketImages([])
-  }, [txLocalState, setTxLocalState])
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [txLocalState?.txId, setTxLocalState])
 
   const handleSubmit = async (
     values: z.infer<typeof txDetailRegisterFormSchema>,
@@ -132,6 +134,8 @@ export default function TxDetailInsertStep({
           orderName: txLocalState?.icuChartOrderName,
           orderType: txLocalState?.icuChartOrderType,
           updatedLogs,
+          txImages: txLocalState?.txImages,
+          bucketImagesLength: txLocalState?.bucketImagesLength,
         })
         return
       }

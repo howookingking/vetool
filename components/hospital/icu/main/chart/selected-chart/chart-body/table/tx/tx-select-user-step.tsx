@@ -77,6 +77,8 @@ export default function TxSelectUserStep({
           orderName: txLocalState?.icuChartOrderName,
           orderType: txLocalState?.icuChartOrderType,
           updatedLogs,
+          txImages: txLocalState?.txImages,
+          bucketImagesLength: txLocalState?.bucketImagesLength,
         })
 
         return

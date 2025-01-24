@@ -46,6 +46,13 @@ export default function TxImageField({
     setBucketImages((prev: ImageUrlResponse[]) =>
       prev.filter((_, i: number) => i !== index),
     )
+
+    setTxLocalState({
+      ...txLocalState,
+      bucketImagesLength: txLocalState?.bucketImagesLength
+        ? txLocalState?.bucketImagesLength - 1
+        : 0,
+    })
   }
 
   return (
@@ -53,7 +60,7 @@ export default function TxImageField({
       <div className="flex items-center justify-between">
         <Label htmlFor="image">이미지 / 동영상</Label>
         <TxImageUploadDialog
-          bucketImagesCount={bucketImages.length || 0}
+          bucketImagesCount={bucketImages?.length || 0}
           txLocalState={txLocalState}
           setTxLocalState={setTxLocalState}
           isUploadDialogOpen={isUploadDialogOpen}

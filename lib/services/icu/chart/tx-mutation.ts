@@ -3,7 +3,7 @@
 import { TxLocalState } from '@/lib/store/icu/tx-mutation'
 import { createClient } from '@/lib/supabase/server'
 import { isValidWeightOrderTx } from '@/lib/utils/utils'
-import type { TxLog } from '@/types/icu/chart'
+import { type TxLog } from '@/types/icu/chart'
 import { redirect } from 'next/navigation'
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL
