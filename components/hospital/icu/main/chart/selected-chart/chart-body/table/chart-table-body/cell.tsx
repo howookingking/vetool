@@ -13,6 +13,7 @@ import { TxLocalState } from '@/lib/store/icu/tx-mutation'
 import { cn } from '@/lib/utils/utils'
 import type { Treatment, TxLog } from '@/types/icu/chart'
 import { format } from 'date-fns'
+import { Image as ImageIcon } from 'lucide-react'
 import React, { useCallback, useEffect, useState } from 'react'
 
 type CellProps = {
@@ -267,6 +268,12 @@ export default function Cell({
 
         {treatment?.is_crucial && (
           <span className="absolute bottom-0 left-0 text-[10px]">❗️</span>
+        )}
+
+        {treatment?.has_images && (
+          <div className="absolute right-0.5 top-0.5 text-pink-500">
+            <ImageIcon size={14} strokeWidth={2} />
+          </div>
         )}
       </div>
     </TableCell>

@@ -456,3 +456,10 @@ export const parseTextWithUrls = (text: string) => {
 
   return parts
 }
+
+// 미디어 파일 확장자 검사
+export const isVideoFile = (contentType: string) => {
+  if (!contentType) return false
+
+  return contentType.includes('video')
+}

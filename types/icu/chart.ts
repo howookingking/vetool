@@ -104,6 +104,7 @@ export type Treatment = {
   tx_result: string | null
   tx_comment: string | null
   is_crucial: boolean
+  has_images: boolean
 }
 
 export type IcuSidebarIoData = {
