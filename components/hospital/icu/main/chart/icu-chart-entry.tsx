@@ -6,7 +6,7 @@ import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provi
 import type { SelectedChart } from '@/types/icu/chart'
 import PasteChartDialogs from './paste-chart-dialogs/paste-chart-dialogs'
 
-export default function ChartEntry({
+export default function IcuChartEntry({
   chartData,
   patientId,
 }: {

@@ -9,7 +9,7 @@ import type { IcuAnalysisData } from '@/types/icu/analysis'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-export default function Analysis() {
+export default function IcuAnalysisEntry() {
   const [startDate, setStartDate] = useState<string>('')
   const [endDate, setEndDate] = useState<string>('')
   const [analysisData, setAnalysisData] = useState<IcuAnalysisData[]>([])

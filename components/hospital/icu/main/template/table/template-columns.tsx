@@ -62,16 +62,10 @@ export const templateColumns: ColumnDef<TemplateChart>[] = [
     header: '미리보기',
     cell: ({ row }) => {
       const chartId = row.original.icu_chart_id
-      const patientId = row.original.patient.patient_id
 
       return (
         <div className="flex justify-center">
-          <PreviewButton
-            chartId={chartId}
-            patientId={patientId}
-            targetDate={null}
-            isTemplate
-          />
+          <PreviewButton chartId={chartId} isTemplate />
         </div>
       )
     },

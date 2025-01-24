@@ -1,4 +1,4 @@
-import ChartEntry from '@/components/hospital/icu/main/chart/chart-entry'
+import IcuChartEntry from '@/components/hospital/icu/main/chart/icu-chart-entry'
 import { getIcuChart } from '@/lib/services/icu/chart/get-icu-chart'
 
 export default async function PatientChartPage(props: {
@@ -16,5 +16,5 @@ export default async function PatientChartPage(props: {
     params.patient_id,
   )
 
-  return <ChartEntry chartData={chartData} patientId={params.patient_id} />
+  return <IcuChartEntry chartData={chartData} patientId={params.patient_id} />
 }

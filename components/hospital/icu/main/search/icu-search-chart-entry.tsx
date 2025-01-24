@@ -18,7 +18,7 @@ export type SearchOptions = {
   searchType: 'simple' | 'keyword'
 }
 
-export default function IcuSearchChart() {
+export default function IcuSearchChartEntry() {
   const { hos_id } = useParams()
   const { trie } = useKeywordTrieStore()
   const [inputValue, setInputValue] = useState('')
