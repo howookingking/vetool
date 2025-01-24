@@ -17,13 +17,14 @@ import { File, LoaderCircle } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-export default function AddDefaultChartDialog({
+export default function PasteDefaultChartDialog({
   chartData,
 }: {
   chartData: SelectedChart
 }) {
   const { hos_id } = useParams()
   const { refresh } = useRouter()
+
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 

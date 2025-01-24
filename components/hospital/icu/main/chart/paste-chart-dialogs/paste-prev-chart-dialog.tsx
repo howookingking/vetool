@@ -18,11 +18,12 @@ import { ClipboardPaste, LoaderCircle } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-export default function CopyPrevChartDialog() {
+export default function PastePrevChartDialog() {
+  const { refresh } = useRouter()
+  const { patient_id, target_date } = useParams()
+
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const { patient_id, target_date } = useParams()
-  const { refresh } = useRouter()
 
   const handleCopyPrevSelectedChart = async () => {
     setIsLoading(true)
@@ -58,7 +59,7 @@ export default function CopyPrevChartDialog() {
           className="flex h-1/3 w-full items-center justify-center gap-2 md:h-1/3 md:w-2/3 lg:w-1/2"
         >
           <ClipboardPaste size={20} />
-          <span>전일 차트 복사</span>
+          <span>전일 차트 붙여넣기</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

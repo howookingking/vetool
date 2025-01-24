@@ -1,13 +1,13 @@
 'use client'
 
 import PreviewButton from '@/components/hospital/icu/common-dialogs/preview/preview-button'
-import PasteTemplateButton from '@/components/hospital/icu/main/chart/add-chart-dialogs/template/paste-template-button'
 import { Button } from '@/components/ui/button'
 import { TemplateChart } from '@/types/icu/template'
 import { ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown } from 'lucide-react'
+import PasteTemplateButton from './paste-template-button'
 
-export const pasteTemplateColumns: ColumnDef<TemplateChart>[] = [
+export const templateColumns: ColumnDef<TemplateChart>[] = [
   {
     accessorKey: 'template_name',
     header: ({ column }) => {
@@ -41,21 +41,21 @@ export const pasteTemplateColumns: ColumnDef<TemplateChart>[] = [
     },
   },
   {
-    accessorKey: 'target_date',
+    accessorKey: 'created_at',
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          차트 생성일
+          템플릿 생성일
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
     },
     cell: ({ row }) => {
-      const targetDate = row.original.target_date
-      return <span>{targetDate}</span>
+      const createdAt = row.original.created_at
+      return <span>{createdAt.slice(0, 10)}</span>
     },
   },
 
@@ -63,17 +63,9 @@ export const pasteTemplateColumns: ColumnDef<TemplateChart>[] = [
     accessorKey: 'preview',
     header: '미리보기',
     cell: ({ row }) => {
-      const patientId = row.original.patient.patient_id
-      const targetDate = row.original.target_date
       const chartId = row.original.icu_chart_id
 
-      return (
-        <PreviewButton
-          patientId={patientId}
-          targetDate={targetDate}
-          chartId={chartId}
-        />
-      )
+      return <PreviewButton chartId={chartId} isTemplate />
     },
   },
   {

@@ -1,6 +1,5 @@
 'use client'
 
-import UserAvatar from '@/components/hospital/common/user-avatar'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -22,50 +21,57 @@ import {
 } from '@/components/ui/select'
 import { toast } from '@/components/ui/use-toast'
 import { pasteChart } from '@/lib/services/icu/chart/paste-chart'
+import { useCopiedChartStore } from '@/lib/store/icu/copied-chart'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import type { PrevIoChartData } from '@/types/icu/chart'
-import { CalendarPlus, LoaderCircle } from 'lucide-react'
+import { CopyCheck, LoaderCircle } from 'lucide-react'
+import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-export default function CopyPrevIoChartDialog({
-  prevIoChartData,
-}: {
-  prevIoChartData: PrevIoChartData
-}) {
+export default function PasteCopiedChartDialog() {
   const { refresh } = useRouter()
-  const { patient_id, target_date } = useParams()
+  const { target_date, patient_id } = useParams()
+
+  const { copiedChartId, reset } = useCopiedChartStore()
   const {
     basicHosData: { vetsListData, showOrderer },
   } = useBasicHosDataContext()
-  const { icu_chart_id: prevChartId, target_date: prevDate } = prevIoChartData
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
   const [orderer, setOrderer] = useState(vetsListData[0].name)
+  const [isLoading, setIsLoading] = useState(false)
 
-  const handleCopyPrevIoChart = async () => {
+  const handlePasteCopiedChart = async () => {
+    if (!copiedChartId) {
+      setIsDialogOpen(false)
+
+      toast({
+        title: '차트 붙여넣기 실패',
+        description: '차트를 먼저 복사해주세요',
+        variant: 'destructive',
+      })
+      return
+    }
+
     setIsLoading(true)
 
     await pasteChart(
       patient_id as string,
-      prevChartId,
+      copiedChartId,
       target_date as string,
       orderer,
     )
 
     toast({
-      title: '최근 입원 차트를 복사하였습니다',
+      title: '차트를 붙여넣었습니다',
+      description: '복사한 차트는 클립보드에서 제거됩니다',
     })
 
     setIsLoading(false)
     setIsDialogOpen(false)
+    reset()
     refresh()
-  }
-
-  const handleOrdererChange = (value: string) => {
-    setOrderer(value)
   }
 
   return (
@@ -75,28 +81,21 @@ export default function CopyPrevIoChartDialog({
           variant="outline"
           className="hidden h-1/3 w-full items-center justify-center gap-2 md:flex md:h-1/3 md:w-2/3 lg:w-1/2"
         >
-          <CalendarPlus size={20} />
-          <div className="flex flex-wrap justify-center">
-            <span>최근 입원 차트 복사</span>
-            <span>{`(${prevDate})`}</span>
-          </div>
+          <CopyCheck size={20} />
+          <span>복사한 차트 붙여넣기</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>최근 입원 차트 복사</DialogTitle>
+          <DialogTitle>복사한 차트 생성</DialogTitle>
           <DialogDescription>
-            최근 입원 차트{`(${prevDate})`}를 복사하여 {target_date} 차트가
-            생성됩니다
+            클립보드에 복사한 차트를 붙여넣어 차트가 생성됩니다
           </DialogDescription>
 
           {showOrderer && (
             <div>
               <Label className="pt-4">오더결정 수의사</Label>
-              <Select
-                onValueChange={handleOrdererChange}
-                defaultValue={orderer}
-              >
+              <Select onValueChange={setOrderer} defaultValue={orderer}>
                 <SelectTrigger
                   className={cn(
                     'h-8 text-sm',
@@ -114,7 +113,14 @@ export default function CopyPrevIoChartDialog({
                     >
                       <div className="flex items-center gap-2">
                         {vet.avatar_url && (
-                          <UserAvatar alt={vet.name} src={vet.avatar_url} />
+                          <Image
+                            unoptimized
+                            src={vet.avatar_url ?? ''}
+                            alt={vet.name}
+                            width={20}
+                            height={20}
+                            className="rounded-full"
+                          />
                         )}
                         <span>{vet.name}</span>
                         {vet.position && (
@@ -135,7 +141,7 @@ export default function CopyPrevIoChartDialog({
               취소
             </Button>
           </DialogClose>
-          <Button onClick={handleCopyPrevIoChart} disabled={isLoading}>
+          <Button onClick={handlePasteCopiedChart} disabled={isLoading}>
             확인
             <LoaderCircle
               className={cn(isLoading ? 'animate-spin' : 'hidden')}

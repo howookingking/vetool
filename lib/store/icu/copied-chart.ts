@@ -8,9 +8,6 @@ type CopiedChartState = {
   copiedChart?: SelectedChart
   setCopiedChart: (copiedChart: SelectedChart) => void
 
-  isConfirmCopyDialogOpen: boolean
-  setIsConfirmCopyDialogOpen: (isCopyDialogOpen: boolean) => void
-
   reset: () => void
 }
 
@@ -23,14 +20,9 @@ export const useCopiedChartStore = create<CopiedChartState>((set) => ({
     set({ copiedChart })
   },
 
-  isConfirmCopyDialogOpen: false,
-  setIsConfirmCopyDialogOpen: (isCopyDialogOpen) =>
-    set({ isConfirmCopyDialogOpen: isCopyDialogOpen }),
-
   reset: () =>
     set({
       copiedChartId: undefined,
       copiedChart: undefined,
-      isConfirmCopyDialogOpen: false,
     }),
 }))

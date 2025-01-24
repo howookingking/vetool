@@ -1,11 +1,16 @@
+'use client'
+
 import UserAvatar from '@/components/hospital/common/user-avatar'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
+  DialogClose,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
 import {
@@ -16,49 +21,73 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { toast } from '@/components/ui/use-toast'
-import { upsertTemplateOrders } from '@/lib/services/icu/chart/order-mutation'
-import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
-import { useTemplateStore } from '@/lib/store/icu/template'
+import { pasteChart } from '@/lib/services/icu/chart/paste-chart'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { DialogDescription } from '@radix-ui/react-dialog'
-import { LoaderCircle } from 'lucide-react'
+import { type PrevIoChartData } from '@/types/icu/chart'
+import { CalendarPlus, LoaderCircle } from 'lucide-react'
+import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-export default function ConfirmCopyTemplateOrderDialog({
-  icuChartId,
+export default function PastePrevIoChartDialog({
+  prevIoChartData,
 }: {
-  icuChartId: string
+  prevIoChartData: PrevIoChartData
 }) {
-  const { setOrderStep } = useIcuOrderStore()
-  const { isTemplateDialogOpen, setIsTemplateDialogOpen, reset, template } =
-    useTemplateStore()
+  const { icu_chart_id: prevChartId, target_date: prevDate } = prevIoChartData
+
+  const { refresh } = useRouter()
+  const { patient_id, target_date } = useParams()
+
   const {
     basicHosData: { vetsListData, showOrderer },
   } = useBasicHosDataContext()
-  const [orderer, setOrderer] = useState(vetsListData[0].name)
-  const [isPending, setIsPending] = useState(false)
 
-  const handleConfirmCopy = async () => {
-    setIsPending(true)
-    await upsertTemplateOrders(template.icu_chart_id!, icuChartId)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [orderer, setOrderer] = useState(vetsListData[0].name)
+
+  const handleCopyPrevIoChart = async () => {
+    setIsLoading(true)
+
+    await pasteChart(
+      patient_id as string,
+      prevChartId,
+      target_date as string,
+      orderer,
+    )
 
     toast({
-      title: '오더를 추가하였습니다',
+      title: '최근 입원 차트를 복사하였습니다',
     })
 
-    setIsPending(false)
-    reset()
-    setIsTemplateDialogOpen(false)
-    setOrderStep('closed')
+    setIsLoading(false)
+    setIsDialogOpen(false)
+    refresh()
   }
 
   return (
-    <Dialog open={isTemplateDialogOpen} onOpenChange={setIsTemplateDialogOpen}>
-      <DialogContent className="sm:max-w-[425px]">
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <DialogTrigger asChild>
+        <Button
+          variant="outline"
+          className="hidden h-1/3 w-full items-center justify-center gap-2 md:flex md:h-1/3 md:w-2/3 lg:w-1/2"
+        >
+          <CalendarPlus size={20} />
+          <div className="flex flex-wrap justify-center">
+            <span>최근 차트 붙여넣기</span>
+            <span>{`(${prevDate})`}</span>
+          </div>
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>오더를 추가하시겠습니까?</DialogTitle>
-          <DialogDescription />
+          <DialogTitle>최근 차트 붙여넣기</DialogTitle>
+          <DialogDescription>
+            최근 입원 차트{`(${prevDate})`}를 복사하여 {target_date} 차트가
+            생성됩니다
+          </DialogDescription>
+
           {showOrderer && (
             <div>
               <Label className="pt-4">오더결정 수의사</Label>
@@ -80,7 +109,7 @@ export default function ConfirmCopyTemplateOrderDialog({
                     >
                       <div className="flex items-center gap-2">
                         {vet.avatar_url && (
-                          <UserAvatar src={vet.avatar_url} alt={vet.name} />
+                          <UserAvatar alt={vet.name} src={vet.avatar_url} />
                         )}
                         <span>{vet.name}</span>
                         {vet.position && (
@@ -94,17 +123,17 @@ export default function ConfirmCopyTemplateOrderDialog({
             </div>
           )}
         </DialogHeader>
-        <DialogFooter>
-          <Button
-            variant="outline"
-            onClick={() => setIsTemplateDialogOpen(false)}
-          >
-            취소
-          </Button>
-          <Button onClick={handleConfirmCopy} disabled={isPending}>
+
+        <DialogFooter className="gap-2 md:gap-0">
+          <DialogClose asChild>
+            <Button type="button" variant="outline" tabIndex={-1}>
+              취소
+            </Button>
+          </DialogClose>
+          <Button onClick={handleCopyPrevIoChart} disabled={isLoading}>
             확인
             <LoaderCircle
-              className={cn(isPending ? 'ml-2 animate-spin' : 'hidden')}
+              className={cn(isLoading ? 'animate-spin' : 'hidden')}
             />
           </Button>
         </DialogFooter>

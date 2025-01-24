@@ -1,8 +1,6 @@
 'use client'
 
-import { ConfirmCopyDialog } from '@/components/hospital/icu/common-dialogs/confirm-copy-dialog'
 import PreviewDialog from '@/components/hospital/icu/common-dialogs/preview/preview-dialog'
-import { pasteTemplateColumns } from '@/components/hospital/icu/main/chart/add-chart-dialogs/template/paste-template-columns'
 import { Button } from '@/components/ui/button'
 import DataTable from '@/components/ui/data-table'
 import {
@@ -15,18 +13,15 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { getTemplateCharts } from '@/lib/services/icu/template/template'
-import { useCopiedChartStore } from '@/lib/store/icu/copied-chart'
-import { usePreviewDialogStore } from '@/lib/store/icu/preview-dialog'
-import type { TemplateChart } from '@/types/icu/template'
+import { type TemplateChart } from '@/types/icu/template'
 import { Bookmark, LoaderCircle } from 'lucide-react'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import { useState } from 'react'
+import { templateColumns } from './template-columns'
 
-export default function AddTemplateOrderDialog() {
-  const { isPreviewDialogOpen } = usePreviewDialogStore()
-  const { isConfirmCopyDialogOpen } = useCopiedChartStore()
+export default function PasteTemplateOrderDialog() {
   const { hos_id } = useParams()
-  const { refresh } = useRouter()
+
   const [templateCharts, setTemplateCharts] = useState<TemplateChart[]>([])
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -34,16 +29,11 @@ export default function AddTemplateOrderDialog() {
   const handleOpenTemplateDialog = async () => {
     setIsLoading(true)
 
-    // icu_templates에 존재하는 차트를 우선 가져옴
-    const chartData = await getTemplateCharts(hos_id as string)
-
-    setTemplateCharts(
-      chartData?.filter((chart) => !chart.patient.patient_id) ?? [],
-    )
+    const templateCharts = await getTemplateCharts(hos_id as string)
+    setTemplateCharts(templateCharts)
 
     setIsLoading(false)
     setIsDialogOpen(!isDialogOpen)
-    refresh()
   }
 
   return (
@@ -55,27 +45,23 @@ export default function AddTemplateOrderDialog() {
         disabled={isLoading}
       >
         <Bookmark size={20} />
-        <span>템플릿 선택</span>
+        <span>템플릿 붙여넣기</span>
         {isLoading && <LoaderCircle className="ml-2 h-4 w-4 animate-spin" />}
       </Button>
 
-      <DialogContent className="md:max-w-[1040px]">
+      <DialogContent className="md:max-w-[1200px]">
         <DialogHeader>
           <DialogTitle>템플릿 붙여넣기</DialogTitle>
           <DialogDescription>복사할 템플릿을 선택해주세요</DialogDescription>
         </DialogHeader>
 
         <DataTable
-          columns={pasteTemplateColumns}
+          columns={templateColumns}
           data={templateCharts ?? []}
-          rowLength={6}
           searchPlaceHolder="템플릿 이름 · 템플릿 설명 검색"
         />
 
-        {isPreviewDialogOpen && <PreviewDialog />}
-        {isConfirmCopyDialogOpen && (
-          <ConfirmCopyDialog setTemplateDialogOpen={setIsDialogOpen} />
-        )}
+        <PreviewDialog />
 
         <DialogFooter>
           <DialogClose asChild>
