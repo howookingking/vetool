@@ -7,18 +7,22 @@ import { LoaderCircle } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 
+type ExportPdfButtonProps = {
+  chartData: SelectedChart
+  setIsDialogOpen: Dispatch<SetStateAction<boolean>>
+}
+
 export default function ExportPdfButton({
   chartData,
   setIsDialogOpen,
-}: {
-  chartData: SelectedChart
-  setIsDialogOpen: Dispatch<SetStateAction<boolean>>
-}) {
-  const [isExporting, setIsExporting] = useState(false)
+}: ExportPdfButtonProps) {
   const { in_date, icu_io_id } = chartData.icu_io
   const { name, patient_id } = chartData.patient
   const { target_date } = chartData
+
   const { hos_id } = useParams()
+
+  const [isExporting, setIsExporting] = useState(false)
 
   const generatePdf = (canvases: HTMLCanvasElement[]) => {
     const firstCanvas = canvases[0]
