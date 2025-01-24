@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import type { Dispatch, SetStateAction } from 'react'
-import type { SearchOptions } from '@/components/hospital/icu/main/search/icu-search-chart'
+import type { SearchOptions } from '@/components/hospital/icu/main/search/icu-search-chart-entry'
 
 export default function OrderSelect({
   order,

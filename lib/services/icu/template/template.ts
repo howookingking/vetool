@@ -1,40 +1,39 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { SelectedIcuOrder } from '@/types/icu/chart'
-import type { TemplateChart } from '@/types/icu/template'
+import { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
+import { type TemplateChart } from '@/types/icu/template'
 import { redirect } from 'next/navigation'
 
-export const upsertTemplateChart = async (
-  name: string,
-  comment: string,
-  icuChartId: string,
+// export const upsertTemplateChart = async (
+//   name: string,
+//   comment: string,
+//   icuChartId: string,
+//   hosId: string,
+// ) => {
+//   const supabase = await createClient()
+
+//   const { error } = await supabase.from('icu_templates').upsert(
+//     {
+//       hos_id: hosId,
+//       template_name: name,
+//       template_comment: comment,
+//       icu_chart_id: icuChartId,
+//     },
+//     {
+//       onConflict: 'icu_chart_id',
+//       ignoreDuplicates: false,
+//     },
+//   )
+
+//   if (error) {
+//     console.error(error)
+//     redirect(`/error/?message=${error.message}`)
+//   }
+// }
+
+export const insertTemplateChart = async (
   hosId: string,
-) => {
-  const supabase = await createClient()
-
-  const { error } = await supabase.from('icu_templates').upsert(
-    {
-      hos_id: hosId,
-      template_name: name,
-      template_comment: comment,
-      icu_chart_id: icuChartId,
-    },
-    {
-      onConflict: 'icu_chart_id',
-      ignoreDuplicates: false,
-    },
-  )
-
-  if (error) {
-    console.error(error)
-    redirect(`/error/?message=${error.message}`)
-  }
-}
-
-export const insertCustomTemplateChart = async (
-  hosId: string,
-  targetDate: string,
   templateOrders: Partial<SelectedIcuOrder>[],
   templateName: string,
   templateComment?: string | null,
@@ -43,7 +42,6 @@ export const insertCustomTemplateChart = async (
 
   const { error } = await supabase.rpc('insert_template_orders', {
     hos_id_input: hosId,
-    target_date_input: targetDate,
     template_orders_input: templateOrders,
     template_name_input: templateName,
     template_comment_input: templateComment ?? '',
@@ -95,48 +93,31 @@ export const deleteTemplateChart = async (
   }
 }
 
-export const getIcuCustomOrders = async (hosId: string) => {
-  const supabase = await createClient()
-
-  const { data, error } = await supabase
-    .rpc('get_icu_custom_order_data', {
-      hos_id_input: hosId,
-    })
-    .returns<TemplateChart[]>()
-
-  if (error) {
-    throw new Error(error.message)
-  }
-
-  return data
-}
-
 export const getTemplateCharts = async (hosId: string) => {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .rpc('get_icu_template_data', {
+    .rpc('get_icu_template_charts_data', {
       hos_id_input: hosId,
     })
     .returns<TemplateChart[]>()
 
   if (error) {
-    throw new Error(error.message)
+    console.error(error)
+    redirect(`/error/?message=${error.message}`)
   }
 
   return data
 }
 
-export const getReadOnlyChartOrders = async (chartId: string) => {
+export const getTemplateChart = async (chartId: string) => {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('icu_orders')
-    .select(
-      'icu_chart_order_id, icu_chart_order_name, icu_chart_order_comment, icu_chart_order_type, icu_chart_order_time, is_bordered',
-    )
-    .order('icu_chart_order_priority')
-    .match({ icu_chart_id: chartId })
+    .rpc('get_template_chart_data', {
+      icu_chart_id_input: chartId,
+    })
+    .returns<SelectedChart>()
 
   if (error) {
     console.error(error)

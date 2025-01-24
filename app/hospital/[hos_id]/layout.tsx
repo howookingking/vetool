@@ -23,8 +23,6 @@ export default async function Layout(props: {
       <HospitalSidebar hosId={params.hos_id} />
 
       <main className="ml-0 flex-1 2xl:ml-14">{props.children}</main>
-
-      <Feedback />
     </div>
   )
 }

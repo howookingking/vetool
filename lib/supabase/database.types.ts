@@ -411,7 +411,7 @@ export type Database = {
           main_vet: string | null
           patient_id: string | null
           sub_vet: string | null
-          target_date: string
+          target_date: string | null
           urgency: number | null
           weight: string
           weight_measured_date: string | null
@@ -426,7 +426,7 @@ export type Database = {
           main_vet?: string | null
           patient_id?: string | null
           sub_vet?: string | null
-          target_date: string
+          target_date?: string | null
           urgency?: number | null
           weight?: string
           weight_measured_date?: string | null
@@ -441,7 +441,7 @@ export type Database = {
           main_vet?: string | null
           patient_id?: string | null
           sub_vet?: string | null
-          target_date?: string
+          target_date?: string | null
           urgency?: number | null
           weight?: string
           weight_measured_date?: string | null
@@ -1530,12 +1530,6 @@ export type Database = {
         }
         Returns: Json
       }
-      get_icu_custom_order_data: {
-        Args: {
-          hos_id_input: string
-        }
-        Returns: Json
-      }
       get_icu_out_due_patients: {
         Args: {
           hos_id_input: string
@@ -1561,6 +1555,12 @@ export type Database = {
         Args: {
           hos_id_input: string
           target_date_input: string
+        }
+        Returns: Json
+      }
+      get_icu_template_charts_data: {
+        Args: {
+          hos_id_input: string
         }
         Returns: Json
       }
@@ -1626,6 +1626,12 @@ export type Database = {
         }
         Returns: Json
       }
+      get_template_chart_data: {
+        Args: {
+          icu_chart_id_input: string
+        }
+        Returns: Json
+      }
       insert_default_chart_orders: {
         Args: {
           hos_id_input: string
@@ -1665,6 +1671,15 @@ export type Database = {
         Returns: string
       }
       insert_template_orders: {
+        Args: {
+          hos_id_input: string
+          template_name_input: string
+          template_comment_input: string
+          template_orders_input: Json
+        }
+        Returns: undefined
+      }
+      insert_template_orders_unused: {
         Args: {
           hos_id_input: string
           target_date_input: string

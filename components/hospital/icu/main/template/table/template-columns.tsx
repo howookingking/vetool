@@ -38,59 +38,59 @@ export const templateColumns: ColumnDef<TemplateChart>[] = [
     },
   },
   {
-    accessorKey: 'target_date',
+    accessorKey: 'created_at',
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          차트 생성일
+          템플릿 생성일
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
     },
+    cell: ({ row }) => {
+      const createdAt = row.original.created_at
+
+      return <span>{createdAt.slice(0, 10)}</span>
+    },
   },
+
   {
     id: 'preview',
     header: '미리보기',
     cell: ({ row }) => {
       const chartId = row.original.icu_chart_id
-      const targetDate = row.original.target_date
-      const patientId = row.original.patient.patient_id
 
       return (
         <div className="flex justify-center">
-          <PreviewButton
-            chartId={chartId}
-            patientId={patientId}
-            targetDate={targetDate}
-          />
+          <PreviewButton chartId={chartId} isTemplate />
         </div>
       )
     },
   },
-  {
-    id: 'action',
-    header: '수정',
-    cell: ({ row }) => {
-      const chartId = row.original.icu_chart_id
-      const templateName = row.original.template_name
-      const templateComment = row.original.template_comment
-      const templateId = row.original.template_id
+  // {
+  //   id: 'action',
+  //   header: '수정',
+  //   cell: ({ row }) => {
+  //     const chartId = row.original.icu_chart_id
+  //     const templateName = row.original.template_name
+  //     const templateComment = row.original.template_comment
+  //     const templateId = row.original.template_id
 
-      return (
-        <div className="flex justify-center">
-          <EditTemplateButton
-            chartId={chartId}
-            templateId={templateId}
-            templateName={templateName}
-            templateComment={templateComment}
-          />
-        </div>
-      )
-    },
-  },
+  //     return (
+  //       <div className="flex justify-center">
+  //         <EditTemplateButton
+  //           chartId={chartId}
+  //           templateId={templateId}
+  //           templateName={templateName}
+  //           templateComment={templateComment}
+  //         />
+  //       </div>
+  //     )
+  //   },
+  // },
   {
     id: 'delete',
     header: '삭제',

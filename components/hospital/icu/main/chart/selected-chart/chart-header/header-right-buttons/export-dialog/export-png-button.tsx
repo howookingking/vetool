@@ -37,7 +37,7 @@ export default function ExportPngButton({
     await handleExport(
       icu_io_id,
       patient_id,
-      target_date,
+      target_date!,
       hos_id as string,
       (canvases) =>
         canvases.forEach((canvas, index) =>

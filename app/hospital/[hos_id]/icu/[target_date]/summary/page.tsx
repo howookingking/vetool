@@ -1,5 +1,5 @@
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
-import Summary from '@/components/hospital/icu/main/summary/summary'
+import IcuSummaryEntry from '@/components/hospital/icu/main/summary/icu-summary-entry'
 import { getIcuSummaryData } from '@/lib/services/icu/summary/get-summary-data'
 
 export default async function SummaryPage(props: {
@@ -21,5 +21,5 @@ export default async function SummaryPage(props: {
     )
   }
 
-  return <Summary summaryData={summaryData} />
+  return <IcuSummaryEntry summaryData={summaryData} />
 }

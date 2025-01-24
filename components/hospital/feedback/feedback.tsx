@@ -20,29 +20,27 @@ export default function Feedback() {
   const [isFeedbackPopoverOpen, setIsPopoverFeedbackOpen] = useState(false)
 
   return (
-    <div className="fixed bottom-1 right-1 z-40">
-      <Popover
-        open={isFeedbackPopoverOpen}
-        onOpenChange={setIsPopoverFeedbackOpen}
-      >
-        <PopoverTrigger asChild>
-          <Button
-            size="icon"
-            className="h-8 w-8 rounded-full shadow-lg"
-            onClick={() => setIsPopoverFeedbackOpen(true)}
-          >
-            <MessageCircle className="h-6 w-6" />
-          </Button>
-        </PopoverTrigger>
+    <Popover
+      open={isFeedbackPopoverOpen}
+      onOpenChange={setIsPopoverFeedbackOpen}
+    >
+      <PopoverTrigger asChild>
+        <Button
+          size="icon"
+          className="h-10 w-10 rounded-full shadow-lg"
+          onClick={() => setIsPopoverFeedbackOpen(true)}
+        >
+          <MessageCircle />
+        </Button>
+      </PopoverTrigger>
 
-        <PopoverContent className="w-80">
-          {isFeedbackPopoverOpen && (
-            <LazyFeedbackForm
-              setIsPopoverFeedbackOpen={setIsPopoverFeedbackOpen}
-            />
-          )}
-        </PopoverContent>
-      </Popover>
-    </div>
+      <PopoverContent className="w-80">
+        {isFeedbackPopoverOpen && (
+          <LazyFeedbackForm
+            setIsPopoverFeedbackOpen={setIsPopoverFeedbackOpen}
+          />
+        )}
+      </PopoverContent>
+    </Popover>
   )
 }

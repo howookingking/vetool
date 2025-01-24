@@ -1,4 +1,4 @@
-import type { IcuOrderColors } from '@/types/adimin'
+import { type IcuOrderColors } from '@/types/adimin'
 
 export default function OrderTypeColorDot({
   orderColorsData,

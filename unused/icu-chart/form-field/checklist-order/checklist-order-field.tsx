@@ -33,12 +33,8 @@ export default function ChecklistOrderField({
   const handleSelectChange = (value: string) => {
     setSelectValue(value)
 
-    const selectedOrder = CHECKLIST_ORDERS.find(
-      (order) => order.orderName === value,
-    )
-
     form.setValue('icu_chart_order_name', value)
-    form.setValue('icu_chart_order_comment', selectedOrder?.orderComment ?? '')
+    form.setValue('icu_chart_order_comment', '')
 
     setDirectInput('')
   }
@@ -68,8 +64,8 @@ export default function ChecklistOrderField({
                   </FormControl>
                   <SelectContent>
                     {CHECKLIST_ORDERS.map((order) => (
-                      <SelectItem key={order.orderName} value={order.orderName}>
-                        {order.orderName}
+                      <SelectItem key={order} value={order}>
+                        {order}
                       </SelectItem>
                     ))}
                   </SelectContent>

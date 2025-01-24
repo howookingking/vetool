@@ -67,50 +67,17 @@
 // ] as const
 
 export const CHECKLIST_ORDERS = [
-  {
-    orderName: '체온(T)',
-    orderComment: '직장체온',
-  },
-  {
-    orderName: '심박수(P)',
-    orderComment: '분당 심박수',
-  },
-  {
-    orderName: '호흡수(R)',
-    orderComment: '①기침 ②맑은콧물 ③화농성콧물',
-  },
-  {
-    orderName: '혈압(BP)',
-    orderComment: '도플러 혈압계',
-  },
-  {
-    orderName: '활력',
-    orderComment: '①양호 ②저하 ③불량',
-  },
-  {
-    orderName: '구토',
-    orderComment: '①위액 ②음식물 ③혈액 ④거품 ⑤기타',
-  },
-  {
-    orderName: '배변',
-    orderComment: '①정상 ②약간무름 ③무름 ④설사 ⑤혈액 ⑥점액',
-  },
-  {
-    orderName: '배뇨',
-    orderComment: '①정상뇨 ②옅은뇨 ③진한뇨 ④혈뇨',
-  },
-  {
-    orderName: '체중',
-    orderComment: '',
-  },
-  {
-    orderName: 'SPO2',
-    orderComment: '',
-  },
-  {
-    orderName: '혈당',
-    orderComment: '',
-  },
+  '체온(T)',
+  '심박수(P)',
+  '호흡수(R)',
+  '혈압(BP)',
+  '체중(BW)',
+  '활력',
+  '구토',
+  '배변',
+  '배뇨',
+  'SPO2',
+  '혈당',
 ] as const
 
 export const DEFAULT_ICU_ORDER_TYPE = [
@@ -144,27 +111,17 @@ export const DEFAULT_ICU_ORDER_TYPE = [
   },
 ] as const
 
-export const QUICKORDER_PLACEHOLDER = {
-  checklist: '체크리스트',
-  fluid: '수액명$수액속도',
-  injection: '주사제$용량',
-  po: '경구제$경구제오더설명',
-  test: '검사명$검사설명',
-  manual: '오더명$오더설명',
-  feed: '사료명$회당급여량',
-} as const
-
-export const DEFAULT_ORDER_LABEL = {
+export const DEFAULT_ICU_ORDER_TYPE_DIC = {
   checklist: '체크리스트',
   fluid: '수액',
   injection: '주사',
   po: '경구',
   test: '검사',
   manual: '기타',
-  feed: '사료',
+  feed: '식이',
 } as const
 
-export const CHECKLIST_ORDER_NAMES = [
+export const CHECKLIST_ORDER_CANDIDATES = [
   '산소포화도',
   '체온',
   '체온(T)',
@@ -182,9 +139,21 @@ export const CHECKLIST_ORDER_NAMES = [
   '체중',
   '몸무게',
   'SPO2',
+  'spo2',
   '대변',
   '소변',
   '혈당',
+  'bg',
+  'blood glucose',
+  '간이혈당',
+  'bw',
+  't',
+  'p',
+  'r',
+  'bp',
+  '도플러',
+  '간이혈당',
+  '간이 혈당',
 ] as const
 
 export type OrderType = (typeof DEFAULT_ICU_ORDER_TYPE)[number]['value']

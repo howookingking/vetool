@@ -19,7 +19,6 @@ import {
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
 import { templateFormSchema } from '@/lib/schemas/icu/chart/template-schema'
-import { insertCustomTemplateChart } from '@/lib/services/icu/template/template'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useTemplateStore } from '@/lib/store/icu/template'
 import { cn } from '@/lib/utils/utils'
@@ -54,26 +53,26 @@ export default function AddTemplateOrdersButton({
     },
   })
 
-  const handleSubmit = async (values: z.infer<typeof templateFormSchema>) => {
-    setIsSubmitting(true)
+  // const handleSubmit = async (values: z.infer<typeof templateFormSchema>) => {
+  //   setIsSubmitting(true)
 
-    await insertCustomTemplateChart(
-      hos_id as string,
-      target_date as string,
-      templateOrders,
-      values.template_name,
-      values.template_comment,
-    )
+  //   await insertCustomTemplateChart(
+  //     hos_id as string,
+  //     target_date as string,
+  //     templateOrders,
+  //     values.template_name,
+  //     values.template_comment,
+  //   )
 
-    toast({
-      title: '템플릿이 추가되었습니다',
-    })
+  //   toast({
+  //     title: '템플릿이 추가되었습니다',
+  //   })
 
-    setIsSubmitting(false)
-    setIsDialogOpen(false)
-    reset()
-    refresh()
-  }
+  //   setIsSubmitting(false)
+  //   setIsDialogOpen(false)
+  //   reset()
+  //   refresh()
+  // }
 
   useEffect(() => {
     if (!isDialogOpen) {
@@ -100,7 +99,7 @@ export default function AddTemplateOrdersButton({
 
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(handleSubmit)}
+            // onSubmit={form.handleSubmit(handleSubmit)}
             className="space-y-4"
           >
             <FormField
