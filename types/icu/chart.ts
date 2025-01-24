@@ -57,6 +57,7 @@ export type SelectedChart = Pick<
   | 'in_charge'
   | 'der_calc_factor'
   | 'main_vet'
+  | 'urgency'
 > & {
   icu_io: SelectedChartIcuIo
 } & {
@@ -103,12 +104,14 @@ export type Treatment = {
   tx_result: string | null
   tx_comment: string | null
   is_crucial: boolean
+  has_images: boolean
 }
 
 export type IcuSidebarIoData = {
   vets: {
     sub_vet: string
     main_vet: string
+    urgency: number | null
   }
   in_date: string
   patient: {

@@ -8,9 +8,11 @@ import { useState } from 'react'
 export default function Diagnosis({
   diagnosis,
   icuIoId,
+  isShare,
 }: {
   diagnosis: string
   icuIoId: string
+  isShare?: boolean
 }) {
   const [isUpdating, setIsUpdating] = useState(false)
 
@@ -38,6 +40,7 @@ export default function Diagnosis({
       handleUpdate={handleUpdateDiagnosis}
       defaultValue={diagnosis}
       isUpdating={isUpdating}
+      isShare={isShare}
     />
   )
 }

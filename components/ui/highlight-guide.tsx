@@ -70,7 +70,7 @@ export default function HighlightGuide({
         onClick={() => setIsOpen(true)}
         variant="ghost"
         size="icon"
-        className={cn('fixed', className)}
+        className={cn('', className)}
       >
         <CircleHelp />
       </Button>

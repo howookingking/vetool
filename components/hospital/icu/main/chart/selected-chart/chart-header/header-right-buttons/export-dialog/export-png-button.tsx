@@ -1,24 +1,28 @@
 import { handleExport } from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/export-dialog/export-dialog-utils'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils/utils'
-import type { SelectedChart } from '@/types/icu/chart'
+import { type SelectedChart } from '@/types/icu/chart'
 import { addDays, format } from 'date-fns'
 import { LoaderCircle } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 
+type ExportPngButtonProps = {
+  chartData: SelectedChart
+  setIsDialogOpen: Dispatch<SetStateAction<boolean>>
+}
+
 export default function ExportPngButton({
   chartData,
   setIsDialogOpen,
-}: {
-  chartData: SelectedChart
-  setIsDialogOpen: Dispatch<SetStateAction<boolean>>
-}) {
-  const [isExporting, setIsExporting] = useState(false)
-  const { hos_id } = useParams()
+}: ExportPngButtonProps) {
   const { icu_io_id } = chartData.icu_io
   const { patient_id } = chartData.patient
   const { target_date } = chartData
+
+  const { hos_id } = useParams()
+
+  const [isExporting, setIsExporting] = useState(false)
 
   const downloadPng = (canvas: HTMLCanvasElement, fileName: string) => {
     const link = document.createElement('a')
