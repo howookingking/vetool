@@ -3,9 +3,6 @@
 import ChartTableBody from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/chart-table-body'
 import SortingOrderRows from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/sorting-order-rows'
 import ChartTableHeader from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/chart-table-header'
-import DeleteOrdersAlertDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/delete-orders-alert-dialog'
-import SelectedOrderActionDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/selected-order-action-dialog'
-import AddTemplateOrderDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/template/add-template-order-dialog'
 import TxUpsertDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/tx-upsert-dialog'
 import { Table } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
@@ -19,6 +16,7 @@ import { formatOrders } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { type SelectedChart, type SelectedIcuOrder } from '@/types/icu/chart'
 import { type RefObject, useCallback, useEffect, useState } from 'react'
+import MultiSelectOrderDialog from './order/multil-select-order/multi-select-order-dialog'
 import OrderDialog from './order/order-dialog'
 
 type ChartTableProps = {
@@ -36,7 +34,7 @@ export default function ChartTable({
   cellRef,
   isTouchMove,
 }: ChartTableProps) {
-  const { icu_chart_id, orders, patient, target_date } = chartData
+  const { icu_chart_id, orders, patient } = chartData
   const { hos_id } = patient
 
   const {
@@ -49,32 +47,25 @@ export default function ChartTable({
       orderColorsData,
     },
   } = useBasicHosDataContext()
-
   const isCommandPressed = useIsCommandPressed()
-
   const [orderWidth, setOrderWidth] = useLocalStorage('orderWidth', 400)
-
   const {
     setOrderStep,
     reset,
     selectedTxPendingQueue,
     orderTimePendingQueue,
     selectedOrderPendingQueue,
-    setSelectedOrderPendingQueue,
-    setCopiedOrderPendingQueue,
     orderStep,
     selectedChartOrder,
   } = useIcuOrderStore()
-
   const isMobile = useIsMobile()
   const { txStep, setTxStep } = useTxMutationStore()
 
   const [isSorting, setIsSorting] = useState(false)
   const [sortedOrders, setSortedOrders] = useState<SelectedIcuOrder[]>(orders)
-  const [isDeleteOrdersDialogOpen, setIsDeleteOrdersDialogOpen] =
+  useState(false)
+  const [isMultiSelectOrderDialogOpen, setIsMultiSelectOrderDialogOpen] =
     useState(false)
-  const [isAddTemplateDialogOpen, setIsAddTemplateDialogOpen] = useState(false)
-  const [isOrderActionDialogOpen, setIsOrderActionDialogOpen] = useState(false)
 
   useEffect(() => {
     if (!isSorting) {
@@ -137,7 +128,7 @@ export default function ChartTable({
       }
 
       if (selectedOrderPendingQueue.length >= 1) {
-        setIsOrderActionDialogOpen(true)
+        setIsMultiSelectOrderDialogOpen(true)
       }
     }
   }, [
@@ -210,32 +201,18 @@ export default function ChartTable({
 
       {!isExport && (
         <>
+          {/* 처치관련 : 처치 상세 입력, 처치자 입력 */}
           <TxUpsertDialog showTxUser={showTxUser} />
 
-          <DeleteOrdersAlertDialog
-            isDeleteOrdersDialogOpen={isDeleteOrdersDialogOpen}
-            setIsDeleteOrdersDialogOpen={setIsDeleteOrdersDialogOpen}
-            setIsOrderActionDialogOpen={setIsOrderActionDialogOpen}
+          {/* 다중 오더 선택 후 작업 : 오더 복사, 템플릿저장, 테두리 변경, 오더 삭제 */}
+          <MultiSelectOrderDialog
+            isMultiSelectOrderDialogOpen={isMultiSelectOrderDialogOpen}
+            setIsMultiSelectOrderDialogOpen={setIsMultiSelectOrderDialogOpen}
             setSortedOrders={setSortedOrders}
           />
 
-          <AddTemplateOrderDialog
-            hosId={patient.hos_id}
-            isAddTemplateDialogOpen={isAddTemplateDialogOpen}
-            setIsAddTemplateDialogOpen={setIsAddTemplateDialogOpen}
-            setIsOrderActionDialogOpen={setIsOrderActionDialogOpen}
-          />
-
-          <SelectedOrderActionDialog
-            isOrderActionDialogOpen={isOrderActionDialogOpen}
-            setIsOrderActionDialogOpen={setIsOrderActionDialogOpen}
-            setIsDeleteOrdersDialogOpen={setIsDeleteOrdersDialogOpen}
-            setIsAddTemplateDialogOpen={setIsAddTemplateDialogOpen}
-            selectedOrderPendingQueue={selectedOrderPendingQueue}
-            setSelectedOrderPendingQueue={setSelectedOrderPendingQueue}
-            setCopiedOrderPendingQueue={setCopiedOrderPendingQueue}
-          />
-
+          {/* 템플릿오더 붙여넣기**, 오더자선택, 오더수정 */}
+          {/* **템플릿오더 붙여넣기 = 차트에 템플릿오더를 넣음, 템플릿오더 추가 = 템플릿 db 추가,  */}
           <OrderDialog
             hosId={patient.hos_id}
             icuChartId={icu_chart_id}
