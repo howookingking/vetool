@@ -1,3 +1,5 @@
+'use no memo'
+
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -19,31 +21,26 @@ import {
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
 import { templateFormSchema } from '@/lib/schemas/icu/chart/template-schema'
-import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
-import { useTemplateStore } from '@/lib/store/icu/template'
-import { cn } from '@/lib/utils/utils'
+import { insertTemplateChart } from '@/lib/services/icu/template/template'
+import { type SelectedIcuOrder } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-export default function AddTemplateOrdersButton({
-  showButton,
-}: {
-  showButton?: boolean
-}) {
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
+type ConfirmAddTemplateDialogProps = {
+  sortedOrders: SelectedIcuOrder[]
+  setIsAddTemplateDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
 
+export default function ConfirmAddTemplateDialog({
+  sortedOrders,
+  setIsAddTemplateDialogOpen,
+}: ConfirmAddTemplateDialogProps) {
   const { refresh } = useRouter()
-  const { hos_id, target_date } = useParams()
-  const { templateOrders, reset } = useTemplateStore()
-  const { setSelectedOrderPendingQueue } = useIcuOrderStore()
-
-  // 템플릿 페이지에서 만든 템플릿 오더
-  const templateOrdersLength = templateOrders.length
+  const { hos_id } = useParams()
 
   const form = useForm<z.infer<typeof templateFormSchema>>({
     resolver: zodResolver(templateFormSchema),
@@ -53,53 +50,56 @@ export default function AddTemplateOrdersButton({
     },
   })
 
-  // const handleSubmit = async (values: z.infer<typeof templateFormSchema>) => {
-  //   setIsSubmitting(true)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
 
-  //   await insertCustomTemplateChart(
-  //     hos_id as string,
-  //     target_date as string,
-  //     templateOrders,
-  //     values.template_name,
-  //     values.template_comment,
-  //   )
+  const handleSubmit = async (values: z.infer<typeof templateFormSchema>) => {
+    setIsSubmitting(true)
 
-  //   toast({
-  //     title: '템플릿이 추가되었습니다',
-  //   })
+    console.log(values)
+    console.log(sortedOrders)
 
-  //   setIsSubmitting(false)
-  //   setIsDialogOpen(false)
-  //   reset()
-  //   refresh()
-  // }
+    await insertTemplateChart(
+      hos_id as string,
+      sortedOrders,
+      values.template_name,
+      values.template_comment,
+    )
 
-  useEffect(() => {
-    if (!isDialogOpen) {
+    toast({
+      title: '템플릿이 추가되었습니다',
+    })
+
+    setIsSubmitting(false)
+    setIsDialogOpen(false)
+    setIsAddTemplateDialogOpen(false)
+    refresh()
+  }
+
+  const handleOpenChange = (open: boolean) => {
+    if (open) {
       form.reset({
         template_name: undefined,
         template_comment: undefined,
       })
-
-      setSelectedOrderPendingQueue([])
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDialogOpen, setSelectedOrderPendingQueue])
+    setIsDialogOpen(open)
+  }
 
   return (
-    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+    <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        {showButton && <Button disabled={!templateOrdersLength}>저장</Button>}
+        <Button disabled={sortedOrders.length === 0}>다음</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>템플릿 저장</DialogTitle>
-          <DialogDescription>{`${templateOrdersLength}개의 오더를 저장합니다`}</DialogDescription>
+          <DialogDescription>{`${sortedOrders.length}개의 오더를 저장합니다`}</DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
           <form
-            // onSubmit={form.handleSubmit(handleSubmit)}
+            onSubmit={form.handleSubmit(handleSubmit)}
             className="space-y-4"
           >
             <FormField
@@ -117,7 +117,7 @@ export default function AddTemplateOrdersButton({
                       placeholder="템플릿 이름을 입력해주세요"
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="mt-2" />
                 </FormItem>
               )}
             />
@@ -135,7 +135,7 @@ export default function AddTemplateOrdersButton({
                       placeholder="설명을 입력해주세요"
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="mt-2" />
                 </FormItem>
               )}
             />
@@ -144,16 +144,13 @@ export default function AddTemplateOrdersButton({
               <div className="ml-auto">
                 <DialogClose asChild>
                   <Button type="button" variant="outline" tabIndex={-1}>
-                    닫기
+                    취소
                   </Button>
                 </DialogClose>
+
                 <Button type="submit" disabled={isSubmitting} className="ml-2">
                   저장
-                  <LoaderCircle
-                    className={cn(
-                      isSubmitting ? 'ml-2 animate-spin' : 'hidden',
-                    )}
-                  />
+                  {isSubmitting && <LoaderCircle className="animate-spin" />}
                 </Button>
               </div>
             </div>

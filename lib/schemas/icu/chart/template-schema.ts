@@ -8,9 +8,5 @@ export const templateFormSchema = z.object({
       message: '템플릿 이름을 입력해주세요',
     }),
 
-  template_comment: z
-    .string({ message: '텍스트로 입력해주세요' })
-    .trim()
-    .optional()
-    .nullable(),
+  template_comment: z.string().trim().optional().nullable(),
 })
