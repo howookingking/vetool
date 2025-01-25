@@ -64,7 +64,7 @@ export default function TemplateOrderTable({
         </TableBody>
       )}
 
-      <DtOrderDialog setSortedOrders={setSortedOrders} />
+      <DtOrderDialog setSortedOrders={setSortedOrders} template />
     </Table>
   )
 }

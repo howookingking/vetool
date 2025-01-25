@@ -17,11 +17,15 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import DtDeleteOrderAlertDialog from './dt-delete-order-alert-dialog'
 
+type DtOrderFormProps = {
+  setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
+  template?: boolean
+}
+
 export default function DtOrderForm({
   setSortedOrders,
-}: {
-  setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
-}) {
+  template,
+}: DtOrderFormProps) {
   const { hos_id } = useParams()
   const { refresh } = useRouter()
 
@@ -45,16 +49,31 @@ export default function DtOrderForm({
     const orderType = values.icu_chart_order_type
     const isBordered = values.is_bordered
 
-    await upsertDefaultChartOrder(
-      hos_id as string,
-      selectedChartOrder.order_id,
-      {
-        default_chart_order_name: trimmedOrderName,
-        default_chart_order_comment: orderComment,
-        default_chart_order_type: orderType,
-        is_bordered: isBordered,
-      },
-    )
+    template
+      ? setSortedOrders((prev) => {
+          return prev.map((order) => {
+            if (order.order_id === selectedChartOrder.order_id) {
+              return {
+                ...order,
+                order_name: trimmedOrderName,
+                order_comment: orderComment,
+                order_type: orderType,
+                is_bordered: isBordered ?? false,
+              }
+            }
+            return order
+          })
+        })
+      : await upsertDefaultChartOrder(
+          hos_id as string,
+          selectedChartOrder.order_id,
+          {
+            default_chart_order_name: trimmedOrderName,
+            default_chart_order_comment: orderComment,
+            default_chart_order_type: orderType,
+            is_bordered: isBordered,
+          },
+        )
 
     toast({
       title: '오더를 수정 하였습니다',
@@ -81,6 +100,7 @@ export default function DtOrderForm({
             selectedChartOrder={selectedChartOrder}
             setOrderStep={setOrderStep}
             setSortedOrders={setSortedOrders}
+            template={template}
           />
 
           <DialogClose asChild>
