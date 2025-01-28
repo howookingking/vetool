@@ -1,6 +1,6 @@
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import NoResult from '@/components/common/no-result'
-import PreviewDialog from '@/components/hospital/icu/common-dialogs/preview/preview-dialog'
+import PreviewDialog from '@/components/hospital/common/preview/preview-dialog'
 import GroupedByIcuIo from '@/components/hospital/icu/main/search/grouped-by-icu-io/grouped-by-icu-io'
 import {
   Table,

@@ -41,7 +41,7 @@ export default function HighlightGuide({
       firstTarget?.classList.add('relative', 'z-max', 'bg-background')
       setIsDialogOpen(true)
     }
-  }, [])
+  }, [localStorageKey, steps])
 
   const highlightTarget = (step: number) => {
     // 이전 하이라이트 초기화
