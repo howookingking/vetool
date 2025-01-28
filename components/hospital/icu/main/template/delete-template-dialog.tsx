@@ -15,32 +15,39 @@ import {
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 import { deleteTemplateChart } from '@/lib/services/icu/template/template'
-import { Trash2 } from 'lucide-react'
+import { LoaderCircle, Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
-export default function DeleteTemplateDialog({
-  templateId,
-  templateName,
-  chartId,
-}: {
-  templateId: string
+type DeleteTemplateDialogProps = {
   templateName: string
   chartId: string
-}) {
+}
+
+export default function DeleteTemplateDialog({
+  templateName,
+  chartId,
+}: DeleteTemplateDialogProps) {
   const { refresh } = useRouter()
 
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
+
   const handleDelete = async () => {
-    await deleteTemplateChart(templateId, chartId)
+    setIsDeleting(true)
+    await deleteTemplateChart(chartId)
 
     toast({
       title: '템플릿이 삭제되었습니다',
     })
 
+    setIsDeleting(false)
+    setIsDialogOpen(false)
     refresh()
   }
 
   return (
-    <AlertDialog>
+    <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <AlertDialogTrigger asChild>
         <Button variant="ghost" size="icon">
           <Trash2 size={16} />
@@ -62,8 +69,10 @@ export default function DeleteTemplateDialog({
           <AlertDialogAction
             onClick={handleDelete}
             className="bg-destructive hover:bg-destructive/90"
+            disabled={isDeleting}
           >
             삭제
+            {isDeleting && <LoaderCircle className="animate-spin" />}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

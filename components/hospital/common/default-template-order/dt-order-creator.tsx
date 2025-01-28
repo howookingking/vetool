@@ -17,7 +17,7 @@ import { upsertDefaultChartOrder } from '@/lib/services/admin/icu/default-orders
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { type SelectedIcuOrder } from '@/types/icu/chart'
 import { useParams, useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
 function getAvailableChecklistOrders(orders: SelectedIcuOrder[]) {
   const currentChecklistTypeOrderNames = orders
@@ -29,11 +29,17 @@ function getAvailableChecklistOrders(orders: SelectedIcuOrder[]) {
   )
 }
 
+type DtOrderCreatorProps = {
+  sortedOrders: SelectedIcuOrder[]
+  setSortedOrders?: Dispatch<SetStateAction<SelectedIcuOrder[]>>
+  template?: boolean
+}
+
 export default function DtOrderCreator({
   sortedOrders,
-}: {
-  sortedOrders: SelectedIcuOrder[]
-}) {
+  setSortedOrders,
+  template,
+}: DtOrderCreatorProps) {
   const { hos_id } = useParams()
   const { refresh } = useRouter()
 
@@ -51,17 +57,32 @@ export default function DtOrderCreator({
   const createOrder = async (orderName: string, orderDescription: string) => {
     setIsSubmitting(true)
 
-    await upsertDefaultChartOrder(hos_id as string, undefined, {
-      default_chart_order_name: orderName.trim(),
-      default_chart_order_comment: orderDescription
-        ? orderDescription.trim()
-        : '',
-      default_chart_order_type: orderType,
-    })
+    template
+      ? setSortedOrders!((prev) => [
+          ...prev,
+          {
+            order_name: orderName,
+            order_type: orderType,
+            order_times: Array(24).fill('0'),
+            treatments: [],
+            order_comment: orderDescription,
+            is_bordered: false,
+            id: prev.length + 1,
+            order_id: `temp_order_id_${new Date().getTime()}`,
+          },
+        ])
+      : await upsertDefaultChartOrder(hos_id as string, undefined, {
+          default_chart_order_name: orderName.trim(),
+          default_chart_order_comment: orderDescription
+            ? orderDescription.trim()
+            : '',
+          default_chart_order_type: orderType,
+        })
 
-    toast({
-      title: `${orderName} 오더를 생성하였습니다`,
-    })
+    !template &&
+      toast({
+        title: `${orderName} 오더를 생성하였습니다`,
+      })
 
     setNewOrderInput('')
     setIsSubmitting(false)

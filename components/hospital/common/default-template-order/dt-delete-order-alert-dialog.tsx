@@ -22,12 +22,14 @@ type DtDeleteOrderAlertDialogProps = {
   selectedChartOrder: Partial<SelectedIcuOrder>
   setOrderStep: (orderStep: OrderStep) => void
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
+  template?: boolean
 }
 
 export default function DtDeleteOrderAlertDialog({
   selectedChartOrder,
   setOrderStep,
   setSortedOrders,
+  template,
 }: DtDeleteOrderAlertDialogProps) {
   const { refresh } = useRouter()
 
@@ -42,7 +44,7 @@ export default function DtDeleteOrderAlertDialog({
       prev.filter((order) => order.order_id !== selectedChartOrder.order_id),
     )
 
-    await deleteDefaultChartOrder(selectedChartOrder.order_id!)
+    !template && (await deleteDefaultChartOrder(selectedChartOrder.order_id!))
 
     toast({
       title: `${selectedChartOrder.order_name} 오더를 삭제하였습니다`,

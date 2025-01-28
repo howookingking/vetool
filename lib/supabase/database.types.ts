@@ -764,7 +764,6 @@ export type Database = {
           created_at: string
           hos_id: string
           icu_chart_id: string
-          is_bordered: boolean
           template_comment: string | null
           template_id: string
           template_name: string
@@ -773,7 +772,6 @@ export type Database = {
           created_at?: string
           hos_id: string
           icu_chart_id: string
-          is_bordered?: boolean
           template_comment?: string | null
           template_id?: string
           template_name: string
@@ -782,7 +780,6 @@ export type Database = {
           created_at?: string
           hos_id?: string
           icu_chart_id?: string
-          is_bordered?: boolean
           template_comment?: string | null
           template_id?: string
           template_name?: string
@@ -1889,6 +1886,16 @@ export type Database = {
           hos_patient_id_input: string
           patient_id_input: string
           weight_input: string
+        }
+        Returns: undefined
+      }
+      update_template_chart: {
+        Args: {
+          icu_chart_id_input: string
+          template_orders_input: Json
+          template_id_input: string
+          template_name_input: string
+          template_comment_input: string
         }
         Returns: undefined
       }

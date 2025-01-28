@@ -3,7 +3,7 @@
 import PreviewButton from '@/components/hospital/icu/common-dialogs/preview/preview-button'
 import DeleteBookmarkDialog from '@/unused/bookmark/delete-bookmark-dialog'
 import BookmarkDialog from '@/unused/bookmark/bookmark-dialog'
-import GotoIcuButton from '@/components/hospital/icu/main/template/table/goto-icu-button'
+import GotoIcuButton from '@/unused/bookmark/goto-icu-button'
 import { Button } from '@/components/ui/button'
 import type { TemplateChart } from '@/types/icu/template'
 import { ColumnDef } from '@tanstack/react-table'

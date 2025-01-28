@@ -5,33 +5,6 @@ import { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
 import { type TemplateChart } from '@/types/icu/template'
 import { redirect } from 'next/navigation'
 
-// export const upsertTemplateChart = async (
-//   name: string,
-//   comment: string,
-//   icuChartId: string,
-//   hosId: string,
-// ) => {
-//   const supabase = await createClient()
-
-//   const { error } = await supabase.from('icu_templates').upsert(
-//     {
-//       hos_id: hosId,
-//       template_name: name,
-//       template_comment: comment,
-//       icu_chart_id: icuChartId,
-//     },
-//     {
-//       onConflict: 'icu_chart_id',
-//       ignoreDuplicates: false,
-//     },
-//   )
-
-//   if (error) {
-//     console.error(error)
-//     redirect(`/error/?message=${error.message}`)
-//   }
-// }
-
 export const insertTemplateChart = async (
   hosId: string,
   templateOrders: Partial<SelectedIcuOrder>[],
@@ -53,18 +26,24 @@ export const insertTemplateChart = async (
   }
 }
 
-export const updateTemplate = async (
+export const updateTemplateChart = async (
+  icu_chart_id: string,
+  templateOrders: Partial<SelectedIcuOrder>[],
+  templateId: string,
+  templateName: string,
+  templateComment: string | null,
   hosId: string,
-  templateId: string,
-  template_name: string,
-  template_comment: string | null,
 ) => {
   const supabase = await createClient()
 
-  const { error } = await supabase
-    .from('icu_templates')
-    .update({ template_name, template_comment })
-    .match({ template_id: templateId, hos_id: hosId })
+  const { error } = await supabase.rpc('update_template_chart', {
+    icu_chart_id_input: icu_chart_id,
+    template_id_input: templateId,
+    template_orders_input: templateOrders,
+    template_name_input: templateName,
+    template_comment_input: templateComment ?? '',
+    hos_id_input: hosId,
+  })
 
   if (error) {
     console.error(error)
@@ -72,20 +51,13 @@ export const updateTemplate = async (
   }
 }
 
-export const deleteTemplateChart = async (
-  templateId: string,
-  chartId?: string,
-) => {
+export const deleteTemplateChart = async (chartId: string) => {
   const supabase = await createClient()
 
   const { error } = await supabase
-    .from('icu_templates')
+    .from('icu_charts')
     .delete()
-    .match({ template_id: templateId })
-
-  if (chartId) {
-    await supabase.from('icu_charts').delete().match({ icu_chart_id: chartId })
-  }
+    .match({ icu_chart_id: chartId })
 
   if (error) {
     console.error(error)
@@ -93,6 +65,7 @@ export const deleteTemplateChart = async (
   }
 }
 
+// template 페이지에서 모든 템플릿들을 테이블에서 보여줌
 export const getTemplateCharts = async (hosId: string) => {
   const supabase = await createClient()
 
@@ -110,6 +83,7 @@ export const getTemplateCharts = async (hosId: string) => {
   return data
 }
 
+// 단일 템플릿 차트를 가져옴 : template페이지에서 preview 또는 수정시
 export const getTemplateChart = async (chartId: string) => {
   const supabase = await createClient()
 
