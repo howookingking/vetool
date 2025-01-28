@@ -1,34 +1,36 @@
 'use client'
 
-import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { format } from 'date-fns'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { addDays } from 'date-fns'
+import { Calendar } from '@/components/ui/calendar'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { Calendar } from '@/components/ui/calendar'
+import { addDays, format, subDays } from 'date-fns'
 import { ko } from 'date-fns/locale'
+import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 
-export default function IcuShareDatePicker({
-  targetDate,
-}: {
+type IcuShareDateSelectorProps = {
   targetDate: string
-}) {
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false)
+  inDate: string
+}
 
+export default function IcuShareDateSelector({
+  targetDate,
+  inDate,
+}: IcuShareDateSelectorProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
+
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false)
 
   const handleUpdateDate = (days: number) => {
     const newDate = addDays(new Date(targetDate), days)
     const params = new URLSearchParams(searchParams.toString())
     params.set('target-date', format(newDate, 'yyyy-MM-dd'))
-
     router.push(`?${params.toString()}`)
   }
 
@@ -43,16 +45,14 @@ export default function IcuShareDatePicker({
   }
 
   return (
-    <div
-      className="2xl:ml-42 mx-auto inline-flex items-center justify-center gap-0 sm:gap-1 2xl:w-fit 2xl:justify-start"
-      data-guide="date-picker"
-    >
+    <div data-guide="date-picker" className="flex items-center gap-1">
       <Button
         onClick={() => handleUpdateDate(-1)}
         size="icon"
         variant="outline"
         className="h-6 w-6 rounded-full"
         aria-label="이전 날짜로 이동"
+        disabled={targetDate === inDate}
       >
         <ArrowLeftIcon />
       </Button>
@@ -60,7 +60,7 @@ export default function IcuShareDatePicker({
       <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
         <PopoverTrigger asChild>
           <Button
-            className="h-8 px-2 py-0 text-sm font-semibold sm:text-base"
+            className="h-8 px-2 py-0 text-base font-semibold"
             variant="ghost"
           >
             {format(targetDate, 'yyyy-MM-dd')}
@@ -81,6 +81,7 @@ export default function IcuShareDatePicker({
             initialFocus
             selected={new Date(targetDate)}
             onSelect={(date) => handleSelectDate(date)}
+            disabled={(date) => date < new Date(subDays(inDate, 1))}
           />
         </PopoverContent>
       </Popover>

@@ -10,14 +10,12 @@ export default function IcuShareNoResult({ text }: { text: string }) {
 
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-8">
-      <NoResultSquirrel text={text} size="lg" className="flex items-center" />
+      <NoResultSquirrel text={text} size="lg" className="flex-col" />
 
-      <div className="flex gap-4">
-        <Button onClick={() => router.back()}>
-          <ArrowLeft />
-          뒤로가기
-        </Button>
-      </div>
+      <Button onClick={() => router.back()}>
+        <ArrowLeft />
+        뒤로가기
+      </Button>
     </div>
   )
 }
