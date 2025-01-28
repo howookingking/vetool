@@ -93,6 +93,7 @@ export default function OrderRows({
         icu_chart_order_comment: order.order_comment!,
         icu_chart_order_type: order.order_type!,
         icu_chart_order_priority: order.id!,
+        is_bordered: order.is_bordered!,
       })
     }
     toast({
