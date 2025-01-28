@@ -1,4 +1,4 @@
-import PreviewButton from '@/components/hospital/icu/common-dialogs/preview/preview-button'
+import PreviewButton from '@/components/hospital/common/preview/preview-button'
 import { Button } from '@/components/ui/button'
 import { type TemplateChart } from '@/types/icu/template'
 import { type ColumnDef } from '@tanstack/react-table'

@@ -10,7 +10,7 @@ export default function IcuShareChartInfos({
   chartData,
   mainVetName,
 }: {
-  chartData: Omit<SelectedChart, 'orders'>
+  chartData: SelectedChart
   mainVetName?: string
 }) {
   const { icu_io, patient } = chartData

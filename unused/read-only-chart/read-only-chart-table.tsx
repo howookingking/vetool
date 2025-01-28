@@ -1,7 +1,7 @@
 'use client'
 
-import ReadOnlyChartCells from '@/components/hospital/icu/common-dialogs/preview/read-only-chart/read-only-chart-cells'
-import ReadOnlyChartRowTitle from '@/components/hospital/icu/common-dialogs/preview/read-only-chart/read-only-chart-row-title'
+import ReadOnlyChartCells from '@/unused/read-only-chart/read-only-chart-cells'
+import ReadOnlyChartRowTitle from '@/unused/read-only-chart/read-only-chart-row-title'
 import OrderWidthButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/order-width-button'
 import {
   Table,

@@ -1,4 +1,4 @@
-import PreviewButton from '@/components/hospital/icu/common-dialogs/preview/preview-button'
+import PreviewButton from '@/components/hospital/common/preview/preview-button'
 import { TableCell, TableRow } from '@/components/ui/table'
 import type { SearchedIcuCharts } from '@/types/icu/search'
 import CopyButton from './copy-button'

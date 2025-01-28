@@ -1,6 +1,6 @@
 'use client'
 
-import PreviewButton from '@/components/hospital/icu/common-dialogs/preview/preview-button'
+import PreviewButton from '@/components/hospital/common/preview/preview-button'
 import DeleteTemplateDialog from '@/components/hospital/icu/main/template/delete-template-dialog'
 import { Button } from '@/components/ui/button'
 import { type SelectedIcuOrder } from '@/types/icu/chart'

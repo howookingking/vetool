@@ -11,34 +11,24 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { toast } from '@/components/ui/use-toast'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { Share2 } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
-export default function ShareChartButton({
-  icuIoId,
-  targetDate,
-  mainVetName,
-}: {
-  icuIoId: string
-  targetDate: string
-  mainVetName?: string
-}) {
-  const {
-    basicHosData: { orderColorDisplay },
-  } = useBasicHosDataContext()
+export default function ShareChartDialog({ icuIoId }: { icuIoId: string }) {
+  const { target_date } = useParams()
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [shareUrl, setShareUrl] = useState('')
+  const [sharedChartUrl, setSharedChartUrl] = useState('')
 
   useEffect(() => {
-    setShareUrl(
-      `${window.location.origin}/hospital/share/${icuIoId}?target-date=${targetDate}&display=${orderColorDisplay}&main-vet=${mainVetName}`,
+    setSharedChartUrl(
+      `${window.location.origin}/hospital/share/${icuIoId}?target-date=${target_date}`,
     )
-  }, [icuIoId, targetDate, orderColorDisplay, mainVetName])
+  }, [icuIoId, target_date])
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(shareUrl)
+    navigator.clipboard.writeText(sharedChartUrl)
 
     setIsDialogOpen(false)
     toast({
@@ -47,7 +37,7 @@ export default function ShareChartButton({
   }
 
   const handleMove = () => {
-    window.open(shareUrl, '_blank')
+    window.open(sharedChartUrl, '_blank')
     setIsDialogOpen(false)
   }
 
@@ -62,17 +52,12 @@ export default function ShareChartButton({
         <DialogHeader>
           <DialogTitle>입원 환자 차트 공유</DialogTitle>
           <DialogDescription>
-            입원기간 동안의 차트를 외부에 링크로 공유할 수 있습니다
-            <br />
-            <br />
-            1. 클립보드에 복사: 공유 페이지 링크가 클립보드에 복사됩니다
-            <br />
-            2. 이동: 공유 페이지로 이동합니다
+            외부인에게 입원기간 동안의 차트를 링크로 공유할 수 있습니다
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <Button variant="outline" onClick={handleCopy}>
-            클립보드에 복사
+            클립보드 복사
           </Button>
           <Button onClick={handleMove}>이동</Button>
         </DialogFooter>

@@ -1,146 +1,117 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import { Indicator } from '@/components/ui/indicator'
-import { SHARE_GUIDE_STEPS } from '@/constants/hospital/share'
 import useLocalStorage from '@/hooks/use-local-storage'
-import { cn } from '@/lib/utils/utils'
-import { CircleHelp, X } from 'lucide-react'
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState } from 'react'
+
+export type Step = {
+  target: string
+  title: string
+  description: string
+}
 
 type HighlightGuideProps = {
-  steps: typeof SHARE_GUIDE_STEPS
-  className?: string
+  steps: Step[]
+  localStorageKey: string
 }
 
 export default function HighlightGuide({
   steps,
-  className,
+  localStorageKey,
 }: HighlightGuideProps) {
-  const [isOpen, setIsOpen] = useState(false)
+  const [_, setHasVisited] = useLocalStorage(localStorageKey, false)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [currentStep, setCurrentStep] = useState(0)
-  const [_, setIsFirstGuide] = useLocalStorage('isFirstGuide', true)
 
-  // highlightTarget 함수를 useCallback으로 감싸기
-  const highlightTarget = useCallback(() => {
+  useEffect(() => {
+    const visited = localStorage.getItem(localStorageKey) === 'true'
+    if (!visited) {
+      const firstTarget = document.querySelector(
+        `[data-guide="${steps[0].target}"]`,
+      )
+      firstTarget?.classList.add('relative', 'z-max', 'bg-background')
+      setIsDialogOpen(true)
+    }
+  }, [localStorageKey, steps])
+
+  const highlightTarget = (step: number) => {
     // 이전 하이라이트 초기화
     document.querySelectorAll('[data-guide]').forEach((element) => {
-      element.classList.remove('relative', 'z-50', 'bg-background')
+      element.classList.remove('relative', 'z-max', 'bg-background')
     })
 
     // 현재 타겟 하이라이트
     const currentTarget = document.querySelector(
-      `[data-guide="${steps[currentStep].target}"]`,
+      `[data-guide="${steps[step].target}"]`,
     )
     if (currentTarget) {
-      currentTarget.classList.add('relative', 'z-50', 'bg-background')
+      currentTarget.classList.add('relative', 'z-max', 'bg-background')
     }
-  }, [currentStep, steps])
+  }
 
-  useEffect(() => {
-    if (isOpen) {
-      highlightTarget()
-    }
-  }, [isOpen, highlightTarget])
+  const handleNextStep = () => {
+    setCurrentStep((prev) => (prev < steps.length - 1 ? prev + 1 : prev))
+    highlightTarget(currentStep + 1)
+  }
 
-  // 가이드 종료 시 하이라이트 제거
-  useEffect(() => {
-    if (!isOpen) {
-      document.querySelectorAll('[data-guide]').forEach((el) => {
-        el.classList.remove('relative', 'z-50', 'bg-background')
-      })
-    }
-  }, [isOpen])
+  const handlePrevStep = () => {
+    setCurrentStep((prev) => (prev > 0 ? prev - 1 : prev))
+    highlightTarget(currentStep - 1)
+  }
 
-  // 첫 가이드 여부 확인
-  useEffect(() => {
-    const storedValue = localStorage.getItem('isFirstGuide')
-    const hasSeenBefore = storedValue === 'false'
-
-    if (!hasSeenBefore) {
-      setIsOpen(true)
-      setIsFirstGuide(false)
-    }
-  }, [setIsFirstGuide])
+  const handleCompleteGuide = () => {
+    setIsDialogOpen(false)
+    setHasVisited(true)
+  }
 
   return (
-    <>
-      <Button
-        onClick={() => setIsOpen(true)}
-        variant="ghost"
-        size="icon"
-        className={cn('', className)}
-      >
-        <CircleHelp />
-      </Button>
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>{steps[currentStep].title}</DialogTitle>
+          <DialogDescription>
+            {steps[currentStep].description}
+          </DialogDescription>
+        </DialogHeader>
 
-      {isOpen && (
-        <div className="fixed inset-0 z-40 transition-opacity">
-          <div className="absolute inset-0 bg-black/50" />
-          <div className="relative h-full w-full">
-            <Card className="absolute bottom-20 left-1/2 w-full max-w-[560px] -translate-x-1/2 transition-all">
-              <CardHeader className="flex flex-row items-center justify-between px-6 py-4">
-                <span className="text-lg font-bold">
-                  {steps[currentStep].title}
-                </span>
+        <DialogFooter className="flex items-center justify-between">
+          <Indicator
+            steps={steps.length}
+            currentStep={currentStep}
+            onStepClick={setCurrentStep}
+          />
 
-                <Button
-                  onClick={() => setIsOpen(false)}
-                  variant="ghost"
-                  size="icon"
-                >
-                  <X />
-                </Button>
-              </CardHeader>
+          <div className="flex gap-2">
+            <Button
+              onClick={handlePrevStep}
+              disabled={currentStep === 0}
+              variant="outline"
+              size="sm"
+            >
+              이전
+            </Button>
 
-              <CardContent className="space-y-4">
-                <p className="min-h-12 whitespace-pre-line text-muted-foreground">
-                  {steps[currentStep].description}
-                </p>
-
-                <div className="flex items-center justify-between pt-4">
-                  <Indicator
-                    steps={steps.length}
-                    currentStep={currentStep}
-                    onStepClick={(step) => setCurrentStep(step)}
-                  />
-
-                  <div className="flex gap-2">
-                    <Button
-                      onClick={() => {
-                        setCurrentStep((prev) => (prev > 0 ? prev - 1 : prev))
-                      }}
-                      disabled={currentStep === 0}
-                      variant="outline"
-                      size="sm"
-                    >
-                      이전
-                    </Button>
-                    {currentStep === steps.length - 1 ? (
-                      <Button onClick={() => setIsOpen(false)} size="sm">
-                        완료
-                      </Button>
-                    ) : (
-                      <Button
-                        onClick={() => {
-                          setCurrentStep((prev) =>
-                            prev < steps.length - 1 ? prev + 1 : prev,
-                          )
-                        }}
-                        variant="outline"
-                        size="sm"
-                      >
-                        다음
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            {currentStep === steps.length - 1 ? (
+              <Button onClick={handleCompleteGuide} size="sm">
+                완료
+              </Button>
+            ) : (
+              <Button onClick={handleNextStep} variant="outline" size="sm">
+                다음
+              </Button>
+            )}
           </div>
-        </div>
-      )}
-    </>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 }

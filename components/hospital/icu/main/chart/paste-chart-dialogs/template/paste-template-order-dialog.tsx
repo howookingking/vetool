@@ -1,6 +1,6 @@
 'use client'
 
-import PreviewDialog from '@/components/hospital/icu/common-dialogs/preview/preview-dialog'
+import PreviewDialog from '@/components/hospital/common/preview/preview-dialog'
 import { Button } from '@/components/ui/button'
 import DataTable from '@/components/ui/data-table'
 import {

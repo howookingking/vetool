@@ -23,7 +23,7 @@ const Indicator = ({
   ...props
 }: Indicator) => {
   return (
-    <div className={cn('flex gap-2', className)} {...props}>
+    <div className={cn('flex w-full gap-2', className)} {...props}>
       {Array.from({ length: steps }).map((_, index) => (
         <button
           key={index}

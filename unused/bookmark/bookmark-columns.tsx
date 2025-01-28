@@ -1,6 +1,6 @@
 'use client'
 
-import PreviewButton from '@/components/hospital/icu/common-dialogs/preview/preview-button'
+import PreviewButton from '@/components/hospital/common/preview/preview-button'
 import DeleteBookmarkDialog from '@/unused/bookmark/delete-bookmark-dialog'
 import BookmarkDialog from '@/unused/bookmark/bookmark-dialog'
 import GotoIcuButton from '@/unused/bookmark/goto-icu-button'
