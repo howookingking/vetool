@@ -1,4 +1,4 @@
-import type { SelectedIcuOrder, TxLog } from '@/types/icu/chart'
+import { type SelectedIcuOrder, type TxLog } from '@/types/icu/chart'
 import { create } from 'zustand'
 
 export type OrderTimePendingQueue = {

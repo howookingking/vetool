@@ -82,7 +82,6 @@ export default function OrdererSelectStep({
           icu_chart_order_name: selectedChartOrder.order_name!,
           icu_chart_order_comment: selectedChartOrder.order_comment!,
           icu_chart_order_type: selectedChartOrder.order_type!,
-          is_bordered: selectedChartOrder.is_bordered,
         },
       )
 
@@ -164,6 +163,7 @@ export default function OrdererSelectStep({
             icu_chart_order_name: order.order_name!,
             icu_chart_order_comment: order.order_comment!,
             icu_chart_order_type: order.order_type!,
+            is_bordered: order.is_bordered!,
           },
         )
       }
