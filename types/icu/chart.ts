@@ -68,11 +68,6 @@ export type SelectedChart = Pick<
   main_vet: Pick<Vet, 'avatar_url' | 'name' | 'user_id'>
 } & {
   sub_vet: Pick<Vet, 'avatar_url' | 'name' | 'user_id'>
-} & {
-  template: Pick<
-    IcuTemplate,
-    'template_id' | 'template_name' | 'template_comment'
-  >
 }
 
 export type Patient = Pick<
