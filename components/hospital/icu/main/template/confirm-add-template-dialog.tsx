@@ -21,8 +21,12 @@ import {
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
 import { templateFormSchema } from '@/lib/schemas/icu/chart/template-schema'
-import { insertTemplateChart } from '@/lib/services/icu/template/template'
+import {
+  insertTemplateChart,
+  updateTemplateChart,
+} from '@/lib/services/icu/template/template'
 import { type SelectedIcuOrder } from '@/types/icu/chart'
+import { type TemplateChart } from '@/types/icu/template'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
@@ -32,12 +36,16 @@ import { z } from 'zod'
 
 type ConfirmAddTemplateDialogProps = {
   sortedOrders: SelectedIcuOrder[]
-  setIsAddTemplateDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setUseUpsertTemplateDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
+  isEdit: boolean
+  selectedTemplateChart: TemplateChart | null
 }
 
 export default function ConfirmAddTemplateDialog({
   sortedOrders,
-  setIsAddTemplateDialogOpen,
+  setUseUpsertTemplateDialogOpen,
+  isEdit,
+  selectedTemplateChart,
 }: ConfirmAddTemplateDialogProps) {
   const { refresh } = useRouter()
   const { hos_id } = useParams()
@@ -56,31 +64,37 @@ export default function ConfirmAddTemplateDialog({
   const handleSubmit = async (values: z.infer<typeof templateFormSchema>) => {
     setIsSubmitting(true)
 
-    console.log(values)
-    console.log(sortedOrders)
-
-    await insertTemplateChart(
-      hos_id as string,
-      sortedOrders,
-      values.template_name,
-      values.template_comment,
-    )
+    isEdit
+      ? await updateTemplateChart(
+          selectedTemplateChart?.icu_chart_id!,
+          sortedOrders,
+          selectedTemplateChart?.template_id!,
+          values.template_name,
+          values.template_comment ?? '',
+          hos_id as string,
+        )
+      : await insertTemplateChart(
+          hos_id as string,
+          sortedOrders,
+          values.template_name,
+          values.template_comment,
+        )
 
     toast({
-      title: '템플릿이 추가되었습니다',
+      title: isEdit ? '템플릿이 수정되었습니다' : '템플릿이 추가되었습니다',
     })
 
     setIsSubmitting(false)
     setIsDialogOpen(false)
-    setIsAddTemplateDialogOpen(false)
+    setUseUpsertTemplateDialogOpen(false)
     refresh()
   }
 
   const handleOpenChange = (open: boolean) => {
     if (open) {
       form.reset({
-        template_name: undefined,
-        template_comment: undefined,
+        template_name: selectedTemplateChart?.template_name ?? '',
+        template_comment: selectedTemplateChart?.template_comment ?? '',
       })
     }
     setIsDialogOpen(open)
@@ -93,7 +107,7 @@ export default function ConfirmAddTemplateDialog({
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>템플릿 저장</DialogTitle>
+          <DialogTitle>템플릿 {isEdit ? '수정' : '저장'}</DialogTitle>
           <DialogDescription>{`${sortedOrders.length}개의 오더를 저장합니다`}</DialogDescription>
         </DialogHeader>
 
