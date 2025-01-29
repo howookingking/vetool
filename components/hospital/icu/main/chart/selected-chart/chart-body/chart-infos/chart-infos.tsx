@@ -5,8 +5,8 @@ import Diagnosis from '@/components/hospital/icu/main/chart/selected-chart/chart
 import Group from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/group/group'
 import InAndOutDate from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/in-and-out-date/in-and-out-date'
 import OwnerName from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/owner-name'
-import Vets from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/vets/vets'
 import Urgency from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/urgency/urgency'
+import Vets from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/vets/vets'
 import { type SelectedChart } from '@/types/icu/chart'
 
 export default function ChartInfos({

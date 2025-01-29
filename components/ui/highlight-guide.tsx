@@ -43,7 +43,7 @@ export default function HighlightGuide({
       firstTarget?.classList.add(...HIGHLIGHT_CLASS_NAMES)
       setIsDialogOpen(true)
     }
-  }, [localStorageKey, steps])
+  }, [localStorageKey, steps, currentStep])
 
   const removeAllHighlights = () => {
     document.querySelectorAll('[data-guide]').forEach((element) => {
