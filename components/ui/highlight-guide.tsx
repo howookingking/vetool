@@ -13,14 +13,14 @@ import { Indicator } from '@/components/ui/indicator'
 import useLocalStorage from '@/hooks/use-local-storage'
 import { useEffect, useState } from 'react'
 
-export type Step = {
+export type GuideStep = {
   target: string
   title: string
   description: string
 }
 
 type HighlightGuideProps = {
-  steps: Step[]
+  steps: GuideStep[]
   localStorageKey: string
 }
 

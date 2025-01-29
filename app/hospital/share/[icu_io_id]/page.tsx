@@ -2,7 +2,7 @@ import ChartTable from '@/components/hospital/icu/main/chart/selected-chart/char
 import IcuShareHeader from '@/components/hospital/share/header/icu-share-header'
 import IcuShareChartInfos from '@/components/hospital/share/icu-share-chart-infos'
 import IcuShareNoResult from '@/components/hospital/share/icu-share-no-result'
-import HighlightGuide, { Step } from '@/components/ui/highlight-guide'
+import HighlightGuide, { type GuideStep } from '@/components/ui/highlight-guide'
 import { DEFAULT_SHARE_ORDER_COLOR } from '@/constants/hospital/icu/chart/colors'
 import { getSharedIcuData } from '@/lib/services/icu/share'
 import { BasicHosDataProvider } from '@/providers/basic-hos-data-context-provider'
@@ -61,7 +61,7 @@ export default async function IcuSharePage(props: IcuSharePageProps) {
   )
 }
 
-const SHARE_GUIDE_STEPS: Step[] = [
+const SHARE_GUIDE_STEPS: GuideStep[] = [
   {
     target: 'date-picker',
     title: '날짜 선택',
