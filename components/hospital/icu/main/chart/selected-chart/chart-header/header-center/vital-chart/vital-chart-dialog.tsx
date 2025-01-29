@@ -19,18 +19,27 @@ const LazyVitalChart = dynamic(() => import('./vital-chart'), {
   loading: () => <LargeLoaderCircle />,
 })
 
+type VitalChartDialogProps = {
+  patientId: string
+  inDate: string
+}
+
 export default function VitalChartDialog({
   patientId,
   inDate,
-}: {
-  patientId: string
-  inDate: string
-}) {
+}: VitalChartDialogProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [currentVital, setCurrentVital] = useState('체중')
 
+  const handleOpenChange = (open: boolean) => {
+    if (open) {
+      setCurrentVital('체중')
+    }
+    setIsDialogOpen(open)
+  }
+
   return (
-    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+    <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon" className="hidden shrink-0 md:flex">
           <LineChart size={18} />
