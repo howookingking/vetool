@@ -50,7 +50,7 @@ export default function PasteTemplateOrderDialog({
         <Button
           size="icon"
           variant="ghost"
-          className="shrink-0"
+          className="hidden shrink-0 md:block"
           onClick={handleOpenTemplateDialog}
           disabled={isLoading}
         >
