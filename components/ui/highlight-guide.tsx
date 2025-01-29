@@ -13,14 +13,16 @@ import { Indicator } from '@/components/ui/indicator'
 import useLocalStorage from '@/hooks/use-local-storage'
 import { useEffect, useState } from 'react'
 
-export type Step = {
+const HIGHLIGHT_CLASS_NAMES = ['z-max', 'bg-white', 'ring-4', 'ring-primary']
+
+export type GuideStep = {
   target: string
   title: string
   description: string
 }
 
 type HighlightGuideProps = {
-  steps: Step[]
+  steps: GuideStep[]
   localStorageKey: string
 }
 
@@ -36,27 +38,36 @@ export default function HighlightGuide({
     const visited = localStorage.getItem(localStorageKey) === 'true'
     if (!visited) {
       const firstTarget = document.querySelector(
-        `[data-guide="${steps[0].target}"]`,
+        `[data-guide="${steps[currentStep].target}"]`,
       )
-      firstTarget?.classList.add('relative', 'z-max', 'bg-background')
+      firstTarget?.classList.add(...HIGHLIGHT_CLASS_NAMES)
       setIsDialogOpen(true)
     }
   }, [localStorageKey, steps])
 
-  const highlightTarget = (step: number) => {
-    // 이전 하이라이트 초기화
+  const removeAllHighlights = () => {
     document.querySelectorAll('[data-guide]').forEach((element) => {
-      element.classList.remove('relative', 'z-max', 'bg-background')
+      element.classList.remove(...HIGHLIGHT_CLASS_NAMES)
     })
+  }
+
+  const highlightTarget = (step: number) => {
+    removeAllHighlights()
 
     // 현재 타겟 하이라이트
     const currentTarget = document.querySelector(
       `[data-guide="${steps[step].target}"]`,
     )
     if (currentTarget) {
-      currentTarget.classList.add('relative', 'z-max', 'bg-background')
+      currentTarget.classList.add(...HIGHLIGHT_CLASS_NAMES)
     }
   }
+
+  // useEffect(() => {
+  //   if (!isDialogOpen) {
+  //     removeAllHighlights()
+  //   }
+  // }, [isDialogOpen])
 
   const handleNextStep = () => {
     setCurrentStep((prev) => (prev < steps.length - 1 ? prev + 1 : prev))
@@ -71,10 +82,21 @@ export default function HighlightGuide({
   const handleCompleteGuide = () => {
     setIsDialogOpen(false)
     setHasVisited(true)
+    removeAllHighlights()
+  }
+
+  const handleOpenChange = (open: boolean) => {
+    if (open) {
+      setCurrentStep(0)
+      highlightTarget(0)
+    } else {
+      removeAllHighlights()
+    }
+    setIsDialogOpen(open)
   }
 
   return (
-    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+    <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{steps[currentStep].title}</DialogTitle>

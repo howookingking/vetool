@@ -4,6 +4,7 @@ import IcuSharePatientInfo from '@/components/hospital/share/header/icu-share-pa
 import { checkIfUserIsVisitor } from '@/lib/services/icu/share'
 import { type SelectedChart } from '@/types/icu/chart'
 import Link from 'next/link'
+import VitalChartDialog from '../../icu/main/chart/selected-chart/chart-header/header-center/vital-chart/vital-chart-dialog'
 
 type IcuShaerHeaderProps = {
   targetDate: string
@@ -25,11 +26,17 @@ export default async function IcuShareHeader({
         inDate={chartData.icu_io.in_date}
       />
 
-      <IcuSharePatientInfo
-        patientData={patient}
-        weight={weight}
-        weightMeasuredDate={weight_measured_date as string}
-      />
+      <div className="flex items-center">
+        <IcuSharePatientInfo
+          patientData={patient}
+          weight={weight}
+          weightMeasuredDate={weight_measured_date as string}
+        />
+        <VitalChartDialog
+          inDate={chartData.icu_io.in_date}
+          patientId={chartData.patient.patient_id}
+        />
+      </div>
 
       {isVistor ? (
         <Link href="/">

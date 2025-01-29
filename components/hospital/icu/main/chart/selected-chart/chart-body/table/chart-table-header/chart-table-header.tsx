@@ -39,7 +39,7 @@ export default function ChartTableHeader({
 }: ChartTableHeaderProps) {
   return (
     <TableHeader
-      data-guide="order-list"
+      data-guide="order-info"
       className={cn(
         preview || isMobile ? 'top-0' : 'top-12',
         'sticky z-20 bg-white shadow-sm',

@@ -2,7 +2,7 @@ import ChartTable from '@/components/hospital/icu/main/chart/selected-chart/char
 import IcuShareHeader from '@/components/hospital/share/header/icu-share-header'
 import IcuShareChartInfos from '@/components/hospital/share/icu-share-chart-infos'
 import IcuShareNoResult from '@/components/hospital/share/icu-share-no-result'
-import HighlightGuide, { Step } from '@/components/ui/highlight-guide'
+import HighlightGuide, { type GuideStep } from '@/components/ui/highlight-guide'
 import { DEFAULT_SHARE_ORDER_COLOR } from '@/constants/hospital/icu/chart/colors'
 import { getSharedIcuData } from '@/lib/services/icu/share'
 import { BasicHosDataProvider } from '@/providers/basic-hos-data-context-provider'
@@ -61,7 +61,7 @@ export default async function IcuSharePage(props: IcuSharePageProps) {
   )
 }
 
-const SHARE_GUIDE_STEPS: Step[] = [
+const SHARE_GUIDE_STEPS: GuideStep[] = [
   {
     target: 'date-picker',
     title: '날짜 선택',
@@ -73,12 +73,18 @@ const SHARE_GUIDE_STEPS: Step[] = [
     description: '환자의 기본 정보와 최근 측정된 체중을 확인할 수 있습니다',
   },
   {
+    target: 'vital-chart',
+    title: '바이탈 그래프',
+    description: '바이탈 그래프를 확인할 수 있습니다',
+  },
+  {
     target: 'chart-info',
     title: '입원 정보',
     description: '환자의 입원 정보를 확인할 수 있습니다',
   },
+
   {
-    target: 'order-list',
+    target: 'order-info',
     title: '오더 정보',
     description: '시간별 오더 및 처치 결과를 확인할 수 있습니다',
   },
