@@ -4,7 +4,7 @@ export const R2Client = new S3Client({
   region: 'auto',
   endpoint: process.env.NEXT_PUBLIC_R2_END_POINT!,
   credentials: {
-    accessKeyId: process.env.NEXT_PUBLIC_R2_ACCESS_KEY!,
-    secretAccessKey: process.env.NEXT_PUBLIC_R2_SECRET_KEY!,
+    accessKeyId: process.env.R2_ACCESS_KEY!,
+    secretAccessKey: process.env.R2_SECRET_KEY!,
   },
 })
