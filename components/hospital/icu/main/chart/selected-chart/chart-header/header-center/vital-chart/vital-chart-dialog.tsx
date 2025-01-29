@@ -41,7 +41,12 @@ export default function VitalChartDialog({
   return (
     <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="icon" className="hidden shrink-0 md:flex">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="hidden shrink-0 md:flex"
+          data-guide="vital-chart"
+        >
           <LineChart size={18} />
         </Button>
       </DialogTrigger>
