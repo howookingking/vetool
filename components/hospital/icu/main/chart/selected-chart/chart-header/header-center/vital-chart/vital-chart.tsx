@@ -137,7 +137,11 @@ export default function VitalChart({
         </>
       ) : (
         <div className="flex h-full items-center justify-center">
-          <NoResultSquirrel text="분석할 데이터가 없습니다" size="lg" />
+          <NoResultSquirrel
+            text="분석할 데이터가 없습니다"
+            size="lg"
+            className="flex-col"
+          />
         </div>
       )}
     </div>

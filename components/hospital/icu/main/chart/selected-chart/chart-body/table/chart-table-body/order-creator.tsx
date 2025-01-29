@@ -43,7 +43,6 @@ export default function OrderCreator({
 }: OrderCreator) {
   const { hos_id } = useParams()
 
-  const { setOrderStep } = useIcuOrderStore()
   const {
     basicHosData: { orderColorsData },
   } = useBasicHosDataContext()
@@ -131,7 +130,7 @@ export default function OrderCreator({
   }, [availableCheckListOrders.length])
 
   return (
-    <div className="relative hidden w-full items-center md:flex">
+    <div className="relative flex w-full items-center">
       <Select onValueChange={handleOrderTypeChange} value={orderType}>
         <SelectTrigger className="h-11 w-[128px] shrink-0 rounded-none border-0 border-r px-2 shadow-none ring-0 focus:ring-0">
           <SelectValue />
@@ -179,7 +178,7 @@ export default function OrderCreator({
         <Input
           className="h-11 rounded-none border-0 border-r focus-visible:ring-0"
           disabled={isSubmitting}
-          placeholder="오더명$오더설명 + ENTER"
+          placeholder="오더명$오더설명"
           value={isSubmitting ? '등록 중' : quickOrderInput}
           onChange={(e) => setQuickOrderInput(e.target.value)}
           onKeyDown={handleEnter}
