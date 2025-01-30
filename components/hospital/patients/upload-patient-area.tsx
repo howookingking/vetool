@@ -23,12 +23,13 @@ import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 export default function UploadPatientArea() {
+  const { refresh } = useRouter()
+  const { hos_id } = useParams()
+
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
   const [uploadType, setUploadType] = useState('intoVet')
 
-  const { refresh } = useRouter()
-  const { hos_id } = useParams()
   const {
     selectedFile,
     uploadStatus,
@@ -66,13 +67,15 @@ export default function UploadPatientArea() {
     }
   }
 
-  const handleDialogOpen = () => {
-    setIsDialogOpen((prev) => !prev)
-    handleFileSelection(null)
+  const handleOpenChange = (open: boolean) => {
+    if (open) {
+      handleFileSelection(null)
+    }
+    setIsDialogOpen(open)
   }
 
   return (
-    <Dialog open={isDialogOpen} onOpenChange={handleDialogOpen}>
+    <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button variant="outline" size="sm">
           <FileUp size={20} />

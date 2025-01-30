@@ -5,7 +5,6 @@ import TxSelectUserStep from '@/components/hospital/icu/main/chart/selected-char
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
-import { useCallback } from 'react'
 
 export default function TxUpsertDialog({
   showTxUser,
@@ -21,12 +20,12 @@ export default function TxUpsertDialog({
 
   const { reset: orderQueueReset } = useIcuOrderStore()
 
-  const handleClose = useCallback(() => {
+  const handleClose = () => {
     setTxStep('closed')
     orderQueueReset()
     txLocalStateReset()
     setIsMutationCanceled(true)
-  }, [setIsMutationCanceled, setTxStep, orderQueueReset, txLocalStateReset])
+  }
 
   return (
     <Dialog open={txStep !== 'closed'} onOpenChange={handleClose}>

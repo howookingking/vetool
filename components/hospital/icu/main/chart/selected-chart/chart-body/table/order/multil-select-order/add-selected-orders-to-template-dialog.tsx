@@ -71,13 +71,13 @@ export default function AddSelectedOrdersToTemplateDialog({
   }
 
   const handleOpenChange = (open: boolean) => {
-    setIsDialogOpen(open)
-    if (!open) {
+    if (open) {
       form.reset({
         template_name: undefined,
         template_comment: undefined,
       })
     }
+    setIsDialogOpen(open)
   }
 
   return (

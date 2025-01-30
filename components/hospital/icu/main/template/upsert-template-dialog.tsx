@@ -37,7 +37,6 @@ export default function UpsertTemplateDialog({
   setSelectedTemplateChart,
 }: UpsertTemplateDilaogProps) {
   const handleOpenChange = (open: boolean) => {
-    // 닫힐때 초기화
     if (open) {
       setSortedOrders([])
       setSelectedTemplateChart(null)

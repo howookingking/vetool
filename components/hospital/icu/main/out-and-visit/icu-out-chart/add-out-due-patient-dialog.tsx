@@ -25,41 +25,24 @@ import {
   updatePatientOutDueDate,
 } from '@/lib/services/icu/out-and-visit/icu-out-chart'
 import { convertPascalCased } from '@/lib/utils/utils'
-import type { NotOutDuePatientsData } from '@/types/icu/movement'
+import { type NotOutDuePatientsData } from '@/types/icu/movement'
 import { Plus } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 export default function AddOutDuePatientDialog() {
+  const { hos_id, target_date } = useParams()
+
   const [selectedIoId, setSelectedIoId] = useState('')
   const [notOutDuePatients, setNotOutDuePatients] = useState<
     NotOutDuePatientsData[]
   >([])
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const { hos_id, target_date } = useParams()
   const [isFetching, setIsFetching] = useState(false)
 
   const noPatientToAdd = notOutDuePatients.length === 0
 
-  useEffect(() => {
-    if (isDialogOpen) {
-      const getNotOutDueIoPatients = async () => {
-        setIsFetching(true)
-        const patients = await getNotOutDuePatients(
-          hos_id as string,
-          target_date as string,
-        )
-        setNotOutDuePatients(patients ?? [])
-        setIsFetching(false)
-      }
-
-      getNotOutDueIoPatients()
-    }
-  }, [isDialogOpen, hos_id, target_date])
-
   const handleUpdatePatientOutDueDate = async (icuIoId: string) => {
-    setIsDialogOpen(false)
-
     await updatePatientOutDueDate(
       icuIoId,
       hos_id as string,
@@ -73,8 +56,25 @@ export default function AddOutDuePatientDialog() {
     setIsDialogOpen(false)
   }
 
+  const handleOpenChange = async (open: boolean) => {
+    if (open) {
+      setIsFetching(true)
+      const getNotOutDueIoPatients = async () => {
+        const patients = await getNotOutDuePatients(
+          hos_id as string,
+          target_date as string,
+        )
+        setNotOutDuePatients(patients ?? [])
+      }
+
+      getNotOutDueIoPatients()
+      setIsFetching(false)
+    }
+    setIsDialogOpen(open)
+  }
+
   return (
-    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+    <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button variant="default" size="icon" className="h-6 w-6 rounded-full">
           <Plus size={14} />

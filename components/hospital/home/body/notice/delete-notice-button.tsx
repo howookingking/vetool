@@ -3,17 +3,21 @@ import { deleteNotice } from '@/lib/services/hospital-home/notice'
 import { useRouter } from 'next/navigation'
 import { type Dispatch, type SetStateAction } from 'react'
 
+type DeleteNoticeButtonProps = {
+  noticeId: string
+  setIsDialogOpen: Dispatch<SetStateAction<boolean>>
+}
 export default function DeleteNoticeButton({
   noticeId,
   setIsDialogOpen,
-}: {
-  noticeId: string
-  setIsDialogOpen: Dispatch<SetStateAction<boolean>>
-}) {
+}: DeleteNoticeButtonProps) {
   const { refresh } = useRouter()
+
   const handleDeleteNotice = async () => {
     setIsDialogOpen(false)
+
     await deleteNotice(noticeId)
+
     refresh()
   }
 

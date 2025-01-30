@@ -28,7 +28,7 @@ export default function ConfirmSelectHospitalDialog({
   const isVet = searchParams.get('is_vet')
   const username = searchParams.get('name')
 
-  const [isOpen, setIsOpen] = useState(false)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleSubmit = async () => {
@@ -41,12 +41,12 @@ export default function ConfirmSelectHospitalDialog({
       description: '승인 완료 후 로그인 해주세요',
     })
     setIsSubmitting(false)
-    setIsOpen(false)
+    setIsDialogOpen(false)
     push('/on-boarding/approval-waiting')
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button size="icon" variant="ghost">
           <Check />
