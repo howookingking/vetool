@@ -1,7 +1,6 @@
 import { z } from 'zod'
 
 /* 사료 */
-/* 사료 */
 export const dietSchema = z.object({
   diet_id: z.string().optional(),
   name: z.string().min(1, { message: '사료명을 입력해주세요' }),
@@ -12,7 +11,6 @@ export const dietSchema = z.object({
   unit: z.string().min(1, { message: '단위를 입력해주세요 (g, ml, etc.)' }),
 })
 
-/* 약물 */
 /* 약물 */
 // 개별 용량 설정 스키마
 const dosageSchema = z.object({
@@ -54,7 +52,6 @@ export const drugSchema = z.object({
 })
 
 /* 메모 */
-/* 메모 */
 export const memoNameFormSchema = z.object({
   memoA: z
     .string({
@@ -88,4 +85,11 @@ export const memoNameFormSchema = z.object({
     .max(20, {
       message: '메모이름은 최대 20자까지 설정 가능합니다.',
     }),
+})
+
+// 스태프관리에서 그룹선택
+export const GroupCheckFormSchema = z.object({
+  items: z.array(z.string()).refine((value) => value.some((item) => item), {
+    message: '적어도 하나의 그룹을 선택해주세요',
+  }),
 })

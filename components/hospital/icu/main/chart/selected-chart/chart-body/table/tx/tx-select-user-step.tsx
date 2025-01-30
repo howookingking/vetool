@@ -1,3 +1,5 @@
+'use no memo'
+
 import { Button } from '@/components/ui/button'
 import { DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import {
@@ -19,7 +21,7 @@ import { DialogDescription } from '@radix-ui/react-dialog'
 import { format } from 'date-fns'
 import { LoaderCircle } from 'lucide-react'
 import { useParams } from 'next/navigation'
-import { useCallback, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -28,9 +30,10 @@ export default function TxSelectUserStep({
 }: {
   handleClose: () => void
 }) {
+  const { hos_id } = useParams()
+
   const { txLocalState } = useTxMutationStore()
   const { selectedTxPendingQueue } = useIcuOrderStore()
-  const { hos_id } = useParams()
   const { isSubmitting, upsertTx, upsertMultipleTx } = useUpsertTx({
     hosId: hos_id as string,
     onSuccess: () => handleClose(),
@@ -50,45 +53,42 @@ export default function TxSelectUserStep({
     },
   })
 
-  const handleUpsertTx = useCallback(
-    async (values: z.infer<typeof userLogFormSchema>) => {
-      let updatedLogs = txLocalState?.txLog ?? []
+  const handleUpsertTx = async (values: z.infer<typeof userLogFormSchema>) => {
+    let updatedLogs = txLocalState?.txLog ?? []
 
-      if (txLocalState?.txResult && txLocalState.txResult.trim() !== '') {
-        const newLog: TxLog = {
-          result: txLocalState.txResult,
-          name: values.userLog,
-          createdAt: format(new Date(), 'yyyy-MM-dd HH:mm'),
-        }
-
-        if (newLog.result && newLog.result.includes('$')) {
-          newLog.result = newLog.result.split('$')[0].trim()
-        }
-
-        updatedLogs = [...updatedLogs, newLog]
+    if (txLocalState?.txResult && txLocalState.txResult.trim() !== '') {
+      const newLog: TxLog = {
+        result: txLocalState.txResult,
+        name: values.userLog,
+        createdAt: format(new Date(), 'yyyy-MM-dd HH:mm'),
       }
 
-      // 다중 Tx 입력
-      if (selectedTxPendingQueue.length) {
-        await upsertMultipleTx(selectedTxPendingQueue, {
-          result: txLocalState?.txResult,
-          comment: txLocalState?.txComment,
-          isCrucialChecked: txLocalState?.isCrucialChecked,
-          orderName: txLocalState?.icuChartOrderName,
-          orderType: txLocalState?.icuChartOrderType,
-          updatedLogs,
-          txImages: txLocalState?.txImages,
-          bucketImagesLength: txLocalState?.bucketImagesLength,
-        })
-
-        return
+      if (newLog.result && newLog.result.includes('$')) {
+        newLog.result = newLog.result.split('$')[0].trim()
       }
 
-      // 단일 Tx 입력
-      await upsertTx(txLocalState, updatedLogs)
-    },
-    [txLocalState, selectedTxPendingQueue, upsertTx, upsertMultipleTx],
-  )
+      updatedLogs = [...updatedLogs, newLog]
+    }
+
+    // 다중 Tx 입력
+    if (selectedTxPendingQueue.length) {
+      await upsertMultipleTx(selectedTxPendingQueue, {
+        result: txLocalState?.txResult,
+        comment: txLocalState?.txComment,
+        isCrucialChecked: txLocalState?.isCrucialChecked,
+        orderName: txLocalState?.icuChartOrderName,
+        orderType: txLocalState?.icuChartOrderType,
+        updatedLogs,
+        txImages: txLocalState?.txImages,
+        bucketImagesLength: txLocalState?.bucketImagesLength,
+      })
+
+      return
+    }
+
+    // 단일 Tx 입력
+    await upsertTx(txLocalState, updatedLogs)
+  }
 
   return (
     <>

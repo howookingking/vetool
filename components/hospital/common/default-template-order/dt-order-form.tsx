@@ -1,3 +1,5 @@
+'use no memo'
+
 import OrderBorderCheckbox from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-border-checkbox'
 import OrderFormField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-form-field'
 import { Button } from '@/components/ui/button'

@@ -10,5 +10,18 @@ export const newHospitalFormSchema = z.object({
   businessNumber: z
     .string({ required_error: '사업자 번호를 입력하세요' })
     .trim()
-    .length(10, { message: '사업자 번호를 10개의 숫자로 입력하세요' }),
+    .length(10, { message: '- 없이 10자를 입력해주세요' }),
+})
+
+export const signupFormSchema = z.object({
+  name: z
+    .string({ required_error: '이름을 입력해주세요' })
+    .min(2, { message: '2자 이상 입력해주세요' })
+    .max(10, { message: '10자 이하로 입력해주세요' }),
+  isVet: z.enum(['true', 'false'], {
+    required_error: '수의사 여부를 선택해주세요',
+  }),
+  option: z.enum(['create', 'select'], {
+    required_error: '동물병원등록 옵션을 선택해주세요',
+  }),
 })
