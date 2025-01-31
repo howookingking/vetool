@@ -127,6 +127,7 @@ export const uploadTxImages = async (
 ) => {
   try {
     if (txImages.length === 0) return
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL + '/api/image'
 
     // 1. FormData 선언
     const formData = new FormData()
@@ -138,7 +139,7 @@ export const uploadTxImages = async (
     formData.append('startIndex', startIndex)
 
     // 3. 이미지 업로드
-    const response = await fetch(`${baseUrl}/api/image`, {
+    const response = await fetch(baseUrl, {
       method: 'POST',
       body: formData,
     })
