@@ -50,7 +50,7 @@ import {
 } from '@/lib/services/patient/patient'
 import { useIcuRegisterStore } from '@/lib/store/icu/icu-register'
 import { cn } from '@/lib/utils/utils'
-import type { SearchedPatientsData } from '@/types/patients'
+import { type SearchedPatientsData } from '@/types/patients'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons'
 import { format } from 'date-fns'
@@ -131,6 +131,8 @@ export default function PatientForm({
   icuChartId,
   setIsEdited,
 }: PatientFormProps) {
+  console.log(weight)
+
   const isEdit =
     mode === 'updateFromPatientRoute' || mode === 'updateFromIcuRoute'
   const isRegisterFromIcuRoute = mode === 'registerFromIcuRoute'
@@ -194,7 +196,7 @@ export default function PatientForm({
           birth: new Date(editingPatient?.birth!),
           microchip_no: editingPatient?.microchip_no ?? '',
           memo: editingPatient?.memo ?? '',
-          weight,
+          weight: weight,
           owner_name: editingPatient?.owner_name ?? '',
           hos_owner_id: editingPatient?.hos_owner_id ?? '',
         }
@@ -222,7 +224,8 @@ export default function PatientForm({
     if (watchBreed) {
       setBreedOpen(false)
     }
-  }, [watchBreed])
+    form.setValue('weight', weight ?? '')
+  }, [watchBreed, weight])
 
   const handleRegister = async (
     values: z.infer<typeof registerPatientFormSchema>,

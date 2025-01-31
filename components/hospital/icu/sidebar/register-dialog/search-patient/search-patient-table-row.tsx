@@ -2,20 +2,22 @@ import DeletePatientAlert from '@/components/hospital/patients/delete-patient-al
 import PatientUpdateDialog from '@/components/hospital/patients/patient-update-dialog'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { calculateAge, cn, convertPascalCased } from '@/lib/utils/utils'
-import type { SearchedPatientsData } from '@/types/patients'
+import { type SearchedPatientsData } from '@/types/patients'
 import { Cat, Dog } from 'lucide-react'
-import { Dispatch, SetStateAction } from 'react'
+import { type Dispatch, type SetStateAction } from 'react'
 import PatientSelectButton from './patient-select-button'
+
+type SearchPatientTableRowProps = {
+  patientData: SearchedPatientsData
+  setIsEdited: Dispatch<SetStateAction<boolean>>
+  isIcu?: boolean
+}
 
 export default function SearchPatientTableRow({
   patientData,
   setIsEdited,
   isIcu,
-}: {
-  patientData: SearchedPatientsData
-  setIsEdited: Dispatch<SetStateAction<boolean>>
-  isIcu?: boolean
-}) {
+}: SearchPatientTableRowProps) {
   const {
     patient_id,
     hos_id,
@@ -32,7 +34,6 @@ export default function SearchPatientTableRow({
 
   return (
     <TableRow>
-      {/* 종 */}
       <TableCell className="w-16 whitespace-nowrap text-center">
         {species === 'canine' ? (
           <Dog className="mx-auto" size={20} />
@@ -41,12 +42,10 @@ export default function SearchPatientTableRow({
         )}
       </TableCell>
 
-      {/* 환자 번호 */}
       <TableCell className="whitespace-nowrap text-center">
         {hos_patient_id}
       </TableCell>
 
-      {/* 환자 이름 */}
       <TableCell
         className={cn(
           'whitespace-nowrap text-center',
@@ -56,29 +55,24 @@ export default function SearchPatientTableRow({
         {name} {!is_alive && '(사망)'}
       </TableCell>
 
-      {/* 품종 */}
       <TableCell className="whitespace-nowrap text-center">
         <div className="truncate" title={convertPascalCased(breed) ?? ''}>
           {convertPascalCased(breed) ?? ''}
         </div>
       </TableCell>
 
-      {/* 성별 */}
       <TableCell className="whitespace-nowrap text-center">
         {gender.toUpperCase()}
       </TableCell>
 
-      {/* 나이 (생일) */}
       <TableCell className="whitespace-nowrap text-center">
         {calculateAge(birth)} ({birth})
       </TableCell>
 
-      {/* 보호자 이름 */}
       <TableCell className="whitespace-nowrap text-center">
         {owner_name}
       </TableCell>
 
-      {/* 등록일 */}
       <TableCell className="whitespace-nowrap text-center">
         {created_at.slice(0, 10)}
       </TableCell>

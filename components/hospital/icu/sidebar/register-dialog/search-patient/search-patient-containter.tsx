@@ -85,7 +85,6 @@ export default function SearchPatientContainer({
 
   useEffect(() => {
     debouncedSearch()
-
     setIsEdited(false)
   }, [isEdited, debouncedSearch])
 

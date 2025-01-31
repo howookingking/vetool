@@ -18,15 +18,18 @@ import { LoaderCircle, Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
+type DeletePatientAlertProps = {
+  patientName: string
+  patientId: string
+}
+
 export default function DeletePatientAlert({
   patientName,
   patientId,
-}: {
-  patientName: string
-  patientId: string
-}) {
-  const [isLoading, setIsLoading] = useState(false)
+}: DeletePatientAlertProps) {
   const { refresh } = useRouter()
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleDeletePatient = async (patientId: string) => {
     setIsLoading(true)
