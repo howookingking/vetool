@@ -19,6 +19,13 @@ export const config = {
   },
 }
 
+// CORS 헤더를 위한 공통 설정
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+}
+
 /**
  * 이미지 업로드 함수
  * @param files 업로드할 이미지 배열
@@ -92,18 +99,18 @@ const deleteImages = async (key: string) => {
   await Promise.all(deletePromises)
 }
 
+// OPTIONS 요청을 처리하는 핸들러 추가
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 200,
+    headers: corsHeaders,
+  })
+}
+
 export async function POST(req: NextRequest) {
   try {
-    // CORS 헤더 추가
-    const headers = new Headers({
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
-    })
-
-    if (req.method === 'OPTIONS') {
-      return new NextResponse(null, { headers })
-    }
+    // CORS 헤더 적용
+    const headers = new Headers(corsHeaders)
 
     if (!process.env.NEXT_PUBLIC_R2_BUCKET_NAME) {
       throw new Error('R2 버킷 이름이 설정되지 않았습니다.')
@@ -150,6 +157,7 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   try {
+    const headers = new Headers(corsHeaders)
     const { searchParams } = new URL(req.url)
     const prefix = searchParams.get('prefix')
 
@@ -197,7 +205,13 @@ export async function GET(req: NextRequest) {
 
       const imageUrls = await Promise.all(urlPromises)
 
-      return NextResponse.json({ urls: imageUrls }, { status: 200 })
+      return NextResponse.json(
+        { urls: imageUrls },
+        {
+          status: 200,
+          headers,
+        },
+      )
     }
   } catch (error) {
     console.error('이미지 URL 생성 중 오류 발생:', error)
@@ -210,6 +224,7 @@ export async function GET(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
+    const headers = new Headers(corsHeaders)
     const { searchParams } = new URL(req.url)
     const key = searchParams.get('key')
 
@@ -218,7 +233,10 @@ export async function DELETE(req: NextRequest) {
 
       return NextResponse.json(
         { message: '이미지들이 성공적으로 삭제되었습니다' },
-        { status: 200 },
+        {
+          status: 200,
+          headers,
+        },
       )
     }
   } catch (error) {
