@@ -92,15 +92,20 @@ const deleteImages = async (key: string) => {
 
 export async function POST(req: NextRequest) {
   try {
+    // R2 클라이언트 연결 상태 확인
+    if (!process.env.NEXT_PUBLIC_R2_BUCKET_NAME) {
+      throw new Error('R2 버킷 이름이 설정되지 않았습니다.')
+    }
+
     const formData = await req.formData()
     const files = formData.getAll('files')
     const route = formData.get('route')
     const id = formData.get('id')
     const startIndex = formData.get('startIndex')
 
-    if (!Array.isArray(files) || files.length === 0) {
+    if (!files || !route || !id || !startIndex) {
       return NextResponse.json(
-        { error: '업로드할 파일이 없습니다' },
+        { error: '필수 파라미터가 누락되었습니다.' },
         { status: 400 },
       )
     }
@@ -117,9 +122,12 @@ export async function POST(req: NextRequest) {
       { status: 200 },
     )
   } catch (error) {
-    console.error('이미지 업로드 처리 중 Route API 오류:', error)
+    console.error('이미지 업로드 처리 중 오류:', error)
     return NextResponse.json(
-      { error: '이미지 업로드 중 오류가 발생했습니다' },
+      {
+        error: '이미지 업로드 중 오류가 발생했습니다',
+        details: error instanceof Error ? error.message : '알 수 없는 오류',
+      },
       { status: 500 },
     )
   }
