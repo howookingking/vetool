@@ -1,4 +1,3 @@
-import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import NoResult from '@/components/common/no-result'
 import {
   Table,
@@ -8,21 +7,27 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import type { SearchedPatientsData } from '@/types/patients'
-import { Dispatch, SetStateAction } from 'react'
+import { cn } from '@/lib/utils/utils'
+import { type SearchedPatientsData } from '@/types/patients'
+import { type Dispatch, type SetStateAction } from 'react'
+import { type RegisteringPatient } from '../register-dialog'
 import SearchPatientTableRow from './search-patient-table-row'
 
-export default function SearchPatientTable({
-  isSearching,
-  searchedPatients,
-  setIsEdited,
-  isIcu,
-}: {
-  isSearching: boolean
+type SearchPatientTableProps = {
   searchedPatients: SearchedPatientsData[]
   setIsEdited: Dispatch<SetStateAction<boolean>>
   isIcu?: boolean
-}) {
+  setIsConfirmDialogOpen?: Dispatch<SetStateAction<boolean>>
+  setRegisteringPatient?: Dispatch<SetStateAction<RegisteringPatient | null>>
+}
+
+export default function SearchPatientTable({
+  searchedPatients,
+  setIsEdited,
+  isIcu,
+  setIsConfirmDialogOpen,
+  setRegisteringPatient,
+}: SearchPatientTableProps) {
   return (
     <Table className="border">
       <TableHeader>
@@ -61,16 +66,13 @@ export default function SearchPatientTable({
       </TableHeader>
 
       <TableBody>
-        {isSearching ? (
+        {searchedPatients && searchedPatients.length === 0 ? (
           <TableRow>
             <TableCell colSpan={10}>
-              <LargeLoaderCircle className="h-[400px]" />
-            </TableCell>
-          </TableRow>
-        ) : searchedPatients && searchedPatients.length === 0 ? (
-          <TableRow>
-            <TableCell colSpan={10}>
-              <NoResult title="검색 결과가 없습니다" className="h-[400px]" />
+              <NoResult
+                title="검색 결과가 없습니다"
+                className={cn(isIcu ? 'h-[430px]' : 'h-[513px]')}
+              />
             </TableCell>
           </TableRow>
         ) : (
@@ -80,6 +82,8 @@ export default function SearchPatientTable({
               patientData={patient}
               setIsEdited={setIsEdited}
               isIcu={isIcu}
+              setIsConfirmDialogOpen={setIsConfirmDialogOpen}
+              setRegisteringPatient={setRegisteringPatient}
             />
           ))
         )}
