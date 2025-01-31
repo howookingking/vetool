@@ -11,8 +11,10 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import sharp from 'sharp'
 
 export const config = {
+  runtime: 'edge',
   api: {
     bodyParser: false,
+    responseLimit: false,
     maxDuration: 60,
   },
 }
@@ -92,7 +94,17 @@ const deleteImages = async (key: string) => {
 
 export async function POST(req: NextRequest) {
   try {
-    // R2 클라이언트 연결 상태 확인
+    // CORS 헤더 추가
+    const headers = new Headers({
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    })
+
+    if (req.method === 'OPTIONS') {
+      return new NextResponse(null, { headers })
+    }
+
     if (!process.env.NEXT_PUBLIC_R2_BUCKET_NAME) {
       throw new Error('R2 버킷 이름이 설정되지 않았습니다.')
     }
@@ -119,7 +131,10 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(
       { message: '이미지가 성공적으로 업로드되었습니다' },
-      { status: 200 },
+      {
+        status: 200,
+        headers,
+      },
     )
   } catch (error) {
     console.error('이미지 업로드 처리 중 오류:', error)
