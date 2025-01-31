@@ -1,13 +1,13 @@
+import { R2Client } from '@/lib/services/image/r2Client'
 import {
+  DeleteObjectCommand,
   GetObjectCommand,
+  HeadObjectCommand,
   ListObjectsV2Command,
   PutObjectCommand,
-  DeleteObjectCommand,
-  HeadObjectCommand,
 } from '@aws-sdk/client-s3'
-import { NextRequest, NextResponse } from 'next/server'
-import { R2Client } from '@/lib/services/image/r2Client'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
+import { NextRequest, NextResponse } from 'next/server'
 import sharp from 'sharp'
 
 export const config = {
@@ -17,13 +17,6 @@ export const config = {
     responseLimit: false,
     maxDuration: 60,
   },
-}
-
-// CORS 헤더를 위한 공통 설정
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 }
 
 /**
@@ -39,40 +32,53 @@ const uploadImage = async (
   startIndex: string,
 ) => {
   const uploadPromises = files.map(async (file, index) => {
-    const buffer = Buffer.from(await file.arrayBuffer())
-    const fileType = file.type.split('/')[0]
+    try {
+      const buffer = Buffer.from(await file.arrayBuffer())
+      const fileType = file.type.split('/')[0]
 
-    let optimizedBuffer = buffer
-    let contentType = file.type
-    let fileExtension = file.name.split('.').pop()
+      let optimizedBuffer = buffer
+      let contentType = file.type
+      let fileExtension = file.name.split('.').pop()
 
-    if (fileType === 'image') {
-      optimizedBuffer = await sharp(buffer)
-        .resize()
-        .webp({ quality: 80 })
-        .toBuffer()
+      if (fileType === 'image') {
+        try {
+          optimizedBuffer = await sharp(buffer)
+            .resize()
+            .webp({ quality: 80 })
+            .toBuffer()
+          contentType = 'image/webp'
+          fileExtension = 'webp'
+        } catch (error) {
+          console.error('이미지 최적화 중 오류:', error)
+        }
+      }
 
-      contentType = 'image/webp'
-      fileExtension = 'webp' // 이미지일 경우 확장자를 webp로 변경
+      // 파일명 생성 시 변경된 확장자 사용
+      const fileName = `${route}-${id}-${index + Number(startIndex)}.${fileExtension}`
+
+      // R2Client 업로드 명령 생성
+      const command = new PutObjectCommand({
+        Bucket: process.env.NEXT_PUBLIC_R2_BUCKET_NAME!,
+        Key: fileName,
+        Body: optimizedBuffer,
+        ContentType: contentType,
+        CacheControl: 'public, max-age=604800, immutable',
+      })
+
+      await R2Client.send(command)
+      return { success: true, fileName }
+    } catch (error) {
+      console.error(`파일 업로드 중 오류 (${file.name}):`, error)
+      return { success: false, error, fileName: file.name }
     }
-
-    // 파일명 생성 시 변경된 확장자 사용
-    const fileName = `${route}-${id}-${index + Number(startIndex)}.${fileExtension}`
-
-    // R2Client 업로드 명령 생성
-    const command = new PutObjectCommand({
-      Bucket: process.env.NEXT_PUBLIC_R2_BUCKET_NAME!,
-      Key: fileName,
-      Body: optimizedBuffer,
-      ContentType: contentType,
-      CacheControl: 'public, max-age=604800, immutable',
-    })
-
-    // 업로드
-    return R2Client.send(command)
   })
 
-  await Promise.all(uploadPromises)
+  const results = await Promise.all(uploadPromises)
+  const failedUploads = results.filter((r) => !r.success)
+
+  if (failedUploads.length > 0) {
+    throw new Error(`${failedUploads.length}개의 파일 업로드 실패`)
+  }
 }
 
 const deleteImages = async (key: string) => {
@@ -99,19 +105,8 @@ const deleteImages = async (key: string) => {
   await Promise.all(deletePromises)
 }
 
-// OPTIONS 요청을 처리하는 핸들러 추가
-export async function OPTIONS() {
-  return new NextResponse(null, {
-    status: 200,
-    headers: corsHeaders,
-  })
-}
-
 export async function POST(req: NextRequest) {
   try {
-    // CORS 헤더 적용
-    const headers = new Headers(corsHeaders)
-
     if (!process.env.NEXT_PUBLIC_R2_BUCKET_NAME) {
       throw new Error('R2 버킷 이름이 설정되지 않았습니다.')
     }
@@ -136,28 +131,34 @@ export async function POST(req: NextRequest) {
       startIndex as string,
     )
 
-    return NextResponse.json(
-      { message: '이미지가 성공적으로 업로드되었습니다' },
+    return new NextResponse(
+      JSON.stringify({ message: '이미지가 성공적으로 업로드되었습니다' }),
       {
         status: 200,
-        headers,
+        headers: {
+          'Content-Type': 'application/json',
+        },
       },
     )
   } catch (error) {
     console.error('이미지 업로드 처리 중 오류:', error)
-    return NextResponse.json(
-      {
+    return new NextResponse(
+      JSON.stringify({
         error: '이미지 업로드 중 오류가 발생했습니다',
         details: error instanceof Error ? error.message : '알 수 없는 오류',
+      }),
+      {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+        },
       },
-      { status: 500 },
     )
   }
 }
 
 export async function GET(req: NextRequest) {
   try {
-    const headers = new Headers(corsHeaders)
     const { searchParams } = new URL(req.url)
     const prefix = searchParams.get('prefix')
 
@@ -209,7 +210,6 @@ export async function GET(req: NextRequest) {
         { urls: imageUrls },
         {
           status: 200,
-          headers,
         },
       )
     }
@@ -224,7 +224,6 @@ export async function GET(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
-    const headers = new Headers(corsHeaders)
     const { searchParams } = new URL(req.url)
     const key = searchParams.get('key')
 
@@ -235,7 +234,6 @@ export async function DELETE(req: NextRequest) {
         { message: '이미지들이 성공적으로 삭제되었습니다' },
         {
           status: 200,
-          headers,
         },
       )
     }
