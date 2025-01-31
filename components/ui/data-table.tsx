@@ -103,7 +103,7 @@ export default function DataTable<TData, TValue>({
             <Button
               size="icon"
               variant="ghost"
-              className="absolute right-5 top-2 h-5 w-5 text-muted-foreground"
+              className="absolute right-2 top-2 h-5 w-5 text-muted-foreground"
               onClick={() => setGlobalFilter('')}
             >
               <X size={12} />
