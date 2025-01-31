@@ -10,15 +10,6 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { NextRequest, NextResponse } from 'next/server'
 import sharp from 'sharp'
 
-export const config = {
-  runtime: 'nodejs',
-  api: {
-    bodyParser: false,
-    responseLimit: false,
-    maxDuration: 60,
-  },
-}
-
 /**
  * 이미지 업로드 함수
  * @param files 업로드할 이미지 배열

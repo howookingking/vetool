@@ -137,7 +137,6 @@ export const uploadTxImages = async (
     const response = await fetch(baseUrl, {
       method: 'POST',
       body: formData,
-      credentials: 'same-origin',
       headers: {
         Accept: 'application/json',
       },
