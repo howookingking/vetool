@@ -6,8 +6,6 @@ import { isValidWeightOrderTx } from '@/lib/utils/utils'
 import { type TxLog } from '@/types/icu/chart'
 import { redirect } from 'next/navigation'
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL
-
 export const upsertIcuTx = async (
   hosId: string,
   txLocalState: TxLocalState,
