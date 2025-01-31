@@ -39,7 +39,10 @@ export default function ExportDialog({
         <DialogHeader className="gap-2">
           <DialogTitle>{chartData.patient.name} 차트 내보내기</DialogTitle>
           <DialogDescription className="flex flex-col gap-1">
-            <span>입원 기간 동안의 차트를 저장합니다</span>
+            <p>입원 기간 동안의 차트를 저장합니다</p>
+            <p>
+              텍스트로 복사할 경우 {chartData.target_date} 차트만 복사합니다
+            </p>
           </DialogDescription>
         </DialogHeader>
 
