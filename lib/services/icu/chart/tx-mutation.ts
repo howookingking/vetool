@@ -59,16 +59,9 @@ export const upsertIcuTx = async (
     redirect(`/error?message=${error.message}`)
   }
 
-  // 이미지가 존재한다면 업로드
-  if (
-    txLocalState?.bucketImagesLength ||
-    (txLocalState?.txImages && txLocalState.txImages.length > 0)
-  ) {
-    await uploadTxImages(
-      txLocalState.txImages || [],
-      data[0].icu_chart_tx_id,
-      txLocalState.bucketImagesLength?.toString() || '0',
-    )
+  return {
+    success: true,
+    txId: data[0].icu_chart_tx_id,
   }
 }
 
