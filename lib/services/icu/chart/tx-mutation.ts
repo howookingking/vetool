@@ -129,17 +129,18 @@ export const uploadTxImages = async (
 
     // 1. FormData 선언
     const formData = new FormData()
-
-    // 2. FormData에 이미지, 라우트, id 추가
     txImages.forEach((file) => formData.append('files', file))
     formData.append('route', 'icu')
     formData.append('id', txId)
     formData.append('startIndex', startIndex)
 
-    // 3. 이미지 업로드
     const response = await fetch(baseUrl, {
       method: 'POST',
       body: formData,
+      credentials: 'same-origin',
+      headers: {
+        Accept: 'application/json',
+      },
     })
 
     if (!response.ok) {

@@ -58,7 +58,7 @@ const uploadImage = async (
 
       // R2Client 업로드 명령 생성
       const command = new PutObjectCommand({
-        Bucket: process.env.NEXT_PUBLIC_R2_BUCKET_NAME!,
+        Bucket: process.env.R2_BUCKET_NAME!,
         Key: fileName,
         Body: optimizedBuffer,
         ContentType: contentType,
@@ -83,7 +83,7 @@ const uploadImage = async (
 
 const deleteImages = async (key: string) => {
   const listCommand = new ListObjectsV2Command({
-    Bucket: process.env.NEXT_PUBLIC_R2_BUCKET_NAME!,
+    Bucket: process.env.R2_BUCKET_NAME!,
     Prefix: key,
   })
 
@@ -96,7 +96,7 @@ const deleteImages = async (key: string) => {
   // 모든 객체 삭제
   const deletePromises = listResponse.Contents.map((item) => {
     const command = new DeleteObjectCommand({
-      Bucket: process.env.NEXT_PUBLIC_R2_BUCKET_NAME!,
+      Bucket: process.env.R2_BUCKET_NAME!,
       Key: item.Key,
     })
     return R2Client.send(command)
@@ -105,9 +105,20 @@ const deleteImages = async (key: string) => {
   await Promise.all(deletePromises)
 }
 
+export async function OPTIONS(req: NextRequest) {
+  return new Response(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    },
+  })
+}
+
 export async function POST(req: NextRequest) {
   try {
-    if (!process.env.NEXT_PUBLIC_R2_BUCKET_NAME) {
+    if (!process.env.R2_BUCKET_NAME) {
       throw new Error('R2 버킷 이름이 설정되지 않았습니다.')
     }
 
@@ -164,7 +175,7 @@ export async function GET(req: NextRequest) {
     if (prefix) {
       // ListObjectsV2Command: R2 버킷 내 객체 목록을 조회 (prefix를 통해)
       const listCommand = new ListObjectsV2Command({
-        Bucket: process.env.NEXT_PUBLIC_R2_BUCKET_NAME!,
+        Bucket: process.env.R2_BUCKET_NAME!,
         Prefix: prefix,
       })
 
@@ -179,7 +190,7 @@ export async function GET(req: NextRequest) {
 
       const urlPromises = listResponse.Contents.map(async (item) => {
         const headCommand = new HeadObjectCommand({
-          Bucket: process.env.NEXT_PUBLIC_R2_BUCKET_NAME!,
+          Bucket: process.env.R2_BUCKET_NAME!,
           Key: item.Key,
         })
 
@@ -187,7 +198,7 @@ export async function GET(req: NextRequest) {
 
         // GetObjectCommand: 특정 객체 (이미지 / 동영상)의 실제 콘텐츠를 조회 및 Signed URL 생성 준비
         const getCommand = new GetObjectCommand({
-          Bucket: process.env.NEXT_PUBLIC_R2_BUCKET_NAME!,
+          Bucket: process.env.R2_BUCKET_NAME!,
           Key: item.Key,
         })
 
