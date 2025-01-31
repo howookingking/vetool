@@ -11,15 +11,19 @@ import type { SearchedPatientsData } from '@/types/patients'
 import { Dispatch, SetStateAction } from 'react'
 import SearchPatientTableRow from './search-patient-table-row'
 
+type SearchPatientTableProps = {
+  searchedPatients: SearchedPatientsData[]
+  setIsEdited: Dispatch<SetStateAction<boolean>>
+  isIcu?: boolean
+  setIsConfirmDialogOpen?: Dispatch<SetStateAction<boolean>>
+}
+
 export default function SearchPatientTable({
   searchedPatients,
   setIsEdited,
   isIcu,
-}: {
-  searchedPatients: SearchedPatientsData[]
-  setIsEdited: Dispatch<SetStateAction<boolean>>
-  isIcu?: boolean
-}) {
+  setIsConfirmDialogOpen,
+}: SearchPatientTableProps) {
   return (
     <Table className="border">
       <TableHeader>
@@ -71,6 +75,7 @@ export default function SearchPatientTable({
               patientData={patient}
               setIsEdited={setIsEdited}
               isIcu={isIcu}
+              setIsConfirmDialogOpen={setIsConfirmDialogOpen}
             />
           ))
         )}

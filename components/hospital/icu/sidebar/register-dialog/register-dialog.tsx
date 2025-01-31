@@ -39,21 +39,25 @@ const LazySearchPatientContainer = dynamic(
   },
 )
 
+type RegisterDialogProps = {
+  hosId: string
+  hosGroupList: string[]
+  vetsListData: Vet[]
+}
+
 export default function RegisterDialog({
   hosId,
   hosGroupList,
   vetsListData,
-}: {
-  hosId: string
-  hosGroupList: string[]
-  vetsListData: Vet[]
-}) {
+}: RegisterDialogProps) {
+  const { target_date } = useParams()
+
+  const { reset } = useIcuRegisterStore()
+
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
+
   const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false)
   const [tab, setTab] = useState('search')
-
-  const { target_date } = useParams()
-  const { reset, isConfirmDialogOpen, setIsConfirmDialogOpen } =
-    useIcuRegisterStore()
 
   const defaultGroup = hosGroupList[0]
   const defaultVetId = vetsListData[0].user_id
@@ -70,15 +74,22 @@ export default function RegisterDialog({
     }
   }
 
-  const handleCloseDialog = () => {
-    setIsRegisterDialogOpen(false)
-    setIsConfirmDialogOpen(false)
-    setTab('search')
-    reset()
+  // const handleCloseDialog = () => {
+  //   setIsRegisterDialogOpen(false)
+  //   setIsConfirmDialogOpen(false)
+  //   setTab('search')
+  //   reset()
+  // }
+
+  const handleOpenChage = (open: boolean) => {
+    if (open) {
+      setTab('search')
+    }
+    setIsRegisterDialogOpen(open)
   }
 
   return (
-    <Dialog open={isRegisterDialogOpen} onOpenChange={setIsRegisterDialogOpen}>
+    <Dialog open={isRegisterDialogOpen} onOpenChange={handleOpenChage}>
       <DialogTrigger asChild className="hidden md:flex">
         <Button size="sm" className="shrink-0 text-sm">
           환자 입원
@@ -108,7 +119,12 @@ export default function RegisterDialog({
           </TabsList>
 
           <TabsContent value="search">
-            <LazySearchPatientContainer itemsPerPage={8} hosId={hosId} isIcu />
+            <LazySearchPatientContainer
+              itemsPerPage={8}
+              hosId={hosId}
+              isIcu
+              setIsConfirmDialogOpen={setIsConfirmDialogOpen}
+            />
           </TabsContent>
 
           <TabsContent value="register">
@@ -123,12 +139,12 @@ export default function RegisterDialog({
       </DialogContent>
 
       <LazyRegisterIcuConfirmDialog
-        handleCloseDialog={handleCloseDialog}
         isConfirmDialogOpen={isConfirmDialogOpen}
         setIsConfirmDialogOpen={setIsConfirmDialogOpen}
         hosId={hosId}
         defaultMainVetId={defaultVetId}
         defaultMainGroup={defaultGroup}
+        setIsRegisterDialogOpen={setIsRegisterDialogOpen}
       />
     </Dialog>
   )

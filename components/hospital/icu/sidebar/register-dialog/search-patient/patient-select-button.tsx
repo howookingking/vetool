@@ -5,22 +5,26 @@ import { useIcuRegisterStore } from '@/lib/store/icu/icu-register'
 import { getDaysSince } from '@/lib/utils/utils'
 import { Check, LoaderCircle } from 'lucide-react'
 import { useParams } from 'next/navigation'
-import { useState } from 'react'
+import { type Dispatch, type SetStateAction, useState } from 'react'
 
-export default function PatientSelectButton({
-  patientId,
-
-  birth,
-  patientName,
-}: {
+type PatientSelectButtonProps = {
   patientId: string
   birth: string
   patientName: string
-}) {
-  const { setRegisteringPatient, setIsConfirmDialogOpen } =
-    useIcuRegisterStore()
-  const [isLoading, setIsLoading] = useState(false)
+  setIsConfirmDialogOpen?: Dispatch<SetStateAction<boolean>>
+}
+
+export default function PatientSelectButton({
+  patientId,
+  birth,
+  patientName,
+  setIsConfirmDialogOpen,
+}: PatientSelectButtonProps) {
   const { target_date } = useParams()
+
+  const { setRegisteringPatient } = useIcuRegisterStore()
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const handlePatientClick = async () => {
     setIsLoading(true)
@@ -58,7 +62,7 @@ export default function PatientSelectButton({
       ageInDays: getDaysSince(birth),
     })
 
-    setIsConfirmDialogOpen(true)
+    setIsConfirmDialogOpen!(true)
   }
 
   return (

@@ -7,7 +7,7 @@ import { searchPatientsData } from '@/lib/services/patient/patient'
 import { type PaginatedData, type SearchedPatientsData } from '@/types/patients'
 import { X } from 'lucide-react'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import PatientNumber from './paitent-number'
 import PatientRegisterButtons from './patient-register-buttons'
@@ -18,12 +18,14 @@ type SearchPatientContainerProps = {
   itemsPerPage: number
   isIcu?: boolean
   hosId: string
+  setIsConfirmDialogOpen?: Dispatch<SetStateAction<boolean>>
 }
 
 export default function SearchPatientContainer({
   itemsPerPage,
   isIcu = false,
   hosId,
+  setIsConfirmDialogOpen,
 }: SearchPatientContainerProps) {
   const { hos_id } = useParams()
   const router = useRouter()
@@ -118,6 +120,7 @@ export default function SearchPatientContainer({
           searchedPatients={patientsData.data}
           setIsEdited={setIsEdited}
           isIcu={isIcu}
+          setIsConfirmDialogOpen={setIsConfirmDialogOpen}
         />
       )}
 

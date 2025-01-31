@@ -20,9 +20,6 @@ type IcuRegisterStore = {
   registeringPatient: Patient | null
   setRegisteringPatient: (patient: Patient) => void
 
-  isConfirmDialogOpen: boolean
-  setIsConfirmDialogOpen: (open: boolean) => void
-
   reset: () => void
 }
 
@@ -47,9 +44,6 @@ export const useIcuRegisterStore = create<IcuRegisterStore>((set) => ({
         hosPatientId: patient.hosPatientId,
       },
     }),
-
-  isConfirmDialogOpen: false,
-  setIsConfirmDialogOpen: (open) => set({ isConfirmDialogOpen: open }),
 
   reset: () => set({ registeringPatient: null }),
 }))

@@ -11,12 +11,14 @@ type SearchPatientTableRowProps = {
   patientData: SearchedPatientsData
   setIsEdited: Dispatch<SetStateAction<boolean>>
   isIcu?: boolean
+  setIsConfirmDialogOpen?: Dispatch<SetStateAction<boolean>>
 }
 
 export default function SearchPatientTableRow({
   patientData,
   setIsEdited,
   isIcu,
+  setIsConfirmDialogOpen,
 }: SearchPatientTableRowProps) {
   const {
     patient_id,
@@ -83,6 +85,7 @@ export default function SearchPatientTableRow({
             patientId={patient_id}
             birth={birth}
             patientName={name}
+            setIsConfirmDialogOpen={setIsConfirmDialogOpen}
           />
         </TableCell>
       ) : (

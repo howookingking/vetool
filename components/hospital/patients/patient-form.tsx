@@ -225,7 +225,7 @@ export default function PatientForm({
       setBreedOpen(false)
     }
     form.setValue('weight', weight ?? '')
-  }, [watchBreed, weight])
+  }, [watchBreed, weight, form])
 
   const handleRegister = async (
     values: z.infer<typeof registerPatientFormSchema>,
