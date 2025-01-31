@@ -15,7 +15,7 @@ export default function RealtimeStatus({
     <TooltipProvider delayDuration={30}>
       <Tooltip>
         <TooltipTrigger asChild className="cursor-pointer">
-          <div className="ml-2 flex items-center gap-1">
+          <div className="ml-1 flex items-center gap-1">
             <span className="text-xs text-muted-foreground">실시간</span>
             <div
               className={cn(

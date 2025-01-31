@@ -4,13 +4,15 @@ import PatchesCarousel from './patches-carousel'
 import { getHosList } from '@/lib/services/hospital-home/get-hos-name'
 import { getPatchTitlesData } from '@/lib/services/super/patch/patch'
 
+type HospitalHomeHeaderProps = {
+  isSuper: boolean
+  hosId: string
+}
+
 export default async function HospitalHomeHeader({
   isSuper,
   hosId,
-}: {
-  isSuper: boolean
-  hosId: string
-}) {
+}: HospitalHomeHeaderProps) {
   const hosListData = await getHosList()
   const patchTitlesData = await getPatchTitlesData()
   return (
