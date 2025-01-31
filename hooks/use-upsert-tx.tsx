@@ -36,6 +36,8 @@ export default function useUpsertTx({ hosId, onSuccess }: TxUpdateOptions) {
       txState.txResult = txState.txResult?.replace('kg', '')
     }
 
+    console.log(process.env.NEXT_PUBLIC_APP_URL)
+
     await upsertIcuTx(hosId, txState, format(new Date(), 'yyyy-MM-dd'), logs)
 
     toast({
