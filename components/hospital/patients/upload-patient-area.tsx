@@ -18,7 +18,7 @@ import { toast } from '@/components/ui/use-toast'
 import usePatientFileUpload from '@/hooks/use-patient-file-upload'
 import { cn } from '@/lib/utils/utils'
 import { DialogClose } from '@radix-ui/react-dialog'
-import { FileUp, LoaderCircle } from 'lucide-react'
+import { LoaderCircle } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -78,7 +78,6 @@ export default function UploadPatientArea() {
     <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button variant="outline" size="sm">
-          <FileUp size={20} />
           엑셀 업로드
         </Button>
       </DialogTrigger>

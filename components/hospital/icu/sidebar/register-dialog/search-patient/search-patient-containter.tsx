@@ -1,30 +1,34 @@
 'use client'
 
+import LargeLoaderCircle from '@/components/common/large-loader-circle'
+import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Skeleton } from '@/components/ui/skeleton'
-import {
-  getHosPatientCount,
-  searchPatientsData,
-} from '@/lib/services/patient/patient'
-import type { PaginatedData, SearchedPatientsData } from '@/types/patients'
+import { searchPatientsData } from '@/lib/services/patient/patient'
+import { type PaginatedData, type SearchedPatientsData } from '@/types/patients'
+import { X } from 'lucide-react'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
+import PatientNumber from './paitent-number'
 import PatientRegisterButtons from './patient-register-buttons'
 import SearchPatientPagination from './search-patient-pagination'
 import SearchPatientTable from './search-patient-table'
 
+type SearchPatientContainerProps = {
+  itemsPerPage: number
+  isIcu?: boolean
+  hosId: string
+}
+
 export default function SearchPatientContainer({
   itemsPerPage,
-  isIcu,
+  isIcu = false,
   hosId,
-}: {
-  itemsPerPage: number
-  isIcu: boolean
-  hosId: string
-}) {
-  const [totalPatientCount, setTotalPatientCount] = useState<number>()
+}: SearchPatientContainerProps) {
   const { hos_id } = useParams()
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
   const [isEdited, setIsEdited] = useState(false)
   const [inputValue, setInputValue] = useState('')
   const [isSearching, setIsSearching] = useState(false)
@@ -36,14 +40,9 @@ export default function SearchPatientContainer({
     page: 1,
     itemsPerPage: 10,
   })
-  const searchParams = useSearchParams()
-  const currentPage = Number(searchParams.get('page') || '1')
-  const router = useRouter()
-  const totalPages = Math.ceil(patientsData.total_count / itemsPerPage)
 
-  useEffect(() => {
-    getHosPatientCount(hosId).then(setTotalPatientCount)
-  }, [hosId])
+  const currentPage = Number(searchParams.get('page') ?? '1')
+  const totalPages = Math.ceil(patientsData.total_count / itemsPerPage)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value)
@@ -93,43 +92,45 @@ export default function SearchPatientContainer({
   return (
     <div className="flex flex-col gap-2">
       <div className="flex justify-between gap-2">
-        <Input
-          placeholder="환자 번호, 환자명, 보호자명을 검색하세요"
-          value={inputValue}
-          onChange={handleInputChange}
-          id="search-chart"
-        />
+        <div className="relative w-full">
+          <Input
+            placeholder="환자 번호, 환자명, 보호자명을 검색하세요"
+            value={inputValue}
+            onChange={handleInputChange}
+            id="search-chart"
+          />
+          <Button
+            size="icon"
+            variant="ghost"
+            className="absolute right-2 top-2 h-5 w-5 text-muted-foreground"
+            onClick={() => setInputValue('')}
+          >
+            <X size={12} />
+          </Button>
+        </div>
 
         {!isIcu && <PatientRegisterButtons hosId={hosId} />}
       </div>
 
-      <SearchPatientTable
-        isSearching={isSearching}
-        searchedPatients={patientsData.data}
-        setIsEdited={setIsEdited}
-        isIcu={isIcu}
-      />
-
-      <div className="flex items-center gap-1 text-sm text-muted-foreground">
-        현재 등록된 환자 수 :
-        {totalPatientCount ? (
-          <span className="font-medium text-black">
-            {totalPatientCount}마리
-          </span>
-        ) : (
-          <Skeleton className="h-5 w-20" />
-        )}
-      </div>
-
-      {!isSearching && (
-        <div className="flex items-center justify-between px-2">
-          <SearchPatientPagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
-        </div>
+      {isSearching ? (
+        <LargeLoaderCircle className="h-[571px] border" />
+      ) : (
+        <SearchPatientTable
+          searchedPatients={patientsData.data}
+          setIsEdited={setIsEdited}
+          isIcu={isIcu}
+        />
       )}
+
+      <div className="flex w-full items-center justify-between">
+        <PatientNumber hosId={hosId} />
+
+        <SearchPatientPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      </div>
     </div>
   )
 }

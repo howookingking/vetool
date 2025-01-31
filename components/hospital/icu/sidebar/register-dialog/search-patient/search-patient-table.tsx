@@ -1,4 +1,3 @@
-import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import NoResult from '@/components/common/no-result'
 import {
   Table,
@@ -13,12 +12,10 @@ import { Dispatch, SetStateAction } from 'react'
 import SearchPatientTableRow from './search-patient-table-row'
 
 export default function SearchPatientTable({
-  isSearching,
   searchedPatients,
   setIsEdited,
   isIcu,
 }: {
-  isSearching: boolean
   searchedPatients: SearchedPatientsData[]
   setIsEdited: Dispatch<SetStateAction<boolean>>
   isIcu?: boolean
@@ -61,16 +58,10 @@ export default function SearchPatientTable({
       </TableHeader>
 
       <TableBody>
-        {isSearching ? (
+        {searchedPatients && searchedPatients.length === 0 ? (
           <TableRow>
             <TableCell colSpan={10}>
-              <LargeLoaderCircle className="h-[400px]" />
-            </TableCell>
-          </TableRow>
-        ) : searchedPatients && searchedPatients.length === 0 ? (
-          <TableRow>
-            <TableCell colSpan={10}>
-              <NoResult title="검색 결과가 없습니다" className="h-[400px]" />
+              <NoResult title="검색 결과가 없습니다" className="h-[513px]" />
             </TableCell>
           </TableRow>
         ) : (
