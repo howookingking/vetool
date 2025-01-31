@@ -21,6 +21,8 @@ export default function ShareChartDialog({ icuIoId }: { icuIoId: string }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [sharedChartUrl, setSharedChartUrl] = useState('')
 
+  // const sharedChartUrl = `${window.location.origin}/hospital/share/${icuIoId}?target-date=${target_date}`
+  // 할 경우 서버에서 window 못 읽음
   useEffect(() => {
     setSharedChartUrl(
       `${window.location.origin}/hospital/share/${icuIoId}?target-date=${target_date}`,

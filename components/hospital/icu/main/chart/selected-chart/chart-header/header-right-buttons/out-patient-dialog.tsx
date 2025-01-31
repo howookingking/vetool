@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import type { SelectedChart } from '@/types/icu/chart'
+import { type SelectedChart } from '@/types/icu/chart'
 import { LogOut, Undo2 } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
@@ -27,7 +27,9 @@ export default function OutPatientDialog({
   chartData: SelectedChart
 }) {
   const { icu_io, patient } = chartData
+
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+
   const isPatientOut = icu_io.out_date !== null
 
   return (

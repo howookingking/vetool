@@ -21,9 +21,18 @@ import { vitalChartSchema } from '@/lib/schemas/icu/chart/vital-chart-schema'
 import { updateWeightData } from '@/lib/services/icu/chart/vitals'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+
+type UpdateVitalDialogProps = {
+  currentVital: string
+  patientId: string
+  isDialogOpen: boolean
+  setIsDialogOpen: Dispatch<SetStateAction<boolean>>
+  defaultValue?: string
+  vitalId?: number
+}
 
 export default function UpdateVitalDialog({
   currentVital,
@@ -32,14 +41,7 @@ export default function UpdateVitalDialog({
   setIsDialogOpen,
   defaultValue,
   vitalId,
-}: {
-  currentVital: string
-  patientId: string
-  isDialogOpen: boolean
-  setIsDialogOpen: Dispatch<SetStateAction<boolean>>
-  defaultValue?: string
-  vitalId?: number
-}) {
+}: UpdateVitalDialogProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const form = useForm<z.infer<typeof vitalChartSchema>>({

@@ -21,19 +21,24 @@ const LazyDeleteChartButtons = dynamic(() => import('./delete-chart-buttons'), {
   ssr: false,
   loading: () => <LargeLoaderCircle size={40} />,
 })
+
+type DeleteChartDialogProps = {
+  icuChartId: string
+  name: string
+  icuIoId: string
+  inDate: string
+}
+
 export default function DeleteChartDialog({
   icuChartId,
   name,
   icuIoId,
   inDate,
-}: {
-  icuChartId: string
-  name: string
-  icuIoId: string
-  inDate: string
-}) {
+}: DeleteChartDialogProps) {
   const { target_date } = useParams()
+
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+
   const isFirstChart = inDate === target_date
 
   return (

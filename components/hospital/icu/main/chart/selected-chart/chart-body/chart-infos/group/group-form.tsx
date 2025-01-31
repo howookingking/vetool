@@ -1,3 +1,5 @@
+'use no memo'
+
 import DialogFooterButtons from '@/components/common/dialog-footer-buttons'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -12,41 +14,26 @@ import { toast } from '@/components/ui/use-toast'
 import { groupCheckFormSchema } from '@/lib/schemas/icu/chart/chart-info-schema'
 import { updateGroup } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { type Dispatch, type SetStateAction, useState } from 'react'
+import { type UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 
-export default function GroupForm({
-  isDialogOpen,
-  currentGroups,
-  icuIoId,
-  setIsDialogOpen,
-}: {
-  isDialogOpen: boolean
-  currentGroups: string[]
+type GroupFormProps = {
   icuIoId: string
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>
-}) {
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  form: UseFormReturn<z.infer<typeof groupCheckFormSchema>>
+}
 
-  const form = useForm<z.infer<typeof groupCheckFormSchema>>({
-    resolver: zodResolver(groupCheckFormSchema),
-    defaultValues: {
-      groupList: currentGroups,
-    },
-  })
-
+export default function GroupForm({
+  icuIoId,
+  setIsDialogOpen,
+  form,
+}: GroupFormProps) {
   const {
     basicHosData: { groupListData },
   } = useBasicHosDataContext()
 
-  useEffect(() => {
-    if (!isDialogOpen) {
-      form.reset({ groupList: currentGroups })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDialogOpen, currentGroups])
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleSubmit = async (values: z.infer<typeof groupCheckFormSchema>) => {
     setIsSubmitting(true)
@@ -60,6 +47,7 @@ export default function GroupForm({
     setIsSubmitting(false)
     setIsDialogOpen(false)
   }
+
   return (
     <Form {...form}>
       <form
@@ -114,7 +102,7 @@ export default function GroupForm({
           )}
         />
         <DialogFooterButtons
-          buttonName="변경"
+          buttonName="수정"
           isLoading={isSubmitting}
           setIsDialogOpen={setIsDialogOpen}
         />

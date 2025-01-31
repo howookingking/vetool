@@ -17,18 +17,13 @@ import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 export function GroupListDialog({ groupList }: { groupList: string[] }) {
-  const [isOpen, setIsOpen] = useState(false)
+  const { refresh } = useRouter()
+  const { hos_id } = useParams()
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [tempGroupList, setTempGroupList] = useState(groupList)
   const [groupInput, setGroupInput] = useState('')
-  const { hos_id } = useParams()
-  const { refresh } = useRouter()
-
-  useEffect(() => {
-    if (!isOpen) {
-      setTempGroupList(groupList)
-    }
-  }, [groupList, isOpen])
 
   const handleSubmit = async () => {
     setIsSubmitting(true)
@@ -38,13 +33,20 @@ export function GroupListDialog({ groupList }: { groupList: string[] }) {
     toast({
       title: '병원 그룹목록을 변경하였습니다',
     })
-    setIsOpen(false)
+    setIsDialogOpen(false)
     setIsSubmitting(false)
     refresh()
   }
 
+  const handleOpenChange = (open: boolean) => {
+    if (open) {
+      setTempGroupList(groupList)
+    }
+    setIsDialogOpen(open)
+  }
+
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon" className="h-6 w-6">
           <Edit size={12} />

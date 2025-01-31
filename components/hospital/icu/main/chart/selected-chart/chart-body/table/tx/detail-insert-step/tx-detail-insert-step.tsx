@@ -40,6 +40,9 @@ export default function TxDetailInsertStep({
 }: {
   showTxUser: boolean
 }) {
+  const { hos_id } = useParams()
+
+  const { selectedTxPendingQueue, reset: orderQueueReset } = useIcuOrderStore()
   const {
     setTxStep,
     txLocalState,
@@ -47,9 +50,14 @@ export default function TxDetailInsertStep({
     setIsDeleting,
     reset: txLocalStateReset,
   } = useTxMutationStore()
-  const { hos_id } = useParams()
-
-  const { selectedTxPendingQueue, reset: orderQueueReset } = useIcuOrderStore()
+  const { isSubmitting, upsertTx, upsertMultipleTx } = useUpsertTx({
+    hosId: hos_id as string,
+    onSuccess: () => {
+      setTxStep('closed')
+      txLocalStateReset()
+      orderQueueReset()
+    },
+  })
 
   const [bucketImages, setBucketImages] = useState<ImageUrlResponse[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -65,15 +73,6 @@ export default function TxDetailInsertStep({
 
   const hasTxOrder = selectedTxPendingQueue.some((order) => order.txId)
   const hasTxLog = txLocalState?.txLog && txLocalState?.txLog?.length > 0
-
-  const { isSubmitting, upsertTx, upsertMultipleTx } = useUpsertTx({
-    hosId: hos_id as string,
-    onSuccess: () => {
-      setTxStep('closed')
-      txLocalStateReset()
-      orderQueueReset()
-    },
-  })
 
   useEffect(() => {
     if (!txLocalState?.txId) return

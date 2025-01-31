@@ -1,3 +1,5 @@
+'use no memo'
+
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -36,6 +38,9 @@ export default function AddSelectedOrdersToTemplateDialog({
 }) {
   const { hos_id } = useParams()
 
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+
   const { selectedOrderPendingQueue, reset: orderReset } = useIcuOrderStore()
   const form = useForm<z.infer<typeof templateFormSchema>>({
     resolver: zodResolver(templateFormSchema),
@@ -44,9 +49,6 @@ export default function AddSelectedOrdersToTemplateDialog({
       template_comment: undefined,
     },
   })
-
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   const handleSubmit = async (values: z.infer<typeof templateFormSchema>) => {
     setIsSubmitting(true)
@@ -68,18 +70,18 @@ export default function AddSelectedOrdersToTemplateDialog({
     orderReset()
   }
 
-  const handleDialogOpenChange = (open: boolean) => {
-    setIsDialogOpen(open)
-    if (!open) {
+  const handleOpenChange = (open: boolean) => {
+    if (open) {
       form.reset({
         template_name: undefined,
         template_comment: undefined,
       })
     }
+    setIsDialogOpen(open)
   }
 
   return (
-    <Dialog open={isDialogOpen} onOpenChange={handleDialogOpenChange}>
+    <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button
           className="flex items-center justify-start gap-2 py-5 text-base"

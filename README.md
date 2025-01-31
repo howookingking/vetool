@@ -39,3 +39,9 @@ export default function DefaultOrdersTable({
   defaultChartOrders: SelectedIcuOrder[]
 }) {}
 ```
+
+- CRUD 함수 명명법
+  - create : insertTodo
+  - read : getTodo
+  - update : updateTodo
+  - delete : deleteTodo

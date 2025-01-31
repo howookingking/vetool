@@ -24,13 +24,12 @@ const LazyCpcrEtTubeUpdateForm = dynamic(
   },
 )
 
-export default function CpcrEtTube({
-  cpcrEtTube,
-  icuIoId,
-}: {
+type CpcrEtTubeProps = {
   cpcrEtTube: string
   icuIoId: string
-}) {
+}
+
+export default function CpcrEtTube({ cpcrEtTube, icuIoId }: CpcrEtTubeProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [cpcr, etTube] = cpcrEtTube.split(',')
 
@@ -51,7 +50,7 @@ export default function CpcrEtTube({
               className={cn(cpcr !== 'CPCR' && 'hidden', 'h-4')}
             />
 
-            <span>{etTube ?? ''}</span>
+            <span>{etTube}</span>
           </div>
         </Button>
       </DialogTrigger>

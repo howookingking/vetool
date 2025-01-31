@@ -1,16 +1,18 @@
 import UserAvatar from '@/components/hospital/common/user-avatar'
 import { parseTextWithUrls } from '@/lib/utils/utils'
-import type { NoticeWithUser, NoticeColorType } from '@/types/hospital/notice'
+import {
+  type NoticeColorType,
+  type NoticeWithUser,
+} from '@/types/hospital/notice'
 import { GripVertical } from 'lucide-react'
 import UpsertNoticeDialog from './upsert-notice-dialog'
 
-export default function SingleNotice({
-  hosId,
-  notice,
-}: {
+type SingleNoticeProps = {
   hosId: string
   notice: NoticeWithUser
-}) {
+}
+
+export default function SingleNotice({ hosId, notice }: SingleNoticeProps) {
   const textParts = parseTextWithUrls(notice.notice_text)
 
   return (

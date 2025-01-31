@@ -1,3 +1,5 @@
+'use no memo'
+
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -24,7 +26,7 @@ import { sendFeedback } from '@/lib/services/super/feedback/feedback'
 import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle, X } from 'lucide-react'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { type Dispatch, type SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -43,7 +45,9 @@ export default function FeedbackForm({
     },
   })
 
-  const onSubmit = async (data: z.infer<typeof feedbackFormSchema>) => {
+  const handleSendFeedback = async (
+    data: z.infer<typeof feedbackFormSchema>,
+  ) => {
     setIsSubmitting(true)
 
     await sendFeedback(data.feedback_category, data.feedback_description)
@@ -63,7 +67,10 @@ export default function FeedbackForm({
         size={12}
       />
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+        <form
+          onSubmit={form.handleSubmit(handleSendFeedback)}
+          className="space-y-2"
+        >
           <FormField
             control={form.control}
             name="feedback_category"

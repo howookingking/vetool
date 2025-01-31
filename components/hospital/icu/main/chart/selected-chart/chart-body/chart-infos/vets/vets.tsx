@@ -11,10 +11,10 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
-import { Json } from '@/lib/supabase/database.types'
+import { type Json } from '@/lib/supabase/database.types'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import type { IcuChartsInCharge } from '@/types/adimin'
-import type { MainAndSubVet } from '@/types/icu/chart'
+import { type IcuChartsInCharge } from '@/types/adimin'
+import { type MainAndSubVet } from '@/types/icu/chart'
 import { Stethoscope } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
@@ -31,23 +31,26 @@ const LazyVetsUpdateForm = dynamic(
   },
 )
 
+type VetsProps = {
+  mainVet: MainAndSubVet
+  subVet: MainAndSubVet | null
+  icuChartId: string
+  inCharge: Json | null
+}
+
 export default function Vets({
   mainVet,
   subVet,
   icuChartId,
   inCharge,
-}: {
-  mainVet: MainAndSubVet
-  subVet: MainAndSubVet | null
-  icuChartId: string
-  inCharge: Json | null
-}) {
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
+}: VetsProps) {
   const { today } = (inCharge as IcuChartsInCharge) || {}
 
   const {
     basicHosData: { vetsListData },
   } = useBasicHosDataContext()
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -84,6 +87,7 @@ export default function Vets({
           <DialogTitle>담당의 변경</DialogTitle>
           <DialogDescription />
         </DialogHeader>
+
         <LazyVetsUpdateForm
           setIsDialogOpen={setIsDialogOpen}
           mainVet={mainVet}

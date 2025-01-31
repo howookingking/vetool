@@ -1,3 +1,5 @@
+'use no memo'
+
 import DeleteTodoDialog from '@/components/hospital/home/body/todo/delete-todo-dialog'
 import { Button } from '@/components/ui/button'
 import {
@@ -22,12 +24,20 @@ import { toast } from '@/components/ui/use-toast'
 import { todoSchema } from '@/lib/schemas/icu/icu-schema'
 import { upsertTodo } from '@/lib/services/hospital-home/todo'
 import { cn, formatDate } from '@/lib/utils/utils'
-import type { ClientTodo } from '@/types/hospital/todo'
+import { type ClientTodo } from '@/types/hospital/todo'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Edit, LoaderCircle, Plus } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+
+type UpsertTodoDialogProps = {
+  hosId: string
+  date: Date
+  isEdit?: boolean
+  refetch: () => Promise<void>
+  todo?: ClientTodo
+}
 
 export default function UpsertTodoDialog({
   hosId,
@@ -35,38 +45,17 @@ export default function UpsertTodoDialog({
   isEdit,
   refetch,
   todo,
-}: {
-  hosId: string
-  date: Date
-  isEdit?: boolean
-  refetch: () => Promise<void>
-  todo?: ClientTodo
-}) {
+}: UpsertTodoDialogProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const form = useForm<z.infer<typeof todoSchema>>({
     resolver: zodResolver(todoSchema),
-    defaultValues: isEdit
-      ? {
-          target_user: todo?.target_user!,
-          todo_title: todo?.todo_title,
-        }
-      : {
-          todo_title: undefined,
-          target_user: undefined,
-        },
+    defaultValues: {
+      todo_title: todo?.todo_title ?? '',
+      target_user: todo?.target_user ?? '',
+    },
   })
-
-  useEffect(() => {
-    if (!isDialogOpen && !isEdit) {
-      form.reset({
-        todo_title: undefined,
-        target_user: undefined,
-      })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDialogOpen])
 
   const handleUpsertTodo = async (values: z.infer<typeof todoSchema>) => {
     const { todo_title, target_user } = values
@@ -82,8 +71,18 @@ export default function UpsertTodoDialog({
     await refetch()
   }
 
+  const handleOpenChange = (open: boolean) => {
+    if (open) {
+      form.reset({
+        todo_title: todo?.todo_title ?? '',
+        target_user: todo?.target_user ?? '',
+      })
+    }
+    setIsDialogOpen(open)
+  }
+
   return (
-    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+    <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         {isEdit ? (
           <Button size="icon" className="h-6 w-6" variant="ghost">

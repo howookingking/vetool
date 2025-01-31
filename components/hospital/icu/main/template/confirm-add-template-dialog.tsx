@@ -50,6 +50,9 @@ export default function ConfirmAddTemplateDialog({
   const { refresh } = useRouter()
   const { hos_id } = useParams()
 
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+
   const form = useForm<z.infer<typeof templateFormSchema>>({
     resolver: zodResolver(templateFormSchema),
     defaultValues: {
@@ -57,9 +60,6 @@ export default function ConfirmAddTemplateDialog({
       template_comment: undefined,
     },
   })
-
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   const handleSubmit = async (values: z.infer<typeof templateFormSchema>) => {
     setIsSubmitting(true)
