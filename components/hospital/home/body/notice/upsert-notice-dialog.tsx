@@ -1,4 +1,5 @@
 'use client'
+'use no memo'
 
 import DeleteNoticeButton from '@/components/hospital/home/body/notice/delete-notice-button'
 import { Button } from '@/components/ui/button'
@@ -30,13 +31,21 @@ import { NOTICE_COLORS } from '@/constants/hospital/icu/chart/colors'
 import { noticeSchema } from '@/lib/schemas/icu/icu-schema'
 import { createNotice, updateNotice } from '@/lib/services/hospital-home/notice'
 import { cn } from '@/lib/utils/utils'
-import type { NoticeColorType } from '@/types/hospital/notice'
+import { type NoticeColorType } from '@/types/hospital/notice'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Edit, LoaderCircle, Plus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+
+type UpsertNoticeDialogProps = {
+  hosId: string
+  isEdit?: boolean
+  oldNoticeId?: string
+  oldNoticeText?: string
+  oldNoticeColor?: NoticeColorType
+}
 
 export default function UpsertNoticeDialog({
   hosId,
@@ -44,15 +53,7 @@ export default function UpsertNoticeDialog({
   oldNoticeText,
   oldNoticeColor,
   oldNoticeId,
-}: {
-  hosId: string
-  isEdit?: boolean
-  oldNoticeId?: string
-  oldNoticeText?: string
-  oldNoticeColor?: NoticeColorType
-}) {
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
+}: UpsertNoticeDialogProps) {
   const { refresh } = useRouter()
 
   const form = useForm<z.infer<typeof noticeSchema>>({
@@ -63,25 +64,16 @@ export default function UpsertNoticeDialog({
     },
   })
 
-  useEffect(() => {
-    if (!isDialogOpen) {
-      form.reset({
-        notice: oldNoticeText ?? '',
-        color: oldNoticeColor ?? '#ffffff',
-      })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDialogOpen])
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleUpsertNotice = async (values: z.infer<typeof noticeSchema>) => {
     const { color, notice } = values
     setIsSubmitting(true)
 
-    if (isEdit) {
-      await updateNotice(oldNoticeId!, notice, color)
-    } else {
-      await createNotice(notice, color, hosId)
-    }
+    isEdit
+      ? await updateNotice(oldNoticeId!, notice, color)
+      : await createNotice(notice, color, hosId)
 
     toast({
       title: isEdit ? '공지사항을 수정하였습니다' : '공지사항을 추가하였습니다',
@@ -91,8 +83,18 @@ export default function UpsertNoticeDialog({
     setIsSubmitting(false)
   }
 
+  const handleOpenChange = (open: boolean) => {
+    if (open) {
+      form.reset({
+        notice: oldNoticeText ?? '',
+        color: oldNoticeColor ?? '#ffffff',
+      })
+    }
+    setIsDialogOpen(open)
+  }
+
   return (
-    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+    <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         {isEdit ? (
           <Button size="icon" className="h-6 w-6" variant="ghost">

@@ -25,6 +25,7 @@ export function MobileIcuSidebarSheet({
   filteredData: {
     filteredIcuIoData: IcuSidebarIoData[]
     excludedIcuIoData: IcuSidebarIoData[]
+    filteredIoPatientCount: number
   }
   isEmpty: boolean
   setFilters: React.Dispatch<React.SetStateAction<Filter>>

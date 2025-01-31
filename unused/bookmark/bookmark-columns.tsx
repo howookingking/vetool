@@ -1,9 +1,9 @@
 'use client'
 
-import PreviewButton from '@/components/hospital/icu/common-dialogs/preview/preview-button'
+import PreviewButton from '@/components/hospital/common/preview/preview-button'
 import DeleteBookmarkDialog from '@/unused/bookmark/delete-bookmark-dialog'
 import BookmarkDialog from '@/unused/bookmark/bookmark-dialog'
-import GotoIcuButton from '@/components/hospital/icu/main/template/table/goto-icu-button'
+import GotoIcuButton from '@/unused/bookmark/goto-icu-button'
 import { Button } from '@/components/ui/button'
 import type { TemplateChart } from '@/types/icu/template'
 import { ColumnDef } from '@tanstack/react-table'
@@ -52,39 +52,39 @@ export const bookmarkColumns: ColumnDef<TemplateChart>[] = [
       )
     },
   },
-  {
-    id: 'preview',
-    header: '미리보기',
-    cell: ({ row }) => {
-      const chartId = row.original.icu_chart_id
-      const targetDate = row.original.target_date
-      const patientId = row.original.patient.patient_id
+  // {
+  //   id: 'preview',
+  //   header: '미리보기',
+  //   cell: ({ row }) => {
+  //     const chartId = row.original.icu_chart_id
+  //     const targetDate = row.original.created_at
+  //     const patientId = row.original.patient.patient_id
 
-      return (
-        <div className="flex justify-center">
-          <PreviewButton
-            chartId={chartId}
-            patientId={patientId}
-            targetDate={targetDate}
-          />
-        </div>
-      )
-    },
-  },
-  {
-    id: 'action',
-    header: '이동',
-    cell: ({ row }) => {
-      const patientId = row.original.patient.patient_id
-      const targetDate = row.original.target_date
+  //     return (
+  //       <div className="flex justify-center">
+  //         <PreviewButton
+  //           chartId={chartId}
+  //           patientId={patientId}
+  //           targetDate={targetDate}
+  //         />
+  //       </div>
+  //     )
+  //   },
+  // },
+  // {
+  //   id: 'action',
+  //   header: '이동',
+  //   cell: ({ row }) => {
+  //     const patientId = row.original.patient.patient_id
+  //     const targetDate = row.original.target_date
 
-      return (
-        <div className="flex justify-center">
-          <GotoIcuButton patientId={patientId} targetDate={targetDate} />
-        </div>
-      )
-    },
-  },
+  //     return (
+  //       <div className="flex justify-center">
+  //         <GotoIcuButton patientId={patientId} targetDate={targetDate} />
+  //       </div>
+  //     )
+  //   },
+  // },
   {
     id: 'edit',
     header: '수정',

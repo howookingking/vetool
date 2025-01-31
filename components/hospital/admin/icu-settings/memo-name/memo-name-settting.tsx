@@ -1,3 +1,5 @@
+'use no memo'
+
 import IcuSettingsCard from '@/components/hospital/admin/icu-settings/icu-settings-card'
 import {
   Form,
@@ -23,9 +25,10 @@ export default function MemoNameSetting({
 }: {
   memoNames: string[]
 }) {
-  const [isUpdating, setIsUpdating] = useState(false)
   const { hos_id } = useParams()
   const { refresh } = useRouter()
+
+  const [isUpdating, setIsUpdating] = useState(false)
 
   const memoA = memoNames[0]
   const memoB = memoNames[1]

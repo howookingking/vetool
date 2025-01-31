@@ -5,6 +5,9 @@ import { toast } from '@/components/ui/use-toast'
 import { useIcuRealtime } from '@/hooks/use-icu-realtime'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
+import PatchesCarousel, {
+  type PatchTitles,
+} from '../../home/header/patches-carousel'
 import RealtimeStatus from './realtime-status'
 
 const FOOTER_MAIN_VIEW_MENUS = [
@@ -45,16 +48,22 @@ const FOOTER_MAIN_VIEW_MENUS = [
   },
 ] as const
 
+type IcuFooterProps = {
+  hosId: string
+  targetDate: string
+  patchTitlesData: PatchTitles[]
+}
+
 export default function IcuFooter({
   hosId,
   targetDate,
-}: {
-  hosId: string
-  targetDate: string
-}) {
-  const isRealtimeReady = useIcuRealtime(hosId)
+  patchTitlesData,
+}: IcuFooterProps) {
   const { push, refresh } = useRouter()
   const path = usePathname()
+
+  const isRealtimeReady = useIcuRealtime(hosId)
+
   const currentIcuPath = path.split('/').at(5)
 
   useEffect(() => {
@@ -68,9 +77,9 @@ export default function IcuFooter({
   }, [isRealtimeReady, refresh])
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 z-40 h-[calc(2.5rem+env(safe-area-inset-bottom))] border-t bg-white 2xl:left-14">
-      <ul className="flex h-10 items-center gap-1 pl-1">
-        <li>
+    <footer className="fixed bottom-0 left-0 right-0 z-40 flex h-[calc(2.5rem+env(safe-area-inset-bottom))] justify-between border-t bg-white 2xl:left-14">
+      <ul className="flex h-10 items-center gap-1">
+        <li className="mx-2">
           <RealtimeStatus isSubscriptionReady={isRealtimeReady} />
         </li>
 
@@ -92,6 +101,8 @@ export default function IcuFooter({
           </li>
         ))}
       </ul>
+
+      <PatchesCarousel hosId={hosId} patchTitlesData={patchTitlesData} />
     </footer>
   )
 }

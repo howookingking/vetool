@@ -56,6 +56,8 @@ export default function useUpsertTx({ hosId, onSuccess }: TxUpdateOptions) {
       orderName?: string
       orderType?: string
       updatedLogs: TxLog[]
+      txImages?: File[]
+      bucketImagesLength?: number
     },
   ) => {
     if (isSubmitting) return
@@ -71,6 +73,8 @@ export default function useUpsertTx({ hosId, onSuccess }: TxUpdateOptions) {
         isCrucialChecked: values.isCrucialChecked,
         icuChartOrderName: values.orderName,
         icuChartOrderType: values.orderType,
+        txImages: values.txImages,
+        bucketImagesLength: values.bucketImagesLength,
       },
       logs:
         values.result && values.result.trim() !== ''
@@ -78,7 +82,16 @@ export default function useUpsertTx({ hosId, onSuccess }: TxUpdateOptions) {
           : (item.txLog ?? []),
     }))
 
-    await Promise.all(txStates.map(({ state, logs }) => upsertTx(state, logs)))
+    await Promise.all(
+      txStates.map(({ state, logs }) =>
+        upsertIcuTx(hosId, state, format(new Date(), 'yyyy-MM-dd'), logs),
+      ),
+    )
+
+    toast({
+      title: '처치 내역이 업데이트 되었습니다',
+    })
+
     onSuccess?.()
     setIsSubmitting(false)
   }

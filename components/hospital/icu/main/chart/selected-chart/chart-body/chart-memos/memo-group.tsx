@@ -146,15 +146,15 @@ export default function MemoGroup({
   }
 
   return (
-    <div className="relative flex w-full flex-col gap-1">
+    <div className="relative flex w-full flex-col">
       <Label
-        className="ml-2 text-xs text-muted-foreground"
+        className="mb-1 ml-2 text-xs text-muted-foreground"
         htmlFor={`memo-${memoIndex}`}
       >
         {memoName} ({sortedMemos.length})
       </Label>
 
-      <ScrollArea className="h-60 rounded-md border p-2">
+      <ScrollArea className="h-60 rounded-t-md border p-2">
         <ReactSortable
           list={sortedMemos}
           setList={setSortedMemos}
@@ -195,7 +195,7 @@ export default function MemoGroup({
           value={memoInput}
           onChange={(e) => setMemoInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="w-full pr-7 text-sm placeholder:text-xs"
+          className="w-full rounded-none rounded-b-md border-t-0 pr-7 text-sm placeholder:text-xs"
         />
 
         <MemoColorPicker memoColor={memoColor} setMemoColor={setMemoColor} />

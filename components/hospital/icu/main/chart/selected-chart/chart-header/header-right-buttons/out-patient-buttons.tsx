@@ -3,7 +3,7 @@ import { DialogClose } from '@/components/ui/dialog'
 import { toast } from '@/components/ui/use-toast'
 import { toggleOutPatient } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { cn, hashtagKeyword } from '@/lib/utils/utils'
-import type { SelectedChart } from '@/types/icu/chart'
+import { type SelectedChart } from '@/types/icu/chart'
 import { LoaderCircle } from 'lucide-react'
 import { Dispatch, SetStateAction, useState } from 'react'
 
@@ -16,7 +16,8 @@ export default function OutPatientButtons({
   chartData: SelectedChart
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>
 }) {
-  const { icu_io, orders, patient } = chartData
+  const { icu_io, patient } = chartData
+
   const [isOutSubmitting, setIsOutSubmitting] = useState(false)
   const [isAliveSubmitting, setIsAliveSubmitting] = useState(false)
 
@@ -26,21 +27,16 @@ export default function OutPatientButtons({
       `${icu_io.icu_io_dx}, ${icu_io.icu_io_cc}`,
     )
 
-    const hashtaggedStringifiedOrderNames = orders
-      .filter((order) => order.order_type !== 'checklist')
-      .map((order) => `#${order.order_name.trim()}`)
-      .join('')
-
     await toggleOutPatient(
       icu_io.icu_io_id,
-      isPatientOut,
-      hashtaggedStringifiedOrderNames,
       patient.patient_id,
+      isPatientOut,
       hashtaggedDxCc,
-      patient.species,
-      patient.breed ?? '미정',
+      patient.breed ?? 'OTHER BREED',
       patient.name,
+      patient.species,
       patient.owner_name ?? '',
+      patient.gender,
       icu_io.age_in_days,
       isAlive,
     )

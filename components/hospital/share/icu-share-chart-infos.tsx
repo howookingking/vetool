@@ -10,24 +10,32 @@ export default function IcuShareChartInfos({
   chartData,
   mainVetName,
 }: {
-  chartData: Omit<SelectedChart, 'orders'>
+  chartData: SelectedChart
   mainVetName?: string
 }) {
   const { icu_io, patient } = chartData
 
   return (
-    <div className="pointer-events-none grid cursor-not-allowed grid-cols-8 gap-2 md:grid-cols-11">
+    <div
+      data-guide="chart-info"
+      className="pointer-events-none grid cursor-not-allowed grid-cols-8 gap-2 md:grid-cols-11"
+    >
       <div className="col-span-8 md:col-span-6">
         <InAndOutDate
           icuIoId={icu_io.icu_io_id}
           inDate={icu_io.in_date}
           outDueDate={icu_io.out_due_date}
           outDate={icu_io.out_date}
+          noIcon
         />
       </div>
 
       <div className="order-last col-span-8 md:order-none md:col-span-5">
-        <Diagnosis diagnosis={icu_io.icu_io_dx} icuIoId={icu_io.icu_io_id} />
+        <Diagnosis
+          diagnosis={icu_io.icu_io_dx}
+          icuIoId={icu_io.icu_io_id}
+          isShare
+        />
       </div>
 
       <div className="col-span-4 md:order-none md:col-span-3">
@@ -58,6 +66,7 @@ export default function IcuShareChartInfos({
         <ChiefComplaint
           chiefComplaint={icu_io.icu_io_cc}
           icuIoId={icu_io.icu_io_id}
+          isShare
         />
       </div>
     </div>

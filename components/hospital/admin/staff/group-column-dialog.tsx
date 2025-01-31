@@ -1,9 +1,12 @@
+'use no memo'
+
 import DialogFooterButtons from '@/components/common/dialog-footer-buttons'
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -17,34 +20,31 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { toast } from '@/components/ui/use-toast'
+import { GroupCheckFormSchema } from '@/lib/schemas/admin/admin-schema'
 import { updateStaffGroup } from '@/lib/services/admin/staff/staff'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { DialogDescription } from '@radix-ui/react-dialog'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-const GroupCheckFormSchema = z.object({
-  items: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: '적어도 하나의 그룹을 선택해주세요',
-  }),
-})
+type GroupColumnDialogProps = {
+  userId: string
+  group: string[] | null
+  groupList: string[]
+  name: string
+}
 
 export function GroupColumnDialog({
   groupList,
   userId,
   group,
   name,
-}: {
-  userId: string
-  group: string[] | null
-  groupList: string[]
-  name: string
-}) {
+}: GroupColumnDialogProps) {
+  const { refresh } = useRouter()
+
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isUpdating, setIsUpdating] = useState(false)
-  const { refresh } = useRouter()
 
   const form = useForm<z.infer<typeof GroupCheckFormSchema>>({
     resolver: zodResolver(GroupCheckFormSchema),
@@ -66,8 +66,17 @@ export function GroupColumnDialog({
     setIsUpdating(false)
   }
 
+  const handleOpenChange = (open: boolean) => {
+    if (open) {
+      form.reset({
+        items: group || [],
+      })
+    }
+    setIsDialogOpen(open)
+  }
+
   return (
-    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+    <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger>
         {!group && <Badge variant="destructive">미분류</Badge>}
         <ul className="flex flex-wrap items-center justify-center gap-1">

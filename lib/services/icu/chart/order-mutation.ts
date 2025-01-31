@@ -79,7 +79,7 @@ export const getOrder = async (icuChartId: string) => {
   return data
 }
 
-export const upsertTemplateOrders = async (
+export const pasteTemplateOrders = async (
   templateChartId: string,
   icuChartId: string,
 ) => {

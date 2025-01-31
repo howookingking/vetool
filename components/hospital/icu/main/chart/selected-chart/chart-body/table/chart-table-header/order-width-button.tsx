@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { ArrowLeftToLine, ArrowRightFromLine } from 'lucide-react'
-import { Dispatch, SetStateAction } from 'react'
+import { type Dispatch, type SetStateAction } from 'react'
 
 const MOBILE_WIDTH = 300
 const WIDTH_SEQUENCE = [300, 400, 500, 600] as const
@@ -39,7 +39,7 @@ export default function OrderWidthButton({
       variant="ghost"
       size="icon"
       onClick={handleOrderWidthChange}
-      className="shrink-0"
+      className="hidden shrink-0 md:block"
     >
       {isMaxWidth ? (
         <ArrowLeftToLine size={18} />

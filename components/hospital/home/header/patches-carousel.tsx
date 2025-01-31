@@ -4,21 +4,24 @@ import { ChevronRight, Megaphone } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-type PatchTitles = {
+export type PatchTitles = {
   patch_id: string
   patch_title: string
+}
+
+type PatchesCarouselProps = {
+  hosId: string
+  patchTitlesData: PatchTitles[]
 }
 
 export default function PatchesCarousel({
   hosId,
   patchTitlesData,
-}: {
-  hosId: string
-  patchTitlesData: PatchTitles[]
-}) {
+}: PatchesCarouselProps) {
+  const { push } = useRouter()
+
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
-  const { push } = useRouter()
 
   useEffect(() => {
     if (patchTitlesData.length <= 1) return
@@ -39,7 +42,7 @@ export default function PatchesCarousel({
   return (
     <div className="h-10 w-[300px]">
       <div
-        className="group relative flex h-full items-center overflow-hidden rounded-md border bg-background px-3 transition-all duration-300 hover:bg-accent"
+        className="group relative flex h-full items-center overflow-hidden bg-background px-3 transition-all duration-300 hover:bg-accent"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
@@ -63,7 +66,9 @@ export default function PatchesCarousel({
                       ? 'animate-slideUp'
                       : 'translate-y-full opacity-0'
                 }`}
-                onClick={() => push(`${hosId}/patches/${patch.patch_id}`)}
+                onClick={() =>
+                  push(`/hospital/${hosId}/patches/${patch.patch_id}`)
+                }
               >
                 <div className="flex items-center justify-between px-2">
                   <p className="w-full truncate text-center text-sm font-medium">

@@ -1,10 +1,13 @@
+import OrderCreator from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-creator'
 import OrderRows from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-rows'
-import QuickOrderInsertInput from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/quick-order-insert-input'
 import { TableBody, TableCell, TableRow } from '@/components/ui/table'
-import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
-import type { VitalRefRange } from '@/types/adimin'
-import type { SelectedIcuOrder } from '@/types/icu/chart'
-import { Dispatch, RefObject, SetStateAction } from 'react'
+import {
+  type OrderStep,
+  OrderTimePendingQueue,
+} from '@/lib/store/icu/icu-order'
+import { type VitalRefRange } from '@/types/adimin'
+import { type SelectedIcuOrder } from '@/types/icu/chart'
+import { type Dispatch, type RefObject, type SetStateAction } from 'react'
 
 type ChartTableBodyProps = {
   selectedOrderPendingQueue: Partial<SelectedIcuOrder>[]
@@ -15,7 +18,7 @@ type ChartTableBodyProps = {
   showOrderer: boolean
   showTxUser: boolean
   selectedTxPendingQueue: OrderTimePendingQueue[]
-  orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit'
+  orderStep: OrderStep
   orderTimePendingQueue: OrderTimePendingQueue[]
   orderWidth: number
   isMobile: boolean
@@ -26,7 +29,7 @@ type ChartTableBodyProps = {
   cellRef?: RefObject<HTMLTableRowElement>
   species: string
   hosId: string
-  setOrderStep: (orderStep: 'closed' | 'upsert' | 'selectOrderer') => void
+  setOrderStep: (orderStep: OrderStep) => void
   reset: () => void
   timeGuidelineData: number[]
 }
@@ -83,9 +86,10 @@ export default function ChartTableBody({
       {!isExport && !preview && (
         <TableRow className="hover:bg-transparent">
           <TableCell className="p-0">
-            <QuickOrderInsertInput
+            <OrderCreator
               icuChartId={icuChartId}
               setSortedOrders={setSortedOrders}
+              sortedOrders={sortedOrders}
             />
           </TableCell>
 

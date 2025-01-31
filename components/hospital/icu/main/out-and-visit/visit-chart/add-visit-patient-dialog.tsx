@@ -29,6 +29,9 @@ import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 export default function AddVisitPatientDialog() {
+  const { hos_id, target_date } = useParams()
+  const { refresh } = useRouter()
+
   const [selectedPatient, setSelectedPatient] = useState<{
     icu_io_id: string
     main_vet: string
@@ -38,28 +41,9 @@ export default function AddVisitPatientDialog() {
   const [visitablePatients, setVisitablePatients] = useState<
     VisitablePatientsData[]
   >([])
-  const { hos_id, target_date } = useParams()
-  const { refresh } = useRouter()
   const [isFetching, setIsFetching] = useState(false)
 
   const noPatientToAdd = visitablePatients.length === 0
-
-  useEffect(() => {
-    if (isDialogOpen) {
-      setIsFetching(true)
-      const fetchVisitablePatients = async () => {
-        const patients = await getVisitablePatients(
-          hos_id as string,
-          target_date as string,
-        )
-
-        setVisitablePatients(patients)
-        setIsFetching(false)
-      }
-
-      fetchVisitablePatients()
-    }
-  }, [hos_id, isDialogOpen, target_date])
 
   const handleInsertVisitPatient = async () => {
     if (!selectedPatient) return
@@ -84,8 +68,24 @@ export default function AddVisitPatientDialog() {
     setIsDialogOpen(false)
   }
 
+  const handleOpenChange = (open: boolean) => {
+    if (open) {
+      setIsFetching(true)
+      const fetchVisitablePatients = async () => {
+        const patients = await getVisitablePatients(
+          hos_id as string,
+          target_date as string,
+        )
+        setVisitablePatients(patients)
+        setIsFetching(false)
+      }
+      fetchVisitablePatients()
+    }
+    setIsDialogOpen(open)
+  }
+
   return (
-    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+    <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button variant="default" size="icon" className="h-6 w-6 rounded-full">
           <Plus size={14} />

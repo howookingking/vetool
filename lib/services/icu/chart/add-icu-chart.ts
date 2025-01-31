@@ -23,7 +23,7 @@ export const copyPrevChart = async (targetDate: string, patientId: string) => {
         weight_measured_date,
         weight,
         in_charge,
-        der_calc_factor
+        urgency
       `,
     )
     .match({ patient_id: patientId, target_date: prevDate })
@@ -86,7 +86,7 @@ export const copyPrevChart = async (targetDate: string, patientId: string) => {
         weight: prevChartData.weight,
         patient_id: patientId,
         in_charge: newInCharge,
-        der_calc_factor: prevChartData.der_calc_factor,
+        urgency: prevChartData.urgency,
       })
       .select('icu_chart_id')
       .single()

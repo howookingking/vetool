@@ -11,10 +11,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
 import { bookmarkFormSchema } from '@/lib/schemas/icu/chart/bookmark-schema'
-import {
-  deleteTemplateChart,
-  upsertTemplateChart,
-} from '@/lib/services/icu/template/template'
+import { deleteTemplateChart } from '@/lib/services/icu/template/template'
 import { cn } from '@/lib/utils/utils'
 import { IcuTemplate } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -54,12 +51,12 @@ export default function BookmarkForm({
   const handleSubmit = async (values: z.infer<typeof bookmarkFormSchema>) => {
     setIsSubmitting(true)
 
-    await upsertTemplateChart(
-      values.bookmark_name,
-      values.bookmark_comment ?? '',
-      icuChartId,
-      hos_id as string,
-    )
+    // await upsertTemplateChart(
+    //   values.bookmark_name,
+    //   values.bookmark_comment ?? '',
+    //   icuChartId,
+    //   hos_id as string,
+    // )
 
     toast({
       title: `북마크를 ${bookmarkData?.template_id!! ? '수정' : '생성'}하였습니다`,

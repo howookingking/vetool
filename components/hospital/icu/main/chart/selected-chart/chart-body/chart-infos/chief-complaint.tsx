@@ -8,9 +8,11 @@ import { useState } from 'react'
 export default function ChiefComplaint({
   chiefComplaint,
   icuIoId,
+  isShare,
 }: {
   chiefComplaint: string
   icuIoId: string
+  isShare?: boolean
 }) {
   const [isUpdating, setIsUpdating] = useState(false)
 
@@ -38,6 +40,7 @@ export default function ChiefComplaint({
       defaultValue={chiefComplaint}
       handleUpdate={handleUpdateChiefComplaint}
       isUpdating={isUpdating}
+      isShare={isShare}
     />
   )
 }

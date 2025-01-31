@@ -10,10 +10,9 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { VITALS } from '@/constants/hospital/icu/chart/vital'
-import { getVitalTxData, getWeightData } from '@/lib/services/icu/chart/vitals'
+import { getVitalTxData } from '@/lib/services/icu/chart/vitals'
 import { parseVitalValue } from '@/lib/utils/analysis'
 import type { VitalChartData, VitalData } from '@/types/icu/chart'
-import { format } from 'date-fns'
 import { useEffect, useMemo, useState } from 'react'
 
 export default function VitalChart({
@@ -38,32 +37,18 @@ export default function VitalChart({
     const fetchVitalData = async () => {
       setIsLoading(true)
 
-      // 이미 페칭한 데이터가 존재하면 early return
       if (vitalData[currentVital]) {
         setIsLoading(false)
         return
       }
 
-      let fetchedVitalData: VitalData[] = []
-
-      switch (currentVital) {
-        case '체중':
-          fetchedVitalData = await getWeightData(patientId, inDate)
-
-          break
-
-        default:
-          fetchedVitalData = await getVitalTxData(patientId, inDate)
-
-          fetchedVitalData = fetchedVitalData.filter((item) =>
-            item.icu_chart_order_name?.includes(currentVital),
-          )
-
-          break
-      }
+      const fetchedVitalData = await getVitalTxData(patientId, inDate)
+      const filteredVitalData = fetchedVitalData.filter((item) =>
+        item.icu_chart_order_name?.includes(currentVital),
+      )
 
       setVitalData((prev) => ({
-        [currentVital]: fetchedVitalData,
+        [currentVital]: filteredVitalData,
         ...prev,
       }))
 
@@ -80,11 +65,14 @@ export default function VitalChart({
     return vitalData[currentVital]
       .map((item) => {
         const value = parseVitalValue(currentVital, item)
+        const date = `${item?.target_date ?? ''} ${
+          item?.time ? `${item.time.toString().padStart(2, '0')}:00` : ''
+        }`
 
-        if (isNaN(value)) return null
+        if (isNaN(value) || !date) return null
 
         return {
-          date: format(new Date(item.created_at), 'yyyy-MM-dd HH:mm'),
+          date,
           value,
           vitalId: item.icu_chart_tx_id,
           vitalName: item.icu_chart_order_name || '체중',
@@ -95,9 +83,7 @@ export default function VitalChart({
       .reverse()
   }, [currentVital, vitalData, displayCount])
 
-  const hasMoreData = (() => {
-    return (vitalData[currentVital] || []).length > displayCount
-  })()
+  const hasMoreData = (vitalData[currentVital] || []).length > displayCount
 
   const handleLoadMore = () => {
     setDisplayCount((prev: number) => prev + initialLength)
@@ -151,7 +137,11 @@ export default function VitalChart({
         </>
       ) : (
         <div className="flex h-full items-center justify-center">
-          <NoResultSquirrel text="분석할 데이터가 없습니다" size="lg" />
+          <NoResultSquirrel
+            text="분석할 데이터가 없습니다"
+            size="lg"
+            className="flex-col"
+          />
         </div>
       )}
     </div>

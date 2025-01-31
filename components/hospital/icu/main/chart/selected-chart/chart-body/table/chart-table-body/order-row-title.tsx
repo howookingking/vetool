@@ -1,6 +1,7 @@
 import OrderTitleContent from '@/components/hospital/common/order-title-content'
 import { Button } from '@/components/ui/button'
 import { TableCell } from '@/components/ui/table'
+import { OrderStep } from '@/lib/store/icu/icu-order'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
@@ -23,8 +24,7 @@ type OrderRowTitleProps = {
       | Partial<SelectedIcuOrder>[]
       | ((prev: Partial<SelectedIcuOrder>[]) => Partial<SelectedIcuOrder>[]),
   ) => void
-  setOrderStep?: (orderStep: 'closed' | 'upsert' | 'selectOrderer') => void
-  setIsEditOrderMode?: (isEditOrderMode: boolean) => void
+  setOrderStep?: (orderStep: OrderStep) => void
   setSelectedChartOrder?: (chartOrder: Partial<SelectedIcuOrder>) => void
   isInOrderPendingQueue?: boolean
 }
@@ -42,7 +42,6 @@ export default function OrderRowTitle({
   reset,
   setSelectedOrderPendingQueue,
   setOrderStep,
-  setIsEditOrderMode,
   setSelectedChartOrder,
   isInOrderPendingQueue,
 }: OrderRowTitleProps) {
@@ -72,8 +71,7 @@ export default function OrderRowTitle({
 
       // 오더 수정하기 위해 다이얼로그 여는 경우
       reset!()
-      setOrderStep!('upsert')
-      setIsEditOrderMode!(true)
+      setOrderStep!('edit')
       setSelectedChartOrder!(order)
     },
     [
@@ -81,7 +79,6 @@ export default function OrderRowTitle({
       setSelectedOrderPendingQueue,
       setSelectedChartOrder,
       setOrderStep,
-      setIsEditOrderMode,
       reset,
     ],
   )
@@ -119,7 +116,7 @@ export default function OrderRowTitle({
       <Button
         disabled={isOptimisticOrder}
         variant="ghost"
-        onClick={isSorting ? undefined : handleClickOrderTitle}
+        onClick={isSorting || preview ? undefined : handleClickOrderTitle}
         className={cn(
           'group flex h-11 justify-between rounded-none bg-transparent px-2 outline-none transition duration-300 hover:scale-[97%] hover:bg-transparent',
           isOptimisticOrder && 'animate-bounce',
@@ -128,7 +125,7 @@ export default function OrderRowTitle({
             : isSorting
               ? 'cursor-grab'
               : 'cursor-pointer',
-          isInOrderPendingQueue && 'ring-4 ring-inset ring-primary',
+          isInOrderPendingQueue && 'ring-2 ring-inset ring-primary',
         )}
         style={{
           width: isTouchMove ? 200 : isMobile ? 300 : orderWidth,

@@ -1,5 +1,5 @@
 import OrderTypeColorDot from '@/components/hospital/common/order-type-color-dot'
-import type { IcuOrderColors } from '@/types/adimin'
+import { type IcuOrderColors } from '@/types/adimin'
 
 type OrderTitleContentProps = {
   orderType: string

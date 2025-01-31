@@ -12,7 +12,7 @@ export default async function DefaultOrdersTab({ hosId }: { hosId: string }) {
   const defaultChartOrders = await getDefaultChartOrders(hosId)
 
   return (
-    <Card className="mt-2 sm:w-1/2">
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>기본 차트</CardTitle>
         <CardDescription>기본형식의 차트를 설정해주세요</CardDescription>

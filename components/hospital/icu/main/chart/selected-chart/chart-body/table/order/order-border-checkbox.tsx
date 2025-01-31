@@ -6,7 +6,7 @@ import {
   FormLabel,
 } from '@/components/ui/form'
 import { orderSchema } from '@/lib/schemas/icu/chart/order-schema'
-import { UseFormReturn } from 'react-hook-form'
+import { type UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 
 export default function OrderBorderCheckbox({

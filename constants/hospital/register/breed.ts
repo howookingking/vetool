@@ -1495,6 +1495,11 @@ export const FELINE_BREEDS = [
     kor: '히말라얀',
     eng: 'HIMALAYAN',
   },
+  {
+    id: 59,
+    kor: '아메리칸 컬',
+    eng: 'AMERICAN CURL',
+  },
 ] as const
 
 export const COLORS = [

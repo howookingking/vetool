@@ -135,12 +135,13 @@ export default function PatientForm({
     mode === 'updateFromPatientRoute' || mode === 'updateFromIcuRoute'
   const isRegisterFromIcuRoute = mode === 'registerFromIcuRoute'
 
+  const { refresh } = useRouter()
+
+  const { registeringPatient, setRegisteringPatient } = useIcuRegisterStore()
+
   const [breedOpen, setBreedOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDuplicatedId, setIsDuplicatedId] = useState(false)
-
-  const { refresh } = useRouter()
-  const { registeringPatient, setRegisteringPatient } = useIcuRegisterStore()
 
   let defaultBreed: string
 

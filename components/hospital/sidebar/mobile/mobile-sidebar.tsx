@@ -32,8 +32,12 @@ export default function MobileSidebar({
           <Menu size={24} />
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="max-w-[240px] p-0">
-        <SheetHeader className="h-12">
+      <SheetContent
+        side="right"
+        className="flex h-screen max-w-[240px] flex-col justify-between p-0"
+        noCloseButton
+      >
+        <SheetHeader className="hidden">
           <SheetTitle />
           <SheetDescription />
         </SheetHeader>
@@ -54,9 +58,9 @@ export default function MobileSidebar({
         </ul>
 
         <SidebarUserInfo
+          mobile
           hosId={hosId}
           vetoolUser={vetoolUser}
-          mobile
           setIsSheetOpen={setIsSheetOpen}
         />
       </SheetContent>

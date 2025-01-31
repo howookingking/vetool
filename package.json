@@ -12,6 +12,8 @@
     "https": "next dev --experimental-https"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.726.1",
+    "@aws-sdk/s3-request-presigner": "^3.726.1",
     "@dotlottie/react-player": "^1.6.19",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-accordion": "^1.2.2",
@@ -61,6 +63,7 @@
     "react-sortablejs": "^6.1.4",
     "recharts": "2.13.0-alpha.5",
     "remark-gfm": "^4.0.0",
+    "sharp": "^0.33.5",
     "supabase": "1.178.2",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",

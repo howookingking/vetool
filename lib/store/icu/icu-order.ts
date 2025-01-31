@@ -1,4 +1,4 @@
-import type { SelectedIcuOrder, TxLog } from '@/types/icu/chart'
+import { type SelectedIcuOrder, type TxLog } from '@/types/icu/chart'
 import { create } from 'zustand'
 
 export type OrderTimePendingQueue = {
@@ -9,14 +9,11 @@ export type OrderTimePendingQueue = {
   isCrucialChecked?: boolean
 }
 
-type IcuOrderState = {
-  orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit'
-  setOrderStep: (
-    orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit',
-  ) => void
+export type OrderStep = 'closed' | 'edit' | 'selectOrderer'
 
-  isEditOrderMode: boolean
-  setIsEditOrderMode: (isEditOrderMode: boolean) => void
+type IcuOrderState = {
+  orderStep: OrderStep
+  setOrderStep: (orderStep: OrderStep) => void
 
   selectedChartOrder: Partial<SelectedIcuOrder>
   setSelectedChartOrder: (chartOrder: Partial<SelectedIcuOrder>) => void
@@ -55,9 +52,6 @@ type IcuOrderState = {
 export const useIcuOrderStore = create<IcuOrderState>((set) => ({
   orderStep: 'closed',
   setOrderStep: (orderStep) => set({ orderStep }),
-
-  isEditOrderMode: false,
-  setIsEditOrderMode: (isEditOrderMode) => set({ isEditOrderMode }),
 
   selectedChartOrder: {} as Partial<SelectedIcuOrder>,
   setSelectedChartOrder: (selectedChartOrder) => set({ selectedChartOrder }),
@@ -100,7 +94,6 @@ export const useIcuOrderStore = create<IcuOrderState>((set) => ({
 
   reset: () =>
     set({
-      isEditOrderMode: false,
       selectedChartOrder: {} as Partial<SelectedIcuOrder>,
       orderTimePendingQueue: [],
       selectedTxPendingQueue: [],

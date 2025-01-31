@@ -411,7 +411,8 @@ export type Database = {
           main_vet: string | null
           patient_id: string | null
           sub_vet: string | null
-          target_date: string
+          target_date: string | null
+          urgency: number | null
           weight: string
           weight_measured_date: string | null
         }
@@ -425,7 +426,8 @@ export type Database = {
           main_vet?: string | null
           patient_id?: string | null
           sub_vet?: string | null
-          target_date: string
+          target_date?: string | null
+          urgency?: number | null
           weight?: string
           weight_measured_date?: string | null
         }
@@ -439,7 +441,8 @@ export type Database = {
           main_vet?: string | null
           patient_id?: string | null
           sub_vet?: string | null
-          target_date?: string
+          target_date?: string | null
+          urgency?: number | null
           weight?: string
           weight_measured_date?: string | null
         }
@@ -761,7 +764,6 @@ export type Database = {
           created_at: string
           hos_id: string
           icu_chart_id: string
-          is_bordered: boolean
           template_comment: string | null
           template_id: string
           template_name: string
@@ -770,7 +772,6 @@ export type Database = {
           created_at?: string
           hos_id: string
           icu_chart_id: string
-          is_bordered?: boolean
           template_comment?: string | null
           template_id?: string
           template_name: string
@@ -779,7 +780,6 @@ export type Database = {
           created_at?: string
           hos_id?: string
           icu_chart_id?: string
-          is_bordered?: boolean
           template_comment?: string | null
           template_id?: string
           template_name?: string
@@ -804,6 +804,7 @@ export type Database = {
       icu_txs: {
         Row: {
           created_at: string
+          has_images: boolean | null
           hos_id: string
           icu_chart_order_id: string | null
           icu_chart_tx_comment: string | null
@@ -817,6 +818,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          has_images?: boolean | null
           hos_id: string
           icu_chart_order_id?: string | null
           icu_chart_tx_comment?: string | null
@@ -830,6 +832,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          has_images?: boolean | null
           hos_id?: string
           icu_chart_order_id?: string | null
           icu_chart_tx_comment?: string | null
@@ -1524,12 +1527,6 @@ export type Database = {
         }
         Returns: Json
       }
-      get_icu_custom_order_data: {
-        Args: {
-          hos_id_input: string
-        }
-        Returns: Json
-      }
       get_icu_out_due_patients: {
         Args: {
           hos_id_input: string
@@ -1555,6 +1552,12 @@ export type Database = {
         Args: {
           hos_id_input: string
           target_date_input: string
+        }
+        Returns: Json
+      }
+      get_icu_template_charts_data: {
+        Args: {
+          hos_id_input: string
         }
         Returns: Json
       }
@@ -1620,6 +1623,12 @@ export type Database = {
         }
         Returns: Json
       }
+      get_template_chart_data: {
+        Args: {
+          icu_chart_id_input: string
+        }
+        Returns: Json
+      }
       insert_default_chart_orders: {
         Args: {
           hos_id_input: string
@@ -1659,6 +1668,15 @@ export type Database = {
         Returns: string
       }
       insert_template_orders: {
+        Args: {
+          hos_id_input: string
+          template_name_input: string
+          template_comment_input: string
+          template_orders_input: Json
+        }
+        Returns: undefined
+      }
+      insert_template_orders_unused: {
         Args: {
           hos_id_input: string
           target_date_input: string
@@ -1741,6 +1759,22 @@ export type Database = {
         }
         Returns: Json
       }
+      toggle_io_patient_out: {
+        Args: {
+          icu_io_id_input: string
+          patient_id_input: string
+          is_patient_out_input: boolean
+          keywords_input: string
+          patient_breed_input: string
+          patient_name_input: string
+          patient_species_input: string
+          owner_name_input: string
+          gender_input: string
+          age_in_days_input: number
+          is_alive_input: boolean
+        }
+        Returns: undefined
+      }
       toggle_patient_out: {
         Args: {
           icu_io_id_input: string
@@ -1752,21 +1786,6 @@ export type Database = {
           patient_name_input: string
           patient_species_input: string
           owner_name_input: string
-          age_in_days_input: number
-          is_alive_input: boolean
-        }
-        Returns: undefined
-      }
-      toggle_patient_out_old: {
-        Args: {
-          icu_io_id_input: string
-          patient_id_input: string
-          is_patient_out_input: boolean
-          chart_orders_input: string
-          keywords_input: string
-          patient_breed_input: string
-          patient_name_input: string
-          patient_species_input: string
           age_in_days_input: number
           is_alive_input: boolean
         }
@@ -1867,6 +1886,16 @@ export type Database = {
           hos_patient_id_input: string
           patient_id_input: string
           weight_input: string
+        }
+        Returns: undefined
+      }
+      update_template_chart: {
+        Args: {
+          icu_chart_id_input: string
+          template_orders_input: Json
+          template_id_input: string
+          template_name_input: string
+          template_comment_input: string
         }
         Returns: undefined
       }

@@ -28,19 +28,21 @@ import * as z from 'zod'
 
 const TUBE_THICKNESS = [
   2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10,
-]
+] as const
+
+type CpcrEtTubeUpdateFormProps = {
+  icuIoId: string
+  cpcr: string
+  etTube: string
+  setIsDialogOpen: Dispatch<SetStateAction<boolean>>
+}
 
 export default function CpcrEtTubeUpdateForm({
   icuIoId,
   cpcr,
   etTube,
   setIsDialogOpen,
-}: {
-  icuIoId: string
-  cpcr: string
-  etTube: string
-  setIsDialogOpen: Dispatch<SetStateAction<boolean>>
-}) {
+}: CpcrEtTubeUpdateFormProps) {
   const [isUpdating, setIsUpdating] = useState(false)
 
   const handleUpdateCpcrEtTube = async (

@@ -3,18 +3,23 @@ import { Separator } from '@/components/ui/separator'
 import type { IcuSidebarIoData, Vet } from '@/types/icu/chart'
 
 type IcuSidebarContentProps = {
-  filteredIcuIoData: IcuSidebarIoData[]
-  excludedIcuIoData: IcuSidebarIoData[]
+  filteredData: {
+    filteredIcuIoData: IcuSidebarIoData[]
+    excludedIcuIoData: IcuSidebarIoData[]
+    filteredIoPatientCount: number
+  }
   vetsListData: Vet[]
   handleCloseMobileDrawer?: () => void
 }
 
 export default function PatientList({
-  filteredIcuIoData,
-  excludedIcuIoData,
+  filteredData,
   vetsListData,
   handleCloseMobileDrawer,
 }: IcuSidebarContentProps) {
+  const { filteredIcuIoData, excludedIcuIoData, filteredIoPatientCount } =
+    filteredData
+
   const fileteredPatientCount = filteredIcuIoData.length
   const excludedPatientCount = excludedIcuIoData.length
 
@@ -24,7 +29,7 @@ export default function PatientList({
         <ul className="flex flex-col gap-2 overflow-y-scroll">
           <li className="flex items-center justify-between text-xs font-bold text-muted-foreground">
             <span className="font-bold">
-              입원환자 ({fileteredPatientCount})
+              입원환자 ({filteredIoPatientCount})
             </span>
           </li>
 

@@ -1,4 +1,4 @@
-import type { SearchOptions } from '@/components/hospital/icu/main/search/icu-search-chart'
+import type { SearchOptions } from '@/components/hospital/icu/main/search/icu-search-chart-entry'
 import DateRagneSelect from '@/components/hospital/icu/main/search/sheet/date-range-select'
 import OrderSelect from '@/components/hospital/icu/main/search/sheet/order-select'
 import { Button } from '@/components/ui/button'

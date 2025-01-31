@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
+import { Label } from '@/components/ui/label'
 import {
   Popover,
   PopoverContent,
@@ -19,10 +20,12 @@ export default function OutDueDate({
   inDate,
   outDueDate,
   icuIoId,
+  noIcon,
 }: {
   inDate: string
   outDueDate: string | null
   icuIoId: string
+  noIcon?: boolean
 }) {
   const transformedOutDueDate = outDueDate ? new Date(outDueDate) : undefined
 
@@ -60,10 +63,19 @@ export default function OutDueDate({
             !outDueDateInput && 'text-muted-foreground',
           )}
         >
-          <LogOut className="text-muted-foreground" size={16} />
+          {noIcon ? (
+            <Label
+              className="text-xs text-muted-foreground"
+              htmlFor="outDueDate"
+            >
+              퇴원 예정일
+            </Label>
+          ) : (
+            <LogOut className="text-muted-foreground" size={16} />
+          )}
 
           {outDueDateInput ? (
-            <span className="truncate text-xs 2xl:text-sm">
+            <span className="truncate text-xs sm:text-sm">
               <span className="hidden 2xl:inline">
                 {format(outDueDateInput, 'yyyy-MM-dd')}
               </span>
@@ -72,7 +84,9 @@ export default function OutDueDate({
               </span>
             </span>
           ) : (
-            <span className="truncate text-xs 2xl:text-sm">퇴원 예정일</span>
+            <span className="truncate text-xs sm:text-sm">
+              {noIcon ? '미정' : '퇴원 예정일'}
+            </span>
           )}
         </Button>
       </PopoverTrigger>

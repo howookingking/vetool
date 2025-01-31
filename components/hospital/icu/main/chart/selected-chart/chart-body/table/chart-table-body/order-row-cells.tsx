@@ -1,7 +1,10 @@
 import Cell from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/cell'
 import NoFecalOrUrineAlert from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/no-fecal-urine-alert'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
-import { type OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
+import {
+  type OrderStep,
+  type OrderTimePendingQueue,
+} from '@/lib/store/icu/icu-order'
 import { TxLocalState } from '@/lib/store/icu/tx-mutation'
 import type { VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
@@ -14,7 +17,7 @@ type OrderRowCellsProps = {
   showOrderer: boolean
   showTxUser: boolean
   selectedTxPendingQueue: OrderTimePendingQueue[]
-  orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit'
+  orderStep: OrderStep
   orderTimePendingQueueLength: number
   vitalRefRange: VitalRefRange[]
   species: string
@@ -146,7 +149,7 @@ export default function OrderRowCells({
         )
       })}
 
-      {noFecalOrUrineResult && (
+      {noFecalOrUrineResult && !preview && (
         <NoFecalOrUrineAlert orderName={order.order_name} />
       )}
     </>

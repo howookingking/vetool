@@ -1,11 +1,11 @@
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
-import { VetoolUser } from '@/types'
-import type {
-  Filter,
-  IcuSidebarIoData,
-  SelectedIcuOrder,
-  Vet,
+import { type VetoolUser } from '@/types'
+import {
+  type Filter,
+  type IcuSidebarIoData,
+  type SelectedIcuOrder,
+  type Vet,
 } from '@/types/icu/chart'
 import { type ClassValue, clsx } from 'clsx'
 import { differenceInDays, isValid, parseISO } from 'date-fns'
@@ -134,11 +134,17 @@ export const formatDate = (date: Date) => {
   return `${year}-${month}-${day}`
 }
 
-// stringifiedHashtagKeywords('사과, 바나나') => '#사과#바나나'
+// stringifiedHashtagKeywords('사과(apple), banana') => '#apple#banana'
 export const hashtagKeyword = (stringKeywords: string) => {
   return stringKeywords
     .split(',')
-    .map((keyword) => `#${keyword.trim()}`)
+    .map((keyword) => {
+      const trimmed = keyword.trim()
+      const match = trimmed.match(/\((.*?)\)/)
+
+      if (match) return `#${match[1]}`
+      return `#${trimmed}`
+    })
     .join('')
 }
 
@@ -382,6 +388,19 @@ export const filterData = (
     filtered.sort((a, b) => a.patient.name.localeCompare(b.patient.name, 'ko'))
   }
 
+  // 3. 응급도순 정렬
+  if (filters.selectedSort === 'urgency') {
+    filtered.sort((a, b) => {
+      if (a.vets === null && b.vets === null) return 0
+      if (a.vets === null) return 1
+      if (b.vets === null) return -1
+
+      const urgencyA = a.vets.urgency ?? 0
+      const urgencyB = b.vets.urgency ?? 0
+      return urgencyB - urgencyA
+    })
+  }
+
   // 최종으로 퇴원 환자 후미로 정렬
   filtered.sort((a, b) => {
     if (a.out_date === null && b.out_date === null) return 0
@@ -390,9 +409,12 @@ export const filterData = (
     return 0
   })
 
+  const filteredIoPatients = filtered.filter((item) => item.out_date === null)
+
   return {
     filteredIcuIoData: filtered,
     excludedIcuIoData: data.filter((item) => !filtered.includes(item)),
+    filteredIoPatientCount: filteredIoPatients.length,
   }
 }
 
@@ -433,4 +455,11 @@ export const parseTextWithUrls = (text: string) => {
   }
 
   return parts
+}
+
+// 미디어 파일 확장자 검사
+export const isVideoFile = (contentType: string) => {
+  if (!contentType) return false
+
+  return contentType.includes('video')
 }

@@ -1,24 +1,50 @@
-import IcuShareDatePicker from '@/components/hospital/share/header/icu-share-date-picker'
+import VetoolLogo from '@/components/common/vetool-logo'
+import IcuShareDateSelector from '@/components/hospital/share/header/icu-share-date-selector'
 import IcuSharePatientInfo from '@/components/hospital/share/header/icu-share-patient-info'
-import type { SelectedChart } from '@/types/icu/chart'
+import { checkIfUserIsVisitor } from '@/lib/services/icu/share'
+import { type SelectedChart } from '@/types/icu/chart'
+import Link from 'next/link'
+import VitalChartDialog from '../../icu/main/chart/selected-chart/chart-header/header-center/vital-chart/vital-chart-dialog'
 
-export default function IcuShareHeader({
+type IcuShaerHeaderProps = {
+  targetDate: string
+  chartData: SelectedChart
+}
+
+export default async function IcuShareHeader({
   targetDate,
   chartData,
-}: {
-  targetDate: string
-  chartData: Omit<SelectedChart, 'orders'>
-}) {
+}: IcuShaerHeaderProps) {
+  const isVistor = await checkIfUserIsVisitor()
+
   const { patient, weight, weight_measured_date } = chartData
 
   return (
-    <div className="flex flex-col gap-2 2xl:grid 2xl:grid-cols-3 2xl:items-center 2xl:gap-0">
-      <IcuShareDatePicker targetDate={targetDate} />
-      <IcuSharePatientInfo
-        patientData={patient}
-        weight={weight}
-        weightMeasuredDate={weight_measured_date as string}
+    <div className="flex items-center justify-between">
+      <IcuShareDateSelector
+        targetDate={targetDate}
+        inDate={chartData.icu_io.in_date}
       />
+
+      <div className="flex items-center">
+        <IcuSharePatientInfo
+          patientData={patient}
+          weight={weight}
+          weightMeasuredDate={weight_measured_date as string}
+        />
+        <VitalChartDialog
+          inDate={chartData.icu_io.in_date}
+          patientId={chartData.patient.patient_id}
+        />
+      </div>
+
+      {isVistor ? (
+        <Link href="/">
+          <VetoolLogo />
+        </Link>
+      ) : (
+        <VetoolLogo />
+      )}
     </div>
   )
 }

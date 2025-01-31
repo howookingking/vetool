@@ -115,29 +115,29 @@ export const updateMemos = async (
 
 export const toggleOutPatient = async (
   icuIoId: string,
-  isPatientOut: boolean,
-  chartOrders: string,
   patientId: string,
+  isPatientOut: boolean,
   hashtaggedDxCc: string,
-  patientSpecies: string,
   patientBreed: string,
   patientName: string,
+  patientSpecies: string,
   ownerName: string,
+  patientGender: string,
   ageInDays: number,
   isAlive: boolean,
 ) => {
   const supabase = await createClient()
 
-  const { error } = await supabase.rpc('toggle_patient_out', {
+  const { error } = await supabase.rpc('toggle_io_patient_out', {
     icu_io_id_input: icuIoId,
-    is_patient_out_input: isPatientOut,
-    chart_orders_input: chartOrders,
     patient_id_input: patientId,
+    is_patient_out_input: isPatientOut,
     keywords_input: hashtaggedDxCc,
-    patient_species_input: patientSpecies,
     patient_breed_input: patientBreed,
     patient_name_input: patientName,
+    patient_species_input: patientSpecies,
     owner_name_input: ownerName,
+    gender_input: patientGender,
     age_in_days_input: ageInDays,
     is_alive_input: isAlive,
   })
@@ -206,6 +206,20 @@ export const updateCage = async (icuIoId: string, cage: string) => {
     .from('icu_io')
     .update({ cage })
     .match({ icu_io_id: icuIoId })
+
+  if (error) {
+    console.error(error)
+    redirect(`/error/?message=${error.message}`)
+  }
+}
+
+export const updateUrgency = async (icuChartId: string, urgency: number) => {
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from('icu_charts')
+    .update({ urgency })
+    .match({ icu_chart_id: icuChartId })
 
   if (error) {
     console.error(error)

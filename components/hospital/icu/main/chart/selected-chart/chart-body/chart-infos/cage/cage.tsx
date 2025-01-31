@@ -17,7 +17,7 @@ export default function Cage({
   const [cageInput, setCageInput] = useState(cage)
   const [isUpdating, setIsUpdating] = useState(false)
 
-  const handleUpdateOwnerName = async () => {
+  const handleUpdateCage = async () => {
     if (cage === cageInput.trim()) {
       setCageInput(cageInput.trim())
       return
@@ -52,7 +52,7 @@ export default function Cage({
         id="cage"
         value={cageInput}
         onChange={(e) => setCageInput(e.target.value)}
-        onBlur={handleUpdateOwnerName}
+        onBlur={handleUpdateCage}
         onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
         className="w-full truncate pl-8"
         title={cage ?? '미등록'}

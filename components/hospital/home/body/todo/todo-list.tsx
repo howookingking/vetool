@@ -2,19 +2,21 @@ import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import SingleTodo from '@/components/hospital/home/body/todo/single-todo'
 import UpsertTodoDialog from '@/components/hospital/home/body/todo/upsert-todo-dialog'
 import { formatDate } from '@/lib/utils/utils'
-import type { ClientTodo } from '@/types/hospital/todo'
+import { type ClientTodo } from '@/types/hospital/todo'
+
+type TodoListProps = {
+  date: Date
+  hosId: string
+  todos: ClientTodo[]
+  refetch: () => Promise<void>
+}
 
 export default function TodoList({
   date,
   hosId,
   todos,
   refetch,
-}: {
-  date: Date
-  hosId: string
-  todos: ClientTodo[]
-  refetch: () => Promise<void>
-}) {
+}: TodoListProps) {
   const formattedToday = formatDate(new Date())
   return (
     <>

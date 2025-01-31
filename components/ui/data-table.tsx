@@ -17,6 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { cn } from '@/lib/utils/utils'
 import {
   ColumnDef,
   SortingState,
@@ -39,6 +40,7 @@ type DataTableProps<TData, TValue> = {
   searchPlaceHolder?: string
   rowLength?: number
   customColumnVisibility?: VisibilityState
+  searchBarSpace?: boolean
   children?: React.ReactNode
 }
 export default function DataTable<TData, TValue>({
@@ -48,6 +50,7 @@ export default function DataTable<TData, TValue>({
   searchPlaceHolder,
   rowLength = 10,
   customColumnVisibility,
+  searchBarSpace,
   children,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
@@ -84,7 +87,12 @@ export default function DataTable<TData, TValue>({
     <div className="w-full">
       {searchPlaceHolder && (
         <div className="flex items-center pb-2">
-          <div className="relative w-full">
+          <div
+            className={cn(
+              searchBarSpace ? 'w-[calc(100%-114px)]' : 'w-full',
+              'relative',
+            )}
+          >
             <Input
               type="text"
               name="global search"
@@ -95,7 +103,7 @@ export default function DataTable<TData, TValue>({
             <Button
               size="icon"
               variant="ghost"
-              className="absolute right-5 top-2 h-5 w-5 text-muted-foreground"
+              className="absolute right-2 top-2 h-5 w-5 text-muted-foreground"
               onClick={() => setGlobalFilter('')}
             >
               <X size={12} />

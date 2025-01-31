@@ -5,11 +5,12 @@ import { toast } from '@/components/ui/use-toast'
 import useShorcutKey from '@/hooks/use-shortcut-key'
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import {
+  type OrderStep,
   OrderTimePendingQueue,
   useIcuOrderStore,
 } from '@/lib/store/icu/icu-order'
 import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
-import { borderedOrderClassName, cn } from '@/lib/utils/utils'
+import { borderedOrderClassName } from '@/lib/utils/utils'
 import type { VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { RefObject } from 'react'
@@ -21,7 +22,7 @@ type CellsRowTitlesProps = {
   showOrderer: boolean
   showTxUser: boolean
   selectedTxPendingQueue: OrderTimePendingQueue[]
-  orderStep: 'closed' | 'upsert' | 'selectOrderer' | 'multipleEdit'
+  orderStep: OrderStep
   orderTimePendingQueueLength: number
   vitalRefRange: VitalRefRange[]
   species: string
@@ -31,7 +32,7 @@ type CellsRowTitlesProps = {
   isTouchMove?: boolean
   icuChartId: string
   hosId: string
-  setOrderStep: (orderStep: 'closed' | 'upsert' | 'selectOrderer') => void
+  setOrderStep: (orderStep: OrderStep) => void
   selectedOrderPendingQueue: Partial<SelectedIcuOrder>[]
   reset: () => void
   timeGuidelineData: number[]
@@ -63,7 +64,6 @@ export default function OrderRows({
   // const { handleColumnHover, handleColumnLeave, hoveredColumn } =
   //   useVerticalGuideline()
   const {
-    setIsEditOrderMode,
     setSelectedChartOrder,
     setSelectedOrderPendingQueue,
     copiedOrderPendingQueue,
@@ -93,6 +93,7 @@ export default function OrderRows({
         icu_chart_order_comment: order.order_comment!,
         icu_chart_order_type: order.order_type!,
         icu_chart_order_priority: order.id!,
+        is_bordered: order.is_bordered!,
       })
     }
     toast({
@@ -109,7 +110,7 @@ export default function OrderRows({
         )
         return (
           <TableRow
-            className={cn('relative w-full divide-x')}
+            className="relative w-full divide-x"
             key={order.order_id}
             ref={cellRef}
             style={borderedOrderClassName(sortedOrders, order, index)}
@@ -128,7 +129,6 @@ export default function OrderRows({
               reset={reset}
               setSelectedOrderPendingQueue={setSelectedOrderPendingQueue}
               setOrderStep={setOrderStep}
-              setIsEditOrderMode={setIsEditOrderMode}
               setSelectedChartOrder={setSelectedChartOrder}
             />
 

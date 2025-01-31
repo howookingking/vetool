@@ -1,40 +1,12 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { SelectedIcuOrder } from '@/types/icu/chart'
-import type { TemplateChart } from '@/types/icu/template'
+import { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
+import { type TemplateChart } from '@/types/icu/template'
 import { redirect } from 'next/navigation'
 
-export const upsertTemplateChart = async (
-  name: string,
-  comment: string,
-  icuChartId: string,
+export const insertTemplateChart = async (
   hosId: string,
-) => {
-  const supabase = await createClient()
-
-  const { error } = await supabase.from('icu_templates').upsert(
-    {
-      hos_id: hosId,
-      template_name: name,
-      template_comment: comment,
-      icu_chart_id: icuChartId,
-    },
-    {
-      onConflict: 'icu_chart_id',
-      ignoreDuplicates: false,
-    },
-  )
-
-  if (error) {
-    console.error(error)
-    redirect(`/error/?message=${error.message}`)
-  }
-}
-
-export const insertCustomTemplateChart = async (
-  hosId: string,
-  targetDate: string,
   templateOrders: Partial<SelectedIcuOrder>[],
   templateName: string,
   templateComment?: string | null,
@@ -43,7 +15,6 @@ export const insertCustomTemplateChart = async (
 
   const { error } = await supabase.rpc('insert_template_orders', {
     hos_id_input: hosId,
-    target_date_input: targetDate,
     template_orders_input: templateOrders,
     template_name_input: templateName,
     template_comment_input: templateComment ?? '',
@@ -55,18 +26,24 @@ export const insertCustomTemplateChart = async (
   }
 }
 
-export const updateTemplate = async (
+export const updateTemplateChart = async (
+  icu_chart_id: string,
+  templateOrders: Partial<SelectedIcuOrder>[],
+  templateId: string,
+  templateName: string,
+  templateComment: string | null,
   hosId: string,
-  templateId: string,
-  template_name: string,
-  template_comment: string | null,
 ) => {
   const supabase = await createClient()
 
-  const { error } = await supabase
-    .from('icu_templates')
-    .update({ template_name, template_comment })
-    .match({ template_id: templateId, hos_id: hosId })
+  const { error } = await supabase.rpc('update_template_chart', {
+    icu_chart_id_input: icu_chart_id,
+    template_id_input: templateId,
+    template_orders_input: templateOrders,
+    template_name_input: templateName,
+    template_comment_input: templateComment ?? '',
+    hos_id_input: hosId,
+  })
 
   if (error) {
     console.error(error)
@@ -74,20 +51,13 @@ export const updateTemplate = async (
   }
 }
 
-export const deleteTemplateChart = async (
-  templateId: string,
-  chartId?: string,
-) => {
+export const deleteTemplateChart = async (chartId: string) => {
   const supabase = await createClient()
 
   const { error } = await supabase
-    .from('icu_templates')
+    .from('icu_charts')
     .delete()
-    .match({ template_id: templateId })
-
-  if (chartId) {
-    await supabase.from('icu_charts').delete().match({ icu_chart_id: chartId })
-  }
+    .match({ icu_chart_id: chartId })
 
   if (error) {
     console.error(error)
@@ -95,48 +65,33 @@ export const deleteTemplateChart = async (
   }
 }
 
-export const getIcuCustomOrders = async (hosId: string) => {
-  const supabase = await createClient()
-
-  const { data, error } = await supabase
-    .rpc('get_icu_custom_order_data', {
-      hos_id_input: hosId,
-    })
-    .returns<TemplateChart[]>()
-
-  if (error) {
-    throw new Error(error.message)
-  }
-
-  return data
-}
-
+// template 페이지에서 모든 템플릿들을 테이블에서 보여줌
 export const getTemplateCharts = async (hosId: string) => {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .rpc('get_icu_template_data', {
+    .rpc('get_icu_template_charts_data', {
       hos_id_input: hosId,
     })
     .returns<TemplateChart[]>()
 
   if (error) {
-    throw new Error(error.message)
+    console.error(error)
+    redirect(`/error/?message=${error.message}`)
   }
 
   return data
 }
 
-export const getReadOnlyChartOrders = async (chartId: string) => {
+// 단일 템플릿 차트를 가져옴 : template페이지에서 preview 또는 수정시
+export const getTemplateChart = async (chartId: string) => {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('icu_orders')
-    .select(
-      'icu_chart_order_id, icu_chart_order_name, icu_chart_order_comment, icu_chart_order_type, icu_chart_order_time, is_bordered',
-    )
-    .order('icu_chart_order_priority')
-    .match({ icu_chart_id: chartId })
+    .rpc('get_template_chart_data', {
+      icu_chart_id_input: chartId,
+    })
+    .returns<SelectedChart>()
 
   if (error) {
     console.error(error)

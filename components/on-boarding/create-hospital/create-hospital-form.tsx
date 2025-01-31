@@ -31,13 +31,11 @@ import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
 export default function CreateHospitalForm() {
+  const { push } = useRouter()
+  const searchParams = useSearchParams()
+
   const [districts, setDistricts] = useState<string[]>()
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const { push } = useRouter()
-
-  const searchParams = useSearchParams()
-  const isVet = searchParams.get('is_vet')
-  const username = searchParams.get('name')
 
   const form = useForm<z.infer<typeof newHospitalFormSchema>>({
     resolver: zodResolver(newHospitalFormSchema),
@@ -48,6 +46,9 @@ export default function CreateHospitalForm() {
       businessNumber: '',
     },
   })
+
+  const isVet = searchParams.get('is_vet')
+  const username = searchParams.get('name')
   const city = form.watch('city')
 
   useEffect(() => {
@@ -92,7 +93,7 @@ export default function CreateHospitalForm() {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-base">병원 이름</FormLabel>
+              <FormLabel className="text-base">1. 동물병원 이름</FormLabel>
               <FormControl>
                 <Input
                   placeholder="벳툴 동물병원"
@@ -111,7 +112,7 @@ export default function CreateHospitalForm() {
             name="city"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel className="text-base">병원 주소</FormLabel>
+                <FormLabel className="text-base">2. 동물병원 주소</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -170,9 +171,12 @@ export default function CreateHospitalForm() {
           name="businessNumber"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-base">사업자 등록번호</FormLabel>
+              <FormLabel className="text-base">3. 사업자 등록번호</FormLabel>
               <FormControl>
-                <Input placeholder="사업자 등록번호 10자리" {...field} />
+                <Input
+                  placeholder="사업자 등록번호 10자리 예)1234567890"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

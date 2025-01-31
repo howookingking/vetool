@@ -1,6 +1,6 @@
 import { hosListColumns } from '@/components/hospital/super/hospitals/hos-list-columns'
 import DataTable from '@/components/ui/data-table'
-import type { HosListData } from '@/types/hospital'
+import { type HosListData } from '@/types/hospital'
 
 export default function HospitalTable({ hosList }: { hosList: HosListData[] }) {
   return (

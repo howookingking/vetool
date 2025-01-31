@@ -13,18 +13,21 @@ import {
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 import { deleteOrder } from '@/lib/services/icu/chart/order-mutation'
-import type { SelectedIcuOrder } from '@/types/icu/chart'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { type OrderStep } from '@/lib/store/icu/icu-order'
+import { type SelectedIcuOrder } from '@/types/icu/chart'
+import { type Dispatch, type SetStateAction, useState } from 'react'
+
+type DeleteOrderAlertDialogProps = {
+  selectedChartOrder: Partial<SelectedIcuOrder>
+  setOrderStep: (orderStep: OrderStep) => void
+  setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
+}
 
 export default function DeleteOrderAlertDialog({
   selectedChartOrder,
   setOrderStep,
   setSortedOrders,
-}: {
-  selectedChartOrder: Partial<SelectedIcuOrder>
-  setOrderStep: (orderStep: 'closed' | 'upsert' | 'selectOrderer') => void
-  setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
-}) {
+}: DeleteOrderAlertDialogProps) {
   const [isDeleteOrdersDialogOpen, setIsDeleteOrdersDialogOpen] =
     useState(false)
 
