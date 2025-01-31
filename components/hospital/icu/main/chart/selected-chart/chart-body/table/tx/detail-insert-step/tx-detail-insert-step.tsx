@@ -240,13 +240,13 @@ export default function TxDetailInsertStep({
             )}
           />
 
-          {/* <TxImageField
+          <TxImageField
             txLocalState={txLocalState}
             setTxLocalState={setTxLocalState}
             bucketImages={bucketImages}
             setBucketImages={setBucketImages}
             isLoading={isLoading}
-          /> */}
+          />
 
           {hasTxLog && <TxLog logs={txLocalState?.txLog} />}
 
