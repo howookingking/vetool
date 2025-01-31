@@ -4,9 +4,8 @@ import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useIcuRegisterStore } from '@/lib/store/icu/icu-register'
 import { cn } from '@/lib/utils/utils'
-import type { Vet } from '@/types/icu/chart'
+import { type Vet } from '@/types/icu/chart'
 import dynamic from 'next/dynamic'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
@@ -39,28 +38,41 @@ const LazySearchPatientContainer = dynamic(
   },
 )
 
+export type RegisteringPatient = {
+  patientId: string
+  birth: string
+  patientName: string
+  ageInDays?: number
+  species?: string
+  breed?: string
+  gender?: string
+  microchipNo?: string
+  memo?: string
+  weight?: string
+  ownerName?: string
+  ownerId?: string
+  hosPatientId?: string
+} | null
+
 type RegisterDialogProps = {
   hosId: string
-  hosGroupList: string[]
-  vetsListData: Vet[]
+  defaultVetId: string
+  defaultGroup: string
 }
 
 export default function RegisterDialog({
   hosId,
-  hosGroupList,
-  vetsListData,
+  defaultGroup,
+  defaultVetId,
 }: RegisterDialogProps) {
   const { target_date } = useParams()
 
-  const { reset } = useIcuRegisterStore()
-
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
+  const [registeringPatient, setRegisteringPatient] =
+    useState<RegisteringPatient>(null)
 
   const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false)
   const [tab, setTab] = useState('search')
-
-  const defaultGroup = hosGroupList[0]
-  const defaultVetId = vetsListData[0].user_id
 
   const handleTabValueChange = (value: string) => {
     if (value === 'search') {
@@ -74,16 +86,10 @@ export default function RegisterDialog({
     }
   }
 
-  // const handleCloseDialog = () => {
-  //   setIsRegisterDialogOpen(false)
-  //   setIsConfirmDialogOpen(false)
-  //   setTab('search')
-  //   reset()
-  // }
-
   const handleOpenChage = (open: boolean) => {
     if (open) {
       setTab('search')
+      setRegisteringPatient(null)
     }
     setIsRegisterDialogOpen(open)
   }
@@ -124,6 +130,7 @@ export default function RegisterDialog({
               hosId={hosId}
               isIcu
               setIsConfirmDialogOpen={setIsConfirmDialogOpen}
+              setRegisteringPatient={setRegisteringPatient}
             />
           </TabsContent>
 
@@ -133,6 +140,8 @@ export default function RegisterDialog({
               hosId={hosId}
               setIsPatientRegisterDialogOpen={setIsRegisterDialogOpen}
               setIsConfirmDialogOpen={setIsConfirmDialogOpen}
+              registeringPatient={registeringPatient}
+              setRegisteringPatient={setRegisteringPatient}
             />
           </TabsContent>
         </Tabs>
@@ -142,8 +151,9 @@ export default function RegisterDialog({
         isConfirmDialogOpen={isConfirmDialogOpen}
         setIsConfirmDialogOpen={setIsConfirmDialogOpen}
         hosId={hosId}
-        defaultMainVetId={defaultVetId}
-        defaultMainGroup={defaultGroup}
+        defaultVetId={defaultVetId}
+        defaultGroup={defaultGroup}
+        registeringPatient={registeringPatient}
         setIsRegisterDialogOpen={setIsRegisterDialogOpen}
       />
     </Dialog>

@@ -5,6 +5,7 @@ import { calculateAge, cn, convertPascalCased } from '@/lib/utils/utils'
 import { type SearchedPatientsData } from '@/types/patients'
 import { Cat, Dog } from 'lucide-react'
 import { type Dispatch, type SetStateAction } from 'react'
+import { type RegisteringPatient } from '../register-dialog'
 import PatientSelectButton from './patient-select-button'
 
 type SearchPatientTableRowProps = {
@@ -12,6 +13,7 @@ type SearchPatientTableRowProps = {
   setIsEdited: Dispatch<SetStateAction<boolean>>
   isIcu?: boolean
   setIsConfirmDialogOpen?: Dispatch<SetStateAction<boolean>>
+  setRegisteringPatient?: Dispatch<SetStateAction<RegisteringPatient | null>>
 }
 
 export default function SearchPatientTableRow({
@@ -19,6 +21,7 @@ export default function SearchPatientTableRow({
   setIsEdited,
   isIcu,
   setIsConfirmDialogOpen,
+  setRegisteringPatient,
 }: SearchPatientTableRowProps) {
   const {
     patient_id,
@@ -85,7 +88,8 @@ export default function SearchPatientTableRow({
             patientId={patient_id}
             birth={birth}
             patientName={name}
-            setIsConfirmDialogOpen={setIsConfirmDialogOpen}
+            setIsConfirmDialogOpen={setIsConfirmDialogOpen!}
+            setRegisteringPatient={setRegisteringPatient!}
           />
         </TableCell>
       ) : (

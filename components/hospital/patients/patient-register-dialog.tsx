@@ -40,6 +40,8 @@ export default function PatientRegisterDialog({ hosId }: { hosId: string }) {
           mode="registerFromPatientRoute"
           hosId={hosId}
           setIsPatientRegisterDialogOpen={setIsPatientRegisterDialogOpen}
+          registeringPatient={null}
+          setRegisteringPatient={null}
         />
       </DialogContent>
     </Dialog>

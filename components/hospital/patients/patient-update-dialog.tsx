@@ -71,6 +71,8 @@ export default function PatientUpdateDialog({
           editingPatient={editingPatient}
           setIsPatientUpdateDialogOpen={setIsPatientUpdateDialogOpen}
           setIsEdited={setIsEdited}
+          registeringPatient={null}
+          setRegisteringPatient={null}
         />
       </DialogContent>
     </Dialog>

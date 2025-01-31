@@ -1,6 +1,6 @@
-import UpdatePatientDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-center/update-patient-dialog'
+import IcuPatientUpdateDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-center/icu-patient-update-dialog'
 import VitalChartDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-center/vital-chart/vital-chart-dialog'
-import type { SelectedChart } from '@/types/icu/chart'
+import { type SelectedChart } from '@/types/icu/chart'
 
 export default function HeaderCenter({
   chartData,
@@ -11,12 +11,7 @@ export default function HeaderCenter({
 
   return (
     <div className="flex h-12 items-center justify-center gap-0.5">
-      {/* <BookmarkDialog
-        icuChartId={chartData.icu_chart_id}
-        bookmarkData={chartData.template}
-        icon="star"
-      /> */}
-      <UpdatePatientDialog
+      <IcuPatientUpdateDialog
         patientData={{ ...patient, isIcu: true }}
         weight={weight}
         weightMeasuredDate={weight_measured_date}

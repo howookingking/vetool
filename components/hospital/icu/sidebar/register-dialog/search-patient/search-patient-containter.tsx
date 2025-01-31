@@ -4,11 +4,13 @@ import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { searchPatientsData } from '@/lib/services/patient/patient'
+import { cn } from '@/lib/utils/utils'
 import { type PaginatedData, type SearchedPatientsData } from '@/types/patients'
 import { X } from 'lucide-react'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
+import { type RegisteringPatient } from '../register-dialog'
 import PatientNumber from './paitent-number'
 import PatientRegisterButtons from './patient-register-buttons'
 import SearchPatientPagination from './search-patient-pagination'
@@ -19,6 +21,7 @@ type SearchPatientContainerProps = {
   isIcu?: boolean
   hosId: string
   setIsConfirmDialogOpen?: Dispatch<SetStateAction<boolean>>
+  setRegisteringPatient?: Dispatch<SetStateAction<RegisteringPatient | null>>
 }
 
 export default function SearchPatientContainer({
@@ -26,6 +29,7 @@ export default function SearchPatientContainer({
   isIcu = false,
   hosId,
   setIsConfirmDialogOpen,
+  setRegisteringPatient,
 }: SearchPatientContainerProps) {
   const { hos_id } = useParams()
   const router = useRouter()
@@ -114,13 +118,16 @@ export default function SearchPatientContainer({
       </div>
 
       {isSearching ? (
-        <LargeLoaderCircle className="h-[571px] border" />
+        <LargeLoaderCircle
+          className={cn(isIcu ? 'h-[488px]' : 'h-[571px]', 'border')}
+        />
       ) : (
         <SearchPatientTable
           searchedPatients={patientsData.data}
           setIsEdited={setIsEdited}
           isIcu={isIcu}
           setIsConfirmDialogOpen={setIsConfirmDialogOpen}
+          setRegisteringPatient={setRegisteringPatient}
         />
       )}
 

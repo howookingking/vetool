@@ -10,34 +10,34 @@ import {
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 import { registerIcuPatient } from '@/lib/services/icu/register-icu-patient'
-import { useIcuRegisterStore } from '@/lib/store/icu/icu-register'
 import { changeTargetDateInUrl, cn } from '@/lib/utils/utils'
 import { LoaderCircle } from 'lucide-react'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useState } from 'react'
+import { type RegisteringPatient } from './register-dialog'
 
 type RegisterIcuConfirmDialogProps = {
   hosId: string
   isConfirmDialogOpen: boolean
   setIsConfirmDialogOpen: Dispatch<SetStateAction<boolean>>
-  defaultMainVetId: string
-  defaultMainGroup: string
+  defaultVetId: string
+  defaultGroup: string
   setIsRegisterDialogOpen: Dispatch<SetStateAction<boolean>>
+  registeringPatient: RegisteringPatient
 }
 
 export default function RegisterIcuConfirmDialog({
   hosId,
   isConfirmDialogOpen,
   setIsConfirmDialogOpen,
-  defaultMainVetId,
-  defaultMainGroup,
+  defaultGroup,
+  defaultVetId,
   setIsRegisterDialogOpen,
+  registeringPatient,
 }: RegisterIcuConfirmDialogProps) {
   const path = usePathname()
   const { target_date } = useParams()
   const { push } = useRouter()
-
-  const { registeringPatient } = useIcuRegisterStore()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -50,8 +50,8 @@ export default function RegisterIcuConfirmDialog({
       registeringPatient?.birth!,
       target_date as string,
       '',
-      [defaultMainGroup as string],
-      defaultMainVetId as string,
+      [defaultGroup as string],
+      defaultVetId as string,
     )
 
     const splittedPathArr = path.split('/')
@@ -91,7 +91,7 @@ export default function RegisterIcuConfirmDialog({
           <AlertDialogTitle>환자 입원</AlertDialogTitle>
         </AlertDialogHeader>
         <AlertDialogDescription>
-          {`${registeringPatient?.patientName} 환자를 ${target_date}에 입원하시겠습니까?`}
+          {`${registeringPatient?.patientName}를(을) ${target_date}에 입원하시겠습니까?`}
         </AlertDialogDescription>
 
         <AlertDialogFooter className="pt-8">

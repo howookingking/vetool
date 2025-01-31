@@ -48,7 +48,6 @@ import {
   updatePatientFromIcu,
   updatePatientFromPatientRoute,
 } from '@/lib/services/patient/patient'
-import { useIcuRegisterStore } from '@/lib/store/icu/icu-register'
 import { cn } from '@/lib/utils/utils'
 import { type SearchedPatientsData } from '@/types/patients'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -60,6 +59,7 @@ import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDebouncedCallback } from 'use-debounce'
 import * as z from 'zod'
+import { type RegisteringPatient } from '../icu/sidebar/register-dialog/register-dialog'
 
 type BaseProps = {
   hosId: string
@@ -75,6 +75,8 @@ type RegisterFromPatientRoute = BaseProps & {
   setIsConfirmDialogOpen?: null
   icuChartId?: null
   setIsEdited?: Dispatch<SetStateAction<boolean>>
+  registeringPatient: null
+  setRegisteringPatient: null
 }
 
 type UpdateFromPatientRoute = BaseProps & {
@@ -87,6 +89,8 @@ type UpdateFromPatientRoute = BaseProps & {
   setIsPatientUpdateDialogOpen: Dispatch<SetStateAction<boolean>>
   icuChartId?: null
   setIsEdited?: Dispatch<SetStateAction<boolean>>
+  registeringPatient: null
+  setRegisteringPatient: null
 }
 
 type RegisterFromIcuRoute = BaseProps & {
@@ -99,6 +103,8 @@ type RegisterFromIcuRoute = BaseProps & {
   setIsPatientUpdateDialogOpen?: null
   icuChartId?: null
   setIsEdited?: Dispatch<SetStateAction<boolean>>
+  registeringPatient: RegisteringPatient
+  setRegisteringPatient: Dispatch<SetStateAction<RegisteringPatient | null>>
 }
 
 type UpdateFromIcuRoute = BaseProps & {
@@ -111,6 +117,8 @@ type UpdateFromIcuRoute = BaseProps & {
   setIsPatientUpdateDialogOpen: Dispatch<SetStateAction<boolean>>
   icuChartId: string
   setIsEdited?: Dispatch<SetStateAction<boolean>>
+  registeringPatient: null
+  setRegisteringPatient: null
 }
 
 type PatientFormProps =
@@ -130,6 +138,8 @@ export default function PatientForm({
   setIsPatientUpdateDialogOpen,
   icuChartId,
   setIsEdited,
+  registeringPatient,
+  setRegisteringPatient,
 }: PatientFormProps) {
   console.log(weight)
 
@@ -138,8 +148,6 @@ export default function PatientForm({
   const isRegisterFromIcuRoute = mode === 'registerFromIcuRoute'
 
   const { refresh } = useRouter()
-
-  const { registeringPatient, setRegisteringPatient } = useIcuRegisterStore()
 
   const [breedOpen, setBreedOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
