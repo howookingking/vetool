@@ -101,7 +101,7 @@ export default function TxImageViewCarousel({
 
       <Button
         variant="ghost"
-        className="absolute left-[-24] top-1/2 -translate-y-1/2"
+        className="absolute -left-6 top-1/2 -translate-y-1/2"
         onClick={scrollPrev}
         aria-label="이전 이미지"
       >
@@ -110,7 +110,7 @@ export default function TxImageViewCarousel({
 
       <Button
         variant="ghost"
-        className="absolute right-[-24] top-1/2 -translate-y-1/2"
+        className="absolute -right-6 top-1/2 -translate-y-1/2"
         onClick={scrollNext}
         aria-label="다음 이미지"
       >
