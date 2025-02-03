@@ -46,8 +46,6 @@ export default function TxImageViewCarousel({
     if (emblaApi) emblaApi.scrollNext()
   }
 
-  if (isLoading) return <LargeLoaderCircle className="h-full" />
-
   const hasImages =
     (bucketImages && bucketImages.length > 0) ||
     (tempImages && tempImages.length > 0)
