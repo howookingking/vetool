@@ -36,7 +36,9 @@ export default function TxImage({
           alt={`처치 이미지 ${index + 1}`}
           fill
           className={cn('object-contain', className)}
-          unoptimized
+          priority
+          quality={75}
+          loading="eager"
         />
       )}
     </>
