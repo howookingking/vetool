@@ -1,7 +1,6 @@
-import PatientInfo from '@/components/hospital/common/patient-info'
+import PatientBriefInfo from '@/components/hospital/common/patient/patient-brief-info'
 import { AccordionTrigger } from '@/components/ui/accordion'
 import { getAgeFromAgeInDays } from '@/lib/utils/utils'
-import { Cat, Dog } from 'lucide-react'
 
 export default function GroupedAccordionTrigger({
   species,
@@ -25,7 +24,7 @@ export default function GroupedAccordionTrigger({
   return (
     <AccordionTrigger className="h-10 w-full hover:bg-muted/50 [&[data-state=open]]:bg-muted">
       <div className="flex w-1/6 justify-center">
-        <PatientInfo
+        <PatientBriefInfo
           name={name}
           species={species}
           breed={breed}

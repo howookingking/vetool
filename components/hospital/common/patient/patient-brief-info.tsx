@@ -1,7 +1,7 @@
 import { convertPascalCased, cn } from '@/lib/utils/utils'
 import { Cat, Dog } from 'lucide-react'
 
-export default function PatientInfo({
+export default function PatientBriefInfo({
   name,
   species,
   breed,
