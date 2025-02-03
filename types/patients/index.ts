@@ -1,4 +1,4 @@
-import { Owner, Patients } from '..'
+import type { Owner, Patients, Vitals } from '@/types'
 
 export type PatientDataTable = Omit<Patients, 'owner_id'> & {
   owner_id?: Owner
@@ -34,3 +34,11 @@ export type PaginatedData<T> = {
 }
 
 export type OwnerDataTable = Owner
+
+export type PatientWithWeight = {
+  patient: Pick<
+    Patients,
+    'patient_id' | 'name' | 'species' | 'breed' | 'gender' | 'birth'
+  >
+  vital: Pick<Vitals, 'body_weight' | 'created_at'>
+}

@@ -1,4 +1,3 @@
-import Feedback from '@/components/hospital/feedback/feedback'
 import HospitalSidebar from '@/components/hospital/sidebar/hospital-sidebar'
 import { getHosName } from '@/lib/services/hospital-home/get-hos-name'
 
