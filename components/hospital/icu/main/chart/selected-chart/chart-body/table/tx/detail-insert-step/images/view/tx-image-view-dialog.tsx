@@ -12,6 +12,7 @@ import { type ImageUrlResponse } from '@/types/images'
 import { X } from 'lucide-react'
 import { useState } from 'react'
 import TxImageViewSkeleton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/detail-insert-step/images/view/tx-image-view-skeleton'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 type TxImageViewDialogProps = {
   isLoading: boolean
@@ -38,8 +39,8 @@ export default function TxImageViewDialog({
 
   return (
     <>
-      <div className="flex w-full flex-shrink-0 gap-6 overflow-x-scroll px-1">
-        <div className="flex min-h-20 gap-6">
+      <ScrollArea className="w-full">
+        <div className="flex min-h-20 gap-6 px-1">
           {isLoading ? (
             <TxImageViewSkeleton />
           ) : (
@@ -102,7 +103,8 @@ export default function TxImageViewDialog({
             </>
           )}
         </div>
-      </div>
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
 
       <Dialog
         open={isCarouselDialogOpen}
