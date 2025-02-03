@@ -42,7 +42,7 @@ export default function TxImageViewDialog({
         {bucketImages?.map((image, index) => (
           <div
             key={image.url}
-            className="relative h-24 w-24 cursor-pointer"
+            className="relative h-24 w-24 cursor-pointer overflow-hidden"
             onClick={() => {
               setSelectedImageIndex(index)
               setIsCarouselDialogOpen(true)

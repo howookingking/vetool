@@ -1,4 +1,4 @@
-import Feedback from '@/components/hospital/feedback/feedback'
+import CalculatorSheet from '@/components/hospital/calculator/calculator-sheet'
 import HospitalSidebar from '@/components/hospital/sidebar/hospital-sidebar'
 import { getHosName } from '@/lib/services/hospital-home/get-hos-name'
 

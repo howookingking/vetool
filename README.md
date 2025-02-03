@@ -48,3 +48,17 @@ export default function DefaultOrdersTable({
   - delete : deleteTodo
 
 - boolean 변수는 isEdit, isIcu 등 is 붙이기
+
+- Visually hidden
+
+```tsx
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
+export default function CalculatorSheetContent() {
+  return (
+    <VisuallyHidden>
+      <SheetTitle />
+      <SheetDescription />
+    </VisuallyHidden>
+  )
+}
+```
