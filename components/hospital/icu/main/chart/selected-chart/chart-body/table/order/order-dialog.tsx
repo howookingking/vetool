@@ -60,7 +60,7 @@ export default function OrderDialog({
         <DialogHeader>
           {orderStep === 'edit' && (
             <>
-              <DialogTitle className="flex items-center gap-2">
+              <DialogTitle className="mb-2 flex items-center gap-2">
                 <OrderTypeColorDot
                   orderColorsData={orderColorsData}
                   orderType={selectedChartOrder.order_type!}
@@ -74,6 +74,7 @@ export default function OrderDialog({
                   오더 수정
                 </span>
               </DialogTitle>
+
               <LazyOrderForm
                 showOrderer={showOrderer}
                 icuChartId={icuChartId}
