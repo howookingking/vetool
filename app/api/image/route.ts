@@ -29,19 +29,24 @@ const createResponse = (body: any, status: number = 200) => {
 }
 
 const uploadImage = async (
-  files: File[],
+  files: FormDataEntryValue[],
   route: string,
   id: string,
   startIndex: string,
 ) => {
   const uploadPromises = files.map(async (file, index) => {
     try {
+      if (!(file instanceof Blob)) {
+        throw new Error('유효하지 않은 파일 형식입니다')
+      }
+
       const buffer = Buffer.from(await file.arrayBuffer())
       const fileType = file.type.split('/')[0]
+      const fileName = (file as File).name || `file-${index}`
 
       let optimizedBuffer = buffer
       let contentType = file.type
-      let fileExtension = file.name.split('.').pop()
+      let fileExtension = fileName.split('.').pop() || 'jpg'
 
       if (fileType === 'image') {
         try {
@@ -53,26 +58,25 @@ const uploadImage = async (
           fileExtension = 'webp'
         } catch (error) {
           console.error('이미지 최적화 중 오류:', error)
-          // 최적화 실패 시 원본 버퍼 사용
           optimizedBuffer = buffer
         }
       }
 
-      const fileName = `${route}-${id}-${index + Number(startIndex)}.${fileExtension}`
+      const bucketFileName = `${route}-${id}-${index + Number(startIndex)}.${fileExtension}`
 
       const command = new PutObjectCommand({
         Bucket: process.env.R2_BUCKET_NAME!,
-        Key: fileName,
+        Key: bucketFileName,
         Body: optimizedBuffer,
         ContentType: contentType,
         CacheControl: 'public, max-age=604800, immutable',
       })
 
       await R2Client.send(command)
-      return { success: true, fileName }
+      return { success: true, fileName: bucketFileName }
     } catch (error) {
-      console.error(`파일 업로드 중 오류 (${file.name}):`, error)
-      return { success: false, error, fileName: file.name }
+      console.error(`파일 업로드 중 오류 (${(file as File).name}):`, error)
+      return { success: false, error, fileName: (file as File).name }
     }
   })
 
@@ -113,7 +117,7 @@ export async function POST(req: NextRequest) {
     }
 
     const uploadedFiles = await uploadImage(
-      files as File[],
+      files,
       route as string,
       id as string,
       startIndex as string,
