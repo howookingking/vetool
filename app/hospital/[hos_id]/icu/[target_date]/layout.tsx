@@ -36,6 +36,7 @@ export default async function IcuPageLayout(props: {
     hos_id,
     target_date,
   )
+
   const patchTitlesData = await getPatchTitlesData()
 
   return (

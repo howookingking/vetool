@@ -1,7 +1,7 @@
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import IcuDateSelector from '@/components/hospital/icu/sidebar/date-selector/icu-date-selector'
 import Filters from '@/components/hospital/icu/sidebar/filters/filters'
-import PatientList from '@/components/hospital/icu/sidebar/patient-list'
+import PatientList from '@/components/hospital/icu/sidebar/patient-list/patient-list'
 import RegisterDialog from '@/components/hospital/icu/sidebar/register-dialog/register-dialog'
 import { Separator } from '@/components/ui/separator'
 import { type Filter, type IcuSidebarIoData, type Vet } from '@/types/icu/chart'
