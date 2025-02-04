@@ -11,8 +11,6 @@ type IcuSharePageProps = {
   params: Promise<{ icu_io_id: string }>
   searchParams: Promise<{
     'target-date'?: string
-    display: string
-    'main-vet'?: string
   }>
 }
 
