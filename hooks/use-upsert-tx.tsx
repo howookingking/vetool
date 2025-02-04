@@ -20,6 +20,11 @@ export default function useUpsertTx({ hosId, onSuccess }: TxUpdateOptions) {
 
     setIsSubmitting(true)
     const txState = { ...txLocalState }
+    const images = txState.txImages
+
+    // !! 이미지 관련 필드 제거 (페이로드 비대 방지)
+    delete txState.txImages
+    delete txState.bucketImagesLength
 
     // 단일 간편 코멘트($) 입력한 경우
     if (txState.txResult?.includes('$')) {
@@ -41,12 +46,14 @@ export default function useUpsertTx({ hosId, onSuccess }: TxUpdateOptions) {
       hosId,
       txState,
       format(new Date(), 'yyyy-MM-dd'),
+      images?.length ?? 0,
       logs,
     )
 
-    if (result.success && txState.txImages) {
+    // TX 입력 후, 반환된 TX ID를 통해 이미지 업로드
+    if (result.success && images) {
       await uploadTxImages(
-        txState.txImages,
+        images,
         result.txId,
         (txState.bucketImagesLength || 0).toString(),
       )
@@ -77,6 +84,10 @@ export default function useUpsertTx({ hosId, onSuccess }: TxUpdateOptions) {
     if (isSubmitting) return
     setIsSubmitting(true)
 
+    // !! 이미지 정보를 별도로 저장
+    const images = values.txImages
+    const bucketImagesLength = values.bucketImagesLength
+
     const txStates = txPendingQueue.map((item) => ({
       state: {
         txId: item.txId,
@@ -87,8 +98,6 @@ export default function useUpsertTx({ hosId, onSuccess }: TxUpdateOptions) {
         isCrucialChecked: values.isCrucialChecked,
         icuChartOrderName: values.orderName,
         icuChartOrderType: values.orderType,
-        txImages: values.txImages,
-        bucketImagesLength: values.bucketImagesLength,
       },
       logs:
         values.result && values.result.trim() !== ''
@@ -98,20 +107,20 @@ export default function useUpsertTx({ hosId, onSuccess }: TxUpdateOptions) {
 
     const results = await Promise.all(
       txStates.map(({ state, logs }) =>
-        upsertIcuTx(hosId, state, format(new Date(), 'yyyy-MM-dd'), logs),
+        upsertIcuTx(hosId, state, format(new Date(), 'yyyy-MM-dd'), 0, logs),
       ),
     )
 
-    // 이미지 업로드 추가
-    if (values.txImages) {
+    // 이미지 존재 시, 병렬로 TX 입력 후 이미지 업로드 진행
+    if (images) {
       await Promise.all(
         results
           .filter((result) => result.success)
           .map((result) =>
             uploadTxImages(
-              values.txImages!,
+              images,
               result.txId,
-              (values.bucketImagesLength || 0).toString(),
+              (bucketImagesLength || 0).toString(),
             ),
           ),
       )
