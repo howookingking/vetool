@@ -1,5 +1,6 @@
 import { toast } from '@/components/ui/use-toast'
 import { upsertIcuTx } from '@/lib/services/icu/chart/tx-mutation'
+import { uploadTxImages } from '@/lib/services/icu/chart/upload-images'
 import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
 import type { TxLocalState } from '@/lib/store/icu/tx-mutation'
 import type { TxLog } from '@/types/icu/chart'
@@ -36,7 +37,20 @@ export default function useUpsertTx({ hosId, onSuccess }: TxUpdateOptions) {
       txState.txResult = txState.txResult?.replace('kg', '')
     }
 
-    await upsertIcuTx(hosId, txState, format(new Date(), 'yyyy-MM-dd'), logs)
+    const result = await upsertIcuTx(
+      hosId,
+      txState,
+      format(new Date(), 'yyyy-MM-dd'),
+      logs,
+    )
+
+    if (result.success && txState.txImages) {
+      await uploadTxImages(
+        txState.txImages,
+        result.txId,
+        (txState.bucketImagesLength || 0).toString(),
+      )
+    }
 
     toast({
       title: '처치 내역이 업데이트 되었습니다',
@@ -82,11 +96,26 @@ export default function useUpsertTx({ hosId, onSuccess }: TxUpdateOptions) {
           : (item.txLog ?? []),
     }))
 
-    await Promise.all(
+    const results = await Promise.all(
       txStates.map(({ state, logs }) =>
         upsertIcuTx(hosId, state, format(new Date(), 'yyyy-MM-dd'), logs),
       ),
     )
+
+    // 이미지 업로드 추가
+    if (values.txImages) {
+      await Promise.all(
+        results
+          .filter((result) => result.success)
+          .map((result) =>
+            uploadTxImages(
+              values.txImages!,
+              result.txId,
+              (values.bucketImagesLength || 0).toString(),
+            ),
+          ),
+      )
+    }
 
     toast({
       title: '처치 내역이 업데이트 되었습니다',

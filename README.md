@@ -41,7 +41,10 @@ export default function DefaultOrdersTable({
 ```
 
 - CRUD 함수 명명법
+
   - create : insertTodo
   - read : getTodo
   - update : updateTodo
   - delete : deleteTodo
+
+- boolean 변수는 isEdit, isIcu 등 is 붙이기

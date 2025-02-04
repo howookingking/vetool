@@ -244,3 +244,21 @@ export const getHosPatientCount = async (hosId: string) => {
 
   return data[0].count
 }
+
+export const getWeightInfo = async (patientId: string) => {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from('vitals')
+    .select('body_weight, created_at')
+    .match({ patient_id: patientId })
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  if (error) {
+    console.error(error)
+    redirect(`/error?message=${error.message}`)
+  }
+  return data
+}

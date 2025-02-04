@@ -4,9 +4,8 @@ import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useIcuRegisterStore } from '@/lib/store/icu/icu-register'
 import { cn } from '@/lib/utils/utils'
-import type { Vet } from '@/types/icu/chart'
+import { type Vet } from '@/types/icu/chart'
 import dynamic from 'next/dynamic'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
@@ -39,24 +38,41 @@ const LazySearchPatientContainer = dynamic(
   },
 )
 
+export type RegisteringPatient = {
+  patientId: string
+  birth: string
+  patientName: string
+  ageInDays?: number
+  species?: string
+  breed?: string
+  gender?: string
+  microchipNo?: string
+  memo?: string
+  weight?: string
+  ownerName?: string
+  ownerId?: string
+  hosPatientId?: string
+} | null
+
+type RegisterDialogProps = {
+  hosId: string
+  defaultVetId: string
+  defaultGroup: string
+}
+
 export default function RegisterDialog({
   hosId,
-  hosGroupList,
-  vetsListData,
-}: {
-  hosId: string
-  hosGroupList: string[]
-  vetsListData: Vet[]
-}) {
+  defaultGroup,
+  defaultVetId,
+}: RegisterDialogProps) {
+  const { target_date } = useParams()
+
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
+  const [registeringPatient, setRegisteringPatient] =
+    useState<RegisteringPatient>(null)
+
   const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false)
   const [tab, setTab] = useState('search')
-
-  const { target_date } = useParams()
-  const { reset, isConfirmDialogOpen, setIsConfirmDialogOpen } =
-    useIcuRegisterStore()
-
-  const defaultGroup = hosGroupList[0]
-  const defaultVetId = vetsListData[0].user_id
 
   const handleTabValueChange = (value: string) => {
     if (value === 'search') {
@@ -70,15 +86,16 @@ export default function RegisterDialog({
     }
   }
 
-  const handleCloseDialog = () => {
-    setIsRegisterDialogOpen(false)
-    setIsConfirmDialogOpen(false)
-    setTab('search')
-    reset()
+  const handleOpenChage = (open: boolean) => {
+    if (open) {
+      setTab('search')
+      setRegisteringPatient(null)
+    }
+    setIsRegisterDialogOpen(open)
   }
 
   return (
-    <Dialog open={isRegisterDialogOpen} onOpenChange={setIsRegisterDialogOpen}>
+    <Dialog open={isRegisterDialogOpen} onOpenChange={handleOpenChage}>
       <DialogTrigger asChild className="hidden md:flex">
         <Button size="sm" className="shrink-0 text-sm">
           환자 입원
@@ -108,7 +125,13 @@ export default function RegisterDialog({
           </TabsList>
 
           <TabsContent value="search">
-            <LazySearchPatientContainer itemsPerPage={8} hosId={hosId} isIcu />
+            <LazySearchPatientContainer
+              itemsPerPage={8}
+              hosId={hosId}
+              isIcu
+              setIsConfirmDialogOpen={setIsConfirmDialogOpen}
+              setRegisteringPatient={setRegisteringPatient}
+            />
           </TabsContent>
 
           <TabsContent value="register">
@@ -117,18 +140,21 @@ export default function RegisterDialog({
               hosId={hosId}
               setIsPatientRegisterDialogOpen={setIsRegisterDialogOpen}
               setIsConfirmDialogOpen={setIsConfirmDialogOpen}
+              registeringPatient={registeringPatient}
+              setRegisteringPatient={setRegisteringPatient}
             />
           </TabsContent>
         </Tabs>
       </DialogContent>
 
       <LazyRegisterIcuConfirmDialog
-        handleCloseDialog={handleCloseDialog}
         isConfirmDialogOpen={isConfirmDialogOpen}
         setIsConfirmDialogOpen={setIsConfirmDialogOpen}
         hosId={hosId}
-        defaultMainVetId={defaultVetId}
-        defaultMainGroup={defaultGroup}
+        defaultVetId={defaultVetId}
+        defaultGroup={defaultGroup}
+        registeringPatient={registeringPatient}
+        setIsRegisterDialogOpen={setIsRegisterDialogOpen}
       />
     </Dialog>
   )

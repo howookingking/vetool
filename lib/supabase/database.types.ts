@@ -1602,6 +1602,12 @@ export type Database = {
         }
         Returns: Json
       }
+      get_patient_data_with_vitals: {
+        Args: {
+          patient_id_input: string
+        }
+        Returns: Json
+      }
       get_pinned_diet_data: {
         Args: {
           hos_id_input: string
@@ -1896,6 +1902,7 @@ export type Database = {
           template_id_input: string
           template_name_input: string
           template_comment_input: string
+          hos_id_input: string
         }
         Returns: undefined
       }

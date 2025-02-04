@@ -59,16 +59,9 @@ export const upsertIcuTx = async (
     redirect(`/error?message=${error.message}`)
   }
 
-  // 이미지가 존재한다면 업로드
-  if (
-    txLocalState?.bucketImagesLength ||
-    (txLocalState?.txImages && txLocalState.txImages.length > 0)
-  ) {
-    await uploadTxImages(
-      txLocalState.txImages || [],
-      data[0].icu_chart_tx_id,
-      txLocalState.bucketImagesLength?.toString() || '0',
-    )
+  return {
+    success: true,
+    txId: data[0].icu_chart_tx_id,
   }
 }
 
@@ -129,17 +122,17 @@ export const uploadTxImages = async (
 
     // 1. FormData 선언
     const formData = new FormData()
-
-    // 2. FormData에 이미지, 라우트, id 추가
     txImages.forEach((file) => formData.append('files', file))
     formData.append('route', 'icu')
     formData.append('id', txId)
     formData.append('startIndex', startIndex)
 
-    // 3. 이미지 업로드
     const response = await fetch(baseUrl, {
       method: 'POST',
       body: formData,
+      headers: {
+        Accept: 'application/json',
+      },
     })
 
     if (!response.ok) {

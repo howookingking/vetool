@@ -1,6 +1,7 @@
 'use client'
 
 import PreviewDialog from '@/components/hospital/common/preview/preview-dialog'
+import { templateColumns } from '@/components/hospital/icu/main/chart/paste-chart-dialogs/template/template-columns'
 import { Button } from '@/components/ui/button'
 import DataTable from '@/components/ui/data-table'
 import {
@@ -15,21 +16,19 @@ import {
 import { getTemplateCharts } from '@/lib/services/icu/template/template'
 import { type TemplateChart } from '@/types/icu/template'
 import { Bookmark, LoaderCircle } from 'lucide-react'
-import { useParams } from 'next/navigation'
 import { useState } from 'react'
-import { templateColumns } from './template-columns'
 
 type PasteTemplateOrderDialogProps = {
   tableHeader?: boolean
   chartId?: string
+  hosId?: string
 }
 
 export default function PasteTemplateOrderDialog({
   tableHeader,
   chartId,
+  hosId,
 }: PasteTemplateOrderDialogProps) {
-  const { hos_id } = useParams()
-
   const [templateCharts, setTemplateCharts] = useState<TemplateChart[]>([])
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -37,7 +36,7 @@ export default function PasteTemplateOrderDialog({
   const handleOpenTemplateDialog = async () => {
     setIsLoading(true)
 
-    const templateCharts = await getTemplateCharts(hos_id as string)
+    const templateCharts = await getTemplateCharts(hosId as string)
     setTemplateCharts(templateCharts)
 
     setIsLoading(false)
@@ -50,7 +49,7 @@ export default function PasteTemplateOrderDialog({
         <Button
           size="icon"
           variant="ghost"
-          className="hidden shrink-0 md:flex"
+          className="hidden shrink-0 md:inline-flex"
           onClick={handleOpenTemplateDialog}
           disabled={isLoading}
         >

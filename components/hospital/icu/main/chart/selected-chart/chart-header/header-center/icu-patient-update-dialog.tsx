@@ -1,3 +1,5 @@
+// patient 라우트에서 사용하는 patient-update-dialog가 있을 헷갈림 주의
+
 'use client'
 
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
@@ -11,7 +13,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { calculateAge, convertPascalCased } from '@/lib/utils/utils'
-import type { PatientDataTable } from '@/types/patients'
+import { type PatientDataTable } from '@/types/patients'
 import { Cat, Dog } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useParams } from 'next/navigation'
@@ -25,27 +27,27 @@ const LazyPatientForm = dynamic(
   },
 )
 
-export default function UpdatePatientDialog({
-  patientData,
-  weight,
-  weightMeasuredDate,
-  icuChartId,
-}: {
+type UpdatePatientDialogProps = {
   patientData: PatientDataTable
   weight: string
   weightMeasuredDate: string | null
   icuChartId: string
-}) {
-  const { hos_id } = useParams()
+}
+
+export default function IcuPatientUpdateDialog({
+  patientData,
+  weight,
+  weightMeasuredDate,
+  icuChartId,
+}: UpdatePatientDialogProps) {
   const { name, breed, gender, species, birth } = patientData
-  const [isPatientUpdateDialogOpen, setIsPatientUpdateDialogOpen] =
-    useState(false)
+
+  const { hos_id } = useParams()
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   return (
-    <Dialog
-      open={isPatientUpdateDialogOpen}
-      onOpenChange={setIsPatientUpdateDialogOpen}
-    >
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button
           variant="ghost"
@@ -78,10 +80,12 @@ export default function UpdatePatientDialog({
           mode="updateFromIcuRoute"
           hosId={hos_id as string}
           editingPatient={patientData}
-          setIsPatientUpdateDialogOpen={setIsPatientUpdateDialogOpen}
+          setIsPatientUpdateDialogOpen={setIsDialogOpen}
           weight={weight}
           weightMeasuredDate={weightMeasuredDate}
           icuChartId={icuChartId}
+          registeringPatient={null}
+          setRegisteringPatient={null}
         />
       </DialogContent>
     </Dialog>

@@ -202,7 +202,7 @@ export default function TxDetailInsertStep({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="flex flex-col gap-4"
+          className="flex flex-col gap-4 overflow-auto px-1"
         >
           <FormField
             control={form.control}
@@ -211,11 +211,7 @@ export default function TxDetailInsertStep({
               <FormItem className="relative">
                 <FormLabel className="">처치 결과</FormLabel>
                 <FormControl>
-                  <Input
-                    {...field}
-                    className="h-8 text-sm"
-                    autoComplete="off"
-                  />
+                  <Input {...field} className="h-8 text-sm" />
                 </FormControl>
                 <FormMessage className="text-xs" />
               </FormItem>
@@ -239,16 +235,15 @@ export default function TxDetailInsertStep({
               </FormItem>
             )}
           />
+          {hasTxLog && <TxLog logs={txLocalState?.txLog} />}
 
-          {/* <TxImageField
+          <TxImageField
             txLocalState={txLocalState}
             setTxLocalState={setTxLocalState}
             bucketImages={bucketImages}
             setBucketImages={setBucketImages}
             isLoading={isLoading}
-          /> */}
-
-          {hasTxLog && <TxLog logs={txLocalState?.txLog} />}
+          />
 
           <FormField
             control={form.control}

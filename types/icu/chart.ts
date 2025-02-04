@@ -106,7 +106,6 @@ export type IcuSidebarIoData = {
   vets: {
     sub_vet: string
     main_vet: string
-    urgency: number | null
   }
   in_date: string
   patient: {
@@ -118,6 +117,7 @@ export type IcuSidebarIoData = {
   }
   out_date: string | null
   icu_io_id: string
+  urgency: number | null
   group_list: string[]
   created_at: string
 }

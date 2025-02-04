@@ -1,26 +1,30 @@
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 import { getLatestIoByPatientId } from '@/lib/services/icu/chart/get-icu-io-by-patient-id'
-import { useIcuRegisterStore } from '@/lib/store/icu/icu-register'
 import { getDaysSince } from '@/lib/utils/utils'
 import { Check, LoaderCircle } from 'lucide-react'
 import { useParams } from 'next/navigation'
-import { useState } from 'react'
+import { type Dispatch, type SetStateAction, useState } from 'react'
+import { type RegisteringPatient } from '../register-dialog'
 
-export default function PatientSelectButton({
-  patientId,
-
-  birth,
-  patientName,
-}: {
+type PatientSelectButtonProps = {
   patientId: string
   birth: string
   patientName: string
-}) {
-  const { setRegisteringPatient, setIsConfirmDialogOpen } =
-    useIcuRegisterStore()
-  const [isLoading, setIsLoading] = useState(false)
+  setIsConfirmDialogOpen: Dispatch<SetStateAction<boolean>>
+  setRegisteringPatient: Dispatch<SetStateAction<RegisteringPatient | null>>
+}
+
+export default function PatientSelectButton({
+  patientId,
+  birth,
+  patientName,
+  setIsConfirmDialogOpen,
+  setRegisteringPatient,
+}: PatientSelectButtonProps) {
   const { target_date } = useParams()
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const handlePatientClick = async () => {
     setIsLoading(true)
@@ -51,14 +55,14 @@ export default function PatientSelectButton({
       return
     }
 
-    setRegisteringPatient({
+    setRegisteringPatient!({
       patientId,
       birth,
       patientName,
       ageInDays: getDaysSince(birth),
     })
 
-    setIsConfirmDialogOpen(true)
+    setIsConfirmDialogOpen!(true)
   }
 
   return (

@@ -395,8 +395,8 @@ export const filterData = (
       if (a.vets === null) return 1
       if (b.vets === null) return -1
 
-      const urgencyA = a.vets.urgency ?? 0
-      const urgencyB = b.vets.urgency ?? 0
+      const urgencyA = a.urgency ?? 0
+      const urgencyB = b.urgency ?? 0
       return urgencyB - urgencyA
     })
   }

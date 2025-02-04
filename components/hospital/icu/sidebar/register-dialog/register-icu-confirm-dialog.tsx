@@ -10,34 +10,36 @@ import {
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 import { registerIcuPatient } from '@/lib/services/icu/register-icu-patient'
-import { useIcuRegisterStore } from '@/lib/store/icu/icu-register'
 import { changeTargetDateInUrl, cn } from '@/lib/utils/utils'
 import { LoaderCircle } from 'lucide-react'
 import { useParams, usePathname, useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { type Dispatch, type SetStateAction, useState } from 'react'
+import { type RegisteringPatient } from './register-dialog'
+
+type RegisterIcuConfirmDialogProps = {
+  hosId: string
+  isConfirmDialogOpen: boolean
+  setIsConfirmDialogOpen: Dispatch<SetStateAction<boolean>>
+  defaultVetId: string
+  defaultGroup: string
+  setIsRegisterDialogOpen: Dispatch<SetStateAction<boolean>>
+  registeringPatient: RegisteringPatient
+}
 
 export default function RegisterIcuConfirmDialog({
   hosId,
   isConfirmDialogOpen,
   setIsConfirmDialogOpen,
-  handleCloseDialog,
-  defaultMainVetId,
-  defaultMainGroup,
-}: {
-  hosId: string
-  isConfirmDialogOpen: boolean
-  setIsConfirmDialogOpen: (open: boolean) => void
-  handleCloseDialog: () => void
-  defaultMainVetId: string
-  defaultMainGroup: string
-}) {
-  const [isSubmitting, setIsSubmitting] = useState(false)
-
-  const { registeringPatient } = useIcuRegisterStore()
+  defaultGroup,
+  defaultVetId,
+  setIsRegisterDialogOpen,
+  registeringPatient,
+}: RegisterIcuConfirmDialogProps) {
+  const path = usePathname()
   const { target_date } = useParams()
   const { push } = useRouter()
 
-  const path = usePathname()
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleConfirm = async () => {
     setIsSubmitting(true)
@@ -48,19 +50,23 @@ export default function RegisterIcuConfirmDialog({
       registeringPatient?.birth!,
       target_date as string,
       '',
-      [defaultMainGroup as string],
-      defaultMainVetId as string,
+      [defaultGroup as string],
+      defaultVetId as string,
     )
 
-    const splittedPath = path.split('/')
-    if (splittedPath[6]) {
-      splittedPath[splittedPath.length - 1] = registeringPatient?.patientId!
+    const splittedPathArr = path.split('/')
+    const currentPatientId = splittedPathArr[6]
+    if (currentPatientId) {
+      // 입원차트에서 환자를 선택한 경우 : 등록중인 환자의 id로 변경
+      // 예) /hospital/병원아이디/icu/2025-01-31/chart/환자아이디
+      splittedPathArr[6] = registeringPatient?.patientId!
     } else {
-      splittedPath[5] = 'chart'
-      splittedPath.push(registeringPatient?.patientId!)
+      // 처치표, 종합현황 등에서 입원시키는 경우 : chart라우트로 변경하고 환자아이디 추가
+      splittedPathArr[5] = 'chart'
+      splittedPathArr.push(registeringPatient?.patientId!)
     }
 
-    const newPatientPath = splittedPath.join('/')
+    const newPatientPath = splittedPathArr.join('/')
     const newPath = changeTargetDateInUrl(newPatientPath, target_date as string)
 
     push(newPath)
@@ -70,14 +76,9 @@ export default function RegisterIcuConfirmDialog({
       description: '입원 등록을 완료했습니다. 차트를 생성하세요',
     })
 
-    handleCloseDialog?.()
     setIsSubmitting(false)
-  }
-
-  const handleCloseConfirmDialog = () => {
     setIsConfirmDialogOpen(false)
-    handleCloseDialog?.()
-    setIsSubmitting(false)
+    setIsRegisterDialogOpen(false)
   }
 
   return (
@@ -87,16 +88,14 @@ export default function RegisterIcuConfirmDialog({
     >
       <AlertDialogContent className="gap-0">
         <AlertDialogHeader>
-          <AlertDialogTitle>등록 환자 입원</AlertDialogTitle>
+          <AlertDialogTitle>환자 입원</AlertDialogTitle>
         </AlertDialogHeader>
         <AlertDialogDescription>
-          {`${registeringPatient?.patientName} 환자를 ${target_date}에 입원하시겠습니까?`}
+          {`${registeringPatient?.patientName}를(을) ${target_date}에 입원하시겠습니까?`}
         </AlertDialogDescription>
 
         <AlertDialogFooter className="pt-8">
-          <AlertDialogCancel onClick={handleCloseConfirmDialog}>
-            닫기
-          </AlertDialogCancel>
+          <AlertDialogCancel>닫기</AlertDialogCancel>
 
           <Button onClick={handleConfirm} disabled={isSubmitting}>
             확인

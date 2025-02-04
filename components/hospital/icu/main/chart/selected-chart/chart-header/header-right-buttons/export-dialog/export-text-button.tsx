@@ -34,10 +34,10 @@ CC: ${chartData.icu_io.icu_io_cc}
     fluidOrders.forEach((order) => {
       const { order_name, order_comment } = order
 
-      textContents += `${order_name.trim()}: (${order_comment}) \n`
+      textContents += `Fluid: ${order_name.trim()} (${order_comment}) \n`
     })
 
-    textContents += `\n=================\n`
+    textContents += `\n=================\n\n`
 
     otherOrders.forEach((order) => {
       const { order_name, order_times } = order

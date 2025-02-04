@@ -9,15 +9,17 @@ import {
 } from '@/components/ui/pagination'
 import { cn } from '@/lib/utils/utils'
 
+type SearchPatientPaginationProps = {
+  currentPage: number
+  totalPages: number
+  onPageChange: (page: number) => void
+}
+
 export default function SearchPatientPagination({
   currentPage,
   totalPages,
   onPageChange,
-}: {
-  currentPage: number
-  totalPages: number
-  onPageChange: (page: number) => void
-}) {
+}: SearchPatientPaginationProps) {
   const renderPaginationItems = () => {
     const items = []
     const maxVisiblePages = 5

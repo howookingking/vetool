@@ -161,6 +161,7 @@ export default function ChartTable({
         isTouchMove={isTouchMove}
         isMobile={isMobile}
         chartId={icu_chart_id}
+        hosId={hos_id}
       />
 
       {isSorting ? (
