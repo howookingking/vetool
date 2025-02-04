@@ -14,7 +14,8 @@ import sharp from 'sharp'
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization, Content-Length',
+  'Access-Control-Max-Age': '86400', // 24시간 동안 preflight 요청 캐시
 }
 
 // Helper function to create consistent response with CORS
@@ -28,6 +29,9 @@ const createResponse = (body: any, status: number = 200) => {
   })
 }
 
+// 타임아웃 설정 추가
+const UPLOAD_TIMEOUT = 30000 // 30초
+
 const uploadImage = async (
   files: File[],
   route: string,
@@ -36,52 +40,68 @@ const uploadImage = async (
 ) => {
   const uploadPromises = files.map(async (file, index) => {
     try {
-      const buffer = Buffer.from(await file.arrayBuffer())
-      const fileType = file.type.split('/')[0]
+      // 각 파일 업로드에 대한 타임아웃 설정
+      const uploadWithTimeout = Promise.race([
+        (async () => {
+          const buffer = Buffer.from(await file.arrayBuffer())
+          const fileType = file.type.split('/')[0]
 
-      let optimizedBuffer = buffer
-      let contentType = file.type
-      let fileExtension = file.name.split('.').pop()
+          let optimizedBuffer = buffer
+          let contentType = file.type
+          let fileExtension = file.name.split('.').pop()
 
-      if (fileType === 'image') {
-        try {
-          optimizedBuffer = await sharp(buffer)
-            .resize()
-            .webp({ quality: 80 })
-            .toBuffer()
-          contentType = 'image/webp'
-          fileExtension = 'webp'
-        } catch (error) {
-          console.error('이미지 최적화 중 오류:', error)
-        }
-      }
+          if (fileType === 'image') {
+            try {
+              optimizedBuffer = await sharp(buffer)
+                .resize()
+                .webp({ quality: 80 })
+                .toBuffer()
+              contentType = 'image/webp'
+              fileExtension = 'webp'
+            } catch (error) {
+              console.error('이미지 최적화 중 오류:', error)
+            }
+          }
 
-      const fileName = `${route}-${id}-${index + Number(startIndex)}.${fileExtension}`
+          const fileName = `${route}-${id}-${index + Number(startIndex)}.${fileExtension}`
 
-      const command = new PutObjectCommand({
-        Bucket: process.env.R2_BUCKET_NAME!,
-        Key: fileName,
-        Body: optimizedBuffer,
-        ContentType: contentType,
-        CacheControl: 'public, max-age=604800, immutable',
-      })
+          // 파일 크기 로깅 추가
+          console.log(
+            `Uploading file: ${fileName}, Size: ${buffer.length} bytes`,
+          )
 
-      await R2Client.send(command)
-      return { success: true, fileName }
+          const command = new PutObjectCommand({
+            Bucket: process.env.R2_BUCKET_NAME!,
+            Key: fileName,
+            Body: optimizedBuffer,
+            ContentType: contentType,
+            CacheControl: 'public, max-age=604800, immutable',
+          })
+
+          await R2Client.send(command)
+          return { success: true, fileName }
+        })(),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Upload timeout')), UPLOAD_TIMEOUT),
+        ),
+      ])
+
+      return await uploadWithTimeout
     } catch (error) {
       console.error(`파일 업로드 중 오류 (${file.name}):`, error)
       return { success: false, error, fileName: file.name }
     }
   })
 
+  // 모든 업로드 작업에 대한 타임아웃 설정
   const results = await Promise.all(uploadPromises)
-  const failedUploads = results.filter((r) => !r.success)
+  const failedUploads = results.filter((r: any) => !r.success)
 
   if (failedUploads.length > 0) {
     throw new Error(`${failedUploads.length}개의 파일 업로드 실패`)
   }
 
-  return results.filter((r) => r.success).map((r) => r.fileName)
+  return results.filter((r: any) => r.success).map((r: any) => r.fileName)
 }
 
 export async function OPTIONS(req: NextRequest) {
@@ -93,6 +113,13 @@ export async function OPTIONS(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
+    // 요청 크기 제한 확인
+    const contentLength = req.headers.get('content-length')
+    if (contentLength && parseInt(contentLength) > 500 * 1024 * 1024) {
+      // 500MB 제한
+      return createResponse({ error: '파일 크기가 너무 큽니다' }, 413)
+    }
+
     if (!process.env.R2_BUCKET_NAME) {
       return createResponse(
         { error: 'R2 버킷 이름이 설정되지 않았습니다' },
@@ -110,6 +137,10 @@ export async function POST(req: NextRequest) {
       return createResponse({ error: '필수 파라미터가 누락되었습니다' }, 400)
     }
 
+    // 디버깅을 위한 로그 추가
+    console.log(`업로드 시작: ${files.length}개 파일`)
+    console.log(`Route: ${route}, ID: ${id}, StartIndex: ${startIndex}`)
+
     const uploadedFiles = await uploadImage(
       files as File[],
       route as string,
@@ -122,7 +153,7 @@ export async function POST(req: NextRequest) {
       files: uploadedFiles,
     })
   } catch (error) {
-    console.error('이미지 업로드 중 오류:', error)
+    console.error('이미지 업로드 중 상세 오류:', error)
     return createResponse(
       {
         error: '이미지 업로드에 실패했습니다',
