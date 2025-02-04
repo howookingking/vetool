@@ -1,19 +1,20 @@
+'use client'
+
 import ChiefComplaint from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/chief-complaint'
 import Diagnosis from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/diagnosis'
 import InAndOutDate from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/in-and-out-date/in-and-out-date'
 import VetName from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/vets/vet-name'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedChart } from '@/types/icu/chart'
 
 export default function IcuShareChartInfos({
   chartData,
-  mainVetName,
 }: {
   chartData: SelectedChart
-  mainVetName?: string
 }) {
-  const { icu_io, patient } = chartData
+  const { icu_io, patient, main_vet } = chartData
 
   return (
     <div
@@ -43,7 +44,7 @@ export default function IcuShareChartInfos({
           variant="outline"
           className="flex w-full justify-start gap-2 px-2"
         >
-          <VetName label="주치의" name={mainVetName ?? '미선택'} />
+          <VetName label="주치의" name={main_vet.name ?? '미선택'} />
         </Button>
       </div>
 

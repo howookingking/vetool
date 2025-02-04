@@ -28,7 +28,9 @@ export default function OrderFormField({
           name="icu_chart_order_type"
           render={({ field }) => (
             <FormItem className="space-y-2">
-              <FormLabel className="font-semibold">오더 타입*</FormLabel>
+              <FormLabel className="font-semibold">
+                오더 타입 <span className="text-destructive">*</span>
+              </FormLabel>
               <FormControl>
                 <RadioGroup
                   onValueChange={field.onChange}
