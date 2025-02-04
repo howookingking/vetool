@@ -29,9 +29,6 @@ const createResponse = (body: any, status: number = 200) => {
   })
 }
 
-// 타임아웃 설정 추가
-const UPLOAD_TIMEOUT = 30000 // 30초
-
 const uploadImage = async (
   files: File[],
   route: string,
@@ -65,11 +62,6 @@ const uploadImage = async (
 
           const fileName = `${route}-${id}-${index + Number(startIndex)}.${fileExtension}`
 
-          // 파일 크기 로깅 추가
-          console.log(
-            `Uploading file: ${fileName}, Size: ${buffer.length} bytes`,
-          )
-
           const command = new PutObjectCommand({
             Bucket: process.env.R2_BUCKET_NAME!,
             Key: fileName,
@@ -81,9 +73,6 @@ const uploadImage = async (
           await R2Client.send(command)
           return { success: true, fileName }
         })(),
-        new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('Upload timeout')), UPLOAD_TIMEOUT),
-        ),
       ])
 
       return await uploadWithTimeout
@@ -113,13 +102,6 @@ export async function OPTIONS(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    // 요청 크기 제한 확인
-    const contentLength = req.headers.get('content-length')
-    if (contentLength && parseInt(contentLength) > 500 * 1024 * 1024) {
-      // 500MB 제한
-      return createResponse({ error: '파일 크기가 너무 큽니다' }, 413)
-    }
-
     if (!process.env.R2_BUCKET_NAME) {
       return createResponse(
         { error: 'R2 버킷 이름이 설정되지 않았습니다' },
@@ -136,10 +118,6 @@ export async function POST(req: NextRequest) {
     if (!files?.length || !route || !id || !startIndex) {
       return createResponse({ error: '필수 파라미터가 누락되었습니다' }, 400)
     }
-
-    // 디버깅을 위한 로그 추가
-    console.log(`업로드 시작: ${files.length}개 파일`)
-    console.log(`Route: ${route}, ID: ${id}, StartIndex: ${startIndex}`)
 
     const uploadedFiles = await uploadImage(
       files as File[],

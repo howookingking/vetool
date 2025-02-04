@@ -10,6 +10,7 @@ export const upsertIcuTx = async (
   hosId: string,
   txLocalState: TxLocalState,
   weightMeasuredDate: string,
+  imagesLength: number,
   updatedLogs?: TxLog[],
 ) => {
   const supabase = await createClient()
@@ -26,8 +27,7 @@ export const upsertIcuTx = async (
       time: txLocalState?.time!,
       is_crucial: txLocalState?.isCrucialChecked,
       has_images: Boolean(
-        (txLocalState?.txImages?.length || 0) +
-          (txLocalState?.bucketImagesLength || 0),
+        imagesLength + (txLocalState?.bucketImagesLength || 0),
       ),
     })
     .select('icu_chart_tx_id')
