@@ -36,13 +36,14 @@ const uploadImage = async (
 ) => {
   const uploadPromises = files.map(async (file, index) => {
     try {
-      if (!(file instanceof Blob)) {
+      if (!(file instanceof File)) {
         throw new Error('유효하지 않은 파일 형식입니다')
       }
 
-      const buffer = Buffer.from(await file.arrayBuffer())
+      const arrayBuffer = await file.arrayBuffer()
+      const buffer = Buffer.from(arrayBuffer)
       const fileType = file.type.split('/')[0]
-      const fileName = (file as File).name || `file-${index}`
+      const fileName = file.name || `file-${index}`
 
       let optimizedBuffer = buffer
       let contentType = file.type
@@ -75,8 +76,15 @@ const uploadImage = async (
       await R2Client.send(command)
       return { success: true, fileName: bucketFileName }
     } catch (error) {
-      console.error(`파일 업로드 중 오류 (${(file as File).name}):`, error)
-      return { success: false, error, fileName: (file as File).name }
+      console.error(
+        `파일 업로드 중 오류 (${file instanceof File ? file.name : '알 수 없는 파일'}):`,
+        error,
+      )
+      return {
+        success: false,
+        error,
+        fileName: file instanceof File ? file.name : '알 수 없는 파일',
+      }
     }
   })
 
@@ -116,6 +124,18 @@ export async function POST(req: NextRequest) {
       return createResponse({ error: '필수 파라미터가 누락되었습니다' }, 400)
     }
 
+    // 파일 크기 및 타입 검증 추가
+    for (const file of files) {
+      if (!(file instanceof File)) {
+        return createResponse({ error: '유효하지 않은 파일 형식입니다' }, 400)
+      }
+
+      // 파일 크기 제한 (예: 10MB)
+      if (file.size > 100 * 1024 * 1024) {
+        return createResponse({ error: '파일 크기가 너무 큽니다' }, 400)
+      }
+    }
+
     const uploadedFiles = await uploadImage(
       files,
       route as string,
@@ -124,14 +144,14 @@ export async function POST(req: NextRequest) {
     )
 
     return createResponse({
-      message: '이미지가 성공적으로 업로드되었습니다',
+      message: '파일이 성공적으로 업로드되었습니다',
       files: uploadedFiles,
     })
   } catch (error) {
-    console.error('이미지 업로드 중 오류:', error)
+    console.error('파일 업로드 중 오류:', error)
     return createResponse(
       {
-        error: '이미지 업로드에 실패했습니다',
+        error: '파일 업로드에 실패했습니다',
         details: error instanceof Error ? error.message : '알 수 없는 오류',
       },
       500,
@@ -156,7 +176,7 @@ export async function GET(req: NextRequest) {
     const listResponse = await R2Client.send(listCommand)
 
     if (!listResponse.Contents?.length) {
-      return createResponse({ error: '이미지를 찾을 수 없습니다' }, 404)
+      return createResponse({ error: '파일을 찾을 수 없습니다' }, 404)
     }
 
     const urlPromises = listResponse.Contents.map(async (item) => {
@@ -185,8 +205,8 @@ export async function GET(req: NextRequest) {
     const imageUrls = await Promise.all(urlPromises)
     return createResponse({ urls: imageUrls })
   } catch (error) {
-    console.error('이미지 URL 생성 중 오류:', error)
-    return createResponse({ error: '이미지 URL 생성에 실패했습니다' }, 500)
+    console.error('파일 URL 생성 중 오류:', error)
+    return createResponse({ error: '파일 URL 생성에 실패했습니다' }, 500)
   }
 }
 
@@ -207,7 +227,7 @@ export async function DELETE(req: NextRequest) {
     const listResponse = await R2Client.send(listCommand)
 
     if (!listResponse.Contents?.length) {
-      return createResponse({ error: '삭제할 이미지가 존재하지 않습니다' }, 404)
+      return createResponse({ error: '삭제할 파일이 존재하지 않습니다' }, 404)
     }
 
     const deletePromises = listResponse.Contents.map((item) => {
@@ -219,9 +239,9 @@ export async function DELETE(req: NextRequest) {
     })
 
     await Promise.all(deletePromises)
-    return createResponse({ message: '이미지들이 성공적으로 삭제되었습니다' })
+    return createResponse({ message: '파일이 성공적으로 삭제되었습니다' })
   } catch (error) {
-    console.error('이미지 삭제 중 오류:', error)
-    return createResponse({ error: '이미지 삭제에 실패했습니다' }, 500)
+    console.error('파일 삭제 중 오류:', error)
+    return createResponse({ error: '파일 삭제에 실패했습니다' }, 500)
   }
 }
