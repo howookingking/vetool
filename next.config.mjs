@@ -3,7 +3,7 @@ const nextConfig = {
   experimental: {
     reactCompiler: true,
     serverActions: {
-      bodySizeLimit: '100mb',
+      bodySizeLimit: '500mb',
     },
   },
   logging: {
@@ -12,7 +12,6 @@ const nextConfig = {
     },
   },
   images: {
-    domains: ['localhost'],
     remotePatterns: [
       {
         protocol: 'https',
