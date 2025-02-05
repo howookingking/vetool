@@ -63,7 +63,7 @@ export default function ResuscitationTab({
       Number(values.weight),
     )
     setResult(calculatedRate)
-  }, [tab, setFormData])
+  }, [tab, form])
 
   useEffect(() => {
     const subscription = form.watch((value) => {
@@ -80,7 +80,7 @@ export default function ResuscitationTab({
       })
     })
     return () => subscription.unsubscribe()
-  }, [form])
+  }, [form, setFormData])
 
   const handleCopyButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()

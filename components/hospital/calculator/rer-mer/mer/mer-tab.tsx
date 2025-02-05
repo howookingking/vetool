@@ -43,7 +43,7 @@ export default function MerTab({
       const calculatedRate = calculateMer(values.weight, values.factor)
       setResult(calculatedRate)
     }
-  }, [tab])
+  }, [tab, form])
 
   useEffect(() => {
     const subscription = form.watch((value) => {

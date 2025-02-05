@@ -20,6 +20,7 @@ export default function SelectedCalculators({
       {selectedCalculator === 'rer-mer' && (
         <RerMerCalculator patientData={patientData} />
       )}
+      {/* {selectedCalculator === 'vital-counter' && <VitalCounter />} */}
     </div>
   )
 }

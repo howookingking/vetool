@@ -61,7 +61,7 @@ export default function MaintenanceTab({
       )
       setResult(calculatedRate)
     }
-  }, [tab])
+  }, [tab, form])
 
   useEffect(() => {
     const subscription = form.watch((value) => {

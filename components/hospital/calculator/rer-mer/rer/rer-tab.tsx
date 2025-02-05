@@ -42,7 +42,7 @@ export default function RerTab({
       const calculatedRate = calculateRer(values.weight)
       setResult(calculatedRate)
     }
-  }, [tab])
+  }, [tab, form])
 
   useEffect(() => {
     const subscription = form.watch((value) => {

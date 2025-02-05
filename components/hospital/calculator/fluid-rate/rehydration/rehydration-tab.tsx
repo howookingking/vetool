@@ -59,7 +59,7 @@ export default function RehydrationTab({
       )
       setResult(calculatedRate)
     }
-  }, [tab])
+  }, [tab, form])
 
   useEffect(() => {
     const subscription = form.watch((value) => {
