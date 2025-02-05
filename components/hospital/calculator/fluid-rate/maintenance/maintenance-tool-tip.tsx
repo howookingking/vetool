@@ -1,26 +1,27 @@
 import HelperTooltip from '@/components/common/helper-tooltip'
 
-export default function FluidToolTip() {
+export default function MaintenanceToolTip() {
   return (
     <HelperTooltip className="mt-[1px]" side="right">
       <div className="space-y-2">
-        <div className="text-sm font-semibold">유지속도</div>
+        <div className="text-sm font-semibold">Maintenance Fluid Rate</div>
 
         <div className="flex gap-10">
           <div>
             <div className="font-semibold">개</div>
-            <div>a. 60ml/kg/day</div>
             <div>
-              b. 132 * (몸무게) <sup>0.75</sup> ml/day
+              a. 132 * (몸무게) <sup>0.75</sup> ml/day
             </div>
+            <div>b. 60ml/kg/day</div>
             <div>c. 30 * (몸무게) + 70 ml/day</div>
           </div>
           <div>
             <div className="font-semibold">고양이</div>
-            <div>a. 40ml/kg/day</div>
             <div>
-              b. 80 * (몸무게) <sup>0.75</sup> ml/day
+              a. 80 * (몸무게) <sup>0.75</sup> ml/day
             </div>
+            <div>b. 40ml/kg/day</div>
+
             <div>c. 30 * (몸무게) + 70 ml/day</div>
           </div>
         </div>

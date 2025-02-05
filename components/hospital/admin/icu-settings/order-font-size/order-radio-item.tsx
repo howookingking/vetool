@@ -1,4 +1,4 @@
-import OrderTypeColorDot from '@/components/hospital/common/order-type-color-dot'
+import OrderTypeColorDot from '@/components/hospital/common/order/order-type-color-dot'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { Label } from '@/components/ui/label'
 import { RadioGroupItem } from '@/components/ui/radio-group'

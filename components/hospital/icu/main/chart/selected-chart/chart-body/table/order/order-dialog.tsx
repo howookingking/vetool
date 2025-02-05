@@ -1,5 +1,5 @@
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
-import OrderTypeColorDot from '@/components/hospital/common/order-type-color-dot'
+import OrderTypeColorDot from '@/components/hospital/common/order/order-type-color-dot'
 import {
   Dialog,
   DialogContent,

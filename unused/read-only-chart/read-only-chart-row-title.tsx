@@ -1,4 +1,4 @@
-import OrderTitleContent from '@/components/hospital/common/order-title-content'
+import OrderTitleContent from '@/components/hospital/common/order/order-title-content'
 import { TableCell } from '@/components/ui/table'
 import { IcuOrderColors } from '@/types/adimin'
 import type { IcuReadOnlyOrderData } from '@/types/icu/chart'

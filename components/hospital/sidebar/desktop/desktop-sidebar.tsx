@@ -1,16 +1,19 @@
+import CalculatorSheet from '@/components/hospital/calculator/calculator-sheet'
+import Feedback from '@/components/hospital/feedback/feedback'
 import SidebarItem from '@/components/hospital/sidebar/desktop/desktop-sidebar-item'
 import SidebarUserInfo from '@/components/hospital/sidebar/sidebar-user-info'
 import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
 import type { VetoolUser } from '@/types'
-import Feedback from '../../feedback/feedback'
 
-export default function DesktopSidebar({
-  hosId,
-  vetoolUser,
-}: {
+type DesktopSidebarProps = {
   hosId: string
   vetoolUser: VetoolUser
-}) {
+}
+
+export default async function DesktopSidebar({
+  hosId,
+  vetoolUser,
+}: DesktopSidebarProps) {
   return (
     <aside className="item-center fixed left-0 top-0 z-50 hidden h-screen w-14 flex-col justify-between border-r bg-white 2xl:flex">
       <ul>
@@ -27,6 +30,7 @@ export default function DesktopSidebar({
       </ul>
 
       <div className="mb-2 flex flex-col items-center justify-end gap-2">
+        <CalculatorSheet />
         <Feedback />
         <SidebarUserInfo hosId={hosId} vetoolUser={vetoolUser} />
       </div>

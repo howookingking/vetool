@@ -1,6 +1,6 @@
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import WarningMessage from '@/components/common/warning-message'
-import FluidToolTip from '@/unused/icu-chart/form-field/fluid-order/fluid-tool-tip'
+import MaintenanceToolTip from '@/components/hospital/calculator/fluid-rate/maintenance/maintenance-tool-tip'
 import { AutoComplete } from '@/components/ui/auto-complete'
 import { Button } from '@/components/ui/button'
 import {
@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { FLUIDS } from '@/constants/hospital/icu/chart/fluid'
-import { calculatedMaintenaceRate } from '@/lib/calculators/maintenace-rate'
+import { calculateMaintenanceRate } from '@/lib/calculators/fluid-rate'
 import { orderSchema } from '@/lib/schemas/icu/chart/order-schema'
 import { cn } from '@/lib/utils/utils'
 import { Calculator } from 'lucide-react'
@@ -69,7 +69,7 @@ export default function FluidOrderField({
   ])
 
   const calculateFluidRate = useCallback(() => {
-    const result = calculatedMaintenaceRate(
+    const result = calculateMaintenanceRate(
       weight || '0',
       species as 'canine' | 'feline',
       localFold,
@@ -140,7 +140,7 @@ export default function FluidOrderField({
                   <div className="itmes-center flex gap-2">
                     <span className="mt-[3px]">수액 속도</span>
 
-                    <FluidToolTip />
+                    <MaintenanceToolTip />
 
                     {ageInDays <= 365 && (
                       <WarningMessage
