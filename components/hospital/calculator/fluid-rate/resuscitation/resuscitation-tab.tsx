@@ -29,29 +29,20 @@ import {
   resuscitationFormSchema,
   type ResuscitationFormValues,
 } from '@/lib/schemas/calculator/fluid-rate-schema'
-import { type PatientFormData, type Species } from '@/types/hospital/calculator'
+import {
+  type CalculatorTabProps,
+  type Species,
+} from '@/types/hospital/calculator'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ClipboardCopy } from 'lucide-react'
-import {
-  Dispatch,
-  MouseEvent,
-  SetStateAction,
-  useEffect,
-  useState,
-} from 'react'
+import { MouseEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-
-type ResuscitationTabProps = {
-  formData: PatientFormData
-  setFormData: Dispatch<SetStateAction<PatientFormData>>
-  tab: string
-}
 
 export default function ResuscitationTab({
   formData,
   setFormData,
   tab,
-}: ResuscitationTabProps) {
+}: CalculatorTabProps) {
   const [result, setResult] = useState<{ min: number; max: number }>({
     min: 0,
     max: 0,

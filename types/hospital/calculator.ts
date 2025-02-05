@@ -1,4 +1,5 @@
 import { CALCULATORS } from '@/constants/hospital/icu/calculator/calcularor'
+import { Dispatch, SetStateAction } from 'react'
 
 export type Species = 'canine' | 'feline'
 
@@ -11,6 +12,13 @@ export type PatientFormData = {
   weight: string
   calcMethod?: CalcMethod
   fold?: FOLD
+  factor?: string
 }
 
 export type SelectedCalculator = (typeof CALCULATORS)[number]['value']
+
+export type CalculatorTabProps = {
+  formData: PatientFormData
+  setFormData: Dispatch<SetStateAction<PatientFormData>>
+  tab: string
+}

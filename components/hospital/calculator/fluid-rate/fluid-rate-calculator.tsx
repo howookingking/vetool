@@ -12,12 +12,12 @@ export default function FluidRateCalculator({
   patientData: PatientWithWeight | null
 }) {
   const [tab, setTab] = useState('maintenance')
-  const [formData, setFormData] = useState<PatientFormData>(() => ({
+  const [formData, setFormData] = useState<PatientFormData>({
     species: (patientData?.patient.species as Species) ?? 'canine',
-    calcMethod: 'a',
     weight: patientData?.vital?.body_weight ?? '',
+    calcMethod: 'a',
     fold: '1',
-  }))
+  })
 
   useEffect(() => {
     if (patientData) {

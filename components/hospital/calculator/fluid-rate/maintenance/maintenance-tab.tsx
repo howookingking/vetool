@@ -23,29 +23,20 @@ import {
   maintenanceFormSchema,
   type MaintenanceFormValues,
 } from '@/lib/schemas/calculator/fluid-rate-schema'
-import { Species, type PatientFormData } from '@/types/hospital/calculator'
+import {
+  type CalculatorTabProps,
+  type Species,
+} from '@/types/hospital/calculator'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ClipboardCopy } from 'lucide-react'
-import {
-  Dispatch,
-  MouseEvent,
-  SetStateAction,
-  useEffect,
-  useState,
-} from 'react'
+import { MouseEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-
-type MaintenanceTabProps = {
-  formData: PatientFormData
-  setFormData: Dispatch<SetStateAction<PatientFormData>>
-  tab: string
-}
 
 export default function MaintenanceTab({
   formData,
   setFormData,
   tab,
-}: MaintenanceTabProps) {
+}: CalculatorTabProps) {
   const [result, setResult] = useState<string>('')
 
   const form = useForm<MaintenanceFormValues>({

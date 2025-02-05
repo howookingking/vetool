@@ -1,11 +1,5 @@
 import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Form,
   FormControl,
@@ -22,31 +16,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { toast } from '@/components/ui/use-toast'
+import { calculateRehydration } from '@/lib/calculators/fluid-rate'
 import {
   rehydrationFormSchema,
   type RehydrationFormValues,
 } from '@/lib/schemas/calculator/fluid-rate-schema'
-import { type PatientFormData } from '@/types/hospital/calculator'
+import { type CalculatorTabProps } from '@/types/hospital/calculator'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ClipboardCopy } from 'lucide-react'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { MouseEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import RehydrationToolTip from './rehydration-tool-tip'
-import { calculateRehydration } from '@/lib/calculators/fluid-rate'
-import { toast } from '@/components/ui/use-toast'
-import { MouseEvent } from 'react'
-
-type RehydrationTabProps = {
-  formData: PatientFormData
-  setFormData: Dispatch<SetStateAction<PatientFormData>>
-  tab: string
-}
 
 export default function RehydrationTab({
   formData,
   setFormData,
   tab,
-}: RehydrationTabProps) {
+}: CalculatorTabProps) {
   const [result, setResult] = useState<{
     totalMl: number
     ratePerHour: number
