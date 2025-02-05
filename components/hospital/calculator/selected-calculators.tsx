@@ -1,15 +1,21 @@
-import React from 'react'
-import { type SelectedCalculator } from './calculator-sheet-content'
-import FluidRateCalculator from './fluid-rate/fluid-rate-calculator'
+import FluidRateCalculator from '@/components/hospital/calculator/fluid-rate/fluid-rate-calculator'
+import { type SelectedCalculator } from '@/types/hospital/calculator'
+import { type PatientWithWeight } from '@/types/patients'
+
+type SelectedCalculatorsProps = {
+  selectedCalculator: SelectedCalculator
+  patientData: PatientWithWeight | null
+}
 
 export default function SelectedCalculators({
   selectedCalculator,
-}: {
-  selectedCalculator: SelectedCalculator
-}) {
+  patientData,
+}: SelectedCalculatorsProps) {
   return (
     <div className="flex-1 p-2">
-      {selectedCalculator === 'fluid-rate' && <FluidRateCalculator />}
+      {selectedCalculator === 'fluid-rate' && (
+        <FluidRateCalculator patientData={patientData} />
+      )}
     </div>
   )
 }

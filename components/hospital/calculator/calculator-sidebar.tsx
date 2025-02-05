@@ -1,11 +1,8 @@
-import React, { Dispatch, SetStateAction } from 'react'
-import {
-  CALCULATORS,
-  type SelectedCalculator,
-} from './calculator-sheet-content'
 import { Button } from '@/components/ui/button'
+import { CALCULATORS } from '@/constants/hospital/icu/calculator/calcularor'
 import { cn } from '@/lib/utils/utils'
-
+import { type SelectedCalculator } from '@/types/hospital/calculator'
+import { Dispatch, SetStateAction } from 'react'
 type CalculatorSidebarProps = {
   selectedCalculator: SelectedCalculator
   setSelectedCalculator: Dispatch<SetStateAction<SelectedCalculator>>

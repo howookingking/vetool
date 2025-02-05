@@ -1,10 +1,10 @@
 'use client'
 
+import CalculatorSheetContent from '@/components/hospital/calculator/calculator-sheet-content'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetTrigger } from '@/components/ui/sheet'
 import { Calculator } from 'lucide-react'
 import { useState } from 'react'
-import CalculatorSheetContent from './calculator-sheet-content'
 
 export default function CalculatorSheet() {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
@@ -17,7 +17,7 @@ export default function CalculatorSheet() {
         </Button>
       </SheetTrigger>
 
-      <CalculatorSheetContent />
+      <CalculatorSheetContent isSheetOpen={isSheetOpen} />
     </Sheet>
   )
 }

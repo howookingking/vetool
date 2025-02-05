@@ -40,5 +40,5 @@ export type PatientWithWeight = {
     Patients,
     'patient_id' | 'name' | 'species' | 'breed' | 'gender' | 'birth'
   >
-  vital: Pick<Vitals, 'body_weight' | 'created_at'>
+  vital: Pick<Vitals, 'body_weight' | 'created_at'> | null
 }

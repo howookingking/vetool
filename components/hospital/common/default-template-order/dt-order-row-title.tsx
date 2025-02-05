@@ -1,4 +1,4 @@
-import OrderTitleContent from '@/components/hospital/common/order-title-content'
+import OrderTitleContent from '@/components/hospital/common/order/order-title-content'
 import { Button } from '@/components/ui/button'
 import { TableCell } from '@/components/ui/table'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
