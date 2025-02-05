@@ -33,6 +33,8 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import RehydrationToolTip from './rehydration-tool-tip'
 import { calculateRehydration } from '@/lib/calculators/fluid-rate'
+import { toast } from '@/components/ui/use-toast'
+import { MouseEvent } from 'react'
 
 type RehydrationTabProps = {
   formData: PatientFormData
@@ -61,18 +63,21 @@ export default function RehydrationTab({
 
   useEffect(() => {
     const values = form.getValues()
-    const calculatedRate = calculateRehydration(
-      values.weight,
-      values.dehydration,
-      values.time,
-    )
-    setResult(calculatedRate)
+
+    if (values.weight) {
+      const calculatedRate = calculateRehydration(
+        values.weight,
+        values.dehydration,
+        values.time,
+      )
+      setResult(calculatedRate)
+    }
   }, [tab])
 
   useEffect(() => {
     const subscription = form.watch((value) => {
       form.trigger().then((isValid) => {
-        if (isValid) {
+        if (isValid && value.weight) {
           const result = calculateRehydration(
             value.weight!,
             value.dehydration!,
@@ -86,6 +91,14 @@ export default function RehydrationTab({
     })
     return () => subscription.unsubscribe()
   }, [form, setFormData])
+
+  const handleCopyButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    navigator.clipboard.writeText(result?.ratePerHour.toString() ?? '')
+    toast({
+      title: '계산 결과가 클립보드에 복사되었습니다.',
+    })
+  }
 
   return (
     <Card>
@@ -169,7 +182,17 @@ export default function RehydrationTab({
           <CardContent className="pt-4">
             {result && (
               <div className="flex flex-col gap-2 text-center">
-                <span className="text-lg font-semibold">계산 결과</span>
+                <div className="flex items-center justify-center gap-4">
+                  <span className="text-lg font-semibold">계산 결과</span>
+                  <Button
+                    onClick={handleCopyButtonClick}
+                    className="xl:text-xs 2xl:text-sm"
+                    variant="outline"
+                    size="icon"
+                  >
+                    <ClipboardCopy className="h-4 w-4" />
+                  </Button>
+                </div>
                 <span className="text-lg">
                   <span className="text-2xl font-bold text-primary">
                     {result.ratePerHour}
@@ -181,22 +204,6 @@ export default function RehydrationTab({
               </div>
             )}
           </CardContent>
-
-          <CardFooter>
-            <Button
-              onClick={() =>
-                navigator.clipboard.writeText(
-                  result?.ratePerHour.toString() ?? '',
-                )
-              }
-              className="ml-auto w-1/2 xl:text-xs 2xl:text-sm"
-              variant="outline"
-              type="button"
-            >
-              <ClipboardCopy className="h-4 w-4" />
-              클립보드 복사
-            </Button>
-          </CardFooter>
         </form>
       </Form>
     </Card>

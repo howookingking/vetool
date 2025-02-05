@@ -4,7 +4,7 @@ export const CALCULATORS = [
     label: '수액속도',
   },
   {
-    value: 'rer-der',
+    value: 'rer-mer',
     label: 'RER / MER',
   },
   {
