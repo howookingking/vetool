@@ -1,4 +1,3 @@
-import CalculatorSheetSkeleton from '@/components/hospital/calculator/calculator-sheet-skeleton'
 import MaintenanceTab from '@/components/hospital/calculator/fluid-rate/maintenance/maintenance-tab'
 import RehydrationTab from '@/components/hospital/calculator/fluid-rate/rehydration/rehydration-tab'
 import ResuscitationTab from '@/components/hospital/calculator/fluid-rate/resuscitation/resuscitation-tab'
@@ -13,11 +12,10 @@ export default function FluidRateCalculator({
   patientData: PatientWithWeight | null
 }) {
   const [tab, setTab] = useState('maintenance')
-  const [isLoading, setIsLoading] = useState(false)
   const [formData, setFormData] = useState<PatientFormData>({
-    species: 'canine',
+    species: (patientData?.patient.species as Species) ?? 'canine',
+    weight: patientData?.vital?.body_weight ?? '',
     calcMethod: 'a',
-    weight: '',
     fold: '1',
   })
 
@@ -29,15 +27,8 @@ export default function FluidRateCalculator({
         weight: patientData.vital?.body_weight ?? '0',
         fold: '1',
       })
-      setIsLoading(true)
-    } else {
-      setIsLoading(false)
     }
   }, [patientData])
-
-  if (!isLoading) {
-    return <CalculatorSheetSkeleton />
-  }
 
   return (
     <Tabs value={tab} onValueChange={setTab}>

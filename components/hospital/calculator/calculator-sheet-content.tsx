@@ -1,3 +1,4 @@
+import CalculatorSheetSkeleton from '@/components/hospital/calculator/calculator-sheet-skeleton'
 import CalculatorSidebar from '@/components/hospital/calculator/calculator-sidebar'
 import SelectedCalculators from '@/components/hospital/calculator/selected-calculators'
 import PatientDetailInfo from '@/components/hospital/common/patient/patient-detail-info'
@@ -22,23 +23,30 @@ export default function CalculatorSheetContent({
   isSheetOpen: boolean
 }) {
   const { patient_id } = useParams()
-
+  const [isLoading, setIsLoading] = useState(true)
   const [patientData, setPatientData] = useState<PatientWithWeight | null>(null)
   const [selectedCalculator, setSelectedCalculator] =
     useState<SelectedCalculator>('fluid-rate')
 
   useEffect(() => {
     const fetchPatientData = async () => {
-      const patientData = await getPatientData(patient_id as string)
-      setPatientData(patientData)
+      setIsLoading(true)
+      try {
+        if (patient_id) {
+          const patientData = await getPatientData(patient_id as string)
+          setPatientData(patientData)
+        }
+      } finally {
+        setIsLoading(false)
+      }
     }
 
-    if (patient_id && isSheetOpen) {
+    if (isSheetOpen) {
       fetchPatientData()
     }
-
     if (!isSheetOpen) {
       setPatientData(null)
+      setIsLoading(true)
     }
   }, [patient_id, isSheetOpen])
 
@@ -56,25 +64,29 @@ export default function CalculatorSheetContent({
         setSelectedCalculator={setSelectedCalculator}
       />
 
-      <div className="flex w-full flex-col justify-between p-2">
-        <SelectedCalculators
-          selectedCalculator={selectedCalculator}
-          patientData={patientData}
-        />
+      {isLoading ? (
+        <CalculatorSheetSkeleton />
+      ) : (
+        <div className="flex w-full flex-col justify-between p-2">
+          <SelectedCalculators
+            selectedCalculator={selectedCalculator}
+            patientData={patientData}
+          />
 
-        {patientData && (
-          <Card className="mb-2 mt-auto flex items-end justify-center py-2">
-            <PatientDetailInfo
-              {...patientData.patient}
-              weight={patientData.vital?.body_weight ?? ''}
-              weightMeasuredDate={
-                patientData.vital?.created_at &&
-                formatDate(new Date(patientData.vital.created_at))
-              }
-            />
-          </Card>
-        )}
-      </div>
+          {patientData && (
+            <Card className="mb-2 mt-auto flex items-end justify-center py-2">
+              <PatientDetailInfo
+                {...patientData.patient}
+                weight={patientData.vital?.body_weight ?? ''}
+                weightMeasuredDate={
+                  patientData.vital?.created_at &&
+                  formatDate(new Date(patientData.vital.created_at))
+                }
+              />
+            </Card>
+          )}
+        </div>
+      )}
     </SheetContent>
   )
 }

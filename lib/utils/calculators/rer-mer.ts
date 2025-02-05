@@ -1,7 +1,3 @@
-export const calculateRer = (weight: string) => {
-  return (70 * Number(weight) ** (3 / 4)).toFixed(0)
-}
-
 // import HelperTooltip from '@/components/common/helper-tooltip'
 // import {
 //   Table,

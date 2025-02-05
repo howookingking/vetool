@@ -1,4 +1,5 @@
 import FluidRateCalculator from '@/components/hospital/calculator/fluid-rate/fluid-rate-calculator'
+import RerMerCalculator from '@/components/hospital/calculator/rer-mer/rer-mer-calculator'
 import { type SelectedCalculator } from '@/types/hospital/calculator'
 import { type PatientWithWeight } from '@/types/patients'
 
@@ -16,6 +17,10 @@ export default function SelectedCalculators({
       {selectedCalculator === 'fluid-rate' && (
         <FluidRateCalculator patientData={patientData} />
       )}
+      {selectedCalculator === 'rer-mer' && (
+        <RerMerCalculator patientData={patientData} />
+      )}
+      {/* {selectedCalculator === 'vital-counter' && <VitalCounter />} */}
     </div>
   )
 }

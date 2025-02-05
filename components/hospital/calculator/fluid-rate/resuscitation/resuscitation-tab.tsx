@@ -23,28 +23,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { toast } from '@/components/ui/use-toast'
 import { calculateResuscitation } from '@/lib/calculators/fluid-rate'
 import {
   resuscitationFormSchema,
   type ResuscitationFormValues,
 } from '@/lib/schemas/calculator/fluid-rate-schema'
-import { type PatientFormData, type Species } from '@/types/hospital/calculator'
+import {
+  type CalculatorTabProps,
+  type Species,
+} from '@/types/hospital/calculator'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ClipboardCopy } from 'lucide-react'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { MouseEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-
-type ResuscitationTabProps = {
-  formData: PatientFormData
-  setFormData: Dispatch<SetStateAction<PatientFormData>>
-  tab: string
-}
 
 export default function ResuscitationTab({
   formData,
   setFormData,
   tab,
-}: ResuscitationTabProps) {
+}: CalculatorTabProps) {
   const [result, setResult] = useState<{ min: number; max: number }>({
     min: 0,
     max: 0,
@@ -65,7 +63,7 @@ export default function ResuscitationTab({
       Number(values.weight),
     )
     setResult(calculatedRate)
-  }, [tab, setFormData])
+  }, [tab, form])
 
   useEffect(() => {
     const subscription = form.watch((value) => {
@@ -82,7 +80,15 @@ export default function ResuscitationTab({
       })
     })
     return () => subscription.unsubscribe()
-  }, [form])
+  }, [form, setFormData])
+
+  const handleCopyButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    navigator.clipboard.writeText(`${result.min}ml ~ ${result.max}ml`)
+    toast({
+      title: '계산 결과가 클립보드에 복사되었습니다.',
+    })
+  }
 
   return (
     <Card>
@@ -155,7 +161,17 @@ export default function ResuscitationTab({
           <CardContent className="pt-4">
             {(result.min !== 0 || result.max !== 0) && (
               <div className="flex flex-col gap-2 text-center">
-                <span className="text-lg font-semibold">계산 결과</span>
+                <div className="flex items-center justify-center gap-4">
+                  <span className="text-lg font-semibold">계산 결과</span>
+                  <Button
+                    onClick={handleCopyButtonClick}
+                    className="xl:text-xs 2xl:text-sm"
+                    variant="outline"
+                    size="icon"
+                  >
+                    <ClipboardCopy className="h-4 w-4" />
+                  </Button>
+                </div>
                 <span>
                   <span className="pr-1 text-2xl font-bold text-primary">
                     {result.min}
