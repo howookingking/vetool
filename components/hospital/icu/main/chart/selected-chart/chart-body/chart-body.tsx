@@ -5,11 +5,12 @@ import ChartMemos from '@/components/hospital/icu/main/chart/selected-chart/char
 import ChartTable from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table'
 import MobileChartTable from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/mobile/mobile-chart-table'
 import useIsMobile from '@/hooks/use-is-mobile'
-import type { Memo, SelectedChart } from '@/types/icu/chart'
+import { type Memo, type SelectedChart } from '@/types/icu/chart'
 
 export default function ChartBody({ chartData }: { chartData: SelectedChart }) {
-  const { icu_io } = chartData
-  const { memo_a, memo_b, memo_c, icu_io_id } = icu_io
+  const {
+    icu_io: { memo_a, memo_b, memo_c, icu_io_id },
+  } = chartData
   const isMobile = useIsMobile()
 
   return (

@@ -15,8 +15,6 @@ type BasicHosData = {
   memoNameListData: string[]
   showOrderer: boolean
   showTxUser: boolean
-  // maintenanceRateCalcMethod: string
-  // rerCalcMethod: 'a' | 'b'
   sidebarData: IcuSidebarIoData[]
   vitalRefRange: VitalRefRange[]
   orderFontSizeData: number

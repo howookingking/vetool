@@ -66,7 +66,7 @@ export default function ChartTableHeader({
 
           <span className="w-full text-center">오더 목록</span>
 
-          {!preview && (
+          {!preview && !isSorting && (
             <PasteTemplateOrderDialog
               tableHeader
               chartId={chartId}
@@ -74,11 +74,13 @@ export default function ChartTableHeader({
             />
           )}
 
-          <OrderWidthButton
-            orderWidth={orderWidth as [300, 400, 500, 600][number]}
-            setOrderWidth={setOrderWidth}
-            isMobile={isMobile}
-          />
+          {!isSorting && (
+            <OrderWidthButton
+              orderWidth={orderWidth as [300, 400, 500, 600][number]}
+              setOrderWidth={setOrderWidth}
+              isMobile={isMobile}
+            />
+          )}
         </TableHead>
 
         {TIMES.map((time) => (

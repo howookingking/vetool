@@ -62,3 +62,10 @@ export default function CalculatorSheetContent() {
   )
 }
 ```
+
+- 하나의 object를 가져오는 경우, 다수의 객체를 가져오는 경우 함수 명명
+
+```
+getTodo
+getTodos
+```
