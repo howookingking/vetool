@@ -50,7 +50,7 @@ export default function DietForm({ mer }: { mer: number | null }) {
 
   return (
     <CardContent className="gap-2">
-      <div className="flex gap-2 pb-6">
+      <div className="grid grid-cols-2 gap-2 pb-6">
         <DietComboBox
           mappedDietList={mappedDietList}
           selectedDiet={selectedDiet}

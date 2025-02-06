@@ -31,8 +31,8 @@ export const calculateResuscitation = (
   bodyWeight: number,
 ) => {
   const rates = {
-    canine: { min: 5, max: 10 },
-    feline: { min: 15, max: 20 },
+    feline: { min: 5, max: 10 },
+    canine: { min: 15, max: 20 },
   }
 
   const selectedRate = rates[species]
