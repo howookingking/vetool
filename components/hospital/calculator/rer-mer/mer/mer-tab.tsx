@@ -1,7 +1,12 @@
 import DietForm from '@/components/hospital/calculator/rer-mer/diet/diet-form'
 import MerForm from '@/components/hospital/calculator/rer-mer/mer/mer-form'
 import MerToolTip from '@/components/hospital/calculator/rer-mer/mer/mer-tool-tip'
-import { Card, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { calculateMer, calculateRer } from '@/lib/calculators/rer-mer'
 import {
@@ -77,6 +82,7 @@ export default function MerTab({ formData, setFormData }: CalculatorTabProps) {
         <CardTitle className="flex items-center gap-2">
           <span>사료 계산</span>
         </CardTitle>
+        <CardDescription>검색되지 않는 사료는 문의해주세요</CardDescription>
       </CardHeader>
 
       <DietForm mer={result} />
