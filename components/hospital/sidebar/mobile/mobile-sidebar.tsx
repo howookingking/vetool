@@ -1,5 +1,6 @@
 'use client'
 
+import CalculatorSheet from '@/components/hospital/calculator/calculator-sheet'
 import MobileSidebarItem from '@/components/hospital/sidebar/mobile/mobile-sidebar-item'
 import SidebarUserInfo from '@/components/hospital/sidebar/sidebar-user-info'
 import { Button } from '@/components/ui/button'
@@ -15,7 +16,6 @@ import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
 import type { VetoolUser } from '@/types'
 import { Menu } from 'lucide-react'
 import { useState } from 'react'
-import CalculatorSheet from '../../calculator/calculator-sheet'
 
 export default function MobileSidebar({
   hosId,

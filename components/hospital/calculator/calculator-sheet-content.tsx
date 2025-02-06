@@ -31,7 +31,7 @@ export default function CalculatorSheetContent({
   const [isLoading, setIsLoading] = useState(true)
   const [patientData, setPatientData] = useState<PatientWithWeight | null>(null)
   const [selectedCalculator, setSelectedCalculator] =
-    useState<SelectedCalculator>('fluid-rate')
+    useState<SelectedCalculator>('counter')
 
   useEffect(() => {
     const fetchPatientData = async () => {

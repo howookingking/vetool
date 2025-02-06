@@ -68,6 +68,16 @@ export default function MerForm({
             )}
           />
 
+          <div>
+            <FormLabel>RER</FormLabel>
+            <Input
+              disabled
+              placeholder="RER"
+              className="mt-2"
+              value={rer ?? ''}
+            />
+          </div>
+
           <FormField
             control={form.control}
             name="factor"
@@ -93,16 +103,6 @@ export default function MerForm({
               </FormItem>
             )}
           />
-
-          <div>
-            <FormLabel>RER</FormLabel>
-            <Input
-              disabled
-              placeholder="RER"
-              className="mt-2"
-              value={rer ?? ''}
-            />
-          </div>
         </CardContent>
 
         <CardContent>

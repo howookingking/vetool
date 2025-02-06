@@ -11,7 +11,7 @@ export default function RerMerCalculator({
   const [formData, setFormData] = useState<PatientFormData>({
     species: (patientData?.patient.species as Species) ?? 'canine',
     weight: patientData?.vital?.body_weight ?? '',
-    factor: '1.4',
+    factor: '1',
   })
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function RerMerCalculator({
       setFormData({
         species: patientData.patient.species as Species,
         weight: patientData.vital?.body_weight ?? '0',
-        factor: '1.4',
+        factor: '1',
       })
     }
   }, [patientData])

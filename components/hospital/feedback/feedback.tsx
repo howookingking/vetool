@@ -29,6 +29,7 @@ export default function Feedback() {
           size="icon"
           className="h-10 w-10 rounded-full shadow-lg"
           onClick={() => setIsPopoverFeedbackOpen(true)}
+          variant="outline"
         >
           <MessageCircle />
         </Button>

@@ -24,7 +24,7 @@ export default function SelectedCalculators({
       )}
       {selectedCalculator === 'counter' && <VitalCounter />}
 
-      {selectedCalculator === 'cri' && <Cri />}
+      {/* {selectedCalculator === 'cri' && <Cri />} */}
     </div>
   )
 }

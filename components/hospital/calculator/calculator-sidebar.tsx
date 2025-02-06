@@ -20,7 +20,7 @@ export default function CalculatorSidebar({
           <Button
             className={cn(
               selectedCalculator === calculator.value && 'bg-muted',
-              'text-md w-full rounded-none py-6',
+              'w-full rounded-none py-0 text-xs sm:py-6 sm:text-base',
             )}
             variant="ghost"
             onClick={() => setSelectedCalculator(calculator.value)}

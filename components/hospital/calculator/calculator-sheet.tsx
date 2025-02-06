@@ -1,12 +1,19 @@
 'use client'
 
-import CalculatorSheetContent from '@/components/hospital/calculator/calculator-sheet-content'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetTrigger } from '@/components/ui/sheet'
 import useIsMobile from '@/hooks/use-is-mobile'
-import { Calculator } from 'lucide-react'
-import { useState } from 'react'
 import { cn } from '@/lib/utils/utils'
+import { Calculator } from 'lucide-react'
+import dynamic from 'next/dynamic'
+import { useState } from 'react'
+
+const LazyCalculatorSheetContent = dynamic(
+  () => import('@/components/hospital/calculator/calculator-sheet-content'),
+  {
+    ssr: false,
+  },
+)
 
 export default function CalculatorSheet() {
   const isMobile = useIsMobile()
@@ -21,7 +28,10 @@ export default function CalculatorSheet() {
         </Button>
       </SheetTrigger>
 
-      <CalculatorSheetContent isSheetOpen={isSheetOpen} isMobile={isMobile} />
+      <LazyCalculatorSheetContent
+        isSheetOpen={isSheetOpen}
+        isMobile={isMobile}
+      />
     </Sheet>
   )
 }

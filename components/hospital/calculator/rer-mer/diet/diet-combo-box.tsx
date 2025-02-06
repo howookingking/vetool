@@ -62,9 +62,9 @@ export default function DietComboBox({
               <ScrollArea className="h-64">
                 <CommandEmpty>검색된 사료 없음</CommandEmpty>
                 <CommandGroup>
-                  {mappedDietList.map((diet) => (
+                  {mappedDietList.map((diet, index) => (
                     <CommandItem
-                      key={diet.label}
+                      key={diet.label + index}
                       value={diet.label}
                       onSelect={(currentValue) => {
                         setSelectedDiet(currentValue)

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
-import { Heart } from 'lucide-react'
+import { Heart, RotateCw } from 'lucide-react'
 import { cn } from '@/lib/utils/utils'
+import { Button } from '@/components/ui/button'
 
 type VitalCountState = {
   beats: number[] // 심박수 측정 시간
@@ -46,6 +47,15 @@ export default function VitalCounter() {
     handleHeartClick()
   }
 
+  const handleReset = () => {
+    setState((prev) => ({
+      ...prev,
+      beats: [],
+      averageBpm: null,
+      isActive: false,
+    }))
+  }
+
   useEffect(() => {
     const beatsLength = state.beats.length
 
@@ -59,23 +69,11 @@ export default function VitalCounter() {
 
       setState((prev) => ({ ...prev, averageBpm: avgBpm }))
     }
-
-    // 5초 후 측정 중지 타임아웃
-    const timeout = setTimeout(() => {
-      if (
-        state.beats.length > 0 &&
-        Date.now() - state.beats[state.beats.length - 1] > 5000
-      ) {
-        setState((prev) => ({ ...prev, isActive: false }))
-      }
-    }, 5000)
-
-    return () => clearTimeout(timeout)
   }, [state.beats])
 
   return (
     <Card className="flex h-full w-full items-center justify-center rounded-2xl bg-white p-6 shadow-lg">
-      <CardContent className="flex select-none flex-col items-center">
+      <CardContent className="relative flex select-none flex-col items-center">
         <Heart
           className={cn(
             'h-72 w-72 cursor-pointer transition-all duration-200',
@@ -118,6 +116,17 @@ export default function VitalCounter() {
             </div>
           )}
         </div>
+
+        {state.isActive && (
+          <Button
+            variant={'outline'}
+            onClick={handleReset}
+            size="icon"
+            className="absolute right-2 top-2"
+          >
+            <RotateCw />
+          </Button>
+        )}
       </CardContent>
     </Card>
   )

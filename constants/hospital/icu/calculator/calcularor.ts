@@ -11,8 +11,8 @@ export const CALCULATORS = [
     value: 'rer-mer',
     label: 'RER, MER / 사료량',
   },
-  {
-    value: 'cri',
-    label: 'CRI',
-  },
+  // {
+  //   value: 'cri',
+  //   label: 'CRI',
+  // },
 ] as const
