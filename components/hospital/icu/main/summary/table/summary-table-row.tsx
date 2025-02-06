@@ -1,6 +1,6 @@
 'use client'
 
-import PatientInfo from '@/components/hospital/common/patient-info'
+import PatientBriefInfo from '@/components/hospital/common/patient/patient-brief-info'
 import SummaryTableCell from '@/components/hospital/icu/main/summary/table/summary-table-cell'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
@@ -31,7 +31,7 @@ export default function SummaryTableRow({ summary }: { summary: SummaryData }) {
     >
       <TableCell className="flex w-[176px] items-center justify-between gap-1">
         <div className="flex flex-1 flex-col items-center gap-1">
-          <PatientInfo
+          <PatientBriefInfo
             name={patient.name}
             species={patient.species}
             breed={patient.breed}

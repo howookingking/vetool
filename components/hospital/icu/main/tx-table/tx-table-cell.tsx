@@ -1,3 +1,4 @@
+import OrderTypeColorDot from '@/components/hospital/common/order/order-type-color-dot'
 import { Button } from '@/components/ui/button'
 import { TableCell } from '@/components/ui/table'
 import useIsMobile from '@/hooks/use-is-mobile'
@@ -8,7 +9,6 @@ import { IcuTxTableData } from '@/types/icu/tx-table'
 import { ArrowRight, Edit } from 'lucide-react'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { useCallback } from 'react'
-import OrderTypeColorDot from '../../../common/order-type-color-dot'
 
 type TxTableCellProps = {
   time: number

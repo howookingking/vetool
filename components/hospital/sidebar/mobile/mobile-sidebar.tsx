@@ -1,5 +1,6 @@
 'use client'
 
+import CalculatorSheet from '@/components/hospital/calculator/calculator-sheet'
 import MobileSidebarItem from '@/components/hospital/sidebar/mobile/mobile-sidebar-item'
 import SidebarUserInfo from '@/components/hospital/sidebar/sidebar-user-info'
 import { Button } from '@/components/ui/button'
@@ -57,12 +58,16 @@ export default function MobileSidebar({
           ))}
         </ul>
 
-        <SidebarUserInfo
-          mobile
-          hosId={hosId}
-          vetoolUser={vetoolUser}
-          setIsSheetOpen={setIsSheetOpen}
-        />
+        <div className="flex flex-col items-end">
+          <CalculatorSheet />
+
+          <SidebarUserInfo
+            mobile
+            hosId={hosId}
+            vetoolUser={vetoolUser}
+            setIsSheetOpen={setIsSheetOpen}
+          />
+        </div>
       </SheetContent>
     </Sheet>
   )

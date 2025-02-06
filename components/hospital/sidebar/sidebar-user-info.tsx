@@ -35,7 +35,7 @@ export default function SidebarUserInfo({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <div className={cn('flex items-center justify-end', mobile && 'm-2')}>
+        <div className={cn('flex items-center justify-end', mobile && 'm-1')}>
           <Avatar>
             <AvatarImage
               loading="lazy"

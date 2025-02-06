@@ -16,7 +16,7 @@ import { cn } from '@/lib/utils/utils'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import OrderTypeColorDot from '@/components/hospital/common/order-type-color-dot'
+import OrderTypeColorDot from '@/components/hospital/common/order/order-type-color-dot'
 import { IcuOrderColors } from '@/types/adimin'
 
 export function TimeGuideLinSettings({

@@ -1,7 +1,6 @@
 'use client'
 
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
-import RerDerToolTip from '@/unused/icu-chart/chart-info/rer-der/rer-der-tool-tip'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -13,8 +12,6 @@ import {
 } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
-import { calculateRer } from '@/lib/calculators/rer'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { Zap } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
@@ -52,13 +49,13 @@ export default function RerDer({
   //   basicHosData: { rerCalcMethod },
   // } = useBasicHosDataContext()
 
-  const calculatedRer = calculateRer(
-    weight,
-    species as 'canine' | 'feline',
-    'a',
-  )
+  // const calculatedRer = calculateRer(
+  //   weight,
+  //   species as 'canine' | 'feline',
+  //   'a',
+  // )
 
-  const calculatedDer = (Number(calculatedRer) * Number(factor)).toFixed(0)
+  // const calculatedDer = (Number(calculatedRer) * Number(factor)).toFixed(0)
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -75,7 +72,7 @@ export default function RerDer({
               <span className="hidden text-xs text-muted-foreground md:block">
                 RER
               </span>
-              <span>{hasNoWeight ? '체중 입력' : calculatedRer}</span>
+              <span>{hasNoWeight ? '체중 입력' : ''}</span>
             </div>
 
             <Separator orientation="vertical" className="h-4" />
@@ -84,9 +81,7 @@ export default function RerDer({
               <span className="hidden text-xs text-muted-foreground md:block">
                 DER
               </span>
-              <span>
-                {hasNoWeight ? '체중 입력' : factor ? calculatedDer : '미정'}
-              </span>
+              <span>{hasNoWeight ? '체중 입력' : factor ? '' : '미정'}</span>
             </div>
           </div>
         </Button>
@@ -95,7 +90,7 @@ export default function RerDer({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <span>RER & DER</span>
-            <RerDerToolTip rerCalcMethod={'a'} />
+            {/* <RerDerToolTip rerCalcMethod={'a'} /> */}
           </DialogTitle>
           <DialogDescription />
         </DialogHeader>
@@ -107,8 +102,8 @@ export default function RerDer({
           icuChartId={icuChartId}
           derCalcFactor={derCalcFactor}
           setIsDialogOpen={setIsDialogOpen}
-          calculatedRer={calculatedRer}
-          calculatedDer={calculatedDer}
+          calculatedRer={'unused'}
+          calculatedDer={'unused'}
         />
       </DialogContent>
     </Dialog>

@@ -12,9 +12,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { calculateAge, convertPascalCased } from '@/lib/utils/utils'
+import PatientDetailInfo from '@/components/hospital/common/patient/patient-detail-info'
 import { type PatientDataTable } from '@/types/patients'
-import { Cat, Dog } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
@@ -51,22 +50,17 @@ export default function IcuPatientUpdateDialog({
       <DialogTrigger asChild>
         <Button
           variant="ghost"
-          className="flex items-center gap-2 px-2 text-xs font-semibold md:text-sm 2xl:text-base"
+          className="text-xs font-semibold md:text-sm 2xl:text-base"
         >
-          {species === 'canine' ? <Dog size={20} /> : <Cat size={20} />}
-          <span>{name}</span>·
-          <span className="w-12 truncate sm:w-auto">
-            {convertPascalCased(breed)}
-          </span>
-          ·<span className="uppercase">{gender}</span>·
-          <span>{calculateAge(birth)} </span>
-          <span>·</span>
-          <span>
-            {weight === '' ? '체중 입력' : `${weight}kg`}
-            <span className="hidden md:inline">
-              {weightMeasuredDate ? `(${weightMeasuredDate})` : ''}
-            </span>
-          </span>
+          <PatientDetailInfo
+            species={species}
+            name={name}
+            breed={breed}
+            gender={gender}
+            birth={birth}
+            weight={weight}
+            weightMeasuredDate={weightMeasuredDate}
+          />
         </Button>
       </DialogTrigger>
 
