@@ -1,31 +1,20 @@
+import DietForm from '@/components/hospital/calculator/rer-mer/diet/diet-form'
+import MerForm from '@/components/hospital/calculator/rer-mer/mer/mer-form'
 import MerToolTip from '@/components/hospital/calculator/rer-mer/mer/mer-tool-tip'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { calculateMer } from '@/lib/calculators/rer-mer'
+import { Card, CardHeader, CardTitle } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
+import { calculateMer, calculateRer } from '@/lib/calculators/rer-mer'
 import {
   merFormSchema,
-  MerFormValues,
+  type MerFormValues,
 } from '@/lib/schemas/calculator/rer-mer-schema'
 import { type CalculatorTabProps } from '@/types/hospital/calculator'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ClipboardCopy } from 'lucide-react'
-import { MouseEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-export default function MerTab({
-  formData,
-  setFormData,
-  tab,
-}: CalculatorTabProps) {
+export default function MerTab({ formData, setFormData }: CalculatorTabProps) {
+  const [rer, setRer] = useState<number | null>(null)
   const [result, setResult] = useState<number | null>(null)
 
   const form = useForm<MerFormValues>({
@@ -37,20 +26,27 @@ export default function MerTab({
   })
 
   useEffect(() => {
-    const values = form.getValues()
+    const weight = form.getValues('weight')
+    const factor = form.getValues('factor')
 
-    if (values.weight && values.factor) {
-      const calculatedRate = calculateMer(values.weight, values.factor)
-      setResult(calculatedRate)
+    if (weight && factor) {
+      const rer = calculateRer(weight)
+      const calculatedMer = calculateMer(weight, factor)
+
+      setRer(rer)
+      setResult(calculatedMer)
     }
-  }, [tab, form])
+  }, [form])
 
   useEffect(() => {
     const subscription = form.watch((value) => {
       form.trigger().then((isValid) => {
         if (isValid && value.weight) {
           const result = calculateMer(value.weight!, value.factor!)
+          const rer = calculateRer(value.weight!)
+
           setResult(result)
+          setRer(rer)
         } else {
           setResult(null)
         }
@@ -59,97 +55,31 @@ export default function MerTab({
     return () => subscription.unsubscribe()
   }, [form, setFormData])
 
-  const handleCopyButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-
-    if (result) {
-      navigator.clipboard.writeText(result.toString())
-    }
-  }
-
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <span>RER</span>
+          <span>MER</span>
           <MerToolTip />
         </CardTitle>
       </CardHeader>
 
-      <Form {...form}>
-        <form>
-          <CardContent className="grid grid-cols-2 gap-2">
-            <FormField
-              control={form.control}
-              name="factor"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Factor</FormLabel>
-                  <Input
-                    onChange={(e) => {
-                      field.onChange(e)
-                      setFormData((prev) => ({
-                        ...prev,
-                        factor: e.target.value,
-                      }))
-                    }}
-                    type="number"
-                    value={field.value}
-                    placeholder="하단 표를 참고하여 Factor를 입력해주세요"
-                  />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+      <MerForm
+        form={form}
+        setFormData={setFormData}
+        rer={rer}
+        result={result}
+      />
 
-            <FormField
-              control={form.control}
-              name="weight"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>체중 (kg)</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="체중을 입력하세요"
-                      {...field}
-                      onChange={(e) => {
-                        field.onChange(e)
-                        setFormData((prev) => ({
-                          ...prev,
-                          weight: e.target.value,
-                        }))
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </CardContent>
+      <Separator className="my-1" />
 
-          <CardContent className="pt-4">
-            {result && (
-              <div className="flex flex-col gap-2 text-center">
-                <div className="flex items-center justify-center gap-4">
-                  <span className="text-lg font-semibold">계산 결과</span>
-                  <Button
-                    onClick={handleCopyButtonClick}
-                    className="xl:text-xs 2xl:text-sm"
-                    variant="outline"
-                    size="icon"
-                  >
-                    <ClipboardCopy className="h-4 w-4" />
-                  </Button>
-                </div>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <span>사료 계산</span>
+        </CardTitle>
+      </CardHeader>
 
-                <span className="text-2xl font-bold text-primary">
-                  {result} <span className="text-sm font-normal">kcal/day</span>
-                </span>
-              </div>
-            )}
-          </CardContent>
-        </form>
-      </Form>
+      <DietForm mer={result} />
     </Card>
   )
 }
