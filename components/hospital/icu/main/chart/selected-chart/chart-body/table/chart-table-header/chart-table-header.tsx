@@ -2,7 +2,6 @@ import OrderWidthButton from '@/components/hospital/icu/main/chart/selected-char
 import SortingButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/sorting-button'
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
-import { type OrderStep } from '@/lib/store/icu/icu-order'
 import { cn } from '@/lib/utils/utils'
 import { type SelectedChart, type SelectedIcuOrder } from '@/types/icu/chart'
 import { type Dispatch, type SetStateAction } from 'react'
@@ -15,7 +14,6 @@ type ChartTableHeaderProps = {
   isSorting: boolean
   setIsSorting: Dispatch<SetStateAction<boolean>>
   isEditOrderMode?: boolean
-  setOrderStep: (orderStep: OrderStep) => void
   orderWidth: number
   isExport?: boolean
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
