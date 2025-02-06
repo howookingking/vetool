@@ -82,7 +82,7 @@ export default function CalculatorSheetContent({
           />
 
           {patientData && (
-            <Card className="my-1 flex items-end justify-center py-2">
+            <Card className="my-1 flex items-end justify-center rounded-md border-2 border-primary py-2">
               <PatientDetailInfo
                 {...patientData.patient}
                 weight={patientData.vital?.body_weight ?? ''}
