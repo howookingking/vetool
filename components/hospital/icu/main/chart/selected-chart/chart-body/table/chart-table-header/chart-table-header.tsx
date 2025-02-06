@@ -23,6 +23,7 @@ type ChartTableHeaderProps = {
   isMobile: boolean
   isTouchMove?: boolean
   chartId?: string
+  hosId: string
 }
 
 export default function ChartTableHeader({
@@ -36,6 +37,7 @@ export default function ChartTableHeader({
   isMobile,
   isTouchMove,
   chartId,
+  hosId,
 }: ChartTableHeaderProps) {
   return (
     <TableHeader
@@ -65,7 +67,11 @@ export default function ChartTableHeader({
           <span className="w-full text-center">오더 목록</span>
 
           {!preview && (
-            <PasteTemplateOrderDialog tableHeader chartId={chartId} />
+            <PasteTemplateOrderDialog
+              tableHeader
+              chartId={chartId}
+              hosId={hosId}
+            />
           )}
 
           <OrderWidthButton

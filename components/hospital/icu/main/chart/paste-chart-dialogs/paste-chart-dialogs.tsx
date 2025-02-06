@@ -8,6 +8,7 @@ import PasteDefaultChartDialog from './paste-default-chart-dialog'
 import PastePrevChartDialog from './paste-prev-chart-dialog'
 import PastePrevIoChartDialog from './paste-prev-io-chart-dialog'
 import PasteTemplateOrderDialog from './template/paste-template-order-dialog'
+import { useParams } from 'next/navigation'
 
 type PasteChartDialogsProps = {
   chartData: SelectedChart
@@ -27,6 +28,8 @@ export default function PasteChartDialogs({
   patientId,
   firstChart,
 }: PasteChartDialogsProps) {
+  const { hos_id } = useParams()
+
   const [prevIoChartData, setPrevIoChartData] =
     useState<PrevIoChartData | null>(null)
 
@@ -50,7 +53,7 @@ export default function PasteChartDialogs({
 
       <PasteCopiedChartDialog />
 
-      <PasteTemplateOrderDialog />
+      <PasteTemplateOrderDialog hosId={hos_id as string} />
     </div>
   )
 }

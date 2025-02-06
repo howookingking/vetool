@@ -1,24 +1,37 @@
 'use client'
 
-import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetTrigger } from '@/components/ui/sheet'
+import useIsMobile from '@/hooks/use-is-mobile'
+import { cn } from '@/lib/utils/utils'
 import { Calculator } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
-import CalculatorSheetContent from './calculator-sheet-content'
+
+const LazyCalculatorSheetContent = dynamic(
+  () => import('@/components/hospital/calculator/calculator-sheet-content'),
+  {
+    ssr: false,
+  },
+)
 
 export default function CalculatorSheet() {
+  const isMobile = useIsMobile()
+
   const [isSheetOpen, setIsSheetOpen] = useState(false)
+
   return (
     <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-      <SheetTrigger asChild>
+      <SheetTrigger className={cn(isMobile && 'm-1')} asChild>
         <Button size="icon" className="h-10 w-10 rounded-full">
           <Calculator />
         </Button>
       </SheetTrigger>
 
-      <CalculatorSheetContent />
+      <LazyCalculatorSheetContent
+        isSheetOpen={isSheetOpen}
+        isMobile={isMobile}
+      />
     </Sheet>
   )
 }

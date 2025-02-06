@@ -1,95 +1,66 @@
-import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import MaintenanceTab from '@/components/hospital/calculator/fluid-rate/maintenance/maintenance-tab'
+import RehydrationTab from '@/components/hospital/calculator/fluid-rate/rehydration/rehydration-tab'
+import ResuscitationTab from '@/components/hospital/calculator/fluid-rate/resuscitation/resuscitation-tab'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { PatientFormData, type Species } from '@/types/hospital/calculator'
+import { type PatientWithWeight } from '@/types/patients'
+import { useEffect, useState } from 'react'
 
-export default function FluidRateCalculator() {
+export default function FluidRateCalculator({
+  patientData,
+}: {
+  patientData: PatientWithWeight | null
+}) {
+  const [tab, setTab] = useState('maintenance')
+  const [formData, setFormData] = useState<PatientFormData>({
+    species: (patientData?.patient.species as Species) ?? 'canine',
+    weight: patientData?.vital?.body_weight ?? '',
+    calcMethod: 'a',
+    fold: '1',
+  })
+
+  useEffect(() => {
+    if (patientData) {
+      setFormData({
+        species: patientData.patient.species as Species,
+        calcMethod: 'a',
+        weight: patientData.vital?.body_weight ?? '0',
+        fold: '1',
+      })
+    }
+  }, [patientData])
+
   return (
-    <Tabs defaultValue="maintenance">
+    <Tabs value={tab} onValueChange={setTab}>
       <TabsList className="grid w-full grid-cols-3">
         <TabsTrigger value="maintenance">Maintenance</TabsTrigger>
         <TabsTrigger value="rehydration">Rehydration</TabsTrigger>
-        <TabsTrigger value="resusitation">Resusitation</TabsTrigger>
+        <TabsTrigger value="resusitation">Resuscitation</TabsTrigger>
       </TabsList>
 
       <TabsContent value="maintenance">
-        <Card>
-          <CardHeader>
-            <CardTitle>유지</CardTitle>
-            <CardDescription>
-              Make changes to your account here. Click save when you're done.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="space-y-1">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" defaultValue="Pedro Duarte" />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="username">Username</Label>
-              <Input id="username" defaultValue="@peduarte" />
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button>Save changes</Button>
-          </CardFooter>
-        </Card>
+        <MaintenanceTab
+          formData={formData}
+          setFormData={setFormData}
+          tab={tab}
+          birth={patientData?.patient.birth}
+        />
       </TabsContent>
 
       <TabsContent value="rehydration">
-        <Card>
-          <CardHeader>
-            <CardTitle>탈수교정</CardTitle>
-            <CardDescription>
-              Change your password here. After saving, you'll be logged out.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="space-y-1">
-              <Label htmlFor="current">Current password</Label>
-              <Input id="current" type="password" />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="new">New password</Label>
-              <Input id="new" type="password" />
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button>Save password</Button>
-          </CardFooter>
-        </Card>
+        <RehydrationTab
+          formData={formData}
+          setFormData={setFormData}
+          tab={tab}
+        />
       </TabsContent>
 
       <TabsContent value="resusitation">
-        <Card>
-          <CardHeader>
-            <CardTitle>응급</CardTitle>
-            <CardDescription>
-              Change your password here. After saving, you'll be logged out.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="space-y-1">
-              <Label htmlFor="current">Current password</Label>
-              <Input id="current" type="password" />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="new">New password</Label>
-              <Input id="new" type="password" />
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button>Save password</Button>
-          </CardFooter>
-        </Card>
+        <ResuscitationTab
+          formData={formData}
+          setFormData={setFormData}
+          tab={tab}
+        />
       </TabsContent>
     </Tabs>
   )

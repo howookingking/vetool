@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { calculateRer } from '@/lib/calculators/rer'
+// import { calculateRer } from '@/lib/calculators/rer'
 import { orderSchema } from '@/lib/schemas/icu/chart/order-schema'
 import { getPinnedDietData } from '@/lib/services/icu/chart/get-diets'
 import { cn } from '@/lib/utils/utils'
@@ -78,13 +78,13 @@ export default function FeedOrderField({
     setSelectedDiet(foundDiet || null)
   }, [searchedDiet, diets])
 
-  const calculatedRer = calculateRer(
-    weight || '0',
-    species as 'canine' | 'feline',
-    rerCalcMethod || 'a',
-  )
-  const calculatedDer =
-    derCalcFactor && (Number(calculatedRer) * derCalcFactor).toFixed(0)
+  // const calculatedRer = calculateRer(
+  //   weight || '0',
+  //   species as 'canine' | 'feline',
+  //   rerCalcMethod || 'a',
+  // )
+  // const calculatedDer =
+  //   derCalcFactor && (Number(calculatedRer) * derCalcFactor).toFixed(0)
 
   useEffect(() => {
     const feedOrderName = `${searchedDiet}#${localDietDescription}`
@@ -105,25 +105,25 @@ export default function FeedOrderField({
       setShowNonSelectedMessage(true)
       return
     }
-    if (!calculatedDer) {
-      derRef.current?.focus()
-      return
-    }
+    // if (!calculatedDer) {
+    //   derRef.current?.focus()
+    //   return
+    // }
     if (!localFeedPerDay) {
       feedPerDayRef.current?.focus()
       return
     }
 
-    const feedAmount = (
-      Number(calculatedDer) /
-      Number(selectedDiet.mass_vol) /
-      Number(localFeedPerDay)
-    ).toFixed(1)
+    // const feedAmount = (
+    //   Number(calculatedDer) /
+    //   Number(selectedDiet.mass_vol) /
+    //   Number(localFeedPerDay)
+    // ).toFixed(1)
 
-    form.setValue(
-      'icu_chart_order_comment',
-      `${feedAmount}${selectedDiet.unit}`,
-    )
+    // form.setValue(
+    //   'icu_chart_order_comment',
+    //   `${feedAmount}${selectedDiet.unit}`,
+    // )
 
     setShowNonSelectedMessage(false)
   }
@@ -215,7 +215,7 @@ export default function FeedOrderField({
             <Label className={cn('text-right font-semibold')}>DER</Label>
 
             <div className="relative w-full">
-              <Input
+              {/* <Input
                 ref={derRef}
                 className={cn(
                   'pr-18 cursor-not-allowed select-none shadow-none',
@@ -223,7 +223,7 @@ export default function FeedOrderField({
                 )}
                 value={calculatedDer || 'DER을 설정해주세요'}
                 readOnly
-              />
+              /> */}
               <span className="absolute right-2 top-1/2 -translate-y-1/2 cursor-not-allowed select-none text-sm text-muted-foreground">
                 kcal/day
               </span>

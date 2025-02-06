@@ -1,6 +1,6 @@
 'use client'
 
-import PatientInfo from '@/components/hospital/common/patient-info'
+import PatientBriefInfo from '@/components/hospital/common/patient/patient-brief-info'
 import ChecklistInput from '@/components/hospital/icu/main/out-and-visit/checklist-input'
 import ChecklistTime from '@/components/hospital/icu/main/out-and-visit/checklist-time'
 import { CancelOutDue } from '@/components/hospital/icu/main/out-and-visit/icu-out-chart/cancel-out-due'
@@ -19,7 +19,7 @@ export const outDueColumns: ColumnDef<OutDuePatientsData>[] = [
       const isDischarged = row.original.out_date !== null
 
       return (
-        <PatientInfo
+        <PatientBriefInfo
           name={name}
           species={species}
           breed={breed}

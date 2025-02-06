@@ -1,7 +1,7 @@
 'use client'
 
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
-import PatientInfo from '@/components/hospital/common/patient-info'
+import PatientBriefInfo from '@/components/hospital/common/patient/patient-brief-info'
 import TxUpsertDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/tx-upsert-dialog'
 import TxTableCell from '@/components/hospital/icu/main/tx-table/tx-table-cell'
 import TxTableHeader from '@/components/hospital/icu/main/tx-table/tx-table-header'
@@ -111,7 +111,7 @@ export default function TxTable({
                   className="divide-x"
                 >
                   <TableCell className="sticky left-0 z-20 bg-white text-center shadow-md">
-                    <PatientInfo
+                    <PatientBriefInfo
                       name={txData.patient.name}
                       breed={txData.patient.breed}
                       species={txData.patient.species}

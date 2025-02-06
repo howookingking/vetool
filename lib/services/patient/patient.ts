@@ -5,6 +5,7 @@ import type {
   PaginatedData,
   PatientDataTable,
   SearchedPatientsData,
+  PatientWithWeight,
 } from '@/types/patients'
 import { redirect } from 'next/navigation'
 
@@ -82,6 +83,23 @@ export const getPatientsData = async (hosId: string) => {
     hos_owner_id: patient.hos_owner_id,
     isIcu: false,
   })) as PatientDataTable[]
+}
+
+export const getPatientData = async (patientId: string) => {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .rpc('get_patient_data_with_vitals', {
+      patient_id_input: patientId,
+    })
+    .returns<PatientWithWeight>()
+
+  if (error) {
+    console.error(error)
+    redirect(`/error/?message=${error.message}`)
+  }
+
+  return data
 }
 
 export const deletePatient = async (patientId: string) => {

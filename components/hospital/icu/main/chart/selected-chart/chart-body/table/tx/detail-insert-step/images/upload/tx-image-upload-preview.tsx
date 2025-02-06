@@ -30,7 +30,7 @@ export default function TxImageUploadPreview({
   return (
     <div className="flex flex-wrap gap-3">
       {images.map((image, index) => (
-        <Dialog key={image.name} modal>
+        <Dialog key={`${image.name}-${index}`} modal>
           <DialogTrigger asChild>
             <div className="relative h-24 w-24 cursor-pointer">
               <TxImage

@@ -22,6 +22,9 @@ export default function TxImageField({
 }: TxImageFieldProps) {
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false)
 
+  const totalImageCount =
+    (bucketImages?.length || 0) + (txLocalState?.txImages?.length || 0)
+
   const handleDeleteTempImage = (index: number) => {
     if (!txLocalState?.txImages) return
 
@@ -74,6 +77,7 @@ export default function TxImageField({
         txLocalState={txLocalState}
         handleDeleteBucketImage={handleDeleteBucketImage}
         handleDeleteTempImage={handleDeleteTempImage}
+        totalImageCount={totalImageCount}
       />
     </>
   )

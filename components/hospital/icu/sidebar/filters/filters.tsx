@@ -4,19 +4,21 @@ import SortFilter from '@/components/hospital/icu/sidebar/filters/sort-filter'
 import VetFilter from '@/components/hospital/icu/sidebar/filters/vet-filter'
 import { Menubar } from '@/components/ui/menubar'
 import { DEFAULT_FILTER_STATE } from '@/constants/hospital/icu/chart/filters'
-import type { Filter, Vet } from '@/types/icu/chart'
+import { type Filter, type Vet } from '@/types/icu/chart'
+
+type FiltersProps = {
+  hosGroupList: string[]
+  vetsListData: Vet[]
+  filters: Filter
+  setFilters: (filters: Filter) => void
+}
 
 export default function Filters({
   hosGroupList,
   vetsListData,
   filters,
   setFilters,
-}: {
-  hosGroupList: string[]
-  vetsListData: Vet[]
-  filters: Filter
-  setFilters: (filters: Filter) => void
-}) {
+}: FiltersProps) {
   // 그룹 다중 선택 로직
   const handleGroupChange = (group: string) => {
     const newGroups = filters.selectedGroup.includes(group)

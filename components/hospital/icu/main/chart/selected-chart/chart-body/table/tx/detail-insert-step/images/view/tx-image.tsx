@@ -34,10 +34,11 @@ export default function TxImage({
         <Image
           src={src}
           alt={`처치 이미지 ${index + 1}`}
-          className={cn('', className)}
           fill
-          // width={96}
-          // height={96}
+          className={cn('object-contain', className)}
+          priority
+          quality={75}
+          loading="eager"
         />
       )}
     </>

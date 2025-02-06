@@ -1,44 +1,65 @@
-import { Button } from '@/components/ui/button'
+import CalculatorSheetSkeleton from '@/components/hospital/calculator/calculator-sheet-skeleton'
+import CalculatorSidebar from '@/components/hospital/calculator/calculator-sidebar'
+import SelectedCalculators from '@/components/hospital/calculator/selected-calculators'
+import PatientDetailInfo from '@/components/hospital/common/patient/patient-detail-info'
+import { Card } from '@/components/ui/card'
 import {
-  SheetClose,
   SheetContent,
   SheetDescription,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
-import CalculatorSidebar from './calculator-sidebar'
+import { getPatientData } from '@/lib/services/patient/patient'
+import { formatDate } from '@/lib/utils/utils'
+import { type SelectedCalculator } from '@/types/hospital/calculator'
+import { type PatientWithWeight } from '@/types/patients'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
-import { useState } from 'react'
-import FluidRateCalculator from './fluid-rate/fluid-rate-calculator'
-import SelectedCalculators from './selected-calculators'
+import { useParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
-export const CALCULATORS = [
-  {
-    value: 'fluid-rate',
-    label: '수액속도',
-  },
-  {
-    value: 'rer-der',
-    label: 'RER / MER',
-  },
-  {
-    value: 'counter',
-    label: '바이탈카운터',
-  },
-  {
-    value: 'cri',
-    label: 'CRI',
-  },
-] as const
+type CalculatorSheetContentProps = {
+  isSheetOpen: boolean
+  isMobile: boolean
+}
 
-export type SelectedCalculator = (typeof CALCULATORS)[number]['value']
+export default function CalculatorSheetContent({
+  isSheetOpen,
+  isMobile,
+}: CalculatorSheetContentProps) {
+  const { patient_id } = useParams()
 
-export default function CalculatorSheetContent() {
+  const [isLoading, setIsLoading] = useState(true)
+  const [patientData, setPatientData] = useState<PatientWithWeight | null>(null)
   const [selectedCalculator, setSelectedCalculator] =
-    useState<(typeof CALCULATORS)[number]['value']>('fluid-rate')
+    useState<SelectedCalculator>('counter')
+
+  useEffect(() => {
+    const fetchPatientData = async () => {
+      setIsLoading(true)
+      try {
+        if (patient_id) {
+          const patientData = await getPatientData(patient_id as string)
+          setPatientData(patientData)
+        }
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    if (isSheetOpen) {
+      fetchPatientData()
+    }
+    if (!isSheetOpen) {
+      setPatientData(null)
+      setIsLoading(true)
+    }
+  }, [patient_id, isSheetOpen])
+
   return (
-    <SheetContent className="flex w-1/2 gap-0 p-0" noCloseButton>
+    <SheetContent
+      className="flex w-full flex-col gap-0 overflow-auto p-0 sm:flex-row 2xl:w-1/2"
+      noCloseButton={!isMobile}
+    >
       <VisuallyHidden>
         <SheetHeader>
           <SheetTitle />
@@ -51,7 +72,29 @@ export default function CalculatorSheetContent() {
         setSelectedCalculator={setSelectedCalculator}
       />
 
-      <SelectedCalculators selectedCalculator={selectedCalculator} />
+      {isLoading ? (
+        <CalculatorSheetSkeleton />
+      ) : (
+        <div className="flex h-full w-full flex-col justify-between p-2">
+          <SelectedCalculators
+            selectedCalculator={selectedCalculator}
+            patientData={patientData}
+          />
+
+          {patientData && (
+            <Card className="my-1 flex items-end justify-center rounded-md border-2 border-primary py-2">
+              <PatientDetailInfo
+                {...patientData.patient}
+                weight={patientData.vital?.body_weight ?? ''}
+                weightMeasuredDate={
+                  patientData.vital?.created_at &&
+                  formatDate(new Date(patientData.vital.created_at))
+                }
+              />
+            </Card>
+          )}
+        </div>
+      )}
     </SheetContent>
   )
 }
