@@ -14,7 +14,7 @@ export default function CalculatorSidebar({
   setSelectedCalculator,
 }: CalculatorSidebarProps) {
   return (
-    <ul className="mx-2 mb-2 mt-12 flex flex-row justify-between rounded-lg border sm:m-0 sm:w-[240px] sm:flex-col sm:justify-start">
+    <ul className="mx-2 mb-2 mt-12 flex flex-row justify-between border sm:m-0 sm:w-[240px] sm:flex-col sm:justify-start">
       {CALCULATORS.map((calculator) => (
         <li key={calculator.value}>
           <Button
