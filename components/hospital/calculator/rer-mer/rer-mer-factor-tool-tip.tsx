@@ -70,39 +70,30 @@ export default function FactorToolTip() {
   return (
     <HelperTooltip side="right">
       <div className="px-1 py-2">
-        <div className="">
-          <h4 className="text-base font-bold">- RER 계산</h4>
-          <div>
-            개, 고양이 : 70 * (몸무게) <sup>0.75</sup> kcal/day
-          </div>
-        </div>
-
-        <div className="pt-4">
-          <h4 className="text-base font-bold">- DER 인자</h4>
-          <Table className="text-sm">
-            <TableCaption className="text-xs text-white"></TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[100px] text-xs text-white">
-                  Factors
-                </TableHead>
-                <TableHead className="text-xs text-white">Canine</TableHead>
-                <TableHead className="text-xs text-white">Feline</TableHead>
+        <h4 className="text-base font-bold">- Life Stage Factor</h4>
+        <Table className="text-sm">
+          <TableCaption className="text-xs text-white"></TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[100px] text-xs text-white">
+                Factors
+              </TableHead>
+              <TableHead className="text-xs text-white">Canine</TableHead>
+              <TableHead className="text-xs text-white">Feline</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {FACTORS.map((invoice) => (
+              <TableRow key={invoice.factor}>
+                <TableCell className="text-xs font-medium">
+                  {invoice.factor}
+                </TableCell>
+                <TableCell className="text-xs">{invoice.canine}</TableCell>
+                <TableCell className="text-xs">{invoice.feline}</TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {FACTORS.map((invoice) => (
-                <TableRow key={invoice.factor}>
-                  <TableCell className="text-xs font-medium">
-                    {invoice.factor}
-                  </TableCell>
-                  <TableCell className="text-xs">{invoice.canine}</TableCell>
-                  <TableCell className="text-xs">{invoice.feline}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+            ))}
+          </TableBody>
+        </Table>
 
         <div>
           <p>* 2024 AAHA Fluid Therapy Guidelines for Dogs and Cats</p>
