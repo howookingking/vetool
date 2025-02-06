@@ -35,7 +35,7 @@ export default function DietForm({ mer }: { mer: number | null }) {
 
       setFeedAmount(feedAmount)
     }
-  }, [mer, selectedDiet, feedPerDay])
+  }, [mer, selectedDiet, feedPerDay, diets])
 
   const mappedDietList = diets.map((diet) => ({
     value: diet.name,
