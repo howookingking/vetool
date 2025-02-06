@@ -1,5 +1,6 @@
 import OrderCreator from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-creator'
 import OrderRows from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-rows'
+import { Separator } from '@/components/ui/separator'
 import { TableBody, TableCell, TableRow } from '@/components/ui/table'
 import {
   type OrderStep,
@@ -94,10 +95,18 @@ export default function ChartTableBody({
           </TableCell>
 
           <TableCell className="relative">
-            <div className="absolute bottom-3 left-2 hidden whitespace-nowrap text-muted-foreground md:block">
-              CTRL + 우클릭으로{' '}
-              <span className="mx-2 bg-rose-400/10 p-1">형광펜</span>
-              칠을 할 수 있습니다
+            <div className="absolute bottom-3 left-2 hidden items-center gap-2 whitespace-nowrap text-muted-foreground md:flex">
+              <div>
+                처치칸을 CTRL + 우클릭하여{' '}
+                <span className="mx-1 bg-rose-400/10 p-1">형광펜</span>
+                칠을 할 수 있습니다
+              </div>
+
+              <Separator orientation="vertical" className="h-4" />
+
+              <div>
+                CTRL + 오더 또는 처치칸을 클릭하면 다중으로 선택할 수 있습니다
+              </div>
             </div>
           </TableCell>
         </TableRow>
