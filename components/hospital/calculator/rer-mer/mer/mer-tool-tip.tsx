@@ -8,7 +8,9 @@ export default function MerToolTip() {
 
         <div className="flex gap-10">
           <div>
-            <div>RER * Life Stage Factor</div>
+            <div>
+              RER(70 * kg <sup>0.75</sup> kcal/day) * Life Stage Factor
+            </div>
           </div>
         </div>
         <div>*2024 AAHA Fluid Therapy Guidelines for Dogs and Cats</div>
