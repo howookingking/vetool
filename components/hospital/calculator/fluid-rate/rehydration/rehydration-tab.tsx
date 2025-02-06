@@ -1,6 +1,12 @@
 import CalculatorResult from '@/components/hospital/calculator/calculator-result'
 import RehydrationToolTip from '@/components/hospital/calculator/fluid-rate/rehydration/rehydration-tool-tip'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import {
   Form,
   FormControl,
@@ -92,6 +98,9 @@ export default function RehydrationTab({
         <CardTitle className="flex items-center gap-2">
           Rehydration <RehydrationToolTip />
         </CardTitle>
+        <CardDescription>
+          *on-going loss 및 maintenance rate는 계산하지 않음
+        </CardDescription>
       </CardHeader>
 
       <Form {...form}>
