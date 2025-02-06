@@ -15,6 +15,7 @@ import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
 import type { VetoolUser } from '@/types'
 import { Menu } from 'lucide-react'
 import { useState } from 'react'
+import CalculatorSheet from '../../calculator/calculator-sheet'
 
 export default function MobileSidebar({
   hosId,
@@ -57,12 +58,16 @@ export default function MobileSidebar({
           ))}
         </ul>
 
-        <SidebarUserInfo
-          mobile
-          hosId={hosId}
-          vetoolUser={vetoolUser}
-          setIsSheetOpen={setIsSheetOpen}
-        />
+        <div className="flex flex-col items-end">
+          <CalculatorSheet />
+
+          <SidebarUserInfo
+            mobile
+            hosId={hosId}
+            vetoolUser={vetoolUser}
+            setIsSheetOpen={setIsSheetOpen}
+          />
+        </div>
       </SheetContent>
     </Sheet>
   )
