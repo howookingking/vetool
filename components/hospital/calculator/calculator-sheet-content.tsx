@@ -17,16 +17,21 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
+type CalculatorSheetContentProps = {
+  isSheetOpen: boolean
+  isMobile: boolean
+}
+
 export default function CalculatorSheetContent({
   isSheetOpen,
-}: {
-  isSheetOpen: boolean
-}) {
+  isMobile,
+}: CalculatorSheetContentProps) {
   const { patient_id } = useParams()
+
   const [isLoading, setIsLoading] = useState(true)
   const [patientData, setPatientData] = useState<PatientWithWeight | null>(null)
   const [selectedCalculator, setSelectedCalculator] =
-    useState<SelectedCalculator>('fluid-rate')
+    useState<SelectedCalculator>('counter')
 
   useEffect(() => {
     const fetchPatientData = async () => {
@@ -51,7 +56,10 @@ export default function CalculatorSheetContent({
   }, [patient_id, isSheetOpen])
 
   return (
-    <SheetContent className="flex w-1/2 gap-0 p-0" noCloseButton>
+    <SheetContent
+      className="flex w-full flex-col gap-0 overflow-auto p-0 sm:flex-row 2xl:w-1/2"
+      noCloseButton={!isMobile}
+    >
       <VisuallyHidden>
         <SheetHeader>
           <SheetTitle />
@@ -67,14 +75,14 @@ export default function CalculatorSheetContent({
       {isLoading ? (
         <CalculatorSheetSkeleton />
       ) : (
-        <div className="flex w-full flex-col justify-between p-2">
+        <div className="flex h-full w-full flex-col justify-between p-2">
           <SelectedCalculators
             selectedCalculator={selectedCalculator}
             patientData={patientData}
           />
 
           {patientData && (
-            <Card className="mb-2 mt-auto flex items-end justify-center py-2">
+            <Card className="my-1 flex items-end justify-center rounded-md border-2 border-primary py-2">
               <PatientDetailInfo
                 {...patientData.patient}
                 weight={patientData.vital?.body_weight ?? ''}

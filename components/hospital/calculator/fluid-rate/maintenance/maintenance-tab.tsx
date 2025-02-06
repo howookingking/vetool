@@ -1,6 +1,13 @@
+import WarningMessage from '@/components/common/warning-message'
+import CalculatorResult from '@/components/hospital/calculator/calculator-result'
 import MaintenanceToolTip from '@/components/hospital/calculator/fluid-rate/maintenance/maintenance-tool-tip'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import {
   Form,
   FormControl,
@@ -23,12 +30,13 @@ import {
   maintenanceFormSchema,
   type MaintenanceFormValues,
 } from '@/lib/schemas/calculator/fluid-rate-schema'
+import { getDaysSince } from '@/lib/utils/utils'
 import {
   type CalculatorTabProps,
   type Species,
 } from '@/types/hospital/calculator'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ClipboardCopy } from 'lucide-react'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { MouseEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -36,8 +44,11 @@ export default function MaintenanceTab({
   formData,
   setFormData,
   tab,
-}: CalculatorTabProps) {
+  birth,
+}: CalculatorTabProps & { birth?: string }) {
   const [result, setResult] = useState<string>('')
+
+  const isPediatric = getDaysSince(birth ? birth : '1') <= 365
 
   const form = useForm<MaintenanceFormValues>({
     resolver: zodResolver(maintenanceFormSchema),
@@ -84,6 +95,7 @@ export default function MaintenanceTab({
 
   const handleCopyButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
+
     navigator.clipboard.writeText(result)
     toast({
       title: '계산 결과가 클립보드에 복사되었습니다.',
@@ -97,11 +109,44 @@ export default function MaintenanceTab({
           <span>Maintenance</span>
           <MaintenanceToolTip />
         </CardTitle>
+        <VisuallyHidden>
+          <CardDescription />
+        </VisuallyHidden>
+        {isPediatric && (
+          <WarningMessage
+            className="text-sm"
+            text="Pediatrics의 경우,  Adult Dog * 3, Adult Cat  * 2.5"
+          />
+        )}
       </CardHeader>
 
       <Form {...form}>
         <form>
           <CardContent className="grid grid-cols-2 gap-2">
+            <FormField
+              control={form.control}
+              name="weight"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>체중 (kg)</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="체중을 입력하세요"
+                      {...field}
+                      onChange={(e) => {
+                        field.onChange(e)
+                        setFormData((prev) => ({
+                          ...prev,
+                          weight: e.target.value,
+                        }))
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="species"
@@ -185,30 +230,6 @@ export default function MaintenanceTab({
 
             <FormField
               control={form.control}
-              name="weight"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>체중 (kg)</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="체중을 입력하세요"
-                      {...field}
-                      onChange={(e) => {
-                        field.onChange(e)
-                        setFormData((prev) => ({
-                          ...prev,
-                          weight: e.target.value,
-                        }))
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
               name="fold"
               render={({ field }) => (
                 <FormItem>
@@ -238,23 +259,11 @@ export default function MaintenanceTab({
 
           <CardContent className="pt-4">
             {result && (
-              <div className="flex flex-col gap-2 text-center">
-                <div className="flex items-center justify-center gap-4">
-                  <span className="text-lg font-semibold">계산 결과</span>
-                  <Button
-                    onClick={handleCopyButtonClick}
-                    className="xl:text-xs 2xl:text-sm"
-                    variant="outline"
-                    size="icon"
-                  >
-                    <ClipboardCopy className="h-4 w-4" />
-                  </Button>
-                </div>
-
-                <span className="text-2xl font-bold text-primary">
-                  {result} <span className="text-sm font-normal">ml/hr</span>
-                </span>
-              </div>
+              <CalculatorResult
+                result={result}
+                unit="ml/hr"
+                onClick={handleCopyButtonClick}
+              />
             )}
           </CardContent>
         </form>

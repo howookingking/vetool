@@ -1,7 +1,6 @@
 'use client'
 
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
-import RerDerToolTip from '@/unused/icu-chart/chart-info/rer-der/rer-der-tool-tip'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -13,11 +12,9 @@ import {
 } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { Zap } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
-import { calculateRer } from '@/lib/calculators/rer-mer'
 
 const LazyRerDerForm = dynamic(
   () => import('@/unused/icu-chart/chart-info/rer-der/rer-der-form'),
@@ -93,7 +90,7 @@ export default function RerDer({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <span>RER & DER</span>
-            <RerDerToolTip rerCalcMethod={'a'} />
+            {/* <RerDerToolTip rerCalcMethod={'a'} /> */}
           </DialogTitle>
           <DialogDescription />
         </DialogHeader>

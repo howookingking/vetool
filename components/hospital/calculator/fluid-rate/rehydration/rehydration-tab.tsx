@@ -1,5 +1,12 @@
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import CalculatorResult from '@/components/hospital/calculator/calculator-result'
+import RehydrationToolTip from '@/components/hospital/calculator/fluid-rate/rehydration/rehydration-tool-tip'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import {
   Form,
   FormControl,
@@ -24,10 +31,8 @@ import {
 } from '@/lib/schemas/calculator/fluid-rate-schema'
 import { type CalculatorTabProps } from '@/types/hospital/calculator'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ClipboardCopy } from 'lucide-react'
-import { MouseEvent, useEffect, useState } from 'react'
+import { type MouseEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import RehydrationToolTip from './rehydration-tool-tip'
 
 export default function RehydrationTab({
   formData,
@@ -93,6 +98,9 @@ export default function RehydrationTab({
         <CardTitle className="flex items-center gap-2">
           Rehydration <RehydrationToolTip />
         </CardTitle>
+        <CardDescription>
+          *on-going loss 및 maintenance rate는 계산하지 않음
+        </CardDescription>
       </CardHeader>
 
       <Form {...form}>
@@ -168,27 +176,12 @@ export default function RehydrationTab({
 
           <CardContent className="pt-4">
             {result && (
-              <div className="flex flex-col gap-2 text-center">
-                <div className="flex items-center justify-center gap-4">
-                  <span className="text-lg font-semibold">계산 결과</span>
-                  <Button
-                    onClick={handleCopyButtonClick}
-                    className="xl:text-xs 2xl:text-sm"
-                    variant="outline"
-                    size="icon"
-                  >
-                    <ClipboardCopy className="h-4 w-4" />
-                  </Button>
-                </div>
-                <span className="text-lg">
-                  <span className="text-2xl font-bold text-primary">
-                    {result.ratePerHour}
-                    <span className="text-sm font-normal">ml/hr</span>
-                  </span>
-                  <br />
-                  <span className="text-base">{`(${result.totalMl}ml를 ${form.watch('time')}시간동안 주입)`}</span>
-                </span>
-              </div>
+              <CalculatorResult
+                result={result.ratePerHour.toString()}
+                unit="ml/hr"
+                comment={`(${result.totalMl}ml를 ${form.watch('time')}시간동안 주입)`}
+                onClick={handleCopyButtonClick}
+              />
             )}
           </CardContent>
         </form>

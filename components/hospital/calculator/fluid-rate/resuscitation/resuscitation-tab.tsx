@@ -1,12 +1,6 @@
+import CalculatorResult from '@/components/hospital/calculator/calculator-result'
 import ResuscitationToolTip from '@/components/hospital/calculator/fluid-rate/resuscitation/resuscitation-tool-tip'
-import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Form,
   FormControl,
@@ -34,8 +28,7 @@ import {
   type Species,
 } from '@/types/hospital/calculator'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ClipboardCopy } from 'lucide-react'
-import { MouseEvent, useEffect, useState } from 'react'
+import { type MouseEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 export default function ResuscitationTab({
@@ -103,6 +96,31 @@ export default function ResuscitationTab({
           <CardContent className="grid grid-cols-2 gap-2">
             <FormField
               control={form.control}
+              name="weight"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>체중 (kg)</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="체중을 입력하세요"
+                      {...field}
+                      onChange={(e) => {
+                        field.onChange(e)
+                        setFormData((prev) => ({
+                          ...prev,
+                          weight: e.target.value,
+                        }))
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
               name="species"
               render={({ field }) => (
                 <FormItem>
@@ -131,75 +149,17 @@ export default function ResuscitationTab({
                 </FormItem>
               )}
             />
-
-            <FormField
-              control={form.control}
-              name="weight"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>체중 (kg)</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="체중을 입력하세요"
-                      {...field}
-                      onChange={(e) => {
-                        field.onChange(e)
-                        setFormData((prev) => ({
-                          ...prev,
-                          weight: e.target.value,
-                        }))
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
           </CardContent>
 
           <CardContent className="pt-4">
             {(result.min !== 0 || result.max !== 0) && (
-              <div className="flex flex-col gap-2 text-center">
-                <div className="flex items-center justify-center gap-4">
-                  <span className="text-lg font-semibold">계산 결과</span>
-                  <Button
-                    onClick={handleCopyButtonClick}
-                    className="xl:text-xs 2xl:text-sm"
-                    variant="outline"
-                    size="icon"
-                  >
-                    <ClipboardCopy className="h-4 w-4" />
-                  </Button>
-                </div>
-                <span>
-                  <span className="pr-1 text-2xl font-bold text-primary">
-                    {result.min}
-                    ml ~ {result.max}
-                    ml
-                  </span>
-                  <br />
-                  buffered isotonic 수액을 15~30분간 주입해주세요.
-                </span>
-              </div>
+              <CalculatorResult
+                result={`${result.min}ml ~ ${result.max}ml`}
+                comment="buffered isotonic 수액을 15~30분간 주입해주세요."
+                onClick={handleCopyButtonClick}
+              />
             )}
           </CardContent>
-
-          <CardFooter>
-            <Button
-              onClick={() =>
-                navigator.clipboard.writeText(
-                  `${result.min}ml ~ ${result.max}ml`,
-                )
-              }
-              className="ml-auto w-1/2 xl:text-xs 2xl:text-sm"
-              variant="outline"
-              type="button"
-            >
-              <ClipboardCopy className="h-4 w-4" />
-              클립보드 복사
-            </Button>
-          </CardFooter>
         </form>
       </Form>
     </Card>

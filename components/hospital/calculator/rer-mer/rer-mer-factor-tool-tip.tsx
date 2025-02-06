@@ -66,28 +66,15 @@ const FACTORS = [
   },
 ]
 
-export default function RerDerToolTip({
-  rerCalcMethod,
-}: {
-  rerCalcMethod: 'a' | 'b'
-}) {
+export default function FactorToolTip() {
   return (
     <HelperTooltip side="right">
       <div className="px-1 py-2">
         <div className="">
           <h4 className="text-base font-bold">- RER 계산</h4>
-          {rerCalcMethod === 'a' ? (
-            <>
-              <div>개 : (몸무게) * 30 + 70 kcal/day</div>
-              <div>
-                <div>고양이 : (몸무게) * 40 kcal/day</div>
-              </div>
-            </>
-          ) : (
-            <div>
-              개, 고양이 : 70 * (몸무게) <sup>0.75</sup> kcal/day
-            </div>
-          )}
+          <div>
+            개, 고양이 : 70 * (몸무게) <sup>0.75</sup> kcal/day
+          </div>
         </div>
 
         <div className="pt-4">
@@ -118,10 +105,7 @@ export default function RerDerToolTip({
         </div>
 
         <div>
-          <p>
-            * The 2021 AAHA Nutrition and Weight Management Guidelines for Dogs
-            and Cats
-          </p>
+          <p>* 2024 AAHA Fluid Therapy Guidelines for Dogs and Cats</p>
           <p>
             * Sedentary, indoor, hopitalized pets may require less caloric
             intake than indicated above.

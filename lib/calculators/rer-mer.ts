@@ -32,3 +32,11 @@ export const calculateMer = (weight: string, factor: string) => {
 
   return Number(mer.toFixed(0))
 }
+
+export const cacluateFeedAmount = (
+  mer: number,
+  massVol: number,
+  feedPerDay: number,
+) => {
+  return Number((mer / massVol / feedPerDay).toFixed(1))
+}

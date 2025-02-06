@@ -23,7 +23,7 @@ export const calculateMaintenanceRate = (
       fluidRatePerDay = 30 * Number(weight) + 70
     }
   }
-  return ((fluidRatePerDay! * Number(fold)) / 24).toFixed(2)
+  return ((fluidRatePerDay! * Number(fold)) / 24).toFixed(1)
 }
 
 export const calculateResuscitation = (
@@ -38,8 +38,8 @@ export const calculateResuscitation = (
   const selectedRate = rates[species]
 
   return {
-    min: bodyWeight * selectedRate.min,
-    max: bodyWeight * selectedRate.max,
+    min: Number((bodyWeight * selectedRate.min).toFixed(1)),
+    max: Number((bodyWeight * selectedRate.max).toFixed(1)),
   }
 }
 

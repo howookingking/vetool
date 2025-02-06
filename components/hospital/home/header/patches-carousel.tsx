@@ -40,7 +40,7 @@ export default function PatchesCarousel({
   }
 
   return (
-    <div className="h-10 w-[300px]">
+    <div className="hidden h-10 w-[300px] sm:block">
       <div
         className="group relative flex h-full items-center overflow-hidden bg-background px-3 transition-all duration-300 hover:bg-accent"
         onMouseEnter={() => setIsPaused(true)}

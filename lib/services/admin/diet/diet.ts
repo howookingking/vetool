@@ -1,22 +1,23 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { AdminDietData } from '@/types/adimin'
+import { type AdminDietData } from '@/types/adimin'
+import { type Diet } from '@/types/hospital/calculator'
 import { redirect } from 'next/navigation'
 
-export const getDiets = async (hosId: string) => {
+export const getHosDiets = async (hosId: string) => {
   const supabase = await createClient()
 
   const { data: dietData, error: dietDataError } = await supabase
     .from('diets')
     .select(
       `
-        name, 
-        company, 
-        description, 
-        mass_vol, 
-        unit, 
-        diet_id, 
+        name,
+        company,
+        description,
+        mass_vol,
+        unit,
+        diet_id,
         species,
         created_at,
         hos_id(hos_id, name)
@@ -37,6 +38,22 @@ export const getDiets = async (hosId: string) => {
   }
 
   return dietData
+}
+
+export const getDiets = async () => {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from('diets')
+    .select('diet_id, name, unit, mass_vol')
+    .returns<Diet[]>()
+
+  if (error) {
+    console.error(error)
+    redirect(`/error?message=${error.message}`)
+  }
+
+  return data
 }
 
 type UpsertDietData = {

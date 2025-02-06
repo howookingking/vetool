@@ -43,6 +43,7 @@ export default function FluidRateCalculator({
           formData={formData}
           setFormData={setFormData}
           tab={tab}
+          birth={patientData?.patient.birth}
         />
       </TabsContent>
 
