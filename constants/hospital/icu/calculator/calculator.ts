@@ -21,7 +21,7 @@ export const CALCULATORS = [
   },
   {
     value: 'chocolate',
-    label: '초콜릿',
+    label: '테오브로민(초콜릿) 계산',
   },
 ] as const
 
