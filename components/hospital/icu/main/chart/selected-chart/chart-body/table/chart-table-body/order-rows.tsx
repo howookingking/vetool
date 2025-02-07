@@ -27,9 +27,7 @@ type CellsRowTitlesProps = {
   vitalRefRange: VitalRefRange[]
   species: string
   orderwidth: number
-  isMobile: boolean
   cellRef?: RefObject<HTMLTableRowElement>
-  isTouchMove?: boolean
   icuChartId: string
   hosId: string
   setOrderStep: (orderStep: OrderStep) => void
@@ -51,8 +49,6 @@ export default function OrderRows({
   species,
   orderwidth,
   cellRef,
-  isTouchMove,
-  isMobile,
   icuChartId,
   hosId,
   setOrderStep,
@@ -124,8 +120,6 @@ export default function OrderRows({
               vitalRefRange={vitalRefRange}
               species={species}
               orderWidth={orderwidth}
-              isTouchMove={isTouchMove}
-              isMobile={isMobile}
               reset={reset}
               setSelectedOrderPendingQueue={setSelectedOrderPendingQueue}
               setOrderStep={setOrderStep}

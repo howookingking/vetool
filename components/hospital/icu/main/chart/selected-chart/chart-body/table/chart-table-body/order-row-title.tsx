@@ -11,13 +11,11 @@ import { useCallback } from 'react'
 type OrderRowTitleProps = {
   order: SelectedIcuOrder
   index: number
-  isMobile: boolean
   isSorting?: boolean
   preview?: boolean
   vitalRefRange?: VitalRefRange[]
   species: string
   orderWidth: number
-  isTouchMove?: boolean
   reset?: () => void
   setSelectedOrderPendingQueue?: (
     updater:
@@ -33,12 +31,10 @@ export default function OrderRowTitle({
   order,
   isSorting,
   index,
-  isMobile,
   preview,
   vitalRefRange,
   species,
   orderWidth,
-  isTouchMove,
   reset,
   setSelectedOrderPendingQueue,
   setOrderStep,
@@ -100,7 +96,6 @@ export default function OrderRowTitle({
         'handle group p-0',
         isSorting && index % 2 === 0 && 'animate-shake-strong',
         isSorting && index % 2 !== 0 && 'animate-shake-strong-reverse',
-        isTouchMove && 'sticky left-0 z-10',
       )}
       style={{
         width: orderWidth,
@@ -128,7 +123,7 @@ export default function OrderRowTitle({
           isInOrderPendingQueue && 'ring-2 ring-inset ring-primary',
         )}
         style={{
-          width: isTouchMove ? 200 : isMobile ? 300 : orderWidth,
+          width: orderWidth,
           transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
         }}
       >
@@ -140,7 +135,6 @@ export default function OrderRowTitle({
           orderColorsData={orderColorsData}
           orderFontSizeData={orderFontSizeData}
           vitalRefRange={rowVitalRefRange}
-          isTouchMove={isTouchMove}
         />
       </Button>
     </TableCell>

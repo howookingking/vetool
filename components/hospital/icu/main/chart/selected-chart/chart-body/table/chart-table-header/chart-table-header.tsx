@@ -18,8 +18,6 @@ type ChartTableHeaderProps = {
   isExport?: boolean
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   setOrderWidth: Dispatch<SetStateAction<number>>
-  isMobile: boolean
-  isTouchMove?: boolean
   chartId?: string
   hosId: string
 }
@@ -32,8 +30,6 @@ export default function ChartTableHeader({
   setIsSorting,
   orderWidth,
   setOrderWidth,
-  isMobile,
-  isTouchMove,
   chartId,
   hosId,
 }: ChartTableHeaderProps) {
@@ -41,7 +37,7 @@ export default function ChartTableHeader({
     <TableHeader
       data-guide="order-info"
       className={cn(
-        preview || isMobile ? 'top-0' : 'top-12',
+        preview ? 'top-0' : 'top-12',
         'sticky z-20 bg-white shadow-sm',
       )}
     >
@@ -49,7 +45,7 @@ export default function ChartTableHeader({
         <TableHead
           className="flex items-center justify-between px-0.5 text-center"
           style={{
-            width: isTouchMove ? 200 : isMobile ? 300 : orderWidth,
+            width: orderWidth,
             transition: 'width 0.3s ease-in-out ',
           }}
         >
@@ -76,7 +72,6 @@ export default function ChartTableHeader({
             <OrderWidthButton
               orderWidth={orderWidth as [300, 400, 500, 600][number]}
               setOrderWidth={setOrderWidth}
-              isMobile={isMobile}
             />
           )}
         </TableHead>

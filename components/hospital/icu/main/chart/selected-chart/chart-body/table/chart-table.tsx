@@ -4,17 +4,15 @@ import ChartTableBody from '@/components/hospital/icu/main/chart/selected-chart/
 import SortingOrderRows from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/sorting-order-rows'
 import ChartTableHeader from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/chart-table-header'
 import { Table } from '@/components/ui/table'
-import useIsMobile from '@/hooks/use-is-mobile'
 import useLocalStorage from '@/hooks/use-local-storage'
 import { type SelectedChart, type SelectedIcuOrder } from '@/types/icu/chart'
-import { type RefObject, useEffect, useState } from 'react'
+import { type RefObject, useState } from 'react'
 
 type ChartTableProps = {
   chartData: SelectedChart
   preview?: boolean
   isExport?: boolean
   cellRef?: RefObject<HTMLTableRowElement>
-  isTouchMove?: boolean
 }
 
 export default function ChartTable({
@@ -22,19 +20,12 @@ export default function ChartTable({
   preview,
   isExport,
   cellRef,
-  isTouchMove,
 }: ChartTableProps) {
   const { icu_chart_id, orders, patient, hos_id } = chartData
 
-  // 확정
   const [orderWidth, setOrderWidth] = useLocalStorage('orderWidth', 400)
 
-  const isMobile = useIsMobile()
-
-  // 확정
   const [isSorting, setIsSorting] = useState(false)
-
-  // 확정
   const [sortedOrders, setSortedOrders] = useState<SelectedIcuOrder[]>(orders)
 
   return (
@@ -50,15 +41,12 @@ export default function ChartTable({
         setSortedOrders={setSortedOrders}
         orderWidth={orderWidth}
         setOrderWidth={setOrderWidth}
-        isTouchMove={isTouchMove}
-        isMobile={isMobile}
         chartId={icu_chart_id}
         hosId={hos_id}
       />
 
       {isSorting ? (
         <SortingOrderRows
-          isMobile={isMobile}
           isSorting={isSorting}
           orderWidth={orderWidth}
           preview={preview}
@@ -72,8 +60,6 @@ export default function ChartTable({
           sortedOrders={sortedOrders}
           preview={preview}
           orderWidth={orderWidth}
-          isMobile={isMobile}
-          isTouchMove={isTouchMove}
           isExport={isExport}
           icuChartId={icu_chart_id}
           setSortedOrders={setSortedOrders}

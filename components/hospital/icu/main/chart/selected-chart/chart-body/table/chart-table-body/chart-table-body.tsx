@@ -31,8 +31,6 @@ type ChartTableBodyProps = {
   isSorting: boolean
   preview?: boolean
   orderWidth: number
-  isMobile: boolean
-  isTouchMove?: boolean
   isExport?: boolean
   icuChartId: string
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
@@ -45,8 +43,6 @@ export default function ChartTableBody({
   isSorting,
   preview,
   orderWidth,
-  isMobile,
-  isTouchMove,
   isExport,
   icuChartId,
   setSortedOrders,
@@ -159,8 +155,6 @@ export default function ChartTableBody({
         orderTimePendingQueueLength={orderTimePendingQueue.length}
         orderwidth={orderWidth}
         cellRef={cellRef}
-        isMobile={isMobile}
-        isTouchMove={isTouchMove}
         icuChartId={icuChartId}
         hosId={hos_id}
         timeGuidelineData={timeGuidelineData}

@@ -57,7 +57,10 @@ export default function SortingButton({
     <Button
       variant="ghost"
       size="icon"
-      className={cn(isSorting && 'animate-pulse text-primary', 'shrink-0')}
+      className={cn(
+        isSorting && 'animate-pulse text-primary',
+        'hidden shrink-0 md:flex',
+      )}
       onClick={handleSortButtonClick}
     >
       <ArrowUpDown size={18} />

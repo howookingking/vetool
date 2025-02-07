@@ -1,16 +1,18 @@
 import { useEffect } from 'react'
 
+type UseShortcutKeyProps = {
+  keys: string[]
+  condition?: boolean
+  callback: () => void
+  ignoreInput?: boolean
+}
+
 export default function useShorcutKey({
   keys,
   condition = true,
   callback,
   ignoreInput = false,
-}: {
-  keys: string[]
-  condition?: boolean
-  callback: () => void
-  ignoreInput?: boolean
-}) {
+}: UseShortcutKeyProps) {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       // Don't trigger for input fields

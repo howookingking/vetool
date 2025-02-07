@@ -11,7 +11,6 @@ type SortingRowsProps = {
   preview?: boolean
   isSorting: boolean
   orderWidth: number
-  isMobile: boolean
   species: string
 }
 
@@ -21,7 +20,6 @@ export default function SortingOrderRows({
   preview,
   isSorting,
   orderWidth,
-  isMobile,
   species,
 }: SortingRowsProps) {
   const handleReorder = (event: Sortable.SortableEvent) => {
@@ -45,7 +43,6 @@ export default function SortingOrderRows({
             preview={preview}
             isSorting={isSorting}
             orderWidth={orderWidth}
-            isMobile={isMobile}
             species={species}
           />
         </TableRow>
