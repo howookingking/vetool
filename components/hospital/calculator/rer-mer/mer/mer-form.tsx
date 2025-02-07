@@ -34,9 +34,6 @@ export default function MerForm({
 
     if (result) {
       navigator.clipboard.writeText(result.toString())
-      toast({
-        title: '계산 결과가 클립보드에 복사되었습니다.',
-      })
     }
   }
 
