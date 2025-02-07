@@ -5,15 +5,11 @@ import { TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
 import useIsCommandPressed from '@/hooks/use-is-command-pressed'
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
-import {
-  type OrderStep,
-  OrderTimePendingQueue,
-  useIcuOrderStore,
-} from '@/lib/store/icu/icu-order'
+import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
 import { formatOrders } from '@/lib/utils/utils'
-import { type VitalRefRange } from '@/types/adimin'
-import { SelectedChart, Vet, type SelectedIcuOrder } from '@/types/icu/chart'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
+import { SelectedChart, type SelectedIcuOrder } from '@/types/icu/chart'
 import {
   useEffect,
   useState,
@@ -21,10 +17,8 @@ import {
   type RefObject,
   type SetStateAction,
 } from 'react'
-import TxUpsertDialog from '../tx/tx-upsert-dialog'
-import MultiSelectOrderDialog from '../order/multil-select-order/multi-select-order-dialog'
-import OrderDialog from '../order/order-dialog'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
+import ChartTableDialogs from './chart-table-dialogs/chart-table-dialogs'
+import UserKeyGuideMessage from './user-key-guide-message'
 
 type ChartTableBodyProps = {
   sortedOrders: SelectedIcuOrder[]
@@ -54,22 +48,8 @@ export default function ChartTableBody({
     orders,
     patient: { species },
     hos_id,
+    main_vet,
   } = chartData
-
-  const {
-    setOrderStep,
-    reset,
-    selectedTxPendingQueue,
-    orderTimePendingQueue,
-    selectedOrderPendingQueue,
-    orderStep,
-    selectedChartOrder,
-  } = useIcuOrderStore()
-
-  const isCommandPressed = useIsCommandPressed()
-
-  const [isMultiSelectOrderDialogOpen, setIsMultiSelectOrderDialogOpen] =
-    useState(false)
 
   const {
     basicHosData: {
@@ -81,6 +61,21 @@ export default function ChartTableBody({
       orderColorsData,
     },
   } = useBasicHosDataContext()
+
+  const isCommandPressed = useIsCommandPressed()
+  const {
+    orderStep,
+    setOrderStep,
+    reset: resetOrderStore,
+    selectedChartOrder,
+    orderTimePendingQueue,
+    selectedTxPendingQueue,
+    selectedOrderPendingQueue,
+  } = useIcuOrderStore()
+
+  console.log(selectedTxPendingQueue)
+
+  const [isMultiOrderDialogOpen, setIsMultiOrderDialogOpen] = useState(false)
 
   const { txStep, setTxStep } = useTxMutationStore()
 
@@ -115,7 +110,7 @@ export default function ChartTableBody({
     toast({
       title: '오더시간을 변경하였습니다',
     })
-    reset()
+    resetOrderStore()
   }
 
   useEffect(() => {
@@ -131,7 +126,7 @@ export default function ChartTableBody({
       }
 
       if (selectedOrderPendingQueue.length >= 1) {
-        setIsMultiSelectOrderDialogOpen(true)
+        setIsMultiOrderDialogOpen(true)
       }
     }
     /* eslint-disable react-hooks/exhaustive-deps */
@@ -140,7 +135,7 @@ export default function ChartTableBody({
   return (
     <TableBody>
       <OrderRows
-        reset={reset}
+        reset={resetOrderStore}
         selectedOrderPendingQueue={selectedOrderPendingQueue}
         setOrderStep={setOrderStep}
         sortedOrders={sortedOrders}
@@ -171,48 +166,24 @@ export default function ChartTableBody({
               />
             </TableCell>
 
-            <TableCell className="relative">
-              <div className="absolute bottom-3 left-2 hidden items-center gap-2 whitespace-nowrap text-muted-foreground md:flex">
-                <div>
-                  처치칸을 CTRL + 우클릭하여{' '}
-                  <span className="mx-1 bg-rose-400/10 p-1">형광펜</span>
-                  칠을 할 수 있습니다
-                </div>
-
-                <Separator orientation="vertical" className="h-4" />
-
-                <div>
-                  CTRL + 오더 또는 처치칸을 클릭하면 다중으로 선택할 수 있습니다
-                </div>
-              </div>
-            </TableCell>
+            <UserKeyGuideMessage />
           </TableRow>
-          <>
-            {/* 처치관련 : 처치 상세 입력, 처치자 입력 */}
-            <TxUpsertDialog showTxUser={showTxUser} />
 
-            {/* 다중 오더 선택 후 작업 : 오더 복사, 템플릿저장, 테두리 변경, 오더 삭제 */}
-            <MultiSelectOrderDialog
-              isMultiSelectOrderDialogOpen={isMultiSelectOrderDialogOpen}
-              setIsMultiSelectOrderDialogOpen={setIsMultiSelectOrderDialogOpen}
-              setSortedOrders={setSortedOrders}
-            />
-
-            {/* 템플릿오더 붙여넣기**, 오더자선택, 오더수정 */}
-            {/* **템플릿오더 붙여넣기 = 차트에 템플릿오더를 넣음, 템플릿오더 추가 = 템플릿 db 추가,  */}
-            <OrderDialog
-              icuChartId={icu_chart_id}
-              orders={orders}
-              showOrderer={showOrderer}
-              orderStep={orderStep}
-              reset={reset}
-              setOrderStep={setOrderStep}
-              setSortedOrders={setSortedOrders}
-              mainVetName={chartData.main_vet.name}
-              selectedChartOrder={selectedChartOrder}
-              orderColorsData={orderColorsData}
-            />
-          </>
+          <ChartTableDialogs
+            isMultiOrderDialogOpen={isMultiOrderDialogOpen}
+            setIsMultiOrderDialogOpen={setIsMultiOrderDialogOpen}
+            icuChartId={icuChartId}
+            setSortedOrders={setSortedOrders}
+            orders={orders}
+            showOrderer={showOrderer}
+            orderStep={orderStep}
+            setOrderStep={setOrderStep}
+            reset={resetOrderStore}
+            selectedChartOrder={selectedChartOrder}
+            mainVetName={main_vet}
+            orderColorsData={orderColorsData}
+            showTxUser={showTxUser}
+          />
         </>
       )}
     </TableBody>

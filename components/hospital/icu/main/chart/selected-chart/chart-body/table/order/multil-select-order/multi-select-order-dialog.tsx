@@ -14,30 +14,27 @@ import CopySelectedOrdersButton from './copy-selected-orders'
 import DeleteSelectedOrdersDialog from './delete-selected-orders-dialog'
 
 type MultiSelectOrderDialogProps = {
-  isMultiSelectOrderDialogOpen: boolean
-  setIsMultiSelectOrderDialogOpen: Dispatch<SetStateAction<boolean>>
+  isMultiOrderDialogOpen: boolean
+  setIsMultiOrderDialogOpen: Dispatch<SetStateAction<boolean>>
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
 }
 
 export default function MultiSelectOrderDialog({
-  isMultiSelectOrderDialogOpen,
-  setIsMultiSelectOrderDialogOpen,
+  isMultiOrderDialogOpen,
+  setIsMultiOrderDialogOpen,
   setSortedOrders,
 }: MultiSelectOrderDialogProps) {
   const { selectedOrderPendingQueue, reset: orderReset } = useIcuOrderStore()
 
   const handleDialogOpenChange = (open: boolean) => {
-    setIsMultiSelectOrderDialogOpen(open)
+    setIsMultiOrderDialogOpen(open)
     if (!open) {
       orderReset()
     }
   }
 
   return (
-    <Dialog
-      open={isMultiSelectOrderDialogOpen}
-      onOpenChange={handleDialogOpenChange}
-    >
+    <Dialog open={isMultiOrderDialogOpen} onOpenChange={handleDialogOpenChange}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
@@ -48,28 +45,22 @@ export default function MultiSelectOrderDialog({
 
         {/* 선택된 오더들 복사 */}
         <CopySelectedOrdersButton
-          setIsMultiSelectOrderActionDialogOpen={
-            setIsMultiSelectOrderDialogOpen
-          }
+          setIsMultiSelectOrderActionDialogOpen={setIsMultiOrderDialogOpen}
         />
 
         {/* 선택된 오더들 템플릿으로 저장 */}
         <AddSelectedOrdersToTemplateDialog
-          setIsMultiSelectOrderDialogOpen={setIsMultiSelectOrderDialogOpen}
+          setIsMultiOrderDialogOpen={setIsMultiOrderDialogOpen}
         />
 
         {/* 선택된 오더들에 테두리 변경 */}
         <BorderSelectedOrdersButton
-          setIsMultiSelectOrderActionDialogOpen={
-            setIsMultiSelectOrderDialogOpen
-          }
+          setIsMultiSelectOrderActionDialogOpen={setIsMultiOrderDialogOpen}
         />
 
         {/* 선택된 오더들 삭제 */}
         <DeleteSelectedOrdersDialog
-          setIsMultiSelectOrderActionDialogOpen={
-            setIsMultiSelectOrderDialogOpen
-          }
+          setIsMultiSelectOrderActionDialogOpen={setIsMultiOrderDialogOpen}
           setSortedOrders={setSortedOrders}
         />
       </DialogContent>
