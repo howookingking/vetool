@@ -1,4 +1,4 @@
-import { CALCULATORS } from '@/constants/hospital/icu/calculator/calcularor'
+import { CALCULATORS } from '@/constants/hospital/icu/calculator/calculator'
 import { Dispatch, SetStateAction } from 'react'
 
 export type Species = 'canine' | 'feline'
