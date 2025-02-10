@@ -1,12 +1,15 @@
 'use client'
 
-import { IcuOrderColors, VitalRefRange } from '@/types/adimin'
-import type { IcuSidebarIoData, Vet } from '@/types/icu/chart'
+import { ORDER_FONT_SIZES } from '@/constants/admin/admin-setting-items'
+import { type IcuOrderColors, type VitalRefRange } from '@/types/adimin'
+import { type IcuSidebarIoData, type Vet } from '@/types/icu/chart'
 import React, { createContext, useContext } from 'react'
 
-interface IcuContextType {
+type IcuContextType = {
   basicHosData: BasicHosData
 }
+
+export type OrderColorDisplay = 'dot' | 'full'
 
 type BasicHosData = {
   vetsListData: Vet[]
@@ -17,9 +20,9 @@ type BasicHosData = {
   showTxUser: boolean
   sidebarData: IcuSidebarIoData[]
   vitalRefRange: VitalRefRange[]
-  orderFontSizeData: number
+  orderFontSizeData: keyof typeof ORDER_FONT_SIZES
   timeGuidelineData: number[]
-  orderColorDisplay: string
+  orderColorDisplay: OrderColorDisplay
 }
 
 const BasicHosDataContext = createContext<IcuContextType | undefined>(undefined)

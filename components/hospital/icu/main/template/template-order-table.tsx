@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import useLocalStorage from '@/hooks/use-local-storage'
 import { type SelectedIcuOrder } from '@/types/icu/chart'
 import { type Dispatch, type SetStateAction, useState } from 'react'
+import { type OrderWidth } from '../chart/selected-chart/chart-body/table/chart-table-header/order-width-button'
 
 type TemplateOrderTableProps = {
   sortedOrders: SelectedIcuOrder[]
@@ -18,7 +19,10 @@ export default function TemplateOrderTable({
   sortedOrders,
   setSortedOrders,
 }: TemplateOrderTableProps) {
-  const [orderWidth, setOrderWidth] = useLocalStorage('orderWidth', 400)
+  const [orderWidth, setOrderWidth] = useLocalStorage<OrderWidth>(
+    'orderWidth',
+    400,
+  )
 
   const [isSorting, setIsSorting] = useState(false)
 
