@@ -1,13 +1,16 @@
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { type OrderColorDisplay } from '@/providers/basic-hos-data-context-provider'
+
+type Props = {
+  handleOrderColorDisplayMethod: (method: OrderColorDisplay) => void
+  localColorDisplayMethod: OrderColorDisplay
+}
 
 export default function OrderColorDisplayMethod({
   handleOrderColorDisplayMethod,
   localColorDisplayMethod,
-}: {
-  handleOrderColorDisplayMethod: (method: string) => void
-  localColorDisplayMethod: string
-}) {
+}: Props) {
   return (
     <section className="space-y-2">
       <h3 className="font-semibold">오더색상 표시방법</h3>
