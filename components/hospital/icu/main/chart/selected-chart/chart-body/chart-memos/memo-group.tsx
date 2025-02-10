@@ -11,22 +11,13 @@ import type { Memo } from '@/types/icu/chart'
 import { useEffect, useRef, useState } from 'react'
 import { ReactSortable, Sortable } from 'react-sortablejs'
 import { type Dispatch, type SetStateAction } from 'react'
+import { type MemoGroup } from '@/types/icu/chart'
 
 type MemoGroupProps = {
   memo: Memo[]
-  memos: {
-    a: Memo[]
-    b: Memo[]
-    c: Memo[]
-  }
-  setMemos: Dispatch<
-    SetStateAction<{
-      a: Memo[]
-      b: Memo[]
-      c: Memo[]
-    }>
-  >
-  memoId: 'a' | 'b' | 'c'
+  memos: MemoGroup
+  setMemos: Dispatch<SetStateAction<MemoGroup>>
+  memoId: keyof MemoGroup
   icuIoId: string
   memoName: string
   sortMemoMethod: string
@@ -194,7 +185,7 @@ export default function MemoGroup({
   }
 
   return (
-    <div className="relative flex flex-col w-full">
+    <div className="relative flex w-full flex-col">
       <Label
         className="mb-1 ml-2 text-xs text-muted-foreground"
         htmlFor={`memo-${memoId}`}
@@ -202,7 +193,7 @@ export default function MemoGroup({
         {memoName} ({sortedMemos.length})
       </Label>
 
-      <ScrollArea className="p-2 border h-60 rounded-t-md">
+      <ScrollArea className="h-60 rounded-t-md border p-2">
         <ReactSortable
           id={memoId}
           list={sortedMemos}
@@ -250,7 +241,7 @@ export default function MemoGroup({
               handleAddMemo()
             }
           }}
-          className="w-full text-sm border-t-0 rounded-none rounded-b-md pr-7 placeholder:text-xs"
+          className="w-full rounded-none rounded-b-md border-t-0 pr-7 text-sm placeholder:text-xs"
         />
 
         <MemoColorPicker memoColor={memoColor} setMemoColor={setMemoColor} />
