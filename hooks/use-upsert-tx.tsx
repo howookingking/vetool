@@ -22,6 +22,7 @@ export default function useUpsertTx({ hosId, onSuccess }: TxUpdateOptions) {
       setIsSubmitting(true)
       const txState = { ...txLocalState }
       const images = txState.txImages
+      const bucketImagesLength = txState.bucketImagesLength ?? 0
 
       // !! 이미지 관련 필드 제거 (페이로드 비대 방지)
       delete txState.txImages
@@ -57,7 +58,7 @@ export default function useUpsertTx({ hosId, onSuccess }: TxUpdateOptions) {
           await uploadTxImages(
             images,
             result.txId,
-            (txState.bucketImagesLength || 0).toString(),
+            bucketImagesLength.toString(),
           )
         } catch (error) {
           console.error('이미지 업로드 실패:', error)
