@@ -2,12 +2,12 @@ import { Button } from '@/components/ui/button'
 import { ArrowLeftToLine, ArrowRightFromLine } from 'lucide-react'
 import { type Dispatch, type SetStateAction } from 'react'
 
-const WIDTH_SEQUENCE = [300, 400, 500, 600] as const
-type OrderWidth = (typeof WIDTH_SEQUENCE)[number]
+export const WIDTH_SEQUENCE = [300, 400, 500, 600] as const
+export type OrderWidth = (typeof WIDTH_SEQUENCE)[number]
 
 type OrderWidthButtonProps = {
   orderWidth: OrderWidth
-  setOrderWidth: Dispatch<SetStateAction<number>>
+  setOrderWidth: Dispatch<SetStateAction<OrderWidth>>
 }
 
 export default function OrderWidthButton({
@@ -21,7 +21,7 @@ export default function OrderWidthButton({
   }
 
   const handleOrderWidthChange = () => {
-    setOrderWidth(getNextWidth(orderWidth as OrderWidth))
+    setOrderWidth(getNextWidth(orderWidth))
   }
 
   const isMaxWidth = orderWidth === WIDTH_SEQUENCE[WIDTH_SEQUENCE.length - 1]

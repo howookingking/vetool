@@ -6,7 +6,8 @@ import ChartTableHeader from '@/components/hospital/icu/main/chart/selected-char
 import { Table } from '@/components/ui/table'
 import useLocalStorage from '@/hooks/use-local-storage'
 import { type SelectedChart, type SelectedIcuOrder } from '@/types/icu/chart'
-import { type RefObject, useState } from 'react'
+import { type RefObject, useEffect, useState } from 'react'
+import { type OrderWidth } from './chart-table-header/order-width-button'
 
 type ChartTableProps = {
   chartData: SelectedChart
@@ -23,10 +24,17 @@ export default function ChartTable({
 }: ChartTableProps) {
   const { icu_chart_id, orders, patient, hos_id } = chartData
 
-  const [orderWidth, setOrderWidth] = useLocalStorage('orderWidth', 400)
+  const [orderWidth, setOrderWidth] = useLocalStorage<OrderWidth>(
+    'orderWidth',
+    400,
+  )
 
   const [isSorting, setIsSorting] = useState(false)
   const [sortedOrders, setSortedOrders] = useState<SelectedIcuOrder[]>(orders)
+
+  useEffect(() => {
+    setSortedOrders(orders)
+  }, [orders])
 
   return (
     <Table className="border">

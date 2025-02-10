@@ -1,17 +1,19 @@
 import { useEffect } from 'react'
 
 type UseShortcutKeyProps = {
-  keys: string[]
+  key: string
   condition?: boolean
   callback: () => void
   ignoreInput?: boolean
+  requireCtrl?: boolean
 }
 
-export default function useShorcutKey({
-  keys,
+export default function useShortcutKey({
+  key,
   condition = true,
   callback,
   ignoreInput = false,
+  requireCtrl = true,
 }: UseShortcutKeyProps) {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -24,11 +26,15 @@ export default function useShorcutKey({
       ) {
         return
       }
-      if (
-        condition &&
-        (event.ctrlKey || event.metaKey) &&
-        keys.includes(event.key.toLowerCase())
-      ) {
+
+      const ctrlPressed = event.ctrlKey || event.metaKey
+      const keyMatches = event.key === key
+
+      const isValidCombination = requireCtrl
+        ? ctrlPressed && keyMatches
+        : keyMatches
+
+      if (condition && isValidCombination) {
         event.stopPropagation()
         event.preventDefault()
         callback()
@@ -39,5 +45,5 @@ export default function useShorcutKey({
     window.addEventListener('keydown', handleKeyDown, { capture: true })
     return () =>
       window.removeEventListener('keydown', handleKeyDown, { capture: true })
-  }, [callback, keys])
+  }, [callback, key, condition, ignoreInput, requireCtrl])
 }
