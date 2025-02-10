@@ -19,10 +19,10 @@ export const CALCULATORS = [
     value: 'bsa',
     label: 'BSA',
   },
-  {
-    value: 'chocolate',
-    label: '테오브로민(초콜릿) 계산',
-  },
+  // {
+  //   value: 'chocolate',
+  //   label: '테오브로민(초콜릿) 계산',
+  // },
 ] as const
 
 export const CRI_DRUGS = [
