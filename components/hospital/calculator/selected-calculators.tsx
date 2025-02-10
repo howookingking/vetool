@@ -30,9 +30,9 @@ export default function SelectedCalculators({
         <Cri weight={patientData?.vital?.body_weight ?? ''} />
       )}
       {selectedCalculator === 'bsa' && <Bsa patientData={patientData} />}
-      {selectedCalculator === 'chocolate' && (
+      {/* {selectedCalculator === 'chocolate' && (
         <Chocolate weight={patientData?.vital?.body_weight ?? ''} />
-      )}
+      )} */}
     </div>
   )
 }

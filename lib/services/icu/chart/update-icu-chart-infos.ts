@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { IcuChartsInCharge } from '@/types/adimin'
+import type { Memo } from '@/types/icu/chart'
 import { redirect } from 'next/navigation'
 
 export const updateDiagnosis = async (
@@ -97,7 +98,7 @@ export const updateOutDueDate = async (
 }
 
 export const updateMemos = async (
-  query: { [key: string]: string },
+  query: { [key: string]: Memo[] },
   icuIoId: string,
 ) => {
   const supabase = await createClient()
