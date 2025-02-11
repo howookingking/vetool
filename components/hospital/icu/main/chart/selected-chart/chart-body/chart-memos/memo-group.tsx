@@ -10,24 +10,32 @@ import { updateMemos } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import type { Memo } from '@/types/icu/chart'
 import { useEffect, useRef, useState } from 'react'
 import { ReactSortable, Sortable } from 'react-sortablejs'
+import { type Dispatch, type SetStateAction } from 'react'
+import { type MemoGroup } from '@/types/icu/chart'
 
-export default function MemoGroup({
-  memo,
-  memoIndex,
-  icuIoId,
-  memoName,
-  sortMemoMethod,
-}: {
-  memo: Memo[] | null
-  memoIndex: number
+type MemoGroupProps = {
+  memo: Memo[]
+  memos: MemoGroup
+  setMemos: Dispatch<SetStateAction<MemoGroup>>
+  memoId: keyof MemoGroup
   icuIoId: string
   memoName: string
   sortMemoMethod: string
-}) {
+}
+
+export default function MemoGroup({
+  memo,
+  memos,
+  setMemos,
+  memoId,
+  icuIoId,
+  memoName,
+  sortMemoMethod,
+}: MemoGroupProps) {
+  const [isUpdating, setIsUpdating] = useState(false)
   const [sortedMemos, setSortedMemos] = useState<Memo[]>(memo ?? [])
   const [memoInput, setMemoInput] = useState('')
   const [memoColor, setMemoColor] = useState<string>(MEMO_COLORS[0])
-  const [isUpdating, setIsUpdating] = useState(false)
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(false)
   const [shouldScrollToTop, setShouldScrollToTop] = useState(false)
   const lastMemoRef = useRef<HTMLLIElement>(null)
@@ -51,24 +59,71 @@ export default function MemoGroup({
   const handleUpdateDbMemo = async (updatedMemos: Memo[]) => {
     setIsUpdating(true)
 
-    let updateMemoQuery = {}
-
-    switch (memoIndex) {
-      case 0:
-        updateMemoQuery = { memo_a: updatedMemos }
-        break
-      case 1:
-        updateMemoQuery = { memo_b: updatedMemos }
-        break
-      case 2:
-        updateMemoQuery = { memo_c: updatedMemos }
-        break
+    const newMemos = {
+      ...memos,
+      [memoId]: updatedMemos,
     }
 
-    await updateMemos(updateMemoQuery, icuIoId)
+    setMemos(newMemos)
+
+    await updateMemos(
+      {
+        [`memo_${memoId}`]: updatedMemos,
+      },
+      icuIoId,
+    )
+
     setIsUpdating(false)
   }
 
+  const handleReorderMemo = async (event: Sortable.SortableEvent) => {
+    const { from, to, oldIndex, newIndex } = event
+    const isSameGroup = from === to
+
+    // CASE A. 같은 메모 그룹 내 순서 변경인 경우
+    if (isSameGroup) {
+      const newOrder = [...sortedMemos]
+      const [movedItem] = newOrder.splice(oldIndex as number, 1)
+      newOrder.splice(newIndex as number, 0, movedItem)
+
+      setSortedMemos(newOrder)
+      await handleUpdateDbMemo(newOrder)
+    } else {
+      // CASE B. 다른 메모 그룹 간 변경인 경우
+      const fromMemoId = from.id as 'a' | 'b' | 'c'
+      const toMemoId = to.id as 'a' | 'b' | 'c'
+      const movedMemo = sortedMemos[oldIndex as number]
+
+      const updatedFromMemos = memos[fromMemoId].filter(
+        (memo) => memo.id !== movedMemo.id,
+      )
+
+      const updatedToMemos = [
+        ...memos[toMemoId].slice(0, newIndex as number),
+        movedMemo,
+        ...memos[toMemoId].slice(newIndex as number),
+      ]
+
+      setMemos({
+        ...memos,
+        [fromMemoId]: updatedFromMemos,
+        [toMemoId]: updatedToMemos,
+      })
+
+      await updateMemos(
+        {
+          [`memo_${fromMemoId}`]: updatedFromMemos,
+          [`memo_${toMemoId}`]: updatedToMemos,
+        },
+        icuIoId,
+      )
+    }
+  }
+
+  // 메모 CRUD 함수
+  // 메모 CRUD 함수
+
+  // 1. 메모 추가
   const handleAddMemo = async () => {
     if (memoInput.trim() === '') return
 
@@ -89,6 +144,7 @@ export default function MemoGroup({
 
     setSortedMemos(updatedMemos)
     setMemoInput('')
+
     await handleUpdateDbMemo(updatedMemos)
 
     setShouldScrollToBottom(sortMemoMethod === 'asc')
@@ -99,31 +155,23 @@ export default function MemoGroup({
     })
   }
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault()
-      handleAddMemo()
-    }
-  }
-
+  // 2. 메모 수정
   const handleEditMemo = async (editedMemo: Memo, memoIndex: number) => {
     const editedMemos = sortedMemos.map((memo, index) =>
       index === memoIndex
-        ? {
-            ...editedMemo,
-            edit_timestamp: new Date().toISOString(),
-          }
+        ? { ...editedMemo, edit_timestamp: new Date().toISOString() }
         : memo,
     )
+
     setSortedMemos(editedMemos)
 
     await handleUpdateDbMemo(editedMemos)
-
     toast({
       title: `메모가 수정되었습니다`,
     })
   }
 
+  // 3. 메모 삭제
   const handleDeleteMemo = async (entryIndex: number) => {
     const updatedEntries = sortedMemos.filter(
       (_, index) => index !== entryIndex,
@@ -136,32 +184,25 @@ export default function MemoGroup({
     })
   }
 
-  const handleReorder = async (event: Sortable.SortableEvent) => {
-    let newOrder = [...sortedMemos]
-    const [movedItem] = newOrder.splice(event.oldIndex as number, 1)
-    newOrder.splice(event.newIndex as number, 0, movedItem)
-
-    setSortedMemos(newOrder)
-    await handleUpdateDbMemo(newOrder)
-  }
-
   return (
     <div className="relative flex w-full flex-col">
       <Label
         className="mb-1 ml-2 text-xs text-muted-foreground"
-        htmlFor={`memo-${memoIndex}`}
+        htmlFor={`memo-${memoId}`}
       >
         {memoName} ({sortedMemos.length})
       </Label>
 
       <ScrollArea className="h-60 rounded-t-md border p-2">
         <ReactSortable
+          id={memoId}
           list={sortedMemos}
           setList={setSortedMemos}
           className="space-y-2"
           animation={250}
           handle=".handle"
-          onEnd={handleReorder}
+          onEnd={handleReorderMemo}
+          group="memo"
         >
           {sortedMemos.length === 0 ? (
             <NoResultSquirrel text="메모 없음" size="sm" className="h-52" />
@@ -191,10 +232,15 @@ export default function MemoGroup({
         <Textarea
           disabled={isUpdating}
           placeholder="Shift + Enter를 눌러 줄을 추가할 수 있습니다"
-          id={`memo-${memoIndex}`}
+          id={`memo-${memoId}`}
           value={memoInput}
           onChange={(e) => setMemoInput(e.target.value)}
-          onKeyDown={handleKeyDown}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault()
+              handleAddMemo()
+            }
+          }}
           className="w-full rounded-none rounded-b-md border-t-0 pr-7 text-sm placeholder:text-xs"
         />
 

@@ -195,6 +195,12 @@ export type Memo = {
   chosen?: boolean
 }
 
+export type MemoGroup = {
+  a: Memo[]
+  b: Memo[]
+  c: Memo[]
+}
+
 export type IcuShareData = Omit<SelectedChart, 'orders'> & {
   orders: IcuReadOnlyOrderData[]
 }

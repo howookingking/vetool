@@ -78,9 +78,6 @@ export default function ResuscitationTab({
   const handleCopyButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     navigator.clipboard.writeText(`${result.min}ml ~ ${result.max}ml`)
-    toast({
-      title: '계산 결과가 클립보드에 복사되었습니다.',
-    })
   }
 
   return (

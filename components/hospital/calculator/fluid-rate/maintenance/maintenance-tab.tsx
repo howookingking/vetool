@@ -24,7 +24,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { toast } from '@/components/ui/use-toast'
 import { calculateMaintenanceRate } from '@/lib/calculators/fluid-rate'
 import {
   maintenanceFormSchema,
@@ -97,9 +96,6 @@ export default function MaintenanceTab({
     e.preventDefault()
 
     navigator.clipboard.writeText(result)
-    toast({
-      title: '계산 결과가 클립보드에 복사되었습니다.',
-    })
   }
 
   return (

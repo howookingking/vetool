@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { CALCULATORS } from '@/constants/hospital/icu/calculator/calcularor'
+import { CALCULATORS } from '@/constants/hospital/icu/calculator/calculator'
 import { cn } from '@/lib/utils/utils'
 import { type SelectedCalculator } from '@/types/hospital/calculator'
 import { Dispatch, SetStateAction } from 'react'
