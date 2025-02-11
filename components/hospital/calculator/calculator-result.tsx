@@ -3,7 +3,7 @@ import { toast } from '@/components/ui/use-toast'
 import { Copy, CopyCheck } from 'lucide-react'
 import { type MouseEvent, useState } from 'react'
 
-type CalculatorResultProps = {
+type Props = {
   result: string
   unit?: string
   comment?: string
@@ -15,7 +15,7 @@ export default function CalculatorResult({
   unit,
   comment,
   onClick,
-}: CalculatorResultProps) {
+}: Props) {
   const [isCopied, setIsCopied] = useState(false)
 
   const handleButtonClick = (e: MouseEvent<HTMLButtonElement>) => {

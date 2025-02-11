@@ -7,13 +7,17 @@ import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
 import { MEMO_COLORS } from '@/constants/hospital/icu/chart/colors'
 import { updateMemos } from '@/lib/services/icu/chart/update-icu-chart-infos'
-import type { Memo } from '@/types/icu/chart'
-import { useEffect, useRef, useState } from 'react'
-import { ReactSortable, Sortable } from 'react-sortablejs'
-import { type Dispatch, type SetStateAction } from 'react'
-import { type MemoGroup } from '@/types/icu/chart'
+import { type Memo, type MemoGroup } from '@/types/icu/chart'
+import {
+  useEffect,
+  useRef,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from 'react'
+import { ReactSortable, type Sortable } from 'react-sortablejs'
 
-type MemoGroupProps = {
+type Props = {
   memo: Memo[]
   memos: MemoGroup
   setMemos: Dispatch<SetStateAction<MemoGroup>>
@@ -31,7 +35,7 @@ export default function MemoGroup({
   icuIoId,
   memoName,
   sortMemoMethod,
-}: MemoGroupProps) {
+}: Props) {
   const [isUpdating, setIsUpdating] = useState(false)
   const [sortedMemos, setSortedMemos] = useState<Memo[]>(memo ?? [])
   const [memoInput, setMemoInput] = useState('')

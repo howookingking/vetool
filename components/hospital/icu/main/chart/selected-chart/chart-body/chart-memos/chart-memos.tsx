@@ -5,22 +5,18 @@ import MemoGroup from '@/components/hospital/icu/main/chart/selected-chart/chart
 import SortMemoButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/sort-memo-button'
 import { Separator } from '@/components/ui/separator'
 import useLocalStorage from '@/hooks/use-local-storage'
-import { updateMemos } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import type { Memo } from '@/types/icu/chart'
+import { type Memo } from '@/types/icu/chart'
 import { useState } from 'react'
 
-export default function ChartMemos({
-  memoA,
-  memoB,
-  memoC,
-  icuIoId,
-}: {
+type Props = {
   memoA: Memo[] | null
   memoB: Memo[] | null
   memoC: Memo[] | null
   icuIoId: string
-}) {
+}
+
+export default function ChartMemos({ memoA, memoB, memoC, icuIoId }: Props) {
   const {
     basicHosData: { memoNameListData },
   } = useBasicHosDataContext()

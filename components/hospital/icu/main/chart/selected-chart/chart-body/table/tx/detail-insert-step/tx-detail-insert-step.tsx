@@ -26,14 +26,14 @@ import { txDetailRegisterFormSchema } from '@/lib/schemas/icu/chart/tx-schema'
 import { deleteIcuChartTx } from '@/lib/services/icu/chart/tx-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
+import { type ImageUrlResponse } from '@/types/images'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import { LoaderCircle } from 'lucide-react'
 import { useParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { type ImageUrlResponse } from '@/types/images'
-import { useEffect, useState } from 'react'
 
 export default function TxDetailInsertStep({
   showTxUser,
@@ -200,7 +200,7 @@ export default function TxDetailInsertStep({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="flex flex-col gap-4 px-1 overflow-auto"
+          className="flex flex-col gap-4 overflow-auto px-1"
         >
           <FormField
             control={form.control}
@@ -276,7 +276,7 @@ export default function TxDetailInsertStep({
                 삭제
               </Button>
             )}
-            <div className="flex gap-2 ml-auto">
+            <div className="ml-auto flex gap-2">
               <DialogClose asChild>
                 <Button
                   type="button"
@@ -290,7 +290,7 @@ export default function TxDetailInsertStep({
               <Button type="submit" disabled={isSubmitting}>
                 {showTxUser ? '다음' : '확인'}
                 {isSubmitting && (
-                  <LoaderCircle className="w-4 h-4 animate-spin" />
+                  <LoaderCircle className="h-4 w-4 animate-spin" />
                 )}
               </Button>
             </div>
