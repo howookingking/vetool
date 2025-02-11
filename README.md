@@ -23,13 +23,13 @@ props가 한개인경우 구조분해 할당으로, 2개 이상인 경우 타입
 
 ```ts
 🚫🚫
-type DefaultOrdersTableProps = {
+type Props = {
   defaultChartOrders: SelectedIcuOrder[]
 }
 
 export default function DefaultOrdersTable({
   defaultChartOrders,
-}: DefaultOrdersTableProps) {}
+}: Props) {}
 
 
 ✅✅
