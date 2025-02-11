@@ -5,33 +5,43 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { type SelectedIcuOrder } from '@/types/icu/chart'
-import { type Dispatch, type SetStateAction } from 'react'
+import { useEffect, useState, type Dispatch, type SetStateAction } from 'react'
 import AddSelectedOrdersToTemplateDialog from './add-selected-orders-to-template-dialog'
 import BorderSelectedOrdersButton from './border-selected-orders-button'
 import CopySelectedOrdersButton from './copy-selected-orders'
 import DeleteSelectedOrdersDialog from './delete-selected-orders-dialog'
 
-type MultiSelectOrderDialogProps = {
-  isMultiOrderDialogOpen: boolean
-  setIsMultiOrderDialogOpen: Dispatch<SetStateAction<boolean>>
+type Props = {
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
+  isCommandPressed: boolean
+  selectedOrderPendingQueue: Partial<SelectedIcuOrder>[]
+  resetOrderStore: () => void
 }
 
 export default function MultiSelectOrderDialog({
-  isMultiOrderDialogOpen,
-  setIsMultiOrderDialogOpen,
   setSortedOrders,
-}: MultiSelectOrderDialogProps) {
-  const { selectedOrderPendingQueue, reset: orderReset } = useIcuOrderStore()
+  isCommandPressed,
+  selectedOrderPendingQueue,
+  resetOrderStore,
+}: Props) {
+  const [isMultiOrderDialogOpen, setIsMultiOrderDialogOpen] = useState(false)
 
   const handleDialogOpenChange = (open: boolean) => {
     setIsMultiOrderDialogOpen(open)
     if (!open) {
-      orderReset()
+      resetOrderStore()
     }
   }
+
+  useEffect(() => {
+    if (!isCommandPressed) {
+      if (selectedOrderPendingQueue.length >= 1) {
+        setIsMultiOrderDialogOpen(true)
+      }
+    }
+    /* eslint-disable react-hooks/exhaustive-deps */
+  }, [isCommandPressed])
 
   return (
     <Dialog open={isMultiOrderDialogOpen} onOpenChange={handleDialogOpenChange}>

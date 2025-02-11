@@ -1,6 +1,6 @@
 'use server'
 
-import { TxLocalState } from '@/lib/store/icu/tx-mutation'
+import { TxLocalState } from '@/lib/store/icu/icu-tx'
 import { createClient } from '@/lib/supabase/server'
 import { isValidWeightOrderTx } from '@/lib/utils/utils'
 import { type TxLog } from '@/types/icu/chart'

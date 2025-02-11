@@ -4,7 +4,7 @@ import TxDetailInsertStep from '@/components/hospital/icu/main/chart/selected-ch
 import TxSelectUserStep from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/tx-select-user-step'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
-import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
+import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
 
 export default function TxUpsertDialog({
   showTxUser,
@@ -16,8 +16,7 @@ export default function TxUpsertDialog({
     setTxStep,
     setIsMutationCanceled,
     reset: txLocalStateReset,
-  } = useTxMutationStore()
-
+  } = useIcuTxStore()
   const { reset: orderQueueReset } = useIcuOrderStore()
 
   const handleClose = () => {

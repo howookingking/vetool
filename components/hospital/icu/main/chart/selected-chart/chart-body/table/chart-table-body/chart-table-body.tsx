@@ -1,26 +1,23 @@
-import OrderCreator from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-creator'
+import OrderCreatorRow from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-creator-row'
 import OrderRows from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-rows'
-import { Separator } from '@/components/ui/separator'
-import { TableBody, TableCell, TableRow } from '@/components/ui/table'
+import { TableBody } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
 import useIsCommandPressed from '@/hooks/use-is-command-pressed'
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
-import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
+import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
 import { formatOrders } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { SelectedChart, type SelectedIcuOrder } from '@/types/icu/chart'
+import { type SelectedChart, type SelectedIcuOrder } from '@/types/icu/chart'
 import {
   useEffect,
-  useState,
   type Dispatch,
   type RefObject,
   type SetStateAction,
 } from 'react'
 import ChartTableDialogs from './chart-table-dialogs/chart-table-dialogs'
-import UserKeyGuideMessage from './user-key-guide-message'
 
-type ChartTableBodyProps = {
+type Props = {
   sortedOrders: SelectedIcuOrder[]
   isSorting: boolean
   preview?: boolean
@@ -42,15 +39,16 @@ export default function ChartTableBody({
   setSortedOrders,
   cellRef,
   chartData,
-}: ChartTableBodyProps) {
+}: Props) {
   const {
     icu_chart_id,
     orders,
     patient: { species },
     hos_id,
-    main_vet,
+    main_vet: { name },
   } = chartData
 
+  const isCommandPressed = useIsCommandPressed()
   const {
     basicHosData: {
       showOrderer,
@@ -61,23 +59,14 @@ export default function ChartTableBody({
       orderColorsData,
     },
   } = useBasicHosDataContext()
-
-  const isCommandPressed = useIsCommandPressed()
   const {
-    orderStep,
     setOrderStep,
     reset: resetOrderStore,
-    selectedChartOrder,
     orderTimePendingQueue,
     selectedTxPendingQueue,
     selectedOrderPendingQueue,
   } = useIcuOrderStore()
-
-  console.log(selectedTxPendingQueue)
-
-  const [isMultiOrderDialogOpen, setIsMultiOrderDialogOpen] = useState(false)
-
-  const { txStep, setTxStep } = useTxMutationStore()
+  const { setTxStep } = useIcuTxStore()
 
   const handleUpsertOrderTimesWithoutOrderer = async () => {
     const formattedOrders = formatOrders(orderTimePendingQueue)
@@ -113,6 +102,7 @@ export default function ChartTableBody({
     resetOrderStore()
   }
 
+  // 고정, 멀티오더는 멀티오더 컴포넌트로 보냄
   useEffect(() => {
     if (!isCommandPressed) {
       if (orderTimePendingQueue.length >= 1) {
@@ -121,12 +111,8 @@ export default function ChartTableBody({
           : handleUpsertOrderTimesWithoutOrderer()
       }
 
-      if (selectedTxPendingQueue.length >= 1 && txStep === 'closed') {
+      if (selectedTxPendingQueue.length >= 1) {
         setTxStep('detailInsert')
-      }
-
-      if (selectedOrderPendingQueue.length >= 1) {
-        setIsMultiOrderDialogOpen(true)
       }
     }
     /* eslint-disable react-hooks/exhaustive-deps */
@@ -135,7 +121,6 @@ export default function ChartTableBody({
   return (
     <TableBody>
       <OrderRows
-        reset={resetOrderStore}
         selectedOrderPendingQueue={selectedOrderPendingQueue}
         setOrderStep={setOrderStep}
         sortedOrders={sortedOrders}
@@ -146,43 +131,37 @@ export default function ChartTableBody({
         showOrderer={showOrderer}
         showTxUser={showTxUser}
         selectedTxPendingQueue={selectedTxPendingQueue}
-        orderStep={orderStep}
         orderTimePendingQueueLength={orderTimePendingQueue.length}
+        orderTimePendingQueue={orderTimePendingQueue}
         orderwidth={orderWidth}
         cellRef={cellRef}
         icuChartId={icuChartId}
         hosId={hos_id}
         timeGuidelineData={timeGuidelineData}
+        resetOrderStore={resetOrderStore}
       />
 
       {!isExport && !preview && (
         <>
-          <TableRow className="hover:bg-transparent">
-            <TableCell className="p-0">
-              <OrderCreator
-                icuChartId={icuChartId}
-                setSortedOrders={setSortedOrders}
-                sortedOrders={sortedOrders}
-              />
-            </TableCell>
-
-            <UserKeyGuideMessage />
-          </TableRow>
+          <OrderCreatorRow
+            icuChartId={icuChartId}
+            setSortedOrders={setSortedOrders}
+            sortedOrders={sortedOrders}
+            orderColorsData={orderColorsData}
+          />
 
           <ChartTableDialogs
-            isMultiOrderDialogOpen={isMultiOrderDialogOpen}
-            setIsMultiOrderDialogOpen={setIsMultiOrderDialogOpen}
             icuChartId={icuChartId}
             setSortedOrders={setSortedOrders}
             orders={orders}
             showOrderer={showOrderer}
-            orderStep={orderStep}
             setOrderStep={setOrderStep}
-            reset={resetOrderStore}
-            selectedChartOrder={selectedChartOrder}
-            mainVetName={main_vet}
+            resetOrderStore={resetOrderStore}
+            mainVetName={name}
             orderColorsData={orderColorsData}
             showTxUser={showTxUser}
+            isCommandPressed={isCommandPressed}
+            selectedOrderPendingQueue={selectedOrderPendingQueue}
           />
         </>
       )}

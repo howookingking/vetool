@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input'
 import useUpsertTx from '@/hooks/use-upsert-tx'
 import { userLogFormSchema } from '@/lib/schemas/icu/chart/tx-schema'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
-import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
+import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
 import { cn } from '@/lib/utils/utils'
 import type { TxLog } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -32,7 +32,7 @@ export default function TxSelectUserStep({
 }) {
   const { hos_id } = useParams()
 
-  const { txLocalState } = useTxMutationStore()
+  const { txLocalState } = useIcuTxStore()
   const { selectedTxPendingQueue } = useIcuOrderStore()
   const { isSubmitting, upsertTx, upsertMultipleTx } = useUpsertTx({
     hosId: hos_id as string,

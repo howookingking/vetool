@@ -7,8 +7,8 @@ export default function UserKeyGuideMessage() {
       <div className="absolute bottom-3 left-2 hidden items-center gap-2 whitespace-nowrap text-muted-foreground md:flex">
         <div>
           처치칸을 CTRL + 우클릭하여{' '}
-          <span className="mx-1 bg-rose-400/10 p-1">형광펜</span>
-          칠을 할 수 있습니다
+          <span className="mx-1 bg-rose-400/10 p-1">형광팬</span>
+          칠을 하고 지울 수 있습니다
         </div>
 
         <Separator orientation="vertical" className="h-4" />

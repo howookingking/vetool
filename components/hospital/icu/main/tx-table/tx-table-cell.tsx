@@ -2,7 +2,7 @@ import OrderTypeColorDot from '@/components/hospital/common/order/order-type-col
 import { Button } from '@/components/ui/button'
 import { TableCell } from '@/components/ui/table'
 import useIsMobile from '@/hooks/use-is-mobile'
-import { TxLocalState } from '@/lib/store/icu/tx-mutation'
+import { TxLocalState } from '@/lib/store/icu/icu-tx'
 import { IcuOrderColors } from '@/types/adimin'
 import { TxLog } from '@/types/icu/chart'
 import { IcuTxTableData } from '@/types/icu/tx-table'
@@ -10,7 +10,7 @@ import { ArrowRight, Edit } from 'lucide-react'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { useCallback } from 'react'
 
-type TxTableCellProps = {
+type Props = {
   time: number
   order: IcuTxTableData['orders'][number]
   patientId: string
@@ -27,7 +27,7 @@ export default function TxTableCell({
   setTxLocalState,
   setTxStep,
   orderColorsData,
-}: TxTableCellProps) {
+}: Props) {
   const { hos_id, target_date } = useParams()
   const { push } = useRouter()
   const searchParams = useSearchParams()

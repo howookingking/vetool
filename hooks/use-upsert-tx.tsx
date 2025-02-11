@@ -1,9 +1,9 @@
 import { toast } from '@/components/ui/use-toast'
 import { upsertIcuTx } from '@/lib/services/icu/chart/tx-mutation'
 import { uploadTxImages } from '@/lib/services/icu/chart/upload-images'
-import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
-import type { TxLocalState } from '@/lib/store/icu/tx-mutation'
-import type { TxLog } from '@/types/icu/chart'
+import { type TxPendingQueue } from '@/lib/store/icu/icu-order'
+import { type TxLocalState } from '@/lib/store/icu/icu-tx'
+import { type TxLog } from '@/types/icu/chart'
 import { format } from 'date-fns'
 import { useState } from 'react'
 
@@ -90,7 +90,7 @@ export default function useUpsertTx({ hosId, onSuccess }: TxUpdateOptions) {
 
   // 다중 Tx 입력
   const upsertMultipleTx = async (
-    txPendingQueue: OrderTimePendingQueue[],
+    txPendingQueue: TxPendingQueue[],
     values: {
       result?: string | null
       comment?: string | null

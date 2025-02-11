@@ -9,7 +9,7 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
-import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
+import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
 import { SquarePlus } from 'lucide-react'
@@ -34,7 +34,7 @@ export default function TxTable({
     basicHosData: { orderColorsData },
   } = useBasicHosDataContext()
 
-  const { setTxStep, setTxLocalState } = useTxMutationStore()
+  const { setTxStep, setTxLocalState } = useIcuTxStore()
   const {
     basicHosData: { showTxUser },
   } = useBasicHosDataContext()

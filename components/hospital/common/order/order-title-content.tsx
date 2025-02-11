@@ -1,7 +1,7 @@
 import OrderTypeColorDot from '@/components/hospital/common/order/order-type-color-dot'
 import { type IcuOrderColors } from '@/types/adimin'
 
-type OrderTitleContentProps = {
+type Props = {
   orderType: string
   orderName: string
   orderComment: string | null
@@ -22,7 +22,7 @@ export default function OrderTitleContent({
   orderColorsData,
   orderFontSizeData,
   vitalRefRange,
-}: OrderTitleContentProps) {
+}: Props) {
   return (
     <div className="flex w-full items-center justify-between gap-2 truncate">
       <div className="flex items-center gap-2">

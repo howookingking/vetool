@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { DEFAULT_ICU_ORDER_TYPE_DIC } from '@/constants/hospital/icu/chart/order'
-import { type OrderStep } from '@/lib/store/icu/icu-order'
+import { useIcuOrderStore, type OrderStep } from '@/lib/store/icu/icu-order'
 import { type IcuOrderColors } from '@/types/adimin'
 import { type SelectedIcuOrder } from '@/types/icu/chart'
 import dynamic from 'next/dynamic'
@@ -20,38 +20,36 @@ const LazyOrderForm = dynamic(() => import('./order-form'), {
   loading: () => <LargeLoaderCircle className="h-[360px]" />,
 })
 
-type OrderDialogProps = {
+type Props = {
   icuChartId: string
   orders: SelectedIcuOrder[]
   showOrderer: boolean
-  orderStep: OrderStep
   setOrderStep: (orderStep: OrderStep) => void
-  reset: () => void
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   mainVetName: string
-  selectedChartOrder: Partial<SelectedIcuOrder>
   orderColorsData: IcuOrderColors
+  resetOrderStore: () => void
 }
 
 export default function OrderDialog({
   icuChartId,
   orders,
   showOrderer,
-  orderStep,
   setOrderStep,
-  reset,
   setSortedOrders,
+  resetOrderStore,
   mainVetName,
-  selectedChartOrder,
   orderColorsData,
-}: OrderDialogProps) {
+}: Props) {
+  const { orderStep, selectedChartOrder } = useIcuOrderStore()
+
   const handleOpenChange = () => {
     if (orderStep === 'closed') {
       setOrderStep('edit')
     } else {
       setOrderStep('closed')
     }
-    reset()
+    resetOrderStore()
   }
 
   return (

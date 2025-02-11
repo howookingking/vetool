@@ -7,7 +7,7 @@ import {
   DialogDescription,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { type TxLocalState } from '@/lib/store/icu/tx-mutation'
+import { type TxLocalState } from '@/lib/store/icu/icu-tx'
 import { type ImageUrlResponse } from '@/types/images'
 import { X } from 'lucide-react'
 import { useState } from 'react'

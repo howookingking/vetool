@@ -6,37 +6,33 @@ import MultiSelectOrderDialog from '../../order/multil-select-order/multi-select
 import OrderDialog from '../../order/order-dialog'
 import TxUpsertDialog from '../../tx/tx-upsert-dialog'
 
-type ChartTableDialogsProps = {
+type Props = {
   showTxUser: boolean
-  isMultiOrderDialogOpen: boolean
-  setIsMultiOrderDialogOpen: Dispatch<SetStateAction<boolean>>
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   icuChartId: string
   orders: SelectedIcuOrder[]
   showOrderer: boolean
-  orderStep: OrderStep
   setOrderStep: (orderStep: OrderStep) => void
-  reset: () => void
-  selectedChartOrder: Partial<SelectedIcuOrder>
   mainVetName: string
   orderColorsData: IcuOrderColors
+  isCommandPressed: boolean
+  selectedOrderPendingQueue: Partial<SelectedIcuOrder>[]
+  resetOrderStore: () => void
 }
 
 export default function ChartTableDialogs({
-  isMultiOrderDialogOpen,
-  setIsMultiOrderDialogOpen,
   showTxUser,
   setSortedOrders,
   icuChartId,
   orders,
   showOrderer,
-  orderStep,
   setOrderStep,
-  reset,
-  selectedChartOrder,
   mainVetName,
   orderColorsData,
-}: ChartTableDialogsProps) {
+  isCommandPressed,
+  selectedOrderPendingQueue,
+  resetOrderStore,
+}: Props) {
   return (
     <>
       {/* 처치관련 : 처치 상세 입력, 처치자 입력 */}
@@ -44,9 +40,10 @@ export default function ChartTableDialogs({
 
       {/* 다중 오더 선택 후 작업 : 오더 복사, 템플릿저장, 테두리 변경, 오더 삭제 */}
       <MultiSelectOrderDialog
-        isMultiOrderDialogOpen={isMultiOrderDialogOpen}
-        setIsMultiOrderDialogOpen={setIsMultiOrderDialogOpen}
         setSortedOrders={setSortedOrders}
+        isCommandPressed={isCommandPressed}
+        selectedOrderPendingQueue={selectedOrderPendingQueue}
+        resetOrderStore={resetOrderStore}
       />
 
       {/* 오더자선택, 오더수정 */}
@@ -54,13 +51,11 @@ export default function ChartTableDialogs({
         icuChartId={icuChartId}
         orders={orders}
         showOrderer={showOrderer}
-        orderStep={orderStep}
-        reset={reset}
         setOrderStep={setOrderStep}
         setSortedOrders={setSortedOrders}
         mainVetName={mainVetName}
-        selectedChartOrder={selectedChartOrder}
         orderColorsData={orderColorsData}
+        resetOrderStore={resetOrderStore}
       />
     </>
   )
