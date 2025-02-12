@@ -87,9 +87,6 @@ export const renderAndCaptureExportChartBody = (
     root.render(
       <BasicHosDataProvider
         basicHosData={{
-          //todo
-          // rerCalcMethod: 'a',
-          // maintenanceRateCalcMethod: 'b',
           showOrderer: true,
           showTxUser: true,
           vetsListData: initialIcuData.vetsListData,
@@ -99,7 +96,7 @@ export const renderAndCaptureExportChartBody = (
             .order_color as IcuOrderColors,
           memoNameListData: initialIcuData.basicHosData.icu_memo_names,
           vitalRefRange: [],
-          orderFontSizeData: 12,
+          orderFontSizeData: 14,
           timeGuidelineData: [2, 10, 18],
           orderColorDisplay: 'full',
         }}

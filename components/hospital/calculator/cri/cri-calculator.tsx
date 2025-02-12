@@ -19,12 +19,12 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import CriResult from './cri-result'
 
-type CriCalculatorProps = {
+type Props = {
   weight: string
   drug: string
 }
 
-export default function CriCalculator({ weight, drug }: CriCalculatorProps) {
+export default function CriCalculator({ weight, drug }: Props) {
   const isBicarbonate = drug === 'Bicarbonate'
 
   const [criResults, setCriResults] = useState({

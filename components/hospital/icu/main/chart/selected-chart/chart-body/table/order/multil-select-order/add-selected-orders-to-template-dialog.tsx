@@ -32,9 +32,9 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 export default function AddSelectedOrdersToTemplateDialog({
-  setIsMultiSelectOrderDialogOpen,
+  setIsMultiOrderDialogOpen,
 }: {
-  setIsMultiSelectOrderDialogOpen: Dispatch<SetStateAction<boolean>>
+  setIsMultiOrderDialogOpen: Dispatch<SetStateAction<boolean>>
 }) {
   const { hos_id } = useParams()
 
@@ -66,7 +66,7 @@ export default function AddSelectedOrdersToTemplateDialog({
 
     setIsSubmitting(false)
     setIsDialogOpen(false)
-    setIsMultiSelectOrderDialogOpen(false)
+    setIsMultiOrderDialogOpen(false)
     orderReset()
   }
 

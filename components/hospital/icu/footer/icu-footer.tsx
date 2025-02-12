@@ -70,8 +70,7 @@ export default function IcuFooter({
     if (isRealtimeReady) {
       toast({
         title: '차트의 실시간 변경을 감지하고 있습니다',
-        className:
-          'bg-green-600 text-white top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4',
+        className: 'bg-green-600 text-white',
       })
       refresh()
     }

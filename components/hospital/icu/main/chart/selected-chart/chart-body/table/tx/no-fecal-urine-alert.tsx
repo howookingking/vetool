@@ -1,5 +1,4 @@
 import { TableCell } from '@/components/ui/table'
-import React from 'react'
 
 export default function NoFecalOrUrineAlert({
   orderName,

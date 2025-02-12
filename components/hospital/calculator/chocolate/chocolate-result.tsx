@@ -1,14 +1,11 @@
 import { CardContent } from '@/components/ui/card'
 
-type ChocolateResultProps = {
+type Props = {
   dose: number
   toxicityLevel: string
 }
 
-export default function ChocolateResult({
-  dose,
-  toxicityLevel,
-}: ChocolateResultProps) {
+export default function ChocolateResult({ dose, toxicityLevel }: Props) {
   const getAlertColor = (level: string) => {
     switch (level) {
       case '안전':

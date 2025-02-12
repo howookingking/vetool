@@ -1,23 +1,18 @@
 import Cell from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/cell'
 import NoFecalOrUrineAlert from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/no-fecal-urine-alert'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
-import {
-  type OrderStep,
-  type OrderTimePendingQueue,
-} from '@/lib/store/icu/icu-order'
-import { TxLocalState } from '@/lib/store/icu/tx-mutation'
-import type { VitalRefRange } from '@/types/adimin'
-import type { SelectedIcuOrder } from '@/types/icu/chart'
-import { useCallback, useEffect, useState } from 'react'
+import { type OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
+import { type TxLocalState } from '@/lib/store/icu/icu-tx'
+import { type VitalRefRange } from '@/types/adimin'
+import { type SelectedIcuOrder } from '@/types/icu/chart'
 
-type OrderRowCellsProps = {
+type Props = {
   hosId: string
   preview?: boolean
   order: SelectedIcuOrder
   showOrderer: boolean
   showTxUser: boolean
   selectedTxPendingQueue: OrderTimePendingQueue[]
-  orderStep: OrderStep
   orderTimePendingQueueLength: number
   vitalRefRange: VitalRefRange[]
   species: string
@@ -36,6 +31,7 @@ type OrderRowCellsProps = {
   setTxStep: (txStep: 'closed' | 'detailInsert' | 'selectUser') => void
   setTxLocalState: (updates: Partial<TxLocalState>) => void
   timeGuidelineData: number[]
+  orderTimePendingQueue: OrderTimePendingQueue[]
 }
 
 export default function OrderRowCells({
@@ -45,7 +41,6 @@ export default function OrderRowCells({
   showOrderer,
   showTxUser,
   selectedTxPendingQueue,
-  orderStep,
   orderTimePendingQueueLength,
   vitalRefRange,
   species,
@@ -56,39 +51,25 @@ export default function OrderRowCells({
   setTxStep,
   setTxLocalState,
   timeGuidelineData,
-}: OrderRowCellsProps) {
+  orderTimePendingQueue,
+}: Props) {
   const { order_times, order_id, treatments, order_type, order_name } = order
 
-  const [orderTimeState, setOrderTimeState] = useState(order_times)
+  const toggleOrderTime = (orderId: string, time: number) => {
+    if (selectedTxPendingQueue.length > 0) return
 
-  useEffect(() => {
-    setOrderTimeState(order_times)
-  }, [order_times])
+    setOrderTimePendingQueue((prev) => {
+      const existingIndex = prev.findIndex(
+        (item) => item.orderId === orderId && item.orderTime === time,
+      )
 
-  const toggleOrderTime = useCallback(
-    (orderId: string, time: number) => {
-      if (selectedTxPendingQueue.length > 0) return
-
-      setOrderTimeState((prevOrderTime) => {
-        const newOrderTime = [...prevOrderTime]
-        newOrderTime[time - 1] = newOrderTime[time - 1] !== '0' ? '0' : '...'
-        return newOrderTime
-      })
-
-      setOrderTimePendingQueue((prev) => {
-        const existingIndex = prev.findIndex(
-          (item) => item.orderId === orderId && item.orderTime === time,
-        )
-
-        if (existingIndex !== -1) {
-          return prev.filter((_, index) => index !== existingIndex)
-        } else {
-          return [...prev, { orderId, orderTime: time }]
-        }
-      })
-    },
-    [setOrderTimePendingQueue, selectedTxPendingQueue],
-  )
+      if (existingIndex !== -1) {
+        return prev.filter((_, index) => index !== existingIndex)
+      } else {
+        return [...prev, { orderId, orderTime: time }]
+      }
+    })
+  }
 
   const foundVital = vitalRefRange.find(
     (vital) => vital.order_name === order.order_name,
@@ -109,12 +90,15 @@ export default function OrderRowCells({
           treatments.some(
             (treatment) => treatment.time === time && treatment.tx_result,
           )
-        const orderer = orderTimeState[time - 1]
+        const orderer = order_times[time - 1]
         const tx = treatments.findLast((treatment) => treatment.time === time)
         const isGuidelineTime = timeGuidelineData.includes(time)
         const hasOrder = orderer !== '0'
         const hasComment = !!tx?.tx_comment
         const isInPendingQueue = selectedTxPendingQueue.some(
+          (t) => t.orderId === order.order_id && t.orderTime === time,
+        )
+        const isInOrderTimePendingQueue = orderTimePendingQueue.some(
           (t) => t.orderId === order.order_id && t.orderTime === time,
         )
 
@@ -145,6 +129,7 @@ export default function OrderRowCells({
             hasOrder={hasOrder}
             hasComment={hasComment}
             isInPendingQueue={isInPendingQueue}
+            isInOrderTimePendingQueue={isInOrderTimePendingQueue}
           />
         )
       })}

@@ -31,16 +31,16 @@ export default function PasteTemplateOrderDialog({
 }: PasteTemplateOrderDialogProps) {
   const [templateCharts, setTemplateCharts] = useState<TemplateChart[]>([])
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isFetching, setIsFetching] = useState(false)
 
   const handleOpenTemplateDialog = async () => {
-    setIsLoading(true)
+    setIsFetching(true)
 
     const templateCharts = await getTemplateCharts(hosId as string)
     setTemplateCharts(templateCharts)
 
-    setIsLoading(false)
-    setIsDialogOpen(!isDialogOpen)
+    setIsFetching(false)
+    setIsDialogOpen(true)
   }
 
   return (
@@ -51,21 +51,25 @@ export default function PasteTemplateOrderDialog({
           variant="ghost"
           className="hidden shrink-0 md:inline-flex"
           onClick={handleOpenTemplateDialog}
-          disabled={isLoading}
+          disabled={isFetching}
         >
-          {isLoading ? <LoaderCircle className="animate-spin" /> : <Bookmark />}
+          {isFetching ? (
+            <LoaderCircle className="animate-spin" />
+          ) : (
+            <Bookmark />
+          )}
         </Button>
       ) : (
         <Button
           variant="outline"
           className="justify-centeritems-center hidden h-1/3 w-full items-center justify-center gap-2 md:flex md:h-1/3 md:w-2/3 lg:w-1/2"
           onClick={handleOpenTemplateDialog}
-          disabled={isLoading}
+          disabled={isFetching}
         >
           <Bookmark size={20} />
 
-          {!tableHeader && <span>템플릿 붙여넣기</span>}
-          {isLoading && <LoaderCircle className="ml-2 h-4 w-4 animate-spin" />}
+          <span>템플릿 붙여넣기</span>
+          {isFetching && <LoaderCircle className="ml-2 h-4 w-4 animate-spin" />}
         </Button>
       )}
 

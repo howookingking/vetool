@@ -1,4 +1,4 @@
-import type { TxLog } from '@/types/icu/chart'
+import { type TxLog } from '@/types/icu/chart'
 import { create } from 'zustand'
 
 export type TxLocalState = {
@@ -15,15 +15,12 @@ export type TxLocalState = {
   bucketImagesLength?: number
 } | null
 
-type IcuUpsertTxState = {
+type IcuTxStoreState = {
   txStep: 'closed' | 'detailInsert' | 'selectUser'
   setTxStep: (txStep: 'closed' | 'detailInsert' | 'selectUser') => void
 
   txLocalState: TxLocalState
   setTxLocalState: (updates: Partial<TxLocalState>) => void
-
-  isDeleting: boolean
-  setIsDeleting: (isDeleting: boolean) => void
 
   isMutationCanceled: boolean
   setIsMutationCanceled: (isMutationCanceled: boolean) => void
@@ -31,16 +28,13 @@ type IcuUpsertTxState = {
   reset: () => void
 }
 
-export const useTxMutationStore = create<IcuUpsertTxState>((set) => ({
+export const useIcuTxStore = create<IcuTxStoreState>((set) => ({
   txStep: 'closed',
   setTxStep: (txStep) => set({ txStep }),
 
   txLocalState: null,
   setTxLocalState: (updates) =>
     set((state) => ({ txLocalState: { ...state.txLocalState, ...updates } })),
-
-  isDeleting: false,
-  setIsDeleting: (isDeleting) => set({ isDeleting }),
 
   isMutationCanceled: false,
   setIsMutationCanceled: (isMutationCanceled) => set({ isMutationCanceled }),

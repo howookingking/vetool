@@ -2,7 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { IcuChartsInCharge } from '@/types/adimin'
-import type { Memo } from '@/types/icu/chart'
+import { type Memo } from '@/types/icu/chart'
 import { redirect } from 'next/navigation'
 
 export const updateDiagnosis = async (

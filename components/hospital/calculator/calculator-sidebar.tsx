@@ -2,9 +2,9 @@ import { Button } from '@/components/ui/button'
 import { CALCULATORS } from '@/constants/hospital/icu/calculator/calculator'
 import { cn } from '@/lib/utils/utils'
 import { type SelectedCalculator } from '@/types/hospital/calculator'
-import { Dispatch, SetStateAction } from 'react'
+import { type Dispatch, type SetStateAction } from 'react'
 
-type CalculatorSidebarProps = {
+type Props = {
   selectedCalculator: SelectedCalculator
   setSelectedCalculator: Dispatch<SetStateAction<SelectedCalculator>>
 }
@@ -12,7 +12,7 @@ type CalculatorSidebarProps = {
 export default function CalculatorSidebar({
   selectedCalculator,
   setSelectedCalculator,
-}: CalculatorSidebarProps) {
+}: Props) {
   return (
     <ul className="mx-2 mb-2 mt-12 flex flex-row justify-between border sm:m-0 sm:w-[240px] sm:flex-col sm:justify-start">
       {CALCULATORS.map((calculator) => (

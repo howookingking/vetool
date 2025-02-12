@@ -3,19 +3,22 @@
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import Chart from '@/components/hospital/icu/main/chart/chart'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import type { SelectedChart } from '@/types/icu/chart'
+import { type SelectedChart } from '@/types/icu/chart'
 import PasteChartDialogs from './paste-chart-dialogs/paste-chart-dialogs'
+
+type IcuChartEntryProps = {
+  chartData: SelectedChart
+  patientId: string
+}
 
 export default function IcuChartEntry({
   chartData,
   patientId,
-}: {
-  chartData: SelectedChart
-  patientId: string
-}) {
+}: IcuChartEntryProps) {
   const {
     basicHosData: { sidebarData },
   } = useBasicHosDataContext()
+
   const hasIcuIo = sidebarData.find((io) => io.patient.patient_id === patientId)
 
   // 입원 전 or 퇴원 후

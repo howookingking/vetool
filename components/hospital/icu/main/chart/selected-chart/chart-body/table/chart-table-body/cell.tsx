@@ -9,14 +9,14 @@ import useIsMobile from '@/hooks/use-is-mobile'
 import { useLongPress } from '@/hooks/use-long-press'
 import useUpsertTx from '@/hooks/use-upsert-tx'
 import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
-import { TxLocalState } from '@/lib/store/icu/tx-mutation'
+import { TxLocalState } from '@/lib/store/icu/icu-tx'
 import { cn } from '@/lib/utils/utils'
-import type { Treatment, TxLog } from '@/types/icu/chart'
+import { type Treatment, type TxLog } from '@/types/icu/chart'
 import { format } from 'date-fns'
 import { Image as ImageIcon } from 'lucide-react'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-type CellProps = {
+type Props = {
   time: number
   hosId: string
   treatment?: Treatment
@@ -50,6 +50,7 @@ type CellProps = {
   hasOrder: boolean
   hasComment: boolean
   isInPendingQueue: boolean
+  isInOrderTimePendingQueue: boolean
 }
 
 export default function Cell({
@@ -77,16 +78,17 @@ export default function Cell({
   hasComment,
   hasOrder,
   isInPendingQueue,
-}: CellProps) {
-  const [briefTxResultInput, setBriefTxResultInput] = useState('')
+  isInOrderTimePendingQueue,
+}: Props) {
   const { upsertTx } = useUpsertTx({ hosId })
   const { calcVitalResult, isAbnormalVital } = useAbnormalVital(
     treatment,
     rowVitalRefRange,
   )
   const isMobile = useIsMobile()
-
   useCellAutofocus()
+
+  const [briefTxResultInput, setBriefTxResultInput] = useState('')
 
   useEffect(() => {
     if (treatment?.tx_result || isMutationCanceled) {
@@ -95,7 +97,7 @@ export default function Cell({
     }
   }, [isMutationCanceled, treatment?.tx_result, setIsMutationCanceled])
 
-  const handleOpenTxDetail = useCallback(() => {
+  const handleOpenTxDetail = () => {
     setTxLocalState({
       icuChartOrderId,
       icuChartOrderType: orderType,
@@ -108,23 +110,12 @@ export default function Cell({
       isCrucialChecked: treatment?.is_crucial,
     })
     setTxStep('detailInsert')
-  }, [
-    icuChartOrderId,
-    icuChartTxId,
-    setTxStep,
-    setTxLocalState,
-    time,
-    treatment?.tx_comment,
-    treatment?.tx_log,
-    treatment?.tx_result,
-    orderType,
-    orderName,
-    treatment?.is_crucial,
-  ])
+  }
+
   const longPressProps = useLongPress({
     onLongPress: handleOpenTxDetail,
     onClick: () => toggleCellInQueue(icuChartOrderId, time),
-    threshold: isMobile ? 1000 : 500,
+    threshold: isMobile ? 1500 : 500,
   })
 
   const toggleCellInQueue = (orderId: string, time: number) => {
@@ -211,7 +202,7 @@ export default function Cell({
     }
   }
 
-  const handleEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handlePressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       const target = e.currentTarget
       setTimeout(() => target?.blur(), 0)
@@ -233,22 +224,30 @@ export default function Cell({
           className={cn(
             isGuidelineTime && 'bg-amber-300/10',
             hasOrder && 'bg-rose-400/10',
-            isDone && 'bg-emerald-400/10',
-            isInPendingQueue && 'ring-2 ring-primary',
-            'h-11 rounded-none border-none px-1 text-center outline-none ring-inset focus-visible:ring-2 focus-visible:ring-primary',
+            hasOrder && isInOrderTimePendingQueue && 'bg-transparent',
+            isDone &&
+              !isInOrderTimePendingQueue &&
+              !isInPendingQueue &&
+              'bg-emerald-400/10',
+            !hasOrder && isInOrderTimePendingQueue && 'bg-rose-400/10',
+            isDone && isInPendingQueue && 'bg-emerald-400/40',
+            !isDone && isInPendingQueue && 'bg-emerald-400/10',
+            'h-11 rounded-none border-none px-1 text-center ring-inset focus-visible:ring-2',
           )}
           disabled={preview}
           value={briefTxResultInput}
           onChange={(e) => setBriefTxResultInput(e.target.value)}
           onBlur={handleUpsertBriefTxResult}
-          onKeyDown={handleEnterPress}
+          onKeyDown={handlePressEnter}
           onContextMenu={handleRightClick}
           aria-label="처치 결과 입력"
           {...longPressProps}
         />
+
         <span className="tx-result-overlay absolute inset-0 -z-10 flex items-center justify-center overflow-hidden whitespace-pre group-hover:overflow-visible">
           {treatment?.tx_result ?? ''}
         </span>
+
         {hasOrder && showOrderer && (
           <div
             className={cn(
@@ -258,6 +257,7 @@ export default function Cell({
             {orderer}
           </div>
         )}
+
         {hasComment && <TxDetailHover txComment={treatment?.tx_comment} />}
 
         {isAbnormalVital && (
@@ -271,9 +271,11 @@ export default function Cell({
         )}
 
         {treatment?.has_images && (
-          <div className="absolute right-0.5 top-0.5 text-pink-500">
-            <ImageIcon size={14} strokeWidth={2} />
-          </div>
+          <ImageIcon
+            size={14}
+            strokeWidth={2}
+            className="absolute right-0.5 top-0.5 text-pink-500"
+          />
         )}
       </div>
     </TableCell>
