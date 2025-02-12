@@ -8,7 +8,7 @@ import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import useLocalStorage from '@/hooks/use-local-storage'
 import { type SelectedIcuOrder } from '@/types/icu/chart'
 import { type Dispatch, type SetStateAction, useState } from 'react'
-import { type OrderWidth } from '../chart/selected-chart/chart-body/table/chart-table-header/order-width-button'
+import { type OrderWidth } from '@/types/hospital/order'
 
 type TemplateOrderTableProps = {
   sortedOrders: SelectedIcuOrder[]

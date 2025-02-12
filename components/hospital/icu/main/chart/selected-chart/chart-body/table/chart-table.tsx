@@ -5,9 +5,9 @@ import SortingOrderRows from '@/components/hospital/icu/main/chart/selected-char
 import ChartTableHeader from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/chart-table-header'
 import { Table } from '@/components/ui/table'
 import useLocalStorage from '@/hooks/use-local-storage'
+import { type OrderWidth } from '@/types/hospital/order'
 import { type SelectedChart, type SelectedIcuOrder } from '@/types/icu/chart'
 import { type RefObject, useEffect, useState } from 'react'
-import { type OrderWidth } from './chart-table-header/order-width-button'
 
 type Props = {
   chartData: SelectedChart
