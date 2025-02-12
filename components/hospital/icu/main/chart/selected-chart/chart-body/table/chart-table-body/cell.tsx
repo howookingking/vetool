@@ -85,7 +85,6 @@ export default function Cell({
     treatment,
     rowVitalRefRange,
   )
-  const isMobile = useIsMobile()
   useCellAutofocus()
 
   const [briefTxResultInput, setBriefTxResultInput] = useState('')
@@ -115,7 +114,7 @@ export default function Cell({
   const longPressProps = useLongPress({
     onLongPress: handleOpenTxDetail,
     onClick: () => toggleCellInQueue(icuChartOrderId, time),
-    threshold: isMobile ? 1500 : 500,
+    threshold: 500,
   })
 
   const toggleCellInQueue = (orderId: string, time: number) => {
@@ -232,7 +231,8 @@ export default function Cell({
             !hasOrder && isInOrderTimePendingQueue && 'bg-rose-400/10',
             isDone && isInPendingQueue && 'bg-emerald-400/40',
             !isDone && isInPendingQueue && 'bg-emerald-400/10',
-            'h-11 min-w-12 rounded-none border-none px-1 text-center ring-inset focus-visible:ring-2',
+
+            'h-11 min-w-12 rounded-none border-none px-1 text-center ring-inset focus-visible:ring-2 md:min-w-0',
           )}
           disabled={preview}
           value={briefTxResultInput}
