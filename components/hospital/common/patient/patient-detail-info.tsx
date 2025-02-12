@@ -21,7 +21,7 @@ export default function PatientDetailInfo({
   weightMeasuredDate,
 }: PatientDetailInfoProps) {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1 sm:gap-2">
       {species === 'canine' ? <Dog size={20} /> : <Cat size={20} />}
       <span>{name}</span>·
       <span className="w-12 truncate sm:w-auto">

@@ -194,7 +194,11 @@ export default function TxDetailInsertStep({
     <>
       <DialogHeader>
         <DialogTitle>처치 상세 입력</DialogTitle>
-        <DialogDescription />
+        <DialogDescription>
+          <span>
+            {txLocalState?.icuChartOrderName} / {txLocalState?.time}시
+          </span>
+        </DialogDescription>
       </DialogHeader>
 
       <Form {...form}>
