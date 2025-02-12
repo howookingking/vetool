@@ -9,7 +9,7 @@ import { type SelectedChart, type SelectedIcuOrder } from '@/types/icu/chart'
 import { type RefObject, useEffect, useState } from 'react'
 import { type OrderWidth } from './chart-table-header/order-width-button'
 
-type ChartTableProps = {
+type Props = {
   chartData: SelectedChart
   preview?: boolean
   isExport?: boolean
@@ -21,7 +21,7 @@ export default function ChartTable({
   preview,
   isExport,
   cellRef,
-}: ChartTableProps) {
+}: Props) {
   const { icu_chart_id, orders, patient, hos_id } = chartData
 
   const [orderWidth, setOrderWidth] = useLocalStorage<OrderWidth>(

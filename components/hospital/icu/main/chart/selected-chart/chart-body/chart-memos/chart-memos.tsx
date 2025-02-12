@@ -3,7 +3,6 @@
 import HideAndShowButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/hide-and-show-button'
 import MemoGroup from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/memo-group'
 import SortMemoButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/sort-memo-button'
-import { Separator } from '@/components/ui/separator'
 import useLocalStorage from '@/hooks/use-local-storage'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { type Memo } from '@/types/icu/chart'
@@ -32,7 +31,7 @@ export default function ChartMemos({ memoA, memoB, memoC, icuIoId }: Props) {
   return (
     <div className="relative">
       {showMemos && (
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
+        <div className="grid grid-cols-3 gap-2">
           <MemoGroup
             memo={memos.a}
             memos={memos}
@@ -43,8 +42,6 @@ export default function ChartMemos({ memoA, memoB, memoC, icuIoId }: Props) {
             sortMemoMethod={sortMemoMethod}
           />
 
-          <Separator className="mt-4 md:hidden" />
-
           <MemoGroup
             memo={memos.b}
             memos={memos}
@@ -54,8 +51,6 @@ export default function ChartMemos({ memoA, memoB, memoC, icuIoId }: Props) {
             memoName={memoNameListData[1]}
             sortMemoMethod={sortMemoMethod}
           />
-
-          <Separator className="mt-4 md:hidden" />
 
           <MemoGroup
             memo={memos.c}

@@ -16,17 +16,19 @@ import { ko } from 'date-fns/locale'
 import { LogOut } from 'lucide-react'
 import { useCallback, useState } from 'react'
 
+type Props = {
+  inDate: string
+  outDueDate: string | null
+  icuIoId: string
+  noIcon?: boolean
+}
+
 export default function OutDueDate({
   inDate,
   outDueDate,
   icuIoId,
   noIcon,
-}: {
-  inDate: string
-  outDueDate: string | null
-  icuIoId: string
-  noIcon?: boolean
-}) {
+}: Props) {
   const transformedOutDueDate = outDueDate ? new Date(outDueDate) : undefined
 
   const [outDueDateInput, setOutDueDateInput] = useState<Date | undefined>(
@@ -75,16 +77,11 @@ export default function OutDueDate({
           )}
 
           {outDueDateInput ? (
-            <span className="truncate text-xs sm:text-sm">
-              <span className="hidden 2xl:inline">
-                {format(outDueDateInput, 'yyyy-MM-dd')}
-              </span>
-              <span className="2xl:hidden">
-                {format(outDueDateInput, 'yy-MM-dd')}
-              </span>
+            <span className="truncate text-sm">
+              <span>{format(outDueDateInput, 'yyyy-MM-dd')}</span>
             </span>
           ) : (
-            <span className="truncate text-xs sm:text-sm">
+            <span className="truncate text-sm">
               {noIcon ? '미정' : '퇴원 예정일'}
             </span>
           )}

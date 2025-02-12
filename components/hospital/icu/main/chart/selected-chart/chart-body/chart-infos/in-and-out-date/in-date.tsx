@@ -1,13 +1,12 @@
 import { LogIn } from 'lucide-react'
 import { Label } from '@/components/ui/label'
 
-export default function Indate({
-  inDate,
-  noIcon,
-}: {
+type Props = {
   inDate: string
   noIcon?: boolean
-}) {
+}
+
+export default function Indate({ inDate, noIcon }: Props) {
   return (
     <div className="flex h-9 w-full select-none items-center gap-2 rounded-md border p-2 font-medium">
       {noIcon ? (
@@ -18,10 +17,8 @@ export default function Indate({
         <LogIn className="shrink-0 text-muted-foreground" size={16} />
       )}
 
-      <span className="truncate text-xs sm:text-sm">
-        <span className="hidden 2xl:inline">{inDate}</span>
-
-        <span className="2xl:hidden">{inDate.slice(2)}</span>
+      <span className="truncate text-sm sm:text-sm">
+        <span>{inDate}</span>
       </span>
     </div>
   )
