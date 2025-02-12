@@ -31,7 +31,7 @@ export default function OrderWidthButton({
       variant="ghost"
       size="icon"
       onClick={handleOrderWidthChange}
-      className="hidden shrink-0 md:inline-flex"
+      className="shrink-0"
     >
       {isMaxWidth ? (
         <ArrowLeftToLine size={18} />
