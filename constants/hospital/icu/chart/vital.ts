@@ -2,39 +2,27 @@ import { ChartConfig } from '@/components/ui/chart'
 
 export const VITALS = [
   {
-    id: 0,
     title: '체중',
-    isActive: true,
     initialLength: 5,
   },
   {
-    id: 1,
     title: '혈압',
-    isActive: true,
     initialLength: 10,
   },
   {
-    id: 2,
     title: '호흡수',
-    isActive: true,
     initialLength: 10,
   },
   {
-    id: 3,
     title: '심박수',
-    isActive: true,
     initialLength: 10,
   },
   {
-    id: 4,
     title: '체온',
-    isActive: true,
     initialLength: 10,
   },
   {
-    id: 5,
     title: '혈당',
-    isActive: true,
     initialLength: 10,
   },
 ] as const

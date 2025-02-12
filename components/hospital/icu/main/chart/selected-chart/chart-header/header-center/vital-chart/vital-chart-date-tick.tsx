@@ -1,17 +1,14 @@
-import { Text } from 'recharts'
 import { getDaysDifference } from '@/lib/utils/utils'
+import { Text } from 'recharts'
 
-export default function VitalChartDateTick({
-  x,
-  y,
-  payload,
-  inDate,
-}: {
+type Props = {
   x: number
   y: number
   payload: { value: string }
   inDate: string
-}) {
+}
+
+export default function VitalChartDateTick({ x, y, payload, inDate }: Props) {
   const [datePart, timePart] = payload.value.split(' ')
 
   const dayDifference =

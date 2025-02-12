@@ -12,18 +12,16 @@ import {
 import { VITALS } from '@/constants/hospital/icu/chart/vital'
 import { getVitalTxData } from '@/lib/services/icu/chart/vitals'
 import { parseVitalValue } from '@/lib/utils/analysis'
-import type { VitalChartData, VitalData } from '@/types/icu/chart'
+import { type VitalChartData, type VitalData } from '@/types/icu/chart'
 import { useEffect, useMemo, useState } from 'react'
 
-export default function VitalChart({
-  currentVital,
-  patientId,
-  inDate,
-}: {
+type Props = {
   currentVital: string
   patientId: string
   inDate: string
-}) {
+}
+
+export default function VitalChart({ currentVital, patientId, inDate }: Props) {
   const initialLength =
     VITALS.find((vital) => vital.title === currentVital)?.initialLength || 10
 
@@ -89,60 +87,55 @@ export default function VitalChart({
     setDisplayCount((prev: number) => prev + initialLength)
   }
 
-  return (
-    <div className="w-[calc(100%-160px)] flex-1 p-4">
-      {isLoading ? (
-        <div className="flex h-full items-center justify-center">
-          <LargeLoaderCircle />
-        </div>
-      ) : formattedData.length > 0 ? (
-        <>
-          <Card className="">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div className="space-y-2">
-                  <CardTitle>{currentVital} 변화 추이</CardTitle>
-                  <CardDescription>
-                    최근 {formattedData.length}개의 데이터
-                    {currentVital === '호흡수' && (
-                      <span className="pl-1 text-muted-foreground">
-                        (panting은 200으로 표시됩니다)
-                      </span>
-                    )}
-                  </CardDescription>
-                </div>
+  if (isLoading) {
+    return <LargeLoaderCircle className="h-full w-full" />
+  }
 
-                {hasMoreData && (
-                  <div className="mt-2">
+  return (
+    <div className="flex h-full w-full justify-center">
+      {formattedData.length > 0 ? (
+        <Card className="h-full w-full border-0 shadow-none">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div className="space-y-2">
+                <CardTitle className="flex h-8 items-center gap-2">
+                  {currentVital} 변화 추이
+                  {hasMoreData && (
                     <Button
-                      variant="outline"
+                      variant="default"
                       onClick={handleLoadMore}
-                      size="lg"
+                      size="sm"
                     >
                       더보기
                     </Button>
-                  </div>
-                )}
+                  )}
+                </CardTitle>
+                <CardDescription>
+                  최근 {formattedData.length}개의 데이터
+                  {currentVital === '호흡수' && (
+                    <span className="pl-1 text-muted-foreground">
+                      (panting은 200으로 표시됩니다)
+                    </span>
+                  )}
+                </CardDescription>
               </div>
-            </CardHeader>
-            <CardContent>
-              <VitalChartContent
-                formattedData={formattedData}
-                displayCount={displayCount}
-                currentVital={currentVital}
-                inDate={inDate}
-              />
-            </CardContent>
-          </Card>
-        </>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <VitalChartContent
+              formattedData={formattedData}
+              displayCount={displayCount}
+              currentVital={currentVital}
+              inDate={inDate}
+            />
+          </CardContent>
+        </Card>
       ) : (
-        <div className="flex h-full items-center justify-center">
-          <NoResultSquirrel
-            text="분석할 데이터가 없습니다"
-            size="lg"
-            className="flex-col"
-          />
-        </div>
+        <NoResultSquirrel
+          text="분석할 데이터가 없습니다"
+          size="lg"
+          className="h-full flex-col"
+        />
       )}
     </div>
   )
