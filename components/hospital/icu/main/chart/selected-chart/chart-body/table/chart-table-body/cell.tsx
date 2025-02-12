@@ -232,7 +232,7 @@ export default function Cell({
             !hasOrder && isInOrderTimePendingQueue && 'bg-rose-400/10',
             isDone && isInPendingQueue && 'bg-emerald-400/40',
             !isDone && isInPendingQueue && 'bg-emerald-400/10',
-            'h-11 rounded-none border-none px-1 text-center ring-inset focus-visible:ring-2',
+            'h-11 min-w-12 rounded-none border-none px-1 text-center ring-inset focus-visible:ring-2',
           )}
           disabled={preview}
           value={briefTxResultInput}

@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect, ReactNode, useCallback } from 'react'
 
-const ZOOM_FACTOR = 1.5
+const ZOOM_FACTOR = 0.3
 const MIN_SCALE = 0.5
 const MAX_SCALE = 10
 
@@ -24,37 +24,10 @@ export default function PinchZoomContainer({
   const [isDragging, setIsDragging] = useState(false)
 
   // 드래그 시작 시의 위치
-  const [startPosition, setStartPosition] = useState({ x: 0, y: 10 })
+  const [startPosition, setStartPosition] = useState({ x: 0, y: 0 })
 
   // 터치 거리 (핀치 동작 구현을 위한 거리 정보) (null: 핀치 동작 아님 / number: 핀치 동작 중)
   const [touchDistance, setTouchDistance] = useState<number | null>(null)
-
-  // <!-- 데스크탑 환경에서 호환을 위해 터치패드에도 동일하게 적용 -->
-  // 터치패드 제스처 핸들러
-  const handleGestureStart = useCallback((event: any) => {
-    event.preventDefault()
-  }, [])
-
-  const handleGestureChange = useCallback(
-    (event: any) => {
-      event.preventDefault()
-
-      const newScale = Math.min(
-        Math.max(scale * event.scale, MIN_SCALE),
-        MAX_SCALE,
-      )
-      setScale(newScale)
-
-      if (position.x < 0) {
-        setPosition((prev) => ({ ...prev, x: 0 }))
-      }
-    },
-    [scale, position.x],
-  )
-
-  const handleGestureEnd = useCallback((event: any) => {
-    event.preventDefault()
-  }, [])
 
   // 터치스크린 핸들러
   const handleTouchStart = useCallback(
@@ -84,42 +57,6 @@ export default function PinchZoomContainer({
       }
     },
     [position.x, position.y],
-  )
-
-  const handleWheel = useCallback(
-    (e: WheelEvent) => {
-      if (e.ctrlKey) {
-        // 터치패드 핀치 줌 제스처
-        e.preventDefault()
-        const delta = -e.deltaY * 0.01
-        const newScale = Math.min(
-          Math.max(scale * (1 + delta), MIN_SCALE),
-          MAX_SCALE,
-        )
-        setScale(newScale)
-      } else if (isDragging) {
-        // 터치패드 두 손가락 드래그
-        e.preventDefault()
-        const newX = position.x - e.deltaX
-        const newY = position.y - e.deltaY
-
-        const container = containerRef.current
-        const content = contentRef.current
-        if (!container || !content) return
-
-        const containerHeight = container.clientHeight
-        const contentHeight = content.clientHeight * scale
-
-        const limitedX = Math.max(0, newX)
-        const limitedY = Math.max(
-          0,
-          Math.min(newY, Math.max(contentHeight - containerHeight, 0)),
-        )
-
-        setPosition({ x: limitedX, y: limitedY })
-      }
-    },
-    [scale, isDragging, position.x, position.y],
   )
 
   const handleTouchMove = useCallback(
@@ -154,21 +91,10 @@ export default function PinchZoomContainer({
 
       // 한 손가락 터치인 경우 (DRAG 동작)
       if (event.touches.length === 1 && isDragging) {
-        const newX = event.touches[0].clientX - startPosition.x
-        const newY = event.touches[0].clientY - startPosition.y
+        const newX = Math.min(0, event.touches[0].clientX - startPosition.x)
+        const newY = Math.min(0, event.touches[0].clientY - startPosition.y)
 
-        const container = containerRef.current
-        const content = contentRef.current
-        if (!container || !content) return
-
-        const containerHeight = container.clientHeight
-        const contentHeight = content.clientHeight * scale
-        const maxY = Math.max(contentHeight - containerHeight, 0)
-
-        const limitedX = Math.max(0, newX)
-        const limitedY = Math.max(0, Math.min(newY, maxY))
-
-        setPosition({ x: limitedX, y: limitedY })
+        setPosition({ x: newX, y: newY })
       }
     },
     [
@@ -191,31 +117,17 @@ export default function PinchZoomContainer({
     const container = containerRef.current
     if (!container) return
 
-    container.addEventListener('touchstart', handleTouchStart)
+    container.addEventListener('touchstart', handleTouchStart, {
+      passive: false,
+    })
     container.addEventListener('touchmove', handleTouchMove, { passive: false })
     container.addEventListener('touchend', handleTouchEnd)
-    container.addEventListener('gesturestart', handleGestureStart)
-    container.addEventListener('gesturechange', handleGestureChange)
-    container.addEventListener('gestureend', handleGestureEnd)
-    container.addEventListener('wheel', handleWheel)
     return () => {
       container.removeEventListener('touchstart', handleTouchStart)
       container.removeEventListener('touchmove', handleTouchMove)
       container.removeEventListener('touchend', handleTouchEnd)
-      container.removeEventListener('gesturestart', handleGestureStart)
-      container.removeEventListener('gesturechange', handleGestureChange)
-      container.removeEventListener('gestureend', handleGestureEnd)
-      container.removeEventListener('wheel', handleWheel)
     }
-  }, [
-    handleTouchStart,
-    handleTouchMove,
-    handleTouchEnd,
-    handleGestureStart,
-    handleGestureChange,
-    handleGestureEnd,
-    handleWheel,
-  ])
+  }, [handleTouchStart, handleTouchMove, handleTouchEnd])
 
   return (
     <div
@@ -223,6 +135,7 @@ export default function PinchZoomContainer({
       className="h-full w-full overflow-auto"
       style={{
         touchAction: 'none',
+        backgroundColor: 'hsl(var(--primary))',
       }}
     >
       <div
@@ -231,6 +144,7 @@ export default function PinchZoomContainer({
           transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
           transformOrigin: '0 0',
           willChange: 'transform',
+          backgroundColor: 'white',
         }}
       >
         {children}
