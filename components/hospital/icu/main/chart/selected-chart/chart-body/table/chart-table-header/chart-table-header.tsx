@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils/utils'
 import { type SelectedChart, type SelectedIcuOrder } from '@/types/icu/chart'
 import { type Dispatch, type SetStateAction } from 'react'
 
-type ChartTableHeaderProps = {
+type Props = {
   preview?: boolean
   chartData: SelectedChart
   sortedOrders: SelectedIcuOrder[]
@@ -34,13 +34,13 @@ export default function ChartTableHeader({
   setOrderWidth,
   chartId,
   hosId,
-}: ChartTableHeaderProps) {
+}: Props) {
   return (
     <TableHeader
       data-guide="order-info"
       className={cn(
         preview ? 'top-0' : 'top-12',
-        'sticky z-20 bg-white shadow-sm',
+        'z-20 bg-white shadow-sm sm:sticky',
       )}
     >
       <TableRow>
