@@ -7,7 +7,7 @@ import Chocolate from '@/components/hospital/calculator/chocolate/chocolate'
 import { type SelectedCalculator } from '@/types/hospital/calculator'
 import { type PatientWithWeight } from '@/types/patients'
 
-type SelectedCalculatorsProps = {
+type Props = {
   selectedCalculator: SelectedCalculator
   patientData: PatientWithWeight | null
 }
@@ -15,21 +15,24 @@ type SelectedCalculatorsProps = {
 export default function SelectedCalculators({
   selectedCalculator,
   patientData,
-}: SelectedCalculatorsProps) {
+}: Props) {
   return (
-    <div className="flex-1">
+    <div className="h-full">
+      {selectedCalculator === 'counter' && <VitalCounter />}
+
       {selectedCalculator === 'fluid-rate' && (
         <FluidRateCalculator patientData={patientData} />
       )}
+
       {selectedCalculator === 'rer-mer' && (
         <RerMerCalculator patientData={patientData} />
       )}
-      {selectedCalculator === 'counter' && <VitalCounter />}
 
       {selectedCalculator === 'cri' && (
         <Cri weight={patientData?.vital?.body_weight ?? ''} />
       )}
       {selectedCalculator === 'bsa' && <Bsa patientData={patientData} />}
+
       {/* {selectedCalculator === 'chocolate' && (
         <Chocolate weight={patientData?.vital?.body_weight ?? ''} />
       )} */}

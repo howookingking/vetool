@@ -1,4 +1,12 @@
 import { Button } from '@/components/ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { CALCULATORS } from '@/constants/hospital/icu/calculator/calculator'
 import { cn } from '@/lib/utils/utils'
 import { type SelectedCalculator } from '@/types/hospital/calculator'
@@ -14,21 +22,46 @@ export default function CalculatorSidebar({
   setSelectedCalculator,
 }: Props) {
   return (
-    <ul className="mx-2 mb-2 mt-12 flex flex-row justify-between border sm:m-0 sm:w-[240px] sm:flex-col sm:justify-start">
-      {CALCULATORS.map((calculator) => (
-        <li key={calculator.value}>
-          <Button
-            className={cn(
-              selectedCalculator === calculator.value && 'bg-muted',
-              'w-full rounded-none py-0 text-xs sm:py-6 sm:text-base',
-            )}
-            variant="ghost"
-            onClick={() => setSelectedCalculator(calculator.value)}
-          >
-            {calculator.label}
-          </Button>
-        </li>
-      ))}
-    </ul>
+    <>
+      {/* DESKTOP */}
+      <ul className="hidden flex-col border-r md:flex">
+        {CALCULATORS.map((calculator) => (
+          <li key={calculator.value}>
+            <Button
+              className={cn(
+                selectedCalculator === calculator.value &&
+                  'bg-primary text-white',
+                'h-10 w-full rounded-none',
+              )}
+              variant="ghost"
+              onClick={() => setSelectedCalculator(calculator.value)}
+            >
+              {calculator.label}
+            </Button>
+          </li>
+        ))}
+      </ul>
+
+      {/* MOBILE */}
+      <Select
+        onValueChange={(value) =>
+          setSelectedCalculator(value as SelectedCalculator)
+        }
+        value={selectedCalculator}
+      >
+        <SelectTrigger className="ml-2 mt-2 w-[240px] md:hidden">
+          <SelectValue defaultValue={selectedCalculator} />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            {CALCULATORS.map((calculator) => (
+              <SelectItem key={calculator.value} value={calculator.value}>
+                {calculator.label}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    </>
   )
 }
