@@ -49,8 +49,8 @@ export default function DietForm({ mer }: { mer: number | null }) {
   }
 
   return (
-    <CardContent className="gap-2">
-      <div className="grid grid-cols-2 gap-2 pb-6">
+    <div className="flex flex-col gap-4">
+      <div className="mt-2 grid grid-cols-2 gap-2">
         <DietComboBox
           mappedDietList={mappedDietList}
           selectedDiet={selectedDiet}
@@ -70,6 +70,6 @@ export default function DietForm({ mer }: { mer: number | null }) {
           onClick={handleCopyButtonClick}
         />
       )}
-    </CardContent>
+    </div>
   )
 }

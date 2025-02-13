@@ -38,9 +38,9 @@ export default function MerForm({
   }
 
   return (
-    <Form {...form}>
-      <form>
-        <CardContent className="grid grid-cols-2 gap-2">
+    <div className="flex flex-col gap-4">
+      <Form {...form}>
+        <form className="grid grid-cols-2 gap-2">
           <FormField
             control={form.control}
             name="weight"
@@ -100,18 +100,16 @@ export default function MerForm({
               </FormItem>
             )}
           />
-        </CardContent>
+        </form>
+      </Form>
 
-        <CardContent>
-          {result !== null && result > 0 && (
-            <CalculatorResult
-              result={result.toString()}
-              unit="kcal/day"
-              onClick={handleCopyButtonClick}
-            />
-          )}
-        </CardContent>
-      </form>
-    </Form>
+      {result !== null && result > 0 && (
+        <CalculatorResult
+          result={result.toString()}
+          unit="kcal/day"
+          onClick={handleCopyButtonClick}
+        />
+      )}
+    </div>
   )
 }
