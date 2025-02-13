@@ -28,7 +28,7 @@ export default function CalculatorResult({
   }
 
   return (
-    <div className="col-span-2 flex flex-col gap-2 text-center">
+    <div className="col-span-2 flex flex-col gap-2 rounded-md bg-slate-100 py-2 text-center">
       <div className="flex items-center justify-center gap-2">
         <span className="text-lg font-semibold">계산 결과</span>
       </div>

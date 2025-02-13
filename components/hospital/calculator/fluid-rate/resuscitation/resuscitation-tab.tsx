@@ -17,7 +17,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { toast } from '@/components/ui/use-toast'
+import {
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet'
 import { calculateResuscitation } from '@/lib/calculators/fluid-rate'
 import {
   resuscitationFormSchema,
@@ -28,6 +32,7 @@ import {
   type Species,
 } from '@/types/hospital/calculator'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { type MouseEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -81,84 +86,84 @@ export default function ResuscitationTab({
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          Resuscitation <ResuscitationToolTip />
-        </CardTitle>
-      </CardHeader>
+    <div className="flex flex-col gap-4">
+      <SheetHeader>
+        <SheetTitle className="flex items-center gap-2">
+          <span>Resuscitation</span>
+          <ResuscitationToolTip />
+        </SheetTitle>
+        <VisuallyHidden>
+          <SheetDescription />
+        </VisuallyHidden>
+      </SheetHeader>
 
       <Form {...form}>
-        <form>
-          <CardContent className="grid grid-cols-2 gap-2">
-            <FormField
-              control={form.control}
-              name="weight"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>체중 (kg)</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="체중을 입력하세요"
-                      {...field}
-                      onChange={(e) => {
-                        field.onChange(e)
-                        setFormData((prev) => ({
-                          ...prev,
-                          weight: e.target.value,
-                        }))
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="species"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>종 선택</FormLabel>
-                  <Select
-                    onValueChange={(value) => {
-                      field.onChange(value)
+        <form className="grid grid-cols-2 gap-2">
+          <FormField
+            control={form.control}
+            name="weight"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>체중 (kg)</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    placeholder="체중을 입력하세요"
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e)
                       setFormData((prev) => ({
                         ...prev,
-                        species: value as Species,
+                        weight: e.target.value,
                       }))
                     }}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="종 선택" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="canine">Canine</SelectItem>
-                      <SelectItem value="feline">Feline</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </CardContent>
-
-          <CardContent className="pt-4">
-            {(result.min !== 0 || result.max !== 0) && (
-              <CalculatorResult
-                result={`${result.min}ml ~ ${result.max}ml`}
-                comment="buffered isotonic 수액을 15~30분간 주입해주세요."
-                onClick={handleCopyButtonClick}
-              />
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-          </CardContent>
+          />
+
+          <FormField
+            control={form.control}
+            name="species"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>종 선택</FormLabel>
+                <Select
+                  onValueChange={(value) => {
+                    field.onChange(value)
+                    setFormData((prev) => ({
+                      ...prev,
+                      species: value as Species,
+                    }))
+                  }}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="종 선택" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="canine">Canine</SelectItem>
+                    <SelectItem value="feline">Feline</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </form>
       </Form>
-    </Card>
+
+      {(result.min !== 0 || result.max !== 0) && (
+        <CalculatorResult
+          result={`${result.min}ml ~ ${result.max}ml`}
+          comment="buffered isotonic 수액을 15~30분간 주입해주세요."
+          onClick={handleCopyButtonClick}
+        />
+      )}
+    </div>
   )
 }
