@@ -1,4 +1,3 @@
-import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import VitalChartContent from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-center/vital-chart/vital-chart-content'
 import { Button } from '@/components/ui/button'
@@ -10,53 +9,25 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { VITALS } from '@/constants/hospital/icu/chart/vital'
-import { getVitalTxData } from '@/lib/services/icu/chart/vitals'
 import { parseVitalValue } from '@/lib/utils/analysis'
 import type { VitalChartData, VitalData } from '@/types/icu/chart'
 import { useEffect, useMemo, useState } from 'react'
 
-export default function VitalChart({
-  currentVital,
-  patientId,
-  inDate,
-}: {
+type Props = {
   currentVital: string
-  patientId: string
   inDate: string
-}) {
+  vitalData: Record<string, VitalData[]>
+}
+
+export default function VitalChart({ currentVital, inDate, vitalData }: Props) {
   const initialLength =
     VITALS.find((vital) => vital.title === currentVital)?.initialLength || 10
 
-  const [isLoading, setIsLoading] = useState(false)
-  const [vitalData, setVitalData] = useState<Record<string, VitalData[]>>({})
   const [displayCount, setDisplayCount] = useState<number>(initialLength)
 
   useEffect(() => {
     setDisplayCount(initialLength)
-
-    const fetchVitalData = async () => {
-      setIsLoading(true)
-
-      if (vitalData[currentVital]) {
-        setIsLoading(false)
-        return
-      }
-
-      const fetchedVitalData = await getVitalTxData(patientId, inDate)
-      const filteredVitalData = fetchedVitalData.filter((item) =>
-        item.icu_chart_order_name?.includes(currentVital),
-      )
-
-      setVitalData((prev) => ({
-        [currentVital]: filteredVitalData,
-        ...prev,
-      }))
-
-      setIsLoading(false)
-    }
-
-    fetchVitalData()
-  }, [currentVital, patientId, vitalData, inDate, initialLength])
+  }, [currentVital, initialLength])
 
   // 차트 데이터 포맷 변환 및 정렬
   const formattedData: VitalChartData[] = useMemo(() => {
@@ -91,11 +62,7 @@ export default function VitalChart({
 
   return (
     <div className="w-[calc(100%-160px)] flex-1 p-4">
-      {isLoading ? (
-        <div className="flex h-full items-center justify-center">
-          <LargeLoaderCircle />
-        </div>
-      ) : formattedData.length > 0 ? (
+      {formattedData.length > 0 ? (
         <>
           <Card className="">
             <CardHeader>

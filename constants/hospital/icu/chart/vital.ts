@@ -37,6 +37,12 @@ export const VITALS = [
     isActive: true,
     initialLength: 10,
   },
+  {
+    id: 6,
+    title: 'SPO2',
+    isActive: true,
+    initialLength: 10,
+  },
 ] as const
 
 export const CHART_CONFIG = {
