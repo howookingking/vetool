@@ -6,7 +6,6 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
-import { calculateBsa } from '@/lib/calculators/bsa'
 import { type PatientFormData } from '@/types/hospital/calculator'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { useEffect, useState } from 'react'
@@ -17,6 +16,9 @@ export default function Bsa({ weight }: { weight: string }) {
   const [formData, setFormData] = useState<PatientFormData>({
     weight: weight,
   })
+
+  const calculateBsa = (weight: number): number =>
+    Number((0.1 * Math.pow(weight, 2 / 3)).toFixed(2))
 
   useEffect(() => {
     if (weight) {
@@ -31,12 +33,6 @@ export default function Bsa({ weight }: { weight: string }) {
       setResult(calculateBsa(Number(formData.weight)))
     }
   }, [formData.weight, formData.species])
-
-  const handleCopyButtonClick = () => {
-    if (result) {
-      navigator.clipboard.writeText(result.toString())
-    }
-  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -63,9 +59,12 @@ export default function Bsa({ weight }: { weight: string }) {
 
       {result !== null && result >= 0 && (
         <CalculatorResult
-          result={result.toString()}
-          unit="m²"
-          onClick={handleCopyButtonClick}
+          displayResult={
+            <span className="font-bold text-primary">
+              {result} m<sup>2</sup>
+            </span>
+          }
+          copyResult={`${result.toString()} m²`}
         />
       )}
     </div>

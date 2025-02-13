@@ -41,12 +41,6 @@ export default function DietForm({ mer }: { mer: number | null }) {
     label: diet.name,
   }))
 
-  const handleCopyButtonClick = () => {
-    if (feedAmount) {
-      navigator.clipboard.writeText(feedAmount.toString())
-    }
-  }
-
   return (
     <div className="flex flex-col gap-4">
       <div className="mt-2 grid grid-cols-2 gap-2">
@@ -64,9 +58,12 @@ export default function DietForm({ mer }: { mer: number | null }) {
 
       {feedAmount !== null && feedAmount > 0 && (
         <CalculatorResult
-          result={feedAmount.toString()}
-          unit={`${unit}/회`}
-          onClick={handleCopyButtonClick}
+          displayResult={
+            <span className="font-bold text-primary">
+              {feedAmount.toString()} {unit}/회
+            </span>
+          }
+          copyResult={`${feedAmount.toString()} ${unit}/회`}
         />
       )}
     </div>

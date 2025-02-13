@@ -10,7 +10,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { type MerFormValues } from '@/lib/schemas/calculator/rer-mer-schema'
 import { type PatientFormData } from '@/types/hospital/calculator'
-import { type Dispatch, type MouseEvent, type SetStateAction } from 'react'
+import { type Dispatch, type SetStateAction } from 'react'
 import { type UseFormReturn } from 'react-hook-form'
 import CalculatorResult from '../../calculator-result'
 
@@ -27,14 +27,6 @@ export default function MerForm({
   rer,
   result,
 }: MerFormProps) {
-  const handleCopyButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-
-    if (result) {
-      navigator.clipboard.writeText(result.toString())
-    }
-  }
-
   return (
     <div className="flex flex-col gap-4">
       <Form {...form}>
@@ -103,9 +95,12 @@ export default function MerForm({
 
       {result !== null && result > 0 && (
         <CalculatorResult
-          result={result.toString()}
-          unit="kcal/day"
-          onClick={handleCopyButtonClick}
+          displayResult={
+            <span className="font-bold text-primary">
+              {result.toString()} kcal/day
+            </span>
+          }
+          copyResult={`${result.toString()} kcal/day`}
         />
       )}
     </div>

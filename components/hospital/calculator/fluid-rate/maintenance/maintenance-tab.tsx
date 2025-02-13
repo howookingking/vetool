@@ -1,7 +1,6 @@
 import WarningMessage from '@/components/common/warning-message'
 import CalculatorResult from '@/components/hospital/calculator/calculator-result'
 import MaintenanceToolTip from '@/components/hospital/calculator/fluid-rate/maintenance/maintenance-tool-tip'
-import { CardContent } from '@/components/ui/card'
 import {
   Form,
   FormControl,
@@ -35,7 +34,7 @@ import {
 } from '@/types/hospital/calculator'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
-import { MouseEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 export default function MaintenanceTab({
@@ -90,12 +89,6 @@ export default function MaintenanceTab({
     })
     return () => subscription.unsubscribe()
   }, [form, setFormData])
-
-  const handleCopyButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-
-    navigator.clipboard.writeText(result)
-  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -254,9 +247,10 @@ export default function MaintenanceTab({
 
       {result && (
         <CalculatorResult
-          result={result}
-          unit="ml/hr"
-          onClick={handleCopyButtonClick}
+          displayResult={
+            <span className="font-bold text-primary">{result} ml/hr</span>
+          }
+          copyResult={`${result} ml/hr`}
         />
       )}
     </div>

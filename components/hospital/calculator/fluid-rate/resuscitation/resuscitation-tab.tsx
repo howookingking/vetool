@@ -1,6 +1,5 @@
 import CalculatorResult from '@/components/hospital/calculator/calculator-result'
 import ResuscitationToolTip from '@/components/hospital/calculator/fluid-rate/resuscitation/resuscitation-tool-tip'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Form,
   FormControl,
@@ -33,7 +32,7 @@ import {
 } from '@/types/hospital/calculator'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
-import { type MouseEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 export default function ResuscitationTab({
@@ -79,11 +78,6 @@ export default function ResuscitationTab({
     })
     return () => subscription.unsubscribe()
   }, [form, setFormData])
-
-  const handleCopyButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    navigator.clipboard.writeText(`${result.min}ml ~ ${result.max}ml`)
-  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -159,9 +153,13 @@ export default function ResuscitationTab({
 
       {(result.min !== 0 || result.max !== 0) && (
         <CalculatorResult
-          result={`${result.min}ml ~ ${result.max}ml`}
-          comment="buffered isotonic 수액을 15~30분간 주입해주세요."
-          onClick={handleCopyButtonClick}
+          displayResult={
+            <span className="font-bold text-primary">
+              {result.min} ~ {result.max}ml
+            </span>
+          }
+          copyResult={`${result.min}ml ~ ${result.max}ml`}
+          comment="Buffered Isotonic 수액을 15~30분간 주입해주세요."
         />
       )}
     </div>

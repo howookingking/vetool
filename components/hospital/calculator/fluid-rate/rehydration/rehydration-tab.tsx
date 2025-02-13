@@ -28,7 +28,7 @@ import {
 } from '@/lib/schemas/calculator/fluid-rate-schema'
 import { type CalculatorTabProps } from '@/types/hospital/calculator'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { type MouseEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 export default function RehydrationTab({
@@ -80,11 +80,6 @@ export default function RehydrationTab({
     })
     return () => subscription.unsubscribe()
   }, [form, setFormData])
-
-  const handleCopyButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    navigator.clipboard.writeText(result?.ratePerHour.toString() ?? '')
-  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -171,10 +166,13 @@ export default function RehydrationTab({
 
       {result && (
         <CalculatorResult
-          result={result.ratePerHour.toString()}
-          unit="ml/hr"
-          comment={`(${result.totalMl}ml를 ${form.watch('time')}시간동안 주입)`}
-          onClick={handleCopyButtonClick}
+          displayResult={
+            <span className="font-bold text-primary">
+              {result.ratePerHour.toString()} ml/hr
+            </span>
+          }
+          copyResult={`${result.ratePerHour} ml/hr`}
+          comment={`${result.totalMl}ml를 ${form.watch('time')}시간 동안 주입`}
         />
       )}
     </div>

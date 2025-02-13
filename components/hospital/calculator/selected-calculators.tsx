@@ -30,6 +30,7 @@ export default function SelectedCalculators({
       {selectedCalculator === 'cri' && (
         <Cri weight={patientData?.vital?.body_weight ?? ''} />
       )}
+
       {selectedCalculator === 'bsa' && (
         <Bsa weight={patientData?.vital?.body_weight ?? ''} />
       )}
