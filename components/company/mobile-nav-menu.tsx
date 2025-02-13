@@ -14,13 +14,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import { Button } from '../ui/button'
-import { NavbarItems } from './homepage-header'
+import { HOMEPAGE_NAVBAR_ITEMS } from '@/constants/company/nav/nav'
 
-export default function MobileNavMenu({
-  navbarItems,
-}: {
-  navbarItems: NavbarItems
-}) {
+export default function MobileNavMenu() {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
   return (
     <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
@@ -43,7 +39,7 @@ export default function MobileNavMenu({
         </SheetHeader>
 
         <ul className="flex flex-col gap-4">
-          {navbarItems.map((item) => (
+          {HOMEPAGE_NAVBAR_ITEMS.map((item) => (
             <li key={item.label}>
               <Link href={item.href} onClick={() => setIsSheetOpen(false)}>
                 {item.label}
