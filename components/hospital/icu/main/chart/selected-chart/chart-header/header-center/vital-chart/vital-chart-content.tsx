@@ -58,7 +58,7 @@ export default function VitalChartContent({
           activeDot={{ r: 6 }}
           isAnimationActive={false}
         >
-          {displayCount <= 15 && (
+          {displayCount <= 50 && (
             <LabelList
               dataKey="value"
               position="top"
