@@ -3,7 +3,6 @@
 import CalculatorResult from '@/components/hospital/calculator/calculator-result'
 import DietComboBox from '@/components/hospital/calculator/rer-mer/diet/diet-combo-box'
 import DietFeedPerDayInput from '@/components/hospital/calculator/rer-mer/diet/diet-feed-per-day-input'
-import { CardContent } from '@/components/ui/card'
 import { cacluateFeedAmount } from '@/lib/calculators/rer-mer'
 import { getDiets } from '@/lib/services/admin/diet/diet'
 import { type Diet } from '@/types/hospital/calculator'

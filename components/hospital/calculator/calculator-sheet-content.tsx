@@ -27,7 +27,7 @@ export default function CalculatorSheetContent({
         setSelectedCalculator={setSelectedCalculator}
       />
 
-      <div className="flex h-full w-full flex-col justify-between gap-2 p-2">
+      <div className="flex h-full w-full flex-col justify-between gap-2 p-3">
         <SelectedCalculators
           selectedCalculator={selectedCalculator}
           patientData={patientData}

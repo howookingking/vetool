@@ -1,7 +1,6 @@
 import DietForm from '@/components/hospital/calculator/rer-mer/diet/diet-form'
 import MerForm from '@/components/hospital/calculator/rer-mer/mer/mer-form'
 import MerToolTip from '@/components/hospital/calculator/rer-mer/mer/mer-tool-tip'
-import { CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import {
   SheetDescription,
@@ -62,7 +61,7 @@ export default function MerTab({ formData, setFormData }: CalculatorTabProps) {
   }, [form, setFormData])
 
   return (
-    <div>
+    <>
       <div>
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2">
@@ -92,6 +91,6 @@ export default function MerTab({ formData, setFormData }: CalculatorTabProps) {
 
         <DietForm mer={result} />
       </div>
-    </div>
+    </>
   )
 }

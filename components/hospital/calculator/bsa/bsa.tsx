@@ -1,37 +1,34 @@
 import BsaToolTip from '@/components/hospital/calculator/bsa/bsa-tool-tip'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import {
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet'
 import { calculateBsa } from '@/lib/calculators/bsa'
-import { type PatientFormData, type Species } from '@/types/hospital/calculator'
-import { type PatientWithWeight } from '@/types/patients'
+import { type PatientFormData } from '@/types/hospital/calculator'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { useEffect, useState } from 'react'
 import CalculatorResult from '../calculator-result'
 
-export default function Bsa({
-  patientData,
-}: {
-  patientData: PatientWithWeight | null
-}) {
+export default function Bsa({ weight }: { weight: string }) {
   const [result, setResult] = useState<number | null>(null)
   const [formData, setFormData] = useState<PatientFormData>({
-    species: (patientData?.patient.species as Species) ?? 'canine',
-    weight: patientData?.vital?.body_weight ?? '',
+    weight: weight,
   })
 
   useEffect(() => {
-    if (patientData) {
+    if (weight) {
       setFormData({
-        species: patientData.patient.species as Species,
-        weight: patientData.vital?.body_weight ?? '0',
+        weight: weight ?? '0',
       })
     }
-  }, [patientData])
+  }, [weight])
 
   useEffect(() => {
     if (formData.weight) {
-      setResult(calculateBsa(formData.species, Number(formData.weight)))
+      setResult(calculateBsa(Number(formData.weight)))
     }
   }, [formData.weight, formData.species])
 
@@ -42,56 +39,35 @@ export default function Bsa({
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          BSA 계산
+    <div className="flex flex-col gap-4">
+      <SheetHeader>
+        <SheetTitle className="flex items-center gap-2">
+          BSA
           <BsaToolTip />
-        </CardTitle>
-      </CardHeader>
+        </SheetTitle>
+        <VisuallyHidden>
+          <SheetDescription />
+        </VisuallyHidden>
+      </SheetHeader>
 
-      <CardContent className="grid grid-cols-2">
-        <div className="space-y-4">
-          <Label>종 선택</Label>
-          <RadioGroup
-            defaultValue={formData.species}
-            orientation="horizontal"
-            className="flex"
-          >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="canine" id="canine" />
-              <Label htmlFor="canine">Canine</Label>
-            </div>
+      <div className="space-y-2">
+        <Label>체중 (kg)</Label>
+        <Input
+          type="number"
+          placeholder="체중을 입력하세요"
+          value={formData.weight}
+          className="w-1/2"
+          onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
+        />
+      </div>
 
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="feline" id="feline" />
-              <Label htmlFor="feline">Feline</Label>
-            </div>
-          </RadioGroup>
-        </div>
-
-        <div className="space-y-2">
-          <Label>체중 (kg)</Label>
-          <Input
-            type="number"
-            placeholder="체중을 입력하세요"
-            value={formData.weight}
-            onChange={(e) =>
-              setFormData({ ...formData, weight: e.target.value })
-            }
-          />
-        </div>
-      </CardContent>
-
-      <CardContent className="pt-4">
-        {result !== null && result >= 0 && (
-          <CalculatorResult
-            result={result.toString()}
-            unit="m²"
-            onClick={handleCopyButtonClick}
-          />
-        )}
-      </CardContent>
-    </Card>
+      {result !== null && result >= 0 && (
+        <CalculatorResult
+          result={result.toString()}
+          unit="m²"
+          onClick={handleCopyButtonClick}
+        />
+      )}
+    </div>
   )
 }

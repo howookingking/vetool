@@ -1,5 +1,4 @@
 import FactorToolTip from '@/components/hospital/calculator/rer-mer/rer-mer-factor-tool-tip'
-import { CardContent } from '@/components/ui/card'
 import {
   Form,
   FormControl,
@@ -9,7 +8,6 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { toast } from '@/components/ui/use-toast'
 import { type MerFormValues } from '@/lib/schemas/calculator/rer-mer-schema'
 import { type PatientFormData } from '@/types/hospital/calculator'
 import { type Dispatch, type MouseEvent, type SetStateAction } from 'react'
@@ -81,7 +79,7 @@ export default function MerForm({
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="inline-flex items-center gap-2">
-                  Factor
+                  Life Stage Factor
                   <FactorToolTip />
                 </FormLabel>
                 <Input
@@ -94,7 +92,7 @@ export default function MerForm({
                   }}
                   type="number"
                   value={field.value}
-                  placeholder="Factor를 입력해주세요 (하단 표 참고)"
+                  placeholder="Factor를 입력해주세요"
                 />
                 <FormMessage />
               </FormItem>
