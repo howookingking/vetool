@@ -10,6 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { VITALS } from '@/constants/hospital/icu/chart/vital'
 import { getVitalTxData } from '@/lib/services/icu/chart/vitals'
 import type { VitalData } from '@/types/icu/chart'
@@ -82,9 +83,11 @@ export default function VitalChartDialog({ patientId, inDate }: Props) {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="flex h-[90vh] w-[95vw] max-w-[95vw]">
-        <DialogTitle className="hidden" />
-        <DialogDescription className="hidden" />
+      <DialogContent className="flex h-[90vh] w-[95vw] max-w-[95vw] gap-0 p-0">
+        <VisuallyHidden>
+          <DialogTitle />
+          <DialogDescription />
+        </VisuallyHidden>
 
         <VitalChartSidebar
           currentVital={currentVital}

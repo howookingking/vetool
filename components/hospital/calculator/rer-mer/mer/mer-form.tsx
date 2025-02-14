@@ -1,5 +1,4 @@
 import FactorToolTip from '@/components/hospital/calculator/rer-mer/rer-mer-factor-tool-tip'
-import { CardContent } from '@/components/ui/card'
 import {
   Form,
   FormControl,
@@ -9,10 +8,9 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { toast } from '@/components/ui/use-toast'
 import { type MerFormValues } from '@/lib/schemas/calculator/rer-mer-schema'
 import { type PatientFormData } from '@/types/hospital/calculator'
-import { type Dispatch, type MouseEvent, type SetStateAction } from 'react'
+import { type Dispatch, type SetStateAction } from 'react'
 import { type UseFormReturn } from 'react-hook-form'
 import CalculatorResult from '../../calculator-result'
 
@@ -29,18 +27,10 @@ export default function MerForm({
   rer,
   result,
 }: MerFormProps) {
-  const handleCopyButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-
-    if (result) {
-      navigator.clipboard.writeText(result.toString())
-    }
-  }
-
   return (
-    <Form {...form}>
-      <form>
-        <CardContent className="grid grid-cols-2 gap-2">
+    <div className="flex flex-col gap-4">
+      <Form {...form}>
+        <form className="grid grid-cols-2 gap-2">
           <FormField
             control={form.control}
             name="weight"
@@ -81,7 +71,7 @@ export default function MerForm({
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="inline-flex items-center gap-2">
-                  Factor
+                  Life Stage Factor
                   <FactorToolTip />
                 </FormLabel>
                 <Input
@@ -94,24 +84,25 @@ export default function MerForm({
                   }}
                   type="number"
                   value={field.value}
-                  placeholder="Factor를 입력해주세요 (하단 표 참고)"
+                  placeholder="Factor를 입력해주세요"
                 />
                 <FormMessage />
               </FormItem>
             )}
           />
-        </CardContent>
+        </form>
+      </Form>
 
-        <CardContent>
-          {result !== null && result > 0 && (
-            <CalculatorResult
-              result={result.toString()}
-              unit="kcal/day"
-              onClick={handleCopyButtonClick}
-            />
-          )}
-        </CardContent>
-      </form>
-    </Form>
+      {result !== null && result > 0 && (
+        <CalculatorResult
+          displayResult={
+            <span className="font-bold text-primary">
+              {result.toString()} kcal/day
+            </span>
+          }
+          copyResult={`${result.toString()} kcal/day`}
+        />
+      )}
+    </div>
   )
 }

@@ -2,20 +2,22 @@ import VitalChartDateTick from '@/components/hospital/icu/main/chart/selected-ch
 import VitalChartTooltip from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-center/vital-chart/vital-chart-tooltip'
 import { ChartContainer, ChartTooltip } from '@/components/ui/chart'
 import { CHART_CONFIG } from '@/constants/hospital/icu/chart/vital'
-import type { VitalChartData } from '@/types/icu/chart'
-import { LineChart, Line, CartesianGrid, LabelList, XAxis } from 'recharts'
+import { type VitalChartData } from '@/types/icu/chart'
+import { CartesianGrid, LabelList, Line, LineChart, XAxis } from 'recharts'
+
+type Props = {
+  formattedData: VitalChartData[]
+  displayCount: number
+  currentVital: string
+  inDate: string
+}
 
 export default function VitalChartContent({
   formattedData,
   displayCount,
   currentVital,
   inDate,
-}: {
-  formattedData: VitalChartData[]
-  displayCount: number
-  currentVital: string
-  inDate: string
-}) {
+}: Props) {
   const barColor = Object.values(CHART_CONFIG).find(
     (item) => item.label === currentVital,
   )?.color

@@ -1,47 +1,29 @@
-import CriCalculator from '@/components/hospital/calculator/cri/cri-calculator'
+import { Accordion } from '@/components/ui/accordion'
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { CRI_DRUGS } from '@/constants/hospital/icu/calculator/calculator'
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet'
+import DisabledFeedbackButton from '../../common/disabled-feedback-button'
+import DobutamineCri from './drugs/dobutamine-cri'
+import FurosemideCri from './drugs/furosemide-cri'
 
 export default function Cri({ weight }: { weight: string }) {
   return (
-    <Card className="h-full">
-      <CardHeader>
-        <CardTitle>CRI</CardTitle>
-        <CardDescription>약물 CRI을 계산합니다</CardDescription>
-      </CardHeader>
+    <div className="h-full">
+      <SheetHeader>
+        <SheetTitle>CRI</SheetTitle>
+        <SheetDescription className="flex items-center gap-2">
+          필요한 약물은
+          <DisabledFeedbackButton />
+        </SheetDescription>
+      </SheetHeader>
 
-      <CardContent>
-        <Accordion type="multiple">
-          {CRI_DRUGS.map((drug) => (
-            <AccordionItem key={drug.label} value={drug.label}>
-              <AccordionTrigger>
-                <div className="flex flex-col items-start">
-                  <span>{drug.label}</span>
-                  <span className="text-xs text-muted-foreground">
-                    {drug.volumne}
-                  </span>
-                </div>
-              </AccordionTrigger>
+      <Accordion type="multiple">
+        <FurosemideCri weight={weight} />
 
-              <AccordionContent>
-                <CriCalculator weight={weight} drug={drug.value} />
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
-      </CardContent>
-    </Card>
+        <DobutamineCri weight={weight} />
+      </Accordion>
+    </div>
   )
 }

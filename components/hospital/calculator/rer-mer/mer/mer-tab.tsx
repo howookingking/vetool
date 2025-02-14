@@ -1,13 +1,13 @@
 import DietForm from '@/components/hospital/calculator/rer-mer/diet/diet-form'
 import MerForm from '@/components/hospital/calculator/rer-mer/mer/mer-form'
 import MerToolTip from '@/components/hospital/calculator/rer-mer/mer/mer-tool-tip'
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import DisabledFeedbackButton from '@/components/hospital/common/disabled-feedback-button'
 import { Separator } from '@/components/ui/separator'
+import {
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet'
 import { calculateMer, calculateRer } from '@/lib/calculators/rer-mer'
 import {
   merFormSchema,
@@ -15,6 +15,7 @@ import {
 } from '@/lib/schemas/calculator/rer-mer-schema'
 import { type CalculatorTabProps } from '@/types/hospital/calculator'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -61,31 +62,38 @@ export default function MerTab({ formData, setFormData }: CalculatorTabProps) {
   }, [form, setFormData])
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <span>MER</span>
-          <MerToolTip />
-        </CardTitle>
-      </CardHeader>
+    <>
+      <div>
+        <SheetHeader>
+          <SheetTitle className="flex items-center gap-2">
+            <span>MER</span>
+            <MerToolTip />
+          </SheetTitle>
+          <VisuallyHidden>
+            <SheetDescription />
+          </VisuallyHidden>
+        </SheetHeader>
 
-      <MerForm
-        form={form}
-        setFormData={setFormData}
-        rer={rer}
-        result={result}
-      />
+        <MerForm
+          form={form}
+          setFormData={setFormData}
+          rer={rer}
+          result={result}
+        />
+      </div>
 
-      <Separator className="my-1" />
+      <Separator className="my-4" />
 
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <span>사료 계산</span>
-        </CardTitle>
-        <CardDescription>검색되지 않는 사료는 문의해주세요</CardDescription>
-      </CardHeader>
+      <div>
+        <SheetTitle className="flex items-center gap-2">
+          <span>사료량</span>
+        </SheetTitle>
+        <SheetDescription className="flex items-center gap-2">
+          추가가 필요한 사료는 <DisabledFeedbackButton />
+        </SheetDescription>
 
-      <DietForm mer={result} />
-    </Card>
+        <DietForm mer={result} />
+      </div>
+    </>
   )
 }
