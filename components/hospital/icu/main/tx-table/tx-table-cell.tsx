@@ -1,7 +1,6 @@
 import OrderTypeColorDot from '@/components/hospital/common/order/order-type-color-dot'
 import { Button } from '@/components/ui/button'
 import { TableCell } from '@/components/ui/table'
-import useIsMobile from '@/hooks/use-is-mobile'
 import { TxLocalState } from '@/lib/store/icu/icu-tx'
 import { IcuOrderColors } from '@/types/adimin'
 import { TxLog } from '@/types/icu/chart'
@@ -31,7 +30,6 @@ export default function TxTableCell({
   const { hos_id, target_date } = useParams()
   const { push } = useRouter()
   const searchParams = useSearchParams()
-  const isMobile = useIsMobile()
 
   const isOrderScheduled = order.icu_chart_order_time[time - 1] !== '0'
   const isTxCompleted = order.treatments.some(
@@ -75,13 +73,10 @@ export default function TxTableCell({
     if (!isOrderScheduled) return
 
     const params = new URLSearchParams(searchParams)
-    if (isMobile) {
-      push(`/hospital/${hos_id}/icu/${target_date}/chart/${patientId}`)
-    } else {
-      push(
-        `/hospital/${hos_id}/icu/${target_date}/chart/${patientId}?order-id=${order.icu_chart_order_id}&time=${time}&${params}`,
-      )
-    }
+
+    push(
+      `/hospital/${hos_id}/icu/${target_date}/chart/${patientId}?order-id=${order.icu_chart_order_id}&time=${time}&${params}`,
+    )
   }
 
   return (
