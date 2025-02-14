@@ -1,37 +1,55 @@
 import { Button } from '@/components/ui/button'
 import { ArrowLeftToLine, ArrowRightFromLine } from 'lucide-react'
 import { type Dispatch, type SetStateAction } from 'react'
+import useIsMobile from '@/hooks/use-is-mobile'
+import {
+  DESKTOP_WIDTH_SEQUENCE,
+  MOBILE_WIDTH_SEQUENCE,
+} from '@/constants/hospital/icu/chart/order'
+import {
+  type DesktopOrderWidth,
+  type MobileOrderWidth,
+  type OrderWidth,
+} from '@/types/hospital/order'
 
-export const WIDTH_SEQUENCE = [300, 400, 500, 600] as const
-export type OrderWidth = (typeof WIDTH_SEQUENCE)[number]
-
-type OrderWidthButtonProps = {
+type Props = {
   orderWidth: OrderWidth
   setOrderWidth: Dispatch<SetStateAction<OrderWidth>>
 }
 
-export default function OrderWidthButton({
-  orderWidth,
-  setOrderWidth,
-}: OrderWidthButtonProps) {
-  const getNextWidth = (currentWidth: OrderWidth): OrderWidth => {
-    const currentIndex = WIDTH_SEQUENCE.indexOf(currentWidth)
-    const nextIndex = (currentIndex + 1) % WIDTH_SEQUENCE.length
-    return WIDTH_SEQUENCE[nextIndex]
+export default function OrderWidthButton({ orderWidth, setOrderWidth }: Props) {
+  const isMobile = useIsMobile()
+  const widthSequence = isMobile
+    ? MOBILE_WIDTH_SEQUENCE
+    : DESKTOP_WIDTH_SEQUENCE
+
+  const getNextWidth = (currentWidth: OrderWidth) => {
+    if (isMobile) {
+      const sequence = MOBILE_WIDTH_SEQUENCE
+      const currentIndex = sequence.indexOf(currentWidth as MobileOrderWidth)
+      const nextIndex = (currentIndex + 1) % sequence.length
+
+      return sequence[nextIndex]
+    }
+
+    const sequence = DESKTOP_WIDTH_SEQUENCE
+    const currentIndex = sequence.indexOf(currentWidth as DesktopOrderWidth)
+    const nextIndex = (currentIndex + 1) % sequence.length
+    return sequence[nextIndex]
   }
 
   const handleOrderWidthChange = () => {
     setOrderWidth(getNextWidth(orderWidth))
   }
 
-  const isMaxWidth = orderWidth === WIDTH_SEQUENCE[WIDTH_SEQUENCE.length - 1]
+  const isMaxWidth = orderWidth === widthSequence[widthSequence.length - 1]
 
   return (
     <Button
       variant="ghost"
       size="icon"
       onClick={handleOrderWidthChange}
-      className="hidden shrink-0 md:inline-flex"
+      className="shrink-0"
     >
       {isMaxWidth ? (
         <ArrowLeftToLine size={18} />
