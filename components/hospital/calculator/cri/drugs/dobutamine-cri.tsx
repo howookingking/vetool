@@ -8,42 +8,39 @@ import { Label } from '@/components/ui/label'
 import { useState } from 'react'
 import CalculatorResult from '../../calculator-result'
 
-const FUROSEMIDE_CONCENTRATION = 10
+const DOBUTAMINE_CONCENTRATION = 50
 
-export default function FurosemideCri({ weight }: { weight: string }) {
-  // fluidVol에 furosemideVol를 넣고 fluidRate 속도로 투여
-  // fluidVol + furosemideVol = totalVol
-  // furosemideDoseRate = 0.2 ~ 1 mg/kg/hr
-  const [furosemideDoseRate, setFurosemideDoseRate] = useState('1')
+export default function DobutamineCri({ weight }: { weight: string }) {
+  // fluidVol에 dobutamineVol를 넣고 fluidRate 속도로 투여
+  // fluidVol + dobutamineVol = totalVol
+  // dobutamineDose = 개: 5 ~ 20, 고양이: 1 ~ 5 ug/kg/hr
+  const [dobutamineDose, setDobutamineDose] = useState('5')
   const [syringeVol, setSyringeVol] = useState('30')
   const [fluidRate, setFluidRate] = useState('2')
   const [localWeight, setLocalWeight] = useState(weight)
 
-  // 1. 시간당 필요한 퓨로세미드 용량 계산 (mg/hr)
-  const hourlyDose = Number(furosemideDoseRate) * Number(localWeight)
+  // 1. 시간당 필요한 도부타민 용량 계산 (mg/hr)
+  const hourlyDose = (Number(dobutamineDose) * Number(localWeight) * 60) / 1000
 
-  // 2. 시간당 필요한 퓨로세미드 원액 용량 계산 (ml/hr)
-  const hourlyVolume = hourlyDose / FUROSEMIDE_CONCENTRATION
+  // 2. 시간당 필요한 도부타민 원액 용량 계산 (ml/hr)
+  const hourlyVolume = hourlyDose / DOBUTAMINE_CONCENTRATION
 
-  // 3. 주사기 용량에 맞춰 퓨로세미드와 수액의 비율 계산
-  // 총 주입량 = fluidRate ml/hr
-  // 이 중 퓨로세미드가 hourlyVolume ml/hr
-  // hourlyVolume : fluidRate = x : syringeVolume
-  const furosemideVol = (
-    (Number(hourlyVolume) * Number(syringeVol)) /
-    Number(fluidRate)
+  // 3. 최종 첨가할 도부타민 용량 계산 (ml)
+  // (syringeVolume + x) : fluidRate = x : hourlyVolume
+  // x = (syringeVolume * hourlyVolume) / (fluidRate - hourlyVolume)
+  const dobutamineVol = (
+    (Number(syringeVol) * hourlyVolume) /
+    (Number(fluidRate) - hourlyVolume)
   ).toFixed(2)
 
-  const fluidVol = (Number(syringeVol) - Number(furosemideVol)).toFixed(2)
-
   return (
-    <AccordionItem value="furosemide">
-      <AccordionTrigger>Furosemide (10mg/1ml)</AccordionTrigger>
+    <AccordionItem value="dobutamine">
+      <AccordionTrigger>Dobutamine (50mg/1mL)</AccordionTrigger>
 
       <AccordionContent className="space-y-4 px-1">
         <div className="grid grid-cols-2 gap-2">
           <div className="relative">
-            <Label htmlFor="weight">체중</Label>
+            <Label htmlFor="weight">체중 </Label>
             <Input
               type="number"
               id="weight"
@@ -58,17 +55,19 @@ export default function FurosemideCri({ weight }: { weight: string }) {
           </div>
 
           <div className="relative">
-            <Label htmlFor="furosemideDose">약물 용량 (0.2 ~ 1)</Label>
+            <Label htmlFor="dobutamineDose">
+              약물 용량 (개: 5 ~ 20, 고양이: 1 ~ 5)
+            </Label>
             <Input
               type="number"
-              id="furosemideDose"
+              id="dobutamineDose"
               className="mt-1"
-              value={furosemideDoseRate}
-              onChange={(e) => setFurosemideDoseRate(e.target.value)}
-              placeholder="퓨로세마이드 용량"
+              value={dobutamineDose}
+              onChange={(e) => setDobutamineDose(e.target.value)}
+              placeholder="도부타민 용량"
             />
             <span className="absolute bottom-2 right-2 text-muted-foreground">
-              mg/kg/hr
+              μg/kg/min
             </span>
           </div>
 
@@ -103,21 +102,21 @@ export default function FurosemideCri({ weight }: { weight: string }) {
           </div>
         </div>
 
-        {Number(fluidVol) > 0 && Number(furosemideVol) > 0 && (
+        {Number(dobutamineVol) > 0 && (
           <CalculatorResult
             displayResult={
               <div>
                 수액{' '}
-                <span className="font-bold text-primary">{fluidVol}ml</span> +
-                Furosemide{' '}
+                <span className="font-bold text-primary">{syringeVol}ml</span> +
+                Dobutamine{' '}
                 <span className="font-bold text-primary">
-                  {furosemideVol}ml
+                  {dobutamineVol}ml
                 </span>{' '}
                 , FR :{' '}
                 <span className="font-bold text-primary">{fluidRate}ml/hr</span>{' '}
               </div>
             }
-            copyResult={`수액 ${fluidVol}ml + Furosemide ${furosemideVol}ml , FR : ${fluidRate}ml/hr`}
+            copyResult={`수액 ${syringeVol}ml + Dobutamine ${dobutamineVol}ml , FR : ${fluidRate}ml/hr`}
           />
         )}
       </AccordionContent>
