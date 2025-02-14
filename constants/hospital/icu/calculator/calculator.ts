@@ -1,30 +1,3 @@
-export const CALCULATORS = [
-  {
-    value: 'counter',
-    label: '심박수, 호흡수 측정',
-  },
-  {
-    value: 'fluid-rate',
-    label: '수액속도',
-  },
-  {
-    value: 'rer-mer',
-    label: 'RER, MER / 사료량',
-  },
-  {
-    value: 'cri',
-    label: 'CRI',
-  },
-  {
-    value: 'bsa',
-    label: 'BSA',
-  },
-  // {
-  //   value: 'chocolate',
-  //   label: '테오브로민(초콜릿) 계산',
-  // },
-] as const
-
 export const CRI_DRUGS = [
   {
     label: 'Furosemide (20mg/2ml = 10mg/1ml)',
@@ -36,11 +9,11 @@ export const CRI_DRUGS = [
     volumne: '(개: 5 ~ 20ug/kg/min, 고양이: 1 ~ 5ug/kg/min)',
     value: 'Dobutamine',
   },
-  // {
-  //   label: 'Metoclopramide (5mg/ml)',
-  //   volumne: '(0.01 ~ 0.09 mg/kg/hr)',
-  //   value: 'Metroclopramide',
-  // },
+  {
+    label: 'Metoclopramide (5mg/ml)',
+    volumne: '(0.01 ~ 0.09 mg/kg/hr)',
+    value: 'Metroclopramide',
+  },
   // {
   //   label: 'Bicarbonate (1mEq/ml)',
   //   volumne: '',

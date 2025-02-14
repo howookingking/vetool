@@ -1,11 +1,10 @@
 import { Accordion } from '@/components/ui/accordion'
-import { Button } from '@/components/ui/button'
 import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
-import { MessageCircle } from 'lucide-react'
+import DisabledFeedbackButton from '../../common/disabled-feedback-button'
 import DobutamineCri from './drugs/dobutamine-cri'
 import FurosemideCri from './drugs/furosemide-cri'
 
@@ -16,14 +15,7 @@ export default function Cri({ weight }: { weight: string }) {
         <SheetTitle>CRI</SheetTitle>
         <SheetDescription className="flex items-center gap-2">
           필요한 약물은
-          <Button
-            variant="outline"
-            size="icon"
-            className="cursor-default rounded-full"
-          >
-            <MessageCircle />
-          </Button>
-          으로 말씀해주세요
+          <DisabledFeedbackButton />
         </SheetDescription>
       </SheetHeader>
 

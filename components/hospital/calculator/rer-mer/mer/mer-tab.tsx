@@ -1,6 +1,7 @@
 import DietForm from '@/components/hospital/calculator/rer-mer/diet/diet-form'
 import MerForm from '@/components/hospital/calculator/rer-mer/mer/mer-form'
 import MerToolTip from '@/components/hospital/calculator/rer-mer/mer/mer-tool-tip'
+import DisabledFeedbackButton from '@/components/hospital/common/disabled-feedback-button'
 import { Separator } from '@/components/ui/separator'
 import {
   SheetDescription,
@@ -85,9 +86,11 @@ export default function MerTab({ formData, setFormData }: CalculatorTabProps) {
 
       <div>
         <SheetTitle className="flex items-center gap-2">
-          <span>사료 계산</span>
+          <span>사료량</span>
         </SheetTitle>
-        <SheetDescription>검색되지 않는 사료는 문의해주세요</SheetDescription>
+        <SheetDescription className="flex items-center gap-2">
+          추가가 필요한 사료는 <DisabledFeedbackButton />
+        </SheetDescription>
 
         <DietForm mer={result} />
       </div>

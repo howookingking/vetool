@@ -49,7 +49,7 @@ export default function DietComboBox({
               {selectedDiet
                 ? mappedDietList.find((diet) => diet.value === selectedDiet)
                     ?.label
-                : '계산할 사료 선택'}
+                : '사료 선택'}
             </span>
             <ChevronsUpDown className="opacity-50" />
           </Button>
