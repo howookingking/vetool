@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { type TxLocalState } from '@/lib/store/icu/tx-mutation'
+import { type TxLocalState } from '@/lib/store/icu/icu-tx'
 import { Image as ImageIcon } from 'lucide-react'
 
 type TxImageUploadDialogProps = {

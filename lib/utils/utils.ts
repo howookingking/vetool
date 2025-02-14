@@ -263,7 +263,7 @@ export const sortOrders = (orders: SelectedIcuOrder[]): SelectedIcuOrder[] => {
     )
 }
 
-export const hasOrderSortingChanges = (
+export const hasOrderSortingChanged = (
   prevOrders: SelectedIcuOrder[],
   sortedOrders: SelectedIcuOrder[],
 ) => {

@@ -1,7 +1,7 @@
 import TxImageViewDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/detail-insert-step/images/view/tx-image-view-dialog'
 import TxImageUploadDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/detail-insert-step/images/upload/tx-image-upload-dialog'
 import { Label } from '@/components/ui/label'
-import { type TxLocalState } from '@/lib/store/icu/tx-mutation'
+import { type TxLocalState } from '@/lib/store/icu/icu-tx'
 import { type ImageUrlResponse } from '@/types/images'
 import { Dispatch, SetStateAction, useState } from 'react'
 

@@ -1,11 +1,11 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import type {
-  PaginatedData,
-  PatientDataTable,
-  SearchedPatientsData,
-  PatientWithWeight,
+import {
+  type PaginatedData,
+  type PatientDataTable,
+  type SearchedPatientsData,
+  type PatientWithWeight,
 } from '@/types/patients'
 import { redirect } from 'next/navigation'
 

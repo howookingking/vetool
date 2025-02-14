@@ -4,27 +4,27 @@ import MemoTimeStamp from '@/components/hospital/icu/main/chart/selected-chart/c
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
 import { MEMO_COLORS } from '@/constants/hospital/icu/chart/colors'
-import type { Memo } from '@/types/icu/chart'
+import { type Memo } from '@/types/icu/chart'
 import { Check, GripVertical, Pencil } from 'lucide-react'
 import React, { useEffect, useRef, useState } from 'react'
 
-type SingleMemoProps = {
+type Props = {
   memo: Memo
   onDelete: () => void
   handleEditMemo: (editedMemo: Memo, memoIndex: number) => Promise<void>
   memoIndex: number
 }
 
-const SingleMemo = React.forwardRef<HTMLLIElement, SingleMemoProps>(
+const SingleMemo = React.forwardRef<HTMLLIElement, Props>(
   ({ memo, onDelete, handleEditMemo, memoIndex }, ref) => {
     const [isEditMode, setIsEditMode] = useState(false)
-    const editingTextAreaRef = useRef<HTMLTextAreaElement>(null)
-
     const [editedMemo, setEditedMemo] = useState(memo.memo)
     const [editedMemoColor, setEditedMemoColor] = useState(memo.color)
     const [editedCreateTimestamp, setEditedCreateTimestamp] = useState(
       memo.create_timestamp,
     )
+
+    const editingTextAreaRef = useRef<HTMLTextAreaElement>(null)
 
     useEffect(() => {
       if (isEditMode && editingTextAreaRef.current) {
@@ -70,7 +70,7 @@ const SingleMemo = React.forwardRef<HTMLLIElement, SingleMemoProps>(
 
     return (
       <li
-        className="relative flex w-full items-center px-2"
+        className="relative flex w-full items-center rounded-md px-2"
         ref={ref}
         style={{
           backgroundColor: editedMemoColor ?? MEMO_COLORS[0],

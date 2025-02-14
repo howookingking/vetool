@@ -143,6 +143,10 @@ export const parseVitalValue = (
       return parseWithDefault(result)
 
     case '호흡수':
+      if (result?.includes('sr')) {
+        return parseWithDefault(result.split('sr')[0].trim())
+      }
+
       if (
         result?.toLowerCase().includes('panting') ||
         result?.toLowerCase().includes('p')

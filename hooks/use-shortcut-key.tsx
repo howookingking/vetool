@@ -1,16 +1,20 @@
 import { useEffect } from 'react'
 
-export default function useShorcutKey({
-  keys,
-  condition = true,
-  callback,
-  ignoreInput = false,
-}: {
-  keys: string[]
+type UseShortcutKeyProps = {
+  key: string
   condition?: boolean
   callback: () => void
   ignoreInput?: boolean
-}) {
+  requireCtrl?: boolean
+}
+
+export default function useShortcutKey({
+  key,
+  condition = true,
+  callback,
+  ignoreInput = false,
+  requireCtrl = true,
+}: UseShortcutKeyProps) {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       // Don't trigger for input fields
@@ -22,11 +26,15 @@ export default function useShorcutKey({
       ) {
         return
       }
-      if (
-        condition &&
-        (event.ctrlKey || event.metaKey) &&
-        keys.includes(event.key.toLowerCase())
-      ) {
+
+      const ctrlPressed = event.ctrlKey || event.metaKey
+      const keyMatches = event.key === key
+
+      const isValidCombination = requireCtrl
+        ? ctrlPressed && keyMatches
+        : keyMatches
+
+      if (condition && isValidCombination) {
         event.stopPropagation()
         event.preventDefault()
         callback()
@@ -37,5 +45,5 @@ export default function useShorcutKey({
     window.addEventListener('keydown', handleKeyDown, { capture: true })
     return () =>
       window.removeEventListener('keydown', handleKeyDown, { capture: true })
-  }, [callback, keys])
+  }, [callback, key, condition, ignoreInput, requireCtrl])
 }

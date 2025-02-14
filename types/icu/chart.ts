@@ -58,6 +58,7 @@ export type SelectedChart = Pick<
   | 'der_calc_factor'
   | 'main_vet'
   | 'urgency'
+  | 'hos_id'
 > & {
   icu_io: SelectedChartIcuIo
 } & {
@@ -192,6 +193,12 @@ export type Memo = {
   edit_timestamp: string | null
   color: string
   chosen?: boolean
+}
+
+export type MemoGroup = {
+  a: Memo[]
+  b: Memo[]
+  c: Memo[]
 }
 
 export type IcuShareData = Omit<SelectedChart, 'orders'> & {

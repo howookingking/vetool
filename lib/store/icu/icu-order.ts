@@ -4,6 +4,10 @@ import { create } from 'zustand'
 export type OrderTimePendingQueue = {
   orderTime: number
   orderId: string
+}
+export type TxPendingQueue = {
+  orderTime: number
+  orderId: string
   txId?: string
   txLog?: TxLog[] | null
   isCrucialChecked?: boolean
@@ -39,11 +43,9 @@ type IcuOrderState = {
       | ((prev: OrderTimePendingQueue[]) => OrderTimePendingQueue[]),
   ) => void
 
-  selectedTxPendingQueue: OrderTimePendingQueue[]
+  selectedTxPendingQueue: TxPendingQueue[]
   setSelectedTxPendingQueue: (
-    updater:
-      | OrderTimePendingQueue[]
-      | ((prev: OrderTimePendingQueue[]) => OrderTimePendingQueue[]),
+    updater: TxPendingQueue[] | ((prev: TxPendingQueue[]) => TxPendingQueue[]),
   ) => void
 
   reset: () => void

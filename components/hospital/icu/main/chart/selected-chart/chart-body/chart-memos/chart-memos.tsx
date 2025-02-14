@@ -3,57 +3,60 @@
 import HideAndShowButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/hide-and-show-button'
 import MemoGroup from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/memo-group'
 import SortMemoButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/sort-memo-button'
-import { Separator } from '@/components/ui/separator'
 import useLocalStorage from '@/hooks/use-local-storage'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import type { Memo } from '@/types/icu/chart'
+import { type Memo } from '@/types/icu/chart'
 import { useState } from 'react'
 
-export default function ChartMemos({
-  memoA,
-  memoB,
-  memoC,
-  icuIoId,
-}: {
+type Props = {
   memoA: Memo[] | null
   memoB: Memo[] | null
   memoC: Memo[] | null
   icuIoId: string
-}) {
-  const [showMemos, setShowMemos] = useState(true)
-  const [sortMemoMethod, setSortMemoMethod] = useLocalStorage('sort', 'desc')
+}
 
+export default function ChartMemos({ memoA, memoB, memoC, icuIoId }: Props) {
   const {
     basicHosData: { memoNameListData },
   } = useBasicHosDataContext()
 
+  const [showMemos, setShowMemos] = useState(true)
+  const [sortMemoMethod, setSortMemoMethod] = useLocalStorage('sort', 'desc')
+  const [memos, setMemos] = useState({
+    a: memoA ?? [],
+    b: memoB ?? [],
+    c: memoC ?? [],
+  })
+
   return (
     <div className="relative">
       {showMemos && (
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
+        <div className="grid grid-cols-3 gap-2">
           <MemoGroup
-            memo={memoA}
-            memoIndex={0}
+            memo={memos.a}
+            memos={memos}
+            setMemos={setMemos}
+            memoId="a"
             icuIoId={icuIoId}
             memoName={memoNameListData[0]}
             sortMemoMethod={sortMemoMethod}
           />
 
-          <Separator className="mt-4 md:hidden" />
-
           <MemoGroup
-            memo={memoB}
-            memoIndex={1}
+            memo={memos.b}
+            memos={memos}
+            setMemos={setMemos}
+            memoId="b"
             icuIoId={icuIoId}
             memoName={memoNameListData[1]}
             sortMemoMethod={sortMemoMethod}
           />
 
-          <Separator className="mt-4 md:hidden" />
-
           <MemoGroup
-            memo={memoC}
-            memoIndex={2}
+            memo={memos.c}
+            memos={memos}
+            setMemos={setMemos}
+            memoId="c"
             icuIoId={icuIoId}
             memoName={memoNameListData[2]}
             sortMemoMethod={sortMemoMethod}

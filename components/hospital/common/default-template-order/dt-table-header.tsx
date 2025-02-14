@@ -1,14 +1,14 @@
+import OrderWidthButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/order-width-button'
+import SortingButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/sorting-button'
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
+import { type OrderWidth } from '@/types/hospital/order'
 import { type SelectedIcuOrder } from '@/types/icu/chart'
 import { type Dispatch, type SetStateAction } from 'react'
-import OrderWidthButton from '../../icu/main/chart/selected-chart/chart-body/table/chart-table-header/order-width-button'
-import SortingButton from '../../icu/main/chart/selected-chart/chart-body/table/chart-table-header/sorting-button'
-
 type DtTableHeaderProps = {
   isSorting: boolean
-  orderWidth: number
-  setOrderWidth: Dispatch<SetStateAction<number>>
+  orderWidth: OrderWidth
+  setOrderWidth: Dispatch<SetStateAction<OrderWidth>>
   sortedOrders: SelectedIcuOrder[]
   setIsSorting: Dispatch<SetStateAction<boolean>>
   defaultChartOrders: SelectedIcuOrder[]
@@ -43,9 +43,8 @@ export default function DtTableHeader({
           <span className="text-center">기본오더</span>
 
           <OrderWidthButton
-            orderWidth={orderWidth as [300, 400, 500, 600][number]}
+            orderWidth={orderWidth}
             setOrderWidth={setOrderWidth}
-            isMobile={false}
           />
         </TableHead>
 

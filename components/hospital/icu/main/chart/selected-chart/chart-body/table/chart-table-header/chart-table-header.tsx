@@ -1,27 +1,24 @@
-import OrderWidthButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/order-width-button'
+import PasteTemplateOrderDialog from '@/components/hospital/icu/main/chart/paste-chart-dialogs/template/paste-template-order-dialog'
 import SortingButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/sorting-button'
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
-import { type OrderStep } from '@/lib/store/icu/icu-order'
 import { cn } from '@/lib/utils/utils'
+import { type DesktopOrderWidth, type OrderWidth } from '@/types/hospital/order'
 import { type SelectedChart, type SelectedIcuOrder } from '@/types/icu/chart'
 import { type Dispatch, type SetStateAction } from 'react'
-import PasteTemplateOrderDialog from '../../../../paste-chart-dialogs/template/paste-template-order-dialog'
+import OrderWidthButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/order-width-button'
 
-type ChartTableHeaderProps = {
+type Props = {
   preview?: boolean
   chartData: SelectedChart
   sortedOrders: SelectedIcuOrder[]
   isSorting: boolean
   setIsSorting: Dispatch<SetStateAction<boolean>>
   isEditOrderMode?: boolean
-  setOrderStep: (orderStep: OrderStep) => void
-  orderWidth: number
+  orderWidth: OrderWidth
   isExport?: boolean
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
-  setOrderWidth: Dispatch<SetStateAction<number>>
-  isMobile: boolean
-  isTouchMove?: boolean
+  setOrderWidth: Dispatch<SetStateAction<OrderWidth>>
   chartId?: string
   hosId: string
 }
@@ -34,16 +31,14 @@ export default function ChartTableHeader({
   setIsSorting,
   orderWidth,
   setOrderWidth,
-  isMobile,
-  isTouchMove,
   chartId,
   hosId,
-}: ChartTableHeaderProps) {
+}: Props) {
   return (
     <TableHeader
       data-guide="order-info"
       className={cn(
-        preview || isMobile ? 'top-0' : 'top-12',
+        preview ? 'top-0' : 'top-12',
         'sticky z-20 bg-white shadow-sm',
       )}
     >
@@ -51,7 +46,7 @@ export default function ChartTableHeader({
         <TableHead
           className="flex items-center justify-between px-0.5 text-center"
           style={{
-            width: isTouchMove ? 200 : isMobile ? 300 : orderWidth,
+            width: orderWidth,
             transition: 'width 0.3s ease-in-out ',
           }}
         >
@@ -66,7 +61,7 @@ export default function ChartTableHeader({
 
           <span className="w-full text-center">오더 목록</span>
 
-          {!preview && (
+          {!preview && !isSorting && (
             <PasteTemplateOrderDialog
               tableHeader
               chartId={chartId}
@@ -74,11 +69,12 @@ export default function ChartTableHeader({
             />
           )}
 
-          <OrderWidthButton
-            orderWidth={orderWidth as [300, 400, 500, 600][number]}
-            setOrderWidth={setOrderWidth}
-            isMobile={isMobile}
-          />
+          {!isSorting && (
+            <OrderWidthButton
+              orderWidth={orderWidth}
+              setOrderWidth={setOrderWidth}
+            />
+          )}
         </TableHead>
 
         {TIMES.map((time) => (

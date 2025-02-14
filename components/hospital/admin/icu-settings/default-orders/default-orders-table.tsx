@@ -8,6 +8,7 @@ import DtSortingOrderRows from '@/components/hospital/common/default-template-or
 import DtTableHeader from '@/components/hospital/common/default-template-order/dt-table-header'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import useLocalStorage from '@/hooks/use-local-storage'
+import { type OrderWidth } from '@/types/hospital/order'
 import { type SelectedIcuOrder } from '@/types/icu/chart'
 import { useEffect, useState } from 'react'
 
@@ -16,7 +17,10 @@ export default function DefaultOrdersTable({
 }: {
   defaultChartOrders: SelectedIcuOrder[]
 }) {
-  const [orderWidth, setOrderWidth] = useLocalStorage('orderWidth', 400)
+  const [orderWidth, setOrderWidth] = useLocalStorage<OrderWidth>(
+    'orderWidth',
+    400,
+  )
 
   const [isSorting, setIsSorting] = useState(false)
   const [sortedOrders, setSortedOrders] =

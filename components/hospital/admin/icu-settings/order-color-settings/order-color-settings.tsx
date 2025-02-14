@@ -1,7 +1,8 @@
 import { toast } from '@/components/ui/use-toast'
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { updateOrderColorSettings } from '@/lib/services/admin/icu/order-color'
-import type { IcuOrderColors } from '@/types/adimin'
+import { type OrderColorDisplay } from '@/providers/basic-hos-data-context-provider'
+import { type IcuOrderColors } from '@/types/adimin'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import IcuSettingsCard from '../icu-settings-card'
@@ -9,31 +10,27 @@ import OrderColorDisplayMethod from './color-display-method/color-display-method
 import OrderColorPickers from './color-picker/order-color-pickers'
 import TableDisplay from './table-display'
 
-export default function OrderColorSettings({
-  orderColorSettings,
-}: {
+type Props = {
   orderColorSettings: {
     order_color: IcuOrderColors
-    order_color_display: string
+    order_color_display: OrderColorDisplay
   }
-}) {
+}
+
+export default function OrderColorSettings({ orderColorSettings }: Props) {
+  const { hos_id } = useParams()
+  const { refresh } = useRouter()
+
   const [isUpdating, setIsUpdating] = useState(false)
   const [localColorState, setLocalColorState] = useState(
     orderColorSettings.order_color,
   )
   const [localColorDisplayMethod, setLocalColorDisplayMethod] = useState(
-    orderColorSettings.order_color_display,
+    orderColorSettings.order_color_display as OrderColorDisplay,
   )
-
-  const { hos_id } = useParams()
-  const { refresh } = useRouter()
 
   const handleOrderColor = (orderType: string, color: string) => {
     setLocalColorState({ ...localColorState, [orderType]: color })
-  }
-
-  const handleOrderColorDisplayMethod = (method: string) => {
-    setLocalColorDisplayMethod(method)
   }
 
   const handleUpdateOrderColor = async () => {
@@ -82,7 +79,7 @@ export default function OrderColorSettings({
         />
 
         <OrderColorDisplayMethod
-          handleOrderColorDisplayMethod={handleOrderColorDisplayMethod}
+          setLocalColorDisplayMethod={setLocalColorDisplayMethod}
           localColorDisplayMethod={localColorDisplayMethod}
         />
       </div>

@@ -2,7 +2,7 @@ import MaintenanceTab from '@/components/hospital/calculator/fluid-rate/maintena
 import RehydrationTab from '@/components/hospital/calculator/fluid-rate/rehydration/rehydration-tab'
 import ResuscitationTab from '@/components/hospital/calculator/fluid-rate/resuscitation/resuscitation-tab'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { PatientFormData, type Species } from '@/types/hospital/calculator'
+import { type PatientFormData, type Species } from '@/types/hospital/calculator'
 import { type PatientWithWeight } from '@/types/patients'
 import { useEffect, useState } from 'react'
 
@@ -38,7 +38,7 @@ export default function FluidRateCalculator({
         <TabsTrigger value="resusitation">Resuscitation</TabsTrigger>
       </TabsList>
 
-      <TabsContent value="maintenance">
+      <TabsContent value="maintenance" className="px-2">
         <MaintenanceTab
           formData={formData}
           setFormData={setFormData}
@@ -47,7 +47,7 @@ export default function FluidRateCalculator({
         />
       </TabsContent>
 
-      <TabsContent value="rehydration">
+      <TabsContent value="rehydration" className="px-2">
         <RehydrationTab
           formData={formData}
           setFormData={setFormData}
@@ -55,7 +55,7 @@ export default function FluidRateCalculator({
         />
       </TabsContent>
 
-      <TabsContent value="resusitation">
+      <TabsContent value="resusitation" className="px-2">
         <ResuscitationTab
           formData={formData}
           setFormData={setFormData}

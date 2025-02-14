@@ -9,33 +9,31 @@ import {
   OrderTimePendingQueue,
   useIcuOrderStore,
 } from '@/lib/store/icu/icu-order'
-import { useTxMutationStore } from '@/lib/store/icu/tx-mutation'
+import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
 import { borderedOrderClassName } from '@/lib/utils/utils'
-import type { VitalRefRange } from '@/types/adimin'
-import type { SelectedIcuOrder } from '@/types/icu/chart'
-import { RefObject } from 'react'
+import { type VitalRefRange } from '@/types/adimin'
+import { type SelectedIcuOrder } from '@/types/icu/chart'
+import { type RefObject } from 'react'
 
-type CellsRowTitlesProps = {
+type Props = {
   sortedOrders: SelectedIcuOrder[]
   isSorting: boolean
   preview?: boolean
   showOrderer: boolean
   showTxUser: boolean
   selectedTxPendingQueue: OrderTimePendingQueue[]
-  orderStep: OrderStep
   orderTimePendingQueueLength: number
   vitalRefRange: VitalRefRange[]
   species: string
   orderwidth: number
-  isMobile: boolean
   cellRef?: RefObject<HTMLTableRowElement>
-  isTouchMove?: boolean
   icuChartId: string
   hosId: string
   setOrderStep: (orderStep: OrderStep) => void
   selectedOrderPendingQueue: Partial<SelectedIcuOrder>[]
-  reset: () => void
+  resetOrderStore: () => void
   timeGuidelineData: number[]
+  orderTimePendingQueue: OrderTimePendingQueue[]
 }
 
 export default function OrderRows({
@@ -45,24 +43,19 @@ export default function OrderRows({
   showOrderer,
   showTxUser,
   selectedTxPendingQueue,
-  orderStep,
   orderTimePendingQueueLength,
   vitalRefRange,
   species,
   orderwidth,
   cellRef,
-  isTouchMove,
-  isMobile,
   icuChartId,
   hosId,
   setOrderStep,
   selectedOrderPendingQueue,
-  reset,
+  resetOrderStore,
   timeGuidelineData,
-}: CellsRowTitlesProps) {
-  // 세로 hover 가이드라인 기능 없에고 반응보기로
-  // const { handleColumnHover, handleColumnLeave, hoveredColumn } =
-  //   useVerticalGuideline()
+  orderTimePendingQueue,
+}: Props) {
   const {
     setSelectedChartOrder,
     setSelectedOrderPendingQueue,
@@ -76,10 +69,10 @@ export default function OrderRows({
     setIsMutationCanceled,
     setTxStep,
     setTxLocalState,
-  } = useTxMutationStore()
+  } = useIcuTxStore()
 
   useShorcutKey({
-    keys: ['v'],
+    key: 'v',
     condition: copiedOrderPendingQueue.length > 0,
     callback: showOrderer
       ? () => setOrderStep('selectOrderer')
@@ -99,7 +92,7 @@ export default function OrderRows({
     toast({
       title: '오더를 붙여넣었습니다',
     })
-    reset()
+    resetOrderStore()
   }
 
   return (
@@ -124,9 +117,7 @@ export default function OrderRows({
               vitalRefRange={vitalRefRange}
               species={species}
               orderWidth={orderwidth}
-              isTouchMove={isTouchMove}
-              isMobile={isMobile}
-              reset={reset}
+              resetOrderStore={resetOrderStore}
               setSelectedOrderPendingQueue={setSelectedOrderPendingQueue}
               setOrderStep={setOrderStep}
               setSelectedChartOrder={setSelectedChartOrder}
@@ -139,7 +130,6 @@ export default function OrderRows({
               showOrderer={showOrderer}
               showTxUser={showTxUser}
               selectedTxPendingQueue={selectedTxPendingQueue}
-              orderStep={orderStep}
               orderTimePendingQueueLength={orderTimePendingQueueLength}
               vitalRefRange={vitalRefRange}
               species={species}
@@ -150,6 +140,7 @@ export default function OrderRows({
               setTxStep={setTxStep}
               setTxLocalState={setTxLocalState}
               timeGuidelineData={timeGuidelineData}
+              orderTimePendingQueue={orderTimePendingQueue}
             />
           </TableRow>
         )

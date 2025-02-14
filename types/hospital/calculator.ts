@@ -1,19 +1,19 @@
-import { CALCULATORS } from '@/constants/hospital/icu/calculator/calcularor'
+import { CALCULATORS } from '@/constants/hospital/icu/calculator/calculator'
 import { Dispatch, SetStateAction } from 'react'
 
 export type Species = 'canine' | 'feline'
 
 export type CalcMethod = 'a' | 'b' | 'c'
 
-export type FOLD = '1' | '1.5' | '2' | '2.5' | '3'
+export type Fold = '1' | '1.5' | '2' | '2.5' | '3'
 
 export type SelectedCalculator = (typeof CALCULATORS)[number]['value']
 
 export type PatientFormData = {
-  species: Species
+  species?: Species
   weight: string
   calcMethod?: CalcMethod
-  fold?: FOLD
+  fold?: Fold
   factor?: string
 }
 
