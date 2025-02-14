@@ -73,7 +73,7 @@ export default function FurosemideCri({ weight }: { weight: string }) {
           </div>
 
           <div className="relative">
-            <Label htmlFor="syringeVol">사용할 주사기 (cc)</Label>
+            <Label htmlFor="syringeVol">사용할 주사기</Label>
             <Input
               type="number"
               id="syringeVol"
@@ -88,7 +88,7 @@ export default function FurosemideCri({ weight }: { weight: string }) {
           </div>
 
           <div className="relative">
-            <Label htmlFor="fluidRate">수액 속도 (ml/hr)</Label>
+            <Label htmlFor="fluidRate">수액 속도</Label>
             <Input
               type="number"
               id="fluidRate"
