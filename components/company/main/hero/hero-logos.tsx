@@ -1,7 +1,7 @@
 'use client'
 
 import { ArrowUpRight } from 'lucide-react'
-import TranslateWrapper from '@/components/company/hero/ui/translate-wrapper'
+import TranslateWrapper from '@/components/company/main/hero/ui/translate-wrapper'
 
 const HOSPITAL_LIST = [
   'SNC 동물 메디컬센터',

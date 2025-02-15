@@ -1,11 +1,11 @@
-import DesktopMockupHeader from '@/components/company/hero/mockup/desktop/desktop-mockup-header'
-import DesktopMockupSidebar from '@/components/company/hero/mockup/desktop/desktop-mockup-sidebar'
-import DesktopMockupTable from '@/components/company/hero/mockup/desktop/desktop-mockup-table'
+import DesktopMockupHeader from '@/components/company/main/hero/mockup/desktop/desktop-mockup-header'
+import DesktopMockupSidebar from '@/components/company/main/hero/mockup/desktop/desktop-mockup-sidebar'
+import DesktopMockupTable from '@/components/company/main/hero/mockup/desktop/desktop-mockup-table'
 import { ChevronDown } from 'lucide-react'
 
 export default function DesktopMockupScreen() {
   return (
-    <div className="bottom-0 hidden h-[400px] w-[calc(100vw_-_56px)] max-w-[1600px] rounded-t-xl bg-primary p-1 lg:block">
+    <div className="bottom-0 hidden max-w-[740px] overflow-hidden rounded-t-xl bg-primary p-1 md:block lg:max-w-full">
       <div className="flex items-center justify-between px-2 pb-2 pt-1">
         <div className="flex items-center gap-1.5">
           <span className="size-2 rounded-full bg-red-400" />

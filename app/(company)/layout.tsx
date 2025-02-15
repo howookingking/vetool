@@ -1,6 +1,5 @@
-import Hero from '@/components/company/hero/hero'
+import HomepageFooter from '@/components/company/footer/hompage-footer'
 import HomepageHeader from '@/components/company/homepage-header'
-import React from 'react'
 
 export default function HompageLayout({
   children,
@@ -8,10 +7,10 @@ export default function HompageLayout({
   children: React.ReactNode
 }) {
   return (
-    <div>
+    <div className="relative">
       <HomepageHeader />
-      <Hero />
       <main>{children}</main>
+      <HomepageFooter />
     </div>
   )
 }

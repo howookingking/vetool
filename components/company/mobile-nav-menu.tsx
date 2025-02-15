@@ -14,7 +14,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import { Button } from '../ui/button'
-import { HOMEPAGE_NAVBAR_ITEMS } from '@/constants/company/nav/nav'
+import { HOMEPAGE_NAVBAR_ITEMS } from '@/constants/company/nav'
 
 export default function MobileNavMenu() {
   const [isSheetOpen, setIsSheetOpen] = useState(false)

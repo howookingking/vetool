@@ -1,5 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import Hero from '@/components/company/main/hero/hero'
+import Testimonial from '@/components/company/main/testimonial/testimonial'
+import Stats from '@/components/company/main/stats/stats'
 
 export default async function CompanyHomePage() {
   const supabase = await createClient()
@@ -68,5 +71,11 @@ export default async function CompanyHomePage() {
     }
   }
 
-  return <h1>회사 소개 홈페이지</h1>
+  return (
+    <div className="flex flex-col">
+      <Hero />
+      <Testimonial />
+      <Stats />
+    </div>
+  )
 }

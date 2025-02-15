@@ -7,7 +7,7 @@ import Link from 'next/link'
 
 export default async function HomepageHeader() {
   return (
-    <header className="sticky top-0 z-50 border-b bg-white">
+    <header className="sticky top-0 z-50 border-b bg-white/90">
       <MaxWidthContainer>
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-12">

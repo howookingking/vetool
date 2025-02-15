@@ -2,10 +2,10 @@
 
 import { motion } from 'motion/react'
 
-export default function BrandHighlight() {
+export default function BrandHighlight({ value }: { value: string }) {
   return (
     <span className="relative">
-      VETOOL
+      {value}
       <svg
         viewBox="0 0 286 73"
         fill="none"
