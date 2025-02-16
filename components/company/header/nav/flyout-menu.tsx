@@ -1,11 +1,10 @@
 'use client'
 
-import { motion } from 'motion/react'
+import NavContent from '@/components/company/header/nav/nav-content'
+import { ChevronDown } from 'lucide-react'
+import { AnimatePresence, motion } from 'motion/react'
 import Link from 'next/link'
 import { useState, type ReactNode } from 'react'
-import NavContent from '@/components/company/nav/nav-content'
-import { AnimatePresence } from 'motion/react'
-import { ChevronDown } from 'lucide-react'
 
 type Props = {
   children: ReactNode

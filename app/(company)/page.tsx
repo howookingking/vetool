@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import Hero from '@/components/company/main/hero/hero'
 import Testimonial from '@/components/company/main/testimonial/testimonial'
 import Stats from '@/components/company/main/stats/stats'
+import PricingPlans from '@/components/company/main/pricing/pricing-plans'
 
 export default async function CompanyHomePage() {
   const supabase = await createClient()
@@ -76,6 +77,7 @@ export default async function CompanyHomePage() {
       <Hero />
       <Testimonial />
       <Stats />
+      <PricingPlans />
     </div>
   )
 }

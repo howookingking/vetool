@@ -1,5 +1,5 @@
 import HomepageFooter from '@/components/company/footer/hompage-footer'
-import HomepageHeader from '@/components/company/homepage-header'
+import HomepageHeader from '@/components/company/header/homepage-header'
 
 export default function HompageLayout({
   children,

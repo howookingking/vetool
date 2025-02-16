@@ -1,7 +1,7 @@
 import MaxWidthContainer from '@/components/common/max-width-container'
 import VetoolLogo from '@/components/common/vetool-logo'
-import MobileNavMenu from '@/components/company/mobile-nav-menu'
-import NavMenu from '@/components/company/nav/nav-menu'
+import MobileNavMenu from '@/components/company/header/nav/mobile-nav-menu'
+import NavMenu from '@/components/company/header/nav/nav-menu'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 

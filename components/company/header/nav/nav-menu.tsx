@@ -1,5 +1,5 @@
+import FlyoutMenu from '@/components/company/header/nav/flyout-menu'
 import { HOMEPAGE_NAVBAR_ITEMS } from '@/constants/company/nav'
-import FlyoutMenu from '@/components/ui/flyout-menu'
 
 export default function NavMenu() {
   return (

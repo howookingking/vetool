@@ -13,8 +13,8 @@ import { MenuIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
-import { Button } from '../ui/button'
 import { HOMEPAGE_NAVBAR_ITEMS } from '@/constants/company/nav'
+import { Button } from '@/components/ui/button'
 
 export default function MobileNavMenu() {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
@@ -27,6 +27,7 @@ export default function MobileNavMenu() {
       </SheetTrigger>
       <SheetContent>
         <SheetHeader className="mb-10">
+          s
           <SheetTitle>
             <Image
               src={logo}
