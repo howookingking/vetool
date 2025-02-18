@@ -5,6 +5,7 @@ import {
 } from '@/components/ui/accordion'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import CalculatorResult from '../../result/calculator-result'
 
@@ -16,6 +17,9 @@ type Props = {
 }
 
 export default function DobutamineCri({ weight, setIsSheetOpen }: Props) {
+  const { patient_id } = useParams()
+  const hasSelectedPatient = Boolean(patient_id)
+
   // fluidVol에 dobutamineVol를 넣고 fluidRate 속도로 투여
   // fluidVol + dobutamineVol = totalVol
   // dobutamineDose = 개: 5 ~ 20, 고양이: 1 ~ 5 ug/kg/hr
@@ -54,7 +58,7 @@ export default function DobutamineCri({ weight, setIsSheetOpen }: Props) {
               onChange={(e) => setLocalWeight(e.target.value)}
               placeholder="체중"
             />
-            <span className="absolute bottom-2 right-2 text-muted-foreground">
+            <span className="absolute bottom-2 right-2 text-sm text-muted-foreground">
               kg
             </span>
           </div>
@@ -71,7 +75,7 @@ export default function DobutamineCri({ weight, setIsSheetOpen }: Props) {
               onChange={(e) => setDobutamineDose(e.target.value)}
               placeholder="도부타민 용량"
             />
-            <span className="absolute bottom-2 right-2 text-muted-foreground">
+            <span className="absolute bottom-2 right-2 text-sm text-muted-foreground">
               μg/kg/min
             </span>
           </div>
@@ -86,7 +90,7 @@ export default function DobutamineCri({ weight, setIsSheetOpen }: Props) {
               onChange={(e) => setSyringeVol(e.target.value)}
               placeholder="사용할 주사기"
             />
-            <span className="absolute bottom-2 right-2 text-muted-foreground">
+            <span className="absolute bottom-2 right-2 text-sm text-muted-foreground">
               cc
             </span>
           </div>
@@ -101,7 +105,7 @@ export default function DobutamineCri({ weight, setIsSheetOpen }: Props) {
               onChange={(e) => setFluidRate(e.target.value)}
               placeholder="수액속도"
             />
-            <span className="absolute bottom-2 right-2 text-muted-foreground">
+            <span className="absolute bottom-2 right-2 text-sm text-muted-foreground">
               ml/hr
             </span>
           </div>
@@ -122,7 +126,7 @@ export default function DobutamineCri({ weight, setIsSheetOpen }: Props) {
               </div>
             }
             copyResult={`수액 ${syringeVol}ml + Dobutamine ${dobutamineVol}ml , FR : ${fluidRate}ml/hr`}
-            hasApplyButton
+            hasInsertOrderButton={hasSelectedPatient}
             setIsSheetOpen={setIsSheetOpen}
           />
         )}

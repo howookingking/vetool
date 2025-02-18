@@ -5,9 +5,9 @@ import {
 } from '@/components/ui/accordion'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import CalculatorResult from '../../result/calculator-result'
-import { useParams } from 'next/navigation'
 
 const FUROSEMIDE_CONCENTRATION = 10
 
@@ -61,7 +61,7 @@ export default function FurosemideCri({ weight, setIsSheetOpen }: Props) {
               onChange={(e) => setLocalWeight(e.target.value)}
               placeholder="체중"
             />
-            <span className="absolute bottom-2 right-2 text-muted-foreground">
+            <span className="absolute bottom-2 right-2 text-sm text-muted-foreground">
               kg
             </span>
           </div>
@@ -76,7 +76,7 @@ export default function FurosemideCri({ weight, setIsSheetOpen }: Props) {
               onChange={(e) => setFurosemideDoseRate(e.target.value)}
               placeholder="퓨로세마이드 용량"
             />
-            <span className="absolute bottom-2 right-2 text-muted-foreground">
+            <span className="absolute bottom-2 right-2 text-sm text-muted-foreground">
               mg/kg/hr
             </span>
           </div>
@@ -91,7 +91,7 @@ export default function FurosemideCri({ weight, setIsSheetOpen }: Props) {
               onChange={(e) => setSyringeVol(e.target.value)}
               placeholder="사용할 주사기"
             />
-            <span className="absolute bottom-2 right-2 text-muted-foreground">
+            <span className="absolute bottom-2 right-2 text-sm text-muted-foreground">
               cc
             </span>
           </div>
@@ -106,7 +106,7 @@ export default function FurosemideCri({ weight, setIsSheetOpen }: Props) {
               onChange={(e) => setFluidRate(e.target.value)}
               placeholder="수액속도"
             />
-            <span className="absolute bottom-2 right-2 text-muted-foreground">
+            <span className="absolute bottom-2 right-2 text-sm text-muted-foreground">
               ml/hr
             </span>
           </div>
@@ -127,7 +127,7 @@ export default function FurosemideCri({ weight, setIsSheetOpen }: Props) {
               </>
             }
             copyResult={`수액 ${fluidVol}ml + Furosemide ${furosemideVol}ml , FR : ${fluidRate}ml/hr`}
-            hasApplyButton={hasSelectedPatient}
+            hasInsertOrderButton={hasSelectedPatient}
             setIsSheetOpen={setIsSheetOpen}
           />
         )}

@@ -5,7 +5,7 @@ type Props = {
   displayResult: React.ReactNode
   copyResult: string
   comment?: string
-  hasApplyButton?: boolean
+  hasInsertOrderButton?: boolean
   setIsSheetOpen?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -13,13 +13,13 @@ export default function CalculatorResult({
   displayResult,
   copyResult,
   comment,
-  hasApplyButton = false,
+  hasInsertOrderButton = false,
   setIsSheetOpen,
 }: Props) {
   return (
-    <div className="flex w-full flex-col items-center justify-center rounded-md bg-slate-100 py-4 text-lg">
+    <div className="flex w-full animate-slideDown flex-col items-center justify-center rounded-md bg-slate-100 py-4 text-lg">
       <div className="flex items-center gap-1">
-        {hasApplyButton && (
+        {hasInsertOrderButton && (
           <InsertOrderButton
             orderName={copyResult}
             setIsSheetOpen={setIsSheetOpen}
