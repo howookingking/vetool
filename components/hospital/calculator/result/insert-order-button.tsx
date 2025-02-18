@@ -10,6 +10,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Form } from '@/components/ui/form'
+import { toast } from '@/components/ui/use-toast'
 import { calcResultApplyFormSchema } from '@/lib/schemas/icu/chart/calc-result-apply-schema'
 import { insertCalcResultOrder } from '@/lib/services/icu/chart/order-mutation'
 import { cn } from '@/lib/utils/utils'
@@ -49,6 +50,10 @@ export default function InsertOrderButton({
       values.icu_chart_order_comment ?? '',
     )
 
+    toast({
+      title: '오더 추가 완료',
+      description: '최하단에 오더가 추가되었습니다',
+    })
     setIsSubmitting(false)
     setIsDialogOpen(false)
     setIsSheetOpen!(false)
