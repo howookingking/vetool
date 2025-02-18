@@ -1,14 +1,6 @@
-import CalculatorResult from '@/components/hospital/calculator/result/calculator-result'
 import RehydrationToolTip from '@/components/hospital/calculator/fluid-rate/rehydration/rehydration-tool-tip'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -22,64 +14,22 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet'
 import { calculateRehydration } from '@/lib/calculators/fluid-rate'
-import {
-  rehydrationFormSchema,
-  type RehydrationFormValues,
-} from '@/lib/schemas/calculator/fluid-rate-schema'
-import { type CalculatorTabProps } from '@/types/hospital/calculator'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useState } from 'react'
+import CalculatorResult from '../../result/calculator-result'
+
+type Props = {
+  weight: string
+  handleLocalWeightChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+}
 
 export default function RehydrationTab({
-  formData,
-  setFormData,
-  tab,
-}: CalculatorTabProps) {
-  const [result, setResult] = useState<{
-    totalMl: number
-    ratePerHour: number
-  } | null>(null)
+  weight,
+  handleLocalWeightChange,
+}: Props) {
+  const [dehydrationRate, setDehydrationRate] = useState('5')
+  const [rehydrationTime, setRehydrationTime] = useState('12')
 
-  const form = useForm<RehydrationFormValues>({
-    resolver: zodResolver(rehydrationFormSchema),
-    defaultValues: {
-      weight: formData.weight,
-      dehydration: '5',
-      time: '12',
-    },
-  })
-
-  useEffect(() => {
-    const values = form.getValues()
-
-    if (values.weight) {
-      const calculatedRate = calculateRehydration(
-        values.weight,
-        values.dehydration,
-        values.time,
-      )
-      setResult(calculatedRate)
-    }
-  }, [tab, form])
-
-  useEffect(() => {
-    const subscription = form.watch((value) => {
-      form.trigger().then((isValid) => {
-        if (isValid && value.weight) {
-          const result = calculateRehydration(
-            value.weight!,
-            value.dehydration!,
-            value.time!,
-          )
-          setResult(result)
-        } else {
-          setResult(null)
-        }
-      })
-    })
-    return () => subscription.unsubscribe()
-  }, [form, setFormData])
+  const result = calculateRehydration(weight, dehydrationRate, rehydrationTime)
 
   return (
     <div className="flex flex-col gap-4">
@@ -93,76 +43,52 @@ export default function RehydrationTab({
         </SheetDescription>
       </SheetHeader>
 
-      <Form {...form}>
-        <form className="grid grid-cols-2 gap-2">
-          <FormField
-            control={form.control}
-            name="weight"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>체중 (kg)</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    placeholder="체중을 입력하세요"
-                    {...field}
-                    onChange={(e) => {
-                      field.onChange(e)
-                      setFormData((prev) => ({
-                        ...prev,
-                        weight: e.target.value,
-                      }))
-                    }}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+      <div className="grid grid-cols-2 gap-2">
+        <div className="relative">
+          <Label htmlFor="weight">체중</Label>
+          <Input
+            type="number"
+            id="weight"
+            className="mt-1"
+            value={weight}
+            onChange={handleLocalWeightChange}
+            placeholder="체중"
           />
+          <span className="absolute bottom-2 right-2 text-sm text-muted-foreground">
+            kg
+          </span>
+        </div>
 
-          <FormField
-            control={form.control}
-            name="dehydration"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>탈수 정도</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="탈수 정도 선택" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="5">5%</SelectItem>
-                    <SelectItem value="7">7%</SelectItem>
-                    <SelectItem value="9">9%</SelectItem>
-                    <SelectItem value="11">11%</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <div>
+          <Label>탈수 정도</Label>
+          <Select onValueChange={setDehydrationRate} value={dehydrationRate}>
+            <SelectTrigger className="mt-1">
+              <SelectValue placeholder="탈수 정도 선택" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="5">5%</SelectItem>
+              <SelectItem value="7">7%</SelectItem>
+              <SelectItem value="9">9%</SelectItem>
+              <SelectItem value="11">11%</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-          <FormField
-            control={form.control}
-            name="time"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>교정 시간</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    placeholder="교정 시간을 입력하세요"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+        <div className="relative">
+          <Label htmlFor="rehydrationTime">교정 시간</Label>
+          <Input
+            type="number"
+            id="rehydrationTime"
+            className="mt-1"
+            value={rehydrationTime}
+            onChange={(e) => setRehydrationTime(e.target.value)}
+            placeholder="교정 시간"
           />
-        </form>
-      </Form>
+          <span className="absolute bottom-2 right-2 text-sm text-muted-foreground">
+            hr
+          </span>
+        </div>
+      </div>
 
       {result && (
         <CalculatorResult
@@ -172,7 +98,7 @@ export default function RehydrationTab({
             </span>
           }
           copyResult={`${result.ratePerHour} ml/hr`}
-          comment={`${result.totalMl}ml를 ${form.watch('time')}시간 동안 주입`}
+          comment={`${result.totalMl}ml를 ${rehydrationTime}시간 동안 주입`}
         />
       )}
     </div>

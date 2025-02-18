@@ -1,14 +1,7 @@
-import CalculatorResult from '@/components/hospital/calculator/result/calculator-result'
 import ResuscitationToolTip from '@/components/hospital/calculator/fluid-rate/resuscitation/resuscitation-tool-tip'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
+import CalculatorResult from '@/components/hospital/calculator/result/calculator-result'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -22,62 +15,23 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet'
 import { calculateResuscitation } from '@/lib/calculators/fluid-rate'
-import {
-  resuscitationFormSchema,
-  type ResuscitationFormValues,
-} from '@/lib/schemas/calculator/fluid-rate-schema'
-import {
-  type CalculatorTabProps,
-  type Species,
-} from '@/types/hospital/calculator'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { type Species } from '@/types/hospital/calculator'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
-import { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useState } from 'react'
 
+type Props = {
+  weight: string
+  species?: string
+  handleLocalWeightChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+}
 export default function ResuscitationTab({
-  formData,
-  setFormData,
-  tab,
-}: CalculatorTabProps) {
-  const [result, setResult] = useState<{ min: number; max: number }>({
-    min: 0,
-    max: 0,
-  })
+  species,
+  weight,
+  handleLocalWeightChange,
+}: Props) {
+  const [localSpecies, setLocalSpecies] = useState(species ?? 'canine')
 
-  const form = useForm<ResuscitationFormValues>({
-    resolver: zodResolver(resuscitationFormSchema),
-    defaultValues: {
-      species: formData.species,
-      weight: formData.weight,
-    },
-  })
-
-  useEffect(() => {
-    const values = form.getValues()
-    const calculatedRate = calculateResuscitation(
-      values.species,
-      Number(values.weight),
-    )
-    setResult(calculatedRate)
-  }, [tab, form])
-
-  useEffect(() => {
-    const subscription = form.watch((value) => {
-      form.trigger().then((isValid) => {
-        if (isValid) {
-          const calculatedRate = calculateResuscitation(
-            value.species!,
-            Number(value.weight),
-          )
-          setResult(calculatedRate)
-        } else {
-          setResult({ min: 0, max: 0 })
-        }
-      })
-    })
-    return () => subscription.unsubscribe()
-  }, [form, setFormData])
+  const result = calculateResuscitation(localSpecies as Species, weight)
 
   return (
     <div className="flex flex-col gap-4">
@@ -91,67 +45,37 @@ export default function ResuscitationTab({
         </VisuallyHidden>
       </SheetHeader>
 
-      <Form {...form}>
-        <form className="grid grid-cols-2 gap-2">
-          <FormField
-            control={form.control}
-            name="weight"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>체중 (kg)</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    placeholder="체중을 입력하세요"
-                    {...field}
-                    onChange={(e) => {
-                      field.onChange(e)
-                      setFormData((prev) => ({
-                        ...prev,
-                        weight: e.target.value,
-                      }))
-                    }}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+      <div className="grid grid-cols-2 gap-2">
+        <div className="relative">
+          <Label htmlFor="weight">체중</Label>
+          <Input
+            type="number"
+            id="weight"
+            className="mt-1"
+            value={weight}
+            onChange={handleLocalWeightChange}
+            placeholder="체중"
           />
+          <span className="absolute bottom-2 right-2 text-sm text-muted-foreground">
+            kg
+          </span>
+        </div>
 
-          <FormField
-            control={form.control}
-            name="species"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>종 선택</FormLabel>
-                <Select
-                  onValueChange={(value) => {
-                    field.onChange(value)
-                    setFormData((prev) => ({
-                      ...prev,
-                      species: value as Species,
-                    }))
-                  }}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="종 선택" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="canine">Canine</SelectItem>
-                    <SelectItem value="feline">Feline</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </form>
-      </Form>
+        <div>
+          <Label htmlFor="species">종</Label>
+          <Select onValueChange={setLocalSpecies} value={localSpecies}>
+            <SelectTrigger className="mt-1" id="species">
+              <SelectValue placeholder="종 선택" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="canine">Canine</SelectItem>
+              <SelectItem value="feline">Feline</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
 
-      {(result.min !== 0 || result.max !== 0) && (
+      {result && (
         <CalculatorResult
           displayResult={
             <span className="font-bold text-primary">

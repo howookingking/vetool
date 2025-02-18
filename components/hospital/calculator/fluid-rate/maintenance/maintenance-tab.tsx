@@ -1,15 +1,8 @@
 import WarningMessage from '@/components/common/warning-message'
-import CalculatorResult from '@/components/hospital/calculator/result/calculator-result'
 import MaintenanceToolTip from '@/components/hospital/calculator/fluid-rate/maintenance/maintenance-tool-tip'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
+import CalculatorResult from '@/components/hospital/calculator/result/calculator-result'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -23,72 +16,39 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet'
 import { calculateMaintenanceRate } from '@/lib/calculators/fluid-rate'
-import {
-  maintenanceFormSchema,
-  type MaintenanceFormValues,
-} from '@/lib/schemas/calculator/fluid-rate-schema'
 import { getDaysSince } from '@/lib/utils/utils'
 import {
-  type CalculatorTabProps,
+  type CalcMethod,
+  type Fold,
   type Species,
 } from '@/types/hospital/calculator'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
-import { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useState } from 'react'
 
+type Props = {
+  birth?: string
+  species?: string
+  weight: string
+  handleLocalWeightChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+}
 export default function MaintenanceTab({
-  formData,
-  setFormData,
-  tab,
   birth,
-}: CalculatorTabProps & { birth?: string }) {
-  const [result, setResult] = useState<string>('')
+  weight,
+  species,
+  handleLocalWeightChange,
+}: Props) {
+  const [localSpecies, setLocalSpecies] = useState(species ?? 'canine')
+  const [calcMethod, setCalcMethod] = useState('a')
+  const [fold, setFold] = useState<Fold>('1')
 
   const isPediatric = getDaysSince(birth ? birth : '1') <= 365
 
-  const form = useForm<MaintenanceFormValues>({
-    resolver: zodResolver(maintenanceFormSchema),
-    defaultValues: {
-      species: formData.species,
-      calcMethod: formData.calcMethod,
-      weight: formData.weight,
-      fold: formData.fold,
-    },
-  })
-
-  useEffect(() => {
-    const values = form.getValues()
-
-    if (values.weight) {
-      const calculatedRate = calculateMaintenanceRate(
-        values.weight,
-        values.species,
-        values.fold,
-        values.calcMethod,
-      )
-      setResult(calculatedRate)
-    }
-  }, [tab, form])
-
-  useEffect(() => {
-    const subscription = form.watch((value) => {
-      form.trigger().then((isValid) => {
-        if (isValid) {
-          const calculatedRate = calculateMaintenanceRate(
-            value.weight!,
-            value.species!,
-            value.fold!,
-            value.calcMethod!,
-          )
-          setResult(calculatedRate)
-        } else {
-          setResult('')
-        }
-      })
-    })
-    return () => subscription.unsubscribe()
-  }, [form, setFormData])
+  const result = calculateMaintenanceRate(
+    weight,
+    localSpecies as Species,
+    fold as Fold,
+    calcMethod as CalcMethod,
+  )
 
   return (
     <div className="flex flex-col gap-4">
@@ -100,150 +60,95 @@ export default function MaintenanceTab({
         <VisuallyHidden>
           <SheetDescription />
         </VisuallyHidden>
+
         {isPediatric && (
           <WarningMessage
             className="text-sm"
-            text="Pediatrics의 경우,  Adult Dog * 3, Adult Cat  * 2.5"
+            text="Pediatrics의 경우,  Adult Dog x 3, Adult Cat x 2.5"
           />
         )}
       </SheetHeader>
 
-      <Form {...form}>
-        <form className="grid grid-cols-2 gap-2">
-          <FormField
-            control={form.control}
-            name="weight"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>체중 (kg)</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="체중을 입력하세요"
-                    {...field}
-                    onChange={(e) => {
-                      field.onChange(e)
-                      setFormData((prev) => ({
-                        ...prev,
-                        weight: e.target.value,
-                      }))
-                    }}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+      <div className="grid grid-cols-2 gap-2">
+        <div className="relative">
+          <Label htmlFor="weight">체중</Label>
+          <Input
+            type="number"
+            id="weight"
+            className="mt-1"
+            value={weight}
+            onChange={handleLocalWeightChange}
+            placeholder="체중"
           />
+          <span className="absolute bottom-2 right-2 text-sm text-muted-foreground">
+            kg
+          </span>
+        </div>
 
-          <FormField
-            control={form.control}
-            name="species"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>종 선택</FormLabel>
-                <Select
-                  onValueChange={(value) => {
-                    field.onChange(value)
-                    setFormData((prev) => ({
-                      ...prev,
-                      species: value as Species,
-                    }))
-                  }}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="종 선택" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="canine">Canine</SelectItem>
-                    <SelectItem value="feline">Feline</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <div>
+          <Label htmlFor="species">종</Label>
+          <Select onValueChange={setLocalSpecies} value={localSpecies}>
+            <SelectTrigger className="mt-1" id="species">
+              <SelectValue placeholder="종 선택" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="canine">Canine</SelectItem>
+              <SelectItem value="feline">Feline</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-          <FormField
-            control={form.control}
-            name="calcMethod"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>계산법</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="계산법" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {form.watch('species') === 'canine' ? (
-                      <>
-                        <SelectItem value="a">
-                          a. 132 * (몸무게)<sup>0.75</sup>
-                          <span className="text-sm text-muted-foreground">
-                            ml/day
-                          </span>
-                        </SelectItem>
-                        <SelectItem value="b">b. 60ml/kg/day</SelectItem>
-                        <SelectItem value="c">
-                          c. 30 * (몸무게) + 70 ml/day
-                        </SelectItem>
-                      </>
-                    ) : (
-                      <>
-                        <SelectItem value="a">
-                          a. 80 * (몸무게)<sup>0.75</sup>
-                          <span className="text-sm text-muted-foreground">
-                            ml/day
-                          </span>
-                        </SelectItem>
-                        <SelectItem value="b">b. 40ml/kg/day</SelectItem>
-                        <SelectItem value="c">
-                          c. 30 * (몸무게) + 70 ml/day
-                        </SelectItem>
-                      </>
-                    )}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <div>
+          <Label htmlFor="calcMethod">계산법</Label>
+          <Select onValueChange={setCalcMethod} value={calcMethod}>
+            <SelectTrigger className="mt-1" id="calcMethod">
+              <SelectValue placeholder="계산법" />
+            </SelectTrigger>
+            <SelectContent>
+              {localSpecies === 'canine' ? (
+                <>
+                  <SelectItem value="a">
+                    a. 132 x (몸무게)<sup>0.75</sup> ml/day
+                  </SelectItem>
+                  <SelectItem value="b">b. 60 ml/kg/day</SelectItem>
+                  <SelectItem value="c">
+                    c. 30 x (몸무게) + 70 ml/day
+                  </SelectItem>
+                </>
+              ) : (
+                <>
+                  <SelectItem value="a">
+                    a. 80 x (몸무게)<sup>0.75</sup> ml/day
+                  </SelectItem>
+                  <SelectItem value="b">b. 40 ml/kg/day</SelectItem>
+                  <SelectItem value="c">
+                    c. 30 x (몸무게) + 70 ml/day
+                  </SelectItem>
+                </>
+              )}
+            </SelectContent>
+          </Select>
+        </div>
 
-          <FormField
-            control={form.control}
-            name="fold"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>배수</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="배수" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="1">1배수</SelectItem>
-                    <SelectItem value="1.5">1.5배수</SelectItem>
-                    <SelectItem value="2">2배수</SelectItem>
-                    <SelectItem value="2.5">2.5배수</SelectItem>
-                    <SelectItem value="3">3배수</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </form>
-      </Form>
+        <div>
+          <Label htmlFor="fold">배수</Label>
+          <Select
+            value={fold}
+            onValueChange={(value) => setFold(value as Fold)}
+          >
+            <SelectTrigger className="mt-1" id="fold">
+              <SelectValue placeholder="배수" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="1">1배수</SelectItem>
+              <SelectItem value="1.5">1.5배수</SelectItem>
+              <SelectItem value="2">2배수</SelectItem>
+              <SelectItem value="2.5">2.5배수</SelectItem>
+              <SelectItem value="3">3배수</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
 
       {result && (
         <CalculatorResult
