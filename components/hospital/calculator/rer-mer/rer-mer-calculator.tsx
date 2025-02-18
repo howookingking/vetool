@@ -1,28 +1,58 @@
-import MerTab from '@/components/hospital/calculator/rer-mer/mer/mer-tab'
-import { type PatientFormData, type Species } from '@/types/hospital/calculator'
-import { type PatientWithWeight } from '@/types/patients'
-import { useEffect, useState } from 'react'
+import DietForm from '@/components/hospital/calculator/rer-mer/diet/diet-form'
+import MerForm from '@/components/hospital/calculator/rer-mer/mer/mer-form'
+import MerToolTip from '@/components/hospital/calculator/rer-mer/mer/mer-tool-tip'
+import DisabledFeedbackButton from '@/components/hospital/common/disabled-feedback-button'
+import { Separator } from '@/components/ui/separator'
+import {
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet'
+import { calculateRer } from '@/lib/calculators/rer-mer'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
+import { useState } from 'react'
+export default function RerMerCalculator({ weight }: { weight: string }) {
+  const [localWeight, setLocalWeight] = useState(weight)
+  const [factor, setFactor] = useState('1')
 
-export default function RerMerCalculator({
-  patientData,
-}: {
-  patientData: PatientWithWeight | null
-}) {
-  const [formData, setFormData] = useState<PatientFormData>({
-    species: (patientData?.patient.species as Species) ?? 'canine',
-    weight: patientData?.vital?.body_weight ?? '',
-    factor: '1',
-  })
+  const rer = calculateRer(localWeight)
+  const mer = rer ? rer * Number(factor) : undefined
 
-  useEffect(() => {
-    if (patientData) {
-      setFormData({
-        species: patientData.patient.species as Species,
-        weight: patientData.vital?.body_weight ?? '0',
-        factor: '1',
-      })
-    }
-  }, [patientData])
+  return (
+    <>
+      <div>
+        <SheetHeader>
+          <SheetTitle className="flex items-center gap-2">
+            <span>MER</span>
+            <MerToolTip />
+          </SheetTitle>
+          <VisuallyHidden>
+            <SheetDescription />
+          </VisuallyHidden>
+        </SheetHeader>
 
-  return <MerTab formData={formData} setFormData={setFormData} />
+        <MerForm
+          localWeight={localWeight}
+          setLocalWeight={setLocalWeight}
+          factor={factor}
+          setFactor={setFactor}
+          rer={rer}
+          result={mer}
+        />
+      </div>
+
+      <Separator className="my-4" />
+
+      <div>
+        <SheetTitle className="flex items-center gap-2">
+          <span>사료량</span>
+        </SheetTitle>
+        <SheetDescription className="flex items-center gap-2">
+          추가가 필요한 사료는 <DisabledFeedbackButton />
+        </SheetDescription>
+
+        <DietForm mer={mer} />
+      </div>
+    </>
+  )
 }

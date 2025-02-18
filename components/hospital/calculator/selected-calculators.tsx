@@ -26,7 +26,7 @@ export default function SelectedCalculators({
       )}
 
       {selectedCalculator === 'rer-mer' && (
-        <RerMerCalculator patientData={patientData} />
+        <RerMerCalculator weight={patientData?.vital?.body_weight ?? ''} />
       )}
 
       {selectedCalculator === 'cri' && (
