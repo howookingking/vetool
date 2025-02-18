@@ -1,6 +1,6 @@
 'use client'
 
-import CalculatorResult from '@/components/hospital/calculator/calculator-result'
+import CalculatorResult from '@/components/hospital/calculator/result/calculator-result'
 import DietComboBox from '@/components/hospital/calculator/rer-mer/diet/diet-combo-box'
 import DietFeedPerDayInput from '@/components/hospital/calculator/rer-mer/diet/diet-feed-per-day-input'
 import { cacluateFeedAmount } from '@/lib/calculators/rer-mer'

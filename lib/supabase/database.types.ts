@@ -1635,6 +1635,17 @@ export type Database = {
         }
         Returns: Json
       }
+      insert_calc_result_order: {
+        Args: {
+          hos_id_input: string
+          target_date_input: string
+          order_type_input: string
+          order_name_input: string
+          order_comment_input: string
+          patient_id_input: string
+        }
+        Returns: undefined
+      }
       insert_default_chart_orders: {
         Args: {
           hos_id_input: string

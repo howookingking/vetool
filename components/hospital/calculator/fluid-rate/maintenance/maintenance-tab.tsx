@@ -1,5 +1,5 @@
 import WarningMessage from '@/components/common/warning-message'
-import CalculatorResult from '@/components/hospital/calculator/calculator-result'
+import CalculatorResult from '@/components/hospital/calculator/result/calculator-result'
 import MaintenanceToolTip from '@/components/hospital/calculator/fluid-rate/maintenance/maintenance-tool-tip'
 import {
   Form,

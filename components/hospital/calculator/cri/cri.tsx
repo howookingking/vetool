@@ -8,7 +8,12 @@ import DisabledFeedbackButton from '../../common/disabled-feedback-button'
 import DobutamineCri from './drugs/dobutamine-cri'
 import FurosemideCri from './drugs/furosemide-cri'
 
-export default function Cri({ weight }: { weight: string }) {
+type Props = {
+  weight: string
+  setIsSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export default function Cri({ weight, setIsSheetOpen }: Props) {
   return (
     <div className="h-full">
       <SheetHeader>
@@ -20,9 +25,9 @@ export default function Cri({ weight }: { weight: string }) {
       </SheetHeader>
 
       <Accordion type="multiple">
-        <FurosemideCri weight={weight} />
+        <FurosemideCri weight={weight} setIsSheetOpen={setIsSheetOpen} />
 
-        <DobutamineCri weight={weight} />
+        <DobutamineCri weight={weight} setIsSheetOpen={setIsSheetOpen} />
       </Accordion>
     </div>
   )

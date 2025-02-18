@@ -12,7 +12,7 @@ import { type MerFormValues } from '@/lib/schemas/calculator/rer-mer-schema'
 import { type PatientFormData } from '@/types/hospital/calculator'
 import { type Dispatch, type SetStateAction } from 'react'
 import { type UseFormReturn } from 'react-hook-form'
-import CalculatorResult from '../../calculator-result'
+import CalculatorResult from '../../result/calculator-result'
 
 type MerFormProps = {
   form: UseFormReturn<MerFormValues>

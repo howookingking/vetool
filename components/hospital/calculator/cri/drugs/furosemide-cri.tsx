@@ -6,11 +6,20 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useState } from 'react'
-import CalculatorResult from '../../calculator-result'
+import CalculatorResult from '../../result/calculator-result'
+import { useParams } from 'next/navigation'
 
 const FUROSEMIDE_CONCENTRATION = 10
 
-export default function FurosemideCri({ weight }: { weight: string }) {
+type Props = {
+  weight: string
+  setIsSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export default function FurosemideCri({ weight, setIsSheetOpen }: Props) {
+  const { patient_id } = useParams()
+  const hasSelectedPatient = Boolean(patient_id)
+
   // fluidVol에 furosemideVol를 넣고 fluidRate 속도로 투여
   // fluidVol + furosemideVol = totalVol
   // furosemideDoseRate = 0.2 ~ 1 mg/kg/hr
@@ -106,7 +115,7 @@ export default function FurosemideCri({ weight }: { weight: string }) {
         {Number(fluidVol) > 0 && Number(furosemideVol) > 0 && (
           <CalculatorResult
             displayResult={
-              <div>
+              <>
                 수액{' '}
                 <span className="font-bold text-primary">{fluidVol}ml</span> +
                 Furosemide{' '}
@@ -115,9 +124,11 @@ export default function FurosemideCri({ weight }: { weight: string }) {
                 </span>{' '}
                 , FR :{' '}
                 <span className="font-bold text-primary">{fluidRate}ml/hr</span>{' '}
-              </div>
+              </>
             }
             copyResult={`수액 ${fluidVol}ml + Furosemide ${furosemideVol}ml , FR : ${fluidRate}ml/hr`}
+            hasApplyButton={hasSelectedPatient}
+            setIsSheetOpen={setIsSheetOpen}
           />
         )}
       </AccordionContent>

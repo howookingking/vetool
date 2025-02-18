@@ -7,11 +7,15 @@ import { type PatientWithWeight } from '@/types/patients'
 import { useState } from 'react'
 import SelectedPatient from './selected-patient'
 
+type Props = {
+  patientData: PatientWithWeight | null
+  setIsSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
+
 export default function CalculatorSheetContent({
   patientData,
-}: {
-  patientData: PatientWithWeight | null
-}) {
+  setIsSheetOpen,
+}: Props) {
   const isMobile = useIsMobile()
 
   const [selectedCalculator, setSelectedCalculator] =
@@ -31,6 +35,7 @@ export default function CalculatorSheetContent({
         <SelectedCalculators
           selectedCalculator={selectedCalculator}
           patientData={patientData}
+          setIsSheetOpen={setIsSheetOpen}
         />
 
         {patientData && <SelectedPatient patientData={patientData} />}

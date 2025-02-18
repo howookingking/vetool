@@ -1,4 +1,4 @@
-import CalculatorResult from '@/components/hospital/calculator/calculator-result'
+import CalculatorResult from '@/components/hospital/calculator/result/calculator-result'
 import RehydrationToolTip from '@/components/hospital/calculator/fluid-rate/rehydration/rehydration-tool-tip'
 import {
   Form,

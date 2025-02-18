@@ -9,7 +9,7 @@ import {
 import { type PatientFormData } from '@/types/hospital/calculator'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { useEffect, useState } from 'react'
-import CalculatorResult from '../calculator-result'
+import CalculatorResult from '../result/calculator-result'
 
 export default function Bsa({ weight }: { weight: string }) {
   const [result, setResult] = useState<number | null>(null)

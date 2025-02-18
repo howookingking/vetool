@@ -6,11 +6,16 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useState } from 'react'
-import CalculatorResult from '../../calculator-result'
+import CalculatorResult from '../../result/calculator-result'
 
 const DOBUTAMINE_CONCENTRATION = 50
 
-export default function DobutamineCri({ weight }: { weight: string }) {
+type Props = {
+  weight: string
+  setIsSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export default function DobutamineCri({ weight, setIsSheetOpen }: Props) {
   // fluidVol에 dobutamineVol를 넣고 fluidRate 속도로 투여
   // fluidVol + dobutamineVol = totalVol
   // dobutamineDose = 개: 5 ~ 20, 고양이: 1 ~ 5 ug/kg/hr
@@ -117,6 +122,8 @@ export default function DobutamineCri({ weight }: { weight: string }) {
               </div>
             }
             copyResult={`수액 ${syringeVol}ml + Dobutamine ${dobutamineVol}ml , FR : ${fluidRate}ml/hr`}
+            hasApplyButton
+            setIsSheetOpen={setIsSheetOpen}
           />
         )}
       </AccordionContent>
