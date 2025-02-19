@@ -47,7 +47,7 @@ export default function FurosemideCri({ weight, setIsSheetOpen }: Props) {
 
   return (
     <AccordionItem value="furosemide">
-      <AccordionTrigger>Furosemide (10mg/1ml)</AccordionTrigger>
+      <AccordionTrigger>Furosemide (10mg/ml)</AccordionTrigger>
 
       <AccordionContent className="space-y-4 px-1">
         <div className="grid grid-cols-2 gap-2">

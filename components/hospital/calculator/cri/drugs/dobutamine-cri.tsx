@@ -44,7 +44,7 @@ export default function DobutamineCri({ weight, setIsSheetOpen }: Props) {
 
   return (
     <AccordionItem value="dobutamine">
-      <AccordionTrigger>Dobutamine (50mg/1mL)</AccordionTrigger>
+      <AccordionTrigger>Dobutamine (50mg/mL)</AccordionTrigger>
 
       <AccordionContent className="space-y-4 px-1">
         <div className="grid grid-cols-2 gap-2">

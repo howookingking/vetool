@@ -7,6 +7,7 @@ import {
 import DisabledFeedbackButton from '../../common/disabled-feedback-button'
 import DobutamineCri from './drugs/dobutamine-cri'
 import FurosemideCri from './drugs/furosemide-cri'
+import BicarbonateCri from './drugs/bicarbonate-cri'
 
 type Props = {
   weight: string
@@ -28,6 +29,8 @@ export default function Cri({ weight, setIsSheetOpen }: Props) {
         <FurosemideCri weight={weight} setIsSheetOpen={setIsSheetOpen} />
 
         <DobutamineCri weight={weight} setIsSheetOpen={setIsSheetOpen} />
+
+        <BicarbonateCri weight={weight} setIsSheetOpen={setIsSheetOpen} />
       </Accordion>
     </div>
   )

@@ -8,14 +8,6 @@ export type Fold = '1' | '1.5' | '2' | '2.5' | '3'
 
 export type SelectedCalculator = (typeof CALCULATORS)[number]['value']
 
-export type PatientFormData = {
-  species?: Species
-  weight: string
-  calcMethod?: CalcMethod
-  fold?: Fold
-  factor?: string
-}
-
 export type Diet = {
   diet_id: string
   name: string
