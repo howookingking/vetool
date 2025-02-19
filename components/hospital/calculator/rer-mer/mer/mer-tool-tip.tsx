@@ -4,7 +4,7 @@ export default function MerToolTip() {
   return (
     <HelperTooltip side="right">
       <div>
-        RER(70 x kg <sup>0.75</sup> kcal/day) x Life Stage Factor
+        RER(70 x BW(kg) <sup>0.75</sup> kcal/day) x Life Stage Factor
       </div>
 
       <div className="mt-2">

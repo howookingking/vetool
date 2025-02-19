@@ -9,11 +9,13 @@ import { type PatientWithWeight } from '@/types/patients'
 type Props = {
   selectedCalculator: SelectedCalculator
   patientData: PatientWithWeight | null
+  setIsSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function SelectedCalculators({
   selectedCalculator,
   patientData,
+  setIsSheetOpen,
 }: Props) {
   return (
     <div className="h-full">
@@ -24,11 +26,14 @@ export default function SelectedCalculators({
       )}
 
       {selectedCalculator === 'rer-mer' && (
-        <RerMerCalculator patientData={patientData} />
+        <RerMerCalculator weight={patientData?.vital?.body_weight ?? ''} />
       )}
 
       {selectedCalculator === 'cri' && (
-        <Cri weight={patientData?.vital?.body_weight ?? ''} />
+        <Cri
+          weight={patientData?.vital?.body_weight ?? ''}
+          setIsSheetOpen={setIsSheetOpen}
+        />
       )}
 
       {selectedCalculator === 'bsa' && (

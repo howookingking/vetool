@@ -4,10 +4,7 @@ export default function RehydrationToolTip() {
   return (
     <HelperTooltip side="right">
       <div>
-        <div>
-          Total Fluid Deficit (L) = Body Weight (kg) x Dehydration (as a
-          decimal)
-        </div>
+        <div>Total Fluid Deficit (L) =BW(kg) x Dehydration (as a decimal)</div>
         <div>Over 12-24 hr</div>
       </div>
 

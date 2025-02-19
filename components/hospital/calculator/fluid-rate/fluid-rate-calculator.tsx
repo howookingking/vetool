@@ -1,10 +1,9 @@
 import MaintenanceTab from '@/components/hospital/calculator/fluid-rate/maintenance/maintenance-tab'
-import RehydrationTab from '@/components/hospital/calculator/fluid-rate/rehydration/rehydration-tab'
-import ResuscitationTab from '@/components/hospital/calculator/fluid-rate/resuscitation/resuscitation-tab'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { type PatientFormData, type Species } from '@/types/hospital/calculator'
 import { type PatientWithWeight } from '@/types/patients'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import RehydrationTab from './rehydration/rehydration-tab'
+import ResuscitationTab from './resuscitation/resuscitation-tab'
 
 export default function FluidRateCalculator({
   patientData,
@@ -12,23 +11,12 @@ export default function FluidRateCalculator({
   patientData: PatientWithWeight | null
 }) {
   const [tab, setTab] = useState('maintenance')
-  const [formData, setFormData] = useState<PatientFormData>({
-    species: (patientData?.patient.species as Species) ?? 'canine',
-    weight: patientData?.vital?.body_weight ?? '',
-    calcMethod: 'a',
-    fold: '1',
-  })
-
-  useEffect(() => {
-    if (patientData) {
-      setFormData({
-        species: patientData.patient.species as Species,
-        calcMethod: 'a',
-        weight: patientData.vital?.body_weight ?? '0',
-        fold: '1',
-      })
-    }
-  }, [patientData])
+  const [localWeight, setLocalWeight] = useState(
+    patientData?.vital?.body_weight ?? '',
+  )
+  const handleLocalWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocalWeight(e.target.value)
+  }
 
   return (
     <Tabs value={tab} onValueChange={setTab}>
@@ -40,26 +28,25 @@ export default function FluidRateCalculator({
 
       <TabsContent value="maintenance" className="px-2">
         <MaintenanceTab
-          formData={formData}
-          setFormData={setFormData}
-          tab={tab}
           birth={patientData?.patient.birth}
+          weight={localWeight}
+          species={patientData?.patient.species}
+          handleLocalWeightChange={handleLocalWeightChange}
         />
       </TabsContent>
 
       <TabsContent value="rehydration" className="px-2">
         <RehydrationTab
-          formData={formData}
-          setFormData={setFormData}
-          tab={tab}
+          weight={localWeight}
+          handleLocalWeightChange={handleLocalWeightChange}
         />
       </TabsContent>
 
       <TabsContent value="resusitation" className="px-2">
         <ResuscitationTab
-          formData={formData}
-          setFormData={setFormData}
-          tab={tab}
+          species={patientData?.patient.species}
+          weight={localWeight}
+          handleLocalWeightChange={handleLocalWeightChange}
         />
       </TabsContent>
     </Tabs>

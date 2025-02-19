@@ -56,7 +56,10 @@ export default function CalculatorSheet() {
         </Button>
       </SheetTrigger>
 
-      <LazyCalculatorSheetContent patientData={patientData} />
+      <LazyCalculatorSheetContent
+        patientData={patientData}
+        setIsSheetOpen={setIsSheetOpen}
+      />
     </Sheet>
   )
 }

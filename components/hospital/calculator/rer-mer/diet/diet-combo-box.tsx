@@ -25,12 +25,14 @@ type DietComboBoxProps = {
   }[]
   selectedDiet: string
   setSelectedDiet: Dispatch<SetStateAction<string>>
+  disabled?: boolean
 }
 
 export default function DietComboBox({
   mappedDietList,
   selectedDiet,
   setSelectedDiet,
+  disabled,
 }: DietComboBoxProps) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
 
@@ -38,7 +40,7 @@ export default function DietComboBox({
     <div className="col-span-1 w-full space-y-2">
       <Label>사료</Label>
       <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen} modal>
-        <PopoverTrigger asChild>
+        <PopoverTrigger asChild disabled={disabled}>
           <Button
             variant="outline"
             role="combobox"

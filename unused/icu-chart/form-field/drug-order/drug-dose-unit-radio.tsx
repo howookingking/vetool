@@ -17,7 +17,7 @@ export default function DrugDoseUnitRadio({
       <div className="flex items-center space-x-2">
         <RadioGroupItem value={'ml'} id="ml" />
         <Label className="text-xs" htmlFor="ml">
-          ml
+          mL
         </Label>
       </div>
 

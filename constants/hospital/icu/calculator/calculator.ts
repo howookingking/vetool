@@ -25,34 +25,6 @@ export const CALCULATORS = [
   // },
 ] as const
 
-export const CRI_DRUGS = [
-  {
-    label: 'Furosemide (20mg/2ml = 10mg/1ml)',
-    volumne: '(0.2 ~ 1 mg/kg/hr)',
-    value: 'Furosemide',
-  },
-  {
-    label: 'Dobutamine (250mg/5mL = 50mg/1mL)',
-    volumne: '(개: 5 ~ 20ug/kg/min, 고양이: 1 ~ 5ug/kg/min)',
-    value: 'Dobutamine',
-  },
-  {
-    label: 'Metoclopramide (5mg/ml)',
-    volumne: '(0.01 ~ 0.09 mg/kg/hr)',
-    value: 'Metroclopramide',
-  },
-  // {
-  //   label: 'Bicarbonate (1mEq/ml)',
-  //   volumne: '',
-  //   value: 'Bicarbonate',
-  // },
-  // {
-  //   label: 'Midazolam (1mg/ml)',
-  //   volumne: '(0.05 ~ 0.5(2) mg/kg/hr)',
-  //   value: 'Midazolam',
-  // },
-] as const
-
 export const THEOBROMINE_LEVELS = {
   white: 0.25,
   milk: 2.4,
