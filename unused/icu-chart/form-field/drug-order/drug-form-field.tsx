@@ -35,7 +35,7 @@ export default function DrugFormField({
   const [drugTotalAmount, setDrugTotalAmount] = useState(
     dosage ? totalAmount : '0',
   )
-  const [drugTotalUnit, setDrugTotalUnit] = useState(isMicro ? 'ul' : 'ml')
+  const [drugTotalUnit, setDrugTotalUnit] = useState(isMicro ? 'ul' : 'mL')
   const [drugMassVolume, setDrugMassVolume] = useState<number | null>(null)
   const [isAutoCalculate, setIsAutoCalculate] = useState(Boolean(!totalAmount))
 

@@ -51,10 +51,10 @@ export const ORDER_FONT_SIZES = {
 export const TIME_GUIDELINES_SAMPLE_ORDERS = [
   {
     orderTitle: 'AMC IV',
-    orderComment: '1ml',
+    orderComment: '1mL',
   },
   {
     orderTitle: 'Esomeprazole SC',
-    orderComment: '1ml',
+    orderComment: '1mL',
   },
 ] as const

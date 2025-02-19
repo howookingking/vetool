@@ -269,7 +269,7 @@ export default function AddDietDialog({
                             g
                           </SelectItem>
                           <SelectItem value="ml" className="text-xs">
-                            ml
+                            mL
                           </SelectItem>
                         </SelectContent>
                       </Select>

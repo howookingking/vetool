@@ -108,21 +108,21 @@ export default function MaintenanceTab({
               {localSpecies === 'canine' ? (
                 <>
                   <SelectItem value="a">
-                    a. 132 x (몸무게)<sup>0.75</sup> ml/day
+                    a. 132 x (몸무게)<sup>0.75</sup> mL/day
                   </SelectItem>
-                  <SelectItem value="b">b. 60 ml/kg/day</SelectItem>
+                  <SelectItem value="b">b. 60 mL/kg/day</SelectItem>
                   <SelectItem value="c">
-                    c. 30 x (몸무게) + 70 ml/day
+                    c. 30 x (몸무게) + 70 mL/day
                   </SelectItem>
                 </>
               ) : (
                 <>
                   <SelectItem value="a">
-                    a. 80 x (몸무게)<sup>0.75</sup> ml/day
+                    a. 80 x (몸무게)<sup>0.75</sup> mL/day
                   </SelectItem>
-                  <SelectItem value="b">b. 40 ml/kg/day</SelectItem>
+                  <SelectItem value="b">b. 40 mL/kg/day</SelectItem>
                   <SelectItem value="c">
-                    c. 30 x (몸무게) + 70 ml/day
+                    c. 30 x (몸무게) + 70 mL/day
                   </SelectItem>
                 </>
               )}
@@ -153,9 +153,9 @@ export default function MaintenanceTab({
       {result && (
         <CalculatorResult
           displayResult={
-            <span className="font-bold text-primary">{result} ml/hr</span>
+            <span className="font-bold text-primary">{result} mL/hr</span>
           }
-          copyResult={`${result} ml/hr`}
+          copyResult={`${result} mL/hr`}
         />
       )}
     </div>

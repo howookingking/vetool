@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import CalculatorResult from '../../result/calculator-result'
+import HelperTooltip from '@/components/common/helper-tooltip'
 
 type Props = {
   weight: string
@@ -25,12 +26,17 @@ export default function BicarbonateCri({ weight, setIsSheetOpen }: Props) {
 
   return (
     <AccordionItem value="bicarbonate">
-      <AccordionTrigger>Sodium Bicarbonate (HCO3 = 1 mEq/ml)</AccordionTrigger>
+      <AccordionTrigger>
+        <div className="flex items-center gap-2">
+          <span>Sodium Bicarbonate (HCO3 = 1 mEq/mL)</span>
+          <HelperTooltip>BW(kg) x BE x 0.3</HelperTooltip>
+        </div>
+      </AccordionTrigger>
 
       <AccordionContent className="space-y-4 px-1">
         <div className="grid grid-cols-2 gap-2">
           <div className="relative">
-            <Label htmlFor="weight">체중 </Label>
+            <Label htmlFor="weight">체중</Label>
             <Input
               type="number"
               id="weight"
@@ -65,16 +71,16 @@ export default function BicarbonateCri({ weight, setIsSheetOpen }: Props) {
             displayResult={
               <div>
                 Sodium Bicarbonate{' '}
-                <span className="font-bold text-primary">{result}ml</span> 의
+                <span className="font-bold text-primary">{result}mL</span> 의
                 1/3~1/2{' '}
                 <span className="font-bold text-primary">
-                  ({result / 3}~{result / 2}ml)
+                  ({result / 3}~{result / 2}mL)
                 </span>
                 을 <span className="font-bold text-primary">2~6시간</span> 동안
                 공급
               </div>
             }
-            copyResult={`Sodium Bicarbonate ${result}ml 의 1/3~1/2(${result / 3}~${result / 2}ml)을 2~6시간동안 공급 `}
+            copyResult={`Sodium Bicarbonate ${result}mL 의 1/3~1/2(${result / 3}~${result / 2}mL)을 2~6시간동안 공급 `}
             hasInsertOrderButton={hasSelectedPatient}
             setIsSheetOpen={setIsSheetOpen}
           />

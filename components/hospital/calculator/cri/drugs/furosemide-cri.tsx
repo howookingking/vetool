@@ -31,12 +31,10 @@ export default function FurosemideCri({ weight, setIsSheetOpen }: Props) {
   // 1. 시간당 필요한 퓨로세미드 용량 계산 (mg/hr)
   const hourlyDose = Number(furosemideDoseRate) * Number(localWeight)
 
-  // 2. 시간당 필요한 퓨로세미드 원액 용량 계산 (ml/hr)
+  // 2. 시간당 필요한 퓨로세미드 원액 용량 계산 (mL/hr)
   const hourlyVolume = hourlyDose / FUROSEMIDE_CONCENTRATION
 
   // 3. 주사기 용량에 맞춰 퓨로세미드와 수액의 비율 계산
-  // 총 주입량 = fluidRate ml/hr
-  // 이 중 퓨로세미드가 hourlyVolume ml/hr
   // hourlyVolume : fluidRate = x : syringeVolume
   const furosemideVol = (
     (Number(hourlyVolume) * Number(syringeVol)) /
@@ -47,7 +45,7 @@ export default function FurosemideCri({ weight, setIsSheetOpen }: Props) {
 
   return (
     <AccordionItem value="furosemide">
-      <AccordionTrigger>Furosemide (10mg/ml)</AccordionTrigger>
+      <AccordionTrigger>Furosemide (10mg/mL)</AccordionTrigger>
 
       <AccordionContent className="space-y-4 px-1">
         <div className="grid grid-cols-2 gap-2">
@@ -107,7 +105,7 @@ export default function FurosemideCri({ weight, setIsSheetOpen }: Props) {
               placeholder="수액속도"
             />
             <span className="absolute bottom-2 right-2 text-sm text-muted-foreground">
-              ml/hr
+              mL/hr
             </span>
           </div>
         </div>
@@ -117,16 +115,16 @@ export default function FurosemideCri({ weight, setIsSheetOpen }: Props) {
             displayResult={
               <>
                 수액{' '}
-                <span className="font-bold text-primary">{fluidVol}ml</span> +
+                <span className="font-bold text-primary">{fluidVol}mL</span> +
                 Furosemide{' '}
                 <span className="font-bold text-primary">
-                  {furosemideVol}ml
+                  {furosemideVol}mL
                 </span>{' '}
                 , FR :{' '}
-                <span className="font-bold text-primary">{fluidRate}ml/hr</span>{' '}
+                <span className="font-bold text-primary">{fluidRate}mL/hr</span>{' '}
               </>
             }
-            copyResult={`수액 ${fluidVol}ml + Furosemide ${furosemideVol}ml , FR : ${fluidRate}ml/hr`}
+            copyResult={`수액 ${fluidVol}mL + Furosemide ${furosemideVol}mL , FR : ${fluidRate}mL/hr`}
             hasInsertOrderButton={hasSelectedPatient}
             setIsSheetOpen={setIsSheetOpen}
           />

@@ -265,7 +265,7 @@ export default function FeedOrderField({
             render={({ field }) => (
               <FormItem className="col-span-2 space-y-2">
                 <FormLabel className="font-semibold">
-                  1회 급여량 (g/회 또는 ml/회)
+                  1회 급여량 (g/회 또는 mL/회)
                 </FormLabel>
                 <FormControl>
                   <div className="relative">

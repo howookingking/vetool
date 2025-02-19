@@ -22,7 +22,7 @@ export default function DobutamineCri({ weight, setIsSheetOpen }: Props) {
 
   // fluidVol에 dobutamineVol를 넣고 fluidRate 속도로 투여
   // fluidVol + dobutamineVol = totalVol
-  // dobutamineDose = 개: 5 ~ 20, 고양이: 1 ~ 5 ug/kg/hr
+  // dobutamineDose = 개: 5 ~ 20, 고양이: 1 ~ 5 ug/kg/min
   const [dobutamineDose, setDobutamineDose] = useState('5')
   const [syringeVol, setSyringeVol] = useState('30')
   const [fluidRate, setFluidRate] = useState('2')
@@ -31,10 +31,10 @@ export default function DobutamineCri({ weight, setIsSheetOpen }: Props) {
   // 1. 시간당 필요한 도부타민 용량 계산 (mg/hr)
   const hourlyDose = (Number(dobutamineDose) * Number(localWeight) * 60) / 1000
 
-  // 2. 시간당 필요한 도부타민 원액 용량 계산 (ml/hr)
+  // 2. 시간당 필요한 도부타민 원액 용량 계산 (mL/hr)
   const hourlyVolume = hourlyDose / DOBUTAMINE_CONCENTRATION
 
-  // 3. 최종 첨가할 도부타민 용량 계산 (ml)
+  // 3. 최종 첨가할 도부타민 용량 계산 (mL)
   // (syringeVolume + x) : fluidRate = x : hourlyVolume
   // x = (syringeVolume * hourlyVolume) / (fluidRate - hourlyVolume)
   const dobutamineVol = (
@@ -106,7 +106,7 @@ export default function DobutamineCri({ weight, setIsSheetOpen }: Props) {
               placeholder="수액속도"
             />
             <span className="absolute bottom-2 right-2 text-sm text-muted-foreground">
-              ml/hr
+              mL/hr
             </span>
           </div>
         </div>
@@ -116,16 +116,16 @@ export default function DobutamineCri({ weight, setIsSheetOpen }: Props) {
             displayResult={
               <div>
                 수액{' '}
-                <span className="font-bold text-primary">{syringeVol}ml</span> +
+                <span className="font-bold text-primary">{syringeVol}mL</span> +
                 Dobutamine{' '}
                 <span className="font-bold text-primary">
-                  {dobutamineVol}ml
+                  {dobutamineVol}mL
                 </span>{' '}
                 , FR :{' '}
-                <span className="font-bold text-primary">{fluidRate}ml/hr</span>{' '}
+                <span className="font-bold text-primary">{fluidRate}mL/hr</span>{' '}
               </div>
             }
-            copyResult={`수액 ${syringeVol}ml + Dobutamine ${dobutamineVol}ml , FR : ${fluidRate}ml/hr`}
+            copyResult={`수액 ${syringeVol}mL + Dobutamine ${dobutamineVol}mL , FR : ${fluidRate}mL/hr`}
             hasInsertOrderButton={hasSelectedPatient}
             setIsSheetOpen={setIsSheetOpen}
           />

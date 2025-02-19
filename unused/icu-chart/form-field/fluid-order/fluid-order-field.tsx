@@ -175,19 +175,19 @@ export default function FluidOrderField({
                             <SelectItem value="a">
                               a. 60{' '}
                               <span className="text-sm text-muted-foreground">
-                                ml/kg/day
+                                mL/kg/day
                               </span>
                             </SelectItem>
                             <SelectItem value="b">
                               b. 132 * (몸무게) <sup>0.75</sup>{' '}
                               <span className="text-sm text-muted-foreground">
-                                ml/day
+                                mL/day
                               </span>
                             </SelectItem>
                             <SelectItem value="c">
                               c. 30 * (몸무게) + 70{' '}
                               <span className="text-sm text-muted-foreground">
-                                ml/day
+                                mL/day
                               </span>
                             </SelectItem>
                           </>
@@ -196,19 +196,19 @@ export default function FluidOrderField({
                             <SelectItem value="a">
                               a. 40{' '}
                               <span className="text-sm text-muted-foreground">
-                                ml/kg/day
+                                mL/kg/day
                               </span>
                             </SelectItem>
                             <SelectItem value="b">
                               b. 80 * (몸무게) <sup>0.75</sup>{' '}
                               <span className="text-sm text-muted-foreground">
-                                ml/day
+                                mL/day
                               </span>
                             </SelectItem>
                             <SelectItem value="c">
                               c. 30 * (몸무게) + 70{' '}
                               <span className="text-sm text-muted-foreground">
-                                ml/day
+                                mL/day
                               </span>
                             </SelectItem>
                           </>

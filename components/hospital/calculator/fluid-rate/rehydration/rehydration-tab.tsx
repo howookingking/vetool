@@ -94,11 +94,11 @@ export default function RehydrationTab({
         <CalculatorResult
           displayResult={
             <span className="font-bold text-primary">
-              {result.ratePerHour.toString()} ml/hr
+              {result.ratePerHour.toString()} mL/hr
             </span>
           }
-          copyResult={`${result.ratePerHour} ml/hr`}
-          comment={`${result.totalMl}ml를 ${rehydrationTime}시간 동안 주입`}
+          copyResult={`${result.ratePerHour} mL/hr`}
+          comment={`${result.totalMl}mL를 ${rehydrationTime}시간 동안 주입`}
         />
       )}
     </div>

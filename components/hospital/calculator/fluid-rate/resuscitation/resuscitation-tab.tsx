@@ -79,10 +79,10 @@ export default function ResuscitationTab({
         <CalculatorResult
           displayResult={
             <span className="font-bold text-primary">
-              {result.min} ~ {result.max}ml
+              {result.min} ~ {result.max}mL
             </span>
           }
-          copyResult={`${result.min}ml ~ ${result.max}ml`}
+          copyResult={`${result.min}mL ~ ${result.max}mL`}
           comment="Buffered Isotonic 수액을 15~30분간 주입해주세요."
         />
       )}

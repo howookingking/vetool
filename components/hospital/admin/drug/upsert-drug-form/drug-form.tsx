@@ -66,7 +66,7 @@ export function DrugForm({ rawDrugData }: { rawDrugData: RawDrug[] }) {
     resolver: zodResolver(drugSchema),
     defaultValues: {
       hos_drug_dosages: {
-        unit: 'ml',
+        unit: 'mL',
         bw_unit: 'kg',
         dose_unit: 'mg/kg',
         mg_per_ml: 0,
@@ -362,7 +362,7 @@ export function DrugForm({ rawDrugData }: { rawDrugData: RawDrug[] }) {
                           )}
                         />
                         <span className="absolute right-2 top-9 text-xs text-muted-foreground">
-                          ml
+                          mL
                         </span>
                       </div>
 
@@ -381,7 +381,7 @@ export function DrugForm({ rawDrugData }: { rawDrugData: RawDrug[] }) {
                           )}
                         />
                         <span className="absolute right-2 top-9 text-xs text-muted-foreground">
-                          ml
+                          mL
                         </span>
                       </div>
 
@@ -400,7 +400,7 @@ export function DrugForm({ rawDrugData }: { rawDrugData: RawDrug[] }) {
                           )}
                         />
                         <span className="absolute right-2 top-9 text-xs text-muted-foreground">
-                          ml
+                          mL
                         </span>
                       </div>
 

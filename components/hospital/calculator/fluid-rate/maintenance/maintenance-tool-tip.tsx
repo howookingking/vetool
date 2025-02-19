@@ -7,19 +7,19 @@ export default function MaintenanceToolTip() {
         <div>
           <div className="text-sm font-bold">개</div>
           <div>
-            a. 132 x (몸무게) <sup>0.75</sup> ml/day
+            a. 132 x BW(kg) <sup>0.75</sup> mL/day
           </div>
-          <div>b. 60ml/kg/day</div>
-          <div>c. 30 x (몸무게) + 70 ml/day</div>
+          <div>b. 60mL/kg/day</div>
+          <div>c. 30 x BW(kg) + 70 mL/day</div>
         </div>
 
         <div>
           <div className="text-sm font-bold">고양이</div>
           <div>
-            a. 80 x (몸무게) <sup>0.75</sup> ml/day
+            a. 80 x BW(kg) <sup>0.75</sup> mL/day
           </div>
-          <div>b. 40ml/kg/day</div>
-          <div>c. 30 x (몸무게) + 70 ml/day</div>
+          <div>b. 40mL/kg/day</div>
+          <div>c. 30 x BW(kg) + 70 mL/day</div>
         </div>
       </div>
 
