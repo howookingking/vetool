@@ -9,6 +9,7 @@ import DobutamineCri from './drugs/dobutamine-cri'
 import FurosemideCri from './drugs/furosemide-cri'
 import BicarbonateCri from './drugs/bicarbonate-cri'
 import MetoclopramideCri from './drugs/metoclopramide-cri'
+import { useState } from 'react'
 
 type Props = {
   weight: string
@@ -16,6 +17,11 @@ type Props = {
 }
 
 export default function Cri({ weight, setIsSheetOpen }: Props) {
+  const [localWeight, setLocalWeight] = useState(weight)
+  const handleChangeWeight = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocalWeight(e.target.value)
+  }
+
   return (
     <div className="h-full">
       <SheetHeader>
@@ -27,13 +33,29 @@ export default function Cri({ weight, setIsSheetOpen }: Props) {
       </SheetHeader>
 
       <Accordion type="multiple">
-        <FurosemideCri weight={weight} setIsSheetOpen={setIsSheetOpen} />
+        <FurosemideCri
+          weight={localWeight}
+          setIsSheetOpen={setIsSheetOpen}
+          handleChangeWeight={handleChangeWeight}
+        />
 
-        <DobutamineCri weight={weight} setIsSheetOpen={setIsSheetOpen} />
+        <DobutamineCri
+          weight={localWeight}
+          setIsSheetOpen={setIsSheetOpen}
+          handleChangeWeight={handleChangeWeight}
+        />
 
-        <MetoclopramideCri weight={weight} setIsSheetOpen={setIsSheetOpen} />
+        <MetoclopramideCri
+          weight={localWeight}
+          setIsSheetOpen={setIsSheetOpen}
+          handleChangeWeight={handleChangeWeight}
+        />
 
-        <BicarbonateCri weight={weight} setIsSheetOpen={setIsSheetOpen} />
+        <BicarbonateCri
+          weight={localWeight}
+          setIsSheetOpen={setIsSheetOpen}
+          handleChangeWeight={handleChangeWeight}
+        />
       </Accordion>
     </div>
   )

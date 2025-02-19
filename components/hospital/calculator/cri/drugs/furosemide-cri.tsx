@@ -14,9 +14,14 @@ const FUROSEMIDE_CONCENTRATION = 10
 type Props = {
   weight: string
   setIsSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
+  handleChangeWeight: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function FurosemideCri({ weight, setIsSheetOpen }: Props) {
+export default function FurosemideCri({
+  weight,
+  setIsSheetOpen,
+  handleChangeWeight,
+}: Props) {
   const { patient_id } = useParams()
   const hasSelectedPatient = Boolean(patient_id)
 
@@ -26,10 +31,9 @@ export default function FurosemideCri({ weight, setIsSheetOpen }: Props) {
   const [furosemideDoseRate, setFurosemideDoseRate] = useState('1')
   const [syringeVol, setSyringeVol] = useState('30')
   const [fluidRate, setFluidRate] = useState('2')
-  const [localWeight, setLocalWeight] = useState(weight)
 
   // 1. 시간당 필요한 퓨로세미드 용량 계산 (mg/hr)
-  const hourlyDose = Number(furosemideDoseRate) * Number(localWeight)
+  const hourlyDose = Number(furosemideDoseRate) * Number(weight)
 
   // 2. 시간당 필요한 퓨로세미드 원액 용량 계산 (mL/hr)
   const hourlyVolume = hourlyDose / FUROSEMIDE_CONCENTRATION
@@ -55,8 +59,8 @@ export default function FurosemideCri({ weight, setIsSheetOpen }: Props) {
               type="number"
               id="weight"
               className="mt-1"
-              value={localWeight}
-              onChange={(e) => setLocalWeight(e.target.value)}
+              value={weight}
+              onChange={handleChangeWeight}
               placeholder="체중"
             />
             <span className="absolute bottom-2 right-2 text-sm text-muted-foreground">

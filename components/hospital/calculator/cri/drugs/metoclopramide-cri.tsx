@@ -14,9 +14,14 @@ const METOCLOPRAMIDE_CONCENTRATION = 5
 type Props = {
   weight: string
   setIsSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
+  handleChangeWeight: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function MetoclopramideCri({ weight, setIsSheetOpen }: Props) {
+export default function MetoclopramideCri({
+  weight,
+  setIsSheetOpen,
+  handleChangeWeight,
+}: Props) {
   const { patient_id } = useParams()
   const hasSelectedPatient = Boolean(patient_id)
 
@@ -26,10 +31,9 @@ export default function MetoclopramideCri({ weight, setIsSheetOpen }: Props) {
   const [metoDoseRate, setmetoDoseRate] = useState('0.01')
   const [syringeVol, setSyringeVol] = useState('30')
   const [fluidRate, setFluidRate] = useState('2')
-  const [localWeight, setLocalWeight] = useState(weight)
 
   // 1. 시간당 필요한 메토 용량 계산 (mg/hr)
-  const hourlyDose = Number(metoDoseRate) * Number(localWeight)
+  const hourlyDose = Number(metoDoseRate) * Number(weight)
 
   // 2. 시간당 필요한 메토 원액 용량 계산 (mL/hr)
   const hourlyVolume = hourlyDose / METOCLOPRAMIDE_CONCENTRATION
@@ -53,8 +57,8 @@ export default function MetoclopramideCri({ weight, setIsSheetOpen }: Props) {
               type="number"
               id="weight"
               className="mt-1"
-              value={localWeight}
-              onChange={(e) => setLocalWeight(e.target.value)}
+              value={weight}
+              onChange={handleChangeWeight}
               placeholder="체중"
             />
             <span className="absolute bottom-2 right-2 text-sm text-muted-foreground">

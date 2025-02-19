@@ -14,9 +14,14 @@ const DOBUTAMINE_CONCENTRATION = 50
 type Props = {
   weight: string
   setIsSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
+  handleChangeWeight: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function DobutamineCri({ weight, setIsSheetOpen }: Props) {
+export default function DobutamineCri({
+  weight,
+  setIsSheetOpen,
+  handleChangeWeight,
+}: Props) {
   const { patient_id } = useParams()
   const hasSelectedPatient = Boolean(patient_id)
 
@@ -26,10 +31,9 @@ export default function DobutamineCri({ weight, setIsSheetOpen }: Props) {
   const [dobutamineDose, setDobutamineDose] = useState('5')
   const [syringeVol, setSyringeVol] = useState('30')
   const [fluidRate, setFluidRate] = useState('2')
-  const [localWeight, setLocalWeight] = useState(weight)
 
   // 1. 시간당 필요한 도부타민 용량 계산 (mg/hr)
-  const hourlyDose = (Number(dobutamineDose) * Number(localWeight) * 60) / 1000
+  const hourlyDose = (Number(dobutamineDose) * Number(weight) * 60) / 1000
 
   // 2. 시간당 필요한 도부타민 원액 용량 계산 (mL/hr)
   const hourlyVolume = hourlyDose / DOBUTAMINE_CONCENTRATION
@@ -54,8 +58,8 @@ export default function DobutamineCri({ weight, setIsSheetOpen }: Props) {
               type="number"
               id="weight"
               className="mt-1"
-              value={localWeight}
-              onChange={(e) => setLocalWeight(e.target.value)}
+              value={weight}
+              onChange={handleChangeWeight}
               placeholder="체중"
             />
             <span className="absolute bottom-2 right-2 text-sm text-muted-foreground">

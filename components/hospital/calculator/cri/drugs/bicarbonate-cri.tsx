@@ -13,16 +13,20 @@ import HelperTooltip from '@/components/common/helper-tooltip'
 type Props = {
   weight: string
   setIsSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
+  handleChangeWeight: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function BicarbonateCri({ weight, setIsSheetOpen }: Props) {
+export default function BicarbonateCri({
+  weight,
+  setIsSheetOpen,
+  handleChangeWeight,
+}: Props) {
   const { patient_id } = useParams()
   const hasSelectedPatient = Boolean(patient_id)
 
   const [baseExcess, setBaseExcess] = useState('10')
-  const [localWeight, setLocalWeight] = useState(weight)
 
-  const result = 0.3 * Number(localWeight) * Number(baseExcess)
+  const result = 0.3 * Number(weight) * Number(baseExcess)
 
   return (
     <AccordionItem value="bicarbonate">
@@ -41,8 +45,8 @@ export default function BicarbonateCri({ weight, setIsSheetOpen }: Props) {
               type="number"
               id="weight"
               className="mt-1"
-              value={localWeight}
-              onChange={(e) => setLocalWeight(e.target.value)}
+              value={weight}
+              onChange={handleChangeWeight}
               placeholder="체중"
             />
             <span className="absolute bottom-2 right-2 text-sm text-muted-foreground">
