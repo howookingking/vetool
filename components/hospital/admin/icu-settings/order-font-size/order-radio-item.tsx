@@ -51,7 +51,7 @@ export default function OrderRadioItem({
             className="truncate font-semibold text-muted-foreground"
             style={{ fontSize: desc }}
           >
-            7.2ml
+            7.2mL
           </span>
         </div>
       </Label>

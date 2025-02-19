@@ -25,6 +25,7 @@ import { FLUIDS } from '@/constants/hospital/icu/chart/fluid'
 import { calculateMaintenanceRate } from '@/lib/calculators/fluid-rate'
 import { orderSchema } from '@/lib/schemas/icu/chart/order-schema'
 import { cn } from '@/lib/utils/utils'
+import { type Fold } from '@/types/hospital/calculator'
 import { Calculator } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import type { UseFormReturn } from 'react-hook-form'
@@ -72,7 +73,7 @@ export default function FluidOrderField({
     const result = calculateMaintenanceRate(
       weight || '0',
       species as 'canine' | 'feline',
-      localFold,
+      localFold as Fold,
       localMaintenaceRateCalcMethod as 'a' | 'b' | 'c',
     )
 
@@ -175,19 +176,19 @@ export default function FluidOrderField({
                             <SelectItem value="a">
                               a. 60{' '}
                               <span className="text-sm text-muted-foreground">
-                                ml/kg/day
+                                mL/kg/day
                               </span>
                             </SelectItem>
                             <SelectItem value="b">
                               b. 132 * (몸무게) <sup>0.75</sup>{' '}
                               <span className="text-sm text-muted-foreground">
-                                ml/day
+                                mL/day
                               </span>
                             </SelectItem>
                             <SelectItem value="c">
                               c. 30 * (몸무게) + 70{' '}
                               <span className="text-sm text-muted-foreground">
-                                ml/day
+                                mL/day
                               </span>
                             </SelectItem>
                           </>
@@ -196,19 +197,19 @@ export default function FluidOrderField({
                             <SelectItem value="a">
                               a. 40{' '}
                               <span className="text-sm text-muted-foreground">
-                                ml/kg/day
+                                mL/kg/day
                               </span>
                             </SelectItem>
                             <SelectItem value="b">
                               b. 80 * (몸무게) <sup>0.75</sup>{' '}
                               <span className="text-sm text-muted-foreground">
-                                ml/day
+                                mL/day
                               </span>
                             </SelectItem>
                             <SelectItem value="c">
                               c. 30 * (몸무게) + 70{' '}
                               <span className="text-sm text-muted-foreground">
-                                ml/day
+                                mL/day
                               </span>
                             </SelectItem>
                           </>

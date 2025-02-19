@@ -6,17 +6,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Dispatch, SetStateAction } from 'react'
+import { type Dispatch, type SetStateAction } from 'react'
 
-type DietFeedPerDayInputProps = {
+type Props = {
   feedPerDay: string
   setFeedPerDay: Dispatch<SetStateAction<string>>
+  disabled?: boolean
 }
 
 export default function DietFeedPerDayInput({
   feedPerDay,
   setFeedPerDay,
-}: DietFeedPerDayInputProps) {
+  disabled,
+}: Props) {
   const handleFeedPerDayChange = (value: string) => {
     setFeedPerDay(value)
   }
@@ -25,7 +27,7 @@ export default function DietFeedPerDayInput({
     <div className="w-full space-y-2">
       <Label className="font-semibold">급여 횟수</Label>
       <Select value={feedPerDay} onValueChange={handleFeedPerDayChange}>
-        <SelectTrigger className="w-full">
+        <SelectTrigger className="w-full" disabled={disabled}>
           <SelectValue placeholder="회" />
         </SelectTrigger>
         <SelectContent>

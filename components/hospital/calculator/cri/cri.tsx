@@ -7,8 +7,21 @@ import {
 import DisabledFeedbackButton from '../../common/disabled-feedback-button'
 import DobutamineCri from './drugs/dobutamine-cri'
 import FurosemideCri from './drugs/furosemide-cri'
+import BicarbonateCri from './drugs/bicarbonate-cri'
+import MetoclopramideCri from './drugs/metoclopramide-cri'
+import { useState } from 'react'
 
-export default function Cri({ weight }: { weight: string }) {
+type Props = {
+  weight: string
+  setIsSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export default function Cri({ weight, setIsSheetOpen }: Props) {
+  const [localWeight, setLocalWeight] = useState(weight)
+  const handleChangeWeight = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocalWeight(e.target.value)
+  }
+
   return (
     <div className="h-full">
       <SheetHeader>
@@ -20,9 +33,29 @@ export default function Cri({ weight }: { weight: string }) {
       </SheetHeader>
 
       <Accordion type="multiple">
-        <FurosemideCri weight={weight} />
+        <FurosemideCri
+          weight={localWeight}
+          setIsSheetOpen={setIsSheetOpen}
+          handleChangeWeight={handleChangeWeight}
+        />
 
-        <DobutamineCri weight={weight} />
+        <DobutamineCri
+          weight={localWeight}
+          setIsSheetOpen={setIsSheetOpen}
+          handleChangeWeight={handleChangeWeight}
+        />
+
+        <MetoclopramideCri
+          weight={localWeight}
+          setIsSheetOpen={setIsSheetOpen}
+          handleChangeWeight={handleChangeWeight}
+        />
+
+        <BicarbonateCri
+          weight={localWeight}
+          setIsSheetOpen={setIsSheetOpen}
+          handleChangeWeight={handleChangeWeight}
+        />
       </Accordion>
     </div>
   )

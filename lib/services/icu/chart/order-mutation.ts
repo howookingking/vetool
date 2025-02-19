@@ -128,3 +128,28 @@ export const updateIsBordered = async (
     redirect(`/error?message=${error.message}`)
   }
 }
+
+export const insertCalcResultOrder = async (
+  hosId: string,
+  patientId: string,
+  targetDate: string,
+  orderType: string,
+  orderName: string,
+  orderComment: string,
+) => {
+  const supabase = await createClient()
+
+  const { error } = await supabase.rpc('insert_calc_result_order', {
+    hos_id_input: hosId,
+    target_date_input: targetDate,
+    order_type_input: orderType,
+    order_name_input: orderName,
+    order_comment_input: orderComment,
+    patient_id_input: patientId,
+  })
+
+  if (error) {
+    console.error(error)
+    redirect(`/error?message=${error.message}`)
+  }
+}

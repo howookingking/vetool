@@ -9,7 +9,7 @@ import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import CalculatorResult from '../../result/calculator-result'
 
-const FUROSEMIDE_CONCENTRATION = 10
+const METOCLOPRAMIDE_CONCENTRATION = 5
 
 type Props = {
   weight: string
@@ -17,7 +17,7 @@ type Props = {
   handleChangeWeight: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function FurosemideCri({
+export default function MetoclopramideCri({
   weight,
   setIsSheetOpen,
   handleChangeWeight,
@@ -25,31 +25,29 @@ export default function FurosemideCri({
   const { patient_id } = useParams()
   const hasSelectedPatient = Boolean(patient_id)
 
-  // fluidVol에 furosemideVol를 넣고 fluidRate 속도로 투여
-  // fluidVol + furosemideVol = totalVol
-  // furosemideDoseRate = 0.2 ~ 1 mg/kg/hr
-  const [furosemideDoseRate, setFurosemideDoseRate] = useState('1')
+  // fluidVol에 MetoVol를 넣고 fluidRate 속도로 투여
+  // fluidVol + MetoVol = totalVol
+  // MetoDoseRate = 0.01 ~ 0.083mg/kg/hr (0.01mg/kg/hr ~ 2mg/kg/day)
+  const [metoDoseRate, setmetoDoseRate] = useState('0.01')
   const [syringeVol, setSyringeVol] = useState('30')
   const [fluidRate, setFluidRate] = useState('2')
 
-  // 1. 시간당 필요한 퓨로세미드 용량 계산 (mg/hr)
-  const hourlyDose = Number(furosemideDoseRate) * Number(weight)
+  // 1. 시간당 필요한 메토 용량 계산 (mg/hr)
+  const hourlyDose = Number(metoDoseRate) * Number(weight)
 
-  // 2. 시간당 필요한 퓨로세미드 원액 용량 계산 (mL/hr)
-  const hourlyVolume = hourlyDose / FUROSEMIDE_CONCENTRATION
+  // 2. 시간당 필요한 메토 원액 용량 계산 (mL/hr)
+  const hourlyVolume = hourlyDose / METOCLOPRAMIDE_CONCENTRATION
 
-  // 3. 주사기 용량에 맞춰 퓨로세미드와 수액의 비율 계산
-  // hourlyVolume : fluidRate = x : syringeVolume
-  const furosemideVol = (
-    (Number(hourlyVolume) * Number(syringeVol)) /
-    Number(fluidRate)
+  // 3. 주사기 용량에 맞춰 메토와 수액의 비율 계산
+  // (syringeVolume + x) : fluidRate = x : hourlyVolume
+  const metoVol = (
+    (Number(syringeVol) * hourlyVolume) /
+    (Number(fluidRate) - hourlyVolume)
   ).toFixed(2)
 
-  const fluidVol = (Number(syringeVol) - Number(furosemideVol)).toFixed(2)
-
   return (
-    <AccordionItem value="furosemide">
-      <AccordionTrigger>Furosemide (10mg/mL)</AccordionTrigger>
+    <AccordionItem value="Meto">
+      <AccordionTrigger>Metoclopramide (5mg/mL)</AccordionTrigger>
 
       <AccordionContent className="space-y-4 px-1">
         <div className="grid grid-cols-2 gap-2">
@@ -69,14 +67,14 @@ export default function FurosemideCri({
           </div>
 
           <div className="relative">
-            <Label htmlFor="furosemideDose">약물 용량 (0.2 ~ 1)</Label>
+            <Label htmlFor="MetoDose">약물 용량 (0.01 ~ 0.083mg/kg/hr)</Label>
             <Input
               type="number"
-              id="furosemideDose"
+              id="MetoDose"
               className="mt-1"
-              value={furosemideDoseRate}
-              onChange={(e) => setFurosemideDoseRate(e.target.value)}
-              placeholder="퓨로세마이드 용량"
+              value={metoDoseRate}
+              onChange={(e) => setmetoDoseRate(e.target.value)}
+              placeholder="메토클로프로마이드 용량"
             />
             <span className="absolute bottom-2 right-2 text-sm text-muted-foreground">
               mg/kg/hr
@@ -114,21 +112,19 @@ export default function FurosemideCri({
           </div>
         </div>
 
-        {Number(fluidVol) > 0 && Number(furosemideVol) > 0 && (
+        {Number(metoVol) > 0 && (
           <CalculatorResult
             displayResult={
-              <>
+              <div>
                 수액{' '}
-                <span className="font-bold text-primary">{fluidVol}mL</span> +
-                Furosemide{' '}
-                <span className="font-bold text-primary">
-                  {furosemideVol}mL
-                </span>{' '}
-                , FR :{' '}
+                <span className="font-bold text-primary">{syringeVol}mL</span> +
+                Metoclopramide{' '}
+                <span className="font-bold text-primary">{metoVol}mL</span> , FR
+                :{' '}
                 <span className="font-bold text-primary">{fluidRate}mL/hr</span>{' '}
-              </>
+              </div>
             }
-            copyResult={`수액 ${fluidVol}mL + Furosemide ${furosemideVol}mL , FR : ${fluidRate}mL/hr`}
+            copyResult={`수액 ${syringeVol}mL + Metoclopramide ${metoVol}mL , FR : ${fluidRate}mL/hr`}
             hasInsertOrderButton={hasSelectedPatient}
             setIsSheetOpen={setIsSheetOpen}
           />

@@ -7,11 +7,11 @@ export default function ResuscitationToolTip() {
         <div className="flex gap-10">
           <div>
             <div className="text-sm font-bold">개</div>
-            <div>15-20ml/kg</div>
+            <div>15-20mL/kg</div>
           </div>
           <div>
             <div className="text-sm font-bold">고양이</div>
-            <div>5-10ml/kg</div>
+            <div>5-10mL/kg</div>
           </div>
         </div>
         <div>Rate of Administration: 15 ~ 30 min</div>

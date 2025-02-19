@@ -1,106 +1,85 @@
-import FactorToolTip from '@/components/hospital/calculator/rer-mer/rer-mer-factor-tool-tip'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { type MerFormValues } from '@/lib/schemas/calculator/rer-mer-schema'
-import { type PatientFormData } from '@/types/hospital/calculator'
+import { Label } from '@/components/ui/label'
 import { type Dispatch, type SetStateAction } from 'react'
-import { type UseFormReturn } from 'react-hook-form'
-import CalculatorResult from '../../calculator-result'
+import CalculatorResult from '../../result/calculator-result'
+import FactorToolTip from '../rer-mer-factor-tool-tip'
 
-type MerFormProps = {
-  form: UseFormReturn<MerFormValues>
-  setFormData: Dispatch<SetStateAction<PatientFormData>>
-  rer: number | null
-  result: number | null
+type Props = {
+  localWeight: string
+  setLocalWeight: Dispatch<SetStateAction<string>>
+  factor: string
+  setFactor: Dispatch<SetStateAction<string>>
+  rer?: number
+  result?: number
 }
 
 export default function MerForm({
-  form,
-  setFormData,
+  localWeight,
+  setLocalWeight,
+  factor,
+  setFactor,
   rer,
   result,
-}: MerFormProps) {
+}: Props) {
   return (
-    <div className="flex flex-col gap-4">
-      <Form {...form}>
-        <form className="grid grid-cols-2 gap-2">
-          <FormField
-            control={form.control}
-            name="weight"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>체중 (kg)</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="체중을 입력하세요"
-                    {...field}
-                    onChange={(e) => {
-                      field.onChange(e)
-                      setFormData((prev) => ({
-                        ...prev,
-                        weight: e.target.value,
-                      }))
-                    }}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 gap-2">
+        <div className="relative">
+          <Label htmlFor="weight">체중</Label>
+          <Input
+            autoComplete="off"
+            type="number"
+            id="weight"
+            className="mt-1"
+            value={localWeight}
+            onChange={(e) => setLocalWeight(e.target.value)}
+            placeholder="체중"
           />
+          <span className="absolute bottom-2 right-2 text-sm text-muted-foreground">
+            kg
+          </span>
+        </div>
 
-          <div>
-            <FormLabel>RER</FormLabel>
-            <Input
-              disabled
-              placeholder="RER"
-              className="mt-2"
-              value={rer ?? ''}
-            />
-          </div>
-
-          <FormField
-            control={form.control}
-            name="factor"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="inline-flex items-center gap-2">
-                  Life Stage Factor
-                  <FactorToolTip />
-                </FormLabel>
-                <Input
-                  onChange={(e) => {
-                    field.onChange(e)
-                    setFormData((prev) => ({
-                      ...prev,
-                      factor: e.target.value,
-                    }))
-                  }}
-                  type="number"
-                  value={field.value}
-                  placeholder="Factor를 입력해주세요"
-                />
-                <FormMessage />
-              </FormItem>
-            )}
+        <div className="relative">
+          <Label htmlFor="rer">RER</Label>
+          <Input
+            type="number"
+            id="rer"
+            className="mt-1"
+            value={rer ?? ''}
+            readOnly
+            disabled
+            placeholder="RER"
           />
-        </form>
-      </Form>
+          <span className="absolute bottom-2 right-2 text-sm text-muted-foreground">
+            kcal/day
+          </span>
+        </div>
 
-      {result !== null && result > 0 && (
+        <div>
+          <Label htmlFor="factor" className="flex items-center gap-2">
+            Life Stage Factor
+            <FactorToolTip />
+          </Label>
+          <Input
+            type="number"
+            id="factor"
+            className="mt-1"
+            value={factor}
+            onChange={(e) => setFactor(e.target.value)}
+            placeholder="인자"
+          />
+        </div>
+      </div>
+
+      {result && (
         <CalculatorResult
           displayResult={
             <span className="font-bold text-primary">
-              {result.toString()} kcal/day
+              {result.toFixed(0).toString()} kcal/day
             </span>
           }
-          copyResult={`${result.toString()} kcal/day`}
+          copyResult={`${result.toFixed(0).toString()} kcal/day`}
         />
       )}
     </div>
