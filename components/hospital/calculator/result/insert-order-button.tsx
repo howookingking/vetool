@@ -21,6 +21,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import OrderFormField from '../../icu/main/chart/selected-chart/chart-body/table/order/order-form-field'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 
 type Props = {
   orderName: string
@@ -78,10 +79,9 @@ export default function InsertOrderButton({
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>계산 오더 추가</DialogTitle>
-          <DialogDescription>
-            <span className="font-bold">{orderName}</span> <br />
-            오더를 추가하시겠습니까?
-          </DialogDescription>
+          <VisuallyHidden>
+            <DialogDescription />
+          </VisuallyHidden>
         </DialogHeader>
 
         <Form {...form}>

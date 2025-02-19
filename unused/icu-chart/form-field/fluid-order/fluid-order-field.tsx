@@ -25,6 +25,7 @@ import { FLUIDS } from '@/constants/hospital/icu/chart/fluid'
 import { calculateMaintenanceRate } from '@/lib/calculators/fluid-rate'
 import { orderSchema } from '@/lib/schemas/icu/chart/order-schema'
 import { cn } from '@/lib/utils/utils'
+import { type Fold } from '@/types/hospital/calculator'
 import { Calculator } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import type { UseFormReturn } from 'react-hook-form'
@@ -72,7 +73,7 @@ export default function FluidOrderField({
     const result = calculateMaintenanceRate(
       weight || '0',
       species as 'canine' | 'feline',
-      localFold,
+      localFold as Fold,
       localMaintenaceRateCalcMethod as 'a' | 'b' | 'c',
     )
 
