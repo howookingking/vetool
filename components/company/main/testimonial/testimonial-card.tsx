@@ -16,7 +16,7 @@ export default function TestimonialCard({
   setSelectedCard,
 }: Props) {
   const scale =
-    position <= selectedCard ? 1 : 1 + 0.03 * (position - selectedCard)
+    position <= selectedCard ? 1 : 1 + 0.1 * (position - selectedCard)
   const offset =
     position <= selectedCard ? 0 : 115 + (position - selectedCard) * 3
   const background = position % 2 ? 'black' : 'white'

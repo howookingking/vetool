@@ -1,6 +1,6 @@
-import { type Dispatch, type SetStateAction } from 'react'
-import TestimonialCard from './testimonial-card'
+import TestimonialCard from '@/components/company/main/testimonial/testimonial-card'
 import { TESTIMONIALS } from '@/constants/company/main'
+import { type Dispatch, type SetStateAction } from 'react'
 
 type Props = {
   selectedCard: number
@@ -12,7 +12,7 @@ export default function TestimonialCards({
   setSelectedCard,
 }: Props) {
   return (
-    <div className="relative h-[450px] p-4 shadow-xl md:h-[640px] lg:h-[720px]">
+    <div className="relative h-[400px] p-4 shadow-xl lg:h-[500px]">
       {TESTIMONIALS.map((testimonial, position) => (
         <TestimonialCard
           key={position}

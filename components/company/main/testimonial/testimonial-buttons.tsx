@@ -13,7 +13,7 @@ export default function TestimonialButtons({
   selectedCard,
 }: Props) {
   return (
-    <div className="mt-8 flex gap-1">
+    <div className="mt-4 flex gap-1 sm:mt-8">
       {Array.from(Array(numTracks).keys()).map((n) => {
         return (
           <button

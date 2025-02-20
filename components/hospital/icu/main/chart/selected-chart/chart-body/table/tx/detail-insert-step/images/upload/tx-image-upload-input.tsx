@@ -76,10 +76,11 @@ export default function TxImageUploadInput({
       <Label className="flex h-full w-full cursor-pointer items-center justify-center">
         <Input
           type="file"
-          accept="image/*"
+          accept="image/*, video/*"
           ref={fileInputRef}
           onChange={handleImageUpload}
           className="hidden"
+          capture="environment"
           multiple
         />
 

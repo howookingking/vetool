@@ -1,14 +1,29 @@
-import FlyoutMenu from '@/components/company/header/nav/flyout-menu'
+'use client'
+
 import { HOMEPAGE_NAVBAR_ITEMS } from '@/constants/company/nav'
 
 export default function NavMenu() {
+  const handleClick = (sectionId: string) => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      const offsetTop = element.offsetTop
+      window.scrollTo({
+        top: offsetTop - 64, // 헤더 높이 제거
+        behavior: 'smooth',
+      })
+    }
+  }
+
   return (
     <ul className="hidden items-center gap-6 md:flex">
       {HOMEPAGE_NAVBAR_ITEMS.map((menu) => (
-        <li key={menu.href}>
-          <FlyoutMenu href={menu.href} label={menu.label}>
+        <li key={menu.sectionId}>
+          <button
+            onClick={() => handleClick(menu.sectionId)}
+            className="text-sm font-semibold leading-6 text-gray-900 hover:text-gray-700"
+          >
             {menu.label}
-          </FlyoutMenu>
+          </button>
         </li>
       ))}
     </ul>
