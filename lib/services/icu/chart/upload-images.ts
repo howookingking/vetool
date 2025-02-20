@@ -61,7 +61,12 @@ export const uploadTxImages = async (
   try {
     // 1. 이미지 최적화 및 WebP 변환
     const optimizedImages = await Promise.all(
-      txImages.map((file) => optimizeImage(file, 0.8)),
+      txImages.map((file) => {
+        if (file.type.startsWith('image/')) {
+          return optimizeImage(file, 0.8)
+        }
+        return file
+      }),
     )
 
     // 2. Presigned URL 받아오기
