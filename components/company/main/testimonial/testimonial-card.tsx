@@ -55,7 +55,7 @@ export default function TestimonialCard({
       </div>
 
       <p className="my-8 text-sm font-light italic sm:text-lg lg:text-xl">
-        "{testimonial.description}"
+        &ldquo;{testimonial.description}&rdquo;
       </p>
       <div>
         <span className="text-md block font-semibold sm:text-lg">

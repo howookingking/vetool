@@ -122,9 +122,14 @@ export const PLANS = [
 ] as const
 
 export const STATS = [
-  { value: 3000, suffix: '', label: '생성된 디지털 차트' },
+  { value: 3000, suffix: '', decimals: 0, label: '생성된 디지털 차트' },
   { value: 60.7, suffix: 'K', decimals: 1, label: '수의사의 오더 수' },
-  { value: 400, suffix: '시간', label: '벳툴 사용으로 절약한 시간' },
+  {
+    value: 400,
+    suffix: '시간',
+    decimals: 0,
+    label: '벳툴 사용으로 절약한 시간',
+  },
 ] as const
 
 export const SOLUTIONS = [

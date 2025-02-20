@@ -52,13 +52,13 @@ export default function FaqSolution({
             <span className="bg-clip-text">{title}</span>
           </motion.p>
 
-          <div className="flex xl:gap-16">
+          <div className="flex xl:gap-24">
             <motion.p
               initial={false}
               animate={{
                 opacity: isAccordionOpen ? 1 : 0,
               }}
-              className="mt-8 bg-gradient-to-r text-xs text-zinc-800 sm:text-xl"
+              className="mt-8 bg-gradient-to-r text-xs text-muted-foreground sm:text-xl"
             >
               {description}
             </motion.p>

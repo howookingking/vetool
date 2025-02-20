@@ -16,13 +16,13 @@ export default function NavMenu() {
 
   return (
     <ul className="hidden items-center gap-6 md:flex">
-      {HOMEPAGE_NAVBAR_ITEMS.map((menu) => (
-        <li key={menu.sectionId}>
+      {HOMEPAGE_NAVBAR_ITEMS.map((item) => (
+        <li key={item.sectionId}>
           <button
-            onClick={() => handleClick(menu.sectionId)}
+            onClick={() => handleClick(item.sectionId)}
             className="text-sm font-semibold leading-6 text-gray-900 hover:text-gray-700"
           >
-            {menu.label}
+            {item.label}
           </button>
         </li>
       ))}
