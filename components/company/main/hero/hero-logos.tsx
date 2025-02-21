@@ -20,8 +20,8 @@ const HOSPITAL_LIST = [
   },
   {
     name: '로얄 동물 메디컬센터 강동',
-    image: '/company/logos/snc.png',
-    width: 20,
+    image: '/company/logos/royal-gangdong.png',
+    width: 48,
     link: 'https://royalamcgd.com/',
   },
   {
@@ -41,7 +41,7 @@ const HOSPITAL_LIST = [
 export default function HeroLogos() {
   return (
     <div className="relative mt-auto scale-[1.01] border-y-2 border-zinc-900 bg-white">
-      <ul className="relative z-0 flex overflow-hidden">
+      <ul className="w- relative z-0 flex overflow-hidden">
         {Array.from({ length: 3 }).map((_, index) => (
           <TranslateWrapper key={index} reverse>
             {HOSPITAL_LIST.map((item) => (

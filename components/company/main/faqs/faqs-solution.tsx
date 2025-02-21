@@ -46,9 +46,9 @@ export default function FaqSolution({
             animate={{
               color: isAccordionOpen ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 1)',
             }}
-            className="w-fit bg-gradient-to-r from-teal-600 to-teal-700 bg-clip-text text-sm font-semibold sm:text-2xl"
+            className="w-fit bg-gradient-to-r from-teal-600 to-teal-700 bg-clip-text text-sm font-medium sm:text-xl"
           >
-            <span className="mr-2 text-teal-600 lg:mr-4">{icon}</span>
+            <span className="mr-2 text-black lg:mr-4">{icon}</span>
             <span className="bg-clip-text">{title}</span>
           </motion.p>
 
@@ -58,7 +58,7 @@ export default function FaqSolution({
               animate={{
                 opacity: isAccordionOpen ? 1 : 0,
               }}
-              className="mt-8 bg-gradient-to-r text-xs text-muted-foreground sm:text-xl"
+              className="mt-8 bg-gradient-to-r text-xs font-semibold text-muted-foreground sm:text-lg"
             >
               {description}
             </motion.p>
