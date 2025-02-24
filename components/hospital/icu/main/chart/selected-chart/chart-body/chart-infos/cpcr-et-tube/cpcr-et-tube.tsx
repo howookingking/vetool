@@ -24,12 +24,12 @@ const LazyCpcrEtTubeUpdateForm = dynamic(
   },
 )
 
-type CpcrEtTubeProps = {
+type Props = {
   cpcrEtTube: string
   icuIoId: string
 }
 
-export default function CpcrEtTube({ cpcrEtTube, icuIoId }: CpcrEtTubeProps) {
+export default function CpcrEtTube({ cpcrEtTube, icuIoId }: Props) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [cpcr, etTube] = cpcrEtTube.split(',')
 
