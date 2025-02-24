@@ -10,34 +10,34 @@ import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import type { IcuTxTableData } from '@/types/icu/tx-table'
+import { type IcuOrderColors } from '@/types/adimin'
+import { type IcuTxTableData } from '@/types/icu/tx-table'
 import { SquarePlus } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
+
+type Props = {
+  localFilterState: string[]
+  filteredTxData: IcuTxTableData[]
+  chartBackgroundMap: Record<string, string>
+  hasOrder: boolean
+  showTxUser: boolean
+  orderColorsData: IcuOrderColors
+}
 
 export default function TxTable({
   localFilterState,
   filteredTxData,
   chartBackgroundMap,
   hasOrder,
-}: {
-  localFilterState: string[]
-  filteredTxData: IcuTxTableData[]
-  chartBackgroundMap: Record<string, string>
-  hasOrder: boolean
-}) {
+  showTxUser,
+  orderColorsData,
+}: Props) {
+  const { setTxStep, setTxLocalState } = useIcuTxStore()
+
   const scrollAreaRef = useRef<HTMLDivElement>(null)
   const tableRef = useRef<HTMLTableElement>(null)
 
   const [isScrolled, setIsScrolled] = useState(false)
-  const {
-    basicHosData: { orderColorsData },
-  } = useBasicHosDataContext()
-
-  const { setTxStep, setTxLocalState } = useIcuTxStore()
-  const {
-    basicHosData: { showTxUser },
-  } = useBasicHosDataContext()
 
   const getCurrentScrollPosition = () => {
     const currentHour = new Date().getHours() - 5

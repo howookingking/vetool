@@ -2,10 +2,13 @@ import type { IcuCharts, IcuIo, IcuOrders, Patients } from '@/types'
 import type { Treatment } from '@/types/icu/chart'
 
 export type IcuTxTableData = {
-  icu_charts: Pick<IcuCharts, 'icu_chart_id' | 'weight'>
+  icu_charts: Pick<
+    IcuCharts,
+    'icu_chart_id' | 'weight' | 'main_vet' | 'sub_vet' | 'urgency'
+  >
   patient_id: string
   target_date: Date
-  icu_io: Pick<IcuIo, 'out_date' | 'created_at' | 'cage'>
+  icu_io: Pick<IcuIo, 'out_date' | 'created_at' | 'cage' | 'group_list'>
   patient: Pick<Patients, 'name' | 'breed' | 'species'>
   orders: (Pick<
     IcuOrders,

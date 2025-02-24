@@ -2,8 +2,11 @@
 
 import TxTable from '@/components/hospital/icu/main/tx-table/tx-table'
 import TxTableFilter from '@/components/hospital/icu/main/tx-table/tx-table-filter'
-import type { IcuTxTableData } from '@/types/icu/tx-table'
-import { useState } from 'react'
+import { DEFAULT_FILTER_STATE } from '@/constants/hospital/icu/chart/filters'
+import { filterTxTableData } from '@/lib/utils/tx-table'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
+import { type IcuTxTableData } from '@/types/icu/tx-table'
+import { useEffect, useState } from 'react'
 
 const TX_TABLE_BACKGROUD_COLORS = [
   '#fef2f2',
@@ -31,42 +34,39 @@ export default function TxTableContainer({
 }: {
   txTableData: IcuTxTableData[]
 }) {
+  const {
+    basicHosData: { showTxUser, orderColorsData, vetsListData },
+  } = useBasicHosDataContext()
+
   const [localFilterState, setLocalFilterState] = useState<string[]>([])
+  const [initialPatientFilter, setInitialPatientFilter] =
+    useState(DEFAULT_FILTER_STATE)
 
-  const filteredTxData = txTableData.map((data) => {
-    const filteredOrders = data.orders
-      .filter((order) => {
-        // 필터가 있는 경우 기존 필터링 로직 실행
-        // if (!localFilterState.includes(order.icu_chart_order_type)) {
-        //   return false
-        // }
-
-        const orderTimes = order.icu_chart_order_time
-          .map((time, index) => (time !== '0' ? index + 1 : null))
-          .filter((time) => time !== null)
-
-        const treatmentTimes = order.treatments.map((treatment) => {
-          if (treatment.tx_result) return treatment.time
-        })
-
-        const pendingOrderTimes = orderTimes.filter(
-          (time) => !treatmentTimes.includes(time),
-        )
-
-        return pendingOrderTimes.length > 0
-      })
-      .filter((order) => {
-        if (localFilterState.length === 0) {
-          return true
-        }
-
-        return localFilterState.includes(order.icu_chart_order_type)
-      })
-
-    return {
-      ...data,
-      orders: filteredOrders,
+  useEffect(() => {
+    const storagePatientFilter = localStorage.getItem('patientFilter')
+    if (storagePatientFilter) {
+      setInitialPatientFilter(JSON.parse(storagePatientFilter))
     }
+
+    const handleStorageChange = () => {
+      const newValue = localStorage.getItem('patientFilter')
+      if (newValue) {
+        setInitialPatientFilter(JSON.parse(newValue))
+      }
+    }
+
+    window.addEventListener('localStorageChange', handleStorageChange)
+
+    return () => {
+      window.removeEventListener('localStorageChange', handleStorageChange)
+    }
+  }, [])
+
+  const { filteredTxData, hasOrder } = filterTxTableData({
+    txTableData,
+    patientFilter: initialPatientFilter,
+    orderTypeFilter: localFilterState,
+    vetsListData,
   })
 
   const chartBackgroundMap = txTableData.reduce<{ [key: string]: string }>(
@@ -77,8 +77,6 @@ export default function TxTableContainer({
     },
     {},
   )
-
-  const hasOrder = filteredTxData.some((data) => data.orders.length > 0)
 
   return (
     <>
@@ -92,6 +90,8 @@ export default function TxTableContainer({
         filteredTxData={filteredTxData}
         chartBackgroundMap={chartBackgroundMap}
         hasOrder={hasOrder}
+        showTxUser={showTxUser}
+        orderColorsData={orderColorsData}
       />
     </>
   )
