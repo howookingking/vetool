@@ -12,7 +12,7 @@ import {
 const PLANS = [
   {
     name: '기본',
-    price: '500,000원/월',
+    price: '50,000원/월',
     description: '중소형 동물병원용 요금제',
     features: [
       '수의사 3명',
@@ -60,7 +60,7 @@ export default function PricingPage() {
       <div className="container px-4 md:px-6">
         <div className="grid items-center gap-6">
           <div className="flex flex-col justify-center space-y-4 text-center">
-            <div className="space-y-2">
+            <div className="space-y-6">
               <h1 className="bg-gradient-to-r from-primary to-primary-foreground bg-clip-text text-3xl font-bold tracking-tighter text-transparent sm:text-5xl xl:text-6xl/none">
                 가격 안내
               </h1>
@@ -82,7 +82,8 @@ export default function PricingPage() {
                   <CardTitle>{plan.name}</CardTitle>
                   <CardDescription>{plan.description}</CardDescription>
                 </CardHeader>
-                <CardContent>
+
+                <CardContent className="min-h-[320px]">
                   <div className="mb-4 text-4xl font-bold">{plan.price}</div>
                   <ul className="mb-6 space-y-2">
                     {plan.features.map((feature) => (
