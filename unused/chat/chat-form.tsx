@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { toast } from '@/components/ui/use-toast'
 import {
   chartSchema,
   type ChatFormValues,
@@ -19,7 +20,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle, X } from 'lucide-react'
 import { useState, type Dispatch, type SetStateAction } from 'react'
 import { useForm } from 'react-hook-form'
-import { toast } from '@/components/ui/use-toast'
 
 export default function ChatForm({
   setIsChatOpen,

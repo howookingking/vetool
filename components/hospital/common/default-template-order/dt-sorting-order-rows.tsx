@@ -5,7 +5,7 @@ import { type Dispatch, type SetStateAction } from 'react'
 import { type Sortable } from 'react-sortablejs'
 import DtOrderRowTitle from './dt-order-row-title'
 
-type SortingRowsProps = {
+type Props = {
   sortedOrders: SelectedIcuOrder[]
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   isSorting: boolean
@@ -17,7 +17,7 @@ export default function DtSortingOrderRows({
   setSortedOrders,
   isSorting,
   orderWidth,
-}: SortingRowsProps) {
+}: Props) {
   const handleReorder = (event: Sortable.SortableEvent) => {
     const newOrders = [...sortedOrders]
     const [movedOrder] = newOrders.splice(event.oldIndex as number, 1)

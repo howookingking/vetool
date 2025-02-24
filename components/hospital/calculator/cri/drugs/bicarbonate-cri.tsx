@@ -26,7 +26,7 @@ export default function BicarbonateCri({
 
   const [baseExcess, setBaseExcess] = useState('10')
 
-  const result = 0.3 * Number(weight) * Number(baseExcess)
+  const result = (0.3 * Number(weight) * Number(baseExcess)).toFixed(2)
 
   return (
     <AccordionItem value="bicarbonate">
@@ -78,13 +78,14 @@ export default function BicarbonateCri({
                 <span className="font-bold text-primary">{result}mL</span> 의
                 1/3~1/2{' '}
                 <span className="font-bold text-primary">
-                  ({result / 3}~{result / 2}mL)
+                  ({(Number(result) / 3).toFixed(2)}~
+                  {(Number(result) / 2).toFixed(2)}mL)
                 </span>
                 을 <span className="font-bold text-primary">2~6시간</span> 동안
                 공급
               </div>
             }
-            copyResult={`Sodium Bicarbonate ${result}mL 의 1/3~1/2(${result / 3}~${result / 2}mL)을 2~6시간동안 공급 `}
+            copyResult={`Sodium Bicarbonate ${result}mL 의 1/3~1/2(${(Number(result) / 3).toFixed(2)}~${(Number(result) / 2).toFixed(2)}mL)을 2~6시간동안 공급 `}
             hasInsertOrderButton={hasSelectedPatient}
             setIsSheetOpen={setIsSheetOpen}
           />

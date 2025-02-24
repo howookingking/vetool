@@ -99,7 +99,7 @@ export default function SearchPatientContainer({
       <div className="flex justify-between gap-2">
         <div className="relative w-full">
           <Input
-            placeholder="환자 번호, 환자명, 보호자명을 검색하세요"
+            placeholder="환자 번호 or 환자명 or 보호자명을 검색하세요. 검색어는 ','로 구분됩니다. (예 : 오유림, 베리)"
             value={inputValue}
             onChange={handleInputChange}
             id="search-chart"

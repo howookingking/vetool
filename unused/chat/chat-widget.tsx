@@ -11,13 +11,10 @@ import { MessageCircle, X } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
 
-const LazyChatForm = dynamic(
-  () => import('@/components/company/ui/chat/chat-form'),
-  {
-    ssr: false,
-    loading: () => <LargeLoaderCircle className="h-[300px]" />,
-  },
-)
+const LazyChatForm = dynamic(() => import('./chat-form'), {
+  ssr: false,
+  loading: () => <LargeLoaderCircle className="h-[300px]" />,
+})
 
 export default function ChatWidget() {
   const [isChatOpen, setIsChatOpen] = useState(false)

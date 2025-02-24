@@ -1,4 +1,4 @@
-import DtNoOrder from '@/components/hospital/common/default-template-order/dt-no-order'
+import DtNoOrder from '@/unused/dt-no-order'
 import DtOrderCreator from '@/components/hospital/common/default-template-order/dt-order-creator'
 import DtOrderDialog from '@/components/hospital/common/default-template-order/dt-order-dialog'
 import DtOrderRows from '@/components/hospital/common/default-template-order/dt-order-rows'
@@ -61,14 +61,14 @@ export default function TemplateOrderTable({
               <DtOrderCreator
                 sortedOrders={sortedOrders}
                 setSortedOrders={setSortedOrders}
-                template
+                isTemplate
               />
             </TableCell>
           </TableRow>
         </TableBody>
       )}
 
-      <DtOrderDialog setSortedOrders={setSortedOrders} template />
+      <DtOrderDialog setSortedOrders={setSortedOrders} isTemplate />
     </Table>
   )
 }

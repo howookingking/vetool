@@ -19,15 +19,17 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import DtDeleteOrderAlertDialog from './dt-delete-order-alert-dialog'
 
-type DtOrderFormProps = {
+type Props = {
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
-  template?: boolean
+  isTemplate?: boolean
+  isLastDefaultOrder?: boolean
 }
 
 export default function DtOrderForm({
   setSortedOrders,
-  template,
-}: DtOrderFormProps) {
+  isTemplate,
+  isLastDefaultOrder,
+}: Props) {
   const { hos_id } = useParams()
   const { refresh } = useRouter()
 
@@ -51,7 +53,7 @@ export default function DtOrderForm({
     const orderType = values.icu_chart_order_type
     const isBordered = values.is_bordered
 
-    template
+    isTemplate
       ? setSortedOrders((prev) => {
           return prev.map((order) => {
             if (order.order_id === selectedChartOrder.order_id) {
@@ -102,7 +104,8 @@ export default function DtOrderForm({
             selectedChartOrder={selectedChartOrder}
             setOrderStep={setOrderStep}
             setSortedOrders={setSortedOrders}
-            template={template}
+            isTemplate={isTemplate}
+            isLastDefaultOrder={isLastDefaultOrder}
           />
 
           <DialogClose asChild>

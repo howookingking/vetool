@@ -1,6 +1,5 @@
 'use client'
 
-import DtNoOrder from '@/components/hospital/common/default-template-order/dt-no-order'
 import DtOrderCreator from '@/components/hospital/common/default-template-order/dt-order-creator'
 import DtOrderDialog from '@/components/hospital/common/default-template-order/dt-order-dialog'
 import DtOrderRows from '@/components/hospital/common/default-template-order/dt-order-rows'
@@ -50,15 +49,11 @@ export default function DefaultOrdersTable({
         />
       ) : (
         <TableBody>
-          {sortedOrders.length === 0 ? (
-            <DtNoOrder orderWidth={orderWidth} />
-          ) : (
-            <DtOrderRows
-              sortedOrders={sortedOrders}
-              isSorting={isSorting}
-              orderwidth={orderWidth}
-            />
-          )}
+          <DtOrderRows
+            sortedOrders={sortedOrders}
+            isSorting={isSorting}
+            orderwidth={orderWidth}
+          />
 
           <TableRow className="hover:bg-transparent">
             <TableCell className="p-0">
@@ -68,7 +63,11 @@ export default function DefaultOrdersTable({
         </TableBody>
       )}
 
-      <DtOrderDialog setSortedOrders={setSortedOrders} />
+      <DtOrderDialog
+        setSortedOrders={setSortedOrders}
+        isTemplate={false}
+        isLastDefaultOrder={sortedOrders.length === 1}
+      />
     </Table>
   )
 }

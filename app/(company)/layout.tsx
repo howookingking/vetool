@@ -1,7 +1,7 @@
 import HomepageFooter from '@/components/company/footer/hompage-footer'
 import HomepageHeader from '@/components/company/header/homepage-header'
+import OpenKakao from '@/components/company/ui/open-kakao'
 import ScrollToTopButton from '@/components/company/ui/scroll-to-top-button'
-import ChatWidget from '@/components/company/ui/chat/chat-widget'
 export default function HompageLayout({
   children,
 }: {
@@ -12,7 +12,7 @@ export default function HompageLayout({
       <HomepageHeader />
       <main>{children}</main>
       <HomepageFooter />
-      <ChatWidget />
+      <OpenKakao />
       <ScrollToTopButton />
     </div>
   )
