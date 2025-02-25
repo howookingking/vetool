@@ -12,7 +12,7 @@ export default function StatsContent() {
         transition={{ duration: 1 }}
         className="text-2xl font-bold tracking-tighter sm:text-5xl"
       >
-        디지털과 진료 데이터의 <br /> 완벽한 결합
+        시공간의 제약에서 벗어나 <br /> 다양한 기기에서 사용해보세요
       </motion.p>
 
       <br />
@@ -24,10 +24,8 @@ export default function StatsContent() {
         transition={{ duration: 1 }}
         className="text-xs text-muted-foreground sm:text-xl"
       >
-        VETOOL과 함께 병원에서 사무실까지 정확한 정보와 함께하세요.
-        <br />
-        다양한 장소에서 모든 종류의 기기에서 접근하여 <br /> 실시간 업데이트 및
-        정보 공유가 가능합니다.
+        언제 어디서나 PC, 테블릿, 스마트폰을 통해
+        <br /> 환자의 실시간 정보를 확인할 수 있습니다
       </motion.p>
     </div>
   )
