@@ -11,7 +11,7 @@ export default function StatsTitle() {
       transition={{ duration: 1 }}
       className="text-center text-2xl font-bold tracking-tighter sm:text-6xl md:text-4xl"
     >
-      디지털 차트를 통해 <br /> 동물 병원은 변화중
+      벳툴을 통해 <br /> 동물 병원은 변화 중
     </motion.h2>
   )
 }
