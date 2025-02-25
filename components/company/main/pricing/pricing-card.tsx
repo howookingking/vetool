@@ -14,6 +14,8 @@ import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils/utils'
 import { AuroraBackground } from '@/components/company/main/pricing/ui/aurora-background'
 import { PLANS } from '@/constants/company/main'
+import Link from 'next/link'
+import { OPEN_KAKAO_URL } from '../../ui/open-kakao'
 
 type Props = {
   plan: (typeof PLANS)[number]
@@ -27,15 +29,17 @@ const HoverButton = ({
   highlighted: boolean
 }) => {
   return (
-    <button
-      className={cn(
-        'flex w-full items-center justify-center gap-2 rounded-lg border border-primary px-4 py-2 shadow-[-5px_-5px_10px_rgba(255,_255,_255,_0.8),_5px_5px_10px_rgba(0,_0,_0,_0.25)] transition-all hover:text-primary hover:shadow-[-1px_-1px_5px_rgba(255,_255,_255,_0.6),_1px_1px_5px_rgba(0,_0,_0,_0.3),inset_-2px_-2px_5px_rgba(255,_255,_255,_1),inset_2px_2px_4px_rgba(0,_0,_0,_0.3)]',
-        highlighted &&
-          'border-none bg-primary text-white shadow-lg hover:text-white',
-      )}
-    >
-      <span>{value}</span>
-    </button>
+    <Link href={OPEN_KAKAO_URL} target="_blank" className="w-full">
+      <button
+        className={cn(
+          'w-full items-center justify-center gap-2 rounded-lg border border-primary px-4 py-2 shadow-[-5px_-5px_10px_rgba(255,_255,_255,_0.8),_5px_5px_10px_rgba(0,_0,_0,_0.25)] transition-all hover:text-primary hover:shadow-[-1px_-1px_5px_rgba(255,_255,_255,_0.6),_1px_1px_5px_rgba(0,_0,_0,_0.3),inset_-2px_-2px_5px_rgba(255,_255,_255,_1),inset_2px_2px_4px_rgba(0,_0,_0,_0.3)]',
+          highlighted &&
+            'border-none bg-primary text-white shadow-lg hover:text-white',
+        )}
+      >
+        <span>{value}</span>
+      </button>
+    </Link>
   )
 }
 
@@ -62,7 +66,7 @@ export default function PricingCard({ plan }: Props) {
 
         <CardContent className="min-h-[280px] sm:min-h-[320px]">
           <div className="mb-4 text-3xl font-bold sm:text-4xl">
-            {plan.price}
+            {plan.price} <span className="text-sm font-light">(VAT 별도)</span>
           </div>
 
           <Separator className="my-6 w-auto" />

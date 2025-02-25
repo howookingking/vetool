@@ -27,7 +27,7 @@ export default function TestimonialContent() {
         transition={{ duration: 0.5, delay: 0.5 }}
         className="max-w-xl text-sm text-muted-foreground sm:text-xl"
       >
-        벳툴을 사용해보고 <b>혁신</b>을 경험해보세요!
+        벳툴을 사용해보시고 <b>혁신</b>을 경험해보세요!
       </motion.p>
 
       <br />
@@ -39,7 +39,7 @@ export default function TestimonialContent() {
         transition={{ duration: 0.5, delay: 1 }}
         className="max-w-xl text-sm text-muted-foreground sm:text-xl"
       >
-        벳툴은 지속적인 자체 개발과 수의사분들의 피드백으로 만들어집니다.
+        벳툴은 사용자들의 <b>피드백</b>을 적극적으로 수용하고 있습니다
       </motion.p>
     </div>
   )

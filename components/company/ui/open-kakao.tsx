@@ -4,7 +4,7 @@ import kakoIcon from '@/public/kakao-talk-icon.svg'
 import Image from 'next/image'
 import Link from 'next/link'
 
-const OPEN_KAKAO_URL = 'https://open.kakao.com/o/si1PkVhh'
+export const OPEN_KAKAO_URL = 'https://open.kakao.com/o/si1PkVhh'
 
 export default function OpenKakao() {
   return (
