@@ -63,13 +63,14 @@ export default function FaqSolution({
               {description}
             </motion.p>
 
-            <Image
-              src={imgSrc}
-              alt="security-hero"
-              width={200}
-              height={200}
-              className="mt-4 hidden sm:block"
-            />
+            <div className="relative mt-4 h-32 w-32 shrink-0">
+              <Image
+                src={imgSrc}
+                alt="faq_image"
+                fill
+                className="mt-4 hidden object-cover sm:block"
+              />
+            </div>
           </div>
         </div>
       </motion.div>

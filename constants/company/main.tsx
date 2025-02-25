@@ -110,8 +110,7 @@ export const PLANS = [
     description: '대형 동물병원용 요금제',
     features: [
       '수의사 10명',
-      '모든 프로그램',
-      '수의학 계산기',
+      '모든 기능',
       '10GB/월 사진 및 동영상 저장공간',
       '우선적인 지원',
       '데이터 분석 자료 제공',
@@ -166,18 +165,18 @@ export const SOLUTIONS = [
   {
     id: 3,
     icon: '💾',
-    title: '가지고 있는 환자 정보를 한번에 옮기고 싶어요',
+    title: '메인차트의 환자 데이터를 옮길 수 있나요?',
     description:
-      ' 인투벳(IntoVet), 이프렌즈(e-friends)와 같이 기존 전자차트 시스템에 등록된 전체 환자 정보를 클릭 한번에 저장할 수 있습니다.',
-    imgSrc: '/company/security-hero.webp',
+      '네, 인투벳(IntoVet) 또는 이프렌즈(e-friends)에 등록된 전체 환자 정보를 CSV파일로 내보낸 후 벳툴에 업로드 할 수 있습니다',
+    imgSrc: '/company/csv.png',
   },
   {
     id: 4,
     icon: '📑',
     title: '작성한 차트를 따로 저장할 수 있나요?',
     description:
-      'PDF, 이미지 파일 형식으로 입원 단위별 차트를 저장할 수 있습니다. 또한 차트 공유하기 기능을 통해 보호자님 등 차트를 외부로 공유하는 기능도 사용할 수 있습니다.',
-    imgSrc: '/company/security-hero.webp',
+      'PDF 형식 또는 이미지 파일 형식으로 입원 단위별 차트를 파일로 저장할 수 있습니다.',
+    imgSrc: '/company/pdf.png',
   },
 ] as const
 

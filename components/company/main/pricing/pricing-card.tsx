@@ -1,7 +1,6 @@
 'use client'
 
-import { Check } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { AuroraBackground } from '@/components/company/main/pricing/ui/aurora-background'
 import {
   Card,
   CardContent,
@@ -11,9 +10,9 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { cn } from '@/lib/utils/utils'
-import { AuroraBackground } from '@/components/company/main/pricing/ui/aurora-background'
 import { PLANS } from '@/constants/company/main'
+import { cn } from '@/lib/utils/utils'
+import { Check } from 'lucide-react'
 import Link from 'next/link'
 import { OPEN_KAKAO_URL } from '../../ui/open-kakao'
 
