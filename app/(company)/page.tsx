@@ -1,11 +1,11 @@
+import Faqs from '@/components/company/main/faqs/faqs'
+import Feature from '@/components/company/main/feature/feature'
+import Hero from '@/components/company/main/hero/hero'
+import PricingPlans from '@/components/company/main/pricing/pricing-plans'
+import Stats from '@/components/company/main/stats/stats'
+import Testimonial from '@/components/company/main/testimonial/testimonial'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import Hero from '@/components/company/main/hero/hero'
-import Testimonial from '@/components/company/main/testimonial/testimonial'
-import Stats from '@/components/company/main/stats/stats'
-import PricingPlans from '@/components/company/main/pricing/pricing-plans'
-import Feature from '@/components/company/main/feature/feature'
-import Faqs from '@/components/company/main/faqs/faqs'
 export default async function CompanyHomePage() {
   const supabase = await createClient()
 

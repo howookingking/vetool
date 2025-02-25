@@ -12,7 +12,7 @@ export default function Testinomial() {
   return (
     <section
       id="testimonial"
-      className="grid h-company grid-cols-1 items-center gap-4 overflow-hidden bg-gray-50/50 p-8 xl:grid-cols-2 xl:gap-8 xl:px-24"
+      className="h-company grid grid-cols-1 items-center gap-4 overflow-hidden bg-gray-50/50 p-8 xl:grid-cols-2 xl:gap-8 xl:px-24"
     >
       <div>
         <TestimonialContent />
