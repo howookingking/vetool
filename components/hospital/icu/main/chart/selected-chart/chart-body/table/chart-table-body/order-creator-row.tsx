@@ -102,9 +102,8 @@ export default function OrderCreatorRow({
     setIsChecklistOrder(false)
   }
 
-  const handleEnter = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // 맥OS 한글 마지막 중복입력 에러
-    if (e.nativeEvent.isComposing || e.key !== 'Enter' || !newOrderInput) return
+  const handleBlur = async () => {
+    if (!newOrderInput) return
 
     const [orderName, orderDescription] = newOrderInput.split('$')
 
@@ -121,6 +120,11 @@ export default function OrderCreatorRow({
     }
 
     await createOrder(orderName, orderDescription ?? '')
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.nativeEvent.isComposing || e.key !== 'Enter') return
+    e.currentTarget.blur()
   }
 
   const handleOrderTypeChange = (selectedValue: string) => {
@@ -191,11 +195,8 @@ export default function OrderCreatorRow({
               placeholder="오더명$오더설명"
               value={isSubmitting ? '등록 중' : newOrderInput}
               onChange={(e) => setNewOrderInput(e.target.value)}
-              onKeyDown={handleEnter}
-              ref={(node) => {
-                inputRef.current = node
-                inputRef.current?.focus()
-              }}
+              onKeyDown={handleKeyDown}
+              onBlur={handleBlur}
             />
           )}
 

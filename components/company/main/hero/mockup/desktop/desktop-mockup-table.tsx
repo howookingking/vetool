@@ -60,7 +60,7 @@ export default function DesktopMockupTable() {
     <Table className="rounded-lg border">
       <TableHeader>
         <TableRow>
-          <TableHead className="min-w-[160px] border border-r border-input text-center">
+          <TableHead className="w-[160px] min-w-[120px] border border-r border-input text-center">
             오더 목록
           </TableHead>
           {HOURS.map((hour) => (

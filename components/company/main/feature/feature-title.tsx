@@ -11,7 +11,7 @@ export default function FeatureTitle() {
           transition={{ duration: 0.5 }}
           className="text-center text-3xl font-bold tracking-tighter sm:text-5xl xl:text-7xl"
         >
-          주요 기능
+          분과 차트
         </motion.h3>
 
         <motion.p
