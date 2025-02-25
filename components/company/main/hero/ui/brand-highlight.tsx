@@ -1,10 +1,17 @@
 'use client'
 
+import { cn } from '@/lib/utils/utils'
 import { motion } from 'motion/react'
 
-export default function BrandHighlight({ value }: { value: string }) {
+export default function BrandHighlight({
+  value,
+  className,
+}: {
+  value: string
+  className?: string
+}) {
   return (
-    <span className="relative">
+    <span className={cn('relative', className)}>
       {value}
       <svg
         viewBox="0 0 286 73"

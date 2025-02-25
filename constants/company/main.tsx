@@ -1,38 +1,54 @@
+import kokkiri from '@/public/company/logos/kokkiri.jpg'
+import kwangjin from '@/public/company/logos/kwangjin.png'
+import royalGangdong from '@/public/company/logos/royal-gangdong.png'
+import snc from '@/public/company/logos/snc.png'
+
 export const TESTIMONIALS = [
   {
-    image: '/icons/icon-192x192.png',
-    description:
-      'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Expedita sequi cupiditate harum repellendus ipsum dignissimos',
-    name: '이정우',
-    title: '호우킹병원',
+    image: snc,
+    description: (
+      <>
+        벳툴의 입원환자차트를 사용하고 업무효율이 크게 증가하였습니다. <br />
+        집에서도 입원환자의 상태를 확인 할 수 있어서 정말 좋습니다.
+      </>
+    ),
+    name: 'ㅇㅇㅇ',
+    title: 'SNC동물메디컬센터 원장',
   },
   {
-    image: '/icons/icon-192x192.png',
-    description:
-      'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Expedita sequi cupiditate harum repellendus ipsum dignissimos',
-    name: '유희태',
-    title: '벳툴병원',
+    image: kwangjin,
+    description: (
+      <>
+        벳툴은 수의사가 무엇을 불편해하는지를 정확히 알고 있습니다.
+        <br /> 피드백이 빨라서 좋고 이어서 출시되는 제품들이 기대가 됩니다.
+      </>
+    ),
+    name: 'ㅇㅇㅇ',
+    title: '광진동물의료센터 원장',
   },
   {
-    image: '/icons/icon-192x192.png',
-    description:
-      'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Expedita sequi cupiditate harum repellendus ipsum dignissimos',
-    name: '최중연',
-    title: 'SNC 동물메디컬센터 대표원장',
+    image: royalGangdong,
+    description: (
+      <>
+        수의사들 뿐만 아니라 간호사들도 벳툴 입원환자 차트를 좋아합니다.
+        <br />
+        입원환자 업무 부담이 크게 줄었습니다.
+      </>
+    ),
+    name: 'ㅇㅇㅇ',
+    title: '강동로얄동물메디컬센터 원장',
   },
   {
-    image: '/icons/icon-192x192.png',
-    description:
-      'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Expedita sequi cupiditate harum repellendus ipsum dignissimos',
-    name: '문창훈',
-    title: 'SNC 동물메디컬센터 대표원장',
-  },
-  {
-    image: '/icons/icon-192x192.png',
-    description:
-      'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Expedita sequi cupiditate harum repellendus ipsum dignissimos',
-    name: '홍길동',
-    title: '로얄동물메디컬센터강동 대표원장',
+    image: kokkiri,
+    description: (
+      <>
+        수의사들 뿐만 아니라 간호사들도 벳툴 입원환자 차트를 좋아합니다.
+        <br />
+        입원환자 업무 부담이 크게 줄었습니다.
+      </>
+    ),
+    name: 'ㅇㅇㅇ',
+    title: '24시코끼리동물의료센터 원장',
   },
 ] as const
 
@@ -76,47 +92,44 @@ export const FEATURES = [
 
 export const PLANS = [
   {
-    name: '기본',
+    name: 'Mild',
     price: '50,000원/월',
     description: '중소형 동물병원용 요금제',
     features: [
       '수의사 3명',
-      '입원환자차트, 수술차트',
-      '2GB 저장공간',
+      '입원환자차트',
+      '2GB/월 사진 및 동영상 저장공간',
       '기본 지원',
     ],
-    cta: '기본 요금제 시작',
+    cta: 'Mild 요금제 시작',
     highlighted: false,
   },
   {
-    name: '프로',
-    price: '200,000원/월',
-    description: '중대형 동물병원용 요금제',
+    name: 'Moderate',
+    price: '100,000원/월',
+    description: '대형 동물병원용 요금제',
     features: [
-      '수의사 5명',
-      '모든 프로그램 제공',
-      '약물 자동계산 기능 제공',
-      '20GB 저장공간',
+      '수의사 10명',
+      '모든 기능',
+      '10GB/월 사진 및 동영상 저장공간',
       '우선적인 지원',
       '데이터 분석 자료 제공',
     ],
-    cta: '프로 요금제 시작',
+    cta: 'Moderate 요금제 시작',
     highlighted: true,
   },
   {
-    name: '기업',
-    price: '400,000원/월',
+    name: 'Severe',
+    price: '150,000원/월',
     description: '대형 동물병원용 요금제',
     features: [
       '수의사 수 무제한',
-      '모든 프로그램 제공',
-      '약물 자동계산 기능 제공',
-      '무제한 저장공간',
+      '모든 기능',
+      '20GB/월 사진 및 동영상 저장공간',
       '최우선적인 지원',
-      '데이터 분석 자료 제공',
       '동물병원 경영컨설팅 지원',
     ],
-    cta: '기업 요금제 시작',
+    cta: 'Severe 요금제 시작',
     highlighted: false,
   },
 ] as const
@@ -152,18 +165,18 @@ export const SOLUTIONS = [
   {
     id: 3,
     icon: '💾',
-    title: '가지고 있는 환자 정보를 한번에 옮기고 싶어요',
+    title: '메인차트의 환자 데이터를 옮길 수 있나요?',
     description:
-      ' 인투벳(IntoVet), 이프렌즈(e-friends)와 같이 기존 전자차트 시스템에 등록된 전체 환자 정보를 클릭 한번에 저장할 수 있습니다.',
-    imgSrc: '/company/security-hero.webp',
+      '네, 인투벳(IntoVet) 또는 이프렌즈(e-friends)에 등록된 전체 환자 정보를 CSV파일로 내보낸 후 벳툴에 업로드 할 수 있습니다',
+    imgSrc: '/company/csv.png',
   },
   {
     id: 4,
     icon: '📑',
     title: '작성한 차트를 따로 저장할 수 있나요?',
     description:
-      'PDF, 이미지 파일 형식으로 입원 단위별 차트를 저장할 수 있습니다. 또한 차트 공유하기 기능을 통해 보호자님 등 차트를 외부로 공유하는 기능도 사용할 수 있습니다.',
-    imgSrc: '/company/security-hero.webp',
+      'PDF 형식 또는 이미지 파일 형식으로 입원 단위별 차트를 파일로 저장할 수 있습니다.',
+    imgSrc: '/company/pdf.png',
   },
 ] as const
 

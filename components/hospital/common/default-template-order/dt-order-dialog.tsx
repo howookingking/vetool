@@ -13,15 +13,17 @@ import { type SelectedIcuOrder } from '@/types/icu/chart'
 import { type Dispatch, type SetStateAction } from 'react'
 import DtOrderForm from './dt-order-form'
 
-type DtOrderDialogProps = {
+type Props = {
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
-  template?: boolean
+  isTemplate?: boolean
+  isLastDefaultOrder?: boolean
 }
 
 export default function DtOrderDialog({
   setSortedOrders,
-  template,
-}: DtOrderDialogProps) {
+  isTemplate,
+  isLastDefaultOrder,
+}: Props) {
   const { orderStep, setOrderStep, selectedChartOrder } = useIcuOrderStore()
   const {
     basicHosData: { orderColorsData },
@@ -52,7 +54,11 @@ export default function DtOrderDialog({
           <DialogDescription />
         </DialogHeader>
 
-        <DtOrderForm setSortedOrders={setSortedOrders} template={template} />
+        <DtOrderForm
+          setSortedOrders={setSortedOrders}
+          isTemplate={isTemplate}
+          isLastDefaultOrder={isLastDefaultOrder}
+        />
       </DialogContent>
     </Dialog>
   )

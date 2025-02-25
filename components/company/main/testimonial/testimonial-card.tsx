@@ -1,6 +1,6 @@
-import { type Dispatch, type SetStateAction } from 'react'
 import { motion } from 'motion/react'
 import Image from 'next/image'
+import { type Dispatch, type SetStateAction } from 'react'
 
 type Props = {
   testimonial: any
@@ -19,7 +19,7 @@ export default function TestimonialCard({
     position <= selectedCard ? 1 : 1 + 0.1 * (position - selectedCard)
   const offset =
     position <= selectedCard ? 0 : 115 + (position - selectedCard) * 3
-  const background = position % 2 ? 'black' : 'white'
+  const background = position % 2 ? 'oklch(0.274 0.006 286.033)' : 'white'
   const color = position % 2 ? 'white' : 'black'
 
   return (
@@ -45,17 +45,18 @@ export default function TestimonialCard({
       onClick={() => setSelectedCard(position)}
       className="absolute left-0 top-0 flex min-h-full w-full cursor-pointer flex-col justify-between p-8 lg:p-12"
     >
-      <div className="relative mx-auto h-48 w-48 sm:h-72 sm:w-72">
-        <Image
-          src={testimonial.image}
-          alt={testimonial.name}
-          fill
-          className="rounded-full object-cover"
-        />
+      <div className="relative mx-auto flex h-48 w-48 items-center justify-center overflow-hidden rounded-full ring ring-primary sm:h-72 sm:w-72">
+        <Image src={testimonial.image} alt={testimonial.name} />
       </div>
 
-      <p className="my-8 text-sm font-light italic sm:text-lg lg:text-xl">
-        &ldquo;{testimonial.description}&rdquo;
+      <p className="relative my-8 text-sm font-light italic sm:text-lg lg:text-xl">
+        <span className="space-x-1 text-3xl font-bold text-primary">
+          &ldquo;
+        </span>
+        {testimonial.description}
+        <span className="space-x-1 text-3xl font-bold text-primary">
+          &rdquo;
+        </span>
       </p>
       <div>
         <span className="text-md block font-semibold sm:text-lg">

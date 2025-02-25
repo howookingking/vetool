@@ -7,7 +7,7 @@ import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provi
 import { type IcuOrderColors } from '@/types/adimin'
 import { type SelectedIcuOrder } from '@/types/icu/chart'
 
-type DtOrderRowTitleProps = {
+type Props = {
   order: SelectedIcuOrder
   index: number
   isSorting: boolean
@@ -19,7 +19,7 @@ export default function DtOrderRowTitle({
   isSorting,
   index,
   orderWidth,
-}: DtOrderRowTitleProps) {
+}: Props) {
   const { order_comment, order_type, order_name } = order
 
   const {

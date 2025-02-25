@@ -80,3 +80,5 @@ export const NOTICE_COLORS = [
   '#bfdbfe',
   '#ddd6fe',
 ] as const
+
+export const KAKAO_YELLOW = '#FEE500'

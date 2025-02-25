@@ -17,7 +17,7 @@ import { upsertDefaultChartOrder } from '@/lib/services/admin/icu/default-orders
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { type SelectedIcuOrder } from '@/types/icu/chart'
 import { useParams, useRouter } from 'next/navigation'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 
 function getAvailableChecklistOrders(orders: SelectedIcuOrder[]) {
   const currentChecklistTypeOrderNames = orders
@@ -29,17 +29,17 @@ function getAvailableChecklistOrders(orders: SelectedIcuOrder[]) {
   )
 }
 
-type DtOrderCreatorProps = {
+type Props = {
   sortedOrders: SelectedIcuOrder[]
   setSortedOrders?: Dispatch<SetStateAction<SelectedIcuOrder[]>>
-  template?: boolean
+  isTemplate?: boolean
 }
 
 export default function DtOrderCreator({
   sortedOrders,
   setSortedOrders,
-  template,
-}: DtOrderCreatorProps) {
+  isTemplate,
+}: Props) {
   const { hos_id } = useParams()
   const { refresh } = useRouter()
 
@@ -57,7 +57,7 @@ export default function DtOrderCreator({
   const createOrder = async (orderName: string, orderDescription: string) => {
     setIsSubmitting(true)
 
-    template
+    isTemplate
       ? setSortedOrders!((prev) => [
           ...prev,
           {
@@ -79,7 +79,7 @@ export default function DtOrderCreator({
           default_chart_order_type: orderType,
         })
 
-    !template &&
+    !isTemplate &&
       toast({
         title: `${orderName} 오더를 생성하였습니다`,
       })

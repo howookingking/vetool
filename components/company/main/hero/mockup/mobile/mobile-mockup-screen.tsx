@@ -12,7 +12,7 @@ export default function MobileMockupScreen() {
           <span className="size-2 rounded-full bg-green-400" />
         </div>
         <span className="rounded bg-muted px-2 py-0.5 text-xs text-black">
-          당신의 동물 병원
+          벳툴동물메디컬센터
         </span>
         <ChevronDown className="text-white" />
       </div>
