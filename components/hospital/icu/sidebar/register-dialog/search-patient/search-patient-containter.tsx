@@ -1,6 +1,11 @@
 'use client'
 
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
+import { type RegisteringPatient } from '@/components/hospital/icu/sidebar/register-dialog/register-dialog'
+import PatientNumber from '@/components/hospital/icu/sidebar/register-dialog/search-patient/paitent-number'
+import PatientRegisterButtons from '@/components/hospital/icu/sidebar/register-dialog/search-patient/patient-register-buttons'
+import SearchPatientPagination from '@/components/hospital/icu/sidebar/register-dialog/search-patient/search-patient-pagination'
+import SearchPatientTable from '@/components/hospital/icu/sidebar/register-dialog/search-patient/search-patient-table'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { searchPatientsData } from '@/lib/services/patient/patient'
@@ -10,13 +15,8 @@ import { X } from 'lucide-react'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-import { type RegisteringPatient } from '../register-dialog'
-import PatientNumber from './paitent-number'
-import PatientRegisterButtons from './patient-register-buttons'
-import SearchPatientPagination from './search-patient-pagination'
-import SearchPatientTable from './search-patient-table'
 
-type SearchPatientContainerProps = {
+type Props = {
   itemsPerPage: number
   isIcu?: boolean
   hosId: string
@@ -30,7 +30,7 @@ export default function SearchPatientContainer({
   hosId,
   setIsConfirmDialogOpen,
   setRegisteringPatient,
-}: SearchPatientContainerProps) {
+}: Props) {
   const { hos_id } = useParams()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -52,6 +52,11 @@ export default function SearchPatientContainer({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value)
+
+    const searchParams = new URLSearchParams(window.location.search)
+    searchParams.set('page', '1')
+    router.push(`?${searchParams.toString()}`)
+
     debouncedSearch()
   }
 
@@ -75,6 +80,7 @@ export default function SearchPatientContainer({
         currentPage,
         itemsPerPage,
       )
+
       setPatientsData(data)
       setIsSearching(false)
     } else {

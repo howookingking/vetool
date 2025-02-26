@@ -29,6 +29,8 @@ export default function Filters({
       ...filters,
       selectedGroup: newGroups,
     })
+
+    window.dispatchEvent(new Event('localStorageChange'))
   }
 
   // 수의사 선택 로직
@@ -37,6 +39,8 @@ export default function Filters({
       ...filters,
       selectedVet: vetId === 'reset' ? '' : vetId,
     })
+
+    window.dispatchEvent(new Event('localStorageChange'))
   }
 
   // 환자 정렬 방식 로직
@@ -45,11 +49,15 @@ export default function Filters({
       ...filters,
       selectedSort: value,
     })
+
+    window.dispatchEvent(new Event('localStorageChange'))
   }
 
   // 필터 리셋 로직
   const resetFilters = () => {
     setFilters(DEFAULT_FILTER_STATE)
+
+    window.dispatchEvent(new Event('localStorageChange'))
   }
 
   return (

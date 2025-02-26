@@ -2,6 +2,7 @@ import kokkiri from '@/public/company/logos/kokkiri.jpg'
 import kwangjin from '@/public/company/logos/kwangjin.png'
 import royalGangdong from '@/public/company/logos/royal-gangdong.png'
 import snc from '@/public/company/logos/snc.png'
+import { type Features } from '@/types/company/company'
 
 export const TESTIMONIALS = [
   {
@@ -52,7 +53,34 @@ export const TESTIMONIALS = [
   },
 ] as const
 
-export const FEATURES = [
+export const SURGERY_FEATURES = [
+  {
+    id: 1,
+    title: '수술 차트 관리',
+    description: '곧 공개 예정입니다!',
+    imgSrc: '/company/features/surgery/surgery-1.png',
+  },
+] as Features[]
+
+export const ECHOCARDIO_FEATURES = [
+  {
+    id: 1,
+    title: '심장 초음파 차트 관리',
+    description: '곧 공개 예정입니다!',
+    imgSrc: '/company/features/echocardio/echocardio-1.png',
+  },
+] as Features[]
+
+export const CHECKUP_FEATURES = [
+  {
+    id: 1,
+    title: '건강검진 차트 관리',
+    description: '곧 공개 예정입니다!',
+    imgSrc: '/company/features/checkup/checkup-1.png',
+  },
+] as Features[]
+
+export const ICU_FEATURES = [
   {
     id: 1,
     title: '입원 환자 차트 관리',
@@ -65,30 +93,30 @@ export const FEATURES = [
     title: '수의학 계산 프로그램',
     description:
       '사료, 칼로리, 약물 등 수의사에게 필요한 다양한 계산 프로그램을 제공하고 지속적으로 업데이트 할 예정입니다.',
-    imgSrc: '/company/calculator.png',
+    imgSrc: '/company/features/icu/calculator.png',
   },
   {
     id: 3,
     title: '검색 및 필터링',
     description:
       '강력한 검색 기능을 통해 진단, 증상, 담당 수의사 등을 기준으로 환자 차트를 필터링 하고, 다양한 키워드를 이용하여 과거 입원 이력이 있는 환자를 검색할 수 있습니다.',
-    imgSrc: '/company/search.png',
+    imgSrc: '/company/features/icu/search.png',
   },
   {
     id: 4,
     title: '오더 템플릿',
     description:
       '매번 같은 오더를 반복해서 작성할 필요가 없습니다. 사용자가 자주 사용하는 오더는 묶어서 손쉽게 재사용할 수 있도록 템플릿을 만들 수 있습니다.',
-    imgSrc: '/company/template.png',
+    imgSrc: '/company/features/icu/template.png',
   },
   {
     id: 5,
     title: '데이터 분석',
     description:
       '다양한 변수(입원 목적, 진단, 증상, 종, 품종, 처방 약물 등등)에 대한 데이터 추적을 쉽게하고 데이터 분석을 위한 도구를 제공합니다.',
-    imgSrc: '/company/statistics.png',
+    imgSrc: '/company/features/icu/statistics.png',
   },
-] as const
+] as Features[]
 
 export const PLANS = [
   {

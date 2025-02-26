@@ -27,7 +27,24 @@ import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
 const TUBE_THICKNESS = [
-  2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10,
+  '미지정',
+  2,
+  2.5,
+  3,
+  3.5,
+  4,
+  4.5,
+  5,
+  5.5,
+  6,
+  6.5,
+  7,
+  7.5,
+  8,
+  8.5,
+  9,
+  9.5,
+  10,
 ] as const
 
 type CpcrEtTubeUpdateFormProps = {
@@ -85,7 +102,15 @@ export default function CpcrEtTubeUpdateForm({
               <FormLabel>
                 CPCR <span className="text-destructive">*</span>
               </FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select
+                onValueChange={(value) => {
+                  field.onChange(value)
+                  if (value === '미지정') {
+                    form.setValue('etTube', '미지정')
+                  }
+                }}
+                defaultValue={field.value}
+              >
                 <FormControl>
                   <SelectTrigger
                     className={cn(
@@ -117,7 +142,7 @@ export default function CpcrEtTubeUpdateForm({
               <FormLabel>ET Tube</FormLabel>
               <Select
                 onValueChange={field.onChange}
-                defaultValue={field.value ?? ''}
+                value={field.value ?? ''}
                 disabled={cpcrValue !== 'CPCR'}
               >
                 <FormControl>

@@ -1,13 +1,20 @@
-export type SummaryData = {
-  patient_id: string
-  target_date: string
-  icu_chart_id: string
-  icu_io: {
-    in_date: string
-    out_date: string | null
-    created_at: string
-    cage: string | null
-  }
+import { IcuCharts, type IcuIo } from '@/types'
+
+export type SummaryData = Pick<
+  IcuCharts,
+  | 'patient_id'
+  | 'target_date'
+  | 'icu_chart_id'
+  | 'main_vet'
+  | 'sub_vet'
+  | 'urgency'
+  | 'weight'
+  | 'weight_measured_date'
+> & {
+  icu_io: Pick<
+    IcuIo,
+    'in_date' | 'out_date' | 'created_at' | 'cage' | 'group_list'
+  >
   orders: SummaryOrder[]
   patient: {
     name: string
