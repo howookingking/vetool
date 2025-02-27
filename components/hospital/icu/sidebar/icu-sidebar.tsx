@@ -34,6 +34,7 @@ export default function IcuSidebar({
         isEmpty={icuSidebarData.length === 0}
         filters={filterState}
         setFilters={setFilterState}
+        currentChartNumber={icuSidebarData.length}
       />
 
       <MobileIcuSidebarSheet

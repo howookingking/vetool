@@ -35,6 +35,7 @@ export default async function TestPage(props: {
             timeGuidelineData: [],
             vetsListData: [],
             vitalRefRange: [],
+            plan: 'severe',
           }}
         >
           <ShareContainer

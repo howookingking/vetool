@@ -54,6 +54,7 @@ export default async function IcuPageLayout(props: {
           orderFontSizeData: basicHosData.order_font_size,
           timeGuidelineData: basicHosData.time_guidelines,
           orderColorDisplay: basicHosData.order_color_display,
+          plan: basicHosData.plan,
         }}
       >
         <div className="flex h-desktop">

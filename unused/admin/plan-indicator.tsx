@@ -4,9 +4,14 @@ import { type Plans } from '@/constants/plans'
 type Props = {
   plan: Plans
   invitableVetCount: number
+  maxVets: number
 }
 
-export default function PlanIndicator({ plan, invitableVetCount }: Props) {
+export default function PlanIndicator({
+  plan,
+  invitableVetCount,
+  maxVets,
+}: Props) {
   const planConfig = {
     mild: {
       label: 'Mild',
@@ -36,7 +41,7 @@ export default function PlanIndicator({ plan, invitableVetCount }: Props) {
       <div className="text-sm text-muted-foreground">
         등록할 수 있는 수의사 수:{' '}
         <span className="font-medium text-foreground">
-          {invitableVetCount}명
+          {invitableVetCount}명 / {maxVets}명
         </span>
       </div>
     </div>

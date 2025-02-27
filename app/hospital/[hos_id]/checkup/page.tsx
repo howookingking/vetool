@@ -1,4 +1,4 @@
-import UpgragePromptModal from '@/components/hospital/common/upgrade-prompt-modal'
+import UpgragePlanPromptModal from '@/components/hospital/common/upgrade-plan-prompt-modal'
 import { hasPermissions } from '@/constants/plans'
 import { getPlan } from '@/lib/services/auth/plan'
 
@@ -11,7 +11,7 @@ export default async function CheckupPage(props: {
   const isCheckupEnabled = hasPermissions(plan, 'CHECKUP')
 
   if (!isCheckupEnabled) {
-    return <UpgragePromptModal />
+    return <UpgragePlanPromptModal />
   }
 
   return <div>건강검진차트</div>

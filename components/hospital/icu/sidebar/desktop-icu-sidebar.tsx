@@ -19,6 +19,7 @@ type DesktopIcuSidebarProps = {
   handleCloseMobileDrawer?: () => void
   filters: Filter
   setFilters: (filters: Filter) => void
+  currentChartNumber: number
 }
 
 export default function DesktopIcuSidebar({
@@ -30,6 +31,7 @@ export default function DesktopIcuSidebar({
   handleCloseMobileDrawer,
   filters,
   setFilters,
+  currentChartNumber,
 }: DesktopIcuSidebarProps) {
   return (
     <aside className="fixed z-40 hidden h-desktop w-48 shrink-0 flex-col gap-2 border-r bg-white px-2 pb-0 pt-2 2xl:flex">
@@ -39,6 +41,7 @@ export default function DesktopIcuSidebar({
         hosId={hosId}
         defaultVetId={vetsListData[0].user_id}
         defaultGroup={hosGroupList[0]}
+        currentChartNumber={currentChartNumber}
       />
 
       {isEmpty ? (

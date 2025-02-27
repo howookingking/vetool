@@ -19,7 +19,7 @@ const PLANS = {
   moderate: {
     MAX_VETS: 10,
     MAX_CHART_PER_DAY: 999,
-    CALCULATOR: false,
+    CALCULATOR: true,
     SURGERY: true,
     ECHOCARDIO: true,
     CHECKUP: true,
@@ -46,7 +46,7 @@ const PLANS = {
 } as const
 
 export const canAddVet = (plan: Plans, currenVetNumber: number) => {
-  currenVetNumber < PLANS[plan].MAX_VETS
+  return currenVetNumber < PLANS[plan].MAX_VETS
 }
 
 export const checkMaxVets = (plan: Plans) => {
@@ -59,4 +59,8 @@ export const getInvitableVetCount = (plan: Plans, currentVetNumber: number) => {
 
 export const hasPermissions = (plan: Plans, feature: Features) => {
   return PLANS[plan][feature]
+}
+
+export const canAddChart = (plan: Plans, currentChartNumber: number) => {
+  return currentChartNumber < PLANS[plan].MAX_CHART_PER_DAY
 }
