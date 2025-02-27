@@ -36,6 +36,7 @@ export default async function AdminLayout(props: {
         orderFontSizeData: basicHosData.order_font_size,
         timeGuidelineData: basicHosData.time_guidelines,
         orderColorDisplay: basicHosData.order_color_display,
+        plan: basicHosData.plan,
       }}
     >
       <div className="flex flex-col md:flex-row">

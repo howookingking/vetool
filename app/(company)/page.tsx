@@ -1,3 +1,8 @@
+import FaqsSection from '@/components/company/main/faqs/faqs-section'
+import FeatureSection from '@/components/company/main/feature/feature-section'
+import HeroSection from '@/components/company/main/hero/hero-section'
+import StatsSection from '@/components/company/main/stats/stats-section'
+import TestinomialSection from '@/components/company/main/testimonial/testimonial-section'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
@@ -68,5 +73,14 @@ export default async function CompanyHomePage() {
     }
   }
 
-  return <h1>회사 소개 홈페이지</h1>
+  return (
+    <div className="flex flex-col">
+      <HeroSection />
+      <StatsSection />
+      <TestinomialSection />
+      <FeatureSection />
+      <FaqsSection />
+      {/* <PricingSection /> */}
+    </div>
+  )
 }

@@ -21,7 +21,10 @@ import {
 import { toast } from '@/components/ui/use-toast'
 import { ADDRESS } from '@/constants/hospital/create/address'
 import { newHospitalFormSchema } from '@/lib/schemas/on-boarding/on-boarding-schema'
-import { createHospital } from '@/lib/services/on-boarding/on-boarding'
+import {
+  checkBusinessNumber,
+  createHospital,
+} from '@/lib/services/on-boarding/on-boarding'
 import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
@@ -36,6 +39,10 @@ export default function CreateHospitalForm() {
 
   const [districts, setDistricts] = useState<string[]>()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isBusinessNumberVerified, setIsBusinessNumberVerified] =
+    useState(false)
+  const [isCheckingBusinessNumber, setIsCheckingBusinessNumber] =
+    useState(false)
 
   const form = useForm<z.infer<typeof newHospitalFormSchema>>({
     resolver: zodResolver(newHospitalFormSchema),
@@ -49,7 +56,10 @@ export default function CreateHospitalForm() {
 
   const isVet = searchParams.get('is_vet')
   const username = searchParams.get('name')
+
   const city = form.watch('city')
+  const businessNumber = form.watch('businessNumber')
+  const isFormValid = form.formState.isValid
 
   useEffect(() => {
     if (city) {
@@ -57,6 +67,30 @@ export default function CreateHospitalForm() {
       if (selectedCity) setDistricts(selectedCity.districts)
     }
   }, [city])
+
+  const handleBusinessNumberCheck = async () => {
+    setIsCheckingBusinessNumber(true)
+
+    const isAvailable = await checkBusinessNumber(businessNumber)
+    setIsBusinessNumberVerified(isAvailable)
+
+    if (isAvailable) {
+      toast({
+        title: '사용 가능한 사업자등록번호입니다',
+      })
+    } else {
+      toast({
+        variant: 'destructive',
+        title: '이미 등록된 사업자등록번호입니다',
+      })
+    }
+
+    setIsCheckingBusinessNumber(false)
+  }
+
+  useEffect(() => {
+    setIsBusinessNumberVerified(false)
+  }, [businessNumber])
 
   const handleSubmit = async (
     values: z.infer<typeof newHospitalFormSchema>,
@@ -93,7 +127,7 @@ export default function CreateHospitalForm() {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-base">1. 동물병원 이름</FormLabel>
+              <FormLabel className="text-base">동물병원 이름</FormLabel>
               <FormControl>
                 <Input
                   placeholder="벳툴 동물병원"
@@ -112,7 +146,7 @@ export default function CreateHospitalForm() {
             name="city"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel className="text-base">2. 동물병원 주소</FormLabel>
+                <FormLabel className="text-base">동물병원 주소</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -171,19 +205,37 @@ export default function CreateHospitalForm() {
           name="businessNumber"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-base">3. 사업자 등록번호</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="사업자 등록번호 10자리 예)1234567890"
-                  {...field}
-                />
-              </FormControl>
+              <FormLabel className="text-base">사업자 등록번호</FormLabel>
+              <div className="flex gap-2">
+                <FormControl>
+                  <Input
+                    placeholder="사업자 등록번호 10자리 / 예) 1234567890"
+                    {...field}
+                  />
+                </FormControl>
+                <Button
+                  type="button"
+                  onClick={handleBusinessNumberCheck}
+                  disabled={
+                    isCheckingBusinessNumber || businessNumber.length !== 10
+                  }
+                >
+                  중복확인
+                  {isCheckingBusinessNumber && (
+                    <LoaderCircle className="ml-2 animate-spin" />
+                  )}
+                </Button>
+              </div>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <Button type="submit" disabled={isSubmitting} className="ml-auto">
+        <Button
+          type="submit"
+          disabled={isSubmitting || !isBusinessNumberVerified || !isFormValid}
+          className="ml-auto"
+        >
           생성
           <LoaderCircle
             className={cn(isSubmitting ? 'ml-2 animate-spin' : 'hidden')}

@@ -77,7 +77,7 @@ const SingleMemo = React.forwardRef<HTMLLIElement, Props>(
         }}
       >
         <GripVertical
-          className="handle z-20 block shrink-0"
+          className="handle z-20 hidden shrink-0 2xl:block"
           size={16}
           cursor="grab"
         />

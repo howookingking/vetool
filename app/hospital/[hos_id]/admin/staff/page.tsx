@@ -1,3 +1,4 @@
+// import PlanIndicator from '@/components/hospital/admin/staff/plan-indicator'
 import { staffColumns } from '@/components/hospital/admin/staff/staff-columns'
 import DataTable from '@/components/ui/data-table'
 import { getStaffs } from '@/lib/services/admin/staff/staff'
@@ -11,6 +12,10 @@ export default async function AdminStaffPage(props: {
   const vetoolUser = await getVetoolUserData()
   const staffs = await getStaffs(params.hos_id)
   const isMaster = staffs[0].hos_id.master_user_id === vetoolUser.user_id
+
+  // const plan = await getPlan(params.hos_id)
+  // const maxVets = checkMaxVets(plan)
+  // const invitableVetCount = getInvitableVetCount(plan, staffs.length)
 
   const staffsTableData: HospitalUserDataTable[] = staffs.map((user) => ({
     group: user.group,
@@ -27,6 +32,13 @@ export default async function AdminStaffPage(props: {
   }))
 
   return (
-    <DataTable columns={staffColumns} data={staffsTableData} rowLength={15} />
+    <div className="space-y-4">
+      {/* <PlanIndicator
+        plan={plan}
+        invitableVetCount={invitableVetCount}
+        maxVets={maxVets}
+      /> */}
+      <DataTable columns={staffColumns} data={staffsTableData} rowLength={15} />
+    </div>
   )
 }

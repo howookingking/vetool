@@ -5,7 +5,7 @@ import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { type OrderWidth } from '@/types/hospital/order'
 import { type SelectedIcuOrder } from '@/types/icu/chart'
 import { type Dispatch, type SetStateAction } from 'react'
-type DtTableHeaderProps = {
+type Props = {
   isSorting: boolean
   orderWidth: OrderWidth
   setOrderWidth: Dispatch<SetStateAction<OrderWidth>>
@@ -21,7 +21,7 @@ export default function DtTableHeader({
   setIsSorting,
   sortedOrders,
   defaultChartOrders,
-}: DtTableHeaderProps) {
+}: Props) {
   return (
     <TableHeader className="shadow-sm">
       <TableRow>

@@ -1,5 +1,9 @@
 import type { Config } from 'tailwindcss'
 
+const {
+  default: flattenColorPalette,
+} = require('tailwindcss/lib/util/flattenColorPalette')
+
 const createShakeKeyframes = (degree: number, reverse: boolean = false) => {
   const rotations = reverse
     ? {
@@ -118,6 +122,14 @@ const config = {
           '0%': { transform: 'translateY(0)', opacity: '1' },
           '100%': { transform: 'translateY(100%)', opacity: '0' },
         },
+        aurora: {
+          from: {
+            backgroundPosition: '50% 50%, 50% 50%',
+          },
+          to: {
+            backgroundPosition: '350% 50%, 350% 50%',
+          },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -128,18 +140,35 @@ const config = {
         'shake-strong-reverse': 'shake-strong-reverse 1.2s ease-out infinite',
         slideDown: 'slideDown 0.5s ease-in-out forwards',
         slideUp: 'slideUp 0.5s ease-in-out forwards',
+        aurora: 'aurora 60s linear infinite',
       },
       height: {
         'exclude-header': 'calc(100vh - 48px)',
         desktop: 'calc(100vh - 40px)', // icu footer만 제외
         mobile: 'calc(100vh - 88px)', // icu header(모바일 혹은 처치표 필터) 제외
+        company: 'calc(100vh - 64px)',
       },
       width: {
         'exclude-sidebar': 'calc(100vw - 250px)',
       },
     },
   },
-  plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],
+  plugins: [
+    require('tailwindcss-animate'),
+    require('@tailwindcss/typography'),
+    addVariablesForColors,
+  ],
 } satisfies Config
+
+function addVariablesForColors({ addBase, theme }: any) {
+  let allColors = flattenColorPalette(theme('colors'))
+  let newVars = Object.fromEntries(
+    Object.entries(allColors).map(([key, val]) => [`--${key}`, val]),
+  )
+
+  addBase({
+    ':root': newVars,
+  })
+}
 
 export default config

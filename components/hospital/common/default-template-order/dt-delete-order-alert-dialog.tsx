@@ -18,38 +18,46 @@ import { type SelectedIcuOrder } from '@/types/icu/chart'
 import { useRouter } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 
-type DtDeleteOrderAlertDialogProps = {
+type Props = {
   selectedChartOrder: Partial<SelectedIcuOrder>
   setOrderStep: (orderStep: OrderStep) => void
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
-  template?: boolean
+  isTemplate?: boolean
+  isLastDefaultOrder?: boolean
 }
 
 export default function DtDeleteOrderAlertDialog({
   selectedChartOrder,
   setOrderStep,
   setSortedOrders,
-  template,
-}: DtDeleteOrderAlertDialogProps) {
+  isTemplate,
+  isLastDefaultOrder,
+}: Props) {
   const { refresh } = useRouter()
 
   const [isDeleteOrdersDialogOpen, setIsDeleteOrdersDialogOpen] =
     useState(false)
 
   const handleDeleteOrderClick = async () => {
-    setIsDeleteOrdersDialogOpen(false)
+    if (!isTemplate && isLastDefaultOrder) {
+      toast({
+        title: '기본오더는 적어도 1개 이상이여야 합니다',
+      })
+      return
+    }
+
     setOrderStep('closed')
 
     setSortedOrders((prev) =>
       prev.filter((order) => order.order_id !== selectedChartOrder.order_id),
     )
 
-    !template && (await deleteDefaultChartOrder(selectedChartOrder.order_id!))
+    !isTemplate && (await deleteDefaultChartOrder(selectedChartOrder.order_id!))
 
     toast({
       title: `${selectedChartOrder.order_name} 오더를 삭제하였습니다`,
     })
-    setOrderStep('closed')
+
     refresh()
   }
 

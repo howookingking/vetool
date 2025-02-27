@@ -30,6 +30,7 @@ export default function Error({
   error: Error & { digest?: string }
 }) {
   const { replace } = useRouter()
+
   const [description, setDescription] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)

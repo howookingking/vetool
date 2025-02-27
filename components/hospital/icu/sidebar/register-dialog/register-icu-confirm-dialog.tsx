@@ -15,6 +15,8 @@ import { LoaderCircle } from 'lucide-react'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { type RegisteringPatient } from './register-dialog'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
+import { canAddChart } from '@/constants/plans'
 
 type RegisterIcuConfirmDialogProps = {
   hosId: string
@@ -24,6 +26,7 @@ type RegisterIcuConfirmDialogProps = {
   defaultGroup: string
   setIsRegisterDialogOpen: Dispatch<SetStateAction<boolean>>
   registeringPatient: RegisteringPatient
+  currentChartNumber: number
 }
 
 export default function RegisterIcuConfirmDialog({
@@ -34,6 +37,7 @@ export default function RegisterIcuConfirmDialog({
   defaultVetId,
   setIsRegisterDialogOpen,
   registeringPatient,
+  currentChartNumber,
 }: RegisterIcuConfirmDialogProps) {
   const path = usePathname()
   const { target_date } = useParams()

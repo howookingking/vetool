@@ -18,7 +18,13 @@ import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import { type IcuOrderColors } from '@/types/adimin'
 import { type SelectedIcuOrder } from '@/types/icu/chart'
 import { useParams } from 'next/navigation'
-import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
+import {
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import UserKeyGuideMessage from './user-key-guide-message'
 
 type Props = {
@@ -45,6 +51,8 @@ export default function OrderCreatorRow({
   orderColorsData,
 }: Props) {
   const { hos_id } = useParams()
+
+  const inputRef = useRef<HTMLInputElement | null>(null)
 
   const [newOrderInput, setNewOrderInput] = useState('')
   const [orderType, setOrderType] = useState('manual')
@@ -92,11 +100,14 @@ export default function OrderCreatorRow({
     setNewOrderInput('')
     setIsSubmitting(false)
     setIsChecklistOrder(false)
+
+    setTimeout(() => {
+      inputRef?.current?.focus()
+    }, 100)
   }
 
-  const handleEnter = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // 맥OS 한글 마지막 중복입력 에러
-    if (e.nativeEvent.isComposing || e.key !== 'Enter' || !newOrderInput) return
+  const handleBlur = async () => {
+    if (!newOrderInput) return
 
     const [orderName, orderDescription] = newOrderInput.split('$')
 
@@ -113,6 +124,11 @@ export default function OrderCreatorRow({
     }
 
     await createOrder(orderName, orderDescription ?? '')
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.nativeEvent.isComposing || e.key !== 'Enter') return
+    e.currentTarget.blur()
   }
 
   const handleOrderTypeChange = (selectedValue: string) => {
@@ -183,7 +199,9 @@ export default function OrderCreatorRow({
               placeholder="오더명$오더설명"
               value={isSubmitting ? '등록 중' : newOrderInput}
               onChange={(e) => setNewOrderInput(e.target.value)}
-              onKeyDown={handleEnter}
+              onKeyDown={handleKeyDown}
+              onBlur={handleBlur}
+              ref={inputRef}
             />
           )}
 

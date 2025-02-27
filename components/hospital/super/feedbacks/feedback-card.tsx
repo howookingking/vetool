@@ -54,13 +54,26 @@ export default function FeedbackCard({
             </CardTitle>
           </div>
 
-          <div className="flex shrink-0 flex-col items-end space-x-4 text-sm">
-            <span>{feedbackData.user_id.hos_id.city}</span>
-            <span>{feedbackData.user_id.hos_id.name}</span>
-            <span className="text-gray-500">
-              {formatTimeDifference(feedbackData.created_at)}
-            </span>
-          </div>
+          {feedbackData.user_id ? (
+            <div className="flex shrink-0 flex-col items-end space-x-4 text-sm">
+              <span>{feedbackData.user_id.hos_id.city}</span>
+              <span>{feedbackData.user_id.hos_id.name}</span>
+              <span className="text-gray-500">
+                {formatTimeDifference(feedbackData.created_at)}
+              </span>
+            </div>
+          ) : (
+            <div className="flex shrink-0 flex-col items-end space-x-4 text-sm">
+              <span>{feedbackData.feedback_description.split(' ')[0]}</span>
+              <span>
+                {feedbackData.feedback_description.split(' ')[1]} (병원명 혹은
+                이름)
+              </span>
+              <span className="text-gray-500">
+                {formatTimeDifference(feedbackData.created_at)}
+              </span>
+            </div>
+          )}
         </div>
       </CardHeader>
     </Card>

@@ -4,7 +4,7 @@ import { type SelectedIcuOrder } from '@/types/icu/chart'
 import DtOrderRowCells from './dt-order-row-cells'
 import DtOrderRowTitle from './dt-order-row-title'
 
-type CellsRowTitlesProps = {
+type Props = {
   sortedOrders: SelectedIcuOrder[]
   isSorting: boolean
   orderwidth: number
@@ -14,7 +14,7 @@ export default function DtOrderRows({
   sortedOrders,
   isSorting,
   orderwidth,
-}: CellsRowTitlesProps) {
+}: Props) {
   return (
     <>
       {sortedOrders.map((order, index) => {
