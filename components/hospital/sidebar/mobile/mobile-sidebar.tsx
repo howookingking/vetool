@@ -13,18 +13,21 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
-import type { VetoolUser } from '@/types'
+import { type VetoolUser } from '@/types'
+import { type Plans } from '@/types/adimin'
+import { hasPermissions } from '@/constants/plans'
 import { Menu } from 'lucide-react'
 import { useState } from 'react'
 
-export default function MobileSidebar({
-  hosId,
-  vetoolUser,
-}: {
+type Props = {
   hosId: string
   vetoolUser: VetoolUser
-}) {
+  plan: Plans
+}
+
+export default function MobileSidebar({ hosId, vetoolUser, plan }: Props) {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
+  const isCalculatorEnabled = hasPermissions(plan, 'CALCULATOR')
 
   return (
     <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
@@ -59,7 +62,7 @@ export default function MobileSidebar({
         </ul>
 
         <div className="flex flex-col items-end">
-          <CalculatorSheet />
+          <CalculatorSheet plan={plan} />
 
           <SidebarUserInfo
             mobile

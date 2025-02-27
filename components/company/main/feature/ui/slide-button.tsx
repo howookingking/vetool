@@ -4,7 +4,7 @@ import { cva } from 'class-variance-authority'
 import { type ReactNode } from 'react'
 
 const slideButtonVariants = cva(
-  'relative z-0 flex h-9 items-center gap-2 overflow-hidden rounded-md border-[2px] px-4 py-2 font-semibold uppercase transition-all duration-500 before:absolute before:inset-0 before:-z-10 before:translate-x-[150%] before:translate-y-[150%] before:scale-[2.5] before:rounded-[100%] before:transition-transform before:duration-1000 before:content-[""] hover:scale-105 active:scale-95',
+  'relative justify-center z-0 flex h-9 items-center gap-2 overflow-hidden rounded-md border-[2px] px-4 py-2 font-semibold uppercase transition-all duration-500 before:absolute before:inset-0 before:-z-10 before:translate-x-[150%] before:translate-y-[150%] before:scale-[2.5] before:rounded-[100%] before:transition-transform before:duration-1000 before:content-[""] hover:scale-105 active:scale-95',
   {
     variants: {
       variant: {

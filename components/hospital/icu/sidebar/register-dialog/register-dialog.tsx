@@ -5,11 +5,13 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils/utils'
-import { type Vet } from '@/types/icu/chart'
 import dynamic from 'next/dynamic'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import RegisterDialogHeader from './register-dialog-header'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
+import { canAddChart } from '@/constants/plans'
+import UpgragePlanPromptModal from '@/components/hospital/common/upgrade-plan-prompt-modal'
 
 const LazyRegisterIcuConfirmDialog = dynamic(
   () =>
@@ -54,25 +56,32 @@ export type RegisteringPatient = {
   hosPatientId?: string
 } | null
 
-type RegisterDialogProps = {
+type Props = {
   hosId: string
   defaultVetId: string
   defaultGroup: string
+  currentChartNumber: number
 }
 
 export default function RegisterDialog({
   hosId,
   defaultGroup,
   defaultVetId,
-}: RegisterDialogProps) {
+  currentChartNumber,
+}: Props) {
   const { target_date } = useParams()
 
+  const {
+    basicHosData: { plan },
+  } = useBasicHosDataContext()
+
+  const [tab, setTab] = useState('search')
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
   const [registeringPatient, setRegisteringPatient] =
     useState<RegisteringPatient>(null)
-
   const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false)
-  const [tab, setTab] = useState('search')
+
+  const isAvailableAddChart = canAddChart(plan, currentChartNumber)
 
   const handleTabValueChange = (value: string) => {
     if (value === 'search') {
@@ -145,17 +154,27 @@ export default function RegisterDialog({
             />
           </TabsContent>
         </Tabs>
+
+        {isConfirmDialogOpen && !isAvailableAddChart && (
+          <UpgragePlanPromptModal
+            title="차트 생성 실패"
+            onExit={() => setIsConfirmDialogOpen(false)}
+          />
+        )}
       </DialogContent>
 
-      <LazyRegisterIcuConfirmDialog
-        isConfirmDialogOpen={isConfirmDialogOpen}
-        setIsConfirmDialogOpen={setIsConfirmDialogOpen}
-        hosId={hosId}
-        defaultVetId={defaultVetId}
-        defaultGroup={defaultGroup}
-        registeringPatient={registeringPatient}
-        setIsRegisterDialogOpen={setIsRegisterDialogOpen}
-      />
+      {isConfirmDialogOpen && isAvailableAddChart && (
+        <LazyRegisterIcuConfirmDialog
+          isConfirmDialogOpen={isConfirmDialogOpen}
+          setIsConfirmDialogOpen={setIsConfirmDialogOpen}
+          hosId={hosId}
+          defaultVetId={defaultVetId}
+          defaultGroup={defaultGroup}
+          registeringPatient={registeringPatient}
+          setIsRegisterDialogOpen={setIsRegisterDialogOpen}
+          currentChartNumber={currentChartNumber}
+        />
+      )}
     </Dialog>
   )
 }

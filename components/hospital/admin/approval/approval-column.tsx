@@ -16,17 +16,15 @@ import { LoaderCircle } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-export function ApprovalColumn({
-  userId,
-  name,
-  isApproved,
-}: {
+type Props = {
   userId: string
   name: string
   isApproved: boolean
-}) {
+}
+
+export function ApprovalColumn({ userId, name, isApproved }: Props) {
   const [isUpdating, setIsUpdating] = useState(false)
-  const [isDialogOpen, setIsOpen] = useState(false)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
   const { hos_id } = useParams()
   const { refresh } = useRouter()
 
@@ -38,12 +36,12 @@ export function ApprovalColumn({
       description: '스태프관리에서 스테프설정을 변경할 수 있습니다',
     })
     setIsUpdating(false)
-    setIsOpen(false)
+    setIsDialogOpen(false)
     refresh()
   }
 
   return (
-    <Dialog open={isDialogOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button
           disabled={isApproved}
@@ -52,6 +50,7 @@ export function ApprovalColumn({
           {isApproved ? '승인완료' : '승인'}
         </Button>
       </DialogTrigger>
+
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>스태프 추가</DialogTitle>

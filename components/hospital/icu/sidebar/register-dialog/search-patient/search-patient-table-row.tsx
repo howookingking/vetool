@@ -7,8 +7,10 @@ import { Cat, Dog } from 'lucide-react'
 import { type Dispatch, type SetStateAction } from 'react'
 import { type RegisteringPatient } from '../register-dialog'
 import PatientSelectButton from './patient-select-button'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
+import { canAddChart } from '@/constants/plans'
 
-type SearchPatientTableRowProps = {
+type Props = {
   patientData: SearchedPatientsData
   setIsEdited: Dispatch<SetStateAction<boolean>>
   isIcu?: boolean
@@ -22,7 +24,7 @@ export default function SearchPatientTableRow({
   isIcu,
   setIsConfirmDialogOpen,
   setRegisteringPatient,
-}: SearchPatientTableRowProps) {
+}: Props) {
   const {
     patient_id,
     hos_id,

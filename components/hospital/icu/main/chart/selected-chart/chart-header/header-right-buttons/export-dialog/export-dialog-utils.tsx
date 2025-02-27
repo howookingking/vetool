@@ -99,6 +99,7 @@ export const renderAndCaptureExportChartBody = (
           orderFontSizeData: 14,
           timeGuidelineData: [2, 10, 18],
           orderColorDisplay: 'full',
+          plan: 'severe',
         }}
       >
         <ExportChartBody chartData={chartData} onRender={handleRender} />,
