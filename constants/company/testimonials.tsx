@@ -34,7 +34,7 @@ export const TESTIMONIALS = [
         누락되는 처치가 없어서 좋습니다.
       </>
     ),
-    name: 'ㅇㅇㅇ',
+    name: '권린희',
     title: '강동로얄동물메디컬센터 원장',
   },
   // {
