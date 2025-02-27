@@ -8,13 +8,13 @@ export default function HomepageFooter() {
     <footer className="border-t bg-gray-50 py-16">
       <div className="mx-16 lg:mx-48 xl:mx-80 2xl:mx-96">
         <div className="flex gap-4">
-          <Link href="#" className="text-xs md:text-base">
+          <Link href="/terms-of-service" className="text-xs md:text-base">
             이용약관
           </Link>
-          <Link href="#" className="text-xs md:text-base">
+          <Link href="/privacy-policy" className="text-xs md:text-base">
             개인정보처리방침
           </Link>
-          <Link href="#" className="text-xs md:text-base">
+          <Link href="" className="text-xs md:text-base">
             공지사항
           </Link>
         </div>
