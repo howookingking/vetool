@@ -1,7 +1,11 @@
 'use client'
 
 import { ORDER_FONT_SIZES } from '@/constants/admin/admin-setting-items'
-import { type IcuOrderColors, type VitalRefRange } from '@/types/adimin'
+import {
+  type IcuOrderColors,
+  type VitalRefRange,
+  type Plans,
+} from '@/types/adimin'
 import { type IcuSidebarIoData, type Vet } from '@/types/icu/chart'
 import React, { createContext, useContext } from 'react'
 
@@ -23,6 +27,7 @@ type BasicHosData = {
   orderFontSizeData: keyof typeof ORDER_FONT_SIZES
   timeGuidelineData: number[]
   orderColorDisplay: OrderColorDisplay
+  plan: Plans
 }
 
 const BasicHosDataContext = createContext<IcuContextType | undefined>(undefined)

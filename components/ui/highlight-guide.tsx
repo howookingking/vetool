@@ -12,8 +12,7 @@ import {
 import { Indicator } from '@/components/ui/indicator'
 import useLocalStorage from '@/hooks/use-local-storage'
 import { useEffect, useState } from 'react'
-
-const HIGHLIGHT_CLASS_NAMES = ['z-max', 'bg-white', 'ring-4', 'ring-primary']
+import { HIGHLIGHT_CLASS_NAMES } from '@/constants/hospital/icu/guide/guide'
 
 export type GuideStep = {
   target: string
@@ -21,15 +20,12 @@ export type GuideStep = {
   description: string
 }
 
-type HighlightGuideProps = {
+type Props = {
   steps: GuideStep[]
   localStorageKey: string
 }
 
-export default function HighlightGuide({
-  steps,
-  localStorageKey,
-}: HighlightGuideProps) {
+export default function HighlightGuide({ steps, localStorageKey }: Props) {
   const [_, setHasVisited] = useLocalStorage(localStorageKey, false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [currentStep, setCurrentStep] = useState(0)

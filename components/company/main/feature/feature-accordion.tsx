@@ -4,13 +4,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
-import { FEATURES } from '@/constants/company/main'
+import { type Features } from '@/types/company/company'
 import { motion } from 'motion/react'
-
-type Props = {
-  isAccordionOpen: string
-  setIsAccordionOpen: (value: string) => void
-}
+import { useRouter } from 'next/navigation'
+import SlideButton from './ui/slide-button'
 
 const container = {
   hidden: { opacity: 0 },
@@ -28,10 +25,19 @@ const item = {
   show: { opacity: 1, x: 0 },
 }
 
+type Props = {
+  accordionItemIndex: string
+  setAccordionItemIndex: (value: string) => void
+  targetFeatures: Features[]
+}
+
 export default function FeatureAccordion({
-  isAccordionOpen,
-  setIsAccordionOpen,
+  accordionItemIndex,
+  setAccordionItemIndex,
+  targetFeatures,
 }: Props) {
+  const { push } = useRouter()
+
   return (
     <motion.div
       className="order-2 flex flex-col gap-8 md:gap-12 xl:order-1"
@@ -42,11 +48,11 @@ export default function FeatureAccordion({
     >
       <Accordion
         type="single"
-        value={isAccordionOpen}
-        onValueChange={setIsAccordionOpen}
+        value={accordionItemIndex}
+        onValueChange={setAccordionItemIndex}
         className="flex flex-col gap-2 sm:gap-4"
       >
-        {FEATURES.map((feature) => (
+        {targetFeatures.map((feature) => (
           <motion.div
             key={feature.id}
             variants={item}
@@ -64,6 +70,16 @@ export default function FeatureAccordion({
 
               <AccordionContent className="min-h-20 text-xs font-semibold text-muted-foreground sm:text-base xl:min-h-28 xl:text-lg">
                 {feature.description}
+
+                {accordionItemIndex === '1' &&
+                  feature.title === '입원 환자 차트 관리' && (
+                    <SlideButton
+                      onClick={() => push(`/test/io?target-date=2025-02-25`)}
+                      className="ml-1 mt-4 hidden 2xl:flex"
+                    >
+                      체험해보기
+                    </SlideButton>
+                  )}
               </AccordionContent>
             </AccordionItem>
           </motion.div>

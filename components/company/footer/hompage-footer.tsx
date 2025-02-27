@@ -1,7 +1,7 @@
 import MaxWidthContainer from '@/components/common/max-width-container'
 import { Separator } from '@/components/ui/separator'
+import { OPEN_KAKAO_URL } from '@/constants/company/main'
 import Link from 'next/link'
-import { OPEN_KAKAO_URL } from '../ui/open-kakao'
 
 export default function HomepageFooter() {
   return (

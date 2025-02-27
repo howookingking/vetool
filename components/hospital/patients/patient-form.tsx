@@ -141,8 +141,6 @@ export default function PatientForm({
   registeringPatient,
   setRegisteringPatient,
 }: PatientFormProps) {
-  console.log(weight)
-
   const isEdit =
     mode === 'updateFromPatientRoute' || mode === 'updateFromIcuRoute'
   const isRegisterFromIcuRoute = mode === 'registerFromIcuRoute'

@@ -1,10 +1,9 @@
 import { Button } from '@/components/ui/button'
+import { OPEN_KAKAO_URL } from '@/constants/company/main'
 import { KAKAO_YELLOW } from '@/constants/hospital/icu/chart/colors'
 import kakoIcon from '@/public/kakao-talk-icon.svg'
 import Image from 'next/image'
 import Link from 'next/link'
-
-export const OPEN_KAKAO_URL = 'https://open.kakao.com/o/si1PkVhh'
 
 export default function OpenKakao() {
   return (

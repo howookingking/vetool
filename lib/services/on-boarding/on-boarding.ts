@@ -107,3 +107,21 @@ export const createHospital = async (
 
   return data
 }
+
+export const checkBusinessNumber = async (businessNumber: string) => {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('hospitals')
+    .select('business_number')
+    .match({ business_number: businessNumber })
+    .maybeSingle()
+
+  if (error) {
+    console.error(error)
+    redirect(`/error/?message=${error.message}`)
+  }
+
+  console.log(data)
+
+  return data === null
+}

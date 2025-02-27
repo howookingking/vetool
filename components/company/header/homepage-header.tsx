@@ -2,10 +2,10 @@ import MaxWidthContainer from '@/components/common/max-width-container'
 import VetoolLogo from '@/components/common/vetool-logo'
 import MobileNavMenu from '@/components/company/header/nav/mobile-nav-menu'
 import NavMenu from '@/components/company/header/nav/nav-menu'
-import { Button } from '@/components/ui/button'
+import SlideButton from '@/components/company/main/feature/ui/slide-button'
 import Link from 'next/link'
 
-export default async function HomepageHeader() {
+export default function HomepageHeader() {
   return (
     <header className="sticky top-0 z-50 border-b bg-white/95">
       <MaxWidthContainer>
@@ -18,11 +18,13 @@ export default async function HomepageHeader() {
             <NavMenu />
           </div>
 
-          <Button asChild>
-            <Link href="/login" className="font-bold">
-              로그인
-            </Link>
-          </Button>
+          <div className="flex items-center gap-2">
+            <SlideButton variant="outline" asChild>
+              <Link href="/login" className="font-bold">
+                로그인
+              </Link>
+            </SlideButton>
+          </div>
         </div>
       </MaxWidthContainer>
     </header>

@@ -6,7 +6,6 @@ import InAndOutDate from '@/components/hospital/icu/main/chart/selected-chart/ch
 import VetName from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/vets/vet-name'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedChart } from '@/types/icu/chart'
 
 export default function IcuShareChartInfos({
