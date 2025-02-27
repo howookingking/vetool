@@ -100,6 +100,10 @@ export default function OrderCreatorRow({
     setNewOrderInput('')
     setIsSubmitting(false)
     setIsChecklistOrder(false)
+
+    setTimeout(() => {
+      inputRef?.current?.focus()
+    }, 100)
   }
 
   const handleBlur = async () => {
@@ -197,6 +201,7 @@ export default function OrderCreatorRow({
               onChange={(e) => setNewOrderInput(e.target.value)}
               onKeyDown={handleKeyDown}
               onBlur={handleBlur}
+              ref={inputRef}
             />
           )}
 
