@@ -15,11 +15,14 @@ export default async function LoginPage() {
           홈으로
         </Link>
       </Button>
+
       <div className="flex h-screen w-full flex-col items-center justify-center gap-10 p-10 md:w-2/5">
         <VetoolLogo className="md:hidden" />
+
         <h2 className="text-2xl font-bold tracking-wider">
           로그인 또는 회원가입
         </h2>
+
         <form>
           <GoogleLoginButton />
         </form>

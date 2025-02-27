@@ -7,12 +7,12 @@ export default async function AnnouncementsPage() {
   const announcementList = await getAnnouncementList()
   const supabase = await createClient()
   const {
-    data: { session },
-  } = await supabase.auth.getSession()
+    data: { user },
+  } = await supabase.auth.getUser()
 
   return (
     <>
-      {!session && <HomepageHeader />}
+      {!user && <HomepageHeader />}
       <AnnouncementList announcements={announcementList} />
     </>
   )

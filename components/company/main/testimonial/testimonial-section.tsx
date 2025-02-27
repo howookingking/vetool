@@ -3,7 +3,7 @@
 import TestimonialButtons from '@/components/company/main/testimonial/testimonial-buttons'
 import TestimonialCards from '@/components/company/main/testimonial/testimonial-cards'
 import TestimonialContent from '@/components/company/main/testimonial/testimonial-content'
-import { TESTIMONIALS_LENGTH } from '@/constants/company/main'
+import { TESTIMONIALS } from '@/constants/company/testimonials'
 import { useState } from 'react'
 
 export default function TestinomialSection() {
@@ -17,7 +17,7 @@ export default function TestinomialSection() {
       <div>
         <TestimonialContent />
         <TestimonialButtons
-          numTracks={TESTIMONIALS_LENGTH}
+          numTracks={TESTIMONIALS.length}
           setSelectedCard={setSelectedCard}
           selectedCard={selectedCard}
         />

@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'VETOOL',
     short_name: 'VETOOL',
-    description: '수의사 전문차트 서비스',
+    description: '동물병원 전문차트 서비스',
     start_url: '/',
     display: 'standalone',
     background_color: '#15B797',
