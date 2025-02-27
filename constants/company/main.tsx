@@ -58,17 +58,18 @@ export const TESTIMONIALS = [
 export const SURGERY_FEATURES = [
   {
     id: 1,
-    title: '수술 차트 관리',
-    description: '곧 공개 예정입니다!',
-    imgSrc: '/company/features/surgery/surgery-1.png',
+    title: '수술차트 개요',
+    description:
+      'Speech To Text (STT, 음성인식)기술로 수술 중 발생하는 특이사항들을 기록하며 마취상태 및 바이탈을 기록할 수 있습니다.',
+    imgSrc: '/company/features/surgery/surgery-1.jpg',
   },
 ] as Features[]
 
 export const ECHOCARDIO_FEATURES = [
   {
     id: 1,
-    title: '심장 초음파 차트 관리',
-    description: '곧 공개 예정입니다!',
+    title: '심장초음파차트 개요',
+    description: '심장초음파 측정값들을 입력하면 결과값을 출력해줍니다.',
     imgSrc: '/company/features/echocardio/echocardio-1.png',
   },
 ] as Features[]
@@ -77,7 +78,8 @@ export const CHECKUP_FEATURES = [
   {
     id: 1,
     title: '건강검진 차트 관리',
-    description: '곧 공개 예정입니다!',
+    description:
+      '건강검진 결과값을 입력하면 자동으로 보호자 친화적인 문장으로 건겅검진 결과지를 출력해줍니다.',
     imgSrc: '/company/features/checkup/checkup-1.png',
   },
 ] as Features[]
@@ -85,37 +87,38 @@ export const CHECKUP_FEATURES = [
 export const ICU_FEATURES = [
   {
     id: 1,
-    title: '입원 환자 차트 관리',
+    title: '입원차트 개요',
     description:
-      '입원 환자 차트를 디지털로 관리하는 것이 핵심입니다. 종이 차트를 대체하여 불필요한 시간 소모를 막고, 데이터의 정확성, 접근성 문제를 해결하는 것이 목표입니다.',
+      '종이 입원차트를 디지털로 전환한 차트입니다. 더이상 입원환자 차트를 손으로 작성하느라 시간을 허비하지 마세요.',
     imgSrc: '/company/chart.png',
   },
   {
     id: 2,
-    title: '수의학 계산 프로그램',
+    title: '차트 복사 / 붙여넣기',
     description:
-      '사료, 칼로리, 약물 등 수의사에게 필요한 다양한 계산 프로그램을 제공하고 지속적으로 업데이트 할 예정입니다.',
-    imgSrc: '/company/features/icu/calculator.png',
+      '매번 같은 오더를 반복해서 작성할 필요가 없습니다. 전날의 차트를 붙여넣거나 자주 사용하는 오더를 템플릿으로 저장하여 재사용할 수 있습니다.',
+    imgSrc: '/company/features/icu/template.png',
   },
   {
     id: 3,
-    title: '검색 및 필터링',
+    title: '수의학 계산기',
     description:
-      '강력한 검색 기능을 통해 진단, 증상, 담당 수의사 등을 기준으로 환자 차트를 필터링 하고, 다양한 키워드를 이용하여 과거 입원 이력이 있는 환자를 검색할 수 있습니다.',
-    imgSrc: '/company/features/icu/search.png',
+      '사료량, 칼로리, CRI 약물 등 다양한 수의학 계산기를 제공하고 있으며 지속적으로 업데이트하고 있습니다.',
+    imgSrc: '/company/features/icu/calculator.png',
   },
   {
     id: 4,
-    title: '오더 템플릿',
+    title: '키워드 검색',
     description:
-      '매번 같은 오더를 반복해서 작성할 필요가 없습니다. 사용자가 자주 사용하는 오더는 묶어서 손쉽게 재사용할 수 있도록 템플릿을 만들 수 있습니다.',
-    imgSrc: '/company/features/icu/template.png',
+      '강력한 키워드 검색 기능을 통해 DX, CC, 사용약물, 상위키워드, 동의어, 유의어 검색이 가능합니다.',
+    imgSrc: '/company/features/icu/search.png',
   },
+
   {
     id: 5,
     title: '데이터 분석',
     description:
-      '다양한 변수(입원 목적, 진단, 증상, 종, 품종, 처방 약물 등등)에 대한 데이터 추적을 쉽게하고 데이터 분석을 위한 도구를 제공합니다.',
+      '입원 목적, DX, CC, 종, 품종, 처방 약물 등의 데이터 분석이 가능하며 데이터 분석을 위한 도구를 제공합니다.',
     imgSrc: '/company/features/icu/statistics.png',
   },
 ] as Features[]

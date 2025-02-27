@@ -21,8 +21,9 @@ export default function FeatureTitle() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-center text-xs text-muted-foreground sm:text-base xl:text-xl"
         >
-          VETOOL로 바뀌게 될 근무 환경, <br /> 다수의 병원이 선택한 이유를
-          확인해보세요.
+          아날로그 차트의 디지털 전환
+          <br />
+          단순 반복 작업을 자동화 시켜보세요
         </motion.p>
       </div>
     </div>

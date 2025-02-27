@@ -1,6 +1,6 @@
 export const HOMEPAGE_NAVBAR_ITEMS = [
   {
-    label: '제품안내',
+    label: '벳툴안내',
     href: '#stats',
   },
   {
@@ -8,7 +8,7 @@ export const HOMEPAGE_NAVBAR_ITEMS = [
     href: '#testimonial',
   },
   {
-    label: '주요기능',
+    label: '제품안내',
     href: '#feature',
   },
   {
