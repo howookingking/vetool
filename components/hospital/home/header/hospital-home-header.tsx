@@ -1,25 +1,22 @@
 import React from 'react'
 import SuperHospitalSelector from './super-hospital-selector'
-import PatchesCarousel from './patches-carousel'
+import AnnouncementsCarousel from '@/components/hospital/home/header/announcements-carousel'
 import { getHosList } from '@/lib/services/hospital-home/get-hos-name'
-import { getPatchTitlesData } from '@/lib/services/super/patch/patch'
+import { getAnnouncementTitlesData } from '@/lib/services/super/announcement/announcement'
 
-type HospitalHomeHeaderProps = {
+type Props = {
   isSuper: boolean
   hosId: string
 }
 
-export default async function HospitalHomeHeader({
-  isSuper,
-  hosId,
-}: HospitalHomeHeaderProps) {
+export default async function HospitalHomeHeader({ isSuper, hosId }: Props) {
   const hosListData = await getHosList()
-  const patchTitlesData = await getPatchTitlesData()
+  const announcementTitlesData = await getAnnouncementTitlesData()
   return (
     <div className="fixed z-30 flex h-12 w-full items-center justify-center gap-2 border-b bg-white">
       {isSuper && <SuperHospitalSelector hosList={hosListData} />}
 
-      <PatchesCarousel hosId={hosId} patchTitlesData={patchTitlesData} />
+      <AnnouncementsCarousel announcementTitlesData={announcementTitlesData} />
     </div>
   )
 }

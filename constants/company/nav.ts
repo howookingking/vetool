@@ -21,6 +21,6 @@ export const HOMEPAGE_NAVBAR_ITEMS = [
   // },
   {
     label: '공지사항',
-    href: 'announcement',
+    href: 'announcements',
   },
 ] as const

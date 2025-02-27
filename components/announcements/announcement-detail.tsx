@@ -1,22 +1,22 @@
 import { Card } from '@/components/ui/card'
+import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
+import { type AnnouncementDetailData } from '@/types/vetool'
 import { MessageCircle } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { PatchDetailData } from '@/types/vetool'
-import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
 
-export default function PatchDetail({
-  patchDetailData,
+export default function AnnouncementDetail({
+  announcementDetailData,
 }: {
-  patchDetailData: PatchDetailData
+  announcementDetailData: AnnouncementDetailData
 }) {
   const {
-    patch_title,
-    patch_content,
+    announcement_title,
+    announcement_content,
     created_at,
     feedback_id,
-    patch_category,
-  } = patchDetailData
+    announcement_category,
+  } = announcementDetailData
 
   return (
     <Card className="divide-y rounded-lg" style={{ margin: 0 }}>
@@ -24,9 +24,9 @@ export default function PatchDetail({
       <div className="p-6">
         <div className="flex items-center justify-center">
           <div className="flex flex-col gap-2 text-center">
-            <span className="text-xl font-bold">{patch_title}</span>
+            <span className="text-xl font-bold">{announcement_title}</span>
             <span className="text-xs leading-6 text-muted-foreground">
-              {`${SIDEBAR_ITEMS.find((item) => item.path === patch_category)?.name ?? '전체'} | 
+              {`${SIDEBAR_ITEMS.find((item) => item.path === announcement_category)?.name ?? '전체'} | 
               ${created_at.slice(0, 10)}`}
             </span>
           </div>
@@ -37,7 +37,7 @@ export default function PatchDetail({
       <div className="min-h-[400px] p-6">
         <div className="prose max-w-none">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
-            {patch_content}
+            {announcement_content}
           </ReactMarkdown>
         </div>
       </div>

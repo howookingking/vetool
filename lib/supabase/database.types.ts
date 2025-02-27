@@ -9,6 +9,44 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      announcements: {
+        Row: {
+          announcement_category: string
+          announcement_content: string
+          announcement_id: string
+          announcement_title: string
+          created_at: string
+          feedback_id: string | null
+          is_draft: boolean
+        }
+        Insert: {
+          announcement_category?: string
+          announcement_content: string
+          announcement_id?: string
+          announcement_title: string
+          created_at?: string
+          feedback_id?: string | null
+          is_draft?: boolean
+        }
+        Update: {
+          announcement_category?: string
+          announcement_content?: string
+          announcement_id?: string
+          announcement_title?: string
+          created_at?: string
+          feedback_id?: string | null
+          is_draft?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "announcements_feedback_id_fkey"
+            columns: ["feedback_id"]
+            isOneToOne: false
+            referencedRelation: "vetool_feedbacks"
+            referencedColumns: ["feedback_id"]
+          },
+        ]
+      }
       diets: {
         Row: {
           active: boolean
@@ -1348,7 +1386,7 @@ export type Database = {
           feedback_description: string
           feedback_id: string
           is_read: boolean
-          user_id: string
+          user_id: string | null
         }
         Insert: {
           created_at?: string
@@ -1356,7 +1394,7 @@ export type Database = {
           feedback_description: string
           feedback_id?: string
           is_read?: boolean
-          user_id?: string
+          user_id?: string | null
         }
         Update: {
           created_at?: string
@@ -1364,7 +1402,7 @@ export type Database = {
           feedback_description?: string
           feedback_id?: string
           is_read?: boolean
-          user_id?: string
+          user_id?: string | null
         }
         Relationships: [
           {
@@ -1636,6 +1674,28 @@ export type Database = {
         Returns: Json
       }
       insert_calc_result_order: {
+        Args: {
+          hos_id_input: string
+          target_date_input: string
+          order_type_input: string
+          order_name_input: string
+          order_comment_input: string
+          patient_id_input: string
+        }
+        Returns: undefined
+      }
+      insert_calc_result_order1: {
+        Args: {
+          hos_id_input: string
+          target_date_input: string
+          order_type_input: string
+          order_name_input: string
+          order_comment_input: string
+          patient_id_input: string
+        }
+        Returns: undefined
+      }
+      insert_calc_result_order2: {
         Args: {
           hos_id_input: string
           target_date_input: string
