@@ -11,13 +11,11 @@ export default function TestimonialContent() {
         transition={{ duration: 0.5 }}
         className="mb-8 whitespace-pre-line text-2xl font-semibold tracking-tighter text-zinc-800 sm:text-6xl"
       >
-        {'사용자들의 생생한\n실제 벳툴 사용 후기'
-          .split('')
-          .map((child, idx) => (
-            <span className={styles.hoverText} key={idx}>
-              {child}
-            </span>
-          ))}
+        {'사용자들의 생생한\n실제 벳툴 사용후기'.split('').map((child, idx) => (
+          <span className={styles.hoverText} key={idx}>
+            {child}
+          </span>
+        ))}
       </motion.div>
 
       <motion.p

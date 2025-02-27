@@ -1,26 +1,26 @@
 export const HOMEPAGE_NAVBAR_ITEMS = [
   {
-    label: '벳툴소개',
-    sectionId: 'hero',
+    label: '벳툴안내',
+    href: '#stats',
   },
   {
-    label: '실제후기',
-    sectionId: 'testimonial',
+    label: '사용후기',
+    href: '#testimonial',
   },
   {
     label: '제품안내',
-    sectionId: 'stats',
-  },
-  {
-    label: '주요기능',
-    sectionId: 'feature',
+    href: '#feature',
   },
   {
     label: '자주 묻는 질문',
-    sectionId: 'faqs',
+    href: '#faqs',
   },
+  // {
+  //   label: '가격안내',
+  //   href: '#pricing',
+  // },
   {
-    label: '가격안내',
-    sectionId: 'pricing',
+    label: '공지사항',
+    href: 'announcement',
   },
 ] as const

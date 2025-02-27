@@ -1,14 +1,11 @@
-import StatsCounts from '@/components/company/main/stats/stats-counts'
 import StatsContent from '@/components/company/main/stats/stats-content'
-import StatsMockupImage from '@/components/company/main/stats/ui/stats-mockup-image'
+import StatsCounts from '@/components/company/main/stats/stats-counts'
 import StatsTitle from '@/components/company/main/stats/stats-title'
+import StatsMockupImage from '@/components/company/main/stats/ui/stats-mockup-image'
 
-export default function Stats() {
+export default function StatsSection() {
   return (
-    <div
-      id="stats"
-      className="flex h-company flex-col bg-emerald-50/10 px-8 py-16"
-    >
+    <section id="stats" className="flex h-company flex-col px-8 py-16">
       <StatsTitle />
       <StatsCounts />
 
@@ -16,6 +13,6 @@ export default function Stats() {
         <StatsMockupImage />
         <StatsContent />
       </div>
-    </div>
+    </section>
   )
 }
