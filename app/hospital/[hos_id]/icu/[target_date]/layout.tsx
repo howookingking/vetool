@@ -1,7 +1,7 @@
 import IcuFooter from '@/components/hospital/icu/footer/icu-footer'
 import IcuSidebar from '@/components/hospital/icu/sidebar/icu-sidebar'
 import { getIcuData } from '@/lib/services/icu/get-icu-data'
-import { getPatchTitlesData } from '@/lib/services/super/patch/patch'
+import { getAnnouncementTitlesData } from '@/lib/services/super/announcement/announcement'
 import { BasicHosDataProvider } from '@/providers/basic-hos-data-context-provider'
 import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
 import React from 'react'
@@ -37,7 +37,7 @@ export default async function IcuPageLayout(props: {
     target_date,
   )
 
-  const patchTitlesData = await getPatchTitlesData()
+  const announcementTitlesData = await getAnnouncementTitlesData()
 
   return (
     <>
@@ -74,7 +74,7 @@ export default async function IcuPageLayout(props: {
       <IcuFooter
         hosId={hos_id}
         targetDate={target_date}
-        patchTitlesData={patchTitlesData}
+        announcementTitlesData={announcementTitlesData}
       />
     </>
   )

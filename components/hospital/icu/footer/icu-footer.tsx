@@ -1,14 +1,13 @@
 'use client'
 
+import AnnouncementsCarousel from '@/components/hospital/home/header/announcements-carousel'
+import RealtimeStatus from '@/components/hospital/icu/footer/realtime-status'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 import { useIcuRealtime } from '@/hooks/use-icu-realtime'
+import { type AnnouncementTitles } from '@/types/vetool'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
-import PatchesCarousel, {
-  type PatchTitles,
-} from '../../home/header/patches-carousel'
-import RealtimeStatus from './realtime-status'
 
 const FOOTER_MAIN_VIEW_MENUS = [
   {
@@ -51,13 +50,13 @@ const FOOTER_MAIN_VIEW_MENUS = [
 type IcuFooterProps = {
   hosId: string
   targetDate: string
-  patchTitlesData: PatchTitles[]
+  announcementTitlesData: AnnouncementTitles[]
 }
 
 export default function IcuFooter({
   hosId,
   targetDate,
-  patchTitlesData,
+  announcementTitlesData,
 }: IcuFooterProps) {
   const { push, refresh } = useRouter()
   const path = usePathname()
@@ -102,7 +101,7 @@ export default function IcuFooter({
         ))}
       </ul>
 
-      <PatchesCarousel hosId={hosId} patchTitlesData={patchTitlesData} />
+      <AnnouncementsCarousel announcementTitlesData={announcementTitlesData} />
     </footer>
   )
 }

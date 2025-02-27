@@ -15,9 +15,9 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
-import { createPatchNote } from '@/lib/services/super/patch/patch'
+import { createAnnouncement } from '@/lib/services/super/announcement/announcement'
 import { cn } from '@/lib/utils/utils'
-import type { PatchFormProps, UserFeedbackType } from '@/types/vetool'
+import type { AnnouncementFormProps, UserFeedbackType } from '@/types/vetool'
 import { LoaderCircle } from 'lucide-react'
 import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
@@ -32,17 +32,17 @@ const PATCH_CATEGORIES = [
   'analytics',
 ]
 
-export default function PatchForm({
+export default function AnnouncementForm({
   userFeedBackData,
 }: {
   userFeedBackData: UserFeedbackType[]
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [formData, setFormData] = useState<PatchFormProps>({
+  const [formData, setFormData] = useState<AnnouncementFormProps>({
     feedback_id: null,
-    patch_title: '',
-    patch_content: '',
-    patch_category: '',
+    announcement_title: '',
+    announcement_content: '',
+    announcement_category: '',
   })
 
   const handleInputChange = (
@@ -73,28 +73,29 @@ export default function PatchForm({
   const handleSubmit = async () => {
     setIsSubmitting(true)
 
-    await createPatchNote(formData)
+    await createAnnouncement(formData)
 
     toast({
-      title: '패치노트가 등록되었습니다',
+      title: '공지사항이 등록되었습니다',
+      description: '성공적인 배포를 응원합니다',
     })
 
     setIsSubmitting(false)
     setFormData({
       feedback_id: null,
-      patch_title: '',
-      patch_content: '',
-      patch_category: '',
+      announcement_title: '',
+      announcement_content: '',
+      announcement_category: '',
     })
   }
 
   const handleSave = async () => {
     setIsSubmitting(true)
 
-    await createPatchNote(formData, true)
+    await createAnnouncement(formData, true)
 
     toast({
-      title: '패치노트가 임시저장되었습니다',
+      title: '공지사항이 임시저장되었습니다',
     })
 
     setIsSubmitting(false)
@@ -103,7 +104,7 @@ export default function PatchForm({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>패치노트 작성</CardTitle>
+        <CardTitle>공지사항 작성</CardTitle>
       </CardHeader>
 
       <CardContent className="space-y-6">
@@ -137,7 +138,7 @@ export default function PatchForm({
           <Select
             name="patch_category"
             onValueChange={handleCategoryChange}
-            value={formData.patch_category ?? ''}
+            value={formData.announcement_category ?? ''}
           >
             <SelectTrigger className="w-[800px]">
               <SelectValue placeholder="카테고리 목록" />
@@ -157,12 +158,12 @@ export default function PatchForm({
         <div className="space-y-2">
           <Label htmlFor="patch_title">제목</Label>
           <Input
-            id="patch_title"
-            name="patch_title"
-            value={formData.patch_title}
+            id="announcement_title"
+            name="announcement_title"
+            value={formData.announcement_title}
             onChange={handleInputChange}
             required
-            placeholder="패치노트 제목"
+            placeholder="공지사항 제목"
           />
         </div>
 
@@ -175,9 +176,9 @@ export default function PatchForm({
             </TabsList>
             <TabsContent value="write">
               <Textarea
-                id="patch_content"
-                name="patch_content"
-                value={formData.patch_content}
+                id="announcement_content"
+                name="announcement_content"
+                value={formData.announcement_content}
                 onChange={handleInputChange}
                 required
                 className="min-h-[400px]"
@@ -187,7 +188,7 @@ export default function PatchForm({
             <TabsContent value="preview">
               <div className="prose min-h-[400px] max-w-none rounded-md border p-4">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {formData.patch_content}
+                  {formData.announcement_content}
                 </ReactMarkdown>
               </div>
             </TabsContent>
