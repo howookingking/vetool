@@ -72,7 +72,7 @@ export default function FeatureAccordion({
                 {feature.description}
 
                 {accordionItemIndex === '1' &&
-                  feature.title === '입원 환자 차트 관리' && (
+                  feature.title === '입원차트 개요' && (
                     <SlideButton
                       onClick={() => push(`/test/io?target-date=2025-02-25`)}
                       className="ml-1 mt-4 hidden 2xl:flex"
