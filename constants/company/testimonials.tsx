@@ -11,7 +11,7 @@ export const TESTIMONIALS = [
         SNC 추천사 <br />
       </>
     ),
-    name: '문창훈',
+    name: 'ㅇㅇㅇ',
     title: 'SNC동물메디컬센터 원장',
   },
   {
