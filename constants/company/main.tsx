@@ -77,7 +77,7 @@ export const ECHOCARDIO_FEATURES = [
 export const CHECKUP_FEATURES = [
   {
     id: 1,
-    title: '건강검진 차트 관리',
+    title: '건강검진차트 개요',
     description:
       '건강검진 결과값을 입력하면 자동으로 보호자 친화적인 문장으로 건겅검진 결과지를 출력해줍니다.',
     imgSrc: '/company/features/checkup/checkup-1.png',

@@ -26,10 +26,15 @@ export default async function LoginPage() {
 
         <div className="text-center">
           구글로 회원가입을 진행할 경우
-          <br /> (주)벳툴의 <span className="text-primary">
-            이용약관
-          </span> 및 <span className="text-primary">개인정보정책</span>에
-          동의하게됩니다
+          <br /> (주)벳툴의{' '}
+          <span className="text-primary">
+            <Link href="/terms-of-service">이용약관</Link>
+          </span>{' '}
+          및{' '}
+          <span className="text-primary">
+            <Link href="/privacy-policy">개인정보정책</Link>
+          </span>
+          에 동의하게됩니다
         </div>
 
         <div>
