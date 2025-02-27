@@ -3,7 +3,7 @@ import StatsCounts from '@/components/company/main/stats/stats-counts'
 import StatsTitle from '@/components/company/main/stats/stats-title'
 import StatsMockupImage from '@/components/company/main/stats/ui/stats-mockup-image'
 
-export default function Stats() {
+export default function StatsSection() {
   return (
     <section id="stats" className="flex h-company flex-col px-8 py-16">
       <StatsTitle />

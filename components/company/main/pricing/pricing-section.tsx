@@ -2,7 +2,7 @@ import PricingCard from '@/components/company/main/pricing/pricing-card'
 import PricingHeader from '@/components/company/main/pricing/pricing-header'
 import { PLANS } from '@/constants/company/main'
 
-export default function PricingPlans() {
+export default function PricingSection() {
   return (
     <section id="pricing" className="flex flex-col justify-center p-8">
       <div className="container px-4 sm:px-6">

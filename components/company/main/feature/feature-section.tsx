@@ -6,7 +6,7 @@ import { FEATURES } from '@/constants/company/main'
 import { useState } from 'react'
 import FeatureImages from './feature-images'
 
-export default function Feature() {
+export default function FeatureSection() {
   const [isAccordionOpen, setIsAccordionOpen] = useState(
     FEATURES[0].id.toString(),
   )

@@ -6,7 +6,7 @@ import TestimonialContent from '@/components/company/main/testimonial/testimonia
 import { TESTIMONIALS_LENGTH } from '@/constants/company/main'
 import { useState } from 'react'
 
-export default function Testinomial() {
+export default function TestinomialSection() {
   const [selectedCard, setSelectedCard] = useState(0)
 
   return (

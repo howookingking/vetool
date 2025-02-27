@@ -1,11 +1,11 @@
-import Faqs from '@/components/company/main/faqs/faqs'
-import Feature from '@/components/company/main/feature/feature'
-import Hero from '@/components/company/main/hero/hero'
-import PricingPlans from '@/components/company/main/pricing/pricing-plans'
-import Stats from '@/components/company/main/stats/stats'
-import Testimonial from '@/components/company/main/testimonial/testimonial'
+import FaqsSection from '@/components/company/main/faqs/faqs-section'
+import FeatureSection from '@/components/company/main/feature/feature-section'
+import HeroSection from '@/components/company/main/hero/hero-section'
+import StatsSection from '@/components/company/main/stats/stats-section'
+import TestinomialSection from '@/components/company/main/testimonial/testimonial-section'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+
 export default async function CompanyHomePage() {
   const supabase = await createClient()
 
@@ -75,12 +75,12 @@ export default async function CompanyHomePage() {
 
   return (
     <div className="flex flex-col">
-      <Hero />
-      <Stats />
-      <Testimonial />
-      <Feature />
-      <Faqs />
-      <PricingPlans />
+      <HeroSection />
+      <StatsSection />
+      <TestinomialSection />
+      <FeatureSection />
+      <FaqsSection />
+      {/* <PricingSection /> */}
     </div>
   )
 }

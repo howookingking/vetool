@@ -5,7 +5,7 @@ import { SOLUTIONS } from '@/constants/company/main'
 import { motion } from 'motion/react'
 import { useState } from 'react'
 
-export default function Faqs() {
+export default function FaqsSection() {
   const [activeId, setActiveId] = useState<number>(SOLUTIONS[0].id)
 
   return (

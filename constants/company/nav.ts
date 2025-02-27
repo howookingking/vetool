@@ -4,7 +4,7 @@ export const HOMEPAGE_NAVBAR_ITEMS = [
     href: '#stats',
   },
   {
-    label: '실제후기',
+    label: '사용후기',
     href: '#testimonial',
   },
   {
@@ -15,10 +15,10 @@ export const HOMEPAGE_NAVBAR_ITEMS = [
     label: '자주 묻는 질문',
     href: '#faqs',
   },
-  {
-    label: '가격안내',
-    href: '#pricing',
-  },
+  // {
+  //   label: '가격안내',
+  //   href: '#pricing',
+  // },
   {
     label: '공지사항',
     href: 'announcement',
