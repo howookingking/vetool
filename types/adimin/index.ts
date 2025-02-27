@@ -103,3 +103,5 @@ export type AdminDietData = Pick<
 > & {
   hos_id: Pick<Hospital, 'hos_id' | 'name'>
 }
+
+export type Plans = 'mild' | 'moderate' | 'severe'

@@ -4,6 +4,8 @@ import royalGangdong from '@/public/company/logos/royal-gangdong.png'
 import snc from '@/public/company/logos/snc.png'
 import { type Features } from '@/types/company/company'
 
+export const OPEN_KAKAO_URL = 'https://open.kakao.com/o/si1PkVhh'
+
 export const TESTIMONIALS = [
   {
     image: snc,

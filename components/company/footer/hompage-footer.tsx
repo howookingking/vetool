@@ -1,7 +1,6 @@
 import { Separator } from '@/components/ui/separator'
+import { OPEN_KAKAO_URL } from '@/constants/company/main'
 import Link from 'next/link'
-import React from 'react'
-import { OPEN_KAKAO_URL } from '../ui/open-kakao'
 
 export default function HomepageFooter() {
   return (

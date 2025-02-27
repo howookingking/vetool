@@ -10,11 +10,10 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { PLANS } from '@/constants/company/main'
+import { OPEN_KAKAO_URL, PLANS } from '@/constants/company/main'
 import { cn } from '@/lib/utils/utils'
 import { Check } from 'lucide-react'
 import Link from 'next/link'
-import { OPEN_KAKAO_URL } from '../../ui/open-kakao'
 
 type Props = {
   plan: (typeof PLANS)[number]

@@ -1,20 +1,23 @@
 import CalculatorSidebar from '@/components/hospital/calculator/calculator-sidebar'
 import SelectedCalculators from '@/components/hospital/calculator/selected-calculators'
+import SelectedPatient from '@/components/hospital/calculator/selected-patient'
+import UpgragePromptModal from '@/components/hospital/common/upgrade-prompt-modal'
 import { SheetContent } from '@/components/ui/sheet'
 import useIsMobile from '@/hooks/use-is-mobile'
 import { type SelectedCalculator } from '@/types/hospital/calculator'
 import { type PatientWithWeight } from '@/types/patients'
 import { useState } from 'react'
-import SelectedPatient from './selected-patient'
 
 type Props = {
   patientData: PatientWithWeight | null
   setIsSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
+  isCalculatorEnabled: boolean
 }
 
 export default function CalculatorSheetContent({
   patientData,
   setIsSheetOpen,
+  isCalculatorEnabled,
 }: Props) {
   const isMobile = useIsMobile()
 
@@ -40,6 +43,10 @@ export default function CalculatorSheetContent({
 
         {patientData && <SelectedPatient patientData={patientData} />}
       </div>
+
+      {!isCalculatorEnabled && (
+        <UpgragePromptModal onExit={() => setIsSheetOpen(false)} />
+      )}
     </SheetContent>
   )
 }

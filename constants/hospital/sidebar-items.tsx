@@ -31,25 +31,25 @@ export const SIDEBAR_ITEMS = [
   {
     name: '외과차트',
     path: 'surgery',
-    isReady: false,
+    isReady: true,
     icon: <Slice />,
   },
   {
     name: '심초차트',
     path: 'echocardio',
-    isReady: false,
+    isReady: true,
     icon: <HeartPulse />,
   },
   {
     name: '건강검진차트',
     path: 'checkup',
-    isReady: false,
+    isReady: true,
     icon: <ListChecks />,
   },
   {
     name: '데이터분석',
     path: 'analytics',
-    isReady: false,
+    isReady: true,
     icon: <BarChart4 />,
   },
   {

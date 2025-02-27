@@ -2,7 +2,9 @@
 
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetTrigger } from '@/components/ui/sheet'
+import { hasPermissions } from '@/constants/plans'
 import { getPatientData } from '@/lib/services/patient/patient'
+import { type Plans } from '@/types/adimin'
 import { type PatientWithWeight } from '@/types/patients'
 import { Calculator, LoaderCircle } from 'lucide-react'
 import dynamic from 'next/dynamic'
@@ -16,12 +18,14 @@ const LazyCalculatorSheetContent = dynamic(
   },
 )
 
-export default function CalculatorSheet() {
+export default function CalculatorSheet({ plan }: { plan: Plans }) {
   const { patient_id } = useParams()
 
   const [isSheetOpen, setIsSheetOpen] = useState(false)
   const [isFetching, setIsFetching] = useState(false)
   const [patientData, setPatientData] = useState<PatientWithWeight | null>(null)
+
+  const isCalculatorEnabled = hasPermissions(plan, 'CALCULATOR')
 
   const fetchPatientData = async () => {
     setIsFetching(true)
@@ -59,6 +63,7 @@ export default function CalculatorSheet() {
       <LazyCalculatorSheetContent
         patientData={patientData}
         setIsSheetOpen={setIsSheetOpen}
+        isCalculatorEnabled={isCalculatorEnabled}
       />
     </Sheet>
   )
