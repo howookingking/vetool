@@ -1,5 +1,4 @@
 import { GuideStep } from '@/components/ui/highlight-guide'
-import { SelectedChart } from '@/types/icu/chart'
 
 export const HIGHLIGHT_CLASS_NAMES = [
   'z-max',
