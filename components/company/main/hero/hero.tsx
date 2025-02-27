@@ -1,7 +1,7 @@
-import DesktopMockupScreen from '@/components/company/main/hero/mockup/desktop/desktop-mockup-screen'
-import MobileMockupScreen from '@/components/company/main/hero/mockup/mobile/mobile-mockup-screen'
 import HeroContent from '@/components/company/main/hero/hero-content'
 import HeroLogos from '@/components/company/main/hero/hero-logos'
+import DesktopMockupScreen from '@/components/company/main/hero/mockup/desktop/desktop-mockup-screen'
+import MobileMockupScreen from '@/components/company/main/hero/mockup/mobile/mobile-mockup-screen'
 
 export default function Hero() {
   return (

@@ -1,12 +1,12 @@
+import MaxWidthContainer from '@/components/common/max-width-container'
 import { Separator } from '@/components/ui/separator'
 import Link from 'next/link'
-import React from 'react'
 import { OPEN_KAKAO_URL } from '../ui/open-kakao'
 
 export default function HomepageFooter() {
   return (
     <footer className="border-t bg-gray-50 py-16">
-      <div className="mx-16 lg:mx-48 xl:mx-80 2xl:mx-96">
+      <MaxWidthContainer>
         <div className="flex gap-4">
           <Link href="/terms-of-service" className="text-xs md:text-base">
             이용약관
@@ -14,7 +14,7 @@ export default function HomepageFooter() {
           <Link href="/privacy-policy" className="text-xs md:text-base">
             개인정보처리방침
           </Link>
-          <Link href="" className="text-xs md:text-base">
+          <Link href="/announcement" className="text-xs md:text-base">
             공지사항
           </Link>
         </div>
@@ -60,7 +60,7 @@ export default function HomepageFooter() {
         <p className="text-sm tracking-tighter text-muted-foreground">
           &copy; Vetool Co, Ltd. All rights reserved.
         </p>
-      </div>
+      </MaxWidthContainer>
     </footer>
   )
 }

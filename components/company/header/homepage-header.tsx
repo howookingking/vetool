@@ -11,21 +11,18 @@ export default async function HomepageHeader() {
       <MaxWidthContainer>
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-12">
-            <Link href="/">
+            <Link href="/#hero">
               <VetoolLogo />
             </Link>
+
             <NavMenu />
           </div>
 
-          <div className="flex items-center gap-2">
-            <Button asChild>
-              <Link href="/login" className="font-bold">
-                로그인
-              </Link>
-            </Button>
-
-            <MobileNavMenu />
-          </div>
+          <Button asChild>
+            <Link href="/login" className="font-bold">
+              로그인
+            </Link>
+          </Button>
         </div>
       </MaxWidthContainer>
     </header>

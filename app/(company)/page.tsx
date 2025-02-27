@@ -74,10 +74,10 @@ export default async function CompanyHomePage() {
   }
 
   return (
-    <div className="flex flex-col overflow-hidden">
+    <div className="flex flex-col">
       <Hero />
-      <Testimonial />
       <Stats />
+      <Testimonial />
       <Feature />
       <Faqs />
       <PricingPlans />

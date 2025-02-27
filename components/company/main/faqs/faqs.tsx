@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
-import { motion } from 'motion/react'
 import FaqSolution from '@/components/company/main/faqs/faqs-solution'
 import { SOLUTIONS } from '@/constants/company/main'
+import { motion } from 'motion/react'
+import { useState } from 'react'
 
 export default function Faqs() {
   const [activeId, setActiveId] = useState<number>(SOLUTIONS[0].id)
@@ -11,7 +11,7 @@ export default function Faqs() {
   return (
     <section
       id="faqs"
-      className="flex h-company flex-col justify-center bg-white px-8 py-12 sm:justify-start"
+      className="flex h-company flex-col justify-center px-8 py-12 sm:justify-start"
     >
       <div className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-8 lg:gap-16">
         <div className="space-y-2 sm:space-y-4">
