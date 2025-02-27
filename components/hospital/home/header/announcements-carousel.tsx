@@ -3,39 +3,32 @@
 import { ChevronRight, Megaphone } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { type AnnouncementTitles } from '@/types/vetool'
+import Link from 'next/link'
 
-export type PatchTitles = {
-  patch_id: string
-  patch_title: string
-}
-
-type PatchesCarouselProps = {
-  hosId: string
-  patchTitlesData: PatchTitles[]
-}
-
-export default function PatchesCarousel({
-  hosId,
-  patchTitlesData,
-}: PatchesCarouselProps) {
+export default function AnnouncementsCarousel({
+  announcementTitlesData,
+}: {
+  announcementTitlesData: AnnouncementTitles[]
+}) {
   const { push } = useRouter()
 
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
 
   useEffect(() => {
-    if (patchTitlesData.length <= 1) return
+    if (announcementTitlesData.length <= 1) return
     if (isPaused) return
 
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) =>
-        prevIndex >= patchTitlesData.length - 1 ? 0 : prevIndex + 1,
+        prevIndex >= announcementTitlesData.length - 1 ? 0 : prevIndex + 1,
       )
     }, 5000)
     return () => clearInterval(interval)
-  }, [patchTitlesData.length, isPaused])
+  }, [announcementTitlesData.length, isPaused])
 
-  if (patchTitlesData.length === 0) {
+  if (announcementTitlesData.length === 0) {
     return null
   }
 
@@ -49,16 +42,16 @@ export default function PatchesCarousel({
         <Megaphone size="18" className="mr-2 shrink-0 text-primary" />
 
         <div className="relative flex h-full flex-1 items-center">
-          {patchTitlesData.map((patch, index) => {
+          {announcementTitlesData.map((announcement, index) => {
             const isCurrent = index === currentIndex
             const isPrev =
               index ===
-              (currentIndex - 1 + patchTitlesData.length) %
-                patchTitlesData.length
+              (currentIndex - 1 + announcementTitlesData.length) %
+                announcementTitlesData.length
 
             return (
-              <div
-                key={patch.patch_id}
+              <Link
+                key={announcement.announcement_id}
                 className={`absolute w-full cursor-pointer ${
                   isCurrent
                     ? 'animate-slideDown'
@@ -66,16 +59,15 @@ export default function PatchesCarousel({
                       ? 'animate-slideUp'
                       : 'translate-y-full opacity-0'
                 }`}
-                onClick={() =>
-                  push(`/hospital/${hosId}/patches/${patch.patch_id}`)
-                }
+                href={`/announcements/${announcement.announcement_id}`}
+                target="_blank"
               >
                 <div className="flex items-center justify-between px-2">
                   <p className="w-full truncate text-center text-sm font-medium">
-                    {patch.patch_title}
+                    {announcement.announcement_title}
                   </p>
                 </div>
-              </div>
+              </Link>
             )
           })}
         </div>

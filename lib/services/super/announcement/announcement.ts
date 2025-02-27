@@ -1,26 +1,31 @@
 'use server'
 
 import type {
-  PatchDetailData,
-  PatchFormProps,
-  PatchListProps,
+  AnnouncementDetailData,
+  AnnouncementFormProps,
+  AnnouncementListProps,
 } from '@/types/vetool'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
-export const createPatchNote = async (
-  patchData: PatchFormProps,
+export const createAnnouncement = async (
+  announcementData: AnnouncementFormProps,
   isDraft?: boolean,
 ) => {
   const supabase = await createClient()
 
-  const { feedback_id, patch_title, patch_content, patch_category } = patchData
-
-  const { error } = await supabase.from('vetool_patches').upsert({
+  const {
     feedback_id,
-    patch_title,
-    patch_content,
-    patch_category,
+    announcement_title,
+    announcement_content,
+    announcement_category,
+  } = announcementData
+
+  const { error } = await supabase.from('announcements').upsert({
+    feedback_id,
+    announcement_title,
+    announcement_content,
+    announcement_category,
     is_draft: isDraft,
   })
 
@@ -30,14 +35,16 @@ export const createPatchNote = async (
   }
 }
 
-export const getPatchList = async () => {
+export const getAnnouncementList = async () => {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('vetool_patches')
-    .select('patch_id, patch_title, patch_category, created_at, is_draft')
+    .from('announcements')
+    .select(
+      'announcement_id, announcement_title, announcement_category, created_at, is_draft',
+    )
     .order('created_at', { ascending: false })
-    .returns<PatchListProps[]>()
+    .returns<AnnouncementListProps[]>()
   if (error) {
     console.error(error)
     redirect(`/error?message=${error.message}`)
@@ -46,23 +53,23 @@ export const getPatchList = async () => {
   return data
 }
 
-export const getPatchDetailData = async (patchId: string) => {
+export const getAnnouncementDetailData = async (announcementId: string) => {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('vetool_patches')
+    .from('announcements')
     .select(
       `
-        patch_title,
-        patch_content,
+        announcement_title,
+        announcement_content,
         created_at,
-        patch_category,
+        announcement_category,
         feedback_id(feedback_description)
       `,
     )
     .order('created_at')
-    .match({ patch_id: patchId })
-    .returns<PatchDetailData>()
+    .match({ announcement_id: announcementId })
+    .returns<AnnouncementDetailData>()
     .maybeSingle()
 
   if (error) {
@@ -73,12 +80,12 @@ export const getPatchDetailData = async (patchId: string) => {
   return data
 }
 
-export const getPatchTitlesData = async () => {
+export const getAnnouncementTitlesData = async () => {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('vetool_patches')
-    .select('patch_id, patch_title')
+    .from('announcements')
+    .select('announcement_id, announcement_title')
     .match({ is_draft: false })
     .order('created_at', { ascending: false })
     .limit(5)

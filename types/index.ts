@@ -23,7 +23,7 @@ export type VetoolFeedbacks =
   Database['public']['Tables']['vetool_feedbacks']['Row']
 export type VetoolPatches =
   Database['public']['Tables']['vetool_patches']['Row']
-
+export type Announcements = Database['public']['Tables']['announcements']['Row']
 export type Params = { slug: string }
 export type DrugProductsRows =
   Database['public']['Tables']['drug_products']['Row']
