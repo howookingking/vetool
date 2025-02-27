@@ -1,5 +1,5 @@
 import TestimonialCard from '@/components/company/main/testimonial/testimonial-card'
-import { TESTIMONIALS } from '@/constants/company/main'
+import { TESTIMONIALS } from '@/constants/company/testimonials'
 import { type Dispatch, type SetStateAction } from 'react'
 
 type Props = {

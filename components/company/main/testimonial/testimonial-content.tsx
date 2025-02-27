@@ -37,7 +37,7 @@ export default function TestimonialContent() {
         transition={{ duration: 0.5, delay: 1 }}
         className="max-w-xl text-sm text-muted-foreground sm:text-xl"
       >
-        벳툴은 사용자들의 <b>피드백</b>을 적극적으로 수용하고 있습니다
+        벳툴은 사용자들의 <b>피드백</b>을 적극적으로 수용하고 있습니다.
       </motion.p>
     </div>
   )
