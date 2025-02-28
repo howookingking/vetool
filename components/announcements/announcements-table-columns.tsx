@@ -3,7 +3,6 @@ import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
 import { type AnnouncementListProps } from '@/types/vetool'
 import { ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 
 export const announcementsTableColumns: ColumnDef<AnnouncementListProps>[] = [
   {
@@ -11,7 +10,7 @@ export const announcementsTableColumns: ColumnDef<AnnouncementListProps>[] = [
     header: '카테고리',
 
     cell: ({ row }) => {
-      const category = row.getValue('announcement_category') as string
+      const category = row.original.announcement_category
       const foundCategory = SIDEBAR_ITEMS.find((item) => item.path === category)
       return (
         <span className="text-xs text-muted-foreground">
@@ -24,14 +23,12 @@ export const announcementsTableColumns: ColumnDef<AnnouncementListProps>[] = [
     accessorKey: 'announcement_title',
     header: '제목',
     cell: ({ row }) => {
-      const title = row.getValue('announcement_title') as string
-      const { push } = useRouter()
+      const title = row.original.announcement_title
 
       return (
         <Button
           variant="ghost"
           className="w-full font-medium transition-colors hover:bg-transparent hover:text-primary hover:underline"
-          onClick={() => push(`/announcements/${row.original.announcement_id}`)}
         >
           {title}
         </Button>
@@ -52,7 +49,7 @@ export const announcementsTableColumns: ColumnDef<AnnouncementListProps>[] = [
       )
     },
     cell: ({ row }) => {
-      const createdAt = row.getValue('created_at') as string
+      const createdAt = row.original.created_at
       return (
         <span className="text-[10px] text-muted-foreground md:text-sm">
           <span className="hidden text-sm md:inline">
