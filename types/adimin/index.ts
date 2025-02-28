@@ -1,4 +1,11 @@
-import { Diet, DrugProductsRows, Hospital, User, UserApproval } from '@/types'
+import {
+  Diet,
+  DrugProductsRows,
+  Hospital,
+  RawDrug,
+  User,
+  UserApproval,
+} from '@/types'
 
 export type UserHospitalJoined = Omit<
   User,
@@ -105,3 +112,5 @@ export type AdminDietData = Pick<
 }
 
 export type Plans = 'free' | 'mild' | 'moderate' | 'severe'
+
+export type RawDrugs = Pick<RawDrug, 'raw_drug_id' | 'raw_drug_name'>
