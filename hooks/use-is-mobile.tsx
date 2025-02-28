@@ -9,7 +9,7 @@ export default function useIsMobile() {
 
   useEffect(() => {
     const checkIsMobile = () => {
-      setIsMobile(window.innerWidth <= TAILWIND_MD_BREAKPOINT)
+      setIsMobile(window.innerWidth < TAILWIND_MD_BREAKPOINT)
     }
 
     checkIsMobile()
