@@ -40,7 +40,7 @@ export default function FeatureAccordion({
 
   return (
     <motion.div
-      className="order-2 flex flex-col gap-8 md:gap-12 xl:order-1"
+      className="order-2 flex flex-col gap-8 md:gap-12 lg:order-1"
       initial="hidden"
       whileInView="show"
       viewport={{ once: true }}
@@ -68,7 +68,7 @@ export default function FeatureAccordion({
                 </span>
               </AccordionTrigger>
 
-              <AccordionContent className="min-h-20 text-xs font-semibold text-muted-foreground sm:text-base xl:min-h-28 xl:text-lg">
+              <AccordionContent className="min-h-20 pb-2 text-xs font-semibold text-muted-foreground sm:text-base xl:min-h-28 xl:text-lg">
                 {feature.description}
 
                 {accordionItemIndex === '1' &&

@@ -9,7 +9,7 @@ export default function TestimonialContent() {
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
-        className="mb-8 whitespace-pre-line text-2xl font-semibold tracking-tighter text-zinc-800 sm:text-6xl"
+        className="mb-8 whitespace-pre-line text-2xl font-semibold tracking-tighter text-zinc-800 sm:text-4xl xl:text-6xl"
       >
         {'사용자들의 생생한\n실제 벳툴 사용후기'.split('').map((child, idx) => (
           <span className={styles.hoverText} key={idx}>
@@ -23,7 +23,7 @@ export default function TestimonialContent() {
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5, delay: 0.5 }}
-        className="max-w-xl text-sm text-muted-foreground sm:text-xl"
+        className="max-w-xl text-sm text-muted-foreground sm:text-base xl:text-xl"
       >
         벳툴을 사용해보시고 <b>혁신</b>을 경험해보세요!
       </motion.p>
@@ -35,7 +35,7 @@ export default function TestimonialContent() {
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5, delay: 1 }}
-        className="max-w-xl text-sm text-muted-foreground sm:text-xl"
+        className="max-w-xl text-sm text-muted-foreground sm:text-base xl:text-xl"
       >
         벳툴은 사용자들의 <b>피드백</b>을 적극적으로 수용하고 있습니다.
       </motion.p>
