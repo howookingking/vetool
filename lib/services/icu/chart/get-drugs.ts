@@ -48,7 +48,9 @@ export const getHosDrugs = async (hosId: string) => {
 export const getRawDrugs = async () => {
   const supabase = await createClient()
 
-  const { data, error } = await supabase.from('raw_drugs').select('*')
+  const { data, error } = await supabase
+    .from('raw_drugs')
+    .select('raw_drug_id, raw_drug_name')
 
   if (error) {
     console.error(error)

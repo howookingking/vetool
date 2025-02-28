@@ -46,19 +46,21 @@ export function AutoComplete<T extends string>({
     {} as Record<string, string>,
   )
 
+  const filteredItems = (() => {
+    return items.filter((item) => {
+      const normalizedSearchValue = searchValue.toLowerCase()
+
+      return (
+        item.value.toLowerCase().includes(normalizedSearchValue) ||
+        item.label.toLowerCase().includes(normalizedSearchValue)
+      )
+    })
+  })()
+
   const reset = () => {
     onSelectedValueChange('' as T)
     onSearchValueChange('')
   }
-
-  // const onInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-  //   if (
-  //     !e.relatedTarget?.hasAttribute('cmdk-list') &&
-  //     labels[selectedValue] !== searchValue
-  //   ) {
-  //     reset()
-  //   }
-  // }
 
   const onSelectItem = (inputValue: string) => {
     if (inputValue === selectedValue) {
@@ -82,7 +84,6 @@ export function AutoComplete<T extends string>({
               onKeyDown={(e) => setOpen(e.key !== 'Escape')}
               onMouseDown={() => setOpen((open) => !!searchValue || !open)}
               onFocus={() => setOpen(true)}
-              // onBlur={onInputBlur}
             >
               <Input
                 placeholder={placeholder}
@@ -116,9 +117,9 @@ export function AutoComplete<T extends string>({
                   </div>
                 </CommandPrimitive.Loading>
               )}
-              {items.length > 0 && !isLoading ? (
+              {filteredItems.length > 0 && !isLoading ? (
                 <CommandGroup>
-                  {items.map((option) => (
+                  {filteredItems.map((option) => (
                     <CommandItem
                       key={option.value}
                       value={option.value}
@@ -126,7 +127,7 @@ export function AutoComplete<T extends string>({
                       onSelect={onSelectItem}
                     >
                       {noBracket
-                        ? `${option.value}`
+                        ? `${option.label}`
                         : `${option.value} (${option.label})`}
                     </CommandItem>
                   ))}

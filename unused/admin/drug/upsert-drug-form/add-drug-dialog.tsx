@@ -10,7 +10,7 @@ import {
 import { Plus } from 'lucide-react'
 // import DrugForm from './drug-form'
 import { RawDrug } from '@/types'
-import { DrugForm } from './drug-form'
+// import { DrugForm } from '@/components/hospital/admin/drug/upsert-drug-form/drug-form'
 
 export function AddDrugDialog({ rawDrugData }: { rawDrugData: RawDrug[] }) {
   return (
@@ -28,7 +28,7 @@ export function AddDrugDialog({ rawDrugData }: { rawDrugData: RawDrug[] }) {
           </DialogDescription>
         </DialogHeader>
 
-        <DrugForm rawDrugData={rawDrugData} />
+        {/* <DrugForm rawDrugData={rawDrugData} /> */}
       </DialogContent>
     </Dialog>
   )
