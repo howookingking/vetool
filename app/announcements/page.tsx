@@ -1,4 +1,4 @@
-import AnnouncementList from '@/components/announcements/announcement-list'
+import Announcements from '@/components/announcements/announcements'
 import HomepageHeader from '@/components/company/header/homepage-header'
 import { getAnnouncementList } from '@/lib/services/super/announcement/announcement'
 import { createClient } from '@/lib/supabase/server'
@@ -13,7 +13,7 @@ export default async function AnnouncementsPage() {
   return (
     <>
       {!user && <HomepageHeader />}
-      <AnnouncementList announcements={announcementList} />
+      <Announcements announcements={announcementList} />
     </>
   )
 }

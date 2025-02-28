@@ -37,13 +37,13 @@ export default function Feature() {
   return (
     <section
       id="feature"
-      className="flex h-screen flex-col items-center justify-center gap-4 px-8 xl:h-company xl:py-16"
+      className="flex h-full flex-col items-center justify-center gap-4 px-8 py-16 xl:h-company"
     >
       <div>
         <FeatureTitle />
       </div>
 
-      <div className="grid w-full gap-4 xl:max-w-[1600px]">
+      <div className="grid w-full xl:max-w-[1400px]">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}

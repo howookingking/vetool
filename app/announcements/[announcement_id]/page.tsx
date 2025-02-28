@@ -1,5 +1,5 @@
-import AnnouncementDetail from '@/components/announcements/announcement-detail'
-import GotoAnnouncementItemsButton from '@/components/announcements/go-to-announcement-items-button'
+import AnnouncementsDetail from '@/components/announcements/announcements-detail'
+import BackToAnnouncementsButton from '@/components/announcements/back-to-announcement-button'
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import { getAnnouncementDetailData } from '@/lib/services/super/announcement/announcement'
 
@@ -23,8 +23,8 @@ export default async function AnnouncementDetailPage(props: {
 
   return (
     <div className="space-y-2 p-2">
-      <GotoAnnouncementItemsButton />
-      <AnnouncementDetail announcementDetailData={announcementDetailData} />
+      <BackToAnnouncementsButton />
+      <AnnouncementsDetail announcementDetailData={announcementDetailData} />
     </div>
   )
 }

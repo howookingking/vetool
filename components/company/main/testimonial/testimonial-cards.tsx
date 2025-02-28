@@ -12,7 +12,7 @@ export default function TestimonialCards({
   setSelectedCard,
 }: Props) {
   return (
-    <div className="relative h-[400px] p-4 shadow-xl lg:h-[500px]">
+    <div className="relative h-[400px] p-4 shadow-xl 2xl:h-[500px]">
       {TESTIMONIALS.map((testimonial, position) => (
         <TestimonialCard
           key={position}

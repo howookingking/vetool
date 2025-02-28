@@ -45,7 +45,7 @@ export default function TestimonialCard({
       onClick={() => setSelectedCard(position)}
       className="absolute left-0 top-0 flex min-h-full w-full cursor-pointer flex-col justify-between p-8 lg:p-12"
     >
-      <div className="relative mx-auto flex h-48 w-48 items-center justify-center overflow-hidden rounded-full ring ring-primary sm:h-72 sm:w-72">
+      <div className="relative mx-auto flex h-48 w-48 items-center justify-center overflow-hidden rounded-full ring ring-primary xl:h-72 xl:w-72">
         <Image src={testimonial.image} alt={testimonial.name} />
       </div>
 

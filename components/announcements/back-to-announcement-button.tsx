@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Menu } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
-export default function GotoAnnouncementItemsButton() {
+export default function BackToAnnouncementsButton() {
   const { push } = useRouter()
 
   return (
