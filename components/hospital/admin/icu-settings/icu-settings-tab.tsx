@@ -10,6 +10,7 @@ export default function IcuSettingsTab({ hosId }: { hosId: string }) {
             key={item.value}
             value={item.value}
             className="text-xs sm:text-sm"
+            disabled={item.value === 'hosDrug'}
           >
             {item.label}
           </TabsTrigger>
