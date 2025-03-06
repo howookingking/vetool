@@ -12,8 +12,8 @@ export default function HompageLayout({
       <HomepageHeader />
       <main>{children}</main>
       <HomepageFooter />
-      <OpenKakao />
       <ScrollToTopButton />
+      <OpenKakao />
     </div>
   )
 }

@@ -1,5 +1,3 @@
-import AddDietDialog from '@/components/hospital/admin/diet/pin/add-diet-dialog'
-import AddEntireDietDialog from '@/components/hospital/admin/diet/pin/add-entire-diet-dialog'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -10,6 +8,8 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Plus } from 'lucide-react'
 import { useState } from 'react'
+import AddDietDialog from '../add-diet-dialog'
+import AddEntireDietDialog from './add-entire-diet-dialog'
 
 export default function AddAndPinDropDown({ hosId }: { hosId: string }) {
   const [isSingleAddDialogOpen, setIsSingleAddDialogOpen] = useState(false)

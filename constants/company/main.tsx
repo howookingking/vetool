@@ -8,7 +8,7 @@ export const SURGERY_FEATURES = [
     title: '수술차트 개요',
     description:
       'Speech To Text (STT, 음성인식)기술로 수술 중 발생하는 특이사항들을 기록하며 마취상태 및 바이탈을 기록할 수 있습니다.',
-    imgSrc: '/company/features/surgery/surgery-1.jpg',
+    imgSrc: '/company/features/surgery/surgery-1.png',
   },
 ] as Features[]
 
@@ -129,15 +129,20 @@ export const SOLUTIONS = [
   {
     id: 1,
     icon: '🔒',
-    title: '병원의 차트 데이터는 안전하게 보관되나요?',
-    description:
-      ' 벳툴은 최고 수준의 보안 시스템을 통해 병원의 모든 데이터를 안전하게 보관합니다. 세밀한 접근 제어, 자동 백업 시스템, AES-256 암호화 표준을 적용하여 데이터를 보호합니다. 또한 HIPAA 규정을 준수하여 의료 정보의 기밀성을 보장합니다.',
+    title: '병원의 데이터는 안전하게 보관되나요?',
+    description: (
+      <>
+        벳툴은 세밀한 접근 제어, 자동 백업 시스템, AES-256 암호화 표준을
+        적용하여 모든 데이터를 안전하게 보관합니다. <br /> <br /> 또한 HIPAA
+        규정을 준수하여 의료 정보의 기밀성을 보장합니다.
+      </>
+    ),
     imgSrc: '/company/security-hero.webp',
   },
   {
     id: 2,
     icon: '👁️‍🗨️',
-    title: '병원 내 민감한 정보를 모두가 볼 수 있나요?',
+    title: '병원의 민감한 정보를 모두가 볼 수 있나요?',
     description:
       ' 관리자 페이지 진입, 신규 유저 사용 승인, 차트 설정 등 민감한 정보는 경영진만 접근할 수 있도록 권한을 직접 설정할 수 있습니다.',
     imgSrc: '/company/security-hero.webp',

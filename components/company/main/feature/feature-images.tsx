@@ -8,7 +8,7 @@ type Props = {
 
 export default function FeatureImages({ feature, isReady }: Props) {
   return (
-    <div className="order-1 flex items-center justify-center xl:order-2 xl:col-span-2">
+    <div className="order-1 flex items-center justify-center lg:order-2 lg:col-span-2">
       <div className="relative aspect-video h-full w-full">
         <Image
           src={feature.imgSrc}

@@ -1,9 +1,9 @@
 'use client'
 
-import { dietColumns } from '@/components/hospital/admin/diet/diet-columns'
-import AddAndPinDropDown from '@/components/hospital/admin/diet/pin/add-and-pin-dropdown'
 import DataTable from '@/components/ui/data-table'
 import type { AdminDietData } from '@/types/adimin'
+import AddAndPinDropDown from './pin/add-and-pin-dropdown'
+import { dietColumns } from './diet-columns'
 
 export default function DietDataTables({
   dietsData,

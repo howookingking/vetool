@@ -32,7 +32,7 @@ export default function ScrollToTopButton() {
       {showButton && (
         <motion.button
           onClick={scrollToTop}
-          className="fixed bottom-24 right-4 z-20 rounded-full bg-primary p-3 shadow-xl sm:bottom-24 sm:right-8"
+          className="fixed bottom-16 right-2 z-20 rounded-full bg-primary p-3 shadow-xl sm:bottom-24 sm:right-8"
           aria-label="맨 위로 이동"
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}

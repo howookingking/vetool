@@ -13,42 +13,45 @@ export const dietSchema = z.object({
 
 /* 약물 */
 // 개별 용량 설정 스키마
-const dosageSchema = z.object({
-  species: z.string().min(1, { message: '종을 선택해주세요' }),
-  max: z.coerce.number().min(0, { message: '최대 용량은 0 이상이어야 합니다' }),
-  min: z.coerce.number().min(0, { message: '최소 용량은 0 이상이어야 합니다' }),
-  default: z.coerce
-    .number()
-    .min(0, { message: '기본 용량은 0 이상이어야 합니다' }),
-})
+// const dosageSchema = z.object({
+//   species: z.string().min(1, { message: '종을 선택해주세요' }),
+//   max: z.coerce.number().min(0, { message: '최대 용량은 0 이상이어야 합니다' }),
+//   min: z.coerce.number().min(0, { message: '최소 용량은 0 이상이어야 합니다' }),
+//   default: z.coerce
+//     .number()
+//     .min(0, { message: '기본 용량은 0 이상이어야 합니다' }),
+// })
 
 // 전체 약물 용량 스키마
-const drugDosagesSchema = z.object({
-  unit: z.string(),
-  bw_unit: z.string(),
-  dose_unit: z.string(),
-  mg_per_ml: z.coerce
-    .number()
-    .min(0.1, { message: 'mg 값은 0.1 이상이어야 합니다' }),
-  dosages: z
-    .array(dosageSchema)
-    .min(1, { message: '최소 한 개의 용량 설정이 필요합니다' }),
-})
+// const drugDosagesSchema = z.object({
+//   unit: z.string(),
+//   bw_unit: z.string(),
+//   dose_unit: z.string(),
+//   mg_per_ml: z.coerce
+//     .number()
+//     .min(0.1, { message: 'mg 값은 0.1 이상이어야 합니다' }),
+// })
 
-// 전체 약물 폼 스키마
-export const drugSchema = z.object({
+// 관리자 선호 약물 설정 폼 스키마
+export const hosDrugFormSchema = z.object({
   raw_drug_id: z
-    .string({
-      required_error: '약물 원료를 선택해주세요',
-    })
-    .min(1, { message: '약물 원료를 선택해주세요' })
-    .uuid(),
-  hos_drug_dosages: drugDosagesSchema,
-  hos_drug_description: z.string().optional(),
-  hos_drug_indication: z.string().optional(),
-  hos_drug_side_effect: z.string().optional(),
-  hos_drug_tags: z.string(),
-  hos_drug_name: z.string().min(1, { message: '약물 이름을 입력해주세요' }),
+    .string({ required_error: '약물 원료명을 입력해주세요' })
+    .min(1, { message: '약물 원료명을 입력해주세요' }),
+  hos_drug_name: z
+    .string({ required_error: '약물 이름을 입력해주세요' })
+    .min(1, { message: '약물 이름을 입력해주세요' }),
+  hos_drug_route: z
+    .string({ required_error: '경로를 입력해주세요' })
+    .min(1, { message: '경로를 입력해주세요' }),
+  mg_per_kg: z
+    .number({ required_error: 'mg/kg 값을 입력해주세요' })
+    .min(0.1, { message: 'mg 값은 0.1 이상이어야 합니다' })
+    .max(100, { message: 'mg 값은 100 이하여야 합니다' }),
+
+  ml_per_kg: z
+    .number({ required_error: 'ml/kg 값을 입력해주세요' })
+    .min(0.1, { message: 'ml 값은 0.1 이상이어야 합니다' })
+    .max(100, { message: 'ml 값은 100 이하여야 합니다' }),
 })
 
 /* 메모 */
@@ -93,3 +96,5 @@ export const GroupCheckFormSchema = z.object({
     message: '적어도 하나의 그룹을 선택해주세요',
   }),
 })
+
+export type HosDrugFormSchema = z.infer<typeof hosDrugFormSchema>

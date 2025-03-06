@@ -20,7 +20,7 @@ export default function FaqsSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="text-2xl font-bold tracking-tighter text-zinc-800 sm:text-6xl"
+            className="text-3xl font-bold tracking-tighter text-zinc-800 sm:text-6xl"
           >
             FAQ
           </motion.h3>
