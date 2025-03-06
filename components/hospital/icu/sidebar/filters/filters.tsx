@@ -6,7 +6,7 @@ import { Menubar } from '@/components/ui/menubar'
 import { DEFAULT_FILTER_STATE } from '@/constants/hospital/icu/chart/filters'
 import { type Filter, type Vet } from '@/types/icu/chart'
 
-type FiltersProps = {
+type Props = {
   hosGroupList: string[]
   vetsListData: Vet[]
   filters: Filter
@@ -18,7 +18,7 @@ export default function Filters({
   vetsListData,
   filters,
   setFilters,
-}: FiltersProps) {
+}: Props) {
   // 그룹 다중 선택 로직
   const handleGroupChange = (group: string) => {
     const newGroups = filters.selectedGroup.includes(group)
@@ -30,7 +30,8 @@ export default function Filters({
       selectedGroup: newGroups,
     })
 
-    window.dispatchEvent(new Event('localStorageChange'))
+    // localStorage 이벤트 전달 비활성화
+    // window.dispatchEvent(new Event('localStorageChange'))
   }
 
   // 수의사 선택 로직
@@ -40,7 +41,8 @@ export default function Filters({
       selectedVet: vetId === 'reset' ? '' : vetId,
     })
 
-    window.dispatchEvent(new Event('localStorageChange'))
+    // localStorage 이벤트 전달 비활성화
+    // window.dispatchEvent(new Event('localStorageChange'))
   }
 
   // 환자 정렬 방식 로직
@@ -50,14 +52,16 @@ export default function Filters({
       selectedSort: value,
     })
 
-    window.dispatchEvent(new Event('localStorageChange'))
+    // localStorage 이벤트 전달 비활성화
+    // window.dispatchEvent(new Event('localStorageChange'))
   }
 
   // 필터 리셋 로직
   const resetFilters = () => {
     setFilters(DEFAULT_FILTER_STATE)
 
-    window.dispatchEvent(new Event('localStorageChange'))
+    // localStorage 이벤트 전달 비활성화
+    // window.dispatchEvent(new Event('localStorageChange'))
   }
 
   return (

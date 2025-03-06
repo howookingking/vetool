@@ -7,7 +7,6 @@ import TxTableCell from '@/components/hospital/icu/main/tx-table/tx-table-cell'
 import TxTableHeader from '@/components/hospital/icu/main/tx-table/tx-table-header'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
-import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
 import { type IcuOrderColors } from '@/types/adimin'
@@ -72,15 +71,16 @@ export default function TxTable({
     return () => clearTimeout(timeoutId)
   }, [isScrolled])
 
-  const orderType = localFilterState.map(
-    (orderType) =>
-      DEFAULT_ICU_ORDER_TYPE.find((type) => type.value === orderType)?.label,
-  )
+  // 필터 적용 비활성화
+  // const orderType = localFilterState.map(
+  //   (orderType) =>
+  //     DEFAULT_ICU_ORDER_TYPE.find((type) => type.value === orderType)?.label,
+  // )
 
   if (!hasOrder) {
     return (
       <NoResultSquirrel
-        text={`모든 ${orderType ?? ''} 처치를 완료했습니다`}
+        text={`모든 처치를 완료했습니다`}
         className="h-screen flex-col"
         size="lg"
       />
