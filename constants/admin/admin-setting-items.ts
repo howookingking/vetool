@@ -1,4 +1,5 @@
 import DefaultOrdersTab from '@/components/hospital/admin/icu-settings/default-orders/default-orders-tab'
+import HosDrugTab from '@/components/hospital/admin/icu-settings/hos-drug/hos-drug-tab'
 import MemoNameTab from '@/components/hospital/admin/icu-settings/memo-name/memo-name-tab'
 import OrderColorTab from '@/components/hospital/admin/icu-settings/order-color-settings/order-color-tab'
 import OrderFontSizeTab from '@/components/hospital/admin/icu-settings/order-font-size/order-font-size-tab'
@@ -30,6 +31,11 @@ export const ADMIN_SETTING_ITEMS = [
     label: '시간 가이드라인',
     value: 'timeGuideLine',
     Component: TimeGuidelineTab,
+  },
+  {
+    label: '선호 약물 설정',
+    value: 'hosDrug',
+    Component: HosDrugTab,
   },
 ] as const
 

@@ -1,6 +1,7 @@
 'use client'
 'use no memo'
 
+import NoResult from '@/components/common/no-result'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -19,9 +20,9 @@ import {
 } from '@/components/ui/table'
 import { cn } from '@/lib/utils/utils'
 import {
-  ColumnDef,
-  SortingState,
-  VisibilityState,
+  type ColumnDef,
+  type SortingState,
+  type VisibilityState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -30,8 +31,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
-import { useState } from 'react'
-import NoResult from '../common/no-result'
+import { useState, type ReactNode } from 'react'
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[]
@@ -41,7 +41,8 @@ type DataTableProps<TData, TValue> = {
   rowLength?: number
   customColumnVisibility?: VisibilityState
   searchBarSpace?: boolean
-  children?: React.ReactNode
+  children?: ReactNode
+  onRowClick?: (row: TData) => void
 }
 export default function DataTable<TData, TValue>({
   columns,
@@ -52,6 +53,7 @@ export default function DataTable<TData, TValue>({
   customColumnVisibility,
   searchBarSpace,
   children,
+  onRowClick,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [globalFilter, setGlobalFilter] = useState('')
@@ -172,6 +174,7 @@ export default function DataTable<TData, TValue>({
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
                   className="text-center"
+                  onClick={() => onRowClick?.(row.original)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

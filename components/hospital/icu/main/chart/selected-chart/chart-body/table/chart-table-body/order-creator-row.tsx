@@ -26,6 +26,7 @@ import {
   useState,
 } from 'react'
 import UserKeyGuideMessage from './user-key-guide-message'
+import { AutoComplete } from '@/components/ui/auto-complete'
 
 type Props = {
   icuChartId: string
@@ -143,6 +144,11 @@ export default function OrderCreatorRow({
     }
   }, [availableCheckListOrders.length])
 
+  const [selectedDrug, setSelectedDrug] = useState('')
+  const [drugInput, setDrugInput] = useState('')
+
+  console.log(selectedDrug)
+
   return (
     <TableRow className="hover:bg-transparent">
       <TableCell className="p-0">
@@ -192,7 +198,55 @@ export default function OrderCreatorRow({
             </Select>
           )}
 
-          {orderType !== 'checklist' && (
+          {orderType === 'injection' && (
+            <AutoComplete
+              items={[
+                {
+                  value: 'Cefazolin 20mg/kg IV',
+                  label: 'Cefazolin 20mg/kg IV',
+                },
+                {
+                  value: 'Cefovecin 20mg/kg IV',
+                  label: 'Cefovecin 20mg/kg IV',
+                },
+                {
+                  value: 'Esomeprazole 1mg/kg SC',
+                  label: 'Esomeprazole 1mg/kg SC',
+                },
+                {
+                  value: 'Esomeprazole 2mg/kg SC',
+                  label: 'Esomeprazole 2mg/kg SC',
+                },
+                {
+                  value: 'Esomeprazole 3mg/kg SC',
+                  label: 'Esomeprazole 3mg/kg SC',
+                },
+                {
+                  value: 'Esomeprazole 4mg/kg SC',
+                  label: 'Esomeprazole 4mg/kg SC',
+                },
+                {
+                  value: 'Esomeprazole 5mg/kg SC',
+                  label: 'Esomeprazole 5mg/kg SC',
+                },
+                {
+                  value: 'Esomeprazole 6mg/kg SC',
+                  label: 'Esomeprazole 6mg/kg SC',
+                },
+                {
+                  value: 'Esomeprazole 8mg/kg SC',
+                  label: 'Esomeprazole 8mg/kg SC',
+                },
+              ]}
+              selectedValue={selectedDrug}
+              onSearchValueChange={setDrugInput}
+              onSelectedValueChange={setSelectedDrug}
+              searchValue={drugInput}
+              noBracket
+            />
+          )}
+
+          {orderType !== 'checklist' && orderType !== 'injection' && (
             <Input
               className="h-11 rounded-none border-0 border-r focus-visible:ring-0"
               disabled={isSubmitting}
@@ -217,3 +271,43 @@ export default function OrderCreatorRow({
     </TableRow>
   )
 }
+
+const DRUGS = [
+  {
+    raw_drug_id: '6fe44862-ef8c-4a1d-9d07-629294f38258',
+    name: 'Cefazolin Sodium',
+    route: 'IV',
+    mgPerKg: '20',
+    mlPerKg: '0.1',
+  },
+  {
+    raw_drug_id: '6fe44862-ef8c-4a1d-9d07-629294f32258',
+    name: 'Cefovecin Sodium',
+    route: 'IV',
+    mgPerKg: '20',
+    mlPerKg: '0.1',
+  },
+  {
+    raw_drug_id: '6fe44862-ef8c-4a1d-9d07-629294f34258',
+    name: 'Cefotaxime Sodium',
+    route: 'IV',
+    mgPerKg: '20',
+    mlPerKg: '0.1',
+  },
+  {
+    raw_drug_id: '6fe44862-ef8c-4a1d-9d07-629294f35258',
+    name: 'Amoxicillin/Clavulanate Potassium',
+    route: 'IV',
+    mgPerKg: '12.5',
+    mlPerKg: '0.2',
+  },
+  {
+    raw_drug_id: '6fe44862-ef2c-4a1d-9d07-629294f35258',
+    name: 'Esomeprazole',
+    route: 'SC',
+    mgPerKg: '1',
+    mlPerKg: '0.1',
+  },
+]
+
+// 약물 + 경로 + 권장용량
