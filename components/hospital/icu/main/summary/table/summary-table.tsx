@@ -24,35 +24,37 @@ export default function SummaryTable({
   const {
     basicHosData: { vetsListData },
   } = useBasicHosDataContext()
-  const [patientFilter, setPatientFilter] = useState(DEFAULT_FILTER_STATE)
 
-  useEffect(() => {
-    const storagePatientFilter = localStorage.getItem('patientFilter')
-    if (storagePatientFilter) {
-      setPatientFilter(JSON.parse(storagePatientFilter))
-    }
+  // 필터 적용 일단 비활성화
+  // const [patientFilter, setPatientFilter] = useState(DEFAULT_FILTER_STATE)
 
-    const handleStorageChange = () => {
-      const newValue = localStorage.getItem('patientFilter')
-      if (newValue) {
-        setPatientFilter(JSON.parse(newValue))
-      }
-    }
+  // useEffect(() => {
+  //   const storagePatientFilter = localStorage.getItem('patientFilter')
+  //   if (storagePatientFilter) {
+  //     setPatientFilter(JSON.parse(storagePatientFilter))
+  //   }
 
-    window.addEventListener('localStorageChange', handleStorageChange)
+  //   const handleStorageChange = () => {
+  //     const newValue = localStorage.getItem('patientFilter')
+  //     if (newValue) {
+  //       setPatientFilter(JSON.parse(newValue))
+  //     }
+  //   }
 
-    return () => {
-      window.removeEventListener('localStorageChange', handleStorageChange)
-    }
-  }, [])
+  //   window.addEventListener('localStorageChange', handleStorageChange)
 
-  const { filteredSummaryData, hasData } = filterSummaryData({
-    summaryData,
-    patientFilter,
-    vetsListData,
-  })
+  //   return () => {
+  //     window.removeEventListener('localStorageChange', handleStorageChange)
+  //   }
+  // }, [])
 
-  if (!hasData) {
+  // const { filteredSummaryData, hasData } = filterSummaryData({
+  //   summaryData,
+  //   patientFilter,
+  //   vetsListData,
+  // })
+
+  if (summaryData.length === 0) {
     return (
       <NoResultSquirrel
         text="입원 환자가 존재하지 않습니다"
@@ -77,7 +79,7 @@ export default function SummaryTable({
       </TableHeader>
 
       <TableBody>
-        {filteredSummaryData.map((summary) => (
+        {summaryData.map((summary) => (
           <SummaryTableRow key={summary.icu_chart_id} summary={summary} />
         ))}
       </TableBody>
