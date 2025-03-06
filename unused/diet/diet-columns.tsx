@@ -1,13 +1,13 @@
 'use client'
 
-import DeleteDietDialog from '@/components/hospital/admin/diet/delete-diet-dialog'
-import DietSpeciesIcon from '@/components/hospital/admin/diet/diet-species-icon'
-import AddDietDialog from '@/components/hospital/admin/diet/pin/add-diet-dialog'
-import PinButton from '@/components/hospital/admin/diet/pin/pin-button'
 import { Button } from '@/components/ui/button'
 import type { AdminDietData } from '@/types/adimin'
 import { ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown } from 'lucide-react'
+import PinButton from './pin/pin-button'
+import DietSpeciesIcon from './diet-species-icon'
+import AddDietDialog from './add-diet-dialog'
+import DeleteDietDialog from './delete-diet-dialog'
 
 export const dietColumns = ({
   hosId,
