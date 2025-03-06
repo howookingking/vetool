@@ -31,7 +31,7 @@ export default function Filters({
     })
 
     // localStorage 이벤트 전달 비활성화
-    window.dispatchEvent(new Event('localStorageChange'))
+    // window.dispatchEvent(new Event('localStorageChange'))
   }
 
   // 수의사 선택 로직
