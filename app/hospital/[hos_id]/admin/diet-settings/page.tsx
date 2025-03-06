@@ -1,6 +1,6 @@
-import DietDataTables from '@/components/hospital/admin/diet/diet-data-tables'
 import { getHosDiets, getPinnedDiets } from '@/lib/services/admin/diet/diet'
 import { getHosName } from '@/lib/services/hospital-home/get-hos-name'
+import DietDataTables from '@/unused/diet/diet-data-tables'
 
 export default async function AdminFoodSettingsPage(props: {
   params: Promise<{ hos_id: string }>
