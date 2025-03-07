@@ -198,7 +198,7 @@ export default function OrderCreatorRow({
             </Select>
           )}
 
-          {orderType === 'injection' && (
+          {/* {orderType === 'injection' && (
             <AutoComplete
               items={[
                 {
@@ -244,9 +244,9 @@ export default function OrderCreatorRow({
               searchValue={drugInput}
               noBracket
             />
-          )}
+          )} */}
 
-          {orderType !== 'checklist' && orderType !== 'injection' && (
+          {orderType !== 'checklist' && (
             <Input
               className="h-11 rounded-none border-0 border-r focus-visible:ring-0"
               disabled={isSubmitting}
