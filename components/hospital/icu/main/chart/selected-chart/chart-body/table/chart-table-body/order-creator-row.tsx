@@ -147,8 +147,6 @@ export default function OrderCreatorRow({
   const [selectedDrug, setSelectedDrug] = useState('')
   const [drugInput, setDrugInput] = useState('')
 
-  console.log(selectedDrug)
-
   return (
     <TableRow className="hover:bg-transparent">
       <TableCell className="p-0">
