@@ -78,6 +78,7 @@ export const updateRoute = async (route: string, hosDrugId: string) => {
     redirect(`/error/?message=${error.message}`)
   }
 }
+
 export const updateCaution = async (
   catuionInput: string,
   hosDrugId: string,
@@ -86,6 +87,19 @@ export const updateCaution = async (
   const { error } = await supabase
     .from('hos_drugs')
     .update({ caution: catuionInput })
+    .match({ hos_drug_id: hosDrugId })
+
+  if (error) {
+    console.error(error)
+    redirect(`/error/?message=${error.message}`)
+  }
+}
+
+export const deleteHosDrug = async (hosDrugId: string) => {
+  const supabase = await createClient()
+  const { error } = await supabase
+    .from('hos_drugs')
+    .delete()
     .match({ hos_drug_id: hosDrugId })
 
   if (error) {

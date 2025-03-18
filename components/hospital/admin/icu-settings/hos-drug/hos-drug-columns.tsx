@@ -9,6 +9,7 @@ import HosDrugNameColumn from './hos-drug-name-column'
 import MgPerKgColumn from './mg-per-kg-column'
 import MlPerKgColumn from './ml-per-kg-column'
 import RouteColumn from './route-column'
+import { DeleteHosDrugColumn } from './delete-hos-drug-column'
 
 export const hosDurgColumns: ColumnDef<HosDrug>[] = [
   {
@@ -84,6 +85,23 @@ export const hosDurgColumns: ColumnDef<HosDrug>[] = [
       return (
         <div className="flex justify-center">
           <CautionColumn hosDrugId={hosDrugId} caution={caution} />
+        </div>
+      )
+    },
+  },
+  {
+    accessorKey: 'delete_hos_drug',
+    header: () => <span>삭제</span>,
+    cell: ({ row }) => {
+      const hosDrugId = row.original.hos_drug_id
+      const hosDrugName = row.original.hos_drug_name
+
+      return (
+        <div className="flex justify-center">
+          <DeleteHosDrugColumn
+            hosDrugId={hosDrugId}
+            hosDrugName={hosDrugName}
+          />
         </div>
       )
     },
