@@ -10,6 +10,7 @@ import DataTable from '@/components/ui/data-table'
 import { cn } from '@/lib/utils/utils'
 import { type HosDrug } from '@/types'
 import { hosDurgColumns } from './hos-drug-columns'
+import { InsertHosDrugDialog } from './insert-hos-drug-dialog'
 
 type Props = {
   hosDrugs: HosDrug[]
@@ -19,7 +20,10 @@ export default function HosDrugSetting({ hosDrugs }: Props) {
   return (
     <Card className={cn('mt-2')}>
       <CardHeader>
-        <CardTitle>자주 사용하는 주사약물 설정</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          자주 사용하는 주사약물 설정
+          <InsertHosDrugDialog />
+        </CardTitle>
         <CardDescription className="flex flex-col">
           <span>
             주사오더추가시 자동완성 및 약물 용량 자동계산 기능을 제공합니다

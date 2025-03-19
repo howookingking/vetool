@@ -108,6 +108,31 @@ export const deleteHosDrug = async (hosDrugId: string) => {
   }
 }
 
+export const insertHosDrug = async (
+  hosId: string,
+  hosDrugName: string,
+  mgPerKg: string,
+  mlPerKg: string,
+  hosDrugRoute: string,
+  caution: string,
+) => {
+  const supabase = await createClient()
+
+  const { error } = await supabase.from('hos_drugs').insert({
+    hos_id: hosId,
+    hos_drug_name: hosDrugName,
+    mg_per_kg: mgPerKg,
+    ml_per_kg: mlPerKg,
+    hos_drug_route: hosDrugRoute,
+    caution: caution,
+  })
+
+  if (error) {
+    console.error(error)
+    redirect(`/error/?message=${error.message}`)
+  }
+}
+
 // export const getStaffs = async (hosId: string) => {
 //   const supabase = await createClient()
 //   const { data, error } = await supabase

@@ -9,7 +9,7 @@ import {
 import { toast } from '@/components/ui/use-toast'
 import { updateRoute } from '@/lib/services/admin/icu/hos-drugs'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 type Props = {
   route: string
@@ -21,6 +21,10 @@ export default function RouteColumn({ route, hosDrugId }: Props) {
 
   const [selectedRoute, setSelectedRoute] = useState(route)
   const [isUpdating, setIsUpdating] = useState(false)
+
+  useEffect(() => {
+    setSelectedRoute(route)
+  }, [route])
 
   const handleUpdateRoute = async (value: string) => {
     setIsUpdating(true)
@@ -36,7 +40,8 @@ export default function RouteColumn({ route, hosDrugId }: Props) {
 
   return (
     <Select
-      defaultValue={route}
+      defaultValue={selectedRoute}
+      disabled={isUpdating}
       value={selectedRoute}
       onValueChange={(value) => {
         setSelectedRoute(value)
