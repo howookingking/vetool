@@ -37,7 +37,10 @@ export const hosDrugFormSchema = z.object({
   hos_drug_name: z
     .string({ required_error: '약물명을 입력해주세요' })
     .min(1, { message: '약물명을 입력해주세요' }),
-  mg_per_kg: z
+  unit: z
+    .string({ required_error: '단위를 입력해주세요' })
+    .min(1, { message: '단위를 입력해주세요' }),
+  unit_per_kg: z
     .string({ required_error: '기본용량을 입력해주세요' })
     .refine((value) => /^[0-9]*\.?[0-9]+$/.test(value), {
       message: '기본용량을 입력해주세요',

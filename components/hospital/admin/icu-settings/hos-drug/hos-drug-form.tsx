@@ -44,7 +44,8 @@ export default function HosDrugForm({
     resolver: zodResolver(hosDrugFormSchema),
     defaultValues: {
       hos_drug_name: '',
-      mg_per_kg: '',
+      unit: 'mg',
+      unit_per_kg: '',
       ml_per_kg: '',
       hos_drug_route: '',
       caution: '',
@@ -54,20 +55,27 @@ export default function HosDrugForm({
   const handleSubmit = async (values: HosDrugFormSchema) => {
     setIsInserting(true)
 
-    const { hos_drug_name, mg_per_kg, ml_per_kg, hos_drug_route, caution } =
-      values
+    const {
+      hos_drug_name,
+      unit_per_kg,
+      ml_per_kg,
+      hos_drug_route,
+      caution,
+      unit,
+    } = values
 
     await insertHosDrug(
       hos_id as string,
       hos_drug_name,
-      mg_per_kg,
+      unit,
+      unit_per_kg,
       ml_per_kg,
       hos_drug_route,
       caution ?? '',
     )
 
     toast({
-      title: '선호 약물 설정이 완료되었습니다.',
+      title: '선호 약물을 등록하였습니다',
     })
 
     setIsInserting(false)
@@ -90,7 +98,7 @@ export default function HosDrugForm({
                 약물명 <span className="text-destructive">*</span>
               </FormLabel>
               <FormControl>
-                <Input placeholder="약물명을 입력하세요" {...field} />
+                <Input placeholder="Maropitant" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -99,18 +107,40 @@ export default function HosDrugForm({
 
         <FormField
           control={form.control}
-          name="mg_per_kg"
+          name="unit"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="mg_per_kg">
-                기본용량 (mg/kg) <span className="text-destructive">*</span>
+              <FormLabel>
+                단위 <span className="text-destructive">*</span>
+              </FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="mg" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="mg">mg</SelectItem>
+                  <SelectItem value="g">g</SelectItem>
+                  <SelectItem value="μg">μg</SelectItem>
+                  <SelectItem value="U">U</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="unit_per_kg"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="unit_per_kg">
+                기본용량 (단위/kg) <span className="text-destructive">*</span>
               </FormLabel>
               <FormControl>
-                <Input
-                  id="mg_per_kg"
-                  placeholder="mg/kg 값을 입력하세요"
-                  {...field}
-                />
+                <Input id="unit_per_kg" placeholder="1" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -127,11 +157,7 @@ export default function HosDrugForm({
                 <span className="text-destructive">*</span>
               </FormLabel>
               <FormControl>
-                <Input
-                  id="ml_per_kg"
-                  placeholder="ml/kg 값을 입력하세요"
-                  {...field}
-                />
+                <Input id="ml_per_kg" placeholder="0.1" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -171,7 +197,7 @@ export default function HosDrugForm({
             <FormItem>
               <FormLabel>주사시 특이사항</FormLabel>
               <FormControl>
-                <Input placeholder="천천히 주입 등..." {...field} />
+                <Input placeholder="" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
