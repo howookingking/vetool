@@ -28,10 +28,6 @@ export default function HosDrugSetting({ hosDrugs }: Props) {
           <span>
             주사오더추가시 자동완성 및 약물 용량 자동계산 기능을 제공합니다
           </span>
-          <span>
-            예시 : AMC(약물명) 12.5mg/kg(기본용량) 0.2ml/kg(체중당 투여량)
-            IV(투여경로) 익스텐션(주사시 특이사항)
-          </span>
         </CardDescription>
       </CardHeader>
 

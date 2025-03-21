@@ -5,11 +5,12 @@ import { type HosDrug } from '@/types'
 import { type ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown } from 'lucide-react'
 import CautionColumn from './caution-column'
+import { DeleteHosDrugColumn } from './delete-hos-drug-column'
 import HosDrugNameColumn from './hos-drug-name-column'
-import MgPerKgColumn from './mg-per-kg-column'
 import MlPerKgColumn from './ml-per-kg-column'
 import RouteColumn from './route-column'
-import { DeleteHosDrugColumn } from './delete-hos-drug-column'
+import UnitColumn from './unit-column'
+import UnitPerKgColumn from './unit-per-kg-column'
 
 export const hosDurgColumns: ColumnDef<HosDrug>[] = [
   {
@@ -34,15 +35,34 @@ export const hosDurgColumns: ColumnDef<HosDrug>[] = [
     },
   },
   {
-    accessorKey: 'mg_per_kg',
-    header: () => <span>기본용량 (mg/kg)</span>,
+    accessorKey: 'unit',
+    header: () => <span>단위</span>,
     cell: ({ row }) => {
-      const mgPerKg = row.original.mg_per_kg
+      const unit = row.original.unit
       const hosDrugId = row.original.hos_drug_id
 
       return (
         <div className="flex justify-center">
-          <MgPerKgColumn hosDrugId={hosDrugId} mgPerKg={mgPerKg.toString()} />
+          <UnitColumn unit={unit} hosDrugId={hosDrugId} />
+        </div>
+      )
+    },
+  },
+  {
+    accessorKey: 'unit_per_kg',
+    header: () => <span>기본용량 (단위/kg)</span>,
+    cell: ({ row }) => {
+      const unitPerKg = row.original.unit_per_kg
+      const hosDrugId = row.original.hos_drug_id
+      const unit = row.original.unit
+
+      return (
+        <div className="flex justify-center">
+          <UnitPerKgColumn
+            unit={unit}
+            hosDrugId={hosDrugId}
+            unitPerKg={unitPerKg.toString()}
+          />
         </div>
       )
     },

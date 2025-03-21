@@ -240,9 +240,10 @@ export type Database = {
           hos_drug_name: string
           hos_drug_route: string
           hos_id: string
-          mg_per_kg: number
           ml_per_kg: number
           raw_drug_id: string | null
+          unit: string
+          unit_per_kg: number
         }
         Insert: {
           caution?: string
@@ -251,9 +252,10 @@ export type Database = {
           hos_drug_name?: string
           hos_drug_route: string
           hos_id?: string
-          mg_per_kg: number
           ml_per_kg: number
           raw_drug_id?: string | null
+          unit?: string
+          unit_per_kg: number
         }
         Update: {
           caution?: string
@@ -262,9 +264,10 @@ export type Database = {
           hos_drug_name?: string
           hos_drug_route?: string
           hos_id?: string
-          mg_per_kg?: number
           ml_per_kg?: number
           raw_drug_id?: string | null
+          unit?: string
+          unit_per_kg?: number
         }
         Relationships: [
           {
