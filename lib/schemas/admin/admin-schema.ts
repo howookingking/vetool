@@ -34,24 +34,28 @@ export const dietSchema = z.object({
 
 // 관리자 선호 약물 설정 폼 스키마
 export const hosDrugFormSchema = z.object({
-  raw_drug_id: z
-    .string({ required_error: '약물 원료명을 입력해주세요' })
-    .min(1, { message: '약물 원료명을 입력해주세요' }),
   hos_drug_name: z
-    .string({ required_error: '약물 이름을 입력해주세요' })
-    .min(1, { message: '약물 이름을 입력해주세요' }),
-  hos_drug_route: z
-    .string({ required_error: '경로를 입력해주세요' })
-    .min(1, { message: '경로를 입력해주세요' }),
-  mg_per_kg: z
-    .number({ required_error: 'mg/kg 값을 입력해주세요' })
-    .min(0.1, { message: 'mg 값은 0.1 이상이어야 합니다' })
-    .max(100, { message: 'mg 값은 100 이하여야 합니다' }),
-
+    .string({ required_error: '약물명을 입력해주세요' })
+    .min(1, { message: '약물명을 입력해주세요' }),
+  unit: z
+    .string({ required_error: '단위를 입력해주세요' })
+    .min(1, { message: '단위를 입력해주세요' }),
+  unit_per_kg: z
+    .string({ required_error: '기본용량을 입력해주세요' })
+    .refine((value) => /^[0-9]*\.?[0-9]+$/.test(value), {
+      message: '기본용량을 입력해주세요',
+    }),
   ml_per_kg: z
-    .number({ required_error: 'ml/kg 값을 입력해주세요' })
-    .min(0.1, { message: 'ml 값은 0.1 이상이어야 합니다' })
-    .max(100, { message: 'ml 값은 100 이하여야 합니다' }),
+    .string({ required_error: '체중당 투여량을 입력해주세요' })
+    .refine((value) => /^[0-9]*\.?[0-9]+$/.test(value), {
+      message: '체중당 투여량을 입력해주세요',
+    }),
+  hos_drug_route: z
+    .string({ required_error: '경로를 선택해주세요' })
+    .min(1, { message: '경로를 선텍해주세요' }),
+  caution: z
+    .string({ required_error: '주사 특이사항을 입력해주세요' })
+    .optional(),
 })
 
 /* 메모 */

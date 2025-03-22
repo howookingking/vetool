@@ -234,40 +234,40 @@ export type Database = {
       }
       hos_drugs: {
         Row: {
+          caution: string
           created_at: string
-          hos_drug_description: string | null
-          hos_drug_dosages: Json | null
           hos_drug_id: string
-          hos_drug_indication: string | null
           hos_drug_name: string
-          hos_drug_side_effect: string | null
-          hos_drug_tags: string | null
-          hos_id: string | null
-          raw_drug_id: string
+          hos_drug_route: string
+          hos_id: string
+          ml_per_kg: number
+          raw_drug_id: string | null
+          unit: string
+          unit_per_kg: number
         }
         Insert: {
+          caution?: string
           created_at?: string
-          hos_drug_description?: string | null
-          hos_drug_dosages?: Json | null
           hos_drug_id?: string
-          hos_drug_indication?: string | null
           hos_drug_name?: string
-          hos_drug_side_effect?: string | null
-          hos_drug_tags?: string | null
-          hos_id?: string | null
-          raw_drug_id: string
+          hos_drug_route: string
+          hos_id?: string
+          ml_per_kg: number
+          raw_drug_id?: string | null
+          unit?: string
+          unit_per_kg: number
         }
         Update: {
+          caution?: string
           created_at?: string
-          hos_drug_description?: string | null
-          hos_drug_dosages?: Json | null
           hos_drug_id?: string
-          hos_drug_indication?: string | null
           hos_drug_name?: string
-          hos_drug_side_effect?: string | null
-          hos_drug_tags?: string | null
-          hos_id?: string | null
-          raw_drug_id?: string
+          hos_drug_route?: string
+          hos_id?: string
+          ml_per_kg?: number
+          raw_drug_id?: string | null
+          unit?: string
+          unit_per_kg?: number
         }
         Relationships: [
           {

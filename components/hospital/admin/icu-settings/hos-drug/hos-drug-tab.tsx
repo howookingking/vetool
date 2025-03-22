@@ -1,8 +1,8 @@
 import HosDrugSetting from '@/components/hospital/admin/icu-settings/hos-drug/hos-drug-setting'
-import { getRawDrugs } from '@/lib/services/icu/chart/get-drugs'
+import { getHosDrugs } from '@/lib/services/admin/icu/hos-drugs'
 
 export default async function HosDrugTab({ hosId }: { hosId: string }) {
-  const rawDrugs = await getRawDrugs()
+  const hosDrugs = await getHosDrugs(hosId)
 
-  return <HosDrugSetting rawDrugs={rawDrugs} hosId={hosId} />
+  return <HosDrugSetting hosId={hosId} hosDrugs={hosDrugs} />
 }

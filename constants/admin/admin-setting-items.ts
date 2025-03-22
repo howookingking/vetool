@@ -33,7 +33,7 @@ export const ADMIN_SETTING_ITEMS = [
     Component: TimeGuidelineTab,
   },
   {
-    label: '선호 약물 설정',
+    label: '주사 약물 설정',
     value: 'hosDrug',
     Component: HosDrugTab,
   },

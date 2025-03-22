@@ -43,6 +43,7 @@ export default function IsVetColumn({
   return (
     <Select
       defaultValue={isVet ? 'true' : 'false'}
+      disabled={isUpdating}
       value={isVetIput}
       onValueChange={(value) => {
         setIsVetIput(value)

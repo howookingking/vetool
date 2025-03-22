@@ -1,4 +1,4 @@
-import OrderCreatorRow from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-creator-row'
+import OrderCreatorRow from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-creator/order-creator-row'
 import OrderRows from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-rows'
 import { TableBody } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
@@ -15,7 +15,7 @@ import {
   type RefObject,
   type SetStateAction,
 } from 'react'
-import ChartTableDialogs from './chart-table-dialogs/chart-table-dialogs'
+import ChartTableDialogs from './chart-table-dialogs'
 
 type Props = {
   sortedOrders: SelectedIcuOrder[]
@@ -148,6 +148,7 @@ export default function ChartTableBody({
             setSortedOrders={setSortedOrders}
             sortedOrders={sortedOrders}
             orderColorsData={orderColorsData}
+            weight={chartData.weight}
           />
 
           <ChartTableDialogs
