@@ -11,6 +11,13 @@ import { updateUrgency } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { Siren, Star } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
+const URGENCY = [
+  { label: '없음', value: 0 },
+  { label: 1, value: 1 },
+  { label: 2, value: 2 },
+  { label: 3, value: 3 },
+]
+
 export default function Urgency({
   urgency,
   icuChartId,
@@ -19,18 +26,18 @@ export default function Urgency({
   icuChartId: string
 }) {
   const [isUpdating, setIsUpdating] = useState(false)
-  const [localUrgency, setLocalUrgency] = useState(urgency)
+  const [localUrgency, setLocalUrgency] = useState<number | null>(urgency)
 
   const handleUpdateUrgency = async (value: string) => {
-    if (urgency === Number(value)) return
+    const numValue = Number(value)
+    if (urgency === numValue) return
 
     setIsUpdating(true)
-    await updateUrgency(icuChartId, Number(value))
-    setLocalUrgency(Number(value))
-    toast({
-      title: '응급도를 변경하였습니다',
-    })
+    await updateUrgency(icuChartId, numValue)
 
+    setLocalUrgency(numValue !== 0 ? numValue : null)
+
+    toast({ title: '응급도를 변경하였습니다' })
     setIsUpdating(false)
   }
 
@@ -48,7 +55,7 @@ export default function Urgency({
       </Label>
 
       <Select
-        defaultValue={localUrgency ? String(localUrgency) : undefined}
+        value={localUrgency !== null ? String(localUrgency) : ''}
         onValueChange={handleUpdateUrgency}
         disabled={isUpdating}
       >
@@ -56,35 +63,41 @@ export default function Urgency({
           className="w-full pl-8 text-muted-foreground"
           showCaret={false}
         >
-          <SelectValue placeholder="응급도" className="text-muted-foreground">
-            {localUrgency && (
+          <SelectValue placeholder="응급도">
+            {localUrgency ? (
               <div className="flex items-center gap-0.5">
-                {Array(Number(localUrgency))
+                {Array(localUrgency)
                   .fill(0)
-                  .map((_, i) => (
+                  .map((_, index) => (
                     <Star
-                      key={i}
+                      key={index}
                       className="h-4 w-4 fill-yellow-400 text-yellow-400"
                     />
                   ))}
               </div>
+            ) : (
+              <span className="text-muted-foreground">응급도</span>
             )}
           </SelectValue>
         </SelectTrigger>
 
         <SelectContent>
-          {[1, 2, 3].map((value) => (
-            <SelectItem key={value} value={String(value)}>
-              <div className="flex items-center gap-0.5">
-                {Array(value)
-                  .fill(0)
-                  .map((_, i) => (
-                    <Star
-                      key={i}
-                      className="h-4 w-4 fill-yellow-400 text-yellow-400"
-                    />
-                  ))}
-              </div>
+          {URGENCY.map((urgency) => (
+            <SelectItem key={urgency.value} value={String(urgency.value)}>
+              {!urgency.value ? (
+                <span>없음</span>
+              ) : (
+                <div className="flex items-center gap-0.5">
+                  {Array(urgency.value)
+                    .fill(0)
+                    .map((_, index) => (
+                      <Star
+                        key={index}
+                        className="h-4 w-4 fill-yellow-400 text-yellow-400"
+                      />
+                    ))}
+                </div>
+              )}
             </SelectItem>
           ))}
         </SelectContent>
