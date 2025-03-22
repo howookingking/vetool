@@ -37,14 +37,14 @@ export const updateHosDrugName = async (
   }
 }
 
-export const updateMgPerKg = async (
-  mgPerKgInput: string,
+export const updateUnitPerKg = async (
+  unitPerKgInput: string,
   hosDrugId: string,
 ) => {
   const supabase = await createClient()
   const { error } = await supabase
     .from('hos_drugs')
-    .update({ mg_per_kg: mgPerKgInput })
+    .update({ unit_per_kg: unitPerKgInput })
     .match({ hos_drug_id: hosDrugId })
 
   if (error) {
@@ -58,6 +58,19 @@ export const updateMlPerKg = async (mlPerKg: string, hosDrugId: string) => {
   const { error } = await supabase
     .from('hos_drugs')
     .update({ ml_per_kg: mlPerKg })
+    .match({ hos_drug_id: hosDrugId })
+
+  if (error) {
+    console.error(error)
+    redirect(`/error/?message=${error.message}`)
+  }
+}
+
+export const updateUnit = async (selectedUnit: string, hosDrugId: string) => {
+  const supabase = await createClient()
+  const { error } = await supabase
+    .from('hos_drugs')
+    .update({ unit: selectedUnit })
     .match({ hos_drug_id: hosDrugId })
 
   if (error) {
@@ -111,7 +124,8 @@ export const deleteHosDrug = async (hosDrugId: string) => {
 export const insertHosDrug = async (
   hosId: string,
   hosDrugName: string,
-  mgPerKg: string,
+  unit: string,
+  unitPerKg: string,
   mlPerKg: string,
   hosDrugRoute: string,
   caution: string,
@@ -121,7 +135,8 @@ export const insertHosDrug = async (
   const { error } = await supabase.from('hos_drugs').insert({
     hos_id: hosId,
     hos_drug_name: hosDrugName,
-    mg_per_kg: mgPerKg,
+    unit: unit,
+    unit_per_kg: unitPerKg,
     ml_per_kg: mlPerKg,
     hos_drug_route: hosDrugRoute,
     caution: caution,

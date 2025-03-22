@@ -2,9 +2,9 @@ import { type OrderStep } from '@/lib/store/icu/icu-order'
 import { type IcuOrderColors } from '@/types/adimin'
 import { type SelectedIcuOrder } from '@/types/icu/chart'
 import { type Dispatch, type SetStateAction } from 'react'
-import MultiSelectOrderDialog from '../../order/multil-select-order/multi-select-order-dialog'
-import OrderDialog from '../../order/order-dialog'
-import TxUpsertDialog from '../../tx/tx-upsert-dialog'
+import MultiSelectOrderDialog from '../order/multil-select-order/multi-select-order-dialog'
+import OrderDialog from '../order/order-dialog'
+import TxUpsertDialog from '../tx/tx-upsert-dialog'
 
 type Props = {
   showTxUser: boolean

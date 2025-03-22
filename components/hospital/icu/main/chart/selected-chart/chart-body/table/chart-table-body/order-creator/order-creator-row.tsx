@@ -18,21 +18,17 @@ import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import { type IcuOrderColors } from '@/types/adimin'
 import { type SelectedIcuOrder } from '@/types/icu/chart'
 import { useParams } from 'next/navigation'
-import {
-  type Dispatch,
-  type SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import { type Dispatch, type SetStateAction, useRef, useState } from 'react'
+import ChecklistOrderCreator from './checklist-order-creator'
+import { InjectionOrderCreator } from './injection-order/injection-order-creator'
 import UserKeyGuideMessage from './user-key-guide-message'
-import { AutoComplete } from '@/components/ui/auto-complete'
 
 type Props = {
   icuChartId: string
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   sortedOrders: SelectedIcuOrder[]
   orderColorsData: IcuOrderColors
+  weight: string
 }
 
 function getAvailableChecklistOrders(orders: SelectedIcuOrder[]) {
@@ -50,6 +46,7 @@ export default function OrderCreatorRow({
   setSortedOrders,
   sortedOrders,
   orderColorsData,
+  weight,
 }: Props) {
   const { hos_id } = useParams()
 
@@ -107,7 +104,8 @@ export default function OrderCreatorRow({
     }, 100)
   }
 
-  const handleBlur = async () => {
+  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.nativeEvent.isComposing || e.key !== 'Enter') return
     if (!newOrderInput) return
 
     const [orderName, orderDescription] = newOrderInput.split('$')
@@ -127,27 +125,10 @@ export default function OrderCreatorRow({
     await createOrder(orderName, orderDescription ?? '')
   }
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.nativeEvent.isComposing || e.key !== 'Enter') return
-    e.currentTarget.blur()
-  }
-
   const handleOrderTypeChange = (selectedValue: string) => {
     setOrderType(selectedValue)
     setIsChecklistOrder(false)
   }
-
-  // checklist 오더가 더이상 없는 경우 manual로 바꾸기
-  useEffect(() => {
-    if (availableCheckListOrders.length === 0) {
-      setOrderType('manual')
-    }
-  }, [availableCheckListOrders.length])
-
-  const [selectedDrug, setSelectedDrug] = useState('')
-  const [drugInput, setDrugInput] = useState('')
-
-  console.log(selectedDrug)
 
   return (
     <TableRow className="hover:bg-transparent">
@@ -181,80 +162,25 @@ export default function OrderCreatorRow({
           </Select>
 
           {orderType === 'checklist' && (
-            <Select
-              onValueChange={async (value) => await createOrder(value, '')}
-            >
-              <SelectTrigger className="h-11 w-full rounded-none border-0 border-r ring-0 focus-visible:ring-0">
-                <SelectValue placeholder="체크리스트 항목 선택" />
-              </SelectTrigger>
-
-              <SelectContent>
-                {availableCheckListOrders.map((order) => (
-                  <SelectItem key={order} value={order}>
-                    {order}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <ChecklistOrderCreator
+              createOrder={createOrder}
+              setOrderType={setOrderType}
+              availableCheckListOrders={availableCheckListOrders}
+            />
           )}
 
           {orderType === 'injection' && (
-            <AutoComplete
-              items={[
-                {
-                  value: 'Cefazolin 20mg/kg IV',
-                  label: 'Cefazolin 20mg/kg IV',
-                },
-                {
-                  value: 'Cefovecin 20mg/kg IV',
-                  label: 'Cefovecin 20mg/kg IV',
-                },
-                {
-                  value: 'Esomeprazole 1mg/kg SC',
-                  label: 'Esomeprazole 1mg/kg SC',
-                },
-                {
-                  value: 'Esomeprazole 2mg/kg SC',
-                  label: 'Esomeprazole 2mg/kg SC',
-                },
-                {
-                  value: 'Esomeprazole 3mg/kg SC',
-                  label: 'Esomeprazole 3mg/kg SC',
-                },
-                {
-                  value: 'Esomeprazole 4mg/kg SC',
-                  label: 'Esomeprazole 4mg/kg SC',
-                },
-                {
-                  value: 'Esomeprazole 5mg/kg SC',
-                  label: 'Esomeprazole 5mg/kg SC',
-                },
-                {
-                  value: 'Esomeprazole 6mg/kg SC',
-                  label: 'Esomeprazole 6mg/kg SC',
-                },
-                {
-                  value: 'Esomeprazole 8mg/kg SC',
-                  label: 'Esomeprazole 8mg/kg SC',
-                },
-              ]}
-              selectedValue={selectedDrug}
-              onSearchValueChange={setDrugInput}
-              onSelectedValueChange={setSelectedDrug}
-              searchValue={drugInput}
-              noBracket
-            />
+            <InjectionOrderCreator weight={weight} createOrder={createOrder} />
           )}
 
           {orderType !== 'checklist' && orderType !== 'injection' && (
             <Input
-              className="h-11 rounded-none border-0 border-r focus-visible:ring-0"
+              className="h-11 rounded-none border-0 focus-visible:ring-0"
               disabled={isSubmitting}
               placeholder="오더명$오더설명"
               value={isSubmitting ? '등록 중' : newOrderInput}
               onChange={(e) => setNewOrderInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              onBlur={handleBlur}
               ref={inputRef}
             />
           )}
