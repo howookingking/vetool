@@ -15,20 +15,20 @@ import { toast } from '@/components/ui/use-toast'
 import { deletePatient } from '@/lib/services/patient/patient'
 import { cn } from '@/lib/utils/utils'
 import { LoaderCircle, Trash2 } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { type DebouncedState } from 'use-debounce'
 
-type DeletePatientAlertProps = {
+type Props = {
   patientName: string
   patientId: string
+  debouncedSearch: DebouncedState<() => Promise<void>>
 }
 
 export default function DeletePatientAlert({
   patientName,
   patientId,
-}: DeletePatientAlertProps) {
-  const { refresh } = useRouter()
-
+  debouncedSearch,
+}: Props) {
   const [isLoading, setIsLoading] = useState(false)
 
   const handleDeletePatient = async (patientId: string) => {
@@ -41,7 +41,7 @@ export default function DeletePatientAlert({
     })
 
     setIsLoading(false)
-    refresh()
+    debouncedSearch()
   }
 
   return (

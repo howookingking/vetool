@@ -1,6 +1,6 @@
 'use client'
 
-import PatientForm from '@/components/hospital/patients/patient-form'
+import PatientForm from '@/components/common/patients/form/patient-form'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -42,6 +42,7 @@ export default function PatientRegisterDialog({ hosId }: { hosId: string }) {
           setIsPatientRegisterDialogOpen={setIsPatientRegisterDialogOpen}
           registeringPatient={null}
           setRegisteringPatient={null}
+          debouncedSearch={null}
         />
       </DialogContent>
     </Dialog>

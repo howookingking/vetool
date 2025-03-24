@@ -11,7 +11,10 @@ if (e.nativeEvent.isComposing || e.key !== 'Enter') return
 
 - 선언순서
 
-1. 구조분해 2. next hook 3. custom hook 4. react hook /
+1. 구조분해
+2. next hook
+3. custom hook
+4. react hook
 
 - 타입선언
 

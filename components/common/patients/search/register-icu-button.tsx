@@ -5,9 +5,9 @@ import { getDaysSince } from '@/lib/utils/utils'
 import { Check, LoaderCircle } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useState } from 'react'
-import { type RegisteringPatient } from '../register-dialog'
+import { type RegisteringPatient } from '../../../hospital/icu/sidebar/register-dialog/register-dialog'
 
-type PatientSelectButtonProps = {
+type Props = {
   patientId: string
   birth: string
   patientName: string
@@ -15,13 +15,13 @@ type PatientSelectButtonProps = {
   setRegisteringPatient: Dispatch<SetStateAction<RegisteringPatient | null>>
 }
 
-export default function PatientSelectButton({
+export default function RegisterIcuButton({
   patientId,
   birth,
   patientName,
   setIsConfirmDialogOpen,
   setRegisteringPatient,
-}: PatientSelectButtonProps) {
+}: Props) {
   const { target_date } = useParams()
 
   const [isLoading, setIsLoading] = useState(false)

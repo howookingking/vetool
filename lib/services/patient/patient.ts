@@ -1,12 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import {
-  type PaginatedData,
-  type PatientDataTable,
-  type SearchedPatientsData,
-  type PatientWithWeight,
-} from '@/types/patients'
+import { type PatientDataTable, type PatientWithWeight } from '@/types/patients'
 import { redirect } from 'next/navigation'
 
 export const insertPatient = async (
@@ -201,30 +196,55 @@ export const updatePatientFromPatientRoute = async (
   }
 }
 
-export const searchPatientsData = async (
-  searchTerm: string,
-  hosId: string,
-  isIcu: boolean,
-  currentPage: number,
-  itemsPerPage: number,
-) => {
+// 너무 복잡해서 아래 함수 사용
+// export const searchPatientsData = async (
+//   searchTerm: string,
+//   hosId: string,
+//   isIcu: boolean,
+//   currentPage: number,
+//   itemsPerPage: number,
+// ) => {
+//   const supabase = await createClient()
+
+//   const { data, error } = await supabase
+//     .rpc('search_patients', {
+//       search_term_input: searchTerm,
+//       hos_id_input: hosId,
+//       is_icu_input: isIcu,
+//       page_number_input: currentPage,
+//       items_per_page_input: itemsPerPage,
+//     })
+//     .returns<PaginatedData<SearchedPatientsData[]>>()
+
+//   if (error) {
+//     console.error(error)
+//     redirect(`/error?message=${error.message}`)
+//   }
+
+//   return data
+// }
+
+export const searchPatients = async (searchTerms: string[], hosId: string) => {
   const supabase = await createClient()
 
-  const { data, error } = await supabase
-    .rpc('search_patients', {
-      search_term_input: searchTerm,
-      hos_id_input: hosId,
-      is_icu_input: isIcu,
-      page_number_input: currentPage,
-      items_per_page_input: itemsPerPage,
-    })
-    .returns<PaginatedData<SearchedPatientsData[]>>()
+  let queryBuilder = supabase.from('patients').select('*').match({
+    hos_id: hosId,
+  })
+
+  searchTerms.forEach((term) => {
+    queryBuilder = queryBuilder.or(
+      `hos_patient_id.ilike.%${term}%,name.ilike.%${term}%,owner_name.ilike.%${term}%`,
+    )
+  })
+
+  const { data, error } = await queryBuilder.order('created_at', {
+    ascending: false,
+  })
 
   if (error) {
     console.error(error)
     redirect(`/error?message=${error.message}`)
   }
-
   return data
 }
 

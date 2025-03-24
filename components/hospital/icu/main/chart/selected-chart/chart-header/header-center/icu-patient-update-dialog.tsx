@@ -3,6 +3,7 @@
 'use client'
 
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
+import PatientDetailInfo from '@/components/hospital/common/patient/patient-detail-info'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -12,22 +13,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import PatientDetailInfo from '@/components/hospital/common/patient/patient-detail-info'
-import { type PatientDataTable } from '@/types/patients'
+import { type Patients } from '@/types'
 import dynamic from 'next/dynamic'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 
 const LazyPatientForm = dynamic(
-  () => import('@/components/hospital/patients/patient-form'),
+  () => import('@/components/common/patients/form/patient-form'),
   {
     ssr: false,
     loading: () => <LargeLoaderCircle className="h-[544px]" />,
   },
 )
 
-type UpdatePatientDialogProps = {
-  patientData: PatientDataTable
+type Props = {
+  patientData: Patients
   weight: string
   weightMeasuredDate: string | null
   icuChartId: string
@@ -38,7 +38,7 @@ export default function IcuPatientUpdateDialog({
   weight,
   weightMeasuredDate,
   icuChartId,
-}: UpdatePatientDialogProps) {
+}: Props) {
   const { name, breed, gender, species, birth } = patientData
 
   const { hos_id } = useParams()
@@ -71,6 +71,7 @@ export default function IcuPatientUpdateDialog({
         </DialogHeader>
 
         <LazyPatientForm
+          debouncedSearch={null}
           mode="updateFromIcuRoute"
           hosId={hos_id as string}
           editingPatient={patientData}
