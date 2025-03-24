@@ -63,7 +63,7 @@ export type SelectedChart = Pick<
 } & {
   orders: SelectedIcuOrder[]
 } & {
-  patient: SelectedChartPatient
+  patient: Patients
 } & {
   main_vet: Pick<Vet, 'avatar_url' | 'name' | 'user_id'>
 } & {

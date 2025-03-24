@@ -1,4 +1,4 @@
-import SearchPatientContainer from '@/components/hospital/icu/sidebar/register-dialog/search-patient/search-patient-containter'
+import SearchPatientContainer from '@/components/common/patients/search/search-patient-containter'
 
 export default async function HospitalPatientsPage(props: {
   params: Promise<{ hos_id: string }>
@@ -7,7 +7,7 @@ export default async function HospitalPatientsPage(props: {
 
   return (
     <div className="overflow-x-scroll p-2">
-      <SearchPatientContainer itemsPerPage={10} hosId={params.hos_id} />
+      <SearchPatientContainer hosId={params.hos_id} />
     </div>
   )
 }

@@ -3,6 +3,7 @@ import { toggleIsDone } from '@/lib/services/hospital-home/todo'
 import type { ClientTodo } from '@/types/hospital/todo'
 import { useEffect, useState } from 'react'
 import UpsertTodoDialog from './upsert-todo-dialog'
+import { Separator } from '@/components/ui/separator'
 
 export default function SingleTodo({
   todo,
@@ -30,7 +31,7 @@ export default function SingleTodo({
   }
 
   return (
-    <li className="flex items-center justify-between">
+    <li className="flex justify-between gap-2">
       <div className="flex items-center gap-1.5">
         <Checkbox
           id={todo.id}
@@ -47,8 +48,8 @@ export default function SingleTodo({
         </label>
       </div>
 
-      <div className="flex items-center gap-2">
-        <span className="text-sm text-muted-foreground">
+      <div className="flex shrink-0 items-center gap-2">
+        <span className="text-xs text-muted-foreground">
           {todo.target_user ?? ''}
         </span>
 

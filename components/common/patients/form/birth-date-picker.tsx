@@ -20,12 +20,12 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 
-type BirthDatePickerProps = {
+type Props = {
   form: UseFormReturn<z.infer<typeof registerPatientFormSchema>>
   birth?: Date
 }
 
-export default function BirthDatePicker({ form, birth }: BirthDatePickerProps) {
+export default function BirthDatePicker({ form, birth }: Props) {
   const isDatePick = useRef(true)
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)

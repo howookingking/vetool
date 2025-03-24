@@ -1,4 +1,4 @@
-import PatientForm from '@/components/hospital/patients/patient-form'
+import PatientForm from '@/components/common/patients/form/patient-form'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -9,22 +9,23 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { getWeightInfo } from '@/lib/services/patient/patient'
-import { type SearchedPatientsData } from '@/types/patients'
+import { Patients } from '@/types'
 import { format } from 'date-fns'
 import { Edit } from 'lucide-react'
+import { useParams } from 'next/navigation'
 import { useState, type Dispatch, type SetStateAction } from 'react'
+import { type DebouncedState } from 'use-debounce'
 
 type PatientUpdateDialogProps = {
-  hosId: string
-  editingPatient: SearchedPatientsData
-  setIsEdited: Dispatch<SetStateAction<boolean>>
+  editingPatient: Patients
+  debouncedSearch: DebouncedState<() => Promise<void>>
 }
 
 export default function PatientUpdateDialog({
-  hosId,
   editingPatient,
-  setIsEdited,
+  debouncedSearch,
 }: PatientUpdateDialogProps) {
+  const { hos_id } = useParams()
   const [isPatientUpdateDialogOpen, setIsPatientUpdateDialogOpen] =
     useState(false)
   const [weightInfo, setWeightInfo] = useState({
@@ -67,12 +68,12 @@ export default function PatientUpdateDialog({
           mode="updateFromPatientRoute"
           weight={weightInfo.weight}
           weightMeasuredDate={weightInfo.weightMeasuredDate}
-          hosId={hosId}
+          hosId={hos_id as string}
           editingPatient={editingPatient}
           setIsPatientUpdateDialogOpen={setIsPatientUpdateDialogOpen}
-          setIsEdited={setIsEdited}
           registeringPatient={null}
           setRegisteringPatient={null}
+          debouncedSearch={debouncedSearch}
         />
       </DialogContent>
     </Dialog>

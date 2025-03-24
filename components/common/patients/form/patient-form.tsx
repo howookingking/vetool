@@ -2,7 +2,7 @@
 'use no memo'
 
 import HelperTooltip from '@/components/common/helper-tooltip'
-import BirthDatePicker from '@/components/hospital/patients/birth-date-picker'
+import BirthDatePicker from '@/components/common/patients/form/birth-date-picker'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -49,7 +49,7 @@ import {
   updatePatientFromPatientRoute,
 } from '@/lib/services/patient/patient'
 import { cn } from '@/lib/utils/utils'
-import { type SearchedPatientsData } from '@/types/patients'
+import { type Patients } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons'
 import { format } from 'date-fns'
@@ -57,9 +57,9 @@ import { LoaderCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useDebouncedCallback } from 'use-debounce'
+import { type DebouncedState, useDebouncedCallback } from 'use-debounce'
 import * as z from 'zod'
-import { type RegisteringPatient } from '../icu/sidebar/register-dialog/register-dialog'
+import { type RegisteringPatient } from '../../../hospital/icu/sidebar/register-dialog/register-dialog'
 
 type BaseProps = {
   hosId: string
@@ -77,11 +77,12 @@ type RegisterFromPatientRoute = BaseProps & {
   setIsEdited?: Dispatch<SetStateAction<boolean>>
   registeringPatient: null
   setRegisteringPatient: null
+  debouncedSearch: null
 }
 
 type UpdateFromPatientRoute = BaseProps & {
   mode: 'updateFromPatientRoute'
-  editingPatient: SearchedPatientsData
+  editingPatient: Patients
   setIsPatientRegisterDialogOpen?: null
   setIsConfirmDialogOpen?: null
   weight: string
@@ -91,6 +92,7 @@ type UpdateFromPatientRoute = BaseProps & {
   setIsEdited?: Dispatch<SetStateAction<boolean>>
   registeringPatient: null
   setRegisteringPatient: null
+  debouncedSearch: DebouncedState<() => Promise<void>>
 }
 
 type RegisterFromIcuRoute = BaseProps & {
@@ -105,23 +107,24 @@ type RegisterFromIcuRoute = BaseProps & {
   setIsEdited?: Dispatch<SetStateAction<boolean>>
   registeringPatient: RegisteringPatient
   setRegisteringPatient: Dispatch<SetStateAction<RegisteringPatient | null>>
+  debouncedSearch: null
 }
 
 type UpdateFromIcuRoute = BaseProps & {
   mode: 'updateFromIcuRoute'
-  editingPatient: SearchedPatientsData
+  editingPatient: Patients
   setIsPatientRegisterDialogOpen?: null
   setIsConfirmDialogOpen?: null
   weight: string
   weightMeasuredDate: string | null
   setIsPatientUpdateDialogOpen: Dispatch<SetStateAction<boolean>>
   icuChartId: string
-  setIsEdited?: Dispatch<SetStateAction<boolean>>
   registeringPatient: null
   setRegisteringPatient: null
+  debouncedSearch: null
 }
 
-type PatientFormProps =
+type Props =
   | RegisterFromPatientRoute
   | UpdateFromPatientRoute
   | RegisterFromIcuRoute
@@ -137,10 +140,10 @@ export default function PatientForm({
   weightMeasuredDate,
   setIsPatientUpdateDialogOpen,
   icuChartId,
-  setIsEdited,
   registeringPatient,
   setRegisteringPatient,
-}: PatientFormProps) {
+  debouncedSearch,
+}: Props) {
   const isEdit =
     mode === 'updateFromPatientRoute' || mode === 'updateFromIcuRoute'
   const isRegisterFromIcuRoute = mode === 'registerFromIcuRoute'
@@ -345,6 +348,7 @@ export default function PatientForm({
         editingPatient?.patient_id!,
         isWeightChanged,
       )
+      debouncedSearch()
     }
 
     if (mode === 'updateFromIcuRoute') {
@@ -373,7 +377,7 @@ export default function PatientForm({
       title: '환자 정보가 수정되었습니다',
     })
 
-    if (setIsEdited) setIsEdited(true)
+    // if (setIsEdited) setIsEdited(true)
     setIsSubmitting(false)
     setIsPatientUpdateDialogOpen!(false)
     refresh()
@@ -705,7 +709,7 @@ export default function PatientForm({
           />
         </div>
 
-        <div className="col-span-2 ml-auto flex gap-2 pt-8">
+        <div className="col-span-2 ml-auto flex gap-2">
           <Button
             tabIndex={-1}
             type="button"

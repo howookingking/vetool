@@ -173,7 +173,7 @@ export default function OrderCreatorRow({
             <InjectionOrderCreator weight={weight} createOrder={createOrder} />
           )}
 
-          {orderType !== 'checklist' && (
+          {orderType !== 'checklist' && orderType !== 'injection' && (
             <Input
               className="h-11 rounded-none border-0 focus-visible:ring-0"
               disabled={isSubmitting}

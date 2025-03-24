@@ -34,7 +34,7 @@ export default function TodoList({
       {todos.length === 0 ? (
         <NoResultSquirrel text="TODO가 없습니다" size="sm" />
       ) : (
-        <ul className="flex flex-col gap-2">
+        <ul className="flex flex-col gap-6">
           {todos.map((todo) => (
             <SingleTodo
               key={todo.id}
