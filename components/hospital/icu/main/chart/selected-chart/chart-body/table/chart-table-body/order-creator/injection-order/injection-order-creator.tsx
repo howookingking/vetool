@@ -13,6 +13,7 @@ import { Plus } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import ArbitraryInjectionOrder from './arbitrary-injection-order'
+import { toast } from '@/components/ui/use-toast'
 
 type Props = {
   weight: string
@@ -92,6 +93,14 @@ export function InjectionOrderCreator({ weight, createOrder }: Props) {
   }
 
   const handleSelectOption = (selectedOption: Option) => {
+    if (!weight) {
+      toast({
+        title: '체중을 입력해주세요',
+        variant: 'destructive',
+      })
+      return
+    }
+
     createOrder(
       selectedOption.label,
       `${(Number(selectedOption.value) * Number(weight)).toFixed(2)}ml`,
