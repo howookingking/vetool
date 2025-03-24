@@ -39,7 +39,7 @@ export default function HosDrugSetting({ hosDrugs }: Props) {
             className="my-4 flex-col"
           />
         ) : (
-          <DataTable columns={hosDurgColumns} data={hosDrugs} rowLength={20} />
+          <DataTable columns={hosDurgColumns} data={hosDrugs} />
         )}
       </CardContent>
     </Card>
