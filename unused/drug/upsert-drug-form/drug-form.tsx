@@ -1,50 +1,9 @@
 'use client'
 'use no memo'
 
-import NoResultSquirrel from '@/components/common/no-result-squirrel'
-import { Button } from '@/components/ui/button'
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '@/components/ui/command'
-import { DialogClose, DialogFooter } from '@/components/ui/dialog'
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Textarea } from '@/components/ui/textarea'
-import { upsertHosDrugData } from '@/lib/services/admin/drug/drug'
-import { cn } from '@/lib/utils/utils'
 import { RawDrug } from '@/types'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Check, ChevronsUpDown, LoaderCircle, Plus, Trash2 } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useRef, useState } from 'react'
-import { useFieldArray, useForm } from 'react-hook-form'
-import { z } from 'zod'
 
 const SPECIES_OPTIONS = [
   { value: 'both', label: 'Both' },

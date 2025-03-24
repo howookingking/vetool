@@ -86,7 +86,7 @@ export default function UploadPatientArea() {
         <DialogHeader>
           <DialogTitle>환자 목록 업로드</DialogTitle>
           <DialogDescription>
-            Excel 혹은 CSV 파일을 업로드하면 환자 목록을 업로드할 수 있습니다
+            EXCEL 혹은 CSV 파일을 업로드하면 환자 목록을 업로드할 수 있습니다
           </DialogDescription>
 
           <RadioGroup

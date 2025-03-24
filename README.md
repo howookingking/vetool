@@ -11,7 +11,10 @@ if (e.nativeEvent.isComposing || e.key !== 'Enter') return
 
 - 선언순서
 
-1. 구조분해 2. next hook 3. custom hook 4. react hook /
+1. 구조분해
+2. next hook
+3. custom hook
+4. react hook
 
 - 타입선언
 
@@ -42,10 +45,10 @@ export default function DefaultOrdersTable({
 
 - CRUD 함수 명명법
 
-  - create : insertTodo
-  - read : getTodo
-  - update : updateTodo
-  - delete : deleteTodo
+  - create : insertTodo / isInserting
+  - read : fetchTodo / isFetching
+  - update : updateTodo / isUpdating
+  - delete : deleteTodo / isDeleting
 
 - boolean 변수는 isEdit, isIcu 등 is 붙이기
 

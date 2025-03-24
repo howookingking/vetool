@@ -1,6 +1,7 @@
-import {
+import type {
   Diet,
   DrugProductsRows,
+  HosDrug,
   Hospital,
   RawDrug,
   User,

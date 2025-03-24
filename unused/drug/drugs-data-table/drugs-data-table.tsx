@@ -2,7 +2,6 @@
 
 import DataTable from '@/components/ui/data-table'
 import { HosDrugWithRawDrug } from '@/types/icu/drugs'
-import { drugColumns } from './drug-columns'
 import { AddDrugDialog } from '../upsert-drug-form/add-drug-dialog'
 import { RawDrug } from '@/types'
 
@@ -26,12 +25,12 @@ export default function DrugsDataTable({
         <AddDrugDialog rawDrugData={rawDrugData} />
       </div>
 
-      <DataTable
+      {/* <DataTable
         data={formattedHosDrugs}
         columns={drugColumns}
         searchPlaceHolder="원료명, 태그명으로 검색"
         rowLength={20}
-      />
+      /> */}
     </>
   )
 }

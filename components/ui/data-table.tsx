@@ -190,7 +190,7 @@ export default function DataTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="h-[320px] text-center"
                 >
                   <NoResult title="검색 결과가 없습니다" className="h-40" />
                 </TableCell>

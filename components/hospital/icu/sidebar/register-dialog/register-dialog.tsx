@@ -1,17 +1,16 @@
 'use client'
 
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
+import UpgragePlanPromptModal from '@/components/hospital/common/upgrade-plan-prompt-modal'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { canAddChart } from '@/constants/plans'
 import { cn } from '@/lib/utils/utils'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import dynamic from 'next/dynamic'
-import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import RegisterDialogHeader from './register-dialog-header'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { canAddChart } from '@/constants/plans'
-import UpgragePlanPromptModal from '@/components/hospital/common/upgrade-plan-prompt-modal'
 
 const LazyRegisterIcuConfirmDialog = dynamic(
   () =>
@@ -23,17 +22,14 @@ const LazyRegisterIcuConfirmDialog = dynamic(
   },
 )
 const LazyPatientForm = dynamic(
-  () => import('@/components/hospital/patients/patient-form'),
+  () => import('@/components/common/patients/form/patient-form'),
   {
     ssr: false,
     loading: () => <LargeLoaderCircle className="h-[544px]" />,
   },
 )
 const LazySearchPatientContainer = dynamic(
-  () =>
-    import(
-      '@/components/hospital/icu/sidebar/register-dialog/search-patient/search-patient-containter'
-    ),
+  () => import('@/components/common/patients/search/search-patient-containter'),
   {
     ssr: false,
     loading: () => <LargeLoaderCircle className="h-[574px]" />,
@@ -69,8 +65,6 @@ export default function RegisterDialog({
   defaultVetId,
   currentChartNumber,
 }: Props) {
-  const { target_date } = useParams()
-
   const {
     basicHosData: { plan },
   } = useBasicHosDataContext()
@@ -112,12 +106,12 @@ export default function RegisterDialog({
       </DialogTrigger>
 
       <DialogContent
-        className={cn('flex flex-col sm:max-w-[1200px]')}
+        className={cn('flex h-[704px] flex-col sm:max-w-[1200px]')}
         onInteractOutside={(e) => {
           e.preventDefault()
         }}
       >
-        <RegisterDialogHeader tab={tab} targetDate={target_date as string} />
+        <RegisterDialogHeader tab={tab} />
 
         <Tabs
           defaultValue="search"
@@ -126,7 +120,7 @@ export default function RegisterDialog({
         >
           <TabsList className="mb-2 w-full">
             <TabsTrigger value="search" className="w-full">
-              환자 조회
+              환자 검색 및 선택
             </TabsTrigger>
             <TabsTrigger value="register" className="w-full">
               신규 환자 등록
@@ -135,7 +129,6 @@ export default function RegisterDialog({
 
           <TabsContent value="search">
             <LazySearchPatientContainer
-              itemsPerPage={8}
               hosId={hosId}
               isIcu
               setIsConfirmDialogOpen={setIsConfirmDialogOpen}
@@ -151,6 +144,7 @@ export default function RegisterDialog({
               setIsConfirmDialogOpen={setIsConfirmDialogOpen}
               registeringPatient={registeringPatient}
               setRegisteringPatient={setRegisteringPatient}
+              debouncedSearch={null}
             />
           </TabsContent>
         </Tabs>

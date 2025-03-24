@@ -4,18 +4,12 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 
-export default function RegisterDialogHeader({
-  tab,
-  targetDate,
-}: {
-  tab: string
-  targetDate: string
-}) {
+export default function RegisterDialogHeader({ tab }: { tab: string }) {
   return (
     <DialogHeader>
       <DialogTitle>
-        {tab === 'search' && '환자 선택'}
-        {tab === 'register' && '환자 등록'}
+        {tab === 'search' && '환자 검색 및 선택'}
+        {tab === 'register' && '신규 환자 등록'}
       </DialogTitle>
       <DialogDescription>
         {tab === 'search' && '환자를 선택해주세요'}

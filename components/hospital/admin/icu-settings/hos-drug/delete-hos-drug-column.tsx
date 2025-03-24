@@ -12,67 +12,62 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
-import { deletePatient } from '@/lib/services/patient/patient'
+import { deleteHosDrug } from '@/lib/services/admin/icu/hos-drugs'
 import { cn } from '@/lib/utils/utils'
 import { LoaderCircle, Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-type DeletePatientAlertProps = {
-  patientName: string
-  patientId: string
+type Props = {
+  hosDrugId: string
+  hosDrugName: string
 }
 
-export default function DeletePatientAlert({
-  patientName,
-  patientId,
-}: DeletePatientAlertProps) {
+export function DeleteHosDrugColumn({ hosDrugId, hosDrugName }: Props) {
   const { refresh } = useRouter()
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
 
-  const handleDeletePatient = async (patientId: string) => {
-    setIsLoading(true)
+  const handleDeleteStaff = async () => {
+    setIsDeleting(true)
 
-    await deletePatient(patientId)
+    await deleteHosDrug(hosDrugId)
 
     toast({
-      title: `${patientName}이(가) 삭제되었습니다.`,
+      title: `${hosDrugName} 삭제하였습니다`,
     })
 
-    setIsLoading(false)
+    setIsDeleting(false)
+    setIsDialogOpen(false)
     refresh()
   }
 
   return (
-    <AlertDialog>
+    <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <AlertDialogTrigger asChild>
-        <Button size="icon" variant="ghost">
-          <Trash2 size={16} />
+        <Button variant="ghost" size="icon">
+          <Trash2 size={14} />
         </Button>
       </AlertDialogTrigger>
-
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{patientName} 삭제</AlertDialogTitle>
+          <AlertDialogTitle>{hosDrugName} 삭제</AlertDialogTitle>
           <AlertDialogDescription>
-            등록된 환자를 삭제합니다
-            <WarningMessage
-              text="이 동작은 되돌릴 수
-            없습니다"
-            />
+            {hosDrugName}을(룰) 자주 사용하는 주사약물 목록에 삭제하시겠습니까?
+            <WarningMessage text="해당 작업은 되돌릴 수 없습니다" />
           </AlertDialogDescription>
         </AlertDialogHeader>
-
         <AlertDialogFooter>
           <AlertDialogCancel>취소</AlertDialogCancel>
           <AlertDialogAction
-            onClick={() => handleDeletePatient(patientId)}
-            className="bg-destructive hover:bg-destructive/90"
+            className="bg-destructive hover:bg-destructive/80"
+            disabled={isDeleting}
+            onClick={handleDeleteStaff}
           >
             삭제
             <LoaderCircle
-              className={cn(isLoading ? 'ml-2 animate-spin' : 'hidden')}
+              className={cn(isDeleting ? 'ml-2 animate-spin' : 'hidden')}
             />
           </AlertDialogAction>
         </AlertDialogFooter>

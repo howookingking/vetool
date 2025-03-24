@@ -3,7 +3,7 @@ import { TableCell } from '@/components/ui/table'
 
 export default function UserKeyGuideMessage() {
   return (
-    <TableCell className="relative">
+    <TableCell className="relative border-l">
       <div className="absolute bottom-3 left-2 hidden items-center gap-2 whitespace-nowrap text-muted-foreground md:flex">
         <div>
           처치칸을 CTRL + 우클릭하여{' '}
