@@ -1,11 +1,12 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { type Hospital, type User } from '@/types'
+import type { Hospital, User } from '@/types'
 import { redirect } from 'next/navigation'
 
 export const getStaffs = async (hosId: string) => {
   const supabase = await createClient()
+
   const { data: staffs, error } = await supabase
     .from('users')
     .select(

@@ -1,4 +1,4 @@
-import { staffColumns } from '@/components/hospital/super/hospitals/staff-columns'
+import { hosStaffColumns } from '@/components/hospital/super/hospitals/hos-staff-columns'
 import { Button } from '@/components/ui/button'
 import DataTable from '@/components/ui/data-table'
 import {
@@ -28,6 +28,7 @@ export default function HosUserSheet({ hosId, hosName }: Props) {
   const handleSheetOpenChange = async (open: boolean) => {
     if (open) {
       setIsFetching(true)
+
       const staffs = await getStaffs(hosId)
       setStaffs(staffs)
       setIsFetching(false)
@@ -53,7 +54,7 @@ export default function HosUserSheet({ hosId, hosName }: Props) {
         </SheetHeader>
 
         <div className="grid gap-4 py-4">
-          <DataTable columns={staffColumns} data={staffs} />
+          <DataTable columns={hosStaffColumns} data={staffs} />
         </div>
         <SheetFooter>
           <SheetClose asChild>

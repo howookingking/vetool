@@ -18,7 +18,12 @@ if (e.nativeEvent.isComposing || e.key !== 'Enter') return
 
 ### 타입선언
 
-import ( type ~ ) from ~
+```ts
+// 타입 섞인 경우
+import { type setState, useState } from 'react'
+// 모두 타입인 경우
+import type { Hospital, User } from '@/types'
+```
 
 ### Props 타이핑
 
