@@ -3,9 +3,9 @@ import MobileAdminSidebar from '@/components/hospital/admin/mobile-admin-sidebar
 import { getVetoolUserData } from '@/lib/services/auth/authorization'
 import { getBasicHosData } from '@/lib/services/icu/get-basic-hos-data'
 import { redirectToOwnHospital } from '@/lib/utils/utils'
-import { redirect } from 'next/navigation'
 import { BasicHosDataProvider } from '@/providers/basic-hos-data-context-provider'
 import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
+import { redirect } from 'next/navigation'
 
 export default async function AdminLayout(props: {
   params: Promise<{ hos_id: string }>
@@ -18,6 +18,7 @@ export default async function AdminLayout(props: {
   if (!vetoolUser.is_admin) {
     redirect(`/hospital/${params.hos_id}`)
   }
+
   redirectToOwnHospital(vetoolUser, params.hos_id, vetoolUser.is_super)
 
   return (
@@ -29,8 +30,6 @@ export default async function AdminLayout(props: {
         memoNameListData: basicHosData.icu_memo_names,
         showOrderer: basicHosData.show_orderer,
         showTxUser: basicHosData.show_tx_user,
-        // maintenanceRateCalcMethod: basicHosData.maintenance_rate_calc_method,
-        // rerCalcMethod: basicHosData.rer_calc_method as 'a' | 'b',
         sidebarData: [],
         vitalRefRange: basicHosData.vital_ref_range as VitalRefRange[],
         orderFontSizeData: basicHosData.order_font_size,
@@ -43,7 +42,7 @@ export default async function AdminLayout(props: {
         <DesktopAdminSidebar />
         <MobileAdminSidebar />
 
-        <div className="h-screen w-full overflow-auto p-2">
+        <div className="h-screen w-full overflow-auto p-2 pt-14 md:pt-2">
           {props.children}
         </div>
       </div>
