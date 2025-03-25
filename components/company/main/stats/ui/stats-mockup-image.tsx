@@ -16,7 +16,7 @@ export default function StatsMockupImage() {
         src="/company/responsive-image.png"
         alt="faqs"
         fill
-        className="scale-150 object-contain md:scale-150 xl:scale-100"
+        className="scale-100 object-contain md:scale-150 xl:scale-100"
       />
     </motion.figure>
   )
