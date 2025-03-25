@@ -7,29 +7,34 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { toast } from '@/components/ui/use-toast'
-import { updateStaffIsAdmin } from '@/lib/services/admin/staff/staff'
+import { updateStaffIsAdmin } from '@/lib/services/admin/staff'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+
+type Props = {
+  isAdmin: boolean
+  userId: string
+  masterUserId: string
+}
 
 export default function IsAdminColumn({
   isAdmin,
   userId,
   masterUserId,
-}: {
-  isAdmin: boolean
-  userId: string
-  masterUserId: string
-}) {
-  const [isAdminInput, setIsAdminInput] = useState(isAdmin ? 'true' : 'false')
-  const [isUpdating, setIsUpdating] = useState(false)
+}: Props) {
   const { refresh } = useRouter()
 
+  const [isAdminInput, setIsAdminInput] = useState(
+    isAdmin ? '관리자' : '사용자',
+  )
+  const [isUpdating, setIsUpdating] = useState(false)
+
   useEffect(() => {
-    setIsAdminInput(isAdmin ? 'true' : 'false')
+    setIsAdminInput(isAdmin ? '관리자' : '사용자')
   }, [isAdmin])
 
   const handleUpdateIsAdmin = async (value: string) => {
-    const parsedIsAdmin = value === 'true'
+    const parsedIsAdmin = value === '관리자'
 
     setIsUpdating(true)
 
@@ -45,7 +50,7 @@ export default function IsAdminColumn({
 
   return (
     <Select
-      defaultValue={isAdmin ? 'true' : 'false'}
+      defaultValue={isAdmin ? '관리자' : '사용자'}
       value={isAdminInput}
       onValueChange={(value) => {
         setIsAdminInput(value)
@@ -58,8 +63,8 @@ export default function IsAdminColumn({
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectItem value="true">O</SelectItem>
-          <SelectItem value="false">X</SelectItem>
+          <SelectItem value="관리자">관리자</SelectItem>
+          <SelectItem value="사용자">사용자</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

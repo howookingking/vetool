@@ -21,26 +21,21 @@ import {
 } from '@/components/ui/form'
 import { toast } from '@/components/ui/use-toast'
 import { GroupCheckFormSchema } from '@/lib/schemas/admin/admin-schema'
-import { updateStaffGroup } from '@/lib/services/admin/staff/staff'
+import { updateStaffGroup } from '@/lib/services/admin/staff'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-type GroupColumnDialogProps = {
+type Props = {
   userId: string
   group: string[] | null
   groupList: string[]
   name: string
 }
 
-export function GroupColumnDialog({
-  groupList,
-  userId,
-  group,
-  name,
-}: GroupColumnDialogProps) {
+export function GroupColumnDialog({ groupList, userId, group, name }: Props) {
   const { refresh } = useRouter()
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -79,9 +74,10 @@ export function GroupColumnDialog({
     <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger>
         {!group && <Badge variant="destructive">미분류</Badge>}
-        <ul className="flex flex-wrap items-center justify-center gap-1">
-          {group?.map((item) => (
-            <li key={item}>
+
+        <ul className="flex gap-1">
+          {group?.map((item, index) => (
+            <li key={`${item}-${index}`}>
               <Badge>{item}</Badge>
             </li>
           ))}
@@ -90,9 +86,7 @@ export function GroupColumnDialog({
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{name}님 그룹 수정</DialogTitle>
-          <DialogDescription className="text-sm text-muted-foreground">
-            하나 이상의 그룹을 설정해주세요
-          </DialogDescription>
+          <DialogDescription>하나 이상의 그룹을 설정해주세요</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -104,16 +98,16 @@ export function GroupColumnDialog({
               name="items"
               render={() => (
                 <FormItem>
-                  {groupList.map((item) => (
+                  {groupList.map((item, index) => (
                     <FormField
-                      key={item}
+                      key={`${item}-${index}`}
                       control={form.control}
                       name="items"
                       render={({ field }) => {
                         return (
                           <FormItem
                             key={item}
-                            className="flex flex-row items-center gap-2 space-y-0"
+                            className="flex items-center gap-2 space-y-0"
                           >
                             <FormControl>
                               <Checkbox
@@ -129,9 +123,7 @@ export function GroupColumnDialog({
                                 }}
                               />
                             </FormControl>
-                            <FormLabel className="text-sm font-normal">
-                              {item}
-                            </FormLabel>
+                            <FormLabel>{item}</FormLabel>
                           </FormItem>
                         )
                       }}
