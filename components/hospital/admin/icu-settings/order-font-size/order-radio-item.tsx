@@ -55,9 +55,6 @@ export default function OrderRadioItem({
           </span>
         </div>
       </Label>
-      {value === '14' && (
-        <span className="text-sm font-semibold text-rose-600">(기본 설정)</span>
-      )}
     </div>
   )
 }

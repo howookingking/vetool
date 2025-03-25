@@ -15,7 +15,9 @@ export default async function DefaultOrdersTab({ hosId }: { hosId: string }) {
     <Card className="w-full">
       <CardHeader>
         <CardTitle>기본 차트</CardTitle>
-        <CardDescription>기본형식의 차트를 설정해주세요</CardDescription>
+        <CardDescription>
+          기본형식의 차트를 미리 설정할 수 있습니다
+        </CardDescription>
       </CardHeader>
 
       <CardContent>
