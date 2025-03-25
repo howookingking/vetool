@@ -197,8 +197,10 @@ export function InjectionOrderCreator({ weight, createOrder }: Props) {
                         event.stopPropagation()
                       }}
                       onSelect={() => handleSelectOption(option)}
+                      className="flex justify-between gap-2"
                     >
-                      {option.label}
+                      <span className="text-sm">{option.label}</span>
+                      <span className="text-[10px] text-muted-foreground">{`${(Number(option.value) * Number(weight)).toFixed(2)}ml`}</span>
                     </CommandItem>
                   )
                 })}
