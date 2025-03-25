@@ -1,25 +1,26 @@
 import IcuSettingsCard from '@/components/hospital/admin/icu-settings/icu-settings-card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { updateVitalRefRange } from '@/lib/services/admin/icu/vital-ref-range'
-import type { VitalRefRange } from '@/types/adimin'
+import { type VitalRefRange } from '@/types/adimin'
+import { ChevronDown, ChevronUp } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import SingleVitalRefRange from './single-vital-ref-range'
+
+type Props = {
+  hosId: string
+  vitalRefRangeData: VitalRefRange[]
+}
 
 export default function VitalRefRangeSettings({
   hosId,
   vitalRefRangeData,
-}: {
-  hosId: string
-  vitalRefRangeData: VitalRefRange[]
-}) {
+}: Props) {
+  const { refresh } = useRouter()
+
   const [isUpdating, setIsUpdating] = useState(false)
   const [localVitalRefRangeState, setLocalVitalRefRangeState] =
     useState(vitalRefRangeData)
-
-  const { refresh } = useRouter()
 
   const handleUpdateVitalRefRange = async () => {
     setIsUpdating(true)
@@ -63,109 +64,27 @@ export default function VitalRefRangeSettings({
   return (
     <IcuSettingsCard
       title="바이탈 정상 범위 설정"
-      description="정상 범위에서 벗어난 결과값이 차트에 표시됩니다"
+      description={
+        <span className="flex items-center gap-1">
+          입력 값이 정상 범위를 벗어나면
+          <ChevronUp className="text-red-500" size={14} strokeWidth={4} />
+          <ChevronDown className="text-blue-500" size={14} strokeWidth={4} />를
+          표시합니다
+        </span>
+      }
       onSubmit={handleUpdateVitalRefRange}
       isUpdating={isUpdating}
       cardWidth="w-full"
     >
-      <form className="flex flex-col gap-4">
+      <div className="flex flex-col gap-6">
         {localVitalRefRangeState.map((vital) => (
-          <div key={vital.order_name}>
-            <h4 className="mb-1 text-sm font-bold">{vital.order_name}</h4>
-
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <div className="space-y-4 rounded-md bg-slate-50 p-4">
-                <div className="font-medium">Canine</div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor={`${vital.order_name}-canine-min`}>
-                      최소
-                    </Label>
-                    <Input
-                      className="bg-white"
-                      id={`${vital.order_name}-canine-min`}
-                      type="number"
-                      value={vital.canine.min}
-                      onChange={(e) =>
-                        handleChange(
-                          vital.order_name,
-                          'canine',
-                          'min',
-                          e.target.value,
-                        )
-                      }
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor={`${vital.order_name}-canine-max`}>
-                      최대
-                    </Label>
-                    <Input
-                      className="bg-white"
-                      id={`${vital.order_name}-canine-max`}
-                      type="number"
-                      value={vital.canine.max}
-                      onChange={(e) =>
-                        handleChange(
-                          vital.order_name,
-                          'canine',
-                          'max',
-                          e.target.value,
-                        )
-                      }
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-4 rounded-md bg-slate-50 p-4">
-                <div className="font-medium">Feline</div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor={`${vital.order_name}-feline-min`}>
-                      최소
-                    </Label>
-                    <Input
-                      className="bg-white"
-                      id={`${vital.order_name}-feline-min`}
-                      type="number"
-                      value={vital.feline.min}
-                      onChange={(e) =>
-                        handleChange(
-                          vital.order_name,
-                          'feline',
-                          'min',
-                          e.target.value,
-                        )
-                      }
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor={`${vital.order_name}-feline-max`}>
-                      최대
-                    </Label>
-                    <Input
-                      className="bg-white"
-                      id={`${vital.order_name}-feline-max`}
-                      type="number"
-                      value={vital.feline.max}
-                      onChange={(e) =>
-                        handleChange(
-                          vital.order_name,
-                          'feline',
-                          'max',
-                          e.target.value,
-                        )
-                      }
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <Separator className="mt-6" />
-          </div>
+          <SingleVitalRefRange
+            vital={vital}
+            key={vital.order_name}
+            handleChange={handleChange}
+          />
         ))}
-      </form>
+      </div>
     </IcuSettingsCard>
   )
 }

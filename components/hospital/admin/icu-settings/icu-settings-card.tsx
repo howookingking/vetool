@@ -11,6 +11,16 @@ import { cn } from '@/lib/utils/utils'
 import { LoaderCircle } from 'lucide-react'
 import { ReactNode } from 'react'
 
+type Props = {
+  children: ReactNode
+  title: string
+  description?: ReactNode
+  onSubmit: () => void
+  isUpdating?: boolean
+  buttonName?: string
+  cardWidth?: string
+}
+
 export default function IcuSettingsCard({
   children,
   title,
@@ -19,15 +29,7 @@ export default function IcuSettingsCard({
   isUpdating,
   buttonName = '저장',
   cardWidth = 'sm:w-1/2',
-}: {
-  children: ReactNode
-  title: string
-  description?: string
-  onSubmit: () => void
-  isUpdating?: boolean
-  buttonName?: string
-  cardWidth?: string
-}) {
+}: Props) {
   return (
     <Card className={cn('mt-2', cardWidth)}>
       <CardHeader>

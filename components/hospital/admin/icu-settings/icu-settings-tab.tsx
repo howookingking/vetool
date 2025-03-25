@@ -4,13 +4,9 @@ import { ADMIN_SETTING_ITEMS } from '@/constants/admin/admin-setting-items'
 export default function IcuSettingsTab({ hosId }: { hosId: string }) {
   return (
     <Tabs defaultValue="defaultOrder">
-      <TabsList className="grid h-auto grid-cols-4 grid-rows-2 gap-1 text-xs 2xl:grid-cols-8 2xl:grid-rows-1">
+      <TabsList className="grid grid-cols-8">
         {ADMIN_SETTING_ITEMS.map((item) => (
-          <TabsTrigger
-            key={item.value}
-            value={item.value}
-            className="text-xs sm:text-sm"
-          >
+          <TabsTrigger key={item.value} value={item.value} className="text-sm">
             {item.label}
           </TabsTrigger>
         ))}
