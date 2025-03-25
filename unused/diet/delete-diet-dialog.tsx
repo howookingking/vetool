@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
-import { deleteDietData } from '@/lib/services/admin/diet/diet'
+import { deleteDietData } from '@/lib/services/admin/diet'
 import { LoaderCircle, Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'

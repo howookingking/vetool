@@ -1,28 +1,12 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import type { UserHospitalJoined } from '@/types/adimin'
+import { type Hospital, type User } from '@/types'
 import { redirect } from 'next/navigation'
-
-export const updateHosGroupList = async (
-  hosId: string,
-  groupList: string[],
-) => {
-  const supabase = await createClient()
-  const { error } = await supabase
-    .from('hospitals')
-    .update({ group_list: groupList })
-    .match({ hos_id: hosId })
-
-  if (error) {
-    console.error(error)
-    redirect(`/error/?message=${error.message}`)
-  }
-}
 
 export const getStaffs = async (hosId: string) => {
   const supabase = await createClient()
-  const { data, error } = await supabase
+  const { data: staffs, error } = await supabase
     .from('users')
     .select(
       `
@@ -41,14 +25,15 @@ export const getStaffs = async (hosId: string) => {
       `,
     )
     .match({ hos_id: hosId })
-    .returns<UserHospitalJoined[]>()
+    .returns<Staff[]>()
     .order('rank', { ascending: true })
 
   if (error) {
-    throw new Error(error.message)
+    console.error(error)
+    redirect(`/error/?message=${error.message}`)
   }
 
-  return data // 무조건 1명은 있음
+  return staffs
 }
 
 export const updateStaffRank = async (userId: string, rankInput: string) => {
@@ -62,6 +47,20 @@ export const updateStaffRank = async (userId: string, rankInput: string) => {
   if (rankUpdateError) {
     console.error(rankUpdateError)
     redirect(`/error/?message=${rankUpdateError.message}`)
+  }
+}
+
+export const updateStaffName = async (userId: string, nameInput: string) => {
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from('users')
+    .update({ name: nameInput })
+    .match({ user_id: userId })
+
+  if (error) {
+    console.error(error)
+    redirect(`/error/?message=${error.message}`)
   }
 }
 
@@ -80,6 +79,36 @@ export const updateStaffPosition = async (
     console.error(error)
     redirect(`/error/?message=${error.message}`)
   }
+}
+
+export const updateHosGroupList = async (
+  hosId: string,
+  groupList: string[],
+) => {
+  const supabase = await createClient()
+  const { error } = await supabase
+    .from('hospitals')
+    .update({ group_list: groupList })
+    .match({ hos_id: hosId })
+
+  if (error) {
+    console.error(error)
+    redirect(`/error/?message=${error.message}`)
+  }
+}
+
+export type Staff = Pick<
+  User,
+  | 'name'
+  | 'position'
+  | 'rank'
+  | 'group'
+  | 'is_admin'
+  | 'user_id'
+  | 'is_vet'
+  | 'avatar_url'
+> & {
+  hos_id: Pick<Hospital, 'master_user_id' | 'group_list'>
 }
 
 export const updateStaffGroup = async (
@@ -156,19 +185,5 @@ export const deleteStaff = async (userId: string) => {
   if (deleteUserInApproval) {
     console.error(deleteUserInApproval)
     redirect(`/error/?message=${deleteUserInApproval.message}`)
-  }
-}
-
-export const updateStaffName = async (userId: string, nameInput: string) => {
-  const supabase = await createClient()
-
-  const { error } = await supabase
-    .from('users')
-    .update({ name: nameInput })
-    .match({ user_id: userId })
-
-  if (error) {
-    console.error(error)
-    redirect(`/error/?message=${error.message}`)
   }
 }

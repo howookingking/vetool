@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button'
 import { LoaderCircle, Pin } from 'lucide-react'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { addEntireDietPin } from '@/lib/services/admin/diet/diet'
+import { addEntireDietPin } from '@/lib/services/admin/diet'
 import { toast } from '@/components/ui/use-toast'
 
 export default function AddEntireDietDialog({

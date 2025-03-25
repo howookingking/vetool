@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { toggleHospitalDietPin } from '@/lib/services/admin/diet/diet'
+import { toggleHospitalDietPin } from '@/lib/services/admin/diet'
 import { cn } from '@/lib/utils/utils'
 import { LoaderCircle, Pin } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
