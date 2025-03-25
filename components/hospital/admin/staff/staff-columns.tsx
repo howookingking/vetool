@@ -9,7 +9,7 @@ import RankColumn from '@/components/hospital/admin/staff/rank-column'
 import { Button } from '@/components/ui/button'
 import { type Hospital, type User } from '@/types'
 import { type ColumnDef } from '@tanstack/react-table'
-import { ArrowUpDown } from 'lucide-react'
+import { ArrowUpDown, Crown, Stethoscope } from 'lucide-react'
 import { GroupColumnDialog } from './group-column-dialog'
 import NameColumn from './name-column'
 
@@ -104,6 +104,7 @@ export const staffColumns: ColumnDef<StaffDataTable>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
+          <Stethoscope />
           수의사
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -123,6 +124,7 @@ export const staffColumns: ColumnDef<StaffDataTable>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
+          <Crown />
           관리자
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>

@@ -1,6 +1,6 @@
 'use no memo'
 
-import DialogFooterButtons from '@/components/common/dialog-footer-buttons'
+import CommonDialogFooter from '@/components/common/common-dialog-footer'
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -134,10 +134,11 @@ export function GroupColumnDialog({ groupList, userId, group, name }: Props) {
               )}
             />
 
-            <DialogFooterButtons
+            <CommonDialogFooter
               buttonName="수정"
-              isLoading={isUpdating}
-              setIsDialogOpen={setIsDialogOpen}
+              isPending={isUpdating}
+              type="submit"
+              // type submit이라서 handleClick={form.handleSubmit(handleSubmit)} 불필요
             />
           </form>
         </Form>

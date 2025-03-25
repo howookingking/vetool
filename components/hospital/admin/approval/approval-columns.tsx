@@ -4,28 +4,23 @@ import { ApprovalColumn } from '@/components/hospital/admin/approval/approval-co
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { formatTimestamp } from '@/lib/utils/utils'
-import type { ApprovalDataTable } from '@/types/adimin'
+import type { User, UserApproval } from '@/types'
 import { ColumnDef } from '@tanstack/react-table'
-import { ArrowUpDown } from 'lucide-react'
+import { ArrowUpDown, Stethoscope, User as UserIcon } from 'lucide-react'
 
-export const columns: ColumnDef<ApprovalDataTable>[] = [
+export type ApprovalDataTable = Omit<
+  UserApproval,
+  'user_id' | 'hos_id' | 'user_approval_id'
+> &
+  Pick<User, 'user_id' | 'name' | 'avatar_url' | 'is_vet'>
+
+export const approvlaColumns: ColumnDef<ApprovalDataTable>[] = [
   {
     accessorKey: 'name',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          요청인
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
+    header: () => <>요청인</>,
     cell: ({ row }) => {
       const avatarUrl = row.original.avatar_url
       const name = row.original.name
-
       return (
         <div className="flex items-center justify-center gap-2">
           <Avatar className="h-8 w-8">
@@ -45,6 +40,7 @@ export const columns: ColumnDef<ApprovalDataTable>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
+          <Stethoscope />
           수의사
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -52,7 +48,19 @@ export const columns: ColumnDef<ApprovalDataTable>[] = [
     },
     cell: ({ row }) => {
       const isVet = row.original.is_vet
-      return <span>{isVet ? 'O' : 'X'}</span>
+      return (
+        <div className="flex items-center justify-center gap-2">
+          {isVet ? (
+            <>
+              <Stethoscope size={14} /> <span>수의사</span>
+            </>
+          ) : (
+            <>
+              <UserIcon size={14} /> <span>일반직원</span>
+            </>
+          )}
+        </div>
+      )
     },
   },
   {
@@ -95,7 +103,7 @@ export const columns: ColumnDef<ApprovalDataTable>[] = [
   },
 
   {
-    id: 'action',
+    id: 'approval_action',
     cell: ({ row }) => {
       const userId = row.original.user_id
       const name = row.original.name

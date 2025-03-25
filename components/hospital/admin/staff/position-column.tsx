@@ -51,7 +51,7 @@ export default function PositionColumn({ position, userId }: Props) {
 
   return (
     <Input
-      className="mx-auto w-32"
+      className="mx-auto w-40"
       value={positionInput ?? ''}
       onChange={(e) => setPositionInput(e.target.value)}
       onBlur={handleUpdatePosition}

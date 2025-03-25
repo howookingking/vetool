@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/select'
 import { toast } from '@/components/ui/use-toast'
 import { updateStaffIsVet } from '@/lib/services/admin/staff'
+import { Stethoscope, User } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
@@ -58,8 +59,18 @@ export default function IsVetColumn({ isVet, userId }: Props) {
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectItem value="수의사">수의사</SelectItem>
-          <SelectItem value="일반직원">일반직원</SelectItem>
+          <SelectItem value="수의사">
+            <div className="flex items-center gap-2">
+              <Stethoscope size={14} />
+              <span>수의사</span>
+            </div>
+          </SelectItem>
+          <SelectItem value="일반직원">
+            <div className="flex items-center gap-2">
+              <User size={14} />
+              <span>일반직원</span>
+            </div>
+          </SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

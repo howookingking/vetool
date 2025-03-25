@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/select'
 import { toast } from '@/components/ui/use-toast'
 import { updateStaffIsAdmin } from '@/lib/services/admin/staff'
+import { Crown, User } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
@@ -63,8 +64,18 @@ export default function IsAdminColumn({
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectItem value="관리자">관리자</SelectItem>
-          <SelectItem value="사용자">사용자</SelectItem>
+          <SelectItem value="관리자">
+            <div className="flex items-center gap-2">
+              <Crown size={14} />
+              <span>관리자</span>
+            </div>
+          </SelectItem>
+          <SelectItem value="사용자">
+            <div className="flex items-center gap-2">
+              <User size={14} />
+              <span>사용자</span>
+            </div>
+          </SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

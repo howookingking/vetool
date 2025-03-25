@@ -3,11 +3,11 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import type { UserHospitalJoined } from '@/types/adimin'
 import { ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown } from 'lucide-react'
+import { StaffDataTable } from '../../admin/staff/staff-columns'
 
-export const staffColumns: ColumnDef<UserHospitalJoined>[] = [
+export const staffColumns: ColumnDef<StaffDataTable>[] = [
   {
     accessorKey: 'rank',
     header: ({ column }) => {

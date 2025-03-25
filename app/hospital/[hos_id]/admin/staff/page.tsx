@@ -20,7 +20,7 @@ export default async function AdminStaffPage(props: {
   // const maxVets = checkMaxVets(plan)
   // const invitableVetCount = getInvitableVetCount(plan, staffs.length)
 
-  const staffsTableData: StaffDataTable[] = staffs.map((user) => ({
+  const staffTableData: StaffDataTable[] = staffs.map((user) => ({
     group: user.group,
     name: user.name,
     position: user.position,
@@ -35,7 +35,7 @@ export default async function AdminStaffPage(props: {
   }))
 
   return (
-    <DataTable columns={staffColumns} data={staffsTableData} rowLength={15} />
+    <DataTable columns={staffColumns} data={staffTableData} rowLength={15} />
 
     // ***요금제 기능
     // <div>
