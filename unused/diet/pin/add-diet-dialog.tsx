@@ -28,7 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { upsertDietData } from '@/lib/services/admin/diet/diet'
+import { upsertDietData } from '@/lib/services/admin/diet'
 import { cn } from '@/lib/utils/utils'
 import type { AdminDietData } from '@/types/adimin'
 import { zodResolver } from '@hookform/resolvers/zod'

@@ -27,7 +27,6 @@ export function InjectionOrderCreator({ weight, createOrder }: Props) {
 
   const [isArbitraryOrder, setIsArbitraryOrder] = useState(false)
   const [isFetching, setIsFetching] = useState(false)
-  const [isDisabled, setDisbled] = useState(false)
   const [isAutocompleteOpen, setIsAutocompleteOpen] = useState(false)
   const [inputValue, setInputValue] = useState('')
   const [hosDrugOptions, setHosDrugOptions] = useState<
@@ -36,11 +35,11 @@ export function InjectionOrderCreator({ weight, createOrder }: Props) {
       label: string // AMC 12.5mg/kg IV 익스텐션
     }[]
   >([])
+
   const autocompleteInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     setIsFetching(true)
-    setDisbled(true)
 
     getHosDrugs(hos_id as string).then((data) => {
       const drugOptions = data.map((drug) => ({
@@ -52,14 +51,16 @@ export function InjectionOrderCreator({ weight, createOrder }: Props) {
     })
 
     setIsFetching(false)
-    setDisbled(false)
   }, [hos_id])
 
   const handleInsertArbitraryOrder = async () => {
     const [drugName, totalDose] = inputValue.split('$')
+
     setInputValue('')
     setIsAutocompleteOpen(false)
+
     await createOrder(drugName, totalDose)
+
     setTimeout(() => {
       autocompleteInputRef?.current?.blur()
     }, 0)
@@ -81,11 +82,6 @@ export function InjectionOrderCreator({ weight, createOrder }: Props) {
       setIsAutocompleteOpen(true)
     }
 
-    if (event.key === 'Enter') {
-      setInputValue('')
-      handleInsertArbitraryOrder()
-    }
-
     if (event.key === 'Escape') {
       input.blur()
       setInputValue('')
@@ -105,6 +101,7 @@ export function InjectionOrderCreator({ weight, createOrder }: Props) {
       selectedOption.label,
       `${(Number(selectedOption.value) * Number(weight)).toFixed(2)}ml`,
     )
+    setInputValue('')
 
     // This is a hack to prevent the input from being focused after the user selects an option
     // We can call this hack: "The next tick"
@@ -143,7 +140,7 @@ export function InjectionOrderCreator({ weight, createOrder }: Props) {
         onBlur={() => setIsAutocompleteOpen(false)}
         onFocus={() => setIsAutocompleteOpen(true)}
         placeholder="자주 사용하는 약물선택 혹은 직접추가"
-        disabled={isDisabled}
+        disabled={isFetching}
         className="h-11 w-full border-b-0"
       />
 
@@ -155,15 +152,30 @@ export function InjectionOrderCreator({ weight, createOrder }: Props) {
           )}
         >
           <CommandList className="rounded-lg ring-1 ring-slate-200">
-            {isFetching ? (
+            {isFetching && (
               <CommandPrimitive.Loading>
                 <div className="p-1">
                   <Skeleton className="h-8 w-full" />
                 </div>
               </CommandPrimitive.Loading>
-            ) : null}
+            )}
 
-            {hosDrugOptions.length > 0 && !isFetching ? (
+            {hosDrugOptions.length === 0 && !isFetching && (
+              <CommandGroup>
+                <CommandItem
+                  onMouseDown={(event) => {
+                    event.preventDefault()
+                    event.stopPropagation()
+                    setIsArbitraryOrder(true)
+                  }}
+                >
+                  <Plus className="h-4 w-4" />
+                  직접 추가
+                </CommandItem>
+              </CommandGroup>
+            )}
+
+            {hosDrugOptions.length > 0 && !isFetching && (
               <CommandGroup>
                 <CommandItem
                   onMouseDown={(event) => {
@@ -185,16 +197,17 @@ export function InjectionOrderCreator({ weight, createOrder }: Props) {
                         event.stopPropagation()
                       }}
                       onSelect={() => handleSelectOption(option)}
-                      className={cn('flex w-full items-center gap-2')}
+                      className="flex justify-between gap-2"
                     >
-                      {option.label}
+                      <span className="text-sm">{option.label}</span>
+                      <span className="text-[10px] text-muted-foreground">{`${(Number(option.value) * Number(weight)).toFixed(2)}ml`}</span>
                     </CommandItem>
                   )
                 })}
               </CommandGroup>
-            ) : null}
+            )}
 
-            {!isFetching ? (
+            {!isFetching && (
               <CommandPrimitive.Empty className="select-none rounded-sm p-1 text-center text-sm">
                 <Button
                   className="flex w-full items-center gap-2"
@@ -207,7 +220,7 @@ export function InjectionOrderCreator({ weight, createOrder }: Props) {
                   </span>
                 </Button>
               </CommandPrimitive.Empty>
-            ) : null}
+            )}
           </CommandList>
         </div>
       </div>

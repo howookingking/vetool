@@ -1,6 +1,6 @@
 'use no memo'
 
-import DialogFooterButtons from '@/components/common/dialog-footer-buttons'
+import CommonDialogFooter from '@/components/common/common-dialog-footer'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
   Form,
@@ -18,17 +18,13 @@ import { type Dispatch, type SetStateAction, useState } from 'react'
 import { type UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 
-type GroupFormProps = {
+type Props = {
   icuIoId: string
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>
   form: UseFormReturn<z.infer<typeof groupCheckFormSchema>>
 }
 
-export default function GroupForm({
-  icuIoId,
-  setIsDialogOpen,
-  form,
-}: GroupFormProps) {
+export default function GroupForm({ icuIoId, setIsDialogOpen, form }: Props) {
   const {
     basicHosData: { groupListData },
   } = useBasicHosDataContext()
@@ -101,10 +97,11 @@ export default function GroupForm({
             </FormItem>
           )}
         />
-        <DialogFooterButtons
+
+        <CommonDialogFooter
           buttonName="수정"
-          isLoading={isSubmitting}
-          setIsDialogOpen={setIsDialogOpen}
+          isPending={isSubmitting}
+          type="submit"
         />
       </form>
     </Form>

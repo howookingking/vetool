@@ -7,42 +7,46 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { toast } from '@/components/ui/use-toast'
-import { updateStaffIsVet } from '@/lib/services/admin/staff/staff'
+import { updateStaffIsVet } from '@/lib/services/admin/staff'
+import { Stethoscope, User } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-export default function IsVetColumn({
-  isVet,
-  userId,
-}: {
+type Props = {
   isVet: boolean
   userId: string
-}) {
-  const [isVetIput, setIsVetIput] = useState(isVet ? 'true' : 'false')
-  const [isUpdating, setIsUpdating] = useState(false)
+}
+
+export default function IsVetColumn({ isVet, userId }: Props) {
   const { refresh } = useRouter()
 
+  const [isVetIput, setIsVetIput] = useState(isVet ? '수의사' : '일반직원')
+  const [isUpdating, setIsUpdating] = useState(false)
+
   useEffect(() => {
-    setIsVetIput(isVet ? 'true' : 'false')
+    setIsVetIput(isVet ? '수의사' : '일반직원')
   }, [isVet])
 
   const handleUpdateIsVet = async (value: string) => {
-    const parsedIsVet = value === 'true'
+    const parsedIsVet = value === '수의사'
 
     setIsUpdating(true)
+
     await updateStaffIsVet(userId, parsedIsVet)
 
     toast({
-      title: '수의사여부를 변경하였습니다',
+      title:
+        value === '수의사'
+          ? '수의사로 설정되었습니다'
+          : '일반직원으로 설정되었습니다',
     })
-
     setIsUpdating(false)
     refresh()
   }
 
   return (
     <Select
-      defaultValue={isVet ? 'true' : 'false'}
+      defaultValue={isVet ? '수의사' : '일반직원'}
       disabled={isUpdating}
       value={isVetIput}
       onValueChange={(value) => {
@@ -55,8 +59,18 @@ export default function IsVetColumn({
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectItem value="true">O</SelectItem>
-          <SelectItem value="false">X</SelectItem>
+          <SelectItem value="수의사">
+            <div className="flex items-center gap-2">
+              <Stethoscope size={14} />
+              <span>수의사</span>
+            </div>
+          </SelectItem>
+          <SelectItem value="일반직원">
+            <div className="flex items-center gap-2">
+              <User size={14} />
+              <span>일반직원</span>
+            </div>
+          </SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

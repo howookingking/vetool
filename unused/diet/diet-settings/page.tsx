@@ -1,4 +1,4 @@
-import { getHosDiets, getPinnedDiets } from '@/lib/services/admin/diet/diet'
+import { getHosDiets, getPinnedDiets } from '@/lib/services/admin/diet'
 import { getHosName } from '@/lib/services/hospital-home/get-hos-name'
 import DietDataTables from '@/unused/diet/diet-data-tables'
 

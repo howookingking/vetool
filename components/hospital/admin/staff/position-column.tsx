@@ -1,19 +1,19 @@
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
-import { updateStaffPosition } from '@/lib/services/admin/staff/staff'
+import { updateStaffPosition } from '@/lib/services/admin/staff'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-export default function PositionColumn({
-  position,
-  userId,
-}: {
+type Props = {
   position: string
   userId: string
-}) {
+}
+
+export default function PositionColumn({ position, userId }: Props) {
+  const { refresh } = useRouter()
+
   const [positionInput, setPositionInput] = useState(position)
   const [isUpdating, setIsUpdating] = useState(false)
-  const { refresh } = useRouter()
 
   useEffect(() => {
     setPositionInput(position)
@@ -44,23 +44,19 @@ export default function PositionColumn({
     refresh()
   }
 
+  const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.nativeEvent.isComposing || event.key !== 'Enter') return
+    event.currentTarget.blur()
+  }
+
   return (
     <Input
-      className="mx-auto w-32"
+      className="mx-auto w-40"
       value={positionInput ?? ''}
       onChange={(e) => setPositionInput(e.target.value)}
       onBlur={handleUpdatePosition}
       disabled={isUpdating}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter') {
-          const target = e.currentTarget
-          setTimeout(() => {
-            if (target) {
-              target.blur()
-            }
-          }, 0)
-        }
-      }}
+      onKeyDown={handleEnter}
     />
   )
 }

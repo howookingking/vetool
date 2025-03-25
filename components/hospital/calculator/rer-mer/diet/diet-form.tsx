@@ -4,7 +4,7 @@ import DietComboBox from '@/components/hospital/calculator/rer-mer/diet/diet-com
 import DietFeedPerDayInput from '@/components/hospital/calculator/rer-mer/diet/diet-feed-per-day-input'
 import CalculatorResult from '@/components/hospital/calculator/result/calculator-result'
 import { cacluateFeedAmount } from '@/lib/calculators/rer-mer'
-import { getDiets } from '@/lib/services/admin/diet/diet'
+import { getDiets } from '@/lib/services/icu/chart/get-diets'
 import { type Diet } from '@/types/hospital/calculator'
 import { useEffect, useState } from 'react'
 

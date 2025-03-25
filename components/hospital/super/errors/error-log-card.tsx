@@ -49,8 +49,8 @@ export default function ErrorLogCard({
 
           <div className="flex items-center gap-2">
             <div className="flex shrink-0 flex-col items-end space-x-4 text-xs sm:text-sm">
-              <span>{errorLog.user_id.hos_id.city}</span>
-              <span>{errorLog.user_id.hos_id.name}</span>
+              <span>{errorLog.user_id.hos_id?.city ?? ''}</span>
+              <span>{errorLog.user_id.hos_id?.name ?? ''}</span>
               {formatTimeDifference(errorLog.created_at)}
             </div>
             <ChevronDown

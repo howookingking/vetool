@@ -12,25 +12,22 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
-import { deleteStaff } from '@/lib/services/admin/staff/staff'
+import { deleteStaff } from '@/lib/services/admin/staff'
 import { cn } from '@/lib/utils/utils'
 import { LoaderCircle, UserRoundMinus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-export function DeleteUserColumn({
-  name,
-  userId,
-  isMaster,
-  masterUserId,
-}: {
+type Props = {
   name: string
   userId: string
-  isMaster: boolean
   masterUserId: string
-}) {
-  const [isUpdating, setIsUpdating] = useState(false)
+}
+
+export function DeleteUserColumn({ name, userId, masterUserId }: Props) {
   const { refresh } = useRouter()
+
+  const [isUpdating, setIsUpdating] = useState(false)
 
   const handleDeleteStaff = async () => {
     setIsUpdating(true)
@@ -47,7 +44,11 @@ export function DeleteUserColumn({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="ghost" size="icon" disabled={userId === masterUserId}>
+        <Button
+          variant="ghost"
+          size="icon"
+          disabled={userId === masterUserId || isUpdating}
+        >
           <UserRoundMinus size={14} />
         </Button>
       </AlertDialogTrigger>
