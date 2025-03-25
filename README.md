@@ -7,20 +7,20 @@
 if (e.nativeEvent.isComposing || e.key !== 'Enter') return
 ```
 
-## 규칙
+# 규칙
 
-- 선언순서
+### 선언순서
 
 1. 구조분해
 2. next hook
 3. custom hook
 4. react hook
 
-- 타입선언
+### 타입선언
 
-  import ( type ~ ) from ~
+import ( type ~ ) from ~
 
-- Props 타이핑
+### Props 타이핑
 
 props가 한개인경우 구조분해 할당으로, 2개 이상인 경우 타입 선언
 
@@ -43,16 +43,16 @@ export default function DefaultOrdersTable({
 }) {}
 ```
 
-- CRUD 함수 명명법
+### CRUD 함수 명명법
 
-  - create : insertTodo / isInserting
-  - read : fetchTodo / isFetching
-  - update : updateTodo / isUpdating
-  - delete : deleteTodo / isDeleting
+- create : insertTodo / isInserting
+- read : fetchTodo / isFetching
+- update : updateTodo / isUpdating
+- delete : deleteTodo / isDeleting
 
-- boolean 변수는 isEdit, isIcu 등 is 붙이기
+### boolean 변수는 isEdit, isIcu 등 is 붙이기
 
-- Visually hidden
+### Visually hidden
 
 ```tsx
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
@@ -66,9 +66,13 @@ export default function CalculatorSheetContent() {
 }
 ```
 
-- 하나의 object를 가져오는 경우, 다수의 객체를 가져오는 경우 함수 명명
+### 하나의 object를 가져오는 경우, 다수의 객체를 가져오는 경우 함수 명명
 
 ```
 getTodo
 getTodos
 ```
+
+### 타입선언에 관하여
+
+- 타입 폴더에서 선언하지 말고 사용이 밀접한 곳에서 선언

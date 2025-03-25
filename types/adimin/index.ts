@@ -1,27 +1,11 @@
 import type {
   Diet,
   DrugProductsRows,
-  HosDrug,
   Hospital,
   RawDrug,
   User,
   UserApproval,
 } from '@/types'
-
-export type UserHospitalJoined = Omit<
-  User,
-  'email' | 'is_active' | 'created_at' | 'hos_id'
-> & {
-  hos_id: Pick<Hospital, 'master_user_id' | 'group_list'>
-}
-
-export type HospitalUserDataTable = Omit<
-  User,
-  'email' | 'is_active' | 'created_at' | 'hos_id' | 'is_super'
-> &
-  Pick<Hospital, 'master_user_id' | 'group_list'> & {
-    isMaster: boolean
-  }
 
 export type ApprovalData = Pick<
   UserApproval,
