@@ -12,7 +12,7 @@ import RouteColumn from './route-column'
 import UnitColumn from './unit-column'
 import UnitPerKgColumn from './unit-per-kg-column'
 
-export const hosDurgColumns: ColumnDef<HosDrug>[] = [
+export const hosDrugColumns: ColumnDef<HosDrug>[] = [
   {
     accessorKey: 'hos_drug_name',
     header: ({ column }) => {
@@ -40,7 +40,6 @@ export const hosDurgColumns: ColumnDef<HosDrug>[] = [
     cell: ({ row }) => {
       const unit = row.original.unit
       const hosDrugId = row.original.hos_drug_id
-
       return (
         <div className="flex justify-center">
           <UnitColumn unit={unit} hosDrugId={hosDrugId} />
@@ -55,7 +54,6 @@ export const hosDurgColumns: ColumnDef<HosDrug>[] = [
       const unitPerKg = row.original.unit_per_kg
       const hosDrugId = row.original.hos_drug_id
       const unit = row.original.unit
-
       return (
         <div className="flex justify-center">
           <UnitPerKgColumn
@@ -73,7 +71,6 @@ export const hosDurgColumns: ColumnDef<HosDrug>[] = [
     cell: ({ row }) => {
       const mlPerKg = row.original.ml_per_kg
       const hosDrugId = row.original.hos_drug_id
-
       return (
         <div className="flex justify-center">
           <MlPerKgColumn hosDrugId={hosDrugId} mlPerKg={mlPerKg.toString()} />
@@ -87,7 +84,6 @@ export const hosDurgColumns: ColumnDef<HosDrug>[] = [
     cell: ({ row }) => {
       const route = row.original.hos_drug_route
       const hosDrugId = row.original.hos_drug_id
-
       return (
         <div className="flex justify-center">
           <RouteColumn route={route} hosDrugId={hosDrugId} />
@@ -101,7 +97,6 @@ export const hosDurgColumns: ColumnDef<HosDrug>[] = [
     cell: ({ row }) => {
       const caution = row.original.caution
       const hosDrugId = row.original.hos_drug_id
-
       return (
         <div className="flex justify-center">
           <CautionColumn hosDrugId={hosDrugId} caution={caution} />
@@ -115,7 +110,6 @@ export const hosDurgColumns: ColumnDef<HosDrug>[] = [
     cell: ({ row }) => {
       const hosDrugId = row.original.hos_drug_id
       const hosDrugName = row.original.hos_drug_name
-
       return (
         <div className="flex justify-center">
           <DeleteHosDrugColumn

@@ -9,7 +9,7 @@ import {
 import DataTable from '@/components/ui/data-table'
 import { cn } from '@/lib/utils/utils'
 import { type HosDrug } from '@/types'
-import { hosDurgColumns } from './hos-drug-columns'
+import { hosDrugColumns } from './hos-drug-columns'
 import { InsertHosDrugDialog } from './insert-hos-drug-dialog'
 
 type Props = {
@@ -39,7 +39,7 @@ export default function HosDrugSetting({ hosDrugs }: Props) {
             className="my-4 flex-col"
           />
         ) : (
-          <DataTable columns={hosDurgColumns} data={hosDrugs} />
+          <DataTable columns={hosDrugColumns} data={hosDrugs} />
         )}
       </CardContent>
     </Card>
