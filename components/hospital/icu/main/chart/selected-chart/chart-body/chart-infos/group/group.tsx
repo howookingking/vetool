@@ -25,12 +25,12 @@ const LazyGroupForm = dynamic(() => import('./group-form'), {
   loading: () => <LargeLoaderCircle className="h-[120px]" />,
 })
 
-type GroupProps = {
+type Props = {
   currentGroups: string[]
   icuIoId: string
 }
 
-export default function Group({ currentGroups, icuIoId }: GroupProps) {
+export default function Group({ currentGroups, icuIoId }: Props) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   const form = useForm<z.infer<typeof groupCheckFormSchema>>({

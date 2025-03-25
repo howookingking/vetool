@@ -1,18 +1,15 @@
+import CommonDialogFooter from '@/components/common/common-dialog-footer'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { toast } from '@/components/ui/use-toast'
-import { approveStaff } from '@/lib/services/admin/approval/approval'
-import { cn } from '@/lib/utils/utils'
-import { LoaderCircle } from 'lucide-react'
+import { approveStaff } from '@/lib/services/admin/approval'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -23,14 +20,17 @@ type Props = {
 }
 
 export function ApprovalColumn({ userId, name, isApproved }: Props) {
-  const [isUpdating, setIsUpdating] = useState(false)
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
   const { hos_id } = useParams()
   const { refresh } = useRouter()
 
+  const [isUpdating, setIsUpdating] = useState(false)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+
   const handleApproval = async () => {
     setIsUpdating(true)
+
     await approveStaff(hos_id as string, userId)
+
     toast({
       title: `${name}님을 스태프목록에 추가하였습니다`,
       description: '스태프관리에서 스테프설정을 변경할 수 있습니다',
@@ -59,20 +59,11 @@ export function ApprovalColumn({ userId, name, isApproved }: Props) {
           </DialogDescription>
         </DialogHeader>
 
-        <DialogFooter className="ml-auto">
-          <DialogClose asChild>
-            <Button type="button" tabIndex={-1} variant="secondary">
-              닫기
-            </Button>
-          </DialogClose>
-
-          <Button type="button" onClick={handleApproval} disabled={isUpdating}>
-            추가
-            <LoaderCircle
-              className={cn(isUpdating ? 'ml-2 animate-spin' : 'hidden')}
-            />
-          </Button>
-        </DialogFooter>
+        <CommonDialogFooter
+          handleClick={handleApproval}
+          isPending={isUpdating}
+          buttonName="추가"
+        />
       </DialogContent>
     </Dialog>
   )

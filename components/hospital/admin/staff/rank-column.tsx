@@ -1,19 +1,20 @@
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
-import { updateStaffRank } from '@/lib/services/admin/staff/staff'
+import { updateStaffRank } from '@/lib/services/admin/staff'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-export default function RankColumn({
-  rank,
-  userId,
-}: {
+type Props = {
   rank: number
   userId: string
-}) {
+  masterUserId: string
+}
+
+export default function RankColumn({ rank, userId, masterUserId }: Props) {
+  const { refresh } = useRouter()
+
   const [rankInput, setRankInput] = useState(rank.toString())
   const [isUpdating, setIsUpdating] = useState(false)
-  const { refresh } = useRouter()
 
   useEffect(() => {
     setRankInput(rank.toString())
@@ -26,10 +27,10 @@ export default function RankColumn({
       return
     }
 
-    if (isNaN(parsedRank) || parsedRank <= 0) {
+    if (isNaN(parsedRank) || parsedRank <= 0 || parsedRank > 500) {
       toast({
         variant: 'destructive',
-        title: '자연수를 입력해주세요',
+        title: '500이하의 자연수를 입력해주세요',
       })
       setRankInput(rank.toString())
       return
@@ -48,8 +49,8 @@ export default function RankColumn({
 
   return (
     <Input
-      className="mx-auto w-12"
-      disabled={isUpdating}
+      className="mx-auto w-14"
+      disabled={userId === masterUserId || isUpdating}
       value={rankInput}
       onChange={(e) => setRankInput(e.target.value)}
       onBlur={handleUpdateRank}

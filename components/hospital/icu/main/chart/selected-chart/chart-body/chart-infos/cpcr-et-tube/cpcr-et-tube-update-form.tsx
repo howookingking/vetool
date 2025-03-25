@@ -1,6 +1,6 @@
 'use no memo'
 
-import DialogFooterButtons from '@/components/common/dialog-footer-buttons'
+import CommonDialogFooter from '@/components/common/common-dialog-footer'
 import {
   Form,
   FormControl,
@@ -47,7 +47,7 @@ const TUBE_THICKNESS = [
   10,
 ] as const
 
-type CpcrEtTubeUpdateFormProps = {
+type Props = {
   icuIoId: string
   cpcr: string
   etTube: string
@@ -59,7 +59,7 @@ export default function CpcrEtTubeUpdateForm({
   cpcr,
   etTube,
   setIsDialogOpen,
-}: CpcrEtTubeUpdateFormProps) {
+}: Props) {
   const [isUpdating, setIsUpdating] = useState(false)
 
   const handleUpdateCpcrEtTube = async (
@@ -170,10 +170,11 @@ export default function CpcrEtTubeUpdateForm({
           )}
         />
 
-        <DialogFooterButtons
+        <CommonDialogFooter
           buttonName="변경"
-          isLoading={isUpdating}
-          setIsDialogOpen={setIsDialogOpen}
+          isPending={isUpdating}
+          type="submit"
+          className="col-span-2"
         />
       </form>
     </Form>

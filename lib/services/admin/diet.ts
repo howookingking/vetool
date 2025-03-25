@@ -40,22 +40,6 @@ export const getHosDiets = async (hosId: string) => {
   return dietData
 }
 
-export const getDiets = async () => {
-  const supabase = await createClient()
-
-  const { data, error } = await supabase
-    .from('diets')
-    .select('diet_id, name, unit, mass_vol')
-    .returns<Diet[]>()
-
-  if (error) {
-    console.error(error)
-    redirect(`/error?message=${error.message}`)
-  }
-
-  return data
-}
-
 type UpsertDietData = {
   name: string
   description: string | null

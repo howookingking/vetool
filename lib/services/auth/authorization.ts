@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { type User } from '@/types'
 import { redirect } from 'next/navigation'
 import { cache } from 'react'
 
@@ -22,6 +23,19 @@ export const getSupabaseUser = cache(async () => {
 
   return supabaseUser
 })
+
+export type VetoolUser = Pick<
+  User,
+  | 'email'
+  | 'name'
+  | 'avatar_url'
+  | 'position'
+  | 'is_admin'
+  | 'user_id'
+  | 'hos_id'
+  | 'is_super'
+  | 'is_admin'
+>
 
 export const getVetoolUserData = cache(async () => {
   const supabase = await createClient()
@@ -50,5 +64,5 @@ export const getVetoolUserData = cache(async () => {
     redirect(`/error?message=${vetoolUserError.message}`)
   }
 
-  return vetoolUser
+  return vetoolUser as VetoolUser
 })

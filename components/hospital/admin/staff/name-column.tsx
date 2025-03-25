@@ -1,22 +1,21 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
-import { updateStaffName } from '@/lib/services/admin/staff/staff'
+import { updateStaffName } from '@/lib/services/admin/staff'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-export default function NameColumn({
-  userId,
-  avatarUrl,
-  name,
-}: {
+type Props = {
   userId: string
   avatarUrl: string | null
   name: string
-}) {
+}
+
+export default function NameColumn({ userId, avatarUrl, name }: Props) {
+  const { refresh } = useRouter()
+
   const [nameInput, setNameInput] = useState(name)
   const [isUpdating, setIsUpdating] = useState(false)
-  const { refresh } = useRouter()
 
   useEffect(() => {
     setNameInput(name)
@@ -32,6 +31,7 @@ export default function NameColumn({
         variant: 'destructive',
         title: '10자 내로 입력해주세요',
       })
+
       setNameInput(name)
       return
     }
@@ -47,6 +47,11 @@ export default function NameColumn({
     refresh()
   }
 
+  const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.nativeEvent.isComposing || event.key !== 'Enter') return
+    event.currentTarget.blur()
+  }
+
   return (
     <div className="flex items-center justify-center gap-2">
       <Avatar className="h-8 w-8">
@@ -56,20 +61,11 @@ export default function NameColumn({
 
       <Input
         className="w-20"
-        value={nameInput ?? ''}
+        value={nameInput}
         onChange={(e) => setNameInput(e.target.value)}
         onBlur={handleUpdatePosition}
         disabled={isUpdating}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            if (e.nativeEvent.isComposing) return
-
-            const target = e.currentTarget
-            if (target) {
-              target.blur()
-            }
-          }
-        }}
+        onKeyDown={handleEnter}
       />
     </div>
   )

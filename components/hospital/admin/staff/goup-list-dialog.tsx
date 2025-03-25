@@ -10,11 +10,11 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
-import { updateHosGroupList } from '@/lib/services/admin/staff/staff'
+import { updateHosGroupList } from '@/lib/services/admin/staff'
 import { cn } from '@/lib/utils/utils'
 import { Edit, LoaderCircle, X } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 export function GroupListDialog({ groupList }: { groupList: string[] }) {
   const { refresh } = useRouter()
@@ -26,6 +26,11 @@ export function GroupListDialog({ groupList }: { groupList: string[] }) {
   const [groupInput, setGroupInput] = useState('')
 
   const handleSubmit = async () => {
+    if (JSON.stringify(tempGroupList) === JSON.stringify(groupList)) {
+      setIsDialogOpen(false)
+      return
+    }
+
     setIsSubmitting(true)
 
     await updateHosGroupList(hos_id as string, tempGroupList)
@@ -38,15 +43,22 @@ export function GroupListDialog({ groupList }: { groupList: string[] }) {
     refresh()
   }
 
-  const handleOpenChange = (open: boolean) => {
+  const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.nativeEvent.isComposing || event.key !== 'Enter') return
+    setTempGroupList([...tempGroupList, groupInput])
+    setGroupInput('')
+  }
+
+  const handleOpenchange = (open: boolean) => {
     if (open) {
+      setGroupInput('')
       setTempGroupList(groupList)
     }
     setIsDialogOpen(open)
   }
 
   return (
-    <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
+    <Dialog open={isDialogOpen} onOpenChange={handleOpenchange}>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon" className="h-6 w-6">
           <Edit size={12} />
@@ -60,8 +72,8 @@ export function GroupListDialog({ groupList }: { groupList: string[] }) {
           </DialogDescription>
         </DialogHeader>
         <ul className="flex flex-wrap items-center gap-1">
-          {tempGroupList.map((item) => (
-            <li key={item}>
+          {tempGroupList.map((item, index) => (
+            <li key={`${item}-${index}`}>
               <Badge
                 className="flex cursor-pointer gap-1"
                 onClick={() =>
@@ -81,15 +93,7 @@ export function GroupListDialog({ groupList }: { groupList: string[] }) {
           type="text"
           placeholder="Enter를 누르면 추가됩니다"
           onChange={(e) => setGroupInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              const target = e.currentTarget
-              setTimeout(() => {
-                setTempGroupList([...tempGroupList, groupInput])
-                setGroupInput('')
-              }, 0)
-            }
-          }}
+          onKeyDown={handleEnter}
           value={groupInput}
         />
         <Button

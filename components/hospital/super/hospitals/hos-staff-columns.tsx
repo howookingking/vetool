@@ -1,13 +1,17 @@
 'use client'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import type { UserHospitalJoined } from '@/types/adimin'
-import { ColumnDef } from '@tanstack/react-table'
-import { ArrowUpDown } from 'lucide-react'
+import { type User } from '@/types'
+import { type ColumnDef } from '@tanstack/react-table'
+import { ArrowUpDown, Stethoscope, UserIcon } from 'lucide-react'
 
-export const staffColumns: ColumnDef<UserHospitalJoined>[] = [
+export type HosStaffDataTable = Pick<
+  User,
+  'name' | 'position' | 'rank' | 'is_vet' | 'avatar_url'
+>
+
+export const hosStaffColumns: ColumnDef<HosStaffDataTable>[] = [
   {
     accessorKey: 'rank',
     header: ({ column }) => {
@@ -22,7 +26,6 @@ export const staffColumns: ColumnDef<UserHospitalJoined>[] = [
       )
     },
   },
-
   {
     accessorKey: 'name',
     header: ({ column }) => {
@@ -39,7 +42,6 @@ export const staffColumns: ColumnDef<UserHospitalJoined>[] = [
     cell: ({ row }) => {
       const name = row.original.name
       const avatarUrl = row.original.avatar_url
-
       return (
         <div className="flex items-center justify-center gap-2">
           <Avatar className="h-8 w-8">
@@ -66,25 +68,6 @@ export const staffColumns: ColumnDef<UserHospitalJoined>[] = [
     },
   },
   {
-    accessorKey: 'group',
-    header: () => {
-      return <span>그룹</span>
-    },
-    cell: ({ row }) => {
-      const group = row.original.group
-
-      return (
-        <ul className="flex flex-wrap items-center justify-center gap-1">
-          {group?.map((item) => (
-            <li key={item}>
-              <Badge className="flex cursor-pointer gap-1">{item}</Badge>
-            </li>
-          ))}
-        </ul>
-      )
-    },
-  },
-  {
     accessorKey: 'is_vet',
     header: ({ column }) => {
       return (
@@ -99,8 +82,19 @@ export const staffColumns: ColumnDef<UserHospitalJoined>[] = [
     },
     cell: ({ row }) => {
       const isVet = row.original.is_vet
-
-      return <span>{isVet ? 'O' : 'X'}</span>
+      return (
+        <div className="flex items-center justify-center gap-2">
+          {isVet ? (
+            <>
+              <Stethoscope size={14} /> <span>수의사</span>
+            </>
+          ) : (
+            <>
+              <UserIcon size={14} /> <span>일반직원</span>
+            </>
+          )}
+        </div>
+      )
     },
   },
 ]
