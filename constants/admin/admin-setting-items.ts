@@ -22,7 +22,7 @@ export const ADMIN_SETTING_ITEMS = [
   },
   { label: '바이탈 범위', value: 'vitalRefRange', Component: VitalRefRangeTab },
   {
-    label: '글자 크기',
+    label: '오더 글자 크기',
     value: 'orderFontSize',
     Component: OrderFontSizeTab,
   },

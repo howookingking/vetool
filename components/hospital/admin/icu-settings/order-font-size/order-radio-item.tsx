@@ -1,20 +1,17 @@
 import OrderTypeColorDot from '@/components/hospital/common/order/order-type-color-dot'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { Label } from '@/components/ui/label'
 import { RadioGroupItem } from '@/components/ui/radio-group'
-import React from 'react'
 import { cn } from '@/lib/utils/utils'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { IcuOrderColors } from '@/types/adimin'
 
-export default function OrderRadioItem({
-  title,
-  desc,
-  value,
-}: {
+type Props = {
   title: string
   desc: string
   value: string
-}) {
+}
+
+export default function OrderRadioItem({ title, desc, value }: Props) {
   const {
     basicHosData: { orderColorDisplay, orderColorsData },
   } = useBasicHosDataContext()
@@ -22,9 +19,10 @@ export default function OrderRadioItem({
   return (
     <div className="flex items-center space-x-4 py-2">
       <RadioGroupItem value={value} id={title} className="peer" />
+
       <Label
         htmlFor={title}
-        className={cn('w-4/5 border bg-primary/20')}
+        className={cn('w-[480px] cursor-pointer border bg-primary/20')}
         style={{
           background:
             orderColorDisplay === 'full'
@@ -44,11 +42,11 @@ export default function OrderRadioItem({
               className="truncate font-semibold"
               style={{ fontSize: title }}
             >
-              Metronidazole IV BID
+              Metronidazole 10mg/kg IV CRI for 30min
             </span>
           </div>
           <span
-            className="truncate font-semibold text-muted-foreground"
+            className="font-semibold text-muted-foreground"
             style={{ fontSize: desc }}
           >
             7.2mL
