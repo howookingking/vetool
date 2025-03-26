@@ -1,3 +1,4 @@
+import { MEMO_COLORS } from '@/constants/hospital/icu/chart/colors'
 import type {
   Diet,
   DrugDoses,
@@ -6,7 +7,6 @@ import type {
   IcuIo,
   IcuNotification,
   IcuOrders,
-  IcuTemplate,
   IcuTxs,
   Patients,
   User,
@@ -185,12 +185,14 @@ export type Filter = {
   selectedSort: string
 }
 
+export type MemoColor = (typeof MEMO_COLORS)[number]
+
 export type Memo = {
   id: string
   memo: string
   create_timestamp: string
   edit_timestamp: string | null
-  color: string
+  color: MemoColor
   chosen?: boolean
 }
 

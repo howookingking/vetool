@@ -28,7 +28,7 @@ export default function IcuSettingsCard({
   onSubmit,
   isUpdating,
   buttonName = '저장',
-  cardWidth = 'sm:w-1/2',
+  cardWidth = 'w-1/2',
 }: Props) {
   return (
     <Card className={cn('mt-2', cardWidth)}>

@@ -13,9 +13,16 @@ type Props = {
   memoB: Memo[] | null
   memoC: Memo[] | null
   icuIoId: string
+  isMemoNameSetting?: boolean
 }
 
-export default function ChartMemos({ memoA, memoB, memoC, icuIoId }: Props) {
+export default function ChartMemos({
+  memoA,
+  memoB,
+  memoC,
+  icuIoId,
+  isMemoNameSetting = false,
+}: Props) {
   const {
     basicHosData: { memoNameListData },
   } = useBasicHosDataContext()
@@ -40,6 +47,7 @@ export default function ChartMemos({ memoA, memoB, memoC, icuIoId }: Props) {
             icuIoId={icuIoId}
             memoName={memoNameListData[0]}
             sortMemoMethod={sortMemoMethod}
+            isMemoNameSetting={isMemoNameSetting}
           />
 
           <MemoGroup
@@ -50,6 +58,7 @@ export default function ChartMemos({ memoA, memoB, memoC, icuIoId }: Props) {
             icuIoId={icuIoId}
             memoName={memoNameListData[1]}
             sortMemoMethod={sortMemoMethod}
+            isMemoNameSetting={isMemoNameSetting}
           />
 
           <MemoGroup
@@ -60,15 +69,23 @@ export default function ChartMemos({ memoA, memoB, memoC, icuIoId }: Props) {
             icuIoId={icuIoId}
             memoName={memoNameListData[2]}
             sortMemoMethod={sortMemoMethod}
+            isMemoNameSetting={isMemoNameSetting}
           />
         </div>
       )}
 
-      <SortMemoButton
-        sortMemoMethod={sortMemoMethod}
-        setSortMemoMethod={setSortMemoMethod}
-      />
-      <HideAndShowButton setShowMemos={setShowMemos} showMemos={showMemos} />
+      {!isMemoNameSetting && (
+        <>
+          <SortMemoButton
+            sortMemoMethod={sortMemoMethod}
+            setSortMemoMethod={setSortMemoMethod}
+          />
+          <HideAndShowButton
+            setShowMemos={setShowMemos}
+            showMemos={showMemos}
+          />
+        </>
+      )}
     </div>
   )
 }
