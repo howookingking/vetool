@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/card'
 import { RadioGroup } from '@/components/ui/radio-group'
 import { toast } from '@/components/ui/use-toast'
-import { ORDER_FONT_SIZES } from '@/constants/admin/admin-setting-items'
+import { ORDER_FONT_SIZES } from '@/constants/admin/order-font-size'
 import { updateOrderFontSize } from '@/lib/services/admin/icu/order-font-size'
 import { cn } from '@/lib/utils/utils'
 import { LoaderCircle } from 'lucide-react'
