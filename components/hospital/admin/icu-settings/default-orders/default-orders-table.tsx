@@ -7,15 +7,25 @@ import DtSortingOrderRows from '@/components/hospital/common/default-template-or
 import DtTableHeader from '@/components/hospital/common/default-template-order/dt-table-header'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import useLocalStorage from '@/hooks/use-local-storage'
+import { cn } from '@/lib/utils/utils'
+import { type IcuOrderColors } from '@/types/adimin'
 import { type OrderWidth } from '@/types/hospital/order'
 import { type SelectedIcuOrder } from '@/types/icu/chart'
 import { useEffect, useState } from 'react'
 
+type Props = {
+  defaultChartOrders: SelectedIcuOrder[]
+  isSetting?: boolean
+  localColorState?: IcuOrderColors
+  localColorDisplayMethod?: 'dot' | 'full'
+}
+
 export default function DefaultOrdersTable({
   defaultChartOrders,
-}: {
-  defaultChartOrders: SelectedIcuOrder[]
-}) {
+  isSetting,
+  localColorState,
+  localColorDisplayMethod,
+}: Props) {
   const [orderWidth, setOrderWidth] = useLocalStorage<OrderWidth>(
     'orderWidth',
     400,
@@ -38,6 +48,7 @@ export default function DefaultOrdersTable({
         sortedOrders={sortedOrders}
         setIsSorting={setIsSorting}
         defaultChartOrders={defaultChartOrders}
+        isSetting={isSetting}
       />
 
       {isSorting ? (
@@ -53,9 +64,14 @@ export default function DefaultOrdersTable({
             sortedOrders={sortedOrders}
             isSorting={isSorting}
             orderwidth={orderWidth}
+            isSetting={isSetting}
+            localColorState={localColorState}
+            localColorDisplayMethod={localColorDisplayMethod}
           />
 
-          <TableRow className="hover:bg-transparent">
+          <TableRow
+            className={cn('hover:bg-transparent', isSetting && 'hidden')}
+          >
             <TableCell className="p-0">
               <DtOrderCreator sortedOrders={sortedOrders} />
             </TableCell>

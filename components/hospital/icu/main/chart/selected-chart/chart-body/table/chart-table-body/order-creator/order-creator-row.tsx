@@ -13,6 +13,7 @@ import {
   CHECKLIST_ORDER_CANDIDATES,
   CHECKLIST_ORDERS,
   DEFAULT_ICU_ORDER_TYPE,
+  type OrderType,
 } from '@/constants/hospital/icu/chart/order'
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import { type IcuOrderColors } from '@/types/adimin'
@@ -69,7 +70,7 @@ export default function OrderCreatorRow({
       order_id: `temp_order_id_${new Date().getTime()}`,
       order_name: orderName.trim(),
       order_comment: orderDescription ? orderDescription.trim() : '',
-      order_type: orderType,
+      order_type: orderType as OrderType,
       order_times: emptyOrderTimes,
       treatments: [],
       is_bordered: false,

@@ -83,7 +83,7 @@ export default function OrderDialog({
 
           {orderStep === 'selectOrderer' && (
             <>
-              <DialogTitle>수의사 선택</DialogTitle>
+              <DialogTitle>오더자 선택</DialogTitle>
               <OrdererSelectStep
                 icuChartId={icuChartId}
                 orders={orders}

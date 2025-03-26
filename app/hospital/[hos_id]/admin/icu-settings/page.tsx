@@ -3,7 +3,7 @@ import IcuSettingsTab from '@/components/hospital/admin/icu-settings/icu-setting
 export default async function AdminIcuSettingsPage(props: {
   params: Promise<{ hos_id: string }>
 }) {
-  const params = await props.params
+  const { hos_id } = await props.params
 
-  return <IcuSettingsTab hosId={params.hos_id} />
+  return <IcuSettingsTab hosId={hos_id} />
 }

@@ -21,12 +21,12 @@ export default function HosDrugSetting({ hosDrugs }: Props) {
     <Card className={cn('mt-2')}>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          자주 사용하는 주사약물 설정
+          자주 사용하는 주사
           <InsertHosDrugDialog />
         </CardTitle>
         <CardDescription className="flex flex-col">
           <span>
-            주사오더추가시 자동완성 및 약물 용량 자동계산 기능을 제공합니다
+            주사오더 추가시 자동완성 및 약물 투여량 계산기능을 제공합니다
           </span>
         </CardDescription>
       </CardHeader>

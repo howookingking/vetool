@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { type Vet } from '@/types/icu/chart'
 import { redirect } from 'next/navigation'
 
 export const getBasicHosData = async (hosId: string) => {
@@ -31,4 +32,22 @@ export const getBasicHosData = async (hosId: string) => {
   }
 
   return basicHosData
+}
+
+export const getVetListData = async (hosId: string) => {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from('users')
+    .select('name, position, user_id, avatar_url, rank')
+    .match({ hos_id: hosId, is_vet: true })
+    .order('rank', { ascending: true })
+    .returns<Vet[]>()
+
+  if (error) {
+    console.error(error)
+    redirect(`/error?message=${error.message}`)
+  }
+
+  return data
 }

@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { DialogClose, DialogFooter } from '@/components/ui/dialog'
 import { Form } from '@/components/ui/form'
 import { toast } from '@/components/ui/use-toast'
+import { type OrderType } from '@/constants/hospital/icu/chart/order'
 import { orderSchema } from '@/lib/schemas/icu/chart/order-schema'
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
@@ -61,7 +62,7 @@ export default function OrderForm({
     setSelectedChartOrder({
       order_name: values.icu_chart_order_name,
       order_comment: values.icu_chart_order_comment,
-      order_type: values.icu_chart_order_type,
+      order_type: values.icu_chart_order_type as OrderType,
       order_times: orderTime,
       order_id: selectedChartOrder.order_id,
       is_bordered: values.is_bordered,

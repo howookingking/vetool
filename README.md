@@ -20,7 +20,7 @@ if (e.nativeEvent.isComposing || e.key !== 'Enter') return
 
 ```ts
 // 타입 섞인 경우
-import { type setState, useState } from 'react'
+import { type Dispatch, type SetStateAction, useState } from 'react'
 // 모두 타입인 경우
 import type { Hospital, User } from '@/types'
 ```
