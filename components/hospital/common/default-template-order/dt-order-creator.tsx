@@ -12,6 +12,7 @@ import {
   CHECKLIST_ORDER_CANDIDATES,
   CHECKLIST_ORDERS,
   DEFAULT_ICU_ORDER_TYPE,
+  type OrderType,
 } from '@/constants/hospital/icu/chart/order'
 import { upsertDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
@@ -62,7 +63,7 @@ export default function DtOrderCreator({
           ...prev,
           {
             order_name: orderName,
-            order_type: orderType,
+            order_type: orderType as OrderType,
             order_times: Array(24).fill('0'),
             treatments: [],
             order_comment: orderDescription,

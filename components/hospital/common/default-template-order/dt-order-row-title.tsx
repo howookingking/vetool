@@ -79,7 +79,7 @@ export default function DtOrderRowTitle({
           orderName={order_name}
           orderComment={order_comment}
           orderColorDisplay={orderColorMethod!}
-          orderColor={orderColor!}
+          orderColorsData={orderColor!}
           orderFontSizeData={orderFontSizeData}
         />
       </Button>

@@ -18,6 +18,7 @@ import { type Dispatch, type SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import DtDeleteOrderAlertDialog from './dt-delete-order-alert-dialog'
+import { type OrderType } from '@/constants/hospital/icu/chart/order'
 
 type Props = {
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
@@ -61,7 +62,7 @@ export default function DtOrderForm({
                 ...order,
                 order_name: trimmedOrderName,
                 order_comment: orderComment,
-                order_type: orderType,
+                order_type: orderType as OrderType,
                 is_bordered: isBordered ?? false,
               }
             }

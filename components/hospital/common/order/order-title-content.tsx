@@ -1,12 +1,13 @@
 import OrderTypeColorDot from '@/components/hospital/common/order/order-type-color-dot'
+import { type OrderType } from '@/constants/hospital/icu/chart/order'
 import { type IcuOrderColors } from '@/types/adimin'
 
 type Props = {
-  orderType: string
+  orderType: OrderType
   orderName: string
   orderComment: string | null
   orderColorDisplay: string
-  orderColor: IcuOrderColors
+  orderColorsData: IcuOrderColors
   orderFontSizeData: number
   vitalRefRange?: {
     min: number
@@ -19,7 +20,7 @@ export default function OrderTitleContent({
   orderName,
   orderComment,
   orderColorDisplay,
-  orderColor,
+  orderColorsData,
   orderFontSizeData,
   vitalRefRange,
 }: Props) {
@@ -28,7 +29,7 @@ export default function OrderTitleContent({
       <div className="flex items-center gap-2">
         {orderColorDisplay === 'dot' && (
           <OrderTypeColorDot
-            orderColorsData={orderColor}
+            orderColorsData={orderColorsData}
             orderType={orderType}
           />
         )}
