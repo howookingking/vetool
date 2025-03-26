@@ -1,4 +1,5 @@
 import { MEMO_COLORS } from '@/constants/hospital/icu/chart/colors'
+import { type OrderType } from '@/constants/hospital/icu/chart/order'
 import type {
   Diet,
   DrugDoses,
@@ -84,7 +85,7 @@ export type Patient = Pick<
 export type SelectedIcuOrder = {
   order_id: string
   order_name: string
-  order_type: string
+  order_type: OrderType
   order_times: string[]
   treatments: Treatment[]
   order_comment: string | null

@@ -6,7 +6,7 @@ type Props = {
   orderName: string
   orderComment: string | null
   orderColorDisplay: string
-  orderColorsData: IcuOrderColors
+  orderColor: IcuOrderColors
   orderFontSizeData: number
   vitalRefRange?: {
     min: number
@@ -19,7 +19,7 @@ export default function OrderTitleContent({
   orderName,
   orderComment,
   orderColorDisplay,
-  orderColorsData,
+  orderColor,
   orderFontSizeData,
   vitalRefRange,
 }: Props) {
@@ -28,7 +28,7 @@ export default function OrderTitleContent({
       <div className="flex items-center gap-2">
         {orderColorDisplay === 'dot' && (
           <OrderTypeColorDot
-            orderColorsData={orderColorsData}
+            orderColorsData={orderColor}
             orderType={orderType}
           />
         )}
