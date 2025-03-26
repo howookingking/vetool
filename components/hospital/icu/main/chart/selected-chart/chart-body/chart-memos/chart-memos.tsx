@@ -2,11 +2,13 @@
 
 import HideAndShowButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/hide-and-show-button'
 import MemoGroup from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/memo-group'
-import SortMemoButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/sort-memo-button'
+import NewMemoAddedToButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/new-memo-added-to-button'
 import useLocalStorage from '@/hooks/use-local-storage'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { type Memo } from '@/types/icu/chart'
 import { useState } from 'react'
+
+export type NewMemoAddedTo = 'top' | 'bottom'
 
 type Props = {
   memoA: Memo[] | null
@@ -28,7 +30,10 @@ export default function ChartMemos({
   } = useBasicHosDataContext()
 
   const [showMemos, setShowMemos] = useState(true)
-  const [sortMemoMethod, setSortMemoMethod] = useLocalStorage('sort', 'desc')
+  const [newMemoAddedTo, setNewMemoAddedTo] = useLocalStorage<NewMemoAddedTo>(
+    'sort',
+    'bottom',
+  )
   const [memos, setMemos] = useState({
     a: memoA ?? [],
     b: memoB ?? [],
@@ -46,7 +51,7 @@ export default function ChartMemos({
             memoId="a"
             icuIoId={icuIoId}
             memoName={memoNameListData[0]}
-            sortMemoMethod={sortMemoMethod}
+            newMemoAddedTo={newMemoAddedTo}
             isMemoNameSetting={isMemoNameSetting}
           />
 
@@ -57,7 +62,7 @@ export default function ChartMemos({
             memoId="b"
             icuIoId={icuIoId}
             memoName={memoNameListData[1]}
-            sortMemoMethod={sortMemoMethod}
+            newMemoAddedTo={newMemoAddedTo}
             isMemoNameSetting={isMemoNameSetting}
           />
 
@@ -68,7 +73,7 @@ export default function ChartMemos({
             memoId="c"
             icuIoId={icuIoId}
             memoName={memoNameListData[2]}
-            sortMemoMethod={sortMemoMethod}
+            newMemoAddedTo={newMemoAddedTo}
             isMemoNameSetting={isMemoNameSetting}
           />
         </div>
@@ -76,9 +81,9 @@ export default function ChartMemos({
 
       {!isMemoNameSetting && (
         <>
-          <SortMemoButton
-            sortMemoMethod={sortMemoMethod}
-            setSortMemoMethod={setSortMemoMethod}
+          <NewMemoAddedToButton
+            newMemoAddedTo={newMemoAddedTo}
+            setNewMemoAddedTo={setNewMemoAddedTo}
           />
           <HideAndShowButton
             setShowMemos={setShowMemos}
