@@ -28,8 +28,7 @@ export default function OrdererSetting({
     await updateOrdererSetting(hosId, showOrdererInput, showTxUserInput)
 
     toast({
-      title: '오더자 & 처치자 설정',
-      description: '오더자 & 처치자 설정을 변경하였습니다',
+      title: '오더자 & 처치자 설정을 변경하였습니다',
     })
 
     setIsUpdating(false)
@@ -38,7 +37,7 @@ export default function OrdererSetting({
 
   return (
     <IcuSettingsCard
-      title="오더자 입력 & 처치자 설정"
+      title="오더자 입력 & 처치자"
       description="OFF시 오더자 입력 또는 처치자 입력 단계를 생략합니다"
       onSubmit={handleUpdateShowOrderer}
       isUpdating={isUpdating}

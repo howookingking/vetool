@@ -113,7 +113,7 @@ export default function MemoNameSetting({
       <form onSubmit={form.handleSubmit(handleSubmit)}>
         <Card>
           <CardHeader>
-            <CardTitle>메모이름</CardTitle>
+            <CardTitle>메모 이름</CardTitle>
             <CardDescription>
               입원차트 하단의 메모이름을 변경할 수 있습니다
             </CardDescription>

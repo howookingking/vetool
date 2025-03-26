@@ -75,7 +75,7 @@ export default function VitalRefRangeSettings({
     <form onSubmit={handleUpdateVitalRefRange}>
       <Card>
         <CardHeader>
-          <CardTitle>바이탈 정상 범위 설정</CardTitle>
+          <CardTitle>바이탈 정상 범위</CardTitle>
           <CardDescription>
             <span className="flex items-center gap-1">
               입력 값이 정상 범위를 벗어나면

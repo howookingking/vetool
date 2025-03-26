@@ -14,13 +14,17 @@ export const ADMIN_SETTING_ITEMS = [
     value: 'orderColor',
     Component: OrderColorTab,
   },
-  { label: '메모이름', value: 'memo', Component: MemoNameTab },
+  { label: '메모 이름', value: 'memo', Component: MemoNameTab },
   {
-    label: '오더자 & 처치자 설정',
+    label: '오더자 & 처치자',
     value: 'orderer',
     Component: OrdererTab,
   },
-  { label: '바이탈 범위', value: 'vitalRefRange', Component: VitalRefRangeTab },
+  {
+    label: '바이탈 정상 범위',
+    value: 'vitalRefRange',
+    Component: VitalRefRangeTab,
+  },
   {
     label: '오더 글자 크기',
     value: 'orderFontSize',
@@ -32,7 +36,7 @@ export const ADMIN_SETTING_ITEMS = [
     Component: TimeGuidelineTab,
   },
   {
-    label: '주사 약물 설정',
+    label: '자주 사용하는 주사',
     value: 'hosDrug',
     Component: HosDrugTab,
   },
