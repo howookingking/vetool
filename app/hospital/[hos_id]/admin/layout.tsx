@@ -1,7 +1,10 @@
 import DesktopAdminSidebar from '@/components/hospital/admin/desktop-admin-sidebar'
 import MobileAdminSidebar from '@/components/hospital/admin/mobile-admin-sidebar'
 import { getVetoolUserData } from '@/lib/services/auth/authorization'
-import { getBasicHosData } from '@/lib/services/icu/get-basic-hos-data'
+import {
+  getBasicHosData,
+  getVetListData,
+} from '@/lib/services/icu/get-basic-hos-data'
 import { redirectToOwnHospital } from '@/lib/utils/utils'
 import { BasicHosDataProvider } from '@/providers/basic-hos-data-context-provider'
 import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
@@ -14,6 +17,7 @@ export default async function AdminLayout(props: {
   const params = await props.params
   const basicHosData = await getBasicHosData(params.hos_id)
   const vetoolUser = await getVetoolUserData()
+  const vetlistData = await getVetListData(params.hos_id)
 
   if (!vetoolUser.is_admin) {
     redirect(`/hospital/${params.hos_id}`)
@@ -24,7 +28,7 @@ export default async function AdminLayout(props: {
   return (
     <BasicHosDataProvider
       basicHosData={{
-        vetsListData: [],
+        vetsListData: vetlistData,
         groupListData: basicHosData.group_list,
         orderColorsData: basicHosData.order_color as IcuOrderColors,
         memoNameListData: basicHosData.icu_memo_names,

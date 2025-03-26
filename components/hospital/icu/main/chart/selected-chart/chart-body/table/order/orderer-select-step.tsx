@@ -31,17 +31,19 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
-type OrdererSelectStepProps = {
+type Props = {
   icuChartId: string
   mainVetName: string
   orders: SelectedIcuOrder[]
+  isSetting?: boolean
 }
 
 export default function OrdererSelectStep({
   icuChartId,
   mainVetName,
   orders,
-}: OrdererSelectStepProps) {
+  isSetting,
+}: Props) {
   const { hos_id } = useParams()
 
   const {
@@ -258,28 +260,17 @@ export default function OrdererSelectStep({
           )}
         />
 
-        <div className="flex justify-between">
-          <Button
-            onClick={() => setOrderStep('edit')}
-            variant="outline"
-            type="button"
-            className={isSingleTx ? '' : 'hidden'}
-            tabIndex={-1}
-          >
-            뒤로
-          </Button>
-          <Button
-            type="submit"
-            disabled={isUpdating}
-            className="ml-auto"
-            ref={okButtonRef}
-          >
-            확인
-            <LoaderCircle
-              className={cn(isUpdating ? 'ml-2 animate-spin' : 'hidden')}
-            />
-          </Button>
-        </div>
+        <Button
+          type="submit"
+          disabled={isUpdating || isSetting}
+          className="ml-auto flex"
+          ref={okButtonRef}
+        >
+          확인
+          <LoaderCircle
+            className={cn(isUpdating ? 'ml-2 animate-spin' : 'hidden')}
+          />
+        </Button>
       </form>
     </Form>
   )
