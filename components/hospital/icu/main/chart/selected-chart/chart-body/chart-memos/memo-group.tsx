@@ -16,6 +16,7 @@ import {
   type SetStateAction,
 } from 'react'
 import { ReactSortable, type Sortable } from 'react-sortablejs'
+import { type NewMemoAddedTo } from './chart-memos'
 
 type Props = {
   memo: Memo[]
@@ -24,7 +25,7 @@ type Props = {
   memoId: keyof MemoGroup
   icuIoId: string
   memoName: string
-  sortMemoMethod: string
+  newMemoAddedTo: NewMemoAddedTo
   isMemoNameSetting?: boolean
 }
 
@@ -35,7 +36,7 @@ export default function MemoGroup({
   memoId,
   icuIoId,
   memoName,
-  sortMemoMethod,
+  newMemoAddedTo,
   isMemoNameSetting,
 }: Props) {
   const [isUpdating, setIsUpdating] = useState(false)
@@ -141,7 +142,7 @@ export default function MemoGroup({
     }
 
     const updatedMemos =
-      sortMemoMethod === 'desc'
+      newMemoAddedTo === 'top'
         ? [newMemo, ...sortedMemos]
         : [...sortedMemos, newMemo]
 
@@ -150,8 +151,8 @@ export default function MemoGroup({
 
     await handleUpdateDbMemo(updatedMemos)
 
-    setShouldScrollToBottom(sortMemoMethod === 'asc')
-    setShouldScrollToTop(sortMemoMethod === 'desc')
+    setShouldScrollToBottom(newMemoAddedTo === 'bottom')
+    setShouldScrollToTop(newMemoAddedTo === 'top')
 
     toast({
       title: `${memoName}에 새 메모를 추가했습니다`,

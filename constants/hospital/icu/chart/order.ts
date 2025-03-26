@@ -122,7 +122,6 @@ export const DEFAULT_ICU_ORDER_TYPE_DIC = {
 } as const
 
 export const CHECKLIST_ORDER_CANDIDATES = [
-  '산소포화도',
   '체온',
   '체온(T)',
   '심박수',
