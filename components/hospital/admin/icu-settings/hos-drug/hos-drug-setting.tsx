@@ -35,7 +35,7 @@ export default function HosDrugSetting({ hosDrugs }: Props) {
         {hosDrugs.length === 0 ? (
           <NoResultSquirrel
             text="자주 사용하는 약물을 등록해주세요"
-            size="lg"
+            size="md"
             className="my-4 flex-col"
           />
         ) : (

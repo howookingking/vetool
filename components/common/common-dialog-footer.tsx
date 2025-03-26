@@ -21,7 +21,7 @@ export default function CommonDialogFooter({
   return (
     <DialogFooter className={cn('ml-auto', className)}>
       <DialogClose asChild>
-        <Button tabIndex={-1} variant="secondary">
+        <Button tabIndex={-1} variant="outline">
           닫기
         </Button>
       </DialogClose>
