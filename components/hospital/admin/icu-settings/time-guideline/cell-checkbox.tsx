@@ -1,16 +1,18 @@
 import { Checkbox } from '@/components/ui/checkbox'
 import { TableCell } from '@/components/ui/table'
-import { Dispatch, useState } from 'react'
+import { type Dispatch, useState } from 'react'
+
+type Props = {
+  time: number
+  isGuidelineTime: boolean
+  setLocalTimeGuideline: Dispatch<React.SetStateAction<number[]>>
+}
 
 export default function CellCheckbox({
   time,
   isGuidelineTime,
   setLocalTimeGuideline,
-}: {
-  time: number
-  isGuidelineTime: boolean
-  setLocalTimeGuideline: Dispatch<React.SetStateAction<number[]>>
-}) {
+}: Props) {
   const [isChecked, setIsChecked] = useState(isGuidelineTime)
 
   const handleCheckedChange = () => {
@@ -20,7 +22,7 @@ export default function CellCheckbox({
     )
   }
   return (
-    <TableCell className="text-center">
+    <TableCell className="text-center [&:has([role=checkbox])]:pr-2">
       <Checkbox checked={isChecked} onCheckedChange={handleCheckedChange} />
     </TableCell>
   )

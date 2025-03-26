@@ -1,3 +1,5 @@
+import { MEMO_COLORS } from '@/constants/hospital/icu/chart/colors'
+import { type OrderType } from '@/constants/hospital/icu/chart/order'
 import type {
   Diet,
   DrugDoses,
@@ -6,7 +8,6 @@ import type {
   IcuIo,
   IcuNotification,
   IcuOrders,
-  IcuTemplate,
   IcuTxs,
   Patients,
   User,
@@ -84,7 +85,7 @@ export type Patient = Pick<
 export type SelectedIcuOrder = {
   order_id: string
   order_name: string
-  order_type: string
+  order_type: OrderType
   order_times: string[]
   treatments: Treatment[]
   order_comment: string | null
@@ -185,12 +186,14 @@ export type Filter = {
   selectedSort: string
 }
 
+export type MemoColor = (typeof MEMO_COLORS)[number]
+
 export type Memo = {
   id: string
   memo: string
   create_timestamp: string
   edit_timestamp: string | null
-  color: string
+  color: MemoColor
   chosen?: boolean
 }
 

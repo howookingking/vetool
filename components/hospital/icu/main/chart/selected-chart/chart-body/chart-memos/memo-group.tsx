@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
 import { MEMO_COLORS } from '@/constants/hospital/icu/chart/colors'
 import { updateMemos } from '@/lib/services/icu/chart/update-icu-chart-infos'
-import { type Memo, type MemoGroup } from '@/types/icu/chart'
+import type { Memo, MemoColor, MemoGroup } from '@/types/icu/chart'
 import {
   useEffect,
   useRef,
@@ -25,6 +25,7 @@ type Props = {
   icuIoId: string
   memoName: string
   sortMemoMethod: string
+  isMemoNameSetting?: boolean
 }
 
 export default function MemoGroup({
@@ -35,11 +36,12 @@ export default function MemoGroup({
   icuIoId,
   memoName,
   sortMemoMethod,
+  isMemoNameSetting,
 }: Props) {
   const [isUpdating, setIsUpdating] = useState(false)
   const [sortedMemos, setSortedMemos] = useState<Memo[]>(memo ?? [])
   const [memoInput, setMemoInput] = useState('')
-  const [memoColor, setMemoColor] = useState<string>(MEMO_COLORS[0])
+  const [memoColor, setMemoColor] = useState<MemoColor>(MEMO_COLORS[0])
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(false)
   const [shouldScrollToTop, setShouldScrollToTop] = useState(false)
   const lastMemoRef = useRef<HTMLLIElement>(null)
@@ -124,9 +126,6 @@ export default function MemoGroup({
     }
   }
 
-  // 메모 CRUD 함수
-  // 메모 CRUD 함수
-
   // 1. 메모 추가
   const handleAddMemo = async () => {
     if (memoInput.trim() === '') return
@@ -138,7 +137,7 @@ export default function MemoGroup({
       memo: memoInput.trim(),
       create_timestamp: createdAt,
       edit_timestamp: null,
-      color: memoColor,
+      color: memoColor as MemoColor,
     }
 
     const updatedMemos =
@@ -207,12 +206,14 @@ export default function MemoGroup({
           handle=".handle"
           onEnd={handleReorderMemo}
           group="memo"
+          disabled={isUpdating || isMemoNameSetting}
         >
           {sortedMemos.length === 0 ? (
             <NoResultSquirrel text="메모 없음" size="sm" className="h-52" />
           ) : (
             sortedMemos.map((memo, index) => (
               <SingleMemo
+                isMemoNameSetting={isMemoNameSetting}
                 key={memo.id}
                 memo={memo}
                 memoIndex={index}
@@ -234,7 +235,7 @@ export default function MemoGroup({
 
       <div className="relative">
         <Textarea
-          disabled={isUpdating}
+          disabled={isUpdating || isMemoNameSetting}
           placeholder="Shift + Enter를 눌러 줄을 추가할 수 있습니다"
           id={`memo-${memoId}`}
           value={memoInput}

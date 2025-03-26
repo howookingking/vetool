@@ -200,7 +200,11 @@ export function InjectionOrderCreator({ weight, createOrder }: Props) {
                       className="flex justify-between gap-2"
                     >
                       <span className="text-sm">{option.label}</span>
-                      <span className="text-[10px] text-muted-foreground">{`${(Number(option.value) * Number(weight)).toFixed(2)}ml`}</span>
+                      <span className="text-[10px] text-muted-foreground">
+                        {weight
+                          ? `${(Number(option.value) * Number(weight)).toFixed(2)}ml`
+                          : '체중입력'}
+                      </span>
                     </CommandItem>
                   )
                 })}

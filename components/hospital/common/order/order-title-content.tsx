@@ -1,8 +1,9 @@
 import OrderTypeColorDot from '@/components/hospital/common/order/order-type-color-dot'
+import { type OrderType } from '@/constants/hospital/icu/chart/order'
 import { type IcuOrderColors } from '@/types/adimin'
 
 type Props = {
-  orderType: string
+  orderType: OrderType
   orderName: string
   orderComment: string | null
   orderColorDisplay: string

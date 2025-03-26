@@ -1,6 +1,6 @@
 'use client'
 
-import { ORDER_FONT_SIZES } from '@/constants/admin/admin-setting-items'
+import { ORDER_FONT_SIZES } from '@/constants/admin/order-font-size'
 import {
   type IcuOrderColors,
   type VitalRefRange,

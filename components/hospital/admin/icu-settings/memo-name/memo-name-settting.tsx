@@ -1,6 +1,15 @@
 'use no memo'
 
-import IcuSettingsCard from '@/components/hospital/admin/icu-settings/icu-settings-card'
+import ChartMemos from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/chart-memos'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import {
   Form,
   FormControl,
@@ -14,11 +23,44 @@ import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
 import { memoNameFormSchema } from '@/lib/schemas/admin/admin-schema'
 import { updateMemoNames } from '@/lib/services/admin/icu/memo-name'
+import { cn } from '@/lib/utils/utils'
+import { type Memo } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { LoaderCircle } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+
+const DUMMY_MEMO_A: Memo[] = [
+  {
+    color: '#fef9c3',
+    id: '1',
+    memo: 'memo A',
+    create_timestamp: '2025-05-15T00:00:00.000Z',
+    edit_timestamp: '',
+  },
+] as const
+
+const DUMMY_MEMO_B: Memo[] = [
+  {
+    color: '#fce7f3',
+    id: '1',
+    memo: 'memo B',
+    create_timestamp: '2025-05-15T00:00:00.000Z',
+    edit_timestamp: '',
+  },
+] as const
+
+const DUMMY_MEMO_C: Memo[] = [
+  {
+    color: '#d1fae5',
+    id: '1',
+    memo: 'memo C',
+    create_timestamp: '2025-05-15T00:00:00.000Z',
+    edit_timestamp: '',
+  },
+] as const
 
 export default function MemoNameSetting({
   memoNames,
@@ -59,8 +101,7 @@ export default function MemoNameSetting({
     await updateMemoNames(updatedMemoNames, hos_id as string)
 
     toast({
-      title: '메모명 변경',
-      description: '메모명 변경이 완료되었습니다',
+      title: '메모이름 변경완료',
     })
 
     setIsUpdating(false)
@@ -68,66 +109,89 @@ export default function MemoNameSetting({
   }
 
   return (
-    <IcuSettingsCard
-      title="메모이름"
-      description="차트 하단에 위치한 메모의 이름을 변경하실 수 있습니다"
-      isUpdating={isUpdating}
-      onSubmit={form.handleSubmit(handleSubmit)}
-    >
-      <Form {...form}>
-        <form className="space-y-4">
-          <FormField
-            control={form.control}
-            name="memoA"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>첫 번째 메모이름</FormLabel>
-                <FormControl>
-                  <Input placeholder="입원차트 첫번째 메모이름" {...field} />
-                </FormControl>
-                <FormDescription>
-                  입원 차트의 첫번째 메모입력란의 이름에 해당합니다
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(handleSubmit)}>
+        <Card>
+          <CardHeader>
+            <CardTitle>메모 이름</CardTitle>
+            <CardDescription>
+              입원차트 하단의 메모이름을 변경할 수 있습니다
+            </CardDescription>
+          </CardHeader>
 
-          <FormField
-            control={form.control}
-            name="memoB"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>두 번째 메모이름</FormLabel>
-                <FormControl>
-                  <Input placeholder="메모 B" {...field} />
-                </FormControl>
-                <FormDescription>
-                  입원 차트의 두번째 메모입력란의 이름에 해당합니다
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <CardContent>
+            <div className="mb-4 grid grid-cols-3 gap-2">
+              <FormField
+                control={form.control}
+                name="memoA"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>첫 번째 메모이름</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="입원차트 첫번째 메모이름"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription />
 
-          <FormField
-            control={form.control}
-            name="memoC"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>세 번째 메모이름</FormLabel>
-                <FormControl>
-                  <Input placeholder="메모 C" {...field} />
-                </FormControl>
-                <FormDescription>
-                  입원 차트의 세번째 메모입력란의 이름에 해당합니다
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </form>
-      </Form>
-    </IcuSettingsCard>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="memoB"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>두 번째 메모이름</FormLabel>
+                    <FormControl>
+                      <Input placeholder="메모 B" {...field} />
+                    </FormControl>
+                    <FormDescription />
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="memoC"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>세 번째 메모이름</FormLabel>
+                    <FormControl>
+                      <Input placeholder="메모 C" {...field} />
+                    </FormControl>
+                    <FormDescription />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <ChartMemos
+              icuIoId="memo_name_setting"
+              memoA={DUMMY_MEMO_A}
+              memoB={DUMMY_MEMO_B}
+              memoC={DUMMY_MEMO_C}
+              isMemoNameSetting
+            />
+          </CardContent>
+
+          <CardFooter>
+            <Button type="submit" disabled={isUpdating}>
+              저장
+              <LoaderCircle
+                className={cn(isUpdating ? 'ml-2 animate-spin' : 'hidden')}
+                size={16}
+              />
+            </Button>
+          </CardFooter>
+        </Card>
+      </form>
+    </Form>
   )
 }

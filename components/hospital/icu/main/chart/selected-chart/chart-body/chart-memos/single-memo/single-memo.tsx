@@ -4,6 +4,7 @@ import MemoTimeStamp from '@/components/hospital/icu/main/chart/selected-chart/c
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
 import { MEMO_COLORS } from '@/constants/hospital/icu/chart/colors'
+import { cn } from '@/lib/utils/utils'
 import { type Memo } from '@/types/icu/chart'
 import { Check, GripVertical, Pencil } from 'lucide-react'
 import React, { useEffect, useRef, useState } from 'react'
@@ -13,10 +14,11 @@ type Props = {
   onDelete: () => void
   handleEditMemo: (editedMemo: Memo, memoIndex: number) => Promise<void>
   memoIndex: number
+  isMemoNameSetting?: boolean
 }
 
 const SingleMemo = React.forwardRef<HTMLLIElement, Props>(
-  ({ memo, onDelete, handleEditMemo, memoIndex }, ref) => {
+  ({ memo, onDelete, handleEditMemo, memoIndex, isMemoNameSetting }, ref) => {
     const [isEditMode, setIsEditMode] = useState(false)
     const [editedMemo, setEditedMemo] = useState(memo.memo)
     const [editedMemoColor, setEditedMemoColor] = useState(memo.color)
@@ -93,7 +95,12 @@ const SingleMemo = React.forwardRef<HTMLLIElement, Props>(
               />
 
               {!isEditMode && (
-                <div className="absolute right-1.5 top-1.5 flex cursor-pointer items-center gap-2 text-muted-foreground opacity-0 transition duration-300 group-hover:opacity-100 group-focus:opacity-100">
+                <div
+                  className={cn(
+                    'absolute right-1.5 top-1.5 flex cursor-pointer items-center gap-2 text-muted-foreground opacity-0 transition duration-300 group-hover:opacity-100 group-focus:opacity-100',
+                    isMemoNameSetting && 'hidden',
+                  )}
+                >
                   <Pencil
                     size={14}
                     onClick={() => setIsEditMode(true)}

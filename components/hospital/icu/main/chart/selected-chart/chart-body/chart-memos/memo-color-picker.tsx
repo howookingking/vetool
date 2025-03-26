@@ -1,5 +1,3 @@
-'use client'
-
 import { Button } from '@/components/ui/button'
 import {
   Popover,
@@ -7,18 +5,18 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { MEMO_COLORS } from '@/constants/hospital/icu/chart/colors'
+import { type MemoColor } from '@/types/icu/chart'
 import { Check } from 'lucide-react'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { type Dispatch, type SetStateAction, useState } from 'react'
 
-export default function MemoColorPicker({
-  memoColor,
-  setMemoColor,
-}: {
-  memoColor: string
-  setMemoColor: Dispatch<SetStateAction<string>>
-}) {
+type Props = {
+  memoColor: MemoColor
+  setMemoColor: Dispatch<SetStateAction<MemoColor>>
+}
+
+export default function MemoColorPicker({ memoColor, setMemoColor }: Props) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
-  const handleSelectColor = (color: string) => {
+  const handleSelectColor = (color: MemoColor) => {
     setMemoColor(color)
     setIsPopoverOpen(false)
   }

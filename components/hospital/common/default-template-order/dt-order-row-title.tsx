@@ -12,6 +12,9 @@ type Props = {
   index: number
   isSorting: boolean
   orderWidth: number
+  isSetting?: boolean
+  localColorState?: IcuOrderColors
+  localColorDisplayMethod?: 'dot' | 'full'
 }
 
 export default function DtOrderRowTitle({
@@ -19,17 +22,26 @@ export default function DtOrderRowTitle({
   isSorting,
   index,
   orderWidth,
+  isSetting,
+  localColorDisplayMethod,
+  localColorState,
 }: Props) {
   const { order_comment, order_type, order_name } = order
 
   const {
     basicHosData: { orderColorsData, orderColorDisplay, orderFontSizeData },
   } = useBasicHosDataContext()
+
+  const orderColor = isSetting ? localColorState : orderColorsData
+  const orderColorMethod = isSetting
+    ? localColorDisplayMethod
+    : orderColorDisplay
+
   const { reset, setOrderStep, setSelectedChartOrder } = useIcuOrderStore()
 
   const handleClickOrderTitle = () => {
     reset()
-    setOrderStep!('edit')
+    !isSetting && setOrderStep!('edit')
     setSelectedChartOrder(order)
   }
 
@@ -46,8 +58,8 @@ export default function DtOrderRowTitle({
 
         // 오더 색 표시 방법이 full 인경우
         background:
-          orderColorDisplay === 'full'
-            ? orderColorsData[order_type as keyof IcuOrderColors]
+          orderColorMethod === 'full'
+            ? orderColor![order_type as keyof IcuOrderColors]
             : 'transparent',
       }}
     >
@@ -66,8 +78,8 @@ export default function DtOrderRowTitle({
           orderType={order_type}
           orderName={order_name}
           orderComment={order_comment}
-          orderColorDisplay={orderColorDisplay}
-          orderColorsData={orderColorsData}
+          orderColorDisplay={orderColorMethod!}
+          orderColorsData={orderColor!}
           orderFontSizeData={orderFontSizeData}
         />
       </Button>

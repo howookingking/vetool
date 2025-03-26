@@ -25,11 +25,12 @@ import { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-export default function TxSelectUserStep({
-  handleClose,
-}: {
+type Props = {
   handleClose: () => void
-}) {
+  isSetting?: boolean
+}
+
+export default function TxSelectUserStep({ handleClose, isSetting }: Props) {
   const { hos_id } = useParams()
 
   const { txLocalState } = useIcuTxStore()
@@ -125,15 +126,10 @@ export default function TxSelectUserStep({
 
           <div className="col-span-2 ml-auto font-semibold">
             <Button
-              type="button"
-              variant="outline"
-              tabIndex={-1}
-              onClick={handleClose}
+              type="submit"
+              className="ml-2"
+              disabled={isSubmitting || isSetting}
             >
-              취소
-            </Button>
-
-            <Button type="submit" className="ml-2" disabled={isSubmitting}>
               확인
               <LoaderCircle
                 className={cn(isSubmitting ? 'ml-2 animate-spin' : 'hidden')}
