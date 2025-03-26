@@ -85,7 +85,7 @@ export default function Urgency({
           {URGENCY.map((urgency) => (
             <SelectItem key={urgency.value} value={String(urgency.value)}>
               {!urgency.value ? (
-                <span>없음</span>
+                <span>미등록</span>
               ) : (
                 <div className="flex items-center gap-0.5">
                   {Array(urgency.value)

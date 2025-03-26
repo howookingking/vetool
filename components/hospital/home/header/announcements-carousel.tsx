@@ -1,18 +1,15 @@
 'use client'
 
-import { ChevronRight, Megaphone } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
 import { type AnnouncementTitles } from '@/types/vetool'
+import { ChevronRight, Megaphone } from 'lucide-react'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 export default function AnnouncementsCarousel({
   announcementTitlesData,
 }: {
   announcementTitlesData: AnnouncementTitles[]
 }) {
-  const { push } = useRouter()
-
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
 

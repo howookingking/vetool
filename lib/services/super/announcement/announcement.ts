@@ -88,7 +88,7 @@ export const getAnnouncementTitlesData = async () => {
     .select('announcement_id, announcement_title')
     .match({ is_draft: false })
     .order('created_at', { ascending: false })
-    .limit(5)
+    .limit(1)
 
   if (error) {
     console.error(error)
