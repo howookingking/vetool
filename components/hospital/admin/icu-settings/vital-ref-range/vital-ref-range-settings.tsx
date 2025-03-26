@@ -68,8 +68,8 @@ export default function VitalRefRangeSettings({
         <span className="flex items-center gap-1">
           입력 값이 정상 범위를 벗어나면
           <ChevronUp className="text-red-500" size={14} strokeWidth={4} />
-          <ChevronDown className="text-blue-500" size={14} strokeWidth={4} />를
-          표시합니다
+          <ChevronDown className="text-blue-500" size={14} strokeWidth={4} />가
+          표시됩니다
         </span>
       }
       onSubmit={handleUpdateVitalRefRange}
