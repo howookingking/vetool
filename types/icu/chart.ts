@@ -89,7 +89,8 @@ export type SelectedIcuOrder = {
   order_times: string[]
   treatments: Treatment[]
   order_comment: string | null
-  id: number
+  id: number // DB상에서는 priority로 돼있음, sortable에서 id를 사용하기 때문에 key값 id로 변경해서 사용
+  // rpc에서 'id', icu_orders.icu_chart_order_priority,
   is_bordered: boolean
 }
 

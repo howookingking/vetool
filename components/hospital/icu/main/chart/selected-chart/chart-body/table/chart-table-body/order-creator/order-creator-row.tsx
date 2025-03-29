@@ -55,18 +55,18 @@ export default function OrderCreatorRow({
 
   const [newOrderInput, setNewOrderInput] = useState('')
   const [orderType, setOrderType] = useState('manual')
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isInserting, setIsInserting] = useState(false)
   const [isChecklistOrder, setIsChecklistOrder] = useState(false)
 
   const availableCheckListOrders = getAvailableChecklistOrders(sortedOrders)
 
   const createOrder = async (orderName: string, orderDescription: string) => {
-    setIsSubmitting(true)
+    setIsInserting(true)
 
     const emptyOrderTimes = Array(24).fill('0')
 
     const newOrder = {
-      id: 1,
+      id: 999,
       order_id: `temp_order_id_${new Date().getTime()}`,
       order_name: orderName.trim(),
       order_comment: orderDescription ? orderDescription.trim() : '',
@@ -97,7 +97,7 @@ export default function OrderCreatorRow({
     })
 
     setNewOrderInput('')
-    setIsSubmitting(false)
+    setIsInserting(false)
     setIsChecklistOrder(false)
 
     setTimeout(() => {
@@ -177,9 +177,9 @@ export default function OrderCreatorRow({
           {orderType !== 'checklist' && orderType !== 'injection' && (
             <Input
               className="h-11 rounded-none border-0 focus-visible:ring-0"
-              disabled={isSubmitting}
+              disabled={isInserting}
               placeholder="오더명$오더설명"
-              value={isSubmitting ? '등록 중' : newOrderInput}
+              value={isInserting ? '등록 중' : newOrderInput}
               onChange={(e) => setNewOrderInput(e.target.value)}
               onKeyDown={handleKeyDown}
               ref={inputRef}
@@ -198,43 +198,3 @@ export default function OrderCreatorRow({
     </TableRow>
   )
 }
-
-const DRUGS = [
-  {
-    raw_drug_id: '6fe44862-ef8c-4a1d-9d07-629294f38258',
-    name: 'Cefazolin Sodium',
-    route: 'IV',
-    mgPerKg: '20',
-    mlPerKg: '0.1',
-  },
-  {
-    raw_drug_id: '6fe44862-ef8c-4a1d-9d07-629294f32258',
-    name: 'Cefovecin Sodium',
-    route: 'IV',
-    mgPerKg: '20',
-    mlPerKg: '0.1',
-  },
-  {
-    raw_drug_id: '6fe44862-ef8c-4a1d-9d07-629294f34258',
-    name: 'Cefotaxime Sodium',
-    route: 'IV',
-    mgPerKg: '20',
-    mlPerKg: '0.1',
-  },
-  {
-    raw_drug_id: '6fe44862-ef8c-4a1d-9d07-629294f35258',
-    name: 'Amoxicillin/Clavulanate Potassium',
-    route: 'IV',
-    mgPerKg: '12.5',
-    mlPerKg: '0.2',
-  },
-  {
-    raw_drug_id: '6fe44862-ef2c-4a1d-9d07-629294f35258',
-    name: 'Esomeprazole',
-    route: 'SC',
-    mgPerKg: '1',
-    mlPerKg: '0.1',
-  },
-]
-
-// 약물 + 경로 + 권장용량

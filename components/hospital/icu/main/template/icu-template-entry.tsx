@@ -13,8 +13,7 @@ export default function IcuTemplateEntry({
 }: {
   templateCharts: TemplateChart[]
 }) {
-  const [useUpsertTemplateDialogOpen, setUseUpsertTemplateDialogOpen] =
-    useState(false)
+  const [templateDialogOpen, setTemplateDialogOpen] = useState(false)
   const [sortedOrders, setSortedOrders] = useState<SelectedIcuOrder[]>([])
   const [isEdit, setIsEdit] = useState(false)
   const [selectedTemplateChart, setSelectedTemplateChart] =
@@ -25,7 +24,7 @@ export default function IcuTemplateEntry({
       <DataTable
         searchBarSpace
         columns={templateColumns(
-          setUseUpsertTemplateDialogOpen,
+          setTemplateDialogOpen,
           setSortedOrders,
           setIsEdit,
           setSelectedTemplateChart,
@@ -37,8 +36,8 @@ export default function IcuTemplateEntry({
       <PreviewDialog />
 
       <UpsertTemplateDialog
-        useUpsertTemplateDialogOpen={useUpsertTemplateDialogOpen}
-        setUseUpsertTemplateDialogOpen={setUseUpsertTemplateDialogOpen}
+        useUpsertTemplateDialogOpen={templateDialogOpen}
+        setUseUpsertTemplateDialogOpen={setTemplateDialogOpen}
         sortedOrders={sortedOrders}
         setSortedOrders={setSortedOrders}
         isEdit={isEdit}

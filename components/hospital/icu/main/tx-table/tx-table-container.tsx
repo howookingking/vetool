@@ -8,27 +8,6 @@ import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provi
 import { type IcuTxTableData } from '@/types/icu/tx-table'
 import { useEffect, useState } from 'react'
 
-const TX_TABLE_BACKGROUD_COLORS = [
-  '#fef2f2',
-  '#fffbeb',
-  '#f7fee7',
-  '#ecfdf5',
-  '#ecfeff',
-  '#eff6ff',
-  '#f5f3ff',
-  '#fdf4ff',
-  '#fff1f2',
-  '#fff7ed',
-  '#fefce8',
-  '#f0fdf4',
-  '#f0fdfa',
-  '#e0f2fe',
-  '#f0f9ff',
-  '#eef2ff',
-  '#faf5ff',
-  '#fdf2f8',
-]
-
 export default function TxTableContainer({
   txTableData,
 }: {
@@ -96,3 +75,24 @@ export default function TxTableContainer({
     </>
   )
 }
+
+const TX_TABLE_BACKGROUD_COLORS = [
+  '#fef2f2',
+  '#fffbeb',
+  '#f7fee7',
+  '#ecfdf5',
+  '#ecfeff',
+  '#eff6ff',
+  '#f5f3ff',
+  '#fdf4ff',
+  '#fff1f2',
+  '#fff7ed',
+  '#fefce8',
+  '#f0fdf4',
+  '#f0fdfa',
+  '#e0f2fe',
+  '#f0f9ff',
+  '#eef2ff',
+  '#faf5ff',
+  '#fdf2f8',
+]

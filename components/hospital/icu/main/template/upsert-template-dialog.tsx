@@ -15,7 +15,7 @@ import { type Dispatch, type SetStateAction } from 'react'
 import ConfirmAddTemplateDialog from './confirm-add-template-dialog'
 import TemplateOrderTable from './template-order-table'
 
-type UpsertTemplateDilaogProps = {
+type Props = {
   useUpsertTemplateDialogOpen: boolean
   setUseUpsertTemplateDialogOpen: Dispatch<SetStateAction<boolean>>
   sortedOrders: SelectedIcuOrder[]
@@ -35,7 +35,7 @@ export default function UpsertTemplateDialog({
   setIsEdit,
   selectedTemplateChart,
   setSelectedTemplateChart,
-}: UpsertTemplateDilaogProps) {
+}: Props) {
   const handleOpenChange = (open: boolean) => {
     if (open) {
       setSortedOrders([])

@@ -11,7 +11,7 @@ import { type Dispatch, type SetStateAction } from 'react'
 import EditTemplateButton from './edit-template-button'
 
 export const templateColumns = (
-  setUseUpsertTemplateDialogOpen: Dispatch<SetStateAction<boolean>>,
+  setTemplateDialogOpen: Dispatch<SetStateAction<boolean>>,
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>,
   setIsEdtit: Dispatch<SetStateAction<boolean>>,
   setSelectedTemplateChart: Dispatch<SetStateAction<TemplateChart | null>>,
@@ -87,7 +87,7 @@ export const templateColumns = (
       return (
         <div className="flex justify-center">
           <EditTemplateButton
-            setUseUpsertTemplateDialogOpen={setUseUpsertTemplateDialogOpen}
+            setUseUpsertTemplateDialogOpen={setTemplateDialogOpen}
             chartId={chartId}
             template={template}
             setSortedOrders={setSortedOrders}
