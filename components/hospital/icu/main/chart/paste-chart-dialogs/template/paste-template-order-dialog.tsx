@@ -19,7 +19,7 @@ import { Bookmark, LoaderCircle } from 'lucide-react'
 import { useState } from 'react'
 
 type Props = {
-  tableHeader: boolean
+  tableHeader?: boolean
   chartId?: string
   hosId: string
 }
