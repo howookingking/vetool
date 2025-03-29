@@ -6,15 +6,12 @@ import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provi
 import { type SelectedChart } from '@/types/icu/chart'
 import PasteChartDialogs from './paste-chart-dialogs/paste-chart-dialogs'
 
-type IcuChartEntryProps = {
+type Props = {
   chartData: SelectedChart
   patientId: string
 }
 
-export default function IcuChartEntry({
-  chartData,
-  patientId,
-}: IcuChartEntryProps) {
+export default function IcuChartEntry({ chartData, patientId }: Props) {
   const {
     basicHosData: { sidebarData },
   } = useBasicHosDataContext()

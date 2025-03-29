@@ -1,4 +1,4 @@
-import { type IcuTemplate, type Patients } from '@/types'
+import { type IcuTemplate } from '@/types'
 
 export type TemplateChart = Pick<
   IcuTemplate,

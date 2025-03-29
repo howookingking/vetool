@@ -9,8 +9,8 @@ export default async function TxTablePage(props: {
     patient_id: string
   }>
 }) {
-  const params = await props.params
-  const txTableData = await getIcuTxTableData(params.hos_id, params.target_date)
+  const { hos_id, target_date } = await props.params
+  const txTableData = await getIcuTxTableData(hos_id, target_date)
 
   if (!txTableData) {
     return (

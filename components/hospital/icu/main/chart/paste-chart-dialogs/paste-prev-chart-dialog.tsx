@@ -27,6 +27,7 @@ export default function PastePrevChartDialog() {
 
   const handleCopyPrevSelectedChart = async () => {
     setIsLoading(true)
+
     const { error } = await copyPrevChart(
       target_date as string,
       patient_id as string,
