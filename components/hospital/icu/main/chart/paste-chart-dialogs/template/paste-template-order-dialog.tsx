@@ -18,17 +18,17 @@ import { type TemplateChart } from '@/types/icu/template'
 import { Bookmark, LoaderCircle } from 'lucide-react'
 import { useState } from 'react'
 
-type PasteTemplateOrderDialogProps = {
-  tableHeader?: boolean
+type Props = {
+  tableHeader: boolean
   chartId?: string
-  hosId?: string
+  hosId: string
 }
 
 export default function PasteTemplateOrderDialog({
   tableHeader,
   chartId,
   hosId,
-}: PasteTemplateOrderDialogProps) {
+}: Props) {
   const [templateCharts, setTemplateCharts] = useState<TemplateChart[]>([])
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isFetching, setIsFetching] = useState(false)

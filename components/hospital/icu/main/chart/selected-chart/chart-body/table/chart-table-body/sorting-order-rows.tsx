@@ -5,7 +5,7 @@ import { type SelectedIcuOrder } from '@/types/icu/chart'
 import { type Dispatch, type SetStateAction } from 'react'
 import { type Sortable } from 'react-sortablejs'
 
-type SortingRowsProps = {
+type Props = {
   sortedOrders: SelectedIcuOrder[]
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   preview?: boolean
@@ -21,7 +21,7 @@ export default function SortingOrderRows({
   isSorting,
   orderWidth,
   species,
-}: SortingRowsProps) {
+}: Props) {
   const handleReorder = (event: Sortable.SortableEvent) => {
     const newOrders = [...sortedOrders]
     const [movedOrder] = newOrders.splice(event.oldIndex as number, 1)

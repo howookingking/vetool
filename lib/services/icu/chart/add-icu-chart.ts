@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { IcuChartsInCharge } from '@/types/adimin'
 import { format } from 'date-fns'
 import { redirect } from 'next/navigation'
+import { reorderOrders } from './order-mutation'
 
 export const copyPrevChart = async (targetDate: string, patientId: string) => {
   const supabase = await createClient()
@@ -40,20 +41,33 @@ export const copyPrevChart = async (targetDate: string, patientId: string) => {
     return { error: 'prev chart not found' }
   }
 
-  const { data: prevChartOrdersData, error: prevChartOrdersDataError } =
-    await supabase.from('icu_orders').select('*').match({
+  // 전날차트의 오더들을 모두 찾음
+  const { data: prevOrders, error: prevOrdersError } = await supabase
+    .from('icu_orders')
+    .select('*')
+    .match({
       icu_chart_id: prevChartData.icu_chart_id,
     })
+    .order('icu_chart_order_priority', { ascending: true })
+    .order('created_at', { ascending: true })
 
-  if (prevChartOrdersDataError) {
-    console.error(prevChartOrdersDataError)
-    redirect(`/error?message=${prevChartOrdersDataError.message}`)
+  if (prevOrdersError) {
+    console.error(prevOrdersError)
+    redirect(`/error?message=${prevOrdersError.message}`)
   }
 
+  // 입원일에 차트를 생성하지 않고 그 다음날 차트를 복사하려는 경우
   // 첫째날 차트는 오더가 없고 차트는 있기 때문에 확인해야함
-  if (prevChartOrdersData.length === 0) {
+  if (prevOrders.length === 0) {
     return { error: 'prev orders not found' }
   }
+
+  // 복사 전에 priority 정렬
+  const prevOrderIds = prevOrders.map((order) => order.icu_chart_order_id)
+  console.log(prevOrderIds)
+  await reorderOrders(prevOrderIds)
+  // db에서 priority 업데이트가 이뤄지기전에 아래 rpc(copy_prev_orders)가 실행되어 의도치않는 중복 순서가 발생하는 것 예방
+  await new Promise((resolve) => setTimeout(resolve, 500))
 
   // 차트 복사 시 익일 담당자를 금일 담당자로
   let newInCharge: IcuChartsInCharge | null =

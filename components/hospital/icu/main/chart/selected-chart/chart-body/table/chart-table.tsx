@@ -46,7 +46,6 @@ export default function ChartTable({
         preview={preview}
         sortedOrders={sortedOrders}
         isExport={isExport}
-        setSortedOrders={setSortedOrders}
         orderWidth={orderWidth}
         setOrderWidth={setOrderWidth}
         chartId={icu_chart_id}
