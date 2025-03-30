@@ -54,7 +54,7 @@ export const getPatientsData = async (hosId: string) => {
     .match({ hos_id: hosId })
     .order('is_alive', { ascending: false })
     .order('created_at', { ascending: false })
-    .returns<PatientDataTable[]>()
+    .overrideTypes<PatientDataTable[]>()
 
   if (error) {
     throw new Error(error.message)
@@ -87,14 +87,13 @@ export const getPatientData = async (patientId: string) => {
     .rpc('get_patient_data_with_vitals', {
       patient_id_input: patientId,
     })
-    .returns<PatientWithWeight>()
 
   if (error) {
     console.error(error)
     redirect(`/error/?message=${error.message}`)
   }
 
-  return data
+  return data as PatientWithWeight
 }
 
 export const deletePatient = async (patientId: string) => {

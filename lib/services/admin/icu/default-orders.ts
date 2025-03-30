@@ -11,13 +11,12 @@ export const getDefaultChartOrders = async (hosId: string) => {
     .rpc('get_default_chart_data', {
       hos_id_input: hosId,
     })
-    .returns<SelectedIcuOrder[]>()
 
   if (error) {
     throw new Error(error.message)
   }
 
-  return data
+  return data as SelectedIcuOrder[]
 }
 
 export const deleteDefaultChartOrder = async (defaultChartId: string) => {

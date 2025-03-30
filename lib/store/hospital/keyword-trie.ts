@@ -14,7 +14,7 @@ export const useKeywordTrieStore = create<TrieStore>((set) => ({
 }))
 
 const initializeTrie = () => {
-  const trie = new TrieSearch<Keyword>(['keyword', 'mainkeyword'], { min: 1 })
+  const trie = new TrieSearch<Keyword>(['keyword', 'mainkeyword'], { min: 1, idFieldOrFunction: 'keyword' })
   trie.addAll(KEYWORDS)
   return trie
 }

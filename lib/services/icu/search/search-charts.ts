@@ -54,7 +54,7 @@ export const searchIos = async (
     .match({ hos_id: hosId })
     .not('out_date', 'is', null)
     .order('out_date', { ascending: order === 'asc' })
-    .returns<SearchedIcuIos[]>()
+    .overrideTypes<SearchedIcuIos[]>()
 
   if (error) {
     console.error(error)

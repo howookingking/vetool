@@ -12,7 +12,7 @@ export const getHosDrugs = async (hosId: string) => {
     .select('*')
     .match({ hos_id: hosId })
     .order('created_at', { ascending: false })
-    .returns<HosDrug[]>()
+    .overrideTypes<HosDrug[]>()
 
   if (hosDrugsError) {
     console.error(hosDrugsError)

@@ -44,7 +44,8 @@ export const getAnnouncementList = async () => {
       'announcement_id, announcement_title, announcement_category, created_at, is_draft',
     )
     .order('created_at', { ascending: false })
-    .returns<AnnouncementListProps[]>()
+    .overrideTypes<AnnouncementListProps[]>()
+
   if (error) {
     console.error(error)
     redirect(`/error?message=${error.message}`)
@@ -69,8 +70,9 @@ export const getAnnouncementDetailData = async (announcementId: string) => {
     )
     .order('created_at')
     .match({ announcement_id: announcementId })
-    .returns<AnnouncementDetailData>()
     .maybeSingle()
+    .overrideTypes<AnnouncementDetailData>()
+  
 
   if (error) {
     console.error(error)

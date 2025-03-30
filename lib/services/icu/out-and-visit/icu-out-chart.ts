@@ -20,13 +20,12 @@ export const getNotOutDuePatients = async (
       hos_id_input: hosId,
       target_date_input: targetDate,
     })
-    .returns<NotOutDuePatientsData[] | null>()
 
   if (error) {
     throw new Error(error.message)
   }
 
-  return data
+  return data as NotOutDuePatientsData[] | null
 }
 
 export const getVisitablePatients = async (
@@ -40,13 +39,12 @@ export const getVisitablePatients = async (
       hos_id_input: hosId,
       target_date_input: targetDate,
     })
-    .returns<VisitablePatientsData[]>()
 
   if (error) {
     throw new Error(error.message)
   }
 
-  return data || []
+  return data as VisitablePatientsData[] ?? []
 }
 
 export const deleteVisitPatient = async (visitId: string) => {
@@ -70,13 +68,12 @@ export const getVisitPatients = async (hosId: string, targetDate: string) => {
       hos_id_input: hosId,
       target_date_input: targetDate,
     })
-    .returns<VisitPatientData[]>()
 
   if (error) {
     throw new Error(error.message)
   }
 
-  return data || []
+  return data as VisitPatientData[] || []
 }
 
 export const getIcuOutDuePatients = async (
@@ -90,13 +87,12 @@ export const getIcuOutDuePatients = async (
       hos_id_input: hosId,
       target_date_input: targetDate,
     })
-    .returns<OutDuePatientsData[]>()
 
   if (error) {
     throw new Error(error.message)
   }
 
-  return data || []
+  return data as OutDuePatientsData[] || []
 }
 
 export const updatePatientOutDueDate = async (

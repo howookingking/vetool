@@ -1,5 +1,6 @@
+import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { X } from 'lucide-react'
+import { Plus, X } from 'lucide-react'
 import React, { useEffect, useRef, useState } from 'react'
 
 type Props = {
@@ -26,21 +27,6 @@ export default function ArbitraryInjectionOrder({
     inputRef?.current?.focus()
   }, [])
 
-  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.nativeEvent.isComposing || e.key !== 'Enter') return
-    if (!arbitraryInjectionInput) return
-
-    const [orderName, orderDescription] = arbitraryInjectionInput.split('$')
-
-    setIsInserting(true)
-    setArbitraryInjectionInput('')
-    await createOrder(orderName, orderDescription ?? '')
-
-    setIsInserting(false)
-    setIsArbitraryOrder(false)
-    setIsAutocompleteOpen(false)
-  }
-
   const handleClickX = () => {
     setIsArbitraryOrder(false)
     setInputValue('')
@@ -49,21 +35,46 @@ export default function ArbitraryInjectionOrder({
     }, 0)
   }
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (!arbitraryInjectionInput) return
+
+    const [orderName, orderDescription] = arbitraryInjectionInput.split('$')
+
+    setIsInserting(true)
+    setArbitraryInjectionInput('')
+
+    await createOrder(orderName, orderDescription ?? '')
+
+    setIsInserting(false)
+    setIsArbitraryOrder(false)
+    setIsAutocompleteOpen(false)
+  }
+
   return (
-    <div className="relative w-full">
+    <form className="relative w-full" onSubmit={handleSubmit}>
       <Input
         className="h-11 w-full rounded-none border-0 focus-visible:ring-0"
         disabled={isInserting}
-        placeholder="주사명$주사량"
+        placeholder="주사오더$주사량"
         value={isInserting ? '등록 중' : arbitraryInjectionInput}
         onChange={(e) => setArbitraryInjectionInput(e.target.value)}
-        onKeyDown={handleKeyDown}
         ref={inputRef}
       />
+
+      <Button
+        className="absolute right-8 top-1 2xl:hidden"
+        size="icon"
+        disabled={isInserting}
+        type="submit"
+        variant="ghost"
+      >
+        <Plus />
+      </Button>
       <X
         className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 cursor-pointer"
         onClick={handleClickX}
       />
-    </div>
+    </form>
   )
 }
