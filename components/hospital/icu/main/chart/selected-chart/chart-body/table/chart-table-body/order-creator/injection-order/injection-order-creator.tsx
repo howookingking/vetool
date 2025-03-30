@@ -6,6 +6,7 @@ import {
   CommandList,
 } from '@/components/ui/command'
 import { Skeleton } from '@/components/ui/skeleton'
+import { toast } from '@/components/ui/use-toast'
 import { getHosDrugs } from '@/lib/services/admin/icu/hos-drugs'
 import { cn } from '@/lib/utils/utils'
 import { Command as CommandPrimitive } from 'cmdk'
@@ -13,7 +14,6 @@ import { Plus } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import ArbitraryInjectionOrder from './arbitrary-injection-order'
-import { toast } from '@/components/ui/use-toast'
 
 type Props = {
   weight: string
@@ -200,7 +200,7 @@ export function InjectionOrderCreator({ weight, createOrder }: Props) {
                       className="flex justify-between gap-2"
                     >
                       <span className="text-sm">{option.label}</span>
-                      <span className="text-[10px] text-muted-foreground">
+                      <span className="shrink-0 text-[10px] text-muted-foreground">
                         {weight
                           ? `${(Number(option.value) * Number(weight)).toFixed(2)}ml`
                           : '체중입력'}

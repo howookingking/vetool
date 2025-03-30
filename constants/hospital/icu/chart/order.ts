@@ -102,13 +102,14 @@ export const DEFAULT_ICU_ORDER_TYPE = [
     value: 'test',
   },
   {
-    label: '기타',
-    value: 'manual',
-  },
-  {
     label: '식이',
     value: 'feed',
   },
+  {
+    label: '기타',
+    value: 'manual',
+  },
+
 ] as const
 
 export const DEFAULT_ICU_ORDER_TYPE_DIC = {

@@ -22,7 +22,7 @@ import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-type OrderFormProps = {
+type Props = {
   showOrderer: boolean
   icuChartId: string
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
@@ -32,7 +32,7 @@ export default function OrderForm({
   showOrderer,
   icuChartId,
   setSortedOrders,
-}: OrderFormProps) {
+}: Props) {
   const { hos_id } = useParams()
 
   const { setOrderStep, selectedChartOrder, setSelectedChartOrder, reset } =
