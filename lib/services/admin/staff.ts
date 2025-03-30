@@ -26,8 +26,9 @@ export const getStaffs = async (hosId: string) => {
       `,
     )
     .match({ hos_id: hosId })
-    .returns<Staff[]>()
     .order('rank', { ascending: true })
+    .overrideTypes<Staff[]>()
+  
 
   if (error) {
     console.error(error)

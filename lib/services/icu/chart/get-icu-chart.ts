@@ -16,13 +16,13 @@ export const getIcuChart = async (
       target_date_input: targetDate,
       patient_id_input: patient_id,
     })
-    .returns<SelectedChart>()
+    .overrideTypes<SelectedChart>()
 
   if (error) {
     throw new Error(error.message)
   }
 
-  return data
+  return data as SelectedChart
 }
 
 export const getPrevIoChartData = async (patientId: string) => {

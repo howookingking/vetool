@@ -73,14 +73,13 @@ export const getTemplateCharts = async (hosId: string) => {
     .rpc('get_icu_template_charts_data', {
       hos_id_input: hosId,
     })
-    .returns<TemplateChart[]>()
 
   if (error) {
     console.error(error)
     redirect(`/error/?message=${error.message}`)
   }
 
-  return data
+  return data as TemplateChart[]
 }
 
 // 단일 템플릿 차트를 가져옴 : template페이지에서 preview 또는 수정시
@@ -91,12 +90,11 @@ export const getTemplateChart = async (chartId: string) => {
     .rpc('get_template_chart_data', {
       icu_chart_id_input: chartId,
     })
-    .returns<SelectedChart>()
 
   if (error) {
     console.error(error)
     redirect(`/error/?message=${error.message}`)
   }
 
-  return data
+  return data as SelectedChart
 }

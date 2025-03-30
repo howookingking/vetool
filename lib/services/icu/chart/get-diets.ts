@@ -28,7 +28,7 @@ export const getDiets = async () => {
   const { data, error } = await supabase
     .from('diets')
     .select('diet_id, name, unit, mass_vol')
-    .returns<Diet[]>()
+    .overrideTypes<Diet[]>()
 
   if (error) {
     console.error(error)

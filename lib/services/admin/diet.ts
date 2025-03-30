@@ -30,7 +30,7 @@ export const getHosDiets = async (hosId: string) => {
     .order('created_at', {
       ascending: false,
     })
-    .returns<AdminDietData[]>()
+    .overrideTypes<AdminDietData[]>()
 
   if (dietDataError) {
     console.error(dietDataError)

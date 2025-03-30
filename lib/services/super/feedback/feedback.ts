@@ -33,7 +33,7 @@ export const getFeedback = async () => {
       `,
     )
     .order('created_at', { ascending: false })
-    .returns<UserFeedbackType[]>()
+    .overrideTypes<UserFeedbackType[]>()
 
   if (error) {
     throw new Error(error.message)

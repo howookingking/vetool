@@ -71,7 +71,8 @@ export default function FeatureAccordion({
               <AccordionContent className="min-h-20 pb-2 text-xs font-semibold text-muted-foreground sm:text-base xl:min-h-28 xl:text-lg">
                 {feature.description}
 
-                {accordionItemIndex === '1' &&
+                {/* 만든거 삭제함 ㅋㅋ 다시 제대로만들어야함 */}
+                {/* {accordionItemIndex === '1' &&
                   feature.title === '입원차트 개요' && (
                     <SlideButton
                       onClick={() => push(`/test/io?target-date=2025-02-25`)}
@@ -79,7 +80,7 @@ export default function FeatureAccordion({
                     >
                       체험해보기
                     </SlideButton>
-                  )}
+                  )} */}
               </AccordionContent>
             </AccordionItem>
           </motion.div>

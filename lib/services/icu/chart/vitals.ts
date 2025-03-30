@@ -35,12 +35,11 @@ export const getVitalTxData = async (patientId: string, inDate: string) => {
       patient_id_input: patientId,
       target_date_input: inDate,
     })
-    .returns<VitalTxData[]>()
 
   if (vitalTxDataError) {
     console.error(vitalTxDataError)
     redirect(`/error?message=${vitalTxDataError.message}`)
   }
 
-  return vitalTxData ?? []
+  return vitalTxData as VitalTxData[] ?? []
 }
