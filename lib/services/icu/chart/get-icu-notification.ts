@@ -27,7 +27,7 @@ export const getIcuNotification = async (hosId: string, page: number = 1) => {
     .match({ hos_id: hosId })
     .order('created_at', { ascending: false })
     .range(startRange, endRange)
-    .returns<IcuNotificationJoined[]>()
+    .overrideTypes<IcuNotificationJoined[]>()
 
   if (error) {
     throw new Error(error.message)

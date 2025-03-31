@@ -42,7 +42,7 @@ export const getVetListData = async (hosId: string) => {
     .select('name, position, user_id, avatar_url, rank')
     .match({ hos_id: hosId, is_vet: true })
     .order('rank', { ascending: true })
-    .returns<Vet[]>()
+    .overrideTypes<Vet[]>()
 
   if (error) {
     console.error(error)

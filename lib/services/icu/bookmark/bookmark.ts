@@ -10,7 +10,7 @@ export const getBookmarkedChartData = async (hosId: string) => {
     .rpc('get_icu_bookmarked_data', {
       hos_id_input: hosId,
     })
-    .returns<TemplateChart[]>()
+    .overrideTypes<TemplateChart[]>()
 
   if (error) {
     throw new Error(error.message)

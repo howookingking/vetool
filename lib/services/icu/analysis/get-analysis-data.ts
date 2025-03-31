@@ -18,11 +18,10 @@ export const getAnalysisData = async (
       start_date_input: startDate,
       end_date_input: endDate,
     })
-    .returns<IcuAnalysisData[]>()
 
   if (error) {
     throw new Error(error.message)
   }
 
-  return data ? data.filter((chart) => chart.patient.name !== null) : []
+  return data as IcuAnalysisData[] ? (data as IcuAnalysisData[]).filter((chart) => chart.patient.name !== null) : []
 }

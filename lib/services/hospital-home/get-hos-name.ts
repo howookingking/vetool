@@ -21,7 +21,6 @@ export const getHosList = async () => {
 
   const { data } = await supabase
     .rpc('get_hos_list_data')
-    .returns<HosListData[]>()
 
-  return data ?? []
+  return data as HosListData[] ?? []
 }

@@ -32,7 +32,7 @@ export const getStaffApprovals = async (hosId: string) => {
     .match({ hos_id: hosId })
     .order('is_approved')
     .order('created_at', { ascending: false })
-    .returns<StaffApproval[]>()
+    .overrideTypes<StaffApproval[]>()
 
   if (error) {
     throw new Error(error.message)

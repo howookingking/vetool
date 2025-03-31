@@ -25,7 +25,7 @@ export const getNotices = async (hosId: string) => {
     .match({ hos_id: hosId })
     .order('notice_order', { ascending: true })
     .order('created_at', { ascending: false })
-    .returns<NoticeWithUser[]>()
+    .overrideTypes<NoticeWithUser[]>()
 
   if (error) {
     throw new Error(error.message)

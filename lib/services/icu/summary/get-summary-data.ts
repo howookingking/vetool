@@ -11,10 +11,9 @@ export const getIcuSummaryData = async (hosId: string, targetDate: string) => {
       hos_id_input: hosId,
       target_date_input: targetDate,
     })
-    .returns<SummaryData[]>()
 
   if (error) {
     throw new Error(error.message)
   }
-  return data
+  return data as SummaryData[]
 }

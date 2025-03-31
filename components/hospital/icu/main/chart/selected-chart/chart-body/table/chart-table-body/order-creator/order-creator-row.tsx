@@ -1,4 +1,5 @@
 import OrderTypeColorDot from '@/components/hospital/common/order/order-type-color-dot'
+import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
   Select,
@@ -10,7 +11,6 @@ import {
 import { TableCell, TableRow } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
 import {
-  CHECKLIST_ORDER_CANDIDATES,
   CHECKLIST_ORDERS,
   DEFAULT_ICU_ORDER_TYPE,
   type OrderType,
@@ -18,8 +18,16 @@ import {
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import { type IcuOrderColors } from '@/types/adimin'
 import { type SelectedIcuOrder } from '@/types/icu/chart'
+import { Plus } from 'lucide-react'
 import { useParams } from 'next/navigation'
-import { type Dispatch, type SetStateAction, useRef, useState } from 'react'
+import {
+  type Dispatch,
+  type FormEvent,
+  type SetStateAction,
+  useRef,
+  useState,
+} from 'react'
+import { OrderTypeLabel } from '../../order/order-form-field'
 import ChecklistOrderCreator from './checklist-order-creator'
 import { InjectionOrderCreator } from './injection-order/injection-order-creator'
 import UserKeyGuideMessage from './user-key-guide-message'
@@ -30,16 +38,6 @@ type Props = {
   sortedOrders: SelectedIcuOrder[]
   orderColorsData: IcuOrderColors
   weight: string
-}
-
-function getAvailableChecklistOrders(orders: SelectedIcuOrder[]) {
-  const currentChecklistTypeOrderNames = orders
-    .filter((order) => order.order_type === 'checklist')
-    .map((order) => order.order_name)
-
-  return CHECKLIST_ORDERS.filter(
-    (order) => !currentChecklistTypeOrderNames.includes(order),
-  )
 }
 
 export default function OrderCreatorRow({
@@ -56,7 +54,6 @@ export default function OrderCreatorRow({
   const [newOrderInput, setNewOrderInput] = useState('')
   const [orderType, setOrderType] = useState('manual')
   const [isInserting, setIsInserting] = useState(false)
-  const [isChecklistOrder, setIsChecklistOrder] = useState(false)
 
   const availableCheckListOrders = getAvailableChecklistOrders(sortedOrders)
 
@@ -98,44 +95,50 @@ export default function OrderCreatorRow({
 
     setNewOrderInput('')
     setIsInserting(false)
-    setIsChecklistOrder(false)
 
     setTimeout(() => {
       inputRef?.current?.focus()
     }, 100)
   }
 
-  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.nativeEvent.isComposing || e.key !== 'Enter') return
+  // const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+  //   if (e.nativeEvent.isComposing || e.key !== 'Enter') return
+  //   if (!newOrderInput) return
+
+  //   const [orderName, orderDescription] = newOrderInput.split('$')
+
+  //   // 체크리스트후보군을 INPUT에 입력했을 경우(혈당, bg, 혈압 등...) 체크리스트애 있음을 안내
+  //   // if (
+  //   //   CHECKLIST_ORDER_CANDIDATES.some((name) =>
+  //   //     name.includes(orderName.toLowerCase()),
+  //   //   )
+  //   // ) {
+  //   //   setIsChecklistOrder(true)
+  //   //   setOrderType('checklist')
+  //   //   setNewOrderInput('')
+  //   //   return
+  //   // }
+
+  //   await createOrder(orderName, orderDescription ?? '')
+  // }
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     if (!newOrderInput) return
 
     const [orderName, orderDescription] = newOrderInput.split('$')
 
-    // 체크리스트후보군을 INPUT에 입력했을 경우(혈당, bg, 혈압 등...) 체크리스트애 있음을 안내
-    if (
-      CHECKLIST_ORDER_CANDIDATES.some((name) =>
-        name.includes(orderName.toLowerCase()),
-      )
-    ) {
-      setIsChecklistOrder(true)
-      setOrderType('checklist')
-      setNewOrderInput('')
-      return
-    }
-
     await createOrder(orderName, orderDescription ?? '')
   }
 
-  const handleOrderTypeChange = (selectedValue: string) => {
-    setOrderType(selectedValue)
-    setIsChecklistOrder(false)
-  }
+  const orderTypeLabel = OrderTypeLabel(orderType as OrderType)
+  const OrderTypePlaceholder = `${orderTypeLabel.orderName}$${orderTypeLabel.orderComment}`
 
   return (
     <TableRow className="hover:bg-transparent">
       <TableCell className="p-0">
         <div className="relative flex w-full items-center">
-          <Select onValueChange={handleOrderTypeChange} value={orderType}>
+          <Select onValueChange={setOrderType} value={orderType}>
             <SelectTrigger className="h-11 w-[128px] shrink-0 rounded-none border-0 border-r px-2 shadow-none ring-0 focus:ring-0">
               <SelectValue />
             </SelectTrigger>
@@ -175,26 +178,49 @@ export default function OrderCreatorRow({
           )}
 
           {orderType !== 'checklist' && orderType !== 'injection' && (
-            <Input
-              className="h-11 rounded-none border-0 focus-visible:ring-0"
-              disabled={isInserting}
-              placeholder="오더명$오더설명"
-              value={isInserting ? '등록 중' : newOrderInput}
-              onChange={(e) => setNewOrderInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              ref={inputRef}
-            />
+            <form
+              className="relative flex w-full items-center gap-2"
+              onSubmit={handleSubmit}
+            >
+              <Input
+                className="h-11 rounded-none border-0 focus-visible:ring-0"
+                disabled={isInserting}
+                placeholder={OrderTypePlaceholder}
+                value={isInserting ? '등록 중' : newOrderInput}
+                onChange={(e) => setNewOrderInput(e.target.value)}
+                ref={inputRef}
+              />
+              <Button
+                className="absolute right-2 2xl:hidden"
+                size="icon"
+                disabled={isInserting}
+                type="submit"
+                variant="ghost"
+              >
+                <Plus />
+              </Button>
+            </form>
           )}
 
-          {isChecklistOrder && (
+          {/* {isChecklistOrder && (
             <span className="absolute -bottom-5 right-3 text-xs text-destructive">
               해당 오더는 체크리스트에 존재합니다
             </span>
-          )}
+          )} */}
         </div>
       </TableCell>
 
       <UserKeyGuideMessage />
     </TableRow>
+  )
+}
+
+function getAvailableChecklistOrders(orders: SelectedIcuOrder[]) {
+  const currentChecklistTypeOrderNames = orders
+    .filter((order) => order.order_type === 'checklist')
+    .map((order) => order.order_name)
+
+  return CHECKLIST_ORDERS.filter(
+    (order) => !currentChecklistTypeOrderNames.includes(order),
   )
 }

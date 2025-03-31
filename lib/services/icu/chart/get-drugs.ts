@@ -14,7 +14,7 @@ export const getDrugs = async (hosId: string) => {
       .rpc('get_drugs', {
         hos_id_input: hosId,
       })
-      .returns<DrugProductsJoined[]>()
+      .overrideTypes<DrugProductsJoined[]>()
 
   if (searchedDrugDataError) {
     console.error(searchedDrugDataError)
@@ -36,7 +36,7 @@ export const getHosDrugs = async (hosId: string) => {
       `,
     )
     .match({ hos_id: hosId })
-    .returns<HosDrugWithRawDrug[]>()
+    .overrideTypes<HosDrugWithRawDrug[]>()
 
   if (error) {
     console.error(error)

@@ -7,9 +7,13 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
+import {
+  DEFAULT_ICU_ORDER_TYPE,
+  OrderType,
+} from '@/constants/hospital/icu/chart/order'
 import { orderSchema } from '@/lib/schemas/icu/chart/order-schema'
 import { cn } from '@/lib/utils/utils'
+import { useState } from 'react'
 import { type UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -19,10 +23,11 @@ export default function OrderFormField({
   form: UseFormReturn<z.infer<typeof orderSchema>>
 }) {
   const orderType = form.watch('icu_chart_order_type')
+  const [currentOrderType, setCurrentOrderType] = useState(orderType)
 
   return (
     <>
-      {orderType !== 'checklist' && (
+      {currentOrderType !== 'checklist' && (
         <FormField
           control={form.control}
           name="icu_chart_order_type"
@@ -33,7 +38,10 @@ export default function OrderFormField({
               </FormLabel>
               <FormControl>
                 <RadioGroup
-                  onValueChange={field.onChange}
+                  onValueChange={(value) => {
+                    setCurrentOrderType(value)
+                    field.onChange(value)
+                  }}
                   defaultValue={field.value}
                   className="flex flex-wrap gap-4"
                 >
@@ -66,12 +74,13 @@ export default function OrderFormField({
         render={({ field }) => (
           <FormItem className="w-full space-y-2">
             <FormLabel className="font-semibold">
-              오더명 <span className="text-destructive">*</span>
+              {OrderTypeLabel(currentOrderType as OrderType).orderName}{' '}
+              <span className="text-destructive">*</span>
             </FormLabel>
             <FormControl>
               <Input
                 disabled={orderType === 'checklist'}
-                placeholder={`${'오더에 대한 이름을 입력해주세요'}`}
+                placeholder="오더를 입력해주세요"
                 {...field}
               />
             </FormControl>
@@ -85,12 +94,11 @@ export default function OrderFormField({
         name="icu_chart_order_comment"
         render={({ field }) => (
           <FormItem className="w-full space-y-2">
-            <FormLabel className="font-semibold">오더 설명</FormLabel>
+            <FormLabel className="font-semibold">
+              {OrderTypeLabel(currentOrderType as OrderType).orderComment}
+            </FormLabel>
             <FormControl>
-              <Input
-                placeholder={`${'오더에 대한 설명을 입력해주세요'}`}
-                {...field}
-              />
+              <Input {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -98,4 +106,25 @@ export default function OrderFormField({
       />
     </>
   )
+}
+
+export function OrderTypeLabel(orderType: OrderType) {
+  switch (orderType) {
+    case 'checklist':
+      return { orderName: '체크리스트오더', orderComment: '오더설명' }
+    case 'feed':
+      return { orderName: '식이오더', orderComment: '오더설명' }
+    case 'fluid':
+      return { orderName: '수액오더', orderComment: '수액속도' }
+    case 'po':
+      return { orderName: '경구오더', orderComment: '오더설명' }
+    case 'test':
+      return { orderName: '검사오더', orderComment: '오더설명' }
+    case 'manual':
+      return { orderName: '기타오더', orderComment: '오더설명' }
+    case 'injection':
+      return { orderName: '주사오더', orderComment: '주사량' }
+    default:
+      return { orderName: '기타오더', orderComment: '오더설명' }
+  }
 }

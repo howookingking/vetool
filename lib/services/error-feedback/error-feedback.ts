@@ -42,7 +42,7 @@ export const getErrorFeedback = async (dateRange: string) => {
   }
   const { data, error } = await query
     .order('created_at', { ascending: false })
-    .returns<ErrorFeedbackType[]>()
+    .overrideTypes<ErrorFeedbackType[]>()
 
   if (error) {
     throw new Error(error.message)
