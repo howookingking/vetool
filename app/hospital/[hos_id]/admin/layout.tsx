@@ -10,10 +10,12 @@ import { BasicHosDataProvider } from '@/providers/basic-hos-data-context-provide
 import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
 import { redirect } from 'next/navigation'
 
-export default async function AdminLayout(props: {
+type Props = {
   params: Promise<{ hos_id: string }>
   children: React.ReactNode
-}) {
+}
+
+export default async function AdminLayout(props: Props) {
   const params = await props.params
   const basicHosData = await getBasicHosData(params.hos_id)
   const vetoolUser = await getVetoolUserData()
@@ -40,6 +42,7 @@ export default async function AdminLayout(props: {
         timeGuidelineData: basicHosData.time_guidelines,
         orderColorDisplay: basicHosData.order_color_display,
         plan: basicHosData.plan,
+        isInChargeSystem: basicHosData.is_in_charge_system,
       }}
     >
       <div className="flex flex-col md:flex-row">

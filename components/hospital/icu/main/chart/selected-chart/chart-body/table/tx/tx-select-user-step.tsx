@@ -116,7 +116,7 @@ export default function TxSelectUserStep({ handleClose, isSetting }: Props) {
                     className="h-8 text-sm"
                     autoComplete="off"
                     ref={inputRef}
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || isSetting}
                   />
                 </FormControl>
                 <FormMessage className="text-xs" />
