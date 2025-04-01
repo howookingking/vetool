@@ -1,12 +1,26 @@
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from '@/components/ui/resizable'
 import Notice from './notice/notice'
 import Todo from './todo/todo'
 
-export default function HospitalHomeBody({ hosId }: { hosId: string }) {
+export function HospitalHomeBody({ hosId }: { hosId: string }) {
   return (
-    <div className="mt-12 flex w-full flex-col gap-2 p-2 xl:flex-row">
-      <Notice hosId={hosId} />
+    <div className="mt-12">
+      <ResizablePanelGroup direction="horizontal" className="mt-12 w-full">
+        <ResizablePanel defaultSize={500} className="w-full min-w-[600px]">
+          <Notice hosId={hosId} />
+        </ResizablePanel>
 
-      <Todo hosId={hosId} />
+        <ResizableHandle withHandle />
+
+        <ResizablePanel defaultSize={500} className="w-full min-w-[600px]">
+          <Todo hosId={hosId} />
+        </ResizablePanel>
+        <ResizableHandle />
+      </ResizablePanelGroup>
     </div>
   )
 }

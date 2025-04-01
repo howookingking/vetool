@@ -26,7 +26,10 @@ export default function SelectedCalculators({
       )}
 
       {selectedCalculator === 'rer-mer' && (
-        <RerMerCalculator weight={patientData?.vital?.body_weight ?? ''} />
+        <RerMerCalculator
+          weight={patientData?.vital?.body_weight ?? ''}
+          setIsSheetOpen={setIsSheetOpen}
+        />
       )}
 
       {selectedCalculator === 'cri' && (
