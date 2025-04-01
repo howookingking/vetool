@@ -66,7 +66,7 @@ export default function InChargeSystemTab({ hosId }: { hosId: string }) {
           <Label
             htmlFor="false"
             className={cn(
-              'relative block w-[600px] cursor-pointer rounded-md border p-4 shadow-md transition-opacity duration-700',
+              'relative block w-1/2 cursor-pointer rounded-md border p-4 shadow-md transition-opacity duration-700',
               currentIsInChageSystem === 'true'
                 ? 'opacity-30'
                 : 'opacity-100 ring-2 ring-primary',
@@ -90,7 +90,7 @@ export default function InChargeSystemTab({ hosId }: { hosId: string }) {
           <Label
             htmlFor="true"
             className={cn(
-              'relative block w-[600px] cursor-pointer rounded-md border p-4 shadow-md transition-opacity duration-700',
+              'relative block w-1/2 cursor-pointer rounded-md border p-4 shadow-md transition-opacity duration-700',
               currentIsInChageSystem === 'true'
                 ? 'opacity-100 ring-2 ring-primary'
                 : 'opacity-30',
