@@ -163,13 +163,13 @@ export default function VetsUpdateForm({
                 </FormControl>
                 <SelectContent>
                   {[
-                    ...vetsList,
                     {
                       user_id: 'null',
                       name: '미선택',
                       position: '',
                       avatar_url: '',
                     },
+                    ...vetsList,
                   ].map((vet) => (
                     <SelectItem
                       key={vet.user_id}
@@ -219,13 +219,13 @@ export default function VetsUpdateForm({
                     </FormControl>
                     <SelectContent>
                       {[
-                        ...vetsList,
                         {
                           user_id: 'null',
                           name: '미선택',
                           position: '',
                           avatar_url: '',
                         },
+                        ...vetsList,
                       ].map((vet) => (
                         <SelectItem
                           key={vet.user_id}
@@ -273,13 +273,13 @@ export default function VetsUpdateForm({
                     </FormControl>
                     <SelectContent>
                       {[
-                        ...vetsList,
                         {
                           user_id: 'null',
                           name: '미선택',
                           position: '',
                           avatar_url: '',
                         },
+                        ...vetsList,
                       ].map((vet) => (
                         <SelectItem
                           key={vet.user_id}
@@ -327,13 +327,13 @@ export default function VetsUpdateForm({
                     </FormControl>
                     <SelectContent>
                       {[
-                        ...vetsList,
                         {
                           user_id: 'null',
                           name: '미선택',
                           position: '',
                           avatar_url: '',
                         },
+                        ...vetsList,
                       ].map((vet) => (
                         <SelectItem
                           key={vet.user_id}
@@ -381,13 +381,13 @@ export default function VetsUpdateForm({
                     </FormControl>
                     <SelectContent>
                       {[
-                        ...vetsList,
                         {
                           user_id: 'null',
                           name: '미선택',
                           position: '',
                           avatar_url: '',
                         },
+                        ...vetsList,
                       ].map((vet) => (
                         <SelectItem
                           key={vet.user_id}
@@ -435,13 +435,13 @@ export default function VetsUpdateForm({
                     </FormControl>
                     <SelectContent>
                       {[
-                        ...vetsList,
                         {
                           user_id: 'null',
                           name: '미선택',
                           position: '',
                           avatar_url: '',
                         },
+                        ...vetsList,
                       ].map((vet) => (
                         <SelectItem
                           key={vet.user_id}
@@ -489,13 +489,13 @@ export default function VetsUpdateForm({
                     </FormControl>
                     <SelectContent>
                       {[
-                        ...vetsList,
                         {
                           user_id: 'null',
                           name: '미선택',
                           position: '',
                           avatar_url: '',
                         },
+                        ...vetsList,
                       ].map((vet) => (
                         <SelectItem
                           key={vet.user_id}
