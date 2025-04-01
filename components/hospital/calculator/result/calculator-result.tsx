@@ -1,5 +1,6 @@
-import InsertOrderButton from './insert-order-button'
+import { type OrderType } from '@/constants/hospital/icu/chart/order'
 import CopyButton from './copy-button'
+import InsertOrderButton from './insert-order-button'
 
 type Props = {
   displayResult: React.ReactNode
@@ -7,6 +8,7 @@ type Props = {
   comment?: string
   hasInsertOrderButton?: boolean
   setIsSheetOpen?: React.Dispatch<React.SetStateAction<boolean>>
+  orderType?: OrderType
 }
 
 export default function CalculatorResult({
@@ -15,6 +17,7 @@ export default function CalculatorResult({
   comment,
   hasInsertOrderButton = false,
   setIsSheetOpen,
+  orderType,
 }: Props) {
   return (
     <div className="flex w-full animate-slideDown flex-col items-center justify-center rounded-md bg-slate-100 py-4 text-lg">
@@ -23,6 +26,7 @@ export default function CalculatorResult({
           <InsertOrderButton
             orderName={copyResult}
             setIsSheetOpen={setIsSheetOpen}
+            orderType={orderType}
           />
         )}
         <div className="text-xs sm:text-base">{displayResult}</div>
