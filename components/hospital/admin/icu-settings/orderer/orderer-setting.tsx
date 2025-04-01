@@ -68,14 +68,6 @@ export default function OrdererSetting({
             />
             <Label htmlFor="orderer" className="cursor-pointer">
               오더자 입력 단계
-              <span
-                className={cn(
-                  showOrdererInput ? 'text-green-600' : 'text-red-600',
-                  'ml-2',
-                )}
-              >
-                {showOrdererInput ? 'ON' : 'OFF'}
-              </span>
             </Label>
           </div>
 
@@ -87,14 +79,6 @@ export default function OrdererSetting({
             />
             <Label htmlFor="txUser" className="cursor-pointer">
               처치자 입력 단계
-              <span
-                className={cn(
-                  showTxUserInput ? 'text-green-600' : 'text-red-600',
-                  'ml-2',
-                )}
-              >
-                {showTxUserInput ? 'ON' : 'OFF'}
-              </span>
             </Label>
           </div>
         </div>

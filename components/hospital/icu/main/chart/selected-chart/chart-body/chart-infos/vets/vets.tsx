@@ -27,7 +27,7 @@ const LazyVetsUpdateForm = dynamic(
     ),
   {
     ssr: false,
-    loading: () => <LargeLoaderCircle className="h-[276px]" />,
+    loading: () => <LargeLoaderCircle className="h-[200px]" />,
   },
 )
 
@@ -47,7 +47,7 @@ export default function Vets({
   const { today } = (inCharge as IcuChartsInCharge) || {}
 
   const {
-    basicHosData: { vetsListData },
+    basicHosData: { vetsListData, isInChargeSystem },
   } = useBasicHosDataContext()
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -68,17 +68,21 @@ export default function Vets({
 
             <VetName label="부주치의" name={subVet?.name ?? '미선택'} />
 
-            <Separator orientation="vertical" className="h-4" />
+            {isInChargeSystem && (
+              <>
+                <Separator orientation="vertical" className="h-4" />
 
-            <VetName label="당일" name={today?.all ?? '미선택'} />
+                <VetName label="당일" name={today?.all ?? '미선택'} />
 
-            <Separator orientation="vertical" className="h-4" />
+                <Separator orientation="vertical" className="h-4" />
 
-            <VetName label="오전" name={today?.am ?? '미선택'} />
+                <VetName label="오전" name={today?.am ?? '미선택'} />
 
-            <Separator orientation="vertical" className="h-4" />
+                <Separator orientation="vertical" className="h-4" />
 
-            <VetName label="오후" name={today?.pm ?? '미선택'} />
+                <VetName label="오후" name={today?.pm ?? '미선택'} />
+              </>
+            )}
           </div>
         </Button>
       </DialogTrigger>
@@ -95,6 +99,7 @@ export default function Vets({
           vetsList={vetsListData}
           icuChartId={icuChartId}
           inCharge={inCharge}
+          isInChargeSystem={isInChargeSystem}
         />
       </DialogContent>
     </Dialog>

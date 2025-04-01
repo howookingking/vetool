@@ -224,7 +224,11 @@ export default function OrdererSelectStep({
           render={({ field }) => (
             <FormItem>
               <FormLabel>오더결정 수의사</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={mainVetName}>
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={mainVetName}
+                disabled={isUpdating || isSetting}
+              >
                 <FormControl>
                   <SelectTrigger
                     className={cn(
