@@ -64,7 +64,6 @@ export const copyPrevChart = async (targetDate: string, patientId: string) => {
 
   // 복사 전에 priority 정렬
   const prevOrderIds = prevOrders.map((order) => order.icu_chart_order_id)
-  console.log(prevOrderIds)
   await reorderOrders(prevOrderIds)
   // db에서 priority 업데이트가 이뤄지기전에 아래 rpc(copy_prev_orders)가 실행되어 의도치않는 중복 순서가 발생하는 것 예방
   await new Promise((resolve) => setTimeout(resolve, 500))

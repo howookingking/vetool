@@ -1,6 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import DefaultOrdersTab from './default-orders/default-orders-tab'
 import HosDrugTab from './hos-drug/hos-drug-tab'
+import InChargeSystemTab from './in-charge-system/in-charge-system-tab'
 import MemoNameTab from './memo-name/memo-name-tab'
 import OrderColorTab from './order-color-settings/order-color-tab'
 import OrderFontSizeTab from './order-font-size/order-font-size-tab'
@@ -20,6 +21,11 @@ const ADMIN_SETTING_ITEMS = [
     label: '오더자 & 처치자',
     value: 'orderer',
     Component: OrdererTab,
+  },
+  {
+    label: '담당자 시스템',
+    value: 'inChargeSystem',
+    Component: InChargeSystemTab,
   },
   {
     label: '바이탈 정상 범위',
@@ -46,7 +52,7 @@ const ADMIN_SETTING_ITEMS = [
 export default function IcuSettingsTab({ hosId }: { hosId: string }) {
   return (
     <Tabs defaultValue="defaultOrder">
-      <TabsList className="grid grid-cols-8">
+      <TabsList className="grid grid-cols-9">
         {ADMIN_SETTING_ITEMS.map((item) => (
           <TabsTrigger key={item.value} value={item.value} className="text-sm">
             {item.label}
