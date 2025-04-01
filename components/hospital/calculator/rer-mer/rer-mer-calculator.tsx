@@ -11,7 +11,13 @@ import {
 import { calculateRer } from '@/lib/calculators/rer-mer'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { useState } from 'react'
-export default function RerMerCalculator({ weight }: { weight: string }) {
+
+type Props = {
+  weight: string
+  setIsSheetOpen?: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export default function RerMerCalculator({ weight, setIsSheetOpen }: Props) {
   const [localWeight, setLocalWeight] = useState(weight)
   const [factor, setFactor] = useState('1')
 
@@ -51,7 +57,7 @@ export default function RerMerCalculator({ weight }: { weight: string }) {
           추가가 필요한 사료는 <DisabledFeedbackButton />
         </SheetDescription>
 
-        <DietForm mer={mer} />
+        <DietForm mer={mer} setIsSheetOpen={setIsSheetOpen} />
       </div>
     </>
   )

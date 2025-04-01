@@ -36,6 +36,7 @@ export default async function TestPage(props: {
             vetsListData: [],
             vitalRefRange: [],
             plan: 'severe',
+            isInChargeSystem: false,
           }}
         >
           <ShareContainer

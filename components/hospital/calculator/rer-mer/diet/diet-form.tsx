@@ -8,7 +8,12 @@ import { getDiets } from '@/lib/services/icu/chart/get-diets'
 import { type Diet } from '@/types/hospital/calculator'
 import { useEffect, useState } from 'react'
 
-export default function DietForm({ mer }: { mer?: number }) {
+type Props = {
+  mer?: number
+  setIsSheetOpen?: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export default function DietForm({ mer, setIsSheetOpen }: Props) {
   const [diets, setDiets] = useState<Diet[]>([])
   const [selectedDiet, setSelectedDiet] = useState<string>('')
   const [feedPerDay, setFeedPerDay] = useState('2')
@@ -23,7 +28,7 @@ export default function DietForm({ mer }: { mer?: number }) {
   }))
 
   const massVol = diets.find((diet) => diet.name === selectedDiet)?.mass_vol
-  const unit = diets.find((diet) => diet.name === selectedDiet)?.unit || 'g'
+  const unit = diets.find((diet) => diet.name === selectedDiet)?.unit ?? 'g'
 
   const result = cacluateFeedAmount(mer, massVol, Number(feedPerDay))
 
@@ -47,11 +52,18 @@ export default function DietForm({ mer }: { mer?: number }) {
       {result && (
         <CalculatorResult
           displayResult={
-            <span className="font-bold text-primary">
-              {result.toString()} {unit}/회
-            </span>
+            <>
+              <span>{selectedDiet}</span>{' '}
+              <span className="font-bold text-primary">
+                {result.toString()}
+                {unit}/회
+              </span>
+            </>
           }
-          copyResult={`${result.toString()} ${unit}/회`}
+          copyResult={`${selectedDiet} ${result.toString()}${unit}/회`}
+          hasInsertOrderButton
+          orderType="feed"
+          setIsSheetOpen={setIsSheetOpen}
         />
       )}
     </div>

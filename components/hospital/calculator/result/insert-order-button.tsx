@@ -1,3 +1,5 @@
+'use no memo'
+
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -11,31 +13,36 @@ import {
 } from '@/components/ui/dialog'
 import { Form } from '@/components/ui/form'
 import { toast } from '@/components/ui/use-toast'
+import { type OrderType } from '@/constants/hospital/icu/chart/order'
 import { calcResultApplyFormSchema } from '@/lib/schemas/icu/chart/calc-result-apply-schema'
 import { insertCalcResultOrder } from '@/lib/services/icu/chart/order-mutation'
 import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { ListPlus, LoaderCircle } from 'lucide-react'
 import { useParams } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import OrderFormField from '../../icu/main/chart/selected-chart/chart-body/table/order/order-form-field'
-import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 
 type Props = {
   orderName: string
   setIsSheetOpen?: React.Dispatch<React.SetStateAction<boolean>>
+  orderType?: OrderType
 }
 
 export default function InsertOrderButton({
   orderName,
   setIsSheetOpen,
+  orderType,
 }: Props) {
   const { hos_id, target_date, patient_id } = useParams()
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  console.log(orderName)
 
   const handleSubmit = async (
     values: z.infer<typeof calcResultApplyFormSchema>,
@@ -63,11 +70,15 @@ export default function InsertOrderButton({
   const form = useForm<z.infer<typeof calcResultApplyFormSchema>>({
     resolver: zodResolver(calcResultApplyFormSchema),
     defaultValues: {
-      icu_chart_order_type: 'fluid',
+      icu_chart_order_type: orderType,
       icu_chart_order_name: orderName,
       icu_chart_order_comment: '',
     },
   })
+
+  useEffect(() => {
+    form.setValue('icu_chart_order_name', orderName)
+  }, [orderName, form])
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
