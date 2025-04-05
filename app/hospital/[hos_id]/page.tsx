@@ -1,4 +1,4 @@
-import { HospitalHomeBody } from '@/components/hospital/home/body/hospital-home-body'
+import HospitalHomeBody from '@/components/hospital/home/body/hospital-home-body'
 import HospitalHomeHeader from '@/components/hospital/home/header/hospital-home-header'
 import { getVetoolUserData } from '@/lib/services/auth/authorization'
 import { redirectToOwnHospital } from '@/lib/utils/utils'
