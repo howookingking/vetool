@@ -16,7 +16,7 @@ export default function Todo({ hosId }: { hosId: string }) {
   const { isLoading, todos, refetch } = useTodos(hosId, selectedDate)
 
   return (
-    <Card className="w-full rounded-sm xl:w-1/3">
+    <Card className="w-full rounded-sm xl:w-2/5">
       <CardHeader>
         <CardTitle>
           <div className="flex justify-between gap-1">
