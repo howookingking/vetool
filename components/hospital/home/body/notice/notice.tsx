@@ -7,7 +7,7 @@ import UpsertNoticeDialog from './upsert-notice-dialog'
 
 export default function Notice({ hosId }: { hosId: string }) {
   return (
-    <Card className="w-full border-none shadow-none">
+    <Card className="w-full rounded-sm xl:w-2/3">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-1">
