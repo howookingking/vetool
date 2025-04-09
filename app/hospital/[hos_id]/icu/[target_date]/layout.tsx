@@ -56,6 +56,7 @@ export default async function IcuPageLayout(props: {
           orderColorDisplay: basicHosData.order_color_display,
           plan: basicHosData.plan,
           isInChargeSystem: basicHosData.is_in_charge_system,
+          baselineTime: basicHosData.baseline_time,
         }}
       >
         <div className="flex h-desktop">
