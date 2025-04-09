@@ -29,6 +29,7 @@ type BasicHosData = {
   orderColorDisplay: OrderColorDisplay
   plan: Plans
   isInChargeSystem: boolean
+  baselineTime: number
 }
 
 const BasicHosDataContext = createContext<IcuContextType | undefined>(undefined)

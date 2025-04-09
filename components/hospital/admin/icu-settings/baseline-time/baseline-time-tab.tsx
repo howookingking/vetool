@@ -1,4 +1,5 @@
-import CellCheckbox from '@/components/hospital/admin/icu-settings/time-guideline/cell-checkbox'
+'use client'
+
 import OrderTypeColorDot from '@/components/hospital/common/order/order-type-color-dot'
 import { Button } from '@/components/ui/button'
 import {
@@ -10,6 +11,15 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import {
   Table,
   TableBody,
   TableCell,
@@ -19,7 +29,7 @@ import {
 } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
-import { updateHosTimeGuidelines } from '@/lib/services/admin/icu/time-guidelines'
+import { updateBaselineTime } from '@/lib/services/admin/icu/baseline-time'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { IcuOrderColors } from '@/types/adimin'
@@ -39,29 +49,34 @@ export const TIME_GUIDELINES_SAMPLE_ORDERS = [
 ] as const
 
 type Props = {
-  hosGuidelineData: number[]
   hosId: string
 }
 
-export function TimeGuideLinSettings({ hosGuidelineData, hosId }: Props) {
+export default function BaselineTimeTab({ hosId }: Props) {
   const { refresh } = useRouter()
-
-  const [isUpdating, setIsUpdating] = useState(false)
-  const [locaTimeGuideline, setLocalTimeGuideline] = useState(hosGuidelineData)
 
   const {
     basicHosData: {
-      orderColorDisplay,
-      orderColorsData,
-      orderFontSizeData,
       baselineTime,
+      orderFontSizeData,
+      orderColorsData,
+      orderColorDisplay,
+      timeGuidelineData,
     },
   } = useBasicHosDataContext()
+
+  const [localBaselineTime, setLocalBaselineTime] = useState(
+    baselineTime.toString(),
+  )
+
+  const [isUpdating, setIsUpdating] = useState(false)
+  //   const [locaTimeGuideline, setLocalTimeGuideline] = useState(hosGuidelineData)
 
   const handleSubmit = async () => {
     setIsUpdating(true)
 
-    await updateHosTimeGuidelines(hosId, locaTimeGuideline)
+    await updateBaselineTime(hosId, Number(localBaselineTime))
+
     toast({
       title: '시간 가이드라인을 변경하였습니다',
     })
@@ -72,16 +87,49 @@ export function TimeGuideLinSettings({ hosGuidelineData, hosId }: Props) {
 
   const newTime = new Array(24)
     .fill(0)
-    .map((_, i) => (Number(baselineTime) + i) % 24)
+    .map((_, i) => (Number(localBaselineTime) + i) % 24)
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>시간 가이드라인</CardTitle>
-        <CardDescription />
+        <CardTitle>일 기준 시간</CardTitle>
+        <CardDescription>
+          하루의 기준이 되는 시작 시간을 설정합니다
+        </CardDescription>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="space-y-4">
+        <Select value={localBaselineTime} onValueChange={setLocalBaselineTime}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="기준 시간" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>기준 시간</SelectLabel>
+              <SelectItem value="18">기준일 전날 18시</SelectItem>
+              <SelectItem value="19">기준일 전날 19시</SelectItem>
+              <SelectItem value="20">기준일 전날 20시</SelectItem>
+              <SelectItem value="21">기준일 전날 21시</SelectItem>
+              <SelectItem value="22">기준일 전날 22시</SelectItem>
+              <SelectItem value="23">기준일 전날 23시</SelectItem>
+              <SelectItem value="0">기준일 0시 (기본값)</SelectItem>
+              <SelectItem value="1">기준일 1시</SelectItem>
+              <SelectItem value="2">기준일 2시</SelectItem>
+              <SelectItem value="3">기준일 3시</SelectItem>
+              <SelectItem value="4">기준일 4시</SelectItem>
+              <SelectItem value="5">기준일 5시</SelectItem>
+              <SelectItem value="6">기준일 6시</SelectItem>
+              <SelectItem value="6">기준일 6시</SelectItem>
+              <SelectItem value="7">기준일 7시</SelectItem>
+              <SelectItem value="8">기준일 8시</SelectItem>
+              <SelectItem value="9">기준일 9시</SelectItem>
+              <SelectItem value="10">기준일 10시</SelectItem>
+              <SelectItem value="11">기준일 11시</SelectItem>
+              <SelectItem value="12">기준일 12시</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+
         <Table className="border">
           <TableHeader className="bg-white shadow-sm">
             <TableRow>
@@ -130,29 +178,17 @@ export function TimeGuideLinSettings({ hosGuidelineData, hosId }: Props) {
                 </TableCell>
 
                 {TIMES.map((time) => {
-                  const isGuidelineTime = locaTimeGuideline.includes(time)
                   return (
                     <TableCell
                       key={time}
-                      className={cn(isGuidelineTime && 'bg-amber-300/10')}
+                      className={cn(
+                        timeGuidelineData.includes(time) && 'bg-amber-300/10',
+                      )}
                     ></TableCell>
                   )
                 })}
               </TableRow>
             ))}
-            <TableRow className="relative w-full divide-x">
-              <TableCell className="flex justify-between font-medium" />
-              {TIMES.map((time) => {
-                return (
-                  <CellCheckbox
-                    key={time}
-                    isGuidelineTime={locaTimeGuideline.includes(time)}
-                    time={time}
-                    setLocalTimeGuideline={setLocalTimeGuideline}
-                  />
-                )
-              })}
-            </TableRow>
           </TableBody>
         </Table>
       </CardContent>
