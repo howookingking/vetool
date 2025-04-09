@@ -54,6 +54,14 @@ export default function SummaryTable({
   //   vetsListData,
   // })
 
+  const {
+    basicHosData: { baselineTime },
+  } = useBasicHosDataContext()
+
+  const newTime = new Array(24)
+    .fill(0)
+    .map((_, i) => (Number(baselineTime) + i) % 24)
+
   if (summaryData.length === 0) {
     return (
       <NoResultSquirrel
@@ -70,7 +78,7 @@ export default function SummaryTable({
         <TableRow>
           <TableHead className="w-[160px] text-center">환자목록</TableHead>
 
-          {TIMES.map((time) => (
+          {newTime.map((time) => (
             <TableHead className="border border-t-0 text-center" key={time}>
               {time.toString().padStart(2, '0')}
             </TableHead>
