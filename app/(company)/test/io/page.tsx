@@ -37,6 +37,7 @@ export default async function TestPage(props: {
             vitalRefRange: [],
             plan: 'severe',
             isInChargeSystem: false,
+            baselineTime: 0,
           }}
         >
           <ShareContainer
