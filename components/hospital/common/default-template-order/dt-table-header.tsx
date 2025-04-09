@@ -1,7 +1,7 @@
 import OrderWidthButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/order-width-button'
 import SortingButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/sorting-button'
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { TIMES } from '@/constants/hospital/icu/chart/time'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { type OrderWidth } from '@/types/hospital/order'
 import { type SelectedIcuOrder } from '@/types/icu/chart'
 import type { Dispatch, SetStateAction } from 'react'
@@ -24,6 +24,14 @@ export default function DtTableHeader({
   defaultChartOrders,
   isSetting,
 }: Props) {
+  const {
+    basicHosData: { baselineTime },
+  } = useBasicHosDataContext()
+
+  const newTime = new Array(24)
+    .fill(0)
+    .map((_, i) => (Number(baselineTime) + i) % 24)
+
   return (
     <TableHeader className="shadow-sm">
       <TableRow>
@@ -51,7 +59,7 @@ export default function DtTableHeader({
           />
         </TableHead>
 
-        {TIMES.map((time) => (
+        {newTime.map((time) => (
           <TableHead className="border text-center" key={time}>
             {time.toString().padStart(2, '0')}
           </TableHead>

@@ -21,7 +21,8 @@ export const getBasicHosData = async (hosId: string) => {
           order_color_display,
           show_tx_user,
           plan,
-          is_in_charge_system
+          is_in_charge_system,
+          baseline_time
         `,
     )
     .match({ hos_id: hosId })
