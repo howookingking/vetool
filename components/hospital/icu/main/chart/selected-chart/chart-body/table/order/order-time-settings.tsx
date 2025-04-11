@@ -22,6 +22,7 @@ type OrderTimeSettingsProps = {
   setStartTime: Dispatch<SetStateAction<string>>
   setTimeTerm: Dispatch<SetStateAction<string>>
   setOrderTime: Dispatch<SetStateAction<string[]>>
+  newTime: number[]
 }
 
 export default function OrderTimeSettings({
@@ -31,6 +32,7 @@ export default function OrderTimeSettings({
   setStartTime,
   setTimeTerm,
   setOrderTime,
+  newTime,
 }: OrderTimeSettingsProps) {
   const handleSelectAllClick = () => {
     setStartTime('undefined')
@@ -128,7 +130,7 @@ export default function OrderTimeSettings({
         </div>
       </div>
       <div className="mt-2 flex w-full flex-wrap md:justify-between">
-        {TIMES.map((time, index) => (
+        {newTime.map((time, index) => (
           <Button
             tabIndex={-1}
             type="button"
