@@ -38,7 +38,7 @@ export default function OrderForm({
   const { setOrderStep, selectedChartOrder, setSelectedChartOrder, reset } =
     useIcuOrderStore()
   const {
-    basicHosData: { vetsListData },
+    basicHosData: { vetsListData, baselineTime },
   } = useBasicHosDataContext()
 
   const [isUpdating, setIsUpdating] = useState(false)
@@ -113,6 +113,10 @@ export default function OrderForm({
     }
   }, [form, startTime, timeTerm])
 
+  const newTime = new Array(24)
+    .fill(0)
+    .map((_, i) => (Number(baselineTime) + i) % 24)
+
   return (
     <Form {...form}>
       <form
@@ -128,6 +132,7 @@ export default function OrderForm({
           setStartTime={setStartTime}
           setTimeTerm={setTimeTerm}
           setOrderTime={setOrderTime}
+          newTime={newTime}
         />
 
         <OrderBorderCheckbox form={form} />
