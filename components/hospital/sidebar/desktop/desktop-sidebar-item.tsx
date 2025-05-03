@@ -6,19 +6,21 @@ import { cn } from '@/lib/utils/utils'
 import { format } from 'date-fns'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 
-export default function SidebarItem({
-  name,
-  path,
-  isReady,
-  isSuper,
-  icon,
-}: {
+type Props = {
   name: string
   path: string
   isReady: boolean
   isSuper: boolean
   icon: JSX.Element
-}) {
+}
+
+export default function DesktopSidebarItem({
+  name,
+  path,
+  isReady,
+  isSuper,
+  icon,
+}: Props) {
   const pathname = usePathname()
   const { hos_id } = useParams()
   const { push } = useRouter()
@@ -41,8 +43,8 @@ export default function SidebarItem({
         <Button
           onClick={() => push(`/hospital/${hos_id}/${dynamicPath}`)}
           className={cn(
+            'h-8 w-8 bg-white',
             isActive && 'bg-primary text-white',
-            'h-12 w-full rounded-none',
             !isSuper && name === '벳툴' && 'hidden',
           )}
           variant="ghost"

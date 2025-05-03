@@ -94,7 +94,7 @@ export default function BaselineTimeTab({ hosId }: Props) {
       <CardHeader>
         <CardTitle>일 기준 시간</CardTitle>
         <CardDescription>
-          하루의 기준이 되는 시작 시간을 설정합니다
+          하루의 시작이 되는 기준 시간을 설정합니다.
         </CardDescription>
       </CardHeader>
 

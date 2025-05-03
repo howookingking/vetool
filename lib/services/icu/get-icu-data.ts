@@ -5,7 +5,6 @@ import type { IcuSidebarIoData, Vet } from '@/types/icu/chart'
 import { redirect } from 'next/navigation'
 
 export const getIcuData = async (hosId: string, targetDate: string) => {
-  console.log('Initial Icu Data Fetching')
   const supabase = await createClient()
 
   const promiseArray = Promise.all([
