@@ -36,8 +36,9 @@ export default function SidebarUserInfo({
     <DropdownMenu>
       <DropdownMenuTrigger>
         <div className={cn('flex items-center justify-end', mobile && 'm-1')}>
-          <Avatar>
+          <Avatar className="h-8 w-8">
             <AvatarImage
+              className="h-8 w-8"
               loading="lazy"
               src={vetoolUser.avatar_url ?? userAvatarFallback}
               alt={vetoolUser.name}

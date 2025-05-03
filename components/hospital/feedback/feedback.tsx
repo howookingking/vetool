@@ -27,7 +27,7 @@ export default function Feedback() {
       <PopoverTrigger asChild>
         <Button
           size="icon"
-          className="h-10 w-10 rounded-full shadow-lg"
+          className="h-8 w-8 rounded-full shadow-lg"
           onClick={() => setIsPopoverFeedbackOpen(true)}
           variant="outline"
         >
