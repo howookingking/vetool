@@ -21,7 +21,7 @@ export default async function Layout(props: {
     <div className="flex h-screen">
       <HospitalSidebar hosId={params.hos_id} />
 
-      <main className="ml-0 flex-1 2xl:ml-14">{props.children}</main>
+      <main className="ml-0 flex-1 2xl:ml-10">{props.children}</main>
     </div>
   )
 }

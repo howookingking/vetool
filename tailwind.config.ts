@@ -149,7 +149,7 @@ const config = {
         company: 'calc(100vh - 64px)',
       },
       width: {
-        'exclude-sidebar': 'calc(100vw - 250px)',
+        'exclude-sidebar': 'calc(100vw - 232px)',
       },
     },
   },
