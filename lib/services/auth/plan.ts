@@ -1,5 +1,6 @@
 'use server'
 
+import { Plan } from '@/constants/plans'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
@@ -17,5 +18,5 @@ export const getPlan = async (hosId: string) => {
     redirect(`/error?message=${error.message}`)
   }
 
-  return data?.plan
+  return data.plan as Plan
 }

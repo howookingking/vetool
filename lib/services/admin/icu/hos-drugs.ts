@@ -44,7 +44,7 @@ export const updateUnitPerKg = async (
   const supabase = await createClient()
   const { error } = await supabase
     .from('hos_drugs')
-    .update({ unit_per_kg: unitPerKgInput })
+    .update({ unit_per_kg: Number(unitPerKgInput) })
     .match({ hos_drug_id: hosDrugId })
 
   if (error) {
@@ -57,7 +57,7 @@ export const updateMlPerKg = async (mlPerKg: string, hosDrugId: string) => {
   const supabase = await createClient()
   const { error } = await supabase
     .from('hos_drugs')
-    .update({ ml_per_kg: mlPerKg })
+    .update({ ml_per_kg: Number(mlPerKg) })
     .match({ hos_drug_id: hosDrugId })
 
   if (error) {
@@ -133,13 +133,13 @@ export const insertHosDrug = async (
   const supabase = await createClient()
 
   const { error } = await supabase.from('hos_drugs').insert({
+    hos_drug_route: hosDrugRoute,
+    ml_per_kg: Number(mlPerKg),
+    unit_per_kg: Number(unitPerKg),
     hos_id: hosId,
     hos_drug_name: hosDrugName,
-    unit: unit,
-    unit_per_kg: unitPerKg,
-    ml_per_kg: mlPerKg,
-    hos_drug_route: hosDrugRoute,
-    caution: caution,
+    unit,
+    caution,
   })
 
   if (error) {

@@ -6,15 +6,14 @@ import type { IcuTxTableData } from '@/types/icu/tx-table'
 export const getIcuTxTableData = async (hosId: string, targetDate: string) => {
   const supabase = await createClient()
 
-  const { data, error } = await supabase
-    .rpc('get_icu_tx_table_data', {
-      hos_id_input: hosId,
-      target_date_input: targetDate,
-    })
+  const { data, error } = await supabase.rpc('get_icu_tx_table_data', {
+    hos_id_input: hosId,
+    target_date_input: targetDate,
+  })
 
   if (error) {
     throw new Error(error.message)
   }
 
-  return data as IcuTxTableData[]
+  return data as unknown as IcuTxTableData[]
 }

@@ -3,13 +3,13 @@
 import FeedbackCard from '@/components/hospital/super/feedbacks/feedback-card'
 import FeedbackFilter from '@/components/hospital/super/feedbacks/feedback-filter'
 import { Card, CardContent } from '@/components/ui/card'
-import { UserFeedbackType } from '@/types/vetool'
+import type { UserFeedback } from '@/lib/services/super/feedback/feedback'
 import { useState } from 'react'
 
 export default function FeedBackDashBoard({
   userFeedBackData,
 }: {
-  userFeedBackData: UserFeedbackType[]
+  userFeedBackData: UserFeedback[]
 }) {
   const [filter, setFilter] = useState('all')
 

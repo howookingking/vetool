@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 import type { UserApprovalHosJoined } from '@/types/on-boarding'
 import { redirect } from 'next/navigation'
 
-export const getUserAppoval = async () => {
+export const fetchUserApproval = async () => {
   const supabase = await createClient()
   const supabaseUser = await getSupabaseUser()
 
@@ -13,22 +13,22 @@ export const getUserAppoval = async () => {
     .from('user_approvals')
     .select(
       `
-          user_approval_id,
-          hos_id (name)
-        `,
+        user_approval_id,
+        hos_id (name)
+      `,
     )
     .match({
       user_id: supabaseUser?.id,
     })
-    .returns<UserApprovalHosJoined>()
     .single()
 
   if (error) {
     throw new Error(error.message)
   }
 
-  return data
+  return data as UserApprovalHosJoined
 }
+
 export const cancelApproval = async (userApprovalId: string) => {
   const supabase = await createClient()
 
@@ -120,8 +120,6 @@ export const checkBusinessNumber = async (businessNumber: string) => {
     console.error(error)
     redirect(`/error/?message=${error.message}`)
   }
-
-  console.log(data)
 
   return data === null
 }

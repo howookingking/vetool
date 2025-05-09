@@ -76,6 +76,4 @@ export type AdminDietData = Pick<
   hos_id: Pick<Hospital, 'hos_id' | 'name'>
 }
 
-export type Plans = 'free' | 'mild' | 'moderate' | 'severe'
-
 export type RawDrugs = Pick<RawDrug, 'raw_drug_id' | 'raw_drug_name'>

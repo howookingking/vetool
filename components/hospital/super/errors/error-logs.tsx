@@ -3,13 +3,13 @@
 import ErrorLogCard from '@/components/hospital/super/errors/error-log-card'
 import ErrorTypeFilter from '@/components/hospital/super/errors/error-type-filter'
 import { Card, CardContent } from '@/components/ui/card'
-import type { ErrorFeedbackType } from '@/types/vetool'
+import type { ErrorFeedback } from '@/lib/services/error-feedback/error-feedback'
 import { useMemo, useState } from 'react'
 
 export default function ErrorLogDashboard({
   errorLogs,
 }: {
-  errorLogs: ErrorFeedbackType[]
+  errorLogs: ErrorFeedback[]
 }) {
   const [filter, setFilter] = useState('all')
   const [search, setSearch] = useState('')

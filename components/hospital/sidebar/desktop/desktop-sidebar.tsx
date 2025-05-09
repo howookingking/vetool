@@ -3,13 +3,13 @@ import Feedback from '@/components/hospital/feedback/feedback'
 import DesktopSidebarItem from '@/components/hospital/sidebar/desktop/desktop-sidebar-item'
 import SidebarUserInfo from '@/components/hospital/sidebar/sidebar-user-info'
 import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
-import { type VetoolUser } from '@/types'
-import { type Plans } from '@/types/adimin'
+import type { Plan } from '@/constants/plans'
+import type { VetoolUser } from '@/types'
 
 type Props = {
   hosId: string
   vetoolUser: VetoolUser
-  plan: Plans
+  plan: Plan
 }
 
 export default async function DesktopSidebar({

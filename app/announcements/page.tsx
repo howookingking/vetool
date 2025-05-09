@@ -1,10 +1,10 @@
 import Announcements from '@/components/announcements/announcements'
 import HomepageHeader from '@/components/company/header/homepage-header'
-import { getAnnouncementList } from '@/lib/services/super/announcement/announcement'
+import { fetchAnnouncements } from '@/lib/services/super/announcement/announcement'
 import { createClient } from '@/lib/supabase/server'
 
 export default async function AnnouncementsPage() {
-  const announcementList = await getAnnouncementList()
+  const announcementList = await fetchAnnouncements()
   const supabase = await createClient()
   const {
     data: { user },

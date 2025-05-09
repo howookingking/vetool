@@ -1414,44 +1414,6 @@ export type Database = {
           },
         ]
       }
-      vetool_patches: {
-        Row: {
-          created_at: string
-          feedback_id: string | null
-          is_draft: boolean
-          patch_category: string
-          patch_content: string
-          patch_id: string
-          patch_title: string
-        }
-        Insert: {
-          created_at?: string
-          feedback_id?: string | null
-          is_draft?: boolean
-          patch_category?: string
-          patch_content: string
-          patch_id?: string
-          patch_title: string
-        }
-        Update: {
-          created_at?: string
-          feedback_id?: string | null
-          is_draft?: boolean
-          patch_category?: string
-          patch_content?: string
-          patch_id?: string
-          patch_title?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "vetool_patches_feedback_id_fkey"
-            columns: ["feedback_id"]
-            isOneToOne: false
-            referencedRelation: "vetool_feedbacks"
-            referencedColumns: ["feedback_id"]
-          },
-        ]
-      }
       vitals: {
         Row: {
           blood_pressure: string | null
@@ -1513,6 +1475,14 @@ export type Database = {
       copy_template_orders: {
         Args: { prev_chart_id_input: string; new_chart_id_input: string }
         Returns: undefined
+      }
+      get_chartable_vital_data: {
+        Args: { patient_id_input: string; in_date_input: string }
+        Returns: Json
+      }
+      get_chartable_vitals_data: {
+        Args: { icu_io_id_input: string }
+        Returns: Json
       }
       get_default_chart_data: {
         Args: { hos_id_input: string }

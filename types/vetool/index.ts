@@ -1,12 +1,4 @@
-import { VetoolErrors, VetoolFeedbacks, Announcements } from '@/types'
-
-export type UserFeedbackType = VetoolFeedbacks & {
-  user_id: { hos_id: { city: string; name: string } }
-}
-
-export type ErrorFeedbackType = VetoolErrors & {
-  user_id: { hos_id: { city: string; name: string } }
-}
+import type { Announcements, VetoolFeedbacks } from '@/types'
 
 export type AnnouncementFormProps = Omit<
   Announcements,
