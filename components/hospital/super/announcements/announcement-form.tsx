@@ -15,7 +15,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
-import { insertAnnouncement } from '@/lib/services/super/announcement/announcement'
+import { createAnnouncement } from '@/lib/services/super/announcement/announcement'
 import type { UserFeedback } from '@/lib/services/super/feedback/feedback'
 import { cn } from '@/lib/utils/utils'
 import type { AnnouncementFormProps } from '@/types/vetool'
@@ -74,7 +74,7 @@ export default function AnnouncementForm({
   const handleSubmit = async () => {
     setIsSubmitting(true)
 
-    await insertAnnouncement(formData)
+    await createAnnouncement(formData)
 
     toast({
       title: '공지사항이 등록되었습니다',
@@ -93,7 +93,7 @@ export default function AnnouncementForm({
   const handleSave = async () => {
     setIsSubmitting(true)
 
-    await insertAnnouncement(formData, true)
+    await createAnnouncement(formData, true)
 
     toast({
       title: '공지사항이 임시저장되었습니다',

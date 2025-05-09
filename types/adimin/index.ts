@@ -32,8 +32,16 @@ export type IcuChartsInCharge = {
   }
 }
 
+export type RefRangedVitalOrder =
+  | '체온'
+  | '심박수'
+  | '호흡수'
+  | '혈압'
+  | 'SPO2'
+  | '혈당'
+
 export type VitalRefRange = {
-  order_name: string
+  order_name: RefRangedVitalOrder
   canine: {
     min: number
     max: number

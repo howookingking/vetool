@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { type VitalRefRange } from '@/types/adimin'
+import type { VitalRefRange } from '@/types/adimin'
 import { Cat, Dog } from 'lucide-react'
 
 type Props = {
@@ -32,7 +32,6 @@ export default function SingleVitalRefRange({ vital, handleChange }: Props) {
               <Input
                 className="bg-white"
                 id={`${vital.order_name}-canine-min`}
-                type="number"
                 value={vital.canine.min}
                 onChange={(e) =>
                   handleChange(
@@ -83,7 +82,6 @@ export default function SingleVitalRefRange({ vital, handleChange }: Props) {
               <Input
                 className="bg-white"
                 id={`${vital.order_name}-feline-min`}
-                type="number"
                 value={vital.feline.min}
                 onChange={(e) =>
                   handleChange(

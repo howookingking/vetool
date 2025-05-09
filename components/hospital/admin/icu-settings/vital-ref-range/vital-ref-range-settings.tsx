@@ -10,7 +10,7 @@ import {
 import { toast } from '@/components/ui/use-toast'
 import { updateVitalRefRange } from '@/lib/services/admin/icu/vital-ref-range'
 import { cn } from '@/lib/utils/utils'
-import { type VitalRefRange } from '@/types/adimin'
+import type { VitalRefRange } from '@/types/adimin'
 import { ChevronDown, ChevronUp, LoaderCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -31,6 +31,36 @@ export default function VitalRefRangeSettings({
   const [localVitalRefRangeState, setLocalVitalRefRangeState] =
     useState(vitalRefRangeData)
 
+  const handleChange = (
+    orderName: string,
+    species: 'canine' | 'feline',
+    type: 'min' | 'max',
+    value: string,
+  ) => {
+    if (isNaN(Number(value))) {
+      toast({
+        title: '숫자만 입력 가능합니다',
+        variant: 'destructive',
+      })
+      return
+    }
+
+    setLocalVitalRefRangeState((prev) =>
+      prev.map((vital) => {
+        if (vital.order_name === orderName) {
+          return {
+            ...vital,
+            [species]: {
+              ...vital[species],
+              [type]: value,
+            },
+          }
+        }
+        return vital
+      }),
+    )
+  }
+
   const handleUpdateVitalRefRange = async (event: React.FormEvent) => {
     event.preventDefault()
     setIsUpdating(true)
@@ -40,35 +70,9 @@ export default function VitalRefRangeSettings({
     toast({
       title: '바이탈 정상 범위가 수정되었습니다',
     })
+
     setIsUpdating(false)
     refresh()
-  }
-
-  const handleChange = (
-    orderName: string,
-    species: 'canine' | 'feline',
-    type: 'min' | 'max',
-    value: string,
-  ) => {
-    if (isNaN(Number(value))) return
-
-    const roundedValue =
-      value === '' ? '' : parseFloat(parseFloat(value).toFixed(2))
-
-    setLocalVitalRefRangeState((prev) =>
-      prev.map((vital) => {
-        if (vital.order_name === orderName) {
-          return {
-            ...vital,
-            [species]: {
-              ...vital[species],
-              [type]: roundedValue,
-            },
-          }
-        }
-        return vital
-      }),
-    )
   }
 
   return (
@@ -101,6 +105,7 @@ export default function VitalRefRangeSettings({
             ))}
           </div>
         </CardContent>
+
         <CardFooter>
           <Button
             type="submit"
