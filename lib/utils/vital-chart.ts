@@ -47,80 +47,88 @@ import type { ChartableVital } from '@/constants/hospital/icu/chart/vital-chart'
 // "120회/분" => 120
 // "120회" => 120
 // "120청진" => 120
+// "촉진120" => 120
 // "정상" => NaN
+
+// 체온 관련 예시
+// "38" => 38
+// "38°C" => 38
+// "38도" => 38
+// "38(직장)" => 38
+// "술후 36 도" => 36
+// "측정불가" => NaN
+
+// 혈당 관련 예시
+// "120" => 120
+// "120mg/dL" => 120
+// "120mg/dL(정맥)" => 120
+// "120(정맥)" => 120
+// "120(RA 발바닥)" => 120
+// "120(오른 귀)" => 120
+// "왼발 150" => 150
+
+// SPO2 관련 예시
+// "95" => 95
+// "95%" => 95
+// "95(혓바닥)" => 95
+// "귀 95" => 95
+// "수술 중 95" => 95
+
+const removeParentheses = (input: string): string => {
+  return input.replace(/\([^)]*\)/g, '').trim()
+}
+
+const extractFirstNumber = (input: string): number | null => {
+  const match = input.match(/[\d.]+/)
+  return match ? Number(match[0]) : null
+}
 
 export const purifyVitalValue = (
   selectedVital: ChartableVital,
   input: string,
 ): number => {
+  const parenthesesRemoved = removeParentheses(input)
+
   switch (selectedVital) {
-    case '체중': {
-      // 관호안에 있는 값들 제거, 트림
-      const cleaned = input.replace(/\([^)]*\)/g, '').trim()
-
-      // 정규 표현식으로 숫자추출
-      const match = cleaned.match(/([\d.]+)/)
-
-      if (match) {
-        return Number(match[1])
-      }
-
-      return NaN
+    case '체중':
+    case '체온':
+    case '혈당':
+    case 'SPO2': {
+      const num = extractFirstNumber(parenthesesRemoved)
+      return num !== null ? num : NaN
     }
 
     case '혈압': {
-      // 관호안에 있는 값들 제거, 트림
-      const cleaned = input.replace(/\([^)]*\)/g, '').trim()
-
-      // 모든 2-3자리 숫자 추출
-      const matches = cleaned.match(/\d{2,3}/g)
-
+      const matches = parenthesesRemoved.match(/\d{2,3}/g)
       if (matches) {
         const numbers = matches.map(Number)
-        return Math.max(...numbers) // 수축기 혈압만 return
+        return Math.max(...numbers) // 수축기 혈압
       }
-
       return NaN
     }
 
     case '호흡수': {
-      const lower = input.toLowerCase().trim()
+      const lower = parenthesesRemoved.toLowerCase()
 
-      // P, panting, 팬팅, 펜팅 만 입력한 경우 200으로 처리
-      if (
-        lower === 'panting' ||
-        lower === 'p' ||
-        lower === '팬팅' ||
-        lower === '펜팅'
-      ) {
+      if (['panting', 'p', '팬팅', '펜팅'].includes(lower)) {
         return 200
       }
 
-      // 관호안에 있는 값들 제거, 트림
-      const cleaned = input.replace(/\([^)]*\)/g, '').trim()
-
-      // 숫자 추출
-      const match = cleaned.match(/\d{1,3}/g)
-
-      if (match && match.length > 0) {
-        return Number(match[0]) // 첫 번째 숫자만 return
+      const matches = parenthesesRemoved.match(/\d{1,3}/g)
+      if (matches?.length) {
+        return Number(matches[0])
       }
 
       return NaN
     }
 
     case '심박수': {
-      const cleaned = input
-        .replace(/\([^)]*\)/g, '') // 괄호 제거
-        .replace(/[^\d]/g, '') // 숫자가 아닌 문자 제거
-        .trim()
-
-      const value = Number(cleaned)
-
+      const digitsOnly = parenthesesRemoved.replace(/[^\d]/g, '')
+      const value = Number(digitsOnly)
       return isNaN(value) ? NaN : value
     }
 
     default:
-      return Number(input)
+      return NaN
   }
 }

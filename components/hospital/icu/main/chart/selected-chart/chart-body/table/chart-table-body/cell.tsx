@@ -81,6 +81,7 @@ export default function Cell({
 }: Props) {
   const { upsertTx, isSubmitting } = useUpsertTx({ hosId })
   const { calcVitalResult, isAbnormalVital } = useAbnormalVital(
+    orderName,
     treatment,
     rowVitalRefRange,
   )
