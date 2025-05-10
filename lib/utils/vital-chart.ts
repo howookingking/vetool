@@ -1,7 +1,6 @@
 import type { ChartableVital } from '@/constants/hospital/icu/chart/vital-chart'
-import type { VitalData } from '@/types/icu/chart'
 
-// 체중(BW) 관련 예시
+// 체중 관련 예시
 // "5kg" =>	5
 // "5 kg"	=> 5
 // "5kg(넥칼라ㅇ)" =>	5
@@ -13,7 +12,7 @@ import type { VitalData } from '@/types/icu/chart'
 // "몸무게 약 8.1kg(리드줄 있음)" => 8.1
 // "N/A" or "없음" =>	NaN
 
-// 혈압(BP) 관련 예시
+// 혈압 관련 예시
 // "120/80"	=> 120
 // "80/120"	=> 120
 // "120mmHg" => 120
@@ -28,7 +27,7 @@ import type { VitalData } from '@/types/icu/chart'
 // "측정값 120 (자동)" => 120
 // "없음" or "N/A" => NaN
 
-// 호흡수(R) 관련 예시
+// 호흡수 관련 예시
 // "panting" => 200
 // "P" => 200
 // "팬팅" => 200
@@ -42,7 +41,7 @@ import type { VitalData } from '@/types/icu/chart'
 // "30, 2" => 30
 // "정상" => NaN
 
-// 심박수(HR) 관련 예시
+// 심박수 관련 예시
 // "120" => 120
 // "120bpm" => 120
 // "120회/분" => 120
@@ -52,14 +51,12 @@ import type { VitalData } from '@/types/icu/chart'
 
 export const purifyVitalValue = (
   selectedVital: ChartableVital,
-  singleVitalTx: VitalData,
+  input: string,
 ): number => {
-  const result = singleVitalTx.icu_chart_tx_result
-
   switch (selectedVital) {
     case '체중': {
       // 관호안에 있는 값들 제거, 트림
-      const cleaned = result.replace(/\([^)]*\)/g, '').trim()
+      const cleaned = input.replace(/\([^)]*\)/g, '').trim()
 
       // 정규 표현식으로 숫자추출
       const match = cleaned.match(/([\d.]+)/)
@@ -73,7 +70,7 @@ export const purifyVitalValue = (
 
     case '혈압': {
       // 관호안에 있는 값들 제거, 트림
-      const cleaned = result.replace(/\([^)]*\)/g, '').trim()
+      const cleaned = input.replace(/\([^)]*\)/g, '').trim()
 
       // 모든 2-3자리 숫자 추출
       const matches = cleaned.match(/\d{2,3}/g)
@@ -87,7 +84,7 @@ export const purifyVitalValue = (
     }
 
     case '호흡수': {
-      const lower = result.toLowerCase().trim()
+      const lower = input.toLowerCase().trim()
 
       // P, panting, 팬팅, 펜팅 만 입력한 경우 200으로 처리
       if (
@@ -100,7 +97,7 @@ export const purifyVitalValue = (
       }
 
       // 관호안에 있는 값들 제거, 트림
-      const cleaned = result.replace(/\([^)]*\)/g, '').trim()
+      const cleaned = input.replace(/\([^)]*\)/g, '').trim()
 
       // 숫자 추출
       const match = cleaned.match(/\d{1,3}/g)
@@ -113,7 +110,7 @@ export const purifyVitalValue = (
     }
 
     case '심박수': {
-      const cleaned = result
+      const cleaned = input
         .replace(/\([^)]*\)/g, '') // 괄호 제거
         .replace(/[^\d]/g, '') // 숫자가 아닌 문자 제거
         .trim()
@@ -124,6 +121,6 @@ export const purifyVitalValue = (
     }
 
     default:
-      return Number(result)
+      return Number(input)
   }
 }

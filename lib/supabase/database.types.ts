@@ -1772,6 +1772,14 @@ export type Database = {
         }
         Returns: undefined
       }
+      update_icu_chart_table_weight_and_insert_vitals_table: {
+        Args: {
+          icu_chart_order_id_input: string
+          weight_input: string
+          weight_measured_date_input: string
+        }
+        Returns: undefined
+      }
       update_icu_patient_weight: {
         Args: {
           patient_id_input: string

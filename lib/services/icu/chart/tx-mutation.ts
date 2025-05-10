@@ -2,8 +2,8 @@
 
 import { TxLocalState } from '@/lib/store/icu/icu-tx'
 import { createClient } from '@/lib/supabase/server'
-import { isValidWeightOrderTx } from '@/lib/utils/utils'
-import { type TxLog } from '@/types/icu/chart'
+import { purifyVitalValue } from '@/lib/utils/vital-chart'
+import type { TxLog } from '@/types/icu/chart'
 import { redirect } from 'next/navigation'
 
 export const upsertIcuTx = async (
@@ -32,25 +32,41 @@ export const upsertIcuTx = async (
     })
     .select('icu_chart_tx_id')
 
-  if (
-    isValidWeightOrderTx(
-      txLocalState?.icuChartOrderType!,
-      txLocalState?.icuChartOrderName!,
-      txLocalState?.txResult!,
-    )
-  ) {
-    const { error: weightError } = await supabase.rpc(
-      'update_weight_and_insert_vitals_by_order',
-      {
-        icu_chart_order_id_input: txLocalState?.icuChartOrderId!,
-        weight_input: txLocalState?.txResult!,
-        weight_measured_date_input: weightMeasuredDate,
-      },
-    )
+  // 체중인 경우
+  // 1. 체중이 입력해도 되는 값인지 확인
+  // 2. 값이 괜찮다면 purified된 값을 icu_charts 테이블 업데이트(weight, weight_measured_date) 및 vitals 테이블 추가(body_weight)
 
-    if (weightError) {
-      console.error(weightError)
-      redirect(`/error?message=${weightError.message}`)
+  // 체중 관련 예시
+  // "5kg" =>	5
+  // "5 kg"	=> 5
+  // "5kg(넥칼라ㅇ)" =>	5
+  // "5(kg)" =>	5
+  // "5(넥칼라x)"	=> 5
+  // "약 5.3kg(넥칼라 있음)" =>	5.3
+  // "체중 6.7kg"	=> 6.7
+  // " 7.2 kg "	=> 7.2
+  // "몸무게 약 8.1kg(리드줄 있음)" => 8.1
+  // "N/A" or "없음" =>	NaN
+
+  if (txLocalState?.icuChartOrderName === '체중') {
+    const purifiedWeight = purifyVitalValue(
+      '체중',
+      txLocalState?.txResult ?? '',
+    )
+    if (purifiedWeight) {
+      const { error: weightError } = await supabase.rpc(
+        'update_icu_chart_table_weight_and_insert_vitals_table',
+        {
+          icu_chart_order_id_input: txLocalState?.icuChartOrderId!,
+          weight_input: String(purifiedWeight),
+          weight_measured_date_input: weightMeasuredDate,
+        },
+      )
+
+      if (weightError) {
+        console.error(weightError)
+        redirect(`/error?message=${weightError.message}`)
+      }
     }
   }
 

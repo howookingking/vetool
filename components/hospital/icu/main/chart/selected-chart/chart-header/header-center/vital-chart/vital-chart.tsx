@@ -39,7 +39,7 @@ export default function VitalChart({
 
     return selectedVitalArray
       .map((item) => {
-        const value = purifyVitalValue(selectedVital, item)
+        const value = purifyVitalValue(selectedVital, item.icu_chart_tx_result)
         const date = `${item.target_date} ${`${((item.time - 1 + baselineTime) % 24).toString().padStart(2, '0')}:00`}`
 
         if (isNaN(value) || !date) return null
