@@ -8,37 +8,39 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { VITALS } from '@/constants/hospital/icu/chart/vital'
-import { parseVitalValue } from '@/lib/utils/analysis'
-import { type VitalChartData, type VitalData } from '@/types/icu/chart'
-import { useEffect, useMemo, useState } from 'react'
+import type { ChartableVital } from '@/constants/hospital/icu/chart/vital-chart'
+import { purifyVitalValue } from '@/lib/utils/vital-chart'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
+import type { VitalChartData, VitalData } from '@/types/icu/chart'
+import { useMemo, useState } from 'react'
 
 type Props = {
-  currentVital: string
+  selectedVital: ChartableVital
   inDate: string
-  vitalData: Record<string, VitalData[]>
+  chartableVitals: Record<string, VitalData[]>
 }
 
-export default function VitalChart({ currentVital, inDate, vitalData }: Props) {
-  const initialLength =
-    VITALS.find((vital) => vital.title === currentVital)?.initialLength || 10
+export default function VitalChart({
+  selectedVital,
+  inDate,
+  chartableVitals,
+}: Props) {
+  const {
+    basicHosData: { baselineTime },
+  } = useBasicHosDataContext()
 
-  const [displayCount, setDisplayCount] = useState<number>(initialLength)
-
-  useEffect(() => {
-    setDisplayCount(initialLength)
-  }, [currentVital, initialLength])
+  const [displayCount, setDisplayCount] = useState(10)
 
   // 차트 데이터 포맷 변환 및 정렬
-  const formattedData: VitalChartData[] = useMemo(() => {
-    if (!vitalData[currentVital]) return []
+  const formattedSelectedVitalData: VitalChartData[] = useMemo(() => {
+    const selectedVitalArray = chartableVitals[selectedVital]
 
-    return vitalData[currentVital]
+    if (!selectedVitalArray) return []
+
+    return selectedVitalArray
       .map((item) => {
-        const value = parseVitalValue(currentVital, item)
-        const date = `${item?.target_date ?? ''} ${
-          item?.time ? `${item.time.toString().padStart(2, '0')}:00` : ''
-        }`
+        const value = purifyVitalValue(selectedVital, item)
+        const date = `${item.target_date} ${`${((item.time - 1 + baselineTime) % 24).toString().padStart(2, '0')}:00`}`
 
         if (isNaN(value) || !date) return null
 
@@ -46,33 +48,40 @@ export default function VitalChart({ currentVital, inDate, vitalData }: Props) {
           date,
           value,
           vitalId: item.icu_chart_tx_id,
-          vitalName: item.icu_chart_order_name || '체중',
+          vitalName: selectedVital,
         }
       })
       .filter((item) => item !== null)
       .slice(0, displayCount)
       .reverse()
-  }, [currentVital, vitalData, displayCount])
+  }, [selectedVital, chartableVitals, displayCount, baselineTime])
 
-  const hasMoreData = (vitalData[currentVital] || []).length > displayCount
-
-  const handleLoadMore = () => {
-    setDisplayCount((prev: number) => prev + initialLength)
-  }
+  const hasMoreData =
+    (chartableVitals[selectedVital] ?? []).length > displayCount
 
   return (
     <div className="flex h-full w-full justify-center">
-      {formattedData.length > 0 ? (
+      {formattedSelectedVitalData.length === 0 && (
+        <NoResultSquirrel
+          text="분석할 데이터가 없습니다"
+          size="lg"
+          className="h-full flex-col"
+        />
+      )}
+
+      {formattedSelectedVitalData.length > 0 && (
         <Card className="h-full w-full border-0 shadow-none">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div className="space-y-2">
                 <CardTitle className="flex h-8 items-center gap-2">
-                  {currentVital} 변화 추이
+                  {selectedVital} 변화 추이
                   {hasMoreData && (
                     <Button
                       variant="default"
-                      onClick={handleLoadMore}
+                      onClick={() => {
+                        setDisplayCount((prev) => prev + 10)
+                      }}
                       size="sm"
                     >
                       더보기
@@ -80,8 +89,8 @@ export default function VitalChart({ currentVital, inDate, vitalData }: Props) {
                   )}
                 </CardTitle>
                 <CardDescription>
-                  최근 {formattedData.length}개의 데이터
-                  {currentVital === '호흡수' && (
+                  최근 {formattedSelectedVitalData.length}개의 데이터
+                  {selectedVital === '호흡수' && (
                     <span className="pl-1 text-muted-foreground">
                       (panting은 200으로 표시됩니다)
                     </span>
@@ -92,19 +101,13 @@ export default function VitalChart({ currentVital, inDate, vitalData }: Props) {
           </CardHeader>
           <CardContent>
             <VitalChartContent
-              formattedData={formattedData}
+              formattedSelectedVitalData={formattedSelectedVitalData}
               displayCount={displayCount}
-              currentVital={currentVital}
+              selectedVital={selectedVital}
               inDate={inDate}
             />
           </CardContent>
         </Card>
-      ) : (
-        <NoResultSquirrel
-          text="분석할 데이터가 없습니다"
-          size="lg"
-          className="h-full flex-col"
-        />
       )}
     </div>
   )

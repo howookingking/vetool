@@ -1,5 +1,4 @@
 import type { ChartData, IcuAnalysisData } from '@/types/icu/analysis'
-import { VitalData } from '@/types/icu/chart'
 import { differenceInDays } from 'date-fns'
 import { DateRange } from 'react-day-picker'
 
@@ -94,69 +93,4 @@ export const calculateDailyAverage = (
   }
 
   return dailyAverages
-}
-
-// 기본값을 설정하는 헬퍼 함수
-const parseWithDefault = (
-  value?: string | null,
-  defaultValue: string = '0',
-): number => {
-  return parseFloat(value || defaultValue)
-}
-
-/**
- * 바이탈 측정 값 파싱 함수
- * @param currentVital 현재 측정 중인 바이탈 종류
- * @param item 현재 측정 중인 바이탈 데이터
- * @returns 파싱된 바이탈 값
- */
-export const parseVitalValue = (
-  currentVital: string,
-  item: VitalData,
-): number => {
-  const result = item.icu_chart_tx_result
-
-  if (!item) return 0
-
-  switch (currentVital) {
-    case '체중':
-      if (result?.includes('kg')) {
-        return parseWithDefault(result.split('kg')[0])
-      }
-
-      return parseWithDefault(result)
-
-    case '심박수':
-    case '활력':
-      return parseWithDefault(result)
-
-    case '혈압':
-      if (result?.includes('#')) {
-        return parseWithDefault(result.split('#')[0])
-      }
-
-      if (result?.includes('/')) {
-        const [systolic, diastolic] = result.split('/').map(parseFloat)
-        return Math.max(systolic, diastolic)
-      }
-
-      return parseWithDefault(result)
-
-    case '호흡수':
-      if (result?.includes('sr')) {
-        return parseWithDefault(result.split('sr')[0].trim())
-      }
-
-      if (
-        result?.toLowerCase().includes('panting') ||
-        result?.toLowerCase().includes('p')
-      ) {
-        return 200
-      }
-
-      return parseWithDefault(result)
-
-    default:
-      return parseWithDefault(result)
-  }
 }
