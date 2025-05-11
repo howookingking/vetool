@@ -56,7 +56,6 @@ export type SelectedChart = Pick<
   | 'target_date'
   | 'icu_chart_id'
   | 'in_charge'
-  | 'der_calc_factor'
   | 'urgency'
   | 'hos_id'
 > & {
