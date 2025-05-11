@@ -1,8 +1,8 @@
 import { Badge } from '@/components/ui/badge'
-import { type Plans } from '@/constants/plans'
+import { type Plan } from '@/constants/plans'
 
 type Props = {
-  plan: Plans
+  plan: Plan
   invitableVetCount: number
   maxVets: number
 }

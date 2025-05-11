@@ -1,10 +1,15 @@
 import IcuSettingsTab from '@/components/hospital/admin/icu-settings/icu-settings-tab'
+import type { OrderFontSize } from '@/constants/admin/order-font-size'
+import type { Plan } from '@/constants/plans'
 import {
   getBasicHosData,
   getVetListData,
 } from '@/lib/services/icu/get-basic-hos-data'
-import { BasicHosDataProvider } from '@/providers/basic-hos-data-context-provider'
-import { type IcuOrderColors, type VitalRefRange } from '@/types/adimin'
+import {
+  BasicHosDataProvider,
+  OrderColorDisplay,
+} from '@/providers/basic-hos-data-context-provider'
+import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
 
 export default async function AdminIcuSettingsPage(props: {
   params: Promise<{ hos_id: string }>
@@ -25,10 +30,11 @@ export default async function AdminIcuSettingsPage(props: {
         showTxUser: basicHosData.show_tx_user,
         sidebarData: [],
         vitalRefRange: basicHosData.vital_ref_range as VitalRefRange[],
-        orderFontSizeData: basicHosData.order_font_size,
+        orderFontSizeData: basicHosData.order_font_size as OrderFontSize,
         timeGuidelineData: basicHosData.time_guidelines,
-        orderColorDisplay: basicHosData.order_color_display,
-        plan: basicHosData.plan,
+        orderColorDisplay:
+          basicHosData.order_color_display as OrderColorDisplay,
+        plan: basicHosData.plan as Plan,
         isInChargeSystem: basicHosData.is_in_charge_system,
         baselineTime: basicHosData.baseline_time,
       }}

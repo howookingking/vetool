@@ -12,3 +12,5 @@ export const ORDER_FONT_SIZES = {
     desc: '16px',
   },
 } as const
+
+export type OrderFontSize = keyof typeof ORDER_FONT_SIZES

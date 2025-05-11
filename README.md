@@ -50,7 +50,7 @@ export default function DefaultOrdersTable({
 
 ### CRUD 함수 명명법
 
-- create : insertTodo / isInserting
+- create : createTodo / isCreating
 - read : fetchTodo / isFetching
 - update : updateTodo / isUpdating
 - delete : deleteTodo / isDeleting
@@ -74,10 +74,30 @@ export default function CalculatorSheetContent() {
 ### 하나의 object를 가져오는 경우, 다수의 객체를 가져오는 경우 함수 명명
 
 ```
-getTodo
-getTodos
+fetchTodo
+fetchTodos
 ```
 
 ### 타입선언에 관하여
 
 - 타입 폴더에서 선언하지 말고 사용이 밀접한 곳에서 선언
+- 데이터를 가져오는 함수에 선언하기
+
+### page.tsx 파일의 컴포넌트 명
+
+```tsx
+import DotLottie from '@/components/common/dot-lottie'
+import ApprovalWaitingContents from '@/components/on-boarding/approval-waiting-contents'
+import { fetchUserApproval } from '@/lib/services/on-boarding/on-boarding'
+
+export default async function ApprovalWaitingPage() {
+  const userApprovalData = await fetchUserApproval()
+
+  return (
+    <>
+      <ApprovalWaitingContents userApprovalData={userApprovalData} />
+      <DotLottie className="mt-4 w-full" path="/dot-lottie/waiting.lottie" />
+    </>
+  )
+}
+```

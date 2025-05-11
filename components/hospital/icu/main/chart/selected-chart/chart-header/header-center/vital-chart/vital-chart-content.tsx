@@ -1,31 +1,34 @@
 import VitalChartDateTick from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-center/vital-chart/vital-chart-date-tick'
 import VitalChartTooltip from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-center/vital-chart/vital-chart-tooltip'
 import { ChartContainer, ChartTooltip } from '@/components/ui/chart'
-import { CHART_CONFIG } from '@/constants/hospital/icu/chart/vital'
-import { type VitalChartData } from '@/types/icu/chart'
+import {
+  CHART_CONFIG,
+  type ChartableVital,
+} from '@/constants/hospital/icu/chart/vital-chart'
+import type { VitalChartData } from '@/types/icu/chart'
 import { CartesianGrid, LabelList, Line, LineChart, XAxis } from 'recharts'
 
 type Props = {
-  formattedData: VitalChartData[]
+  formattedSelectedVitalData: VitalChartData[]
   displayCount: number
-  currentVital: string
+  selectedVital: ChartableVital
   inDate: string
 }
 
 export default function VitalChartContent({
-  formattedData,
+  formattedSelectedVitalData,
   displayCount,
-  currentVital,
+  selectedVital,
   inDate,
 }: Props) {
   const barColor = Object.values(CHART_CONFIG).find(
-    (item) => item.label === currentVital,
+    (item) => item.label === selectedVital,
   )?.color
 
   return (
     <ChartContainer config={CHART_CONFIG} className="h-[70vh] w-full">
       <LineChart
-        data={formattedData}
+        data={formattedSelectedVitalData}
         margin={{
           top: 42,
           left: 88,

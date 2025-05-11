@@ -7,10 +7,9 @@ import { redirect } from 'next/navigation'
 export const getDefaultChartOrders = async (hosId: string) => {
   const supabase = await createClient()
 
-  const { data, error } = await supabase
-    .rpc('get_default_chart_data', {
-      hos_id_input: hosId,
-    })
+  const { data, error } = await supabase.rpc('get_default_chart_data', {
+    hos_id_input: hosId,
+  })
 
   if (error) {
     throw new Error(error.message)

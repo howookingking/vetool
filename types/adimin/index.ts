@@ -32,8 +32,16 @@ export type IcuChartsInCharge = {
   }
 }
 
+export type RefRangedVitalOrder =
+  | '체온'
+  | '심박수'
+  | '호흡수'
+  | '혈압'
+  | 'SPO2'
+  | '혈당'
+
 export type VitalRefRange = {
-  order_name: string
+  order_name: RefRangedVitalOrder
   canine: {
     min: number
     max: number
@@ -75,7 +83,5 @@ export type AdminDietData = Pick<
 > & {
   hos_id: Pick<Hospital, 'hos_id' | 'name'>
 }
-
-export type Plans = 'free' | 'mild' | 'moderate' | 'severe'
 
 export type RawDrugs = Pick<RawDrug, 'raw_drug_id' | 'raw_drug_name'>

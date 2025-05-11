@@ -56,7 +56,6 @@ export type SelectedChart = Pick<
   | 'target_date'
   | 'icu_chart_id'
   | 'in_charge'
-  | 'der_calc_factor'
   | 'urgency'
   | 'hos_id'
 > & {
@@ -172,13 +171,11 @@ export type VitalTxData = Pick<
   Pick<IcuOrders, 'icu_chart_order_name'>
 
 export type VitalData = {
-  icu_chart_tx_id?: string
-  icu_chart_order_name?: string
-  icu_chart_tx_result?: string | null
-  target_date?: string
-  time?: number
+  icu_chart_tx_id: string
+  icu_chart_tx_result: string
+  target_date: string
+  time: number
   created_at: string
-  body_weight?: string | null
 }
 
 export type Filter = {

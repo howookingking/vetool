@@ -10,10 +10,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
-import { VITALS } from '@/constants/hospital/icu/chart/vital'
-import { getVitalTxData } from '@/lib/services/icu/chart/vitals'
+import type { ChartableVital } from '@/constants/hospital/icu/chart/vital-chart'
+import { fetchChartableVitalsData } from '@/lib/services/icu/chart/vitals'
 import type { VitalData } from '@/types/icu/chart'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { LineChart, LoaderCircle } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
@@ -24,44 +24,27 @@ const LazyVitalChart = dynamic(() => import('./vital-chart'), {
 })
 
 type Props = {
-  patientId: string
+  icuIoId: string
   inDate: string
 }
 
-export default function VitalChartDialog({ patientId, inDate }: Props) {
+export default function VitalChartDialog({ icuIoId, inDate }: Props) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [currentVital, setCurrentVital] = useState('체중')
-  const [isLoading, setIsLoading] = useState(false)
-  const [vitalData, setVitalData] = useState<Record<string, VitalData[]>>({})
+  const [selectedVital, setSelectedVital] = useState<ChartableVital>('체중')
+  const [isFetching, setIsFetching] = useState(false)
+  const [chartableVitals, setChartableVitals] = useState<
+    Record<string, VitalData[]>
+  >({})
 
   const handleOpenChange = async (isDialogOpen: boolean) => {
     if (isDialogOpen) {
-      setCurrentVital('체중')
-      setIsLoading(true)
-      const fetchedVitalData = await getVitalTxData(patientId, inDate)
+      setIsFetching(true)
 
-      const groupedData = fetchedVitalData.reduce(
-        (acc, item) => {
-          const orderName = item.icu_chart_order_name
+      // { '체중': [...], '체온': [...], '혈압': [...], ... }
+      const fetchedVitalData = await fetchChartableVitalsData(icuIoId)
+      setChartableVitals(fetchedVitalData)
 
-          const vitalName = VITALS.find((vital) =>
-            orderName.includes(vital.title),
-          )?.title
-
-          if (!vitalName) return acc
-
-          if (!acc[vitalName]) {
-            acc[vitalName] = []
-          }
-
-          acc[vitalName].push(item)
-          return acc
-        },
-        {} as Record<string, VitalData[]>,
-      )
-
-      setVitalData(groupedData)
-      setIsLoading(false)
+      setIsFetching(false)
     }
     setIsDialogOpen(isDialogOpen)
   }
@@ -75,7 +58,7 @@ export default function VitalChartDialog({ patientId, inDate }: Props) {
           className="hidden shrink-0 md:flex"
           data-guide="vital-chart"
         >
-          {isLoading ? (
+          {isFetching ? (
             <LoaderCircle className="animate-spin" />
           ) : (
             <LineChart size={18} />
@@ -90,14 +73,14 @@ export default function VitalChartDialog({ patientId, inDate }: Props) {
         </VisuallyHidden>
 
         <VitalChartSidebar
-          currentVital={currentVital}
-          setCurrentVital={setCurrentVital}
+          currentVital={selectedVital}
+          setCurrentVital={setSelectedVital}
         />
 
         <LazyVitalChart
-          currentVital={currentVital}
+          selectedVital={selectedVital}
           inDate={inDate}
-          vitalData={vitalData}
+          chartableVitals={chartableVitals}
         />
       </DialogContent>
     </Dialog>

@@ -3,7 +3,6 @@
 import { Button } from '@/components/ui/button'
 import { logout } from '@/lib/services/auth/authentication'
 import { cancelApproval } from '@/lib/services/on-boarding/on-boarding'
-import { cn } from '@/lib/utils/utils'
 import { UserApprovalHosJoined } from '@/types/on-boarding'
 import { LoaderCircle } from 'lucide-react'
 import { useState } from 'react'
@@ -52,7 +51,7 @@ export default function ApprovalWaitingContents({
           >
             승인요청 취소
             <LoaderCircle
-              className={cn(isCanceling ? 'ml-2 animate-spin' : 'hidden')}
+              className={isCanceling ? 'ml-2 animate-spin' : 'hidden'}
             />
           </Button>
         </form>
@@ -65,7 +64,7 @@ export default function ApprovalWaitingContents({
           >
             홈으로 이동
             <LoaderCircle
-              className={cn(isSubmitting ? 'ml-2 animate-spin' : 'hidden')}
+              className={isSubmitting ? 'ml-2 animate-spin' : 'hidden'}
             />
           </Button>
         </form>

@@ -2,12 +2,11 @@ import PasteTemplateOrderDialog from '@/components/hospital/icu/main/chart/paste
 import OrderWidthButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/order-width-button'
 import SortingButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/sorting-button'
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { type OrderWidth } from '@/types/hospital/order'
-import { type SelectedChart, type SelectedIcuOrder } from '@/types/icu/chart'
-import { type Dispatch, type SetStateAction } from 'react'
+import type { OrderWidth } from '@/types/hospital/order'
+import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
+import type { Dispatch, SetStateAction } from 'react'
 
 type Props = {
   preview?: boolean

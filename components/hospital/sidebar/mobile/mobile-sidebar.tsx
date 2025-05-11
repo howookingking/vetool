@@ -13,21 +13,21 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
-import { type VetoolUser } from '@/types'
-import { type Plans } from '@/types/adimin'
-import { hasPermissions } from '@/constants/plans'
+import { hasPermissions, type Plan } from '@/constants/plans'
+import type { VetoolUser } from '@/types'
 import { Menu } from 'lucide-react'
 import { useState } from 'react'
 
 type Props = {
   hosId: string
   vetoolUser: VetoolUser
-  plan: Plans
+  plan: Plan
 }
 
 export default function MobileSidebar({ hosId, vetoolUser, plan }: Props) {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
-  const isCalculatorEnabled = hasPermissions(plan, 'CALCULATOR')
+  // 요금제
+  // const isCalculatorEnabled = hasPermissions(plan, 'CALCULATOR')
 
   return (
     <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>

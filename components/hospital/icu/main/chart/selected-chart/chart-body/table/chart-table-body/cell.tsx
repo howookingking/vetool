@@ -5,13 +5,12 @@ import { TableCell } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
 import useAbnormalVital from '@/hooks/use-abnormal-vital'
 import useCellAutofocus from '@/hooks/use-cell-autofocus'
-import useIsMobile from '@/hooks/use-is-mobile'
 import { useLongPress } from '@/hooks/use-long-press'
 import useUpsertTx from '@/hooks/use-upsert-tx'
 import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
 import { TxLocalState } from '@/lib/store/icu/icu-tx'
 import { cn } from '@/lib/utils/utils'
-import { type Treatment, type TxLog } from '@/types/icu/chart'
+import type { Treatment, TxLog } from '@/types/icu/chart'
 import { format } from 'date-fns'
 import { Image as ImageIcon } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
@@ -80,8 +79,9 @@ export default function Cell({
   isInPendingQueue,
   isInOrderTimePendingQueue,
 }: Props) {
-  const { upsertTx } = useUpsertTx({ hosId })
+  const { upsertTx, isSubmitting } = useUpsertTx({ hosId })
   const { calcVitalResult, isAbnormalVital } = useAbnormalVital(
+    orderName,
     treatment,
     rowVitalRefRange,
   )
@@ -148,23 +148,29 @@ export default function Cell({
   }
 
   const handleUpsertBriefTxResult = async () => {
+    // 아무것도 입력하지 않은 경우
+    if (briefTxResultInput.trim() === '') {
+      setBriefTxResultInput('')
+      return
+    }
+
+    // 기존 처치 결과와 동일한 경우
     if ((treatment?.tx_result ?? '') === briefTxResultInput.trim()) {
       setBriefTxResultInput('')
       return
     }
 
-    if (icuChartTxId && briefTxResultInput.trim() === '') {
-      setBriefTxResultInput('')
-      return
-    }
+    const [trimmedTxResult, trimmedTxComment] = briefTxResultInput
+      .split('$')
+      .map((item) => item.trim())
 
     const txData = {
       icuChartOrderId,
       icuChartOrderType: orderType,
       icuChartOrderName: orderName,
       time,
-      txResult: briefTxResultInput.replace(/^"|"$/g, '').trim(),
-      txComment: '',
+      txResult: trimmedTxResult,
+      txComment: trimmedTxComment ?? '',
       txId: icuChartTxId,
       txLog: treatment?.tx_log as TxLog[] | null,
     }
@@ -175,15 +181,13 @@ export default function Cell({
     } else {
       let updatedLogs = txData.txLog ?? []
 
-      if (txData.txResult && txData.txResult.trim() !== '') {
-        const newLog = {
-          result: txData.txResult.split('$')[0].trim(),
-          name: '-',
-          createdAt: format(new Date(), 'yyyy-MM-dd HH:mm'),
-        }
-
-        updatedLogs = [...updatedLogs, newLog]
+      const newLog = {
+        result: trimmedTxResult,
+        name: '-',
+        createdAt: format(new Date(), 'yyyy-MM-dd HH:mm'),
       }
+
+      updatedLogs = [...updatedLogs, newLog]
 
       await upsertTx(txData, updatedLogs)
 
@@ -234,7 +238,7 @@ export default function Cell({
 
             'h-11 min-w-12 rounded-none border-none px-1 text-center ring-inset focus-visible:ring-2 md:min-w-0',
           )}
-          disabled={preview}
+          disabled={preview || isSubmitting}
           value={briefTxResultInput}
           onChange={(e) => setBriefTxResultInput(e.target.value)}
           onBlur={handleUpsertBriefTxResult}

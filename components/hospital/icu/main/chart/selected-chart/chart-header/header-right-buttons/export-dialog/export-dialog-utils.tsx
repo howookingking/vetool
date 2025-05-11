@@ -10,7 +10,7 @@ import { BasicHosDataProvider } from '@/providers/basic-hos-data-context-provide
 import type { IcuOrderColors } from '@/types/adimin'
 import type { IcuSidebarIoData, SelectedChart, Vet } from '@/types/icu/chart'
 import html2canvas from 'html2canvas'
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { createRoot } from 'react-dom/client'
 
 // 현재 화면 기준 ScrollWidth & ScrollHeight를 가진 HTMLCanvasElement를 생성
@@ -124,7 +124,11 @@ export const handleExport = async (
     if (dateRange) {
       const canvases = await Promise.all(
         dateRange.map(async ({ target_date }) => {
-          const chartData = await getIcuChart(hosId, target_date, patientId)
+          const chartData = await getIcuChart(
+            hosId,
+            target_date as string,
+            patientId,
+          )
           const dateChartData = {
             ...chartData,
             target_date,

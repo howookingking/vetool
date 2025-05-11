@@ -1,6 +1,6 @@
 import IcuPatientUpdateDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-center/icu-patient-update-dialog'
 import VitalChartDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-center/vital-chart/vital-chart-dialog'
-import { type SelectedChart } from '@/types/icu/chart'
+import type { SelectedChart } from '@/types/icu/chart'
 
 export default function HeaderCenter({
   chartData,
@@ -18,10 +18,7 @@ export default function HeaderCenter({
         icuChartId={chartData.icu_chart_id}
       />
 
-      <VitalChartDialog
-        patientId={patient.patient_id}
-        inDate={icu_io.in_date}
-      />
+      <VitalChartDialog icuIoId={icu_io.icu_io_id} inDate={icu_io.in_date} />
     </div>
   )
 }
