@@ -1,7 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import type { UserFeedbackType } from '@/types/vetool'
+import type { VetoolFeedbacks } from '@/types'
 import { redirect } from 'next/navigation'
 
 export const sendFeedback = async (
@@ -21,6 +21,10 @@ export const sendFeedback = async (
   }
 }
 
+export type UserFeedback = VetoolFeedbacks & {
+  user_id: { hos_id: { city: string; name: string } }
+}
+
 export const getFeedback = async () => {
   const supabase = await createClient()
 
@@ -33,12 +37,11 @@ export const getFeedback = async () => {
       `,
     )
     .order('created_at', { ascending: false })
-    .overrideTypes<UserFeedbackType[]>()
 
   if (error) {
     throw new Error(error.message)
   }
-  return data ?? []
+  return data as UserFeedback[]
 }
 
 // export const getUnReadFeedbacks = async () => {

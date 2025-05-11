@@ -1,4 +1,5 @@
-export type Plans = 'free' | 'mild' | 'moderate' | 'severe'
+export type Plan = 'free' | 'mild' | 'moderate' | 'severe'
+
 export type Features =
   | 'CALCULATOR'
   | 'SURGERY'
@@ -45,22 +46,22 @@ const PLANS = {
   },
 } as const
 
-export const canAddVet = (plan: Plans, currenVetNumber: number) => {
+export const canAddVet = (plan: Plan, currenVetNumber: number) => {
   return currenVetNumber < PLANS[plan].MAX_VETS
 }
 
-export const checkMaxVets = (plan: Plans) => {
+export const checkMaxVets = (plan: Plan) => {
   return PLANS[plan].MAX_VETS
 }
 
-export const getInvitableVetCount = (plan: Plans, currentVetNumber: number) => {
+export const getInvitableVetCount = (plan: Plan, currentVetNumber: number) => {
   return PLANS[plan].MAX_VETS - currentVetNumber
 }
 
-export const hasPermissions = (plan: Plans, feature: Features) => {
+export const hasPermissions = (plan: Plan, feature: Features) => {
   return PLANS[plan][feature]
 }
 
-export const canAddChart = (plan: Plans, currentChartNumber: number) => {
+export const canAddChart = (plan: Plan, currentChartNumber: number) => {
   return currentChartNumber < PLANS[plan].MAX_CHART_PER_DAY
 }

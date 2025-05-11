@@ -1,10 +1,14 @@
 import IcuFooter from '@/components/hospital/icu/footer/icu-footer'
 import IcuSidebar from '@/components/hospital/icu/sidebar/icu-sidebar'
+import type { OrderFontSize } from '@/constants/admin/order-font-size'
+import type { Plan } from '@/constants/plans'
 import { getIcuData } from '@/lib/services/icu/get-icu-data'
-import { getAnnouncementTitlesData } from '@/lib/services/super/announcement/announcement'
-import { BasicHosDataProvider } from '@/providers/basic-hos-data-context-provider'
+import { fetchAnnouncementTitles } from '@/lib/services/super/announcement/announcement'
+import {
+  BasicHosDataProvider,
+  OrderColorDisplay,
+} from '@/providers/basic-hos-data-context-provider'
 import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
-import React from 'react'
 
 export default async function IcuPageLayout(props: {
   children: React.ReactNode
@@ -37,7 +41,7 @@ export default async function IcuPageLayout(props: {
     target_date,
   )
 
-  const announcementTitlesData = await getAnnouncementTitlesData()
+  const announcementTitlesData = await fetchAnnouncementTitles()
 
   return (
     <>
@@ -51,10 +55,11 @@ export default async function IcuPageLayout(props: {
           showTxUser: basicHosData.show_tx_user,
           sidebarData: icuSidebarData,
           vitalRefRange: basicHosData.vital_ref_range as VitalRefRange[],
-          orderFontSizeData: basicHosData.order_font_size,
+          orderFontSizeData: basicHosData.order_font_size as OrderFontSize,
           timeGuidelineData: basicHosData.time_guidelines,
-          orderColorDisplay: basicHosData.order_color_display,
-          plan: basicHosData.plan,
+          orderColorDisplay:
+            basicHosData.order_color_display as OrderColorDisplay,
+          plan: basicHosData.plan as Plan,
           isInChargeSystem: basicHosData.is_in_charge_system,
           baselineTime: basicHosData.baseline_time,
         }}

@@ -6,7 +6,5 @@ export type SelectHosptialDataTable = Pick<
 >
 
 export type UserApprovalHosJoined = Pick<UserApproval, 'user_approval_id'> & {
-  hos_id: {
-    name: string
-  }
+  hos_id: Pick<Hospital, 'name'>
 }

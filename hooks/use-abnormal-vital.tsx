@@ -1,16 +1,9 @@
+import type { ChartableVital } from '@/constants/hospital/icu/chart/vital-chart'
+import { purifyVitalValue } from '@/lib/utils/vital-chart'
 import { Treatment } from '@/types/icu/chart'
 
-const PANTING = ['p', 'panting']
-
-// 체크리스트 결과 Number type으로 변환
-const parseChecklistResult = (
-  value?: string | null,
-  defaultValue: string = '0',
-) => {
-  return Number(value || defaultValue)
-}
-
 export default function useAbnormalVital(
+  orderName: string,
   treatment?: Treatment,
   rowVitalRefRange?: {
     min: number
@@ -29,20 +22,13 @@ export default function useAbnormalVital(
 
     const result = treatment.tx_result
 
-    if (
-      PANTING.some((keyword) => result.toLowerCase().includes(keyword)) &&
-      result.toLowerCase() !== 'pass'
-    ) {
-      return 'above'
-    }
+    const purifiedResult = purifyVitalValue(orderName as ChartableVital, result)
 
-    const parsedValue = parseVitalValue(result)
-
-    if (parsedValue < rowVitalRefRange.min) {
+    if (purifiedResult < rowVitalRefRange.min) {
       return 'below'
     }
 
-    if (parsedValue > rowVitalRefRange.max) {
+    if (purifiedResult > rowVitalRefRange.max) {
       return 'above'
     }
 
@@ -53,29 +39,4 @@ export default function useAbnormalVital(
     calcVitalResult() === 'below' || calcVitalResult() === 'above'
 
   return { calcVitalResult: calcVitalResult(), isAbnormalVital }
-}
-
-// 바이탈 값 파싱 함수 ('sr', '#', '/')
-function parseVitalValue(result: string): number {
-  // 호흡수 sr 파싱
-  const srMatch = result.match(/(\d+)\s*(?:sr|\()/i)
-  if (srMatch) {
-    return parseChecklistResult(srMatch[1])
-  }
-
-  // 혈압 - # 파싱
-  const sharpMatch = result.match(/^(\d+)#/)
-  if (sharpMatch) {
-    return parseChecklistResult(sharpMatch[1])
-  }
-
-  // 혈압 - / 파싱 -> 최댓값 반환
-  const slashMatch = result.match(/^(\d+)\/(\d+)/)
-  if (slashMatch) {
-    const [systolic, diastolic] = [slashMatch[1], slashMatch[2]].map(parseFloat)
-    return Math.max(systolic, diastolic)
-  }
-
-  // 기본 숫자 파싱
-  return parseChecklistResult(result)
 }

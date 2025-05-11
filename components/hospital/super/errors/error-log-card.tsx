@@ -2,9 +2,9 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import type { ErrorFeedback } from '@/lib/services/error-feedback/error-feedback'
 import { cn, formatTimeDifference } from '@/lib/utils/utils'
 import { ParsedError } from '@/types/hospital'
-import type { ErrorFeedbackType } from '@/types/vetool'
 import { ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
@@ -12,7 +12,7 @@ import { useState } from 'react'
 export default function ErrorLogCard({
   errorLog,
 }: {
-  errorLog: ErrorFeedbackType
+  errorLog: ErrorFeedback
 }) {
   const [isExpanded, setIsExpanded] = useState(false)
 

@@ -1,11 +1,11 @@
 'use server'
 
+import { createClient } from '@/lib/supabase/server'
 import type {
   AnnouncementDetailData,
   AnnouncementFormProps,
   AnnouncementListProps,
 } from '@/types/vetool'
-import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
 export const createAnnouncement = async (
@@ -35,7 +35,7 @@ export const createAnnouncement = async (
   }
 }
 
-export const getAnnouncementList = async () => {
+export const fetchAnnouncements = async () => {
   const supabase = await createClient()
 
   const { data, error } = await supabase
@@ -54,7 +54,7 @@ export const getAnnouncementList = async () => {
   return data
 }
 
-export const getAnnouncementDetailData = async (announcementId: string) => {
+export const fetchAnnouncementDetail = async (announcementId: string) => {
   const supabase = await createClient()
 
   const { data, error } = await supabase
@@ -72,7 +72,6 @@ export const getAnnouncementDetailData = async (announcementId: string) => {
     .match({ announcement_id: announcementId })
     .maybeSingle()
     .overrideTypes<AnnouncementDetailData>()
-  
 
   if (error) {
     console.error(error)
@@ -82,7 +81,7 @@ export const getAnnouncementDetailData = async (announcementId: string) => {
   return data
 }
 
-export const getAnnouncementTitlesData = async () => {
+export const fetchAnnouncementTitles = async () => {
   const supabase = await createClient()
 
   const { data, error } = await supabase

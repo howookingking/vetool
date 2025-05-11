@@ -2,7 +2,7 @@ import React from 'react'
 import SuperHospitalSelector from './super-hospital-selector'
 import AnnouncementsCarousel from '@/components/hospital/home/header/announcements-carousel'
 import { getHosList } from '@/lib/services/hospital-home/get-hos-name'
-import { getAnnouncementTitlesData } from '@/lib/services/super/announcement/announcement'
+import { fetchAnnouncementTitles } from '@/lib/services/super/announcement/announcement'
 
 type Props = {
   isSuper: boolean
@@ -11,7 +11,7 @@ type Props = {
 
 export default async function HospitalHomeHeader({ isSuper, hosId }: Props) {
   const hosListData = await getHosList()
-  const announcementTitlesData = await getAnnouncementTitlesData()
+  const announcementTitlesData = await fetchAnnouncementTitles()
   return (
     <div className="fixed z-30 flex h-12 w-full items-center justify-center gap-2 border-b bg-white">
       {isSuper && <SuperHospitalSelector hosList={hosListData} />}

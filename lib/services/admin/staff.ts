@@ -4,6 +4,20 @@ import { createClient } from '@/lib/supabase/server'
 import type { Hospital, User } from '@/types'
 import { redirect } from 'next/navigation'
 
+export type StaffsData = Pick<
+  User,
+  | 'name'
+  | 'position'
+  | 'rank'
+  | 'group'
+  | 'is_admin'
+  | 'user_id'
+  | 'is_vet'
+  | 'avatar_url'
+> & {
+  hos_id: Pick<Hospital, 'master_user_id' | 'group_list'>
+}
+
 export const getStaffs = async (hosId: string) => {
   const supabase = await createClient()
 
@@ -27,15 +41,13 @@ export const getStaffs = async (hosId: string) => {
     )
     .match({ hos_id: hosId })
     .order('rank', { ascending: true })
-    .overrideTypes<Staff[]>()
-  
 
   if (error) {
     console.error(error)
     redirect(`/error/?message=${error.message}`)
   }
 
-  return staffs
+  return staffs as StaffsData[]
 }
 
 export const updateStaffRank = async (userId: string, rankInput: string) => {

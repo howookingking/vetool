@@ -1,10 +1,10 @@
 import Cell from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/cell'
 import NoFecalOrUrineAlert from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/no-fecal-urine-alert'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
-import { type OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
-import { type TxLocalState } from '@/lib/store/icu/icu-tx'
-import { type VitalRefRange } from '@/types/adimin'
-import { type SelectedIcuOrder } from '@/types/icu/chart'
+import type { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
+import type { TxLocalState } from '@/lib/store/icu/icu-tx'
+import type { VitalRefRange } from '@/types/adimin'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
 
 type Props = {
   hosId: string
@@ -91,10 +91,12 @@ export default function OrderRowCells({
             (treatment) => treatment.time === time && treatment.tx_result,
           )
         const orderer = order_times[time - 1]
-        const tx = treatments.findLast((treatment) => treatment.time === time)
+        const treatment = treatments.findLast(
+          (treatment) => treatment.time === time,
+        )
         const isGuidelineTime = timeGuidelineData.includes(time)
         const hasOrder = orderer !== '0'
-        const hasComment = !!tx?.tx_comment
+        const hasComment = !!treatment?.tx_comment
         const isInPendingQueue = selectedTxPendingQueue.some(
           (t) => t.orderId === order.order_id && t.orderTime === time,
         )
@@ -108,13 +110,13 @@ export default function OrderRowCells({
             preview={preview}
             key={time}
             time={time}
-            treatment={tx}
+            treatment={treatment}
             icuChartOrderId={order_id}
             isDone={isDone}
             orderer={orderer}
             orderType={order_type}
             orderName={order_name}
-            icuChartTxId={tx?.tx_id}
+            icuChartTxId={treatment?.tx_id}
             toggleOrderTime={toggleOrderTime}
             showOrderer={showOrderer}
             showTxUser={showTxUser}

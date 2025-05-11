@@ -1,16 +1,18 @@
 import { Badge } from '@/components/ui/badge'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
-import { updateReadFeedback } from '@/lib/services/super/feedback/feedback'
+import {
+  updateReadFeedback,
+  type UserFeedback,
+} from '@/lib/services/super/feedback/feedback'
 import { cn, formatTimeDifference } from '@/lib/utils/utils'
-import type { UserFeedbackType } from '@/types/vetool'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 export default function FeedbackCard({
   feedbackData,
 }: {
-  feedbackData: UserFeedbackType
+  feedbackData: UserFeedback
 }) {
   const [isRead, setIsRead] = useState(feedbackData.is_read)
   const { refresh } = useRouter()

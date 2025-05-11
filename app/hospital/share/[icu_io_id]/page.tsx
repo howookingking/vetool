@@ -5,7 +5,7 @@ import IcuShareNoResult from '@/components/hospital/share/icu-share-no-result'
 import HighlightGuide from '@/components/ui/highlight-guide'
 import { DEFAULT_SHARE_ORDER_COLOR } from '@/constants/hospital/icu/chart/colors'
 import { SHARE_GUIDE_STEPS } from '@/constants/hospital/icu/guide/guide'
-import { getSharedIcuData } from '@/lib/services/icu/share'
+import { fetchSharedIcuData } from '@/lib/services/icu/share'
 import { BasicHosDataProvider } from '@/providers/basic-hos-data-context-provider'
 
 type IcuSharePageProps = {
@@ -20,7 +20,7 @@ export default async function IcuSharePage(props: IcuSharePageProps) {
   const searchParams = await props.searchParams
   const targetDate = searchParams['target-date']
 
-  const sharedChartData = await getSharedIcuData(
+  const sharedChartData = await fetchSharedIcuData(
     params.icu_io_id,
     targetDate as string,
   )

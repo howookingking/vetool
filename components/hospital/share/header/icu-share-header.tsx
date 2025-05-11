@@ -40,7 +40,7 @@ export default function IcuShareHeader({ targetDate, chartData }: Props) {
             />
             <VitalChartDialog
               inDate={chartData.icu_io.in_date}
-              patientId={chartData.patient.patient_id}
+              icuIoId={chartData.icu_io.icu_io_id}
             />
           </>
         )}

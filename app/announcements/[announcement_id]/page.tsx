@@ -1,7 +1,7 @@
 import AnnouncementsDetail from '@/components/announcements/announcements-detail'
 import BackToAnnouncementsButton from '@/components/announcements/back-to-announcement-button'
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
-import { getAnnouncementDetailData } from '@/lib/services/super/announcement/announcement'
+import { fetchAnnouncementDetail } from '@/lib/services/super/announcement/announcement'
 
 export default async function AnnouncementDetailPage(props: {
   params: Promise<{
@@ -9,8 +9,7 @@ export default async function AnnouncementDetailPage(props: {
   }>
 }) {
   const { announcement_id } = await props.params
-  const announcementDetailData =
-    await getAnnouncementDetailData(announcement_id)
+  const announcementDetailData = await fetchAnnouncementDetail(announcement_id)
 
   if (!announcementDetailData) {
     return (

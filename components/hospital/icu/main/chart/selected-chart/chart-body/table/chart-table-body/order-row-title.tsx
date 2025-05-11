@@ -1,11 +1,11 @@
 import OrderTitleContent from '@/components/hospital/common/order/order-title-content'
 import { Button } from '@/components/ui/button'
 import { TableCell } from '@/components/ui/table'
-import { type OrderStep } from '@/lib/store/icu/icu-order'
+import type { OrderStep } from '@/lib/store/icu/icu-order'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { type IcuOrderColors, type VitalRefRange } from '@/types/adimin'
-import { type SelectedIcuOrder } from '@/types/icu/chart'
+import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
 
 type Props = {
   order: SelectedIcuOrder

@@ -1,19 +1,16 @@
 'use client'
 
-import { ORDER_FONT_SIZES } from '@/constants/admin/order-font-size'
-import {
-  type IcuOrderColors,
-  type VitalRefRange,
-  type Plans,
-} from '@/types/adimin'
-import { type IcuSidebarIoData, type Vet } from '@/types/icu/chart'
-import React, { createContext, useContext } from 'react'
+import type { OrderFontSize } from '@/constants/admin/order-font-size'
+import type { Plan } from '@/constants/plans'
+import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
+import type { IcuSidebarIoData, Vet } from '@/types/icu/chart'
+import { createContext, useContext } from 'react'
+
+export type OrderColorDisplay = 'dot' | 'full'
 
 type IcuContextType = {
   basicHosData: BasicHosData
 }
-
-export type OrderColorDisplay = 'dot' | 'full'
 
 type BasicHosData = {
   vetsListData: Vet[]
@@ -24,10 +21,10 @@ type BasicHosData = {
   showTxUser: boolean
   sidebarData: IcuSidebarIoData[]
   vitalRefRange: VitalRefRange[]
-  orderFontSizeData: keyof typeof ORDER_FONT_SIZES
+  orderFontSizeData: OrderFontSize
   timeGuidelineData: number[]
   orderColorDisplay: OrderColorDisplay
-  plan: Plans
+  plan: Plan
   isInChargeSystem: boolean
   baselineTime: number
 }

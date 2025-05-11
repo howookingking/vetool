@@ -16,8 +16,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
 import { createAnnouncement } from '@/lib/services/super/announcement/announcement'
+import type { UserFeedback } from '@/lib/services/super/feedback/feedback'
 import { cn } from '@/lib/utils/utils'
-import type { AnnouncementFormProps, UserFeedbackType } from '@/types/vetool'
+import type { AnnouncementFormProps } from '@/types/vetool'
 import { LoaderCircle } from 'lucide-react'
 import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
@@ -35,7 +36,7 @@ const PATCH_CATEGORIES = [
 export default function AnnouncementForm({
   userFeedBackData,
 }: {
-  userFeedBackData: UserFeedbackType[]
+  userFeedBackData: UserFeedback[]
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState<AnnouncementFormProps>({
