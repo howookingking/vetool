@@ -1,4 +1,4 @@
-import { type SelectedChart } from '@/types/icu/chart'
+import type { SelectedChart } from '@/types/icu/chart'
 import { create } from 'zustand'
 
 type CopiedChartState = {
