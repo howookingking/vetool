@@ -35,6 +35,7 @@ export const deleteDefaultChartOrder = async (defaultChartId: string) => {
 export const upsertDefaultChartOrder = async (
   hosId: string,
   defaultChartId: string | undefined,
+  orderTime: string[] | undefined,
   orderData: {
     default_chart_order_name: string
     default_chart_order_comment: string
@@ -57,6 +58,7 @@ export const upsertDefaultChartOrder = async (
     default_chart_order_comment,
     default_chart_order_type,
     is_bordered,
+    default_order_time: orderTime,
   })
 
   if (error) {

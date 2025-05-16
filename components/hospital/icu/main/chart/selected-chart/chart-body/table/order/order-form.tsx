@@ -8,13 +8,13 @@ import { Button } from '@/components/ui/button'
 import { DialogClose, DialogFooter } from '@/components/ui/dialog'
 import { Form } from '@/components/ui/form'
 import { toast } from '@/components/ui/use-toast'
-import { type OrderType } from '@/constants/hospital/icu/chart/order'
+import type { OrderType } from '@/constants/hospital/icu/chart/order'
 import { orderSchema } from '@/lib/schemas/icu/chart/order-schema'
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { type SelectedIcuOrder } from '@/types/icu/chart'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
 import { useParams } from 'next/navigation'
@@ -42,7 +42,7 @@ export default function OrderForm({
   } = useBasicHosDataContext()
 
   const [isUpdating, setIsUpdating] = useState(false)
-  const [startTime, setStartTime] = useState<string>('undefined')
+  const [startTime, setStartTime] = useState<string>('0')
   const [timeTerm, setTimeTerm] = useState<string>('undefined')
   const [orderTime, setOrderTime] = useState<string[]>(
     selectedChartOrder.order_times || new Array(24).fill('0'),

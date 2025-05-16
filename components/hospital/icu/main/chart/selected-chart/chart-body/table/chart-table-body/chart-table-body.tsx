@@ -8,7 +8,7 @@ import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
 import { formatOrders } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { type SelectedChart, type SelectedIcuOrder } from '@/types/icu/chart'
+import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
 import {
   useEffect,
   type Dispatch,

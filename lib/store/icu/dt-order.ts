@@ -1,9 +1,9 @@
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { create } from 'zustand'
 
-export type DefaultOrderTimePengindQueue = {
-  defaultOrderTime: number
-  defaultOrderId: string
+export type DefaultOrderTimePendindQueue = {
+  orderTime: number
+  orderId: string
 }
 
 type IcuOrderState = {
@@ -24,13 +24,13 @@ type IcuOrderState = {
       | ((prev: Partial<SelectedIcuOrder>[]) => Partial<SelectedIcuOrder>[]),
   ) => void
 
-  orderTimePendingQueue: DefaultOrderTimePengindQueue[]
+  orderTimePendingQueue: DefaultOrderTimePendindQueue[]
   setOrderTimePendingQueue: (
     updater:
-      | DefaultOrderTimePengindQueue[]
+      | DefaultOrderTimePendindQueue[]
       | ((
-          prev: DefaultOrderTimePengindQueue[],
-        ) => DefaultOrderTimePengindQueue[]),
+          prev: DefaultOrderTimePendindQueue[],
+        ) => DefaultOrderTimePendindQueue[]),
   ) => void
 
   reset: () => void

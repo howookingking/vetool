@@ -9,11 +9,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { CELL_COLORS } from '@/constants/hospital/icu/chart/colors'
-import {
-  TIMES,
-  TX_ORDER_TIME_INTERVALS,
-} from '@/constants/hospital/icu/chart/time'
-import { type Dispatch, type SetStateAction } from 'react'
+import { TX_ORDER_TIME_INTERVALS } from '@/constants/hospital/icu/chart/time'
+import type { Dispatch, SetStateAction } from 'react'
 
 type OrderTimeSettingsProps = {
   startTime: string
@@ -73,9 +70,9 @@ export default function OrderTimeSettings({
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                {['undefined', ...TIMES].map((time) => (
+                {['undefined', ...newTime].map((time, i) => (
                   <SelectItem
-                    value={time.toString()}
+                    value={i.toString()}
                     key={time}
                     className="text-xs"
                   >
@@ -98,7 +95,7 @@ export default function OrderTimeSettings({
               <SelectGroup>
                 {['undefined', ...TX_ORDER_TIME_INTERVALS].map((interval) => (
                   <SelectItem
-                    value={interval.toString()}
+                    value={interval}
                     key={interval}
                     className="text-xs"
                   >
