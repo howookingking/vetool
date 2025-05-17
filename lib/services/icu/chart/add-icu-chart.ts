@@ -117,10 +117,10 @@ export const copyPrevChart = async (targetDate: string, patientId: string) => {
   return { error: null }
 }
 
-export const registerDefaultChart = async (hosId: string, chartId: string) => {
+export const pasteDefaultOrders = async (hosId: string, chartId: string) => {
   const supabase = await createClient()
 
-  const { error } = await supabase.rpc('insert_default_orders', {
+  const { error } = await supabase.rpc('paste_default_icu_chart', {
     hos_id_input: hosId,
     icu_chart_id_input: chartId,
   })

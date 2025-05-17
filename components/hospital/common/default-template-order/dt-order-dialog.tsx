@@ -9,8 +9,8 @@ import {
 import { DEFAULT_ICU_ORDER_TYPE_DIC } from '@/constants/hospital/icu/chart/order'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { type SelectedIcuOrder } from '@/types/icu/chart'
-import { type Dispatch, type SetStateAction } from 'react'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
+import type { Dispatch, SetStateAction } from 'react'
 import DtOrderForm from './dt-order-form'
 
 type Props = {

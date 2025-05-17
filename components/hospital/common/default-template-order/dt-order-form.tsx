@@ -6,19 +6,21 @@ import { Button } from '@/components/ui/button'
 import { DialogClose, DialogFooter } from '@/components/ui/dialog'
 import { Form } from '@/components/ui/form'
 import { toast } from '@/components/ui/use-toast'
+import type { OrderType } from '@/constants/hospital/icu/chart/order'
 import { orderSchema } from '@/lib/schemas/icu/chart/order-schema'
 import { upsertDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { cn } from '@/lib/utils/utils'
-import { type SelectedIcuOrder } from '@/types/icu/chart'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
-import { type Dispatch, type SetStateAction, useState } from 'react'
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import OrderTimeSettings from '../../icu/main/chart/selected-chart/chart-body/table/order/order-time-settings'
 import DtDeleteOrderAlertDialog from './dt-delete-order-alert-dialog'
-import { type OrderType } from '@/constants/hospital/icu/chart/order'
 
 type Props = {
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
@@ -35,6 +37,17 @@ export default function DtOrderForm({
   const { refresh } = useRouter()
 
   const { setOrderStep, selectedChartOrder, reset } = useIcuOrderStore()
+  const {
+    basicHosData: { baselineTime },
+  } = useBasicHosDataContext()
+
+  const [startTime, setStartTime] = useState<string>('0')
+  const [timeTerm, setTimeTerm] = useState<string>('undefined')
+  const [orderTime, setOrderTime] = useState<string[]>(
+    selectedChartOrder.order_times || new Array(24).fill('0'),
+  )
+  const [isUpdating, setIsUpdating] = useState(false)
+
   const form = useForm<z.infer<typeof orderSchema>>({
     resolver: zodResolver(orderSchema),
     defaultValues: {
@@ -44,8 +57,6 @@ export default function DtOrderForm({
       is_bordered: selectedChartOrder.is_bordered ?? false,
     },
   })
-
-  const [isUpdating, setIsUpdating] = useState(false)
 
   const handleSubmit = async (values: z.infer<typeof orderSchema>) => {
     setIsUpdating(true)
@@ -72,6 +83,7 @@ export default function DtOrderForm({
       : await upsertDefaultChartOrder(
           hos_id as string,
           selectedChartOrder.order_id,
+          orderTime.map((time) => (time === '0' ? '0' : '기본')),
           {
             default_chart_order_name: trimmedOrderName,
             default_chart_order_comment: orderComment,
@@ -90,6 +102,25 @@ export default function DtOrderForm({
     refresh()
   }
 
+  const newTime = new Array(24)
+    .fill(0)
+    .map((_, i) => (Number(baselineTime) + i) % 24)
+
+  useEffect(() => {
+    if (startTime !== 'undefined' && timeTerm !== 'undefined') {
+      const start = Number(startTime)
+
+      const term = Number(timeTerm)
+      const newOrderTime = Array(24).fill('0')
+
+      for (let i = start - 1; i < 24; i += term) {
+        newOrderTime[i] = '기본'
+      }
+
+      setOrderTime(newOrderTime)
+    }
+  }, [form, startTime, timeTerm])
+
   return (
     <Form {...form}>
       <form
@@ -99,6 +130,16 @@ export default function DtOrderForm({
         <OrderFormField form={form} />
 
         <OrderBorderCheckbox form={form} />
+
+        <OrderTimeSettings
+          startTime={startTime}
+          timeTerm={timeTerm}
+          orderTime={orderTime}
+          setStartTime={setStartTime}
+          setTimeTerm={setTimeTerm}
+          setOrderTime={setOrderTime}
+          newTime={newTime}
+        />
 
         <DialogFooter className="ml-auto w-full gap-2 md:gap-0">
           <DtDeleteOrderAlertDialog

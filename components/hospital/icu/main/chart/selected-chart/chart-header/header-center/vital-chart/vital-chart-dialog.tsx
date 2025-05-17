@@ -35,6 +35,7 @@ export default function VitalChartDialog({ icuIoId, inDate }: Props) {
   const [chartableVitals, setChartableVitals] = useState<
     Record<string, VitalData[]>
   >({})
+  const [displayCount, setDisplayCount] = useState(10)
 
   const handleOpenChange = async (isDialogOpen: boolean) => {
     if (isDialogOpen) {
@@ -75,12 +76,15 @@ export default function VitalChartDialog({ icuIoId, inDate }: Props) {
         <VitalChartSidebar
           currentVital={selectedVital}
           setCurrentVital={setSelectedVital}
+          setDisplayCount={setDisplayCount}
         />
 
         <LazyVitalChart
           selectedVital={selectedVital}
           inDate={inDate}
           chartableVitals={chartableVitals}
+          displayCount={displayCount}
+          setDisplayCount={setDisplayCount}
         />
       </DialogContent>
     </Dialog>
