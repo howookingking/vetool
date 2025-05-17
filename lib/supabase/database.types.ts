@@ -530,6 +530,7 @@ export type Database = {
           default_chart_order_name: string
           default_chart_order_priority: number
           default_chart_order_type: string
+          default_order_time: string[]
           hos_id: string
           is_bordered: boolean
         }
@@ -540,6 +541,7 @@ export type Database = {
           default_chart_order_name: string
           default_chart_order_priority?: number
           default_chart_order_type: string
+          default_order_time?: string[]
           hos_id: string
           is_bordered?: boolean
         }
@@ -550,6 +552,7 @@ export type Database = {
           default_chart_order_name?: string
           default_chart_order_priority?: number
           default_chart_order_type?: string
+          default_order_time?: string[]
           hos_id?: string
           is_bordered?: boolean
         }
@@ -1016,6 +1019,85 @@ export type Database = {
           tags?: string | null
         }
         Relationships: []
+      }
+      memos: {
+        Row: {
+          created_at: string
+          done_date: string | null
+          done_ids: string[] | null
+          from_date: string | null
+          has_images: boolean | null
+          hos_id: string
+          is_done: boolean | null
+          memo_content: string
+          memo_id: number
+          memo_images: string[] | null
+          memo_title: string | null
+          patient_id: string | null
+          target_date: string | null
+          target_group: string[] | null
+          target_ids: string[] | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          done_date?: string | null
+          done_ids?: string[] | null
+          from_date?: string | null
+          has_images?: boolean | null
+          hos_id: string
+          is_done?: boolean | null
+          memo_content: string
+          memo_id?: number
+          memo_images?: string[] | null
+          memo_title?: string | null
+          patient_id?: string | null
+          target_date?: string | null
+          target_group?: string[] | null
+          target_ids?: string[] | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          done_date?: string | null
+          done_ids?: string[] | null
+          from_date?: string | null
+          has_images?: boolean | null
+          hos_id?: string
+          is_done?: boolean | null
+          memo_content?: string
+          memo_id?: number
+          memo_images?: string[] | null
+          memo_title?: string | null
+          patient_id?: string | null
+          target_date?: string | null
+          target_group?: string[] | null
+          target_ids?: string[] | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "memos_hos_id_fkey"
+            columns: ["hos_id"]
+            isOneToOne: false
+            referencedRelation: "hospitals"
+            referencedColumns: ["hos_id"]
+          },
+          {
+            foreignKeyName: "memos_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["patient_id"]
+          },
+          {
+            foreignKeyName: "memos_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["user_id"]
+          },
+        ]
       }
       notices: {
         Row: {
@@ -1630,6 +1712,14 @@ export type Database = {
         Args: { hos_id_input: string; icu_chart_id_input: string }
         Returns: undefined
       }
+      insert_default_orders_with_orderer: {
+        Args: {
+          hos_id_input: string
+          icu_chart_id_input: string
+          oderer: string
+        }
+        Returns: undefined
+      }
       insert_entire_hospital_diet_pin: {
         Args: { hos_id_input: string }
         Returns: undefined
@@ -1667,6 +1757,18 @@ export type Database = {
           template_name_input: string
           template_comment_input: string
           template_orders_input: Json
+        }
+        Returns: undefined
+      }
+      paste_default_icu_chart: {
+        Args: { icu_chart_id_input: string; hos_id_input: string }
+        Returns: undefined
+      }
+      paste_default_orders: {
+        Args: {
+          hos_id_input: string
+          icu_chart_id_input: string
+          oderer_input: string
         }
         Returns: undefined
       }

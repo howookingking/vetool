@@ -64,7 +64,7 @@ export default function DefaultOrdersTable({
       const updatedOrderTimes = currentOrder.order_times.map((time, index) =>
         order.orderTimes.includes(index + 1)
           ? time === '0'
-            ? '1'
+            ? '기본'
             : '0'
           : time,
       )

@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { DialogClose, DialogFooter } from '@/components/ui/dialog'
 import { Form } from '@/components/ui/form'
 import { toast } from '@/components/ui/use-toast'
-import { type OrderType } from '@/constants/hospital/icu/chart/order'
+import type { OrderType } from '@/constants/hospital/icu/chart/order'
 import { orderSchema } from '@/lib/schemas/icu/chart/order-schema'
 import { upsertDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
@@ -83,7 +83,7 @@ export default function DtOrderForm({
       : await upsertDefaultChartOrder(
           hos_id as string,
           selectedChartOrder.order_id,
-          orderTime.map((time) => (time === '0' ? '0' : '1')),
+          orderTime.map((time) => (time === '0' ? '0' : '기본')),
           {
             default_chart_order_name: trimmedOrderName,
             default_chart_order_comment: orderComment,
@@ -114,7 +114,7 @@ export default function DtOrderForm({
       const newOrderTime = Array(24).fill('0')
 
       for (let i = start - 1; i < 24; i += term) {
-        newOrderTime[i] = '1'
+        newOrderTime[i] = '기본'
       }
 
       setOrderTime(newOrderTime)

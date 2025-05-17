@@ -54,7 +54,7 @@ export default function DtCell({
               'absolute bottom-0.5 right-0.5 text-[10px] leading-none text-muted-foreground',
             )}
           >
-            오더자
+            {orderer}
           </div>
         )}
       </div>

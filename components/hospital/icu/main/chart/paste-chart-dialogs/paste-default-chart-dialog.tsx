@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { toast } from '@/components/ui/use-toast'
-import { registerDefaultChart } from '@/lib/services/icu/chart/add-icu-chart'
+import { pasteDefaultOrders } from '@/lib/services/icu/chart/add-icu-chart'
 import { cn } from '@/lib/utils/utils'
 import type { SelectedChart } from '@/types/icu/chart'
 import { File, LoaderCircle } from 'lucide-react'
@@ -31,10 +31,7 @@ export default function PasteDefaultChartDialog({
   const handleAddDefaultChart = async () => {
     setIsLoading(true)
 
-    await registerDefaultChart(
-      hos_id as string,
-      chartData.icu_chart_id as string,
-    )
+    await pasteDefaultOrders(hos_id as string, chartData.icu_chart_id as string)
 
     toast({
       title: '기본형식의 차트를 생성했습니다',
