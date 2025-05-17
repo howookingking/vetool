@@ -6,17 +6,23 @@ import {
 } from '@/constants/hospital/icu/chart/vital-chart'
 import { cn } from '@/lib/utils/utils'
 import { LineChart } from 'lucide-react'
-import { Dispatch, SetStateAction } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 
 type Props = {
   currentVital: ChartableVital
   setCurrentVital: Dispatch<SetStateAction<ChartableVital>>
+  setDisplayCount: Dispatch<SetStateAction<number>>
 }
 
 export default function VitalChartSidebar({
   currentVital,
   setCurrentVital,
+  setDisplayCount,
 }: Props) {
+  const handleVitalClick = (vital: ChartableVital) => {
+    setCurrentVital(vital)
+    setDisplayCount(10)
+  }
   return (
     <aside className="flex h-full min-w-[180px] flex-col border-r">
       <div className="flex items-center justify-center gap-2 border-b py-4 font-bold">
@@ -33,7 +39,7 @@ export default function VitalChartSidebar({
           <li key={vital}>
             <Button
               variant="ghost"
-              onClick={() => setCurrentVital(vital)}
+              onClick={() => handleVitalClick(vital)}
               className={cn(
                 'h-10 w-full rounded-none',
                 currentVital === vital && 'bg-primary text-white',

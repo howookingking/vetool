@@ -72,7 +72,7 @@ export default function DtOrderCreator({
             order_id: `temp_order_id_${new Date().getTime()}`,
           },
         ])
-      : await upsertDefaultChartOrder(hos_id as string, undefined, {
+      : await upsertDefaultChartOrder(hos_id as string, undefined, undefined, {
           default_chart_order_name: orderName.trim(),
           default_chart_order_comment: orderDescription
             ? orderDescription.trim()

@@ -12,24 +12,26 @@ import type { ChartableVital } from '@/constants/hospital/icu/chart/vital-chart'
 import { purifyVitalValue } from '@/lib/utils/vital-chart'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { VitalChartData, VitalData } from '@/types/icu/chart'
-import { useMemo, useState } from 'react'
+import { type Dispatch, type SetStateAction, useMemo } from 'react'
 
 type Props = {
   selectedVital: ChartableVital
   inDate: string
   chartableVitals: Record<string, VitalData[]>
+  displayCount: number
+  setDisplayCount: Dispatch<SetStateAction<number>>
 }
 
 export default function VitalChart({
   selectedVital,
   inDate,
   chartableVitals,
+  displayCount,
+  setDisplayCount,
 }: Props) {
   const {
     basicHosData: { baselineTime },
   } = useBasicHosDataContext()
-
-  const [displayCount, setDisplayCount] = useState(10)
 
   // 차트 데이터 포맷 변환 및 정렬
   const formattedSelectedVitalData: VitalChartData[] = useMemo(() => {

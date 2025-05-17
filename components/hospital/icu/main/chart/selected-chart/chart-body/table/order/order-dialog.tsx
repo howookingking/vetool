@@ -9,10 +9,10 @@ import {
 } from '@/components/ui/dialog'
 import { DEFAULT_ICU_ORDER_TYPE_DIC } from '@/constants/hospital/icu/chart/order'
 import { useIcuOrderStore, type OrderStep } from '@/lib/store/icu/icu-order'
-import { type IcuOrderColors } from '@/types/adimin'
-import { type SelectedIcuOrder } from '@/types/icu/chart'
+import type { IcuOrderColors } from '@/types/adimin'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
 import dynamic from 'next/dynamic'
-import { type Dispatch, type SetStateAction } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 import OrdererSelectStep from './orderer-select-step'
 
 const LazyOrderForm = dynamic(() => import('./order-form'), {

@@ -1,26 +1,14 @@
-import type { SelectedIcuOrder, TxLog } from '@/types/icu/chart'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { create } from 'zustand'
 
-export type OrderTimePendingQueue = {
+export type DefaultOrderTimePendindQueue = {
   orderTime: number
   orderId: string
 }
-export type TxPendingQueue = {
-  orderTime: number
-  orderId: string
-  txId?: string
-  txLog?: TxLog[] | null
-  isCrucialChecked?: boolean
-}
-
-export type OrderStep = 'closed' | 'edit' | 'selectOrderer'
 
 type IcuOrderState = {
-  orderStep: OrderStep
-  setOrderStep: (orderStep: OrderStep) => void
-
-  selectedChartOrder: Partial<SelectedIcuOrder>
-  setSelectedChartOrder: (chartOrder: Partial<SelectedIcuOrder>) => void
+  selectedDefaultOrder: Partial<SelectedIcuOrder>
+  setSelectedDefaultOrder: (chartOrder: Partial<SelectedIcuOrder>) => void
 
   selectedOrderPendingQueue: Partial<SelectedIcuOrder>[]
   setSelectedOrderPendingQueue: (
@@ -36,27 +24,22 @@ type IcuOrderState = {
       | ((prev: Partial<SelectedIcuOrder>[]) => Partial<SelectedIcuOrder>[]),
   ) => void
 
-  orderTimePendingQueue: OrderTimePendingQueue[]
+  orderTimePendingQueue: DefaultOrderTimePendindQueue[]
   setOrderTimePendingQueue: (
     updater:
-      | OrderTimePendingQueue[]
-      | ((prev: OrderTimePendingQueue[]) => OrderTimePendingQueue[]),
-  ) => void
-
-  selectedTxPendingQueue: TxPendingQueue[]
-  setSelectedTxPendingQueue: (
-    updater: TxPendingQueue[] | ((prev: TxPendingQueue[]) => TxPendingQueue[]),
+      | DefaultOrderTimePendindQueue[]
+      | ((
+          prev: DefaultOrderTimePendindQueue[],
+        ) => DefaultOrderTimePendindQueue[]),
   ) => void
 
   reset: () => void
 }
 
-export const useIcuOrderStore = create<IcuOrderState>((set) => ({
-  orderStep: 'closed',
-  setOrderStep: (orderStep) => set({ orderStep }),
-
-  selectedChartOrder: {} as Partial<SelectedIcuOrder>,
-  setSelectedChartOrder: (selectedChartOrder) => set({ selectedChartOrder }),
+export const useDefaultOrderStore = create<IcuOrderState>((set) => ({
+  selectedDefaultOrder: {} as Partial<SelectedIcuOrder>,
+  setSelectedDefaultOrder: (selectedChartOrder) =>
+    set({ selectedDefaultOrder: selectedChartOrder }),
 
   selectedOrderPendingQueue: [],
   setSelectedOrderPendingQueue: (updater) =>
@@ -85,20 +68,10 @@ export const useIcuOrderStore = create<IcuOrderState>((set) => ({
           : updater,
     })),
 
-  selectedTxPendingQueue: [],
-  setSelectedTxPendingQueue: (updater) =>
-    set((state) => ({
-      selectedTxPendingQueue:
-        typeof updater === 'function'
-          ? updater(state.selectedTxPendingQueue)
-          : updater,
-    })),
-
   reset: () =>
     set({
-      selectedChartOrder: {} as Partial<SelectedIcuOrder>,
+      selectedDefaultOrder: {} as Partial<SelectedIcuOrder>,
       orderTimePendingQueue: [],
-      selectedTxPendingQueue: [],
       copiedOrderPendingQueue: [],
       selectedOrderPendingQueue: [],
     }),
