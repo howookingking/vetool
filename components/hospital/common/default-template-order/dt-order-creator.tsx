@@ -1,4 +1,5 @@
 import OrderTypeColorDot from '@/components/hospital/common/order/order-type-color-dot'
+import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
   Select,
@@ -9,26 +10,24 @@ import {
 } from '@/components/ui/select'
 import { toast } from '@/components/ui/use-toast'
 import {
-  CHECKLIST_ORDER_CANDIDATES,
   CHECKLIST_ORDERS,
   DEFAULT_ICU_ORDER_TYPE,
   type OrderType,
 } from '@/constants/hospital/icu/chart/order'
 import { upsertDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { type SelectedIcuOrder } from '@/types/icu/chart'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
+import { Plus } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
-import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
-
-function getAvailableChecklistOrders(orders: SelectedIcuOrder[]) {
-  const currentChecklistTypeOrderNames = orders
-    .filter((order) => order.order_type === 'checklist')
-    .map((order) => order.order_name)
-
-  return CHECKLIST_ORDERS.filter(
-    (order) => !currentChecklistTypeOrderNames.includes(order),
-  )
-}
+import {
+  type Dispatch,
+  type FormEvent,
+  type SetStateAction,
+  useRef,
+  useState,
+} from 'react'
+import ChecklistOrderCreator from '../../icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-creator/checklist-order-creator'
+import { OrderTypeLabel } from '../../icu/main/chart/selected-chart/chart-body/table/order/order-form-field'
 
 type Props = {
   sortedOrders: SelectedIcuOrder[]
@@ -48,15 +47,18 @@ export default function DtOrderCreator({
     basicHosData: { orderColorsData },
   } = useBasicHosDataContext()
 
+  const inputRef = useRef<HTMLInputElement | null>(null)
+
   const [newOrderInput, setNewOrderInput] = useState('')
   const [orderType, setOrderType] = useState('manual')
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isChecklistOrder, setIsChecklistOrder] = useState(false)
+  const [isInserting, setIsInserting] = useState(false)
 
   const availableCheckListOrders = getAvailableChecklistOrders(sortedOrders)
 
   const createOrder = async (orderName: string, orderDescription: string) => {
-    setIsSubmitting(true)
+    setIsInserting(true)
+
+    const emptyOrderTimes = Array(24).fill('0')
 
     isTemplate
       ? setSortedOrders!((prev) => [
@@ -64,7 +66,7 @@ export default function DtOrderCreator({
           {
             order_name: orderName,
             order_type: orderType as OrderType,
-            order_times: Array(24).fill('0'),
+            order_times: emptyOrderTimes,
             treatments: [],
             order_comment: orderDescription,
             is_bordered: false,
@@ -74,58 +76,40 @@ export default function DtOrderCreator({
         ])
       : await upsertDefaultChartOrder(hos_id as string, undefined, undefined, {
           default_chart_order_name: orderName.trim(),
-          default_chart_order_comment: orderDescription
+          default_chart_order_comment: orderDescription.trim()
             ? orderDescription.trim()
             : '',
           default_chart_order_type: orderType,
         })
 
     !isTemplate &&
-      toast({
+      (toast({
         title: `${orderName} 오더를 생성하였습니다`,
-      })
+      }),
+      refresh()),
+      setTimeout(() => {
+        inputRef?.current?.focus()
+      }, 100)
 
     setNewOrderInput('')
-    setIsSubmitting(false)
-    setIsChecklistOrder(false)
-    refresh()
+    setIsInserting(false)
   }
 
-  const handleEnter = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // 맥OS 한글 마지막 중복입력 에러
-    if (e.nativeEvent.isComposing || e.key !== 'Enter' || !newOrderInput) return
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (!newOrderInput) return
 
     const [orderName, orderDescription] = newOrderInput.split('$')
-
-    // 체크리스트후보군을 INPUT에 입력했을 경우(혈당, bg, 혈압 등...) 체크리스트애 있음을 안내
-    if (
-      CHECKLIST_ORDER_CANDIDATES.some((name) =>
-        name.includes(orderName.toLowerCase()),
-      )
-    ) {
-      setIsChecklistOrder(true)
-      setOrderType('checklist')
-      setNewOrderInput('')
-      return
-    }
 
     await createOrder(orderName, orderDescription ?? '')
   }
 
-  const handleOrderTypeChange = async (selectedValue: string) => {
-    setOrderType(selectedValue)
-    setIsChecklistOrder(false)
-  }
-
-  useEffect(() => {
-    if (availableCheckListOrders.length === 0) {
-      setOrderType('manual')
-    }
-  }, [availableCheckListOrders.length])
+  const orderTypeLabel = OrderTypeLabel(orderType as OrderType)
+  const OrderTypePlaceholder = `${orderTypeLabel.orderName}$${orderTypeLabel.orderComment}`
 
   return (
     <div className="relative flex w-full items-center">
-      <Select onValueChange={handleOrderTypeChange} value={orderType}>
+      <Select onValueChange={setOrderType} value={orderType}>
         <SelectTrigger className="h-11 w-[128px] shrink-0 rounded-none border-0 border-r px-2 shadow-none ring-0 focus:ring-0">
           <SelectValue />
         </SelectTrigger>
@@ -153,37 +137,47 @@ export default function DtOrderCreator({
       </Select>
 
       {orderType === 'checklist' && (
-        <Select onValueChange={async (value) => await createOrder(value, '')}>
-          <SelectTrigger className="h-11 w-full rounded-none border-0 border-r ring-0 focus-visible:ring-0">
-            <SelectValue placeholder="체크리스트 항목 선택" />
-          </SelectTrigger>
-
-          <SelectContent>
-            {availableCheckListOrders.map((order) => (
-              <SelectItem key={order} value={order}>
-                {order}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      )}
-
-      {orderType !== 'checklist' && (
-        <Input
-          className="h-11 rounded-none border-0 border-r focus-visible:ring-0"
-          disabled={isSubmitting}
-          placeholder="오더명$오더설명"
-          value={isSubmitting ? '등록 중' : newOrderInput}
-          onChange={(e) => setNewOrderInput(e.target.value)}
-          onKeyDown={handleEnter}
+        <ChecklistOrderCreator
+          createOrder={createOrder}
+          setOrderType={setOrderType}
+          availableCheckListOrders={availableCheckListOrders}
         />
       )}
 
-      {isChecklistOrder && (
-        <span className="absolute -bottom-5 right-3 text-xs text-destructive">
-          해당 오더는 체크리스트에 존재합니다
-        </span>
+      {orderType !== 'checklist' && (
+        <form
+          className="relative flex w-full items-center gap-2"
+          onSubmit={handleSubmit}
+        >
+          <Input
+            className="h-11 rounded-none border-0 focus-visible:ring-0"
+            disabled={isInserting}
+            placeholder={OrderTypePlaceholder}
+            value={isInserting ? '등록 중' : newOrderInput}
+            onChange={(e) => setNewOrderInput(e.target.value)}
+            ref={inputRef}
+          />
+          <Button
+            className="absolute right-2 2xl:hidden"
+            size="icon"
+            disabled={isInserting}
+            type="submit"
+            variant="ghost"
+          >
+            <Plus />
+          </Button>
+        </form>
       )}
     </div>
+  )
+}
+
+function getAvailableChecklistOrders(orders: SelectedIcuOrder[]) {
+  const currentChecklistTypeOrderNames = orders
+    .filter((order) => order.order_type === 'checklist')
+    .map((order) => order.order_name)
+
+  return CHECKLIST_ORDERS.filter(
+    (order) => !currentChecklistTypeOrderNames.includes(order),
   )
 }

@@ -16,8 +16,8 @@ import {
   type OrderType,
 } from '@/constants/hospital/icu/chart/order'
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
-import { type IcuOrderColors } from '@/types/adimin'
-import { type SelectedIcuOrder } from '@/types/icu/chart'
+import type { IcuOrderColors } from '@/types/adimin'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { Plus } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import {
@@ -201,12 +201,6 @@ export default function OrderCreatorRow({
               </Button>
             </form>
           )}
-
-          {/* {isChecklistOrder && (
-            <span className="absolute -bottom-5 right-3 text-xs text-destructive">
-              해당 오더는 체크리스트에 존재합니다
-            </span>
-          )} */}
         </div>
       </TableCell>
 

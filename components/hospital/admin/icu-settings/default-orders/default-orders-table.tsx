@@ -133,6 +133,16 @@ export default function DefaultOrdersTable({
             <TableCell className="p-0">
               <DtOrderCreator sortedOrders={sortedOrders} />
             </TableCell>
+
+            <TableCell className="relative border-l">
+              <div className="absolute bottom-3 left-2 hidden items-center gap-2 whitespace-nowrap text-muted-foreground md:flex">
+                <div>
+                  처치칸을 CTRL + 우클릭하여{' '}
+                  <span className="mx-1 bg-rose-400/10 p-1">형광팬</span>
+                  칠을 하고 지울 수 있습니다
+                </div>
+              </div>
+            </TableCell>
           </TableRow>
         </TableBody>
       )}
