@@ -1,6 +1,7 @@
 'use no memo'
 
 import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   Dialog,
   DialogClose,
@@ -21,7 +22,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
 import { templateFormSchema } from '@/lib/schemas/icu/chart/template-schema'
-import { insertTemplateChart } from '@/lib/services/icu/template/template'
+import { createTemplateChart } from '@/lib/services/icu/template/template'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -47,17 +48,21 @@ export default function AddSelectedOrdersToTemplateDialog({
     defaultValues: {
       template_name: undefined,
       template_comment: undefined,
+      is_time_included: true,
     },
   })
 
   const handleSubmit = async (values: z.infer<typeof templateFormSchema>) => {
+    const { is_time_included, template_comment, template_name } = values
+
     setIsSubmitting(true)
 
-    await insertTemplateChart(
+    await createTemplateChart(
       hos_id as string,
       selectedOrderPendingQueue,
-      values.template_name,
-      values.template_comment,
+      template_name,
+      is_time_included,
+      template_comment,
     )
 
     toast({
@@ -75,6 +80,7 @@ export default function AddSelectedOrdersToTemplateDialog({
       form.reset({
         template_name: undefined,
         template_comment: undefined,
+        is_time_included: true,
       })
     }
     setIsDialogOpen(open)
@@ -136,6 +142,27 @@ export default function AddSelectedOrdersToTemplateDialog({
                     />
                   </FormControl>
                   <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="is_time_included"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-2 space-y-0 rounded-md border p-4 shadow">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel className="cursor-pointer">
+                      <span className="bg-rose-400/10 p-1">시간정보</span>를
+                      같이 저장합니다
+                    </FormLabel>
+                  </div>
                 </FormItem>
               )}
             />
