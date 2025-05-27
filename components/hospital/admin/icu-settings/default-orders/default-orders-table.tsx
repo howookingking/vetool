@@ -5,6 +5,7 @@ import DtOrderDialog from '@/components/hospital/common/default-template-order/d
 import DtOrderRows from '@/components/hospital/common/default-template-order/dt-order-rows'
 import DtSortingOrderRows from '@/components/hospital/common/default-template-order/dt-sorting-order-rows'
 import DtTableHeader from '@/components/hospital/common/default-template-order/dt-table-header'
+import UserKeyGuideMessage from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-creator/user-key-guide-message'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
 import useIsCommandPressed from '@/hooks/use-is-command-pressed'
@@ -133,6 +134,8 @@ export default function DefaultOrdersTable({
             <TableCell className="p-0">
               <DtOrderCreator sortedOrders={sortedOrders} />
             </TableCell>
+
+            <UserKeyGuideMessage isDT />
           </TableRow>
         </TableBody>
       )}

@@ -14,7 +14,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { getTemplateCharts } from '@/lib/services/icu/template/template'
-import { type TemplateChart } from '@/types/icu/template'
+import type { TemplateChart } from '@/types/icu/template'
 import { Bookmark, LoaderCircle } from 'lucide-react'
 import { useState } from 'react'
 

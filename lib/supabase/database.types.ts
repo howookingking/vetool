@@ -1029,6 +1029,7 @@ export type Database = {
           has_images: boolean | null
           hos_id: string
           is_done: boolean | null
+          memo_color: string | null
           memo_content: string
           memo_id: number
           memo_images: string[] | null
@@ -1047,6 +1048,7 @@ export type Database = {
           has_images?: boolean | null
           hos_id: string
           is_done?: boolean | null
+          memo_color?: string | null
           memo_content: string
           memo_id?: number
           memo_images?: string[] | null
@@ -1065,6 +1067,7 @@ export type Database = {
           has_images?: boolean | null
           hos_id?: string
           is_done?: boolean | null
+          memo_color?: string | null
           memo_content?: string
           memo_id?: number
           memo_images?: string[] | null
@@ -1558,6 +1561,16 @@ export type Database = {
         Args: { prev_chart_id_input: string; new_chart_id_input: string }
         Returns: undefined
       }
+      create_template_orders: {
+        Args: {
+          hos_id_input: string
+          template_name_input: string
+          template_comment_input: string
+          template_orders_input: Json
+          is_time_included_input: boolean
+        }
+        Returns: undefined
+      }
       get_chartable_vital_data: {
         Args: { patient_id_input: string; in_date_input: string }
         Returns: Json
@@ -1744,16 +1757,6 @@ export type Database = {
       insert_template_orders: {
         Args: {
           hos_id_input: string
-          template_name_input: string
-          template_comment_input: string
-          template_orders_input: Json
-        }
-        Returns: undefined
-      }
-      insert_template_orders_unused: {
-        Args: {
-          hos_id_input: string
-          target_date_input: string
           template_name_input: string
           template_comment_input: string
           template_orders_input: Json

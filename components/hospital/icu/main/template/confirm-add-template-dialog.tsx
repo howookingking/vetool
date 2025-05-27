@@ -22,7 +22,7 @@ import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
 import { templateFormSchema } from '@/lib/schemas/icu/chart/template-schema'
 import {
-  insertTemplateChart,
+  createTemplateChart,
   updateTemplateChart,
 } from '@/lib/services/icu/template/template'
 import { type SelectedIcuOrder } from '@/types/icu/chart'
@@ -73,7 +73,7 @@ export default function ConfirmAddTemplateDialog({
           values.template_comment ?? '',
           hos_id as string,
         )
-      : await insertTemplateChart(
+      : await createTemplateChart(
           hos_id as string,
           sortedOrders,
           values.template_name,

@@ -1,9 +1,9 @@
 import PreviewButton from '@/components/hospital/common/preview/preview-button'
 import { Button } from '@/components/ui/button'
-import { type TemplateChart } from '@/types/icu/template'
-import { type ColumnDef } from '@tanstack/react-table'
+import type { TemplateChart } from '@/types/icu/template'
+import type { ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown } from 'lucide-react'
-import { type Dispatch, type SetStateAction } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 import PasteTemplateButton from './paste-template-button'
 
 export const templateColumns = (
