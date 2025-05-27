@@ -9,6 +9,7 @@ import useLocalStorage from '@/hooks/use-local-storage'
 import type { OrderWidth } from '@/types/hospital/order'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { type Dispatch, type SetStateAction, useState } from 'react'
+import UserKeyGuideMessage from '../chart/selected-chart/chart-body/table/chart-table-body/order-creator/user-key-guide-message'
 
 type TemplateOrderTableProps = {
   sortedOrders: SelectedIcuOrder[]
@@ -64,6 +65,8 @@ export default function TemplateOrderTable({
                 isTemplate
               />
             </TableCell>
+
+            <UserKeyGuideMessage isDT />
           </TableRow>
         </TableBody>
       )}

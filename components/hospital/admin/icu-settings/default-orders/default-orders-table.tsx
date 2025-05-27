@@ -5,6 +5,7 @@ import DtOrderDialog from '@/components/hospital/common/default-template-order/d
 import DtOrderRows from '@/components/hospital/common/default-template-order/dt-order-rows'
 import DtSortingOrderRows from '@/components/hospital/common/default-template-order/dt-sorting-order-rows'
 import DtTableHeader from '@/components/hospital/common/default-template-order/dt-table-header'
+import UserKeyGuideMessage from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-creator/user-key-guide-message'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
 import useIsCommandPressed from '@/hooks/use-is-command-pressed'
@@ -134,15 +135,7 @@ export default function DefaultOrdersTable({
               <DtOrderCreator sortedOrders={sortedOrders} />
             </TableCell>
 
-            <TableCell className="relative border-l">
-              <div className="absolute bottom-3 left-2 hidden items-center gap-2 whitespace-nowrap text-muted-foreground md:flex">
-                <div>
-                  처치칸을 CTRL + 우클릭하여{' '}
-                  <span className="mx-1 bg-rose-400/10 p-1">형광팬</span>
-                  칠을 하고 지울 수 있습니다
-                </div>
-              </div>
-            </TableCell>
+            <UserKeyGuideMessage isDT />
           </TableRow>
         </TableBody>
       )}
