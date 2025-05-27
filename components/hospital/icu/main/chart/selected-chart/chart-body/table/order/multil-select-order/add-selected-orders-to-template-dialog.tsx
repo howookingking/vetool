@@ -57,9 +57,16 @@ export default function AddSelectedOrdersToTemplateDialog({
 
     setIsSubmitting(true)
 
+    const ordererDefaulted = selectedOrderPendingQueue.map((order) => ({
+      ...order,
+      order_times: order.order_times!.map((time) =>
+        time !== '0' ? '기본' : '0',
+      ),
+    }))
+
     await createTemplateChart(
       hos_id as string,
-      selectedOrderPendingQueue,
+      ordererDefaulted,
       template_name,
       is_time_included,
       template_comment,
