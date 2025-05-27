@@ -2,21 +2,23 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
-import { type TemplateChart } from '@/types/icu/template'
+import type { TemplateChart } from '@/types/icu/template'
 import { redirect } from 'next/navigation'
 
-export const insertTemplateChart = async (
+export const createTemplateChart = async (
   hosId: string,
   templateOrders: Partial<SelectedIcuOrder>[],
   templateName: string,
+  isTimeIncluded: boolean,
   templateComment?: string | null,
 ) => {
   const supabase = await createClient()
 
-  const { error } = await supabase.rpc('insert_template_orders', {
+  const { error } = await supabase.rpc('create_template_orders', {
     hos_id_input: hosId,
     template_orders_input: templateOrders,
     template_name_input: templateName,
+    is_time_included_input: isTimeIncluded,
     template_comment_input: templateComment ?? '',
   })
 
@@ -69,10 +71,9 @@ export const deleteTemplateChart = async (chartId: string) => {
 export const getTemplateCharts = async (hosId: string) => {
   const supabase = await createClient()
 
-  const { data, error } = await supabase
-    .rpc('get_icu_template_charts_data', {
-      hos_id_input: hosId,
-    })
+  const { data, error } = await supabase.rpc('get_icu_template_charts_data', {
+    hos_id_input: hosId,
+  })
 
   if (error) {
     console.error(error)
@@ -86,10 +87,9 @@ export const getTemplateCharts = async (hosId: string) => {
 export const getTemplateChart = async (chartId: string) => {
   const supabase = await createClient()
 
-  const { data, error } = await supabase
-    .rpc('get_template_chart_data', {
-      icu_chart_id_input: chartId,
-    })
+  const { data, error } = await supabase.rpc('get_template_chart_data', {
+    icu_chart_id_input: chartId,
+  })
 
   if (error) {
     console.error(error)
