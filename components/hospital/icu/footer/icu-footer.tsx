@@ -5,44 +5,61 @@ import RealtimeStatus from '@/components/hospital/icu/footer/realtime-status'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 import { useIcuRealtime } from '@/hooks/use-icu-realtime'
-import { type AnnouncementTitles } from '@/types/vetool'
+import { cn } from '@/lib/utils/utils'
+import type { AnnouncementTitles } from '@/types/vetool'
+import {
+  Bookmark,
+  ClipboardList,
+  LayoutDashboard,
+  ListChecks,
+  LogOut,
+  Search,
+  LineChart,
+} from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 const FOOTER_MAIN_VIEW_MENUS = [
   {
-    label: '종합 현황',
+    label: '종합현황',
     value: 'summary',
+    icon: <LayoutDashboard />,
     hideInMobile: false,
   },
   {
     label: '처치표',
     value: 'tx-table',
+    icon: <ListChecks />,
     hideInMobile: false,
   },
   {
-    label: '입원 차트',
+    label: '입원차트',
     value: 'chart',
+    icon: <ClipboardList />,
     hideInMobile: false,
   },
   {
-    label: '퇴원 / 면회',
+    label: '퇴원/면회',
     value: 'out-and-visit',
+    icon: <LogOut />,
     hideInMobile: true,
   },
   {
-    label: '차트 검색',
+    label: '검색',
     value: 'search',
+    icon: <Search />,
     hideInMobile: true,
   },
   {
     label: '템플릿',
     value: 'template',
+    icon: <Bookmark />,
     hideInMobile: true,
   },
   {
-    label: '입원 통계',
+    label: '통계',
     value: 'analysis',
+    icon: <LineChart />,
     hideInMobile: true,
   },
 ] as const
@@ -77,12 +94,12 @@ export default function IcuFooter({
 
   return (
     <footer className="fixed bottom-0 left-0 right-0 z-40 flex h-[calc(2.5rem+env(safe-area-inset-bottom))] justify-between border-t bg-white 2xl:left-10">
-      <ul className="flex h-10 items-center gap-1">
+      <ul className="flex h-10 items-center gap-2">
         <li className="mx-2">
           <RealtimeStatus isSubscriptionReady={isRealtimeReady} />
         </li>
 
-        {FOOTER_MAIN_VIEW_MENUS.map(({ label, value, hideInMobile }) => (
+        {FOOTER_MAIN_VIEW_MENUS.map(({ label, value, icon, hideInMobile }) => (
           <li
             key={value}
             className={hideInMobile ? 'hidden md:block' : 'block'}
@@ -90,11 +107,15 @@ export default function IcuFooter({
             <Button
               size="sm"
               variant="ghost"
-              className={currentIcuPath === value ? 'bg-muted' : ''}
+              className={
+                (cn(currentIcuPath === value ? 'bg-muted' : ''),
+                'flex items-center gap-1')
+              }
               onClick={() =>
                 push(`/hospital/${hosId}/icu/${targetDate}/${value}`)
               }
             >
+              {icon}
               {label}
             </Button>
           </li>
