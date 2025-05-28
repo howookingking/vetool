@@ -1,7 +1,8 @@
 import { Button } from '@/components/ui/button'
 import { getTemplateChart } from '@/lib/services/icu/template/template'
-import { type SelectedIcuOrder } from '@/types/icu/chart'
-import { type TemplateChart } from '@/types/icu/template'
+import { useDtOrderStore } from '@/lib/store/icu/dt-order'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
+import type { TemplateChart } from '@/types/icu/template'
 import { Edit, LoaderCircle } from 'lucide-react'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 
@@ -22,9 +23,12 @@ export default function EditTemplateButton({
   setIsEdtit,
   setSelectedTemplateChart,
 }: EditTemplateButtonProps) {
+  const { reset, setOrderTimePendingQueue } = useDtOrderStore()
+
   const [isFetching, setIsFetching] = useState(false)
 
   const handleOpenEditDialog = async () => {
+    reset()
     setSelectedTemplateChart(template)
     setIsEdtit(true)
     setIsFetching(true)
@@ -35,6 +39,7 @@ export default function EditTemplateButton({
     setIsFetching(false)
     setUseUpsertTemplateDialogOpen(true)
   }
+
   return (
     <Button
       size="icon"

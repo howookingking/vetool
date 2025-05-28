@@ -75,6 +75,9 @@ export default function DtOrderForm({
                 order_comment: orderComment,
                 order_type: orderType as OrderType,
                 is_bordered: isBordered ?? false,
+                order_times: orderTime.map((time) =>
+                  time === '0' ? '0' : '기본',
+                ),
               }
             }
             return order
@@ -131,15 +134,17 @@ export default function DtOrderForm({
 
         <OrderBorderCheckbox form={form} />
 
-        <OrderTimeSettings
-          startTime={startTime}
-          timeTerm={timeTerm}
-          orderTime={orderTime}
-          setStartTime={setStartTime}
-          setTimeTerm={setTimeTerm}
-          setOrderTime={setOrderTime}
-          newTime={newTime}
-        />
+        {!isTemplate && (
+          <OrderTimeSettings
+            startTime={startTime}
+            timeTerm={timeTerm}
+            orderTime={orderTime}
+            setStartTime={setStartTime}
+            setTimeTerm={setTimeTerm}
+            setOrderTime={setOrderTime}
+            newTime={newTime}
+          />
+        )}
 
         <DialogFooter className="ml-auto w-full gap-2 md:gap-0">
           <DtDeleteOrderAlertDialog

@@ -9,9 +9,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { type SelectedIcuOrder } from '@/types/icu/chart'
-import { type TemplateChart } from '@/types/icu/template'
-import { type Dispatch, type SetStateAction } from 'react'
+import { useDtOrderStore } from '@/lib/store/icu/dt-order'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
+import type { TemplateChart } from '@/types/icu/template'
+import type { Dispatch, SetStateAction } from 'react'
 import ConfirmAddTemplateDialog from './confirm-add-template-dialog'
 import TemplateOrderTable from './template-order-table'
 
@@ -36,11 +37,14 @@ export default function UpsertTemplateDialog({
   selectedTemplateChart,
   setSelectedTemplateChart,
 }: Props) {
+  const { reset } = useDtOrderStore()
+
   const handleOpenChange = (open: boolean) => {
     if (open) {
       setSortedOrders([])
       setSelectedTemplateChart(null)
       setIsEdit(false)
+      reset()
     }
     setUseUpsertTemplateDialogOpen(open)
   }
