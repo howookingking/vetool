@@ -262,11 +262,9 @@ export default function TxDetailInsertStep({
                     name="notification"
                   />
                 </FormControl>
-                <div className="">
-                  <FormLabel htmlFor="notification">
-                    확인이 필요한 처치입니다
-                  </FormLabel>
-                </div>
+                <FormLabel htmlFor="notification" className="cursor-pointer">
+                  확인이 필요한 처치입니다
+                </FormLabel>
               </FormItem>
             )}
           />
