@@ -6,6 +6,7 @@ import DtSortingOrderRows from '@/components/hospital/common/default-template-or
 import DtTableHeader from '@/components/hospital/common/default-template-order/dt-table-header'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import useLocalStorage from '@/hooks/use-local-storage'
+import { useDtOrderStore } from '@/lib/store/icu/dt-order'
 import type { OrderWidth } from '@/types/hospital/order'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { type Dispatch, type SetStateAction, useState } from 'react'
@@ -20,6 +21,7 @@ export default function TemplateOrderTable({
   sortedOrders,
   setSortedOrders,
 }: TemplateOrderTableProps) {
+  const { orderTimePendingQueue } = useDtOrderStore()
   const [orderWidth, setOrderWidth] = useLocalStorage<OrderWidth>(
     'orderWidth',
     400,

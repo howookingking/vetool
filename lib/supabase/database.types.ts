@@ -441,7 +441,7 @@ export type Database = {
       icu_charts: {
         Row: {
           created_at: string
-          der_calc_factor: number | null
+          der_calc_factor: number
           hos_id: string
           icu_chart_id: string
           icu_io_id: string | null
@@ -456,7 +456,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
-          der_calc_factor?: number | null
+          der_calc_factor?: number
           hos_id: string
           icu_chart_id?: string
           icu_io_id?: string | null
@@ -471,7 +471,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
-          der_calc_factor?: number | null
+          der_calc_factor?: number
           hos_id?: string
           icu_chart_id?: string
           icu_io_id?: string | null

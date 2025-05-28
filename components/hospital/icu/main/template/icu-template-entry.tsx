@@ -3,8 +3,8 @@
 import PreviewDialog from '@/components/hospital/common/preview/preview-dialog'
 import { templateColumns } from '@/components/hospital/icu/main/template/template-columns'
 import DataTable from '@/components/ui/data-table'
-import { type SelectedIcuOrder } from '@/types/icu/chart'
-import { type TemplateChart } from '@/types/icu/template'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
+import type { TemplateChart } from '@/types/icu/template'
 import { useState } from 'react'
 import UpsertTemplateDialog from './upsert-template-dialog'
 

@@ -29,22 +29,22 @@ export const createTemplateChart = async (
 }
 
 export const updateTemplateChart = async (
+  hosId: string,
   icu_chart_id: string,
   templateOrders: Partial<SelectedIcuOrder>[],
   templateId: string,
   templateName: string,
   templateComment: string | null,
-  hosId: string,
 ) => {
   const supabase = await createClient()
 
   const { error } = await supabase.rpc('update_template_chart', {
+    hos_id_input: hosId,
     icu_chart_id_input: icu_chart_id,
-    template_id_input: templateId,
     template_orders_input: templateOrders,
+    template_id_input: templateId,
     template_name_input: templateName,
     template_comment_input: templateComment ?? '',
-    hos_id_input: hosId,
   })
 
   if (error) {

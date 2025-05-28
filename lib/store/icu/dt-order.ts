@@ -1,12 +1,12 @@
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { create } from 'zustand'
 
-export type DefaultOrderTimePendindQueue = {
+export type DtOrderTimePendingQueue = {
   orderTime: number
   orderId: string
 }
 
-type IcuOrderState = {
+type DtOrderState = {
   selectedDefaultOrder: Partial<SelectedIcuOrder>
   setSelectedDefaultOrder: (chartOrder: Partial<SelectedIcuOrder>) => void
 
@@ -24,19 +24,17 @@ type IcuOrderState = {
       | ((prev: Partial<SelectedIcuOrder>[]) => Partial<SelectedIcuOrder>[]),
   ) => void
 
-  orderTimePendingQueue: DefaultOrderTimePendindQueue[]
+  orderTimePendingQueue: DtOrderTimePendingQueue[]
   setOrderTimePendingQueue: (
     updater:
-      | DefaultOrderTimePendindQueue[]
-      | ((
-          prev: DefaultOrderTimePendindQueue[],
-        ) => DefaultOrderTimePendindQueue[]),
+      | DtOrderTimePendingQueue[]
+      | ((prev: DtOrderTimePendingQueue[]) => DtOrderTimePendingQueue[]),
   ) => void
 
   reset: () => void
 }
 
-export const useDefaultOrderStore = create<IcuOrderState>((set) => ({
+export const useDtOrderStore = create<DtOrderState>((set) => ({
   selectedDefaultOrder: {} as Partial<SelectedIcuOrder>,
   setSelectedDefaultOrder: (selectedChartOrder) =>
     set({ selectedDefaultOrder: selectedChartOrder }),

@@ -25,8 +25,12 @@ import {
   createTemplateChart,
   updateTemplateChart,
 } from '@/lib/services/icu/template/template'
-import { type SelectedIcuOrder } from '@/types/icu/chart'
-import { type TemplateChart } from '@/types/icu/template'
+import {
+  type DtOrderTimePendingQueue,
+  useDtOrderStore,
+} from '@/lib/store/icu/dt-order'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
+import type { TemplateChart } from '@/types/icu/template'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
@@ -50,35 +54,48 @@ export default function ConfirmAddTemplateDialog({
   const { refresh } = useRouter()
   const { hos_id } = useParams()
 
+  const { orderTimePendingQueue, reset: resetOrderStore } = useDtOrderStore()
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   const form = useForm<z.infer<typeof templateFormSchema>>({
     resolver: zodResolver(templateFormSchema),
     defaultValues: {
-      template_name: undefined,
-      template_comment: undefined,
+      template_name: '',
+      template_comment: '',
     },
   })
 
   const handleSubmit = async (values: z.infer<typeof templateFormSchema>) => {
+    const { template_name, template_comment } = values
+
     setIsSubmitting(true)
 
-    isEdit
-      ? await updateTemplateChart(
-          selectedTemplateChart?.icu_chart_id!,
-          sortedOrders,
-          selectedTemplateChart?.template_id!,
-          values.template_name,
-          values.template_comment ?? '',
-          hos_id as string,
-        )
-      : await createTemplateChart(
-          hos_id as string,
-          sortedOrders,
-          values.template_name,
-          values.template_comment,
-        )
+    const updatedTemplateOrders =
+      applyAndToggleTimePendingQueueToTemplateOrders(
+        sortedOrders,
+        orderTimePendingQueue,
+      )
+
+    if (isEdit) {
+      await updateTemplateChart(
+        hos_id as string,
+        selectedTemplateChart?.icu_chart_id!,
+        updatedTemplateOrders,
+        selectedTemplateChart?.template_id!,
+        template_name,
+        template_comment ?? '',
+      )
+    } else {
+      await createTemplateChart(
+        hos_id as string,
+        updatedTemplateOrders,
+        template_name,
+        true,
+        template_comment,
+      )
+    }
 
     toast({
       title: isEdit ? '템플릿이 수정되었습니다' : '템플릿이 추가되었습니다',
@@ -113,7 +130,10 @@ export default function ConfirmAddTemplateDialog({
 
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(handleSubmit)}
+            onSubmit={(e) => {
+              e.preventDefault()
+              form.handleSubmit(handleSubmit)(e)
+            }}
             className="space-y-4"
           >
             <FormField
@@ -173,4 +193,42 @@ export default function ConfirmAddTemplateDialog({
       </DialogContent>
     </Dialog>
   )
+}
+
+function applyAndToggleTimePendingQueueToTemplateOrders(
+  sortedOrders: SelectedIcuOrder[],
+  orderTimePendingQueue: DtOrderTimePendingQueue[],
+): SelectedIcuOrder[] {
+  // 1. orderId별 시간 배열을 map으로 정리
+  const queueMap = new Map<string, number[]>()
+
+  for (const { orderId, orderTime } of orderTimePendingQueue) {
+    const times = queueMap.get(orderId) ?? []
+    times.push(orderTime)
+    queueMap.set(orderId, times)
+  }
+
+  // 2. 각 order에 대해 order_times 토글 적용
+  return sortedOrders.map((order) => {
+    const toggleTimes = queueMap.get(order.order_id)
+
+    // 해당 order에 적용할 시간 정보 없으면 그대로 반환
+    if (!toggleTimes) return order
+
+    // 기존 order_times 복사해서 수정
+    const updatedTimes = order.order_times.map((time, index) => {
+      const hour = index + 1
+      if (!toggleTimes.includes(hour)) return time
+
+      // 값이 "기본"이면 "0"으로, "0"이면 "기본"으로
+      if (time === '기본') return '0'
+      if (time === '0') return '기본'
+      return time // 그 외 값(사실 없으...)은 그대로 유지
+    })
+
+    return {
+      ...order,
+      order_times: updatedTimes,
+    }
+  })
 }

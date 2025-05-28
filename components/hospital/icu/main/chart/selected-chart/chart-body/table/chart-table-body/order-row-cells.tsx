@@ -56,18 +56,16 @@ export default function OrderRowCells({
   const { order_times, order_id, treatments, order_type, order_name } = order
 
   const toggleOrderTime = (orderId: string, time: number) => {
-    if (selectedTxPendingQueue.length > 0) return
-
-    setOrderTimePendingQueue((prev) => {
-      const existingIndex = prev.findIndex(
-        (item) => item.orderId === orderId && item.orderTime === time,
+    setOrderTimePendingQueue((prevQueue) => {
+      const isAlreadyQueued = prevQueue.some(
+        (entry) => entry.orderId === orderId && entry.orderTime === time,
       )
-
-      if (existingIndex !== -1) {
-        return prev.filter((_, index) => index !== existingIndex)
-      } else {
-        return [...prev, { orderId, orderTime: time }]
+      if (isAlreadyQueued) {
+        return prevQueue.filter(
+          (entry) => !(entry.orderId === orderId && entry.orderTime === time),
+        )
       }
+      return [...prevQueue, { orderId, orderTime: time }]
     })
   }
 
