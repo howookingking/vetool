@@ -11,11 +11,21 @@ import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provi
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
 import RegisterDialogHeader from './register-dialog-header'
+import { usePathname } from 'next/navigation'
 
 const LazyRegisterIcuConfirmDialog = dynamic(
   () =>
     import(
       '@/components/hospital/icu/sidebar/register-dialog/register-icu-confirm-dialog'
+    ),
+  {
+    ssr: false,
+  },
+)
+const LazyRegisterChecklistConfirmDialog = dynamic(
+  () =>
+    import(
+      '@/components/hospital/icu/sidebar/register-dialog/register-checklist-confirm-dialog'
     ),
   {
     ssr: false,
@@ -74,7 +84,8 @@ export default function RegisterDialog({
   const [registeringPatient, setRegisteringPatient] =
     useState<RegisteringPatient>(null)
   const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false)
-
+  const pathname = usePathname()
+  const splittedPathArr = pathname.split('/')
   const isAvailableAddChart = canAddChart(plan, currentChartNumber)
 
   const handleTabValueChange = (value: string) => {
@@ -101,7 +112,9 @@ export default function RegisterDialog({
     <Dialog open={isRegisterDialogOpen} onOpenChange={handleOpenChage}>
       <DialogTrigger asChild className="hidden md:flex">
         <Button size="sm" className="shrink-0 text-sm">
-          환자 입원
+          {splittedPathArr[3] === 'checklist'
+            ? '체크리스트 차트 등록'
+            : '환자 입원'}
         </Button>
       </DialogTrigger>
 
@@ -157,7 +170,18 @@ export default function RegisterDialog({
         )}
       </DialogContent>
 
-      {isConfirmDialogOpen && isAvailableAddChart && (
+      {isConfirmDialogOpen && isAvailableAddChart && splittedPathArr[3] ? (
+        <LazyRegisterChecklistConfirmDialog
+          isConfirmDialogOpen={isConfirmDialogOpen}
+          setIsConfirmDialogOpen={setIsConfirmDialogOpen}
+          hosId={hosId}
+          defaultVetId={defaultVetId}
+          defaultGroup={defaultGroup}
+          registeringPatient={registeringPatient}
+          setIsRegisterDialogOpen={setIsRegisterDialogOpen}
+          currentChartNumber={currentChartNumber}
+        />
+      ) : (
         <LazyRegisterIcuConfirmDialog
           isConfirmDialogOpen={isConfirmDialogOpen}
           setIsConfirmDialogOpen={setIsConfirmDialogOpen}
