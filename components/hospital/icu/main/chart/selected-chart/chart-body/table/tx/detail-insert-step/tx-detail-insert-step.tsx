@@ -26,7 +26,7 @@ import { txDetailRegisterFormSchema } from '@/lib/schemas/icu/chart/tx-schema'
 import { deleteIcuChartTx } from '@/lib/services/icu/chart/tx-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
-import { type ImageUrlResponse } from '@/types/images'
+import type { ImageUrlResponse } from '@/types/images'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import { LoaderCircle } from 'lucide-react'
@@ -253,7 +253,7 @@ export default function TxDetailInsertStep({
             control={form.control}
             name="isCrucialChecked"
             render={({ field }) => (
-              <FormItem className="flex items-center space-x-2 space-y-0">
+              <FormItem className="flex flex-row items-center space-x-2 space-y-0 rounded-md border p-4 shadow">
                 <FormControl>
                   <Checkbox
                     checked={field.value}

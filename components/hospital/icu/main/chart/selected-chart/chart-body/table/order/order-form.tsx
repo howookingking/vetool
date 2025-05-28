@@ -59,19 +59,35 @@ export default function OrderForm({
   })
 
   const handleNextStep = async (values: z.infer<typeof orderSchema>) => {
+    const {
+      icu_chart_order_name,
+      icu_chart_order_type,
+      icu_chart_order_comment,
+      is_bordered,
+    } = values
+
     setSelectedChartOrder({
-      order_name: values.icu_chart_order_name,
-      order_comment: values.icu_chart_order_comment,
-      order_type: values.icu_chart_order_type as OrderType,
+      order_name: icu_chart_order_name,
+      order_comment: icu_chart_order_comment,
+      order_type: icu_chart_order_type as OrderType,
       order_times: orderTime,
       order_id: selectedChartOrder.order_id,
-      is_bordered: values.is_bordered,
+      is_bordered: is_bordered,
     })
+
     setOrderStep('selectOrderer')
   }
+
   const handleSubmitWithoutOrderer = async (
     values: z.infer<typeof orderSchema>,
   ) => {
+    const {
+      icu_chart_order_name,
+      icu_chart_order_type,
+      icu_chart_order_comment,
+      is_bordered,
+    } = values
+
     setIsUpdating(true)
 
     await upsertOrder(
@@ -80,14 +96,15 @@ export default function OrderForm({
       selectedChartOrder.order_id,
       orderTime.map((time) => (time === '0' ? '0' : vetsListData[0].name)),
       {
-        icu_chart_order_name: values.icu_chart_order_name.trim(),
-        icu_chart_order_comment: values.icu_chart_order_comment
-          ? values.icu_chart_order_comment.trim()
+        icu_chart_order_name: icu_chart_order_name.trim(),
+        icu_chart_order_comment: icu_chart_order_comment
+          ? icu_chart_order_comment.trim()
           : '',
-        icu_chart_order_type: values.icu_chart_order_type!,
-        is_bordered: values.is_bordered,
+        icu_chart_order_type: icu_chart_order_type,
+        is_bordered: is_bordered,
       },
     )
+
     toast({
       title: '오더를 수정 하였습니다',
     })
