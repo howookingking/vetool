@@ -11,7 +11,7 @@ import { toast } from '@/components/ui/use-toast'
 import useIsCommandPressed from '@/hooks/use-is-command-pressed'
 import useLocalStorage from '@/hooks/use-local-storage'
 import { upsertDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
-import { useDefaultOrderStore } from '@/lib/store/icu/dt-order'
+import { useDtOrderStore } from '@/lib/store/icu/dt-order'
 import { cn, formatOrders } from '@/lib/utils/utils'
 import { IcuOrderColors } from '@/types/adimin'
 import type { OrderWidth } from '@/types/hospital/order'
@@ -42,8 +42,7 @@ export default function DefaultOrdersTable({
 
   const isCommandPressed = useIsCommandPressed()
 
-  const { orderTimePendingQueue, reset: resetOrderStore } =
-    useDefaultOrderStore()
+  const { orderTimePendingQueue, reset: resetOrderStore } = useDtOrderStore()
 
   const [isSorting, setIsSorting] = useState(false)
   const [sortedOrders, setSortedOrders] =
@@ -82,6 +81,7 @@ export default function DefaultOrdersTable({
         },
       )
     }
+
     toast({
       title: '오더시간을 변경하였습니다',
     })

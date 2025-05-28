@@ -1,5 +1,5 @@
 import { TIMES } from '@/constants/hospital/icu/chart/time'
-import { useDefaultOrderStore } from '@/lib/store/icu/dt-order'
+import { useDtOrderStore } from '@/lib/store/icu/dt-order'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { SelectedIcuOrder } from '@/types/icu/chart'
 import DtCell from './dt-cell'
@@ -14,20 +14,19 @@ export default function DtOrderRowCells({
   const {
     basicHosData: { timeGuidelineData },
   } = useBasicHosDataContext()
-  const { setOrderTimePendingQueue, orderTimePendingQueue } =
-    useDefaultOrderStore()
+  const { setOrderTimePendingQueue, orderTimePendingQueue } = useDtOrderStore()
 
   const toggleOrderTime = (orderId: string, time: number) => {
-    setOrderTimePendingQueue((prev) => {
-      const existingIndex = prev.findIndex(
-        (item) => item.orderId === orderId && item.orderTime === time,
+    setOrderTimePendingQueue((prevQueue) => {
+      const isAlreadyQueued = prevQueue.some(
+        (entry) => entry.orderId === orderId && entry.orderTime === time,
       )
-
-      if (existingIndex !== -1) {
-        return prev.filter((_, index) => index !== existingIndex)
-      } else {
-        return [...prev, { orderId: orderId, orderTime: time }]
+      if (isAlreadyQueued) {
+        return prevQueue.filter(
+          (entry) => !(entry.orderId === orderId && entry.orderTime === time),
+        )
       }
+      return [...prevQueue, { orderId, orderTime: time }]
     })
   }
 
