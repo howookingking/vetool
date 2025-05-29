@@ -32,7 +32,6 @@ export default function SidebarUserInfo({
   setIsSheetOpen,
   mobile,
 }: SidebarUserInfoProps) {
-  console.log(vetoolUser)
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>

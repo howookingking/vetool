@@ -9,12 +9,13 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
-import { registerIcuPatient } from '@/lib/services/icu/register-icu-patient'
+
 import { changeTargetDateInUrl, cn } from '@/lib/utils/utils'
 import { LoaderCircle } from 'lucide-react'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { type RegisteringPatient } from './register-dialog'
+import { registerChecklistPatient } from '@/lib/services/checklist/register-checklist-patient'
 
 type RegisterIcuConfirmDialogProps = {
   hosId: string
@@ -27,7 +28,7 @@ type RegisterIcuConfirmDialogProps = {
   currentChartNumber: number
 }
 
-export default function RegisterIcuConfirmDialog({
+export default function RegisterCecklistConfirmDialog({
   hosId,
   isConfirmDialogOpen,
   setIsConfirmDialogOpen,
@@ -46,14 +47,10 @@ export default function RegisterIcuConfirmDialog({
   const handleConfirm = async () => {
     setIsSubmitting(true)
 
-    await registerIcuPatient(
+    await registerChecklistPatient(
       hosId,
       registeringPatient?.patientId!,
-      registeringPatient?.birth!,
-      target_date as string,
-      '',
-      [defaultGroup as string],
-      defaultVetId as string,
+      target_date,
     )
 
     const splittedPathArr = path.split('/')

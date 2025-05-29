@@ -59,9 +59,9 @@ export default function DesktopChecklistSidebar({
             filters={filters}
             setFilters={setFilters}
           /> */}
-
+          <div>오늘 체크리스트</div>
           <Separator />
-
+          <div>최근 등록된 체크리스트</div>
           <PatientList
             filteredData={filteredData}
             vetsListData={vetsListData}

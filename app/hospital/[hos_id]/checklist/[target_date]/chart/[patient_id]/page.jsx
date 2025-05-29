@@ -1,13 +1,7 @@
 import IcuChartEntry from '@/components/hospital/icu/main/chart/icu-chart-entry'
 import { getIcuChart } from '@/lib/services/icu/chart/get-icu-chart'
 
-export default async function PatientChecklistPage(props: {
-  params: Promise<{
-    hos_id: string
-    target_date: string
-    patient_id: string
-  }>
-}) {
+export default async function PatientChecklistPage() {
   const params = await props.params
 
   const chartData = await getIcuChart(
@@ -16,7 +10,7 @@ export default async function PatientChecklistPage(props: {
     params.patient_id,
   )
 
-  return <div>{params.patient_id}</div>
-  
-//   <IcuChartEntry chartData={chartData} patientId={params.patient_id} />
+  return <div>chekc</div>
+
+  //   <IcuChartEntry chartData={chartData} patientId={params.patient_id} />
 }
