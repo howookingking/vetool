@@ -1,8 +1,8 @@
+import ChecklistFooter from '@/components/hospital/checklist/chartlist/footer/checklist-footer'
 import ChekclistSidebar from '@/components/hospital/checklist/sidebar/checklist-sidebar'
-import IcuFooter from '@/components/hospital/icu/footer/icu-footer'
-import IcuSidebar from '@/components/hospital/icu/sidebar/icu-sidebar'
+import { getChecklistData } from '@/lib/services/checklist/get-checklist-data'
 import { getIcuData } from '@/lib/services/icu/get-icu-data'
-// import { getAnnouncementTitlesData } from '@/lib/services/super/announcement/announcement'
+import { getAnnouncementTitlesData } from '@/lib/services/super/announcement/announcement'
 import { BasicHosDataProvider } from '@/providers/basic-hos-data-context-provider'
 import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
 import React from 'react'
@@ -33,12 +33,11 @@ export default async function ChecklistPageLayout(props: {
   // redirectToOwnHospital(vetoolUser, params.hos_id, vetoolUser.is_super)
 
   const { hos_id, target_date } = await props.params
-  const { basicHosData, icuSidebarData, vetsListData } = await getIcuData(
-    hos_id,
-    target_date,
-  )
-
-  //   const announcementTitlesData = await getAnnouncementTitlesData()
+  const { basicHosData, checklistSidebarData, vetsListData } =
+    await getChecklistData(hos_id, target_date)
+  const { icuSidebarData } = await getIcuData(hos_id, target_date)
+  console.log('ss', checklistSidebarData)
+  const announcementTitlesData = await getAnnouncementTitlesData()
 
   return (
     <>
@@ -64,7 +63,7 @@ export default async function ChecklistPageLayout(props: {
           <ChekclistSidebar
             hosId={hos_id}
             hosGroupList={basicHosData.group_list}
-            icuSidebarData={icuSidebarData}
+            checklistSidebarData={checklistSidebarData}
             vetsListData={vetsListData}
           />
 
@@ -74,11 +73,11 @@ export default async function ChecklistPageLayout(props: {
         </div>
       </BasicHosDataProvider>
 
-      {/* <IcuFooter
+      <ChecklistFooter
         hosId={hos_id}
         targetDate={target_date}
         announcementTitlesData={announcementTitlesData}
-      /> */}
+      />
     </>
   )
 }

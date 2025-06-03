@@ -10,7 +10,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { useState } from 'react'
+
+import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 export default function PatientRegisterDialog({ hosId }: { hosId: string }) {
   const [isPatientRegisterDialogOpen, setIsPatientRegisterDialogOpen] =

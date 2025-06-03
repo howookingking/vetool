@@ -112,9 +112,7 @@ export default function RegisterDialog({
     <Dialog open={isRegisterDialogOpen} onOpenChange={handleOpenChage}>
       <DialogTrigger asChild className="hidden md:flex">
         <Button size="sm" className="shrink-0 text-sm">
-          {splittedPathArr[3] === 'checklist'
-            ? '체크리스트 차트 등록'
-            : '환자 입원'}
+          {splittedPathArr[3] === 'checklist' ? '치료 환자 등록' : '환자 입원'}
         </Button>
       </DialogTrigger>
 
@@ -170,7 +168,9 @@ export default function RegisterDialog({
         )}
       </DialogContent>
 
-      {isConfirmDialogOpen && isAvailableAddChart && splittedPathArr[3] ? (
+      {isConfirmDialogOpen &&
+      isAvailableAddChart &&
+      splittedPathArr[3] === 'checklist' ? (
         <LazyRegisterChecklistConfirmDialog
           isConfirmDialogOpen={isConfirmDialogOpen}
           setIsConfirmDialogOpen={setIsConfirmDialogOpen}

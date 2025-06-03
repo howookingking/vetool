@@ -72,7 +72,7 @@ export default function RegisterCecklistConfirmDialog({
 
     toast({
       title: '환자 등록 완료',
-      description: '환자 등록을 완료했습니다. 체크리스트 차트를 생성하세요',
+      description: '환자 등록을 완료했습니다. 치료 차트를 생성하세요',
     })
 
     setIsSubmitting(false)
@@ -87,7 +87,7 @@ export default function RegisterCecklistConfirmDialog({
     >
       <AlertDialogContent className="gap-0">
         <AlertDialogHeader>
-          <AlertDialogTitle>환자 체크리스트 등록</AlertDialogTitle>
+          <AlertDialogTitle>치료 환자 등록</AlertDialogTitle>
         </AlertDialogHeader>
         <AlertDialogDescription>
           {`${registeringPatient?.patientName}를(을) ${target_date}에 등록 하시겠습니까?`}

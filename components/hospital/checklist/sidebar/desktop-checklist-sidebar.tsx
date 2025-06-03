@@ -6,20 +6,21 @@ import RegisterDialog from '@/components/hospital/icu/sidebar/register-dialog/re
 import { Separator } from '@/components/ui/separator'
 import { type Filter, type IcuSidebarIoData, type Vet } from '@/types/icu/chart'
 import ChecklistDateSelector from '@/components/hospital/checklist/sidebar/date-selector/checklist-date-selector'
+import {
+  ChecklistSidebarData,
+  Filterdcheck,
+} from '@/types/checklist/checklistchart'
+import ChecklistList from '../chartlist/checklist-list'
 
 type DesktopChecklistSidebarProps = {
   hosId: string
   vetsListData: Vet[]
   hosGroupList: string[]
-  filteredData: {
-    filteredIcuIoData: IcuSidebarIoData[]
-    excludedIcuIoData: IcuSidebarIoData[]
-    filteredIoPatientCount: number
-  }
+  filteredData: Filterdcheck
   isEmpty: boolean
   handleCloseMobileDrawer?: () => void
-  filters: Filter
-  setFilters: (filters: Filter) => void
+  // filters: Filter
+  // setFilters: (filters: Filter) => void
   currentChartNumber: number
 }
 
@@ -30,8 +31,8 @@ export default function DesktopChecklistSidebar({
   filteredData,
   isEmpty,
   handleCloseMobileDrawer,
-  filters,
-  setFilters,
+  // filters,
+  // setFilters,
   currentChartNumber,
 }: DesktopChecklistSidebarProps) {
   return (
@@ -47,27 +48,17 @@ export default function DesktopChecklistSidebar({
 
       {isEmpty ? (
         <NoResultSquirrel
-          text="당일 체크리스트 목록 없음"
+          text="당일 치료 목록 없음"
           className="mt-20 flex-col"
           size="md"
         />
       ) : (
-        <>
-          {/* <Filters
-            hosGroupList={hosGroupList}
-            vetsListData={vetsListData}
-            filters={filters}
-            setFilters={setFilters}
-          /> */}
-          <div>오늘 체크리스트</div>
-          <Separator />
-          <div>최근 등록된 체크리스트</div>
-          <PatientList
-            filteredData={filteredData}
-            vetsListData={vetsListData}
-            handleCloseMobileDrawer={handleCloseMobileDrawer}
-          />
-        </>
+        <ChecklistList
+          filteredData={filteredData}
+          hosGroupList={hosGroupList}
+          handleCloseMobileDrawer={handleCloseMobileDrawer}
+          vetsListData={vetsListData}
+        />
       )}
     </aside>
   )
