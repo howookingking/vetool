@@ -47,6 +47,81 @@ export type Database = {
           },
         ]
       }
+      checklist: {
+        Row: {
+          checklist_group: string | null
+          checklist_id: string
+          checklist_protocol: Json | null
+          checklist_set: Json | null
+          checklist_tag: string | null
+          checklist_timetable: Json | null
+          checklist_title: string | null
+          checklist_type: string | null
+          checklist_vet: Json | null
+          comment: string | null
+          created_at: string
+          due_date: string | null
+          endtime: string | null
+          hos_id: string | null
+          patient_id: string | null
+          preinfo: string | null
+          starttime: string | null
+        }
+        Insert: {
+          checklist_group?: string | null
+          checklist_id?: string
+          checklist_protocol?: Json | null
+          checklist_set?: Json | null
+          checklist_tag?: string | null
+          checklist_timetable?: Json | null
+          checklist_title?: string | null
+          checklist_type?: string | null
+          checklist_vet?: Json | null
+          comment?: string | null
+          created_at?: string
+          due_date?: string | null
+          endtime?: string | null
+          hos_id?: string | null
+          patient_id?: string | null
+          preinfo?: string | null
+          starttime?: string | null
+        }
+        Update: {
+          checklist_group?: string | null
+          checklist_id?: string
+          checklist_protocol?: Json | null
+          checklist_set?: Json | null
+          checklist_tag?: string | null
+          checklist_timetable?: Json | null
+          checklist_title?: string | null
+          checklist_type?: string | null
+          checklist_vet?: Json | null
+          comment?: string | null
+          created_at?: string
+          due_date?: string | null
+          endtime?: string | null
+          hos_id?: string | null
+          patient_id?: string | null
+          preinfo?: string | null
+          starttime?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "checklist_hos_id_fkey"
+            columns: ["hos_id"]
+            isOneToOne: false
+            referencedRelation: "hospitals"
+            referencedColumns: ["hos_id"]
+          },
+          {
+            foreignKeyName: "checklist_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["patient_id"]
+          },
+        ]
+      }
       diets: {
         Row: {
           active: boolean
@@ -441,7 +516,6 @@ export type Database = {
       icu_charts: {
         Row: {
           created_at: string
-          der_calc_factor: number
           hos_id: string
           icu_chart_id: string
           icu_io_id: string | null
@@ -456,7 +530,6 @@ export type Database = {
         }
         Insert: {
           created_at?: string
-          der_calc_factor?: number
           hos_id: string
           icu_chart_id?: string
           icu_io_id?: string | null
@@ -471,7 +544,6 @@ export type Database = {
         }
         Update: {
           created_at?: string
-          der_calc_factor?: number
           hos_id?: string
           icu_chart_id?: string
           icu_io_id?: string | null
@@ -1571,23 +1643,11 @@ export type Database = {
         }
         Returns: undefined
       }
-      get_chartable_vital_data: {
-        Args: { patient_id_input: string; in_date_input: string }
-        Returns: Json
-      }
       get_chartable_vitals_data: {
         Args: { icu_io_id_input: string }
         Returns: Json
       }
       get_default_chart_data: {
-        Args: { hos_id_input: string }
-        Returns: Json
-      }
-      get_drug_product_details: {
-        Args: { hos_id_input: string }
-        Returns: Json
-      }
-      get_drugs: {
         Args: { hos_id_input: string }
         Returns: Json
       }
