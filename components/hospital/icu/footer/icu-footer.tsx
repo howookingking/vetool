@@ -8,13 +8,13 @@ import { useIcuRealtime } from '@/hooks/use-icu-realtime'
 import { cn } from '@/lib/utils/utils'
 import type { AnnouncementTitles } from '@/types/vetool'
 import {
+  BarChartHorizontal,
   Bookmark,
   ClipboardList,
   LayoutDashboard,
   ListChecks,
   LogOut,
   Search,
-  LineChart,
 } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
@@ -59,7 +59,7 @@ const FOOTER_MAIN_VIEW_MENUS = [
   {
     label: '통계',
     value: 'analysis',
-    icon: <LineChart />,
+    icon: <BarChartHorizontal />,
     hideInMobile: true,
   },
 ] as const
