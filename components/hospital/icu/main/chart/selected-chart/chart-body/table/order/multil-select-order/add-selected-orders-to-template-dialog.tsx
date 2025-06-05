@@ -157,19 +157,17 @@ export default function AddSelectedOrdersToTemplateDialog({
               control={form.control}
               name="is_time_included"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-2 space-y-0 rounded-md border p-4 shadow">
+                <FormItem className="flex space-x-2 space-y-0 rounded-md border p-4 shadow">
                   <FormControl>
                     <Checkbox
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />
                   </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormLabel className="cursor-pointer">
-                      <span className="bg-rose-400/10 p-1">시간정보</span>를
-                      같이 저장합니다
-                    </FormLabel>
-                  </div>
+                  <FormLabel className="cursor-pointer">
+                    <span className="bg-rose-400/10 p-1">시간정보</span>를 같이
+                    저장합니다
+                  </FormLabel>
                 </FormItem>
               )}
             />

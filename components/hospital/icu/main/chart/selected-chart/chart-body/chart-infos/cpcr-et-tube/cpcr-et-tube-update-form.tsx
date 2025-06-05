@@ -22,30 +22,9 @@ import { cpcrEtTubeSchema } from '@/lib/schemas/icu/chart/chart-info-schema'
 import { updateCpcrEtTube } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { type Dispatch, type SetStateAction, useState } from 'react'
+import { type Dispatch, type SetStateAction, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
-
-const TUBE_THICKNESS = [
-  '미지정',
-  2,
-  2.5,
-  3,
-  3.5,
-  4,
-  4.5,
-  5,
-  5.5,
-  6,
-  6.5,
-  7,
-  7.5,
-  8,
-  8.5,
-  9,
-  9.5,
-  10,
-] as const
 
 type Props = {
   icuIoId: string
@@ -61,6 +40,7 @@ export default function CpcrEtTubeUpdateForm({
   setIsDialogOpen,
 }: Props) {
   const [isUpdating, setIsUpdating] = useState(false)
+  const [etTubeSelectOpen, setEtTubeSelectOpen] = useState(false)
 
   const handleUpdateCpcrEtTube = async (
     values: z.infer<typeof cpcrEtTubeSchema>,
@@ -88,6 +68,8 @@ export default function CpcrEtTubeUpdateForm({
 
   const cpcrValue = form.watch('cpcr')
 
+  const etTubeRef = useRef<HTMLSelectElement>(null)
+
   return (
     <Form {...form}>
       <form
@@ -105,8 +87,10 @@ export default function CpcrEtTubeUpdateForm({
               <Select
                 onValueChange={(value) => {
                   field.onChange(value)
-                  if (value === '미지정') {
-                    form.setValue('etTube', '미지정')
+                  if (value === 'CPCR') {
+                    setEtTubeSelectOpen(true)
+                  } else {
+                    setEtTubeSelectOpen(false)
                   }
                 }}
                 defaultValue={field.value}
@@ -144,6 +128,8 @@ export default function CpcrEtTubeUpdateForm({
                 onValueChange={field.onChange}
                 value={field.value ?? ''}
                 disabled={cpcrValue !== 'CPCR'}
+                open={etTubeSelectOpen}
+                onOpenChange={setEtTubeSelectOpen}
               >
                 <FormControl>
                   <SelectTrigger
@@ -180,3 +166,24 @@ export default function CpcrEtTubeUpdateForm({
     </Form>
   )
 }
+
+const TUBE_THICKNESS = [
+  '미지정',
+  2,
+  2.5,
+  3,
+  3.5,
+  4,
+  4.5,
+  5,
+  5.5,
+  6,
+  6.5,
+  7,
+  7.5,
+  8,
+  8.5,
+  9,
+  9.5,
+  10,
+] as const

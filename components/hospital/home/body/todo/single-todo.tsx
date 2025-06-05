@@ -3,20 +3,16 @@ import { toggleIsDone } from '@/lib/services/hospital-home/todo'
 import type { ClientTodo } from '@/types/hospital/todo'
 import { useEffect, useState } from 'react'
 import UpsertTodoDialog from './upsert-todo-dialog'
-import { Separator } from '@/components/ui/separator'
 
-export default function SingleTodo({
-  todo,
-  hosId,
-  date,
-  refetch,
-}: {
+type Props = {
   todo: ClientTodo
   hosId: string
   date: Date
   refetch: () => Promise<void>
-}) {
-  const [isToggling, setIsToggling] = useState(false)
+}
+
+export default function SingleTodo({ todo, hosId, date, refetch }: Props) {
+  const [isUpdating, setIsUpdating] = useState(false)
   const [isChecked, setIsChecked] = useState(todo.is_done)
 
   useEffect(() => {
@@ -24,10 +20,13 @@ export default function SingleTodo({
   }, [todo.is_done])
 
   const handleIsDone = async () => {
-    setIsToggling(true)
+    setIsUpdating(true)
+
     setIsChecked((prev) => !prev)
+
     await toggleIsDone(todo.id, todo.is_done)
-    setIsToggling(false)
+
+    setIsUpdating(false)
   }
 
   return (
@@ -35,7 +34,7 @@ export default function SingleTodo({
       <div className="flex items-center gap-1.5">
         <Checkbox
           id={todo.id}
-          disabled={isToggling}
+          disabled={isUpdating}
           checked={isChecked}
           onClick={(e) => e.stopPropagation()}
           onCheckedChange={handleIsDone}

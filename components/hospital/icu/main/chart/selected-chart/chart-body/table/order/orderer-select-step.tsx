@@ -23,11 +23,11 @@ import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { cn, formatOrders } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { type SelectedIcuOrder } from '@/types/icu/chart'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
 import { useParams } from 'next/navigation'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
@@ -51,14 +51,18 @@ export default function OrdererSelectStep({
   } = useBasicHosDataContext()
   const {
     reset,
-    selectedChartOrder,
+    selectedChartOrder: {
+      is_bordered,
+      order_comment,
+      order_name,
+      order_id,
+      order_type,
+      order_times,
+    },
     orderTimePendingQueue,
     copiedOrderPendingQueue,
     setOrderStep,
   } = useIcuOrderStore()
-
-  const isSingleTx = orderTimePendingQueue.length === 0
-  const isPendingOrder = copiedOrderPendingQueue.length > 0
 
   const [isUpdating, setIsUpdating] = useState(false)
 
@@ -69,151 +73,123 @@ export default function OrdererSelectStep({
     }
   }, [])
 
-  const handleUpsertSingleTx = useCallback(
-    async (values: z.infer<typeof ordererSchema>) => {
-      setIsUpdating(true)
-
-      await upsertOrder(
-        hos_id as string,
-        icuChartId,
-        selectedChartOrder.order_id!,
-        selectedChartOrder.order_times!.map((time) =>
-          time === '1' ? values.orderer : time,
-        ),
-        {
-          icu_chart_order_name: selectedChartOrder.order_name!,
-          icu_chart_order_comment: selectedChartOrder.order_comment!,
-          icu_chart_order_type: selectedChartOrder.order_type!,
-        },
-      )
-
-      toast({
-        title: `${selectedChartOrder.order_name!.split('#')[0]} 오더를 수정하였습니다`,
-      })
-      reset()
-      setOrderStep('closed')
-      setIsUpdating(false)
-    },
-    [
-      hos_id,
-      icuChartId,
-      reset,
-      selectedChartOrder.order_comment,
-      selectedChartOrder.order_id,
-      selectedChartOrder.order_name,
-      selectedChartOrder.order_times,
-      selectedChartOrder.order_type,
-      setOrderStep,
-    ],
-  )
-
-  const handleUpsertMultipleTxs = useCallback(
-    async (values: z.infer<typeof ordererSchema>) => {
-      setIsUpdating(true)
-      const formattedOrders = formatOrders(orderTimePendingQueue)
-
-      for (const order of formattedOrders) {
-        const currentOrder = orders.find((o) => o.order_id === order.orderId)
-        if (!currentOrder) continue
-
-        const updatedOrderTimes = [...currentOrder.order_times]
-        for (const time of order.orderTimes) {
-          updatedOrderTimes[time - 1] =
-            updatedOrderTimes[time - 1] === '0' ? values.orderer : '0'
-        }
-
-        await upsertOrder(
-          hos_id as string,
-          icuChartId,
-          order.orderId,
-          updatedOrderTimes,
-          {
-            icu_chart_order_name: currentOrder.order_name,
-            icu_chart_order_comment: currentOrder.order_comment,
-            icu_chart_order_type: currentOrder.order_type,
-          },
-        )
-      }
-
-      toast({
-        title: '오더시간을 변경하였습니다',
-      })
-      reset()
-      setOrderStep('closed')
-      setIsUpdating(false)
-    },
-    [hos_id, icuChartId, orderTimePendingQueue, orders, reset, setOrderStep],
-  )
-
-  const handleUpsertOrder = useCallback(
-    async (values: z.infer<typeof ordererSchema>) => {
-      setIsUpdating(true)
-      for (const order of copiedOrderPendingQueue) {
-        const updatedOrderTimes = [...order.order_times!]
-
-        order.order_times!.forEach((time, index) => {
-          updatedOrderTimes[index] = time === '0' ? '0' : values.orderer
-        })
-
-        await upsertOrder(
-          hos_id as string,
-          icuChartId,
-          undefined,
-          updatedOrderTimes,
-          {
-            icu_chart_order_name: order.order_name!,
-            icu_chart_order_comment: order.order_comment!,
-            icu_chart_order_type: order.order_type!,
-            is_bordered: order.is_bordered!,
-          },
-        )
-      }
-
-      toast({
-        title: '오더를 붙여넣었습니다',
-      })
-      reset()
-      setOrderStep('closed')
-      setIsUpdating(false)
-    },
-    [
-      hos_id,
-      icuChartId,
-      copiedOrderPendingQueue,
-      reset,
-      setOrderStep,
-      setIsUpdating,
-    ],
-  )
-
-  const handleSubmit = useCallback(
-    async (values: z.infer<typeof ordererSchema>) => {
-      if (isSingleTx && !isPendingOrder) {
-        await handleUpsertSingleTx(values)
-      }
-      if (!isSingleTx && !isPendingOrder) {
-        await handleUpsertMultipleTxs(values)
-      }
-
-      if (isPendingOrder) {
-        await handleUpsertOrder(values)
-      }
-    },
-    [
-      handleUpsertMultipleTxs,
-      handleUpsertOrder,
-      handleUpsertSingleTx,
-      isPendingOrder,
-      isSingleTx,
-    ],
-  )
-
   const form = useForm<z.infer<typeof ordererSchema>>({
     resolver: zodResolver(ordererSchema),
     defaultValues: {
       orderer: mainVetName,
     },
   })
+
+  const handleUpsertSingleTx = async (
+    values: z.infer<typeof ordererSchema>,
+  ) => {
+    setIsUpdating(true)
+
+    await upsertOrder(
+      hos_id as string,
+      icuChartId,
+      order_id!,
+      order_times!.map((time) => (time === '1' ? values.orderer : time)),
+      {
+        icu_chart_order_name: order_name!,
+        icu_chart_order_comment: order_comment!,
+        icu_chart_order_type: order_type!,
+        is_bordered: is_bordered!,
+      },
+    )
+
+    toast({
+      title: `${order_name!.split('#')[0]} 오더를 수정하였습니다`,
+    })
+    reset()
+    setOrderStep('closed')
+    setIsUpdating(false)
+  }
+
+  const handleUpsertMultipleTxs = async (
+    values: z.infer<typeof ordererSchema>,
+  ) => {
+    setIsUpdating(true)
+    const formattedOrders = formatOrders(orderTimePendingQueue)
+
+    for (const order of formattedOrders) {
+      const currentOrder = orders.find((o) => o.order_id === order.orderId)
+      if (!currentOrder) continue
+
+      const updatedOrderTimes = [...currentOrder.order_times]
+      for (const time of order.orderTimes) {
+        updatedOrderTimes[time - 1] =
+          updatedOrderTimes[time - 1] === '0' ? values.orderer : '0'
+      }
+
+      await upsertOrder(
+        hos_id as string,
+        icuChartId,
+        order.orderId,
+        updatedOrderTimes,
+        {
+          icu_chart_order_name: currentOrder.order_name,
+          icu_chart_order_comment: currentOrder.order_comment,
+          icu_chart_order_type: currentOrder.order_type,
+          is_bordered: currentOrder.is_bordered,
+        },
+      )
+    }
+
+    toast({
+      title: '오더시간을 변경하였습니다',
+    })
+    reset()
+    setOrderStep('closed')
+    setIsUpdating(false)
+  }
+
+  const handleUpsertOrder = async (values: z.infer<typeof ordererSchema>) => {
+    setIsUpdating(true)
+    for (const order of copiedOrderPendingQueue) {
+      const updatedOrderTimes = [...order.order_times!]
+
+      order.order_times!.forEach((time, index) => {
+        updatedOrderTimes[index] = time === '0' ? '0' : values.orderer
+      })
+
+      await upsertOrder(
+        hos_id as string,
+        icuChartId,
+        undefined,
+        updatedOrderTimes,
+        {
+          icu_chart_order_name: order.order_name!,
+          icu_chart_order_comment: order.order_comment!,
+          icu_chart_order_type: order.order_type!,
+          is_bordered: order.is_bordered!,
+        },
+      )
+    }
+
+    toast({
+      title: '오더를 붙여넣었습니다',
+    })
+    reset()
+    setOrderStep('closed')
+    setIsUpdating(false)
+  }
+
+  const isSingleTx = orderTimePendingQueue.length === 0
+  const isPendingOrder = copiedOrderPendingQueue.length > 0
+
+  const handleSubmit = async (values: z.infer<typeof ordererSchema>) => {
+    if (isSingleTx && !isPendingOrder) {
+      await handleUpsertSingleTx(values)
+    }
+    if (!isSingleTx && !isPendingOrder) {
+      await handleUpsertMultipleTxs(values)
+    }
+
+    if (isPendingOrder) {
+      await handleUpsertOrder(values)
+    }
+  }
 
   return (
     <Form {...form}>
