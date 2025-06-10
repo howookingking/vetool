@@ -5,7 +5,12 @@ import CustomTooltip from '@/components/ui/custom-tooltip'
 import { cn } from '@/lib/utils/utils'
 import { Separator } from '@/components/ui/separator'
 import { Pencil, FileCheck, ScrollText, Monitor } from 'lucide-react'
-import { useParams, usePathname, useRouter } from 'next/navigation'
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from 'next/navigation'
 import React from 'react'
 import ChecklistEditDialogButton from './checklist-edit-dialogbutton'
 
@@ -13,8 +18,10 @@ const ChecklistTopNav = () => {
   const pathname = usePathname()
   const { push } = useRouter()
 
+  const searchParams = useSearchParams()
+  const edit = searchParams.get('edit')
   const isActive = pathname.split('/')[7]
-  console.log(isActive)
+
   return (
     <div className="flex-col">
       <div className="flex">
@@ -29,7 +36,7 @@ const ChecklistTopNav = () => {
             variant="outline"
             className={cn(
               'm-2 ml-14 2xl:m-2 2xl:ml-2',
-              isActive === 'checklist' && 'bg-primary text-white',
+              isActive === 'txchart' && 'bg-primary text-white',
             )}
           >
             <FileCheck /> <p className="hidden 2xl:flex">TX</p>
@@ -69,7 +76,9 @@ const ChecklistTopNav = () => {
             <Monitor /> <p className="hidden 2xl:flex">MONITOR</p>
           </Button>
         </CustomTooltip>
-        <ChecklistEditDialogButton></ChecklistEditDialogButton>
+        <ChecklistEditDialogButton
+          isEdit={edit === 'true' ? true : false}
+        ></ChecklistEditDialogButton>
       </div>
 
       <Separator className="m-2" />

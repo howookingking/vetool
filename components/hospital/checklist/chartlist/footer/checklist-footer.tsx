@@ -11,7 +11,12 @@ import { useEffect } from 'react'
 
 const FOOTER_MAIN_VIEW_MENUS = [
   {
-    label: '체크리스트',
+    label: '치료 상황',
+    value: 'summary',
+    hideInMobile: false,
+  },
+  {
+    label: '차트작성',
     value: 'chart',
     hideInMobile: false,
   },

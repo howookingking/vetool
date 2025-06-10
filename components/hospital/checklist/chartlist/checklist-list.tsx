@@ -24,7 +24,7 @@ export default function ChecklistList({
     <div className="flex h-full flex-col gap-3 p-2">
       <div className="flex items-center justify-between text-xs font-bold text-muted-foreground">
         <span className="font-bold">
-          당일대기 체크리스트({filteredData.todaycheck.length})
+          당일치료대기({filteredData.todaycheck.length})
         </span>
       </div>
       {filteredData &&
@@ -44,7 +44,7 @@ export default function ChecklistList({
       <Separator />
       <div className="flex items-center justify-between text-xs font-bold text-muted-foreground">
         <span className="font-bold">
-          당일완료된 체크리스트({filteredData.donecheck.length})
+          당일완료된치료({filteredData.donecheck.length})
         </span>
       </div>
       {filteredData &&
@@ -64,7 +64,7 @@ export default function ChecklistList({
       <Separator />
       <div className="flex items-center justify-between text-xs font-bold text-muted-foreground">
         <span className="font-bold">
-          미진행 체크리스트({filteredData.othercheck.length})
+          미진행된 치료({filteredData.othercheck.length})
         </span>
       </div>
       {filteredData &&

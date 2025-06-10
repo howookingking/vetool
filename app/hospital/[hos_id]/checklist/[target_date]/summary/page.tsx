@@ -14,7 +14,7 @@ export default async function SummaryPage(props: {
   if (!summaryData) {
     return (
       <NoResultSquirrel
-        text="작헝할 체크리스트가 없습니다."
+        text="작성된 치료차트 리스트가 없습니다."
         className="h-screen flex-col"
         size="lg"
       />

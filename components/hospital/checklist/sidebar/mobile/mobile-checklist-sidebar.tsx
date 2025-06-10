@@ -31,7 +31,7 @@ export default function MobileChecklistSidebar({
     <aside className="flex h-full flex-col">
       {isEmpty ? (
         <NoResultSquirrel
-          text="당일 체크리스트 목록 없음"
+          text="당일 치료 목록 없음"
           className="mt-10 flex-col"
         />
       ) : (

@@ -106,7 +106,7 @@ export const getChecklistData = async (hosId: string, targetDate: string) => {
     donecheck: [],
   }
   //   checklistSidebarData as ChecklistSidebarData[]
-  checklistSidebarData.map((list: ChecklistSidebarData) => {
+  checklistSidebarData.map((list) => {
     list.due_date &&
       list.due_date !== targetDate &&
       (list.endtime === null || list.endtime === '') &&
@@ -172,5 +172,5 @@ export const getPatientChecklistData = async (checklistId: string) => {
     redirect(`/error?message=${error}`)
   }
 
-  return data[0]
+  return data[0] ?? null
 }

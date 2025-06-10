@@ -31,7 +31,7 @@ export const SIDEBAR_ITEMS = [
     icon: <Syringe />,
   },
   {
-    name: '체크리스트',
+    name: '치료차트',
     path: 'checklist',
     isReady: true,
     icon: <FileCheck />,

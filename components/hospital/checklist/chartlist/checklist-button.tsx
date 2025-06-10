@@ -28,14 +28,17 @@ export default function ChecklistButton({
     const isEdit = checklistchart.checklist_type ? true : false
     isEdit
       ? push(
-          `/hospital/${hos_id}/checklist/${target_date}/chart/${checklistchart.checklist_id}/checklist`,
+          `/hospital/${hos_id}/checklist/${target_date}/chart/${checklistchart.checklist_id}/txchart?edit=${false}`,
         )
       : push(
-          `/hospital/${hos_id}/checklist/${target_date}/chart/${checklistchart.checklist_id}/edit`,
+          `/hospital/${hos_id}/checklist/${target_date}/chart/${checklistchart.checklist_id}/txchart?edit=${true}`,
         )
   }
 
-  const selectedPatient = checklistchart.patients
+  const selectedPatient = checklistchart.patients ?? {
+    hos_patient_id: '',
+    breed: 'canine',
+  }
 
   return (
     <Button
@@ -43,7 +46,7 @@ export default function ChecklistButton({
       size="sm"
       className={cn(
         'relative w-full py-9',
-        selectedPatient.hos_patinet_id &&
+        selectedPatient.hos_patient_id &&
           'border border-black bg-muted shadow-md',
       )}
       onClick={handlePatientButtonClick}
@@ -76,7 +79,7 @@ export default function ChecklistButton({
           </span>
 
           <span className="max-w-[96px] truncate text-xs leading-5">
-            {convertPascalCased(selectedPatient.breed)}
+            {convertPascalCased(selectedPatient.breed ?? '')}
           </span>
         </div>
 

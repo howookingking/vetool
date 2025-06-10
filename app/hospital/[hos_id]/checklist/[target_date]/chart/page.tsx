@@ -9,8 +9,8 @@ export default function ChartDefaultPage() {
     <NoResultSquirrel
       text={
         isMobile
-          ? '👆 체크리스트 차트를 생성하거나 선택해주세요'
-          : '👈 체크리스트 차트를 생성하거나 선택해주세요'
+          ? '👆 치료 차트를 생성하거나 선택해주세요'
+          : '👈 치료 차트를 생성하거나 선택해주세요'
       }
       className="h-screen flex-col"
       size="lg"

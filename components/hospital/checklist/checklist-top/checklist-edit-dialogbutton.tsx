@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button'
 import CustomTooltip from '@/components/ui/custom-tooltip'
 import { cn } from '@/lib/utils/utils'
 import { Separator } from '@/components/ui/separator'
-import { Pencil, FileCheck, ScrollText, Monitor } from 'lucide-react'
+import { Pencil, FileCheck, ScrollText, Monitor, Trash2 } from 'lucide-react'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import React, { useState, useEffect } from 'react'
 import { getPatientChecklistData } from '@/lib/services/checklist/get-checklist-data'
@@ -20,8 +20,9 @@ import type {
   ChecklistSidebarData,
   ChecklistPatinet,
 } from '@/types/checklist/checklistchart'
+import TxEditContainer from '../edit/txchart-edit-container'
 
-const ChecklistEditDialogButton = () => {
+const ChecklistEditDialogButton = ({ isEdit }: { isEdit: boolean }) => {
   const [isChecklistEditDialogOpen, setChecklistEditDialogOpen] =
     useState(false)
   const [prechecklistData, setPreChecklistData] =
@@ -31,15 +32,15 @@ const ChecklistEditDialogButton = () => {
   const pathname = usePathname()
   useEffect(() => {
     const fetchData = async () => {
-      const checklistData: ChecklistSidebarData = await getPatientChecklistData(
-        pathname.split('/')[6],
-      )
+      const checklistData: ChecklistSidebarData | null =
+        await getPatientChecklistData(pathname.split('/')[6])
 
-      setPreChecklistData(checklistData) // ✅ 실제 데이터만 넘김
+      setPreChecklistData(checklistData)
     }
 
     fetchData()
-  }, [])
+    setChecklistEditDialogOpen(isEdit)
+  }, [isEdit])
   const isActive = pathname.split('/')[7]
 
   return (
@@ -51,14 +52,17 @@ const ChecklistEditDialogButton = () => {
         <Button
           type="button"
           variant="outline"
-          className={cn('m-2', isActive === 'edit' && 'bg-primary text-white')}
+          className={cn(
+            'm-2',
+            isChecklistEditDialogOpen && 'bg-primary text-white',
+          )}
         >
           <Pencil />
           {/* <div className="hidden 2xl:flex">EDIT</div> */}
         </Button>
       </DialogTrigger>
       <DialogContent
-        className="flex flex-col sm:max-w-[1200px]"
+        className="flex max-h-screen flex-col overflow-y-auto sm:max-w-[1200px]"
         onInteractOutside={(e) => {
           e.preventDefault()
         }}
@@ -75,8 +79,12 @@ const ChecklistEditDialogButton = () => {
               : '치료 차트를 신규등록합니다'}
           </DialogDescription>
         </DialogHeader>
-        <div>{prechecklistData?.patients.name}</div>
-        <Button
+        <TxEditContainer
+          pretxdata={prechecklistData ?? null}
+          setaChecklistEditDialogOpen={setChecklistEditDialogOpen}
+        ></TxEditContainer>
+        {/* <div>{prechecklistData?.patients.name}</div> */}
+        {/* <Button
           onClick={(e) => {
             setChecklistEditDialogOpen(false)
           }}
@@ -88,7 +96,7 @@ const ChecklistEditDialogButton = () => {
               ? '수정'
               : '등록'}
           </div>
-        </Button>
+        </Button> */}
       </DialogContent>
     </Dialog>
   )
