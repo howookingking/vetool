@@ -1,4 +1,4 @@
-import { ChecklistSidebarData } from '@/types/checklist/checklistchart'
+import { ChecklistSidebarData, TxChart } from '@/types/checklist/checklistchart'
 import React from 'react'
 import {
   Accordion,
@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/table'
 
 type Props = {
-  txchartdata: ChecklistSidebarData
+  txchartdata: TxChart | null
 }
 const TxChartInformation = ({ txchartdata }: Props) => {
   const type = txchartdata?.checklist_type
@@ -33,10 +33,10 @@ const TxChartInformation = ({ txchartdata }: Props) => {
         <AccordionItem value="vet-info">
           <AccordionTrigger>수의사 정보</AccordionTrigger>
           <AccordionContent>
-            <Table className="m-3">
-              <TableHeader className="text-bold w-[200px] bg-gray-100">
+            <Table className="m-3 max-w-2xl">
+              <TableHeader className="text-bold bg-gray-100">
                 <TableRow>
-                  <TableHead>직책</TableHead>
+                  <TableHead className="max-w-s">직책</TableHead>
                   <TableHead>수의사</TableHead>
                 </TableRow>
               </TableHeader>
@@ -67,19 +67,19 @@ const TxChartInformation = ({ txchartdata }: Props) => {
             </Table>
           </AccordionContent>
         </AccordionItem>
-        <AccordionItem value="vet-info">
+        <AccordionItem value="tx-info">
           <AccordionTrigger>처치정보</AccordionTrigger>
           <AccordionContent>
             <div className="flex-col">
               <div>전처치</div>
-              <div className="whitespace-pre-wrap">
+              <div className="m-3 overflow-y-auto whitespace-pre-wrap rounded-md border border-gray-300 p-2 text-sm text-gray-800">
                 {txchartdata?.preinfo?.pre}
               </div>
               {(txchartdata?.checklist_type === '마취' ||
                 txchartdata?.checklist_type === '수술') && (
                 <div>
                   <div>유도마취</div>
-                  <div className="whitespace-pre-wrap">
+                  <div className="m-3 overflow-y-auto whitespace-pre-wrap rounded-md border border-gray-300 p-2 text-sm text-gray-800">
                     {txchartdata?.preinfo?.induce}
                   </div>
                 </div>
@@ -90,11 +90,11 @@ const TxChartInformation = ({ txchartdata }: Props) => {
                   ? '유지마취'
                   : '주요처치'}
               </div>
-              <div className="whitespace-pre-wrap">
+              <div className="m-3 overflow-y-auto whitespace-pre-wrap rounded-md border border-gray-300 p-2 text-sm text-gray-800">
                 {txchartdata?.preinfo?.main}
               </div>
               <div>후처치</div>
-              <div className="whitespace-pre-wrap">
+              <div className="m-3 overflow-y-auto whitespace-pre-wrap rounded-md border border-gray-300 p-2 text-sm text-gray-800">
                 {txchartdata?.preinfo?.post}
               </div>
             </div>

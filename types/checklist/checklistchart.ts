@@ -26,16 +26,22 @@ type timeTable = {
   imgurl?: null | string
 }
 
-type Checklistset = {
+export type Checklistset = {
   interval?: string | null
   preSet?: {
     setname: string[] | null
     settime: string | null
   }[]
-  result?: {
-    [key: string]: string | number | boolean | null
-  }[]
-} | null
+  result?: Record<string, ChecklistResults>
+}
+
+export type ChecklistResults = Record<string, string>
+
+// export type ChecklistResults =
+//   | {
+//       key: string: string
+//     }
+//   | null
 
 type PreInfo = {
   pre: string | null
@@ -96,3 +102,40 @@ export type TxchartData = {
   due_date: null | string
 }
 export type TxTypes = string[]
+
+export type TxChart = {
+  checklist_id: string
+  hos_id: string
+  patient_id: string
+  checklist_type: null | string
+  checklist_vet: null | ChecklistVet
+  checklist_title: null | string
+  checklist_tag: null | string
+  checklist_protocol: null | ChecklistProtocol
+  checklist_group: null | string
+  checklist_set: null | Checklistset
+  checklist_timetable: null | timeTable
+  starttime: null | string
+  endtime: null | string
+  comment: null | string
+  preinfo: null | PreInfo
+  due_date: null | string
+}
+
+export type CheckItem = { displayName: string; name: string; type: string }
+export type CheckNameArray = CheckItem[]
+export type PreSetItem = {
+  setname: string[] | null
+  settime: string | null
+}
+export type ChecklistStateSet = {
+  interval?: string | null
+  preSet?: PreSetItem[] | null
+}
+export type ProtocolItem = {
+  title: string | null
+  type: string | null
+  addinfo: string | null
+  dueStart: string | null
+  mode: string | null
+}

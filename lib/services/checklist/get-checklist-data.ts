@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import type {
   ChecklistSidebarData,
   Filterdcheck,
+  TxChart,
 } from '@/types/checklist/checklistchart'
 import type { Vet } from '@/types/icu/chart'
 
@@ -13,11 +14,6 @@ export const getChecklistData = async (hosId: string, targetDate: string) => {
   const supabase = await createClient()
 
   const promiseArray = Promise.all([
-    // supabase
-    //   .rpc('get_icu_sidebar_data', {
-    //     hos_id_input: hosId,
-    //     target_date_input: targetDate,
-    //   }),
     supabase
       .from('checklist')
       .select(
@@ -173,4 +169,16 @@ export const getPatientChecklistData = async (checklistId: string) => {
   }
 
   return data[0] ?? null
+}
+
+export const saveTxChart = async (txdata: TxChart) => {
+  const supabase = await createClient()
+  const { error } = await supabase
+    .from('checklist')
+    .update(txdata)
+    .eq('checklist_id', txdata.checklist_id)
+  if (error) {
+    console.error(error)
+    redirect(`/error?message=${error.message}`)
+  }
 }

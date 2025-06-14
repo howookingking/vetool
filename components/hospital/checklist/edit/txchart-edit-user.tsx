@@ -60,14 +60,16 @@ import { registerTxChart } from '@/lib/services/checklist/chart/regist-txchart'
 import { toast } from '@/components/ui/use-toast'
 import { createClient } from '@/lib/supabase/client'
 import { redirect } from 'next/navigation'
+import {
+  ChecklistStateSet,
+  CheckNameArray,
+  ProtocolItem,
+} from '@/types/checklist/checklistchart'
+import { checkListSetArray } from '@/constants/checklist/checklist'
 
 type Props = {
   txData?: ChecklistSidebarData | null
   setaChecklistEditDialogOpen: Dispatch<SetStateAction<boolean>>
-}
-type PreSetItem = {
-  setname: string[] | null
-  settime: string | null
 }
 
 const TxFormSchema = z.object({
@@ -92,20 +94,7 @@ const TxFormSchema = z.object({
 })
 
 type TxFormValues = z.infer<typeof TxFormSchema>
-type CheckItem = { displayName: string; name: string }
-type CheckNameArray = CheckItem[]
-type TempMainProtocol = { protocol: string; dueStart: string }
-type ChecklistStateSet = {
-  interval?: string | null
-  preSet?: PreSetItem[] | null
-}
-type ProtocolItem = {
-  title: string | null
-  type: string | null
-  addinfo: string | null
-  dueStart: string | null
-  mode: string | null
-}
+
 export default function TxchartEditUser({
   txData,
   setaChecklistEditDialogOpen,
@@ -227,14 +216,6 @@ export default function TxchartEditUser({
 
     //   console.log('🛠 수정하기:', preData)
   }
-  const checkNameArray: CheckNameArray = [
-    { displayName: 'T', name: '체온' },
-    { displayName: 'P', name: '심박수' },
-    { displayName: 'R', name: '호흡수' },
-    { displayName: 'SPO2', name: 'SPO2' },
-    { displayName: 'BG', name: '혈당' },
-    { displayName: 'BP', name: '혈압' },
-  ]
 
   const addChecklistRow = () => {
     if (checkingTime.current?.value && checklistTitles) {
@@ -519,7 +500,7 @@ export default function TxchartEditUser({
                   variant="outline"
                   size="sm"
                 >
-                  {checkNameArray.map((check, i) => (
+                  {checkListSetArray.map((check, i) => (
                     <ToggleGroupItem
                       key={check.name}
                       value={check.name}
