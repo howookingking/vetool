@@ -18,9 +18,10 @@ import { Input } from '@/components/ui/input'
 import {
   ChecklistResults,
   CheckNameArray,
+  PreSetItem,
   TxChart,
 } from '@/types/checklist/checklistchart'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 type Props = {
@@ -29,19 +30,36 @@ type Props = {
 }
 import {
   checkListSetArray,
+  minToLocalTime,
   timeInterval,
 } from '@/constants/checklist/checklist'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { saveTxChart } from '@/lib/services/checklist/get-checklist-data'
 import { redirect } from 'next/navigation'
 import { toast } from '@/components/ui/use-toast'
+import { Camera } from 'lucide-react'
+import { Image } from 'lucide-react'
 const TxchartChecklistBasic = ({ txChart, timeMin }: Props) => {
   const [checktime, setCheckTime] = useState<string>('0')
   const [interval, setInterval] = useState<string>('1')
   const [checklistTitles, setCheckListTitles] = useState<string[]>([]) //체크리스트 종류
   const [results, setResults] = useState<ChecklistResults>({})
+  const [preset, setPreSet] = useState<PreSetItem[]>([])
 
   useEffect(() => {
-    if (timeMin && interval && Number(interval) >= 1) {
+    if (
+      timeMin &&
+      interval &&
+      Number(interval) >= 1 &&
+      (!txChart?.checklist_set?.preSet ||
+        txChart?.checklist_set?.preSet.length === 0)
+    ) {
       const _checktime = Number(timeMin)
       const _interval = Number(interval)
       const cal1 = Math.floor(_checktime / _interval)
@@ -61,10 +79,13 @@ const TxchartChecklistBasic = ({ txChart, timeMin }: Props) => {
     checkListSetArray.map((list) => {
       pretitle.push(list && list.name)
     })
-
+    txChart &&
+      txChart.checklist_set?.preSet &&
+      txChart.checklist_set?.preSet.length > 0 &&
+      setPreSet(txChart.checklist_set.preSet)
     pretitle && pretitle.length > 0 && setCheckListTitles(pretitle)
   }, [txChart, timeMin])
-
+  const inputTxt = useRef<HTMLInputElement>(null)
   const changeinterval = (e: React.ChangeEvent<HTMLInputElement>) => {
     const _checktime = Number(timeMin)
     const _interval = Number(e.target.value)
@@ -86,7 +107,7 @@ const TxchartChecklistBasic = ({ txChart, timeMin }: Props) => {
   const changeresult = (e: React.ChangeEvent<HTMLInputElement>) => {
     const predata = { ...results }
     predata[e.target.name] = e.target.value
-    console.log(predata)
+
     setResults(predata)
   }
   const savetxdata = () => {
@@ -94,7 +115,7 @@ const TxchartChecklistBasic = ({ txChart, timeMin }: Props) => {
 
     if (predata?.checklist_set?.result) {
       predata.checklist_set.result[checktime] = { ...results }
-      console.log(predata)
+
       saveTxChart(predata)
       setResults({})
     } else {
@@ -102,30 +123,131 @@ const TxchartChecklistBasic = ({ txChart, timeMin }: Props) => {
         predata.checklist_set.result = {}
         predata.checklist_set.result[checktime] = { ...results }
 
-        console.log(predata)
         saveTxChart(predata)
         setResults({})
       } else {
         predata.checklist_set = {}
         predata.checklist_set.result = {}
         predata.checklist_set.result[checktime] = { ...results }
-        console.log(predata)
+
         saveTxChart(predata)
         setResults({})
       }
     }
   }
+  const addtimetableTx = () => {
+    if (inputTxt.current && inputTxt.current.value) {
+      const txt = inputTxt.current.value
+      const predata = { ...txChart } as any
+      if (!predata.checklist_timetable) {
+        predata.checklist_timetable = []
+        predata.checklist_timetable.push({
+          time: checktime,
+          txt: txt,
+          type: 'protocol',
+          imgurl: null,
+        })
+        saveTxChart(predata)
+          .then(() => {
+            inputTxt.current.value = ''
+          })
+          .catch((error) => {
+            console.error('Error saving txChart:', error)
+            toast({
+              title: '오류',
+              description: '저장에 실패했습니다.',
+            })
+          })
+      } else {
+        predata.checklist_timetable = [...predata.checklist_timetable]
+        predata.checklist_timetable.push({
+          time: checktime,
+          txt: txt,
+          type: 'protocol',
+          imgurl: null,
+        })
+        saveTxChart(predata)
+          .then(() => {
+            inputTxt.current.value = ''
+          })
+          .catch((error) => {
+            console.error('Error saving txChart:', error)
+            toast({
+              title: '오류',
+              description: '저장에 실패했습니다.',
+            })
+          })
+      }
+    }
+  }
   return (
     <div>
+      <div className="m-3 flex items-center">
+        <div>기록 추가</div>
+        <Input className="ml-3 w-[250px]" ref={inputTxt}></Input>
+        <Button variant="outline" className="ml-1" onClick={addtimetableTx}>
+          +
+        </Button>
+        <Button variant="outline" className="ml-3">
+          {' '}
+          <Camera />
+        </Button>
+        <Button variant="outline" className="ml-3">
+          <Image />
+        </Button>
+      </div>
       <div className="flex items-center">
-        <div>측정간격 :</div>
-        <Input
-          type="number"
-          className="m-3 w-[60px]"
-          defaultValue={interval && Number(interval)}
-          onChange={changeinterval}
-        ></Input>
-        <div>분</div>
+        {txChart?.checklist_set?.preSet &&
+        txChart.checklist_set.preSet.length > 0 ? (
+          <div>
+            <Select
+              onValueChange={(value: string) => {
+                const predata: any =
+                  preset && preset.find((x) => x.settime === String(value))
+
+                setCheckTime(predata?.settime ?? '0')
+                setCheckListTitles(
+                  predata?.setname ? [...predata.setname, '비고'] : [],
+                )
+              }}
+            >
+              <SelectTrigger className="w-auto">
+                <SelectValue placeholder="측정시간선택" />
+              </SelectTrigger>
+              <SelectContent className="w-auto">
+                {preset &&
+                  preset.map((set) => {
+                    let names = ''
+                    set.setname &&
+                      set.setname.map((name) => {
+                        names = names + name + ' '
+                      })
+                    return (
+                      <SelectItem
+                        key={set.settime}
+                        value={set?.settime ? set.settime : ''}
+                      >
+                        {set.settime + '분후' + '(' + names + ')'}
+                      </SelectItem>
+                    )
+                  })}
+              </SelectContent>
+            </Select>
+          </div>
+        ) : (
+          <div className="flex items-center">
+            {' '}
+            <div>측정간격 :</div>
+            <Input
+              type="number"
+              className="m-3 w-[60px]"
+              defaultValue={interval && Number(interval)}
+              onChange={changeinterval}
+            ></Input>
+            <div>분</div>
+          </div>
+        )}
+
         <div>
           <Popover>
             <PopoverTrigger asChild>
@@ -162,7 +284,7 @@ const TxchartChecklistBasic = ({ txChart, timeMin }: Props) => {
         </div>
       </div>
       <div>
-        <Table className="m-3 mb-7">
+        <Table className="m-3 mb-7 max-w-[400px]">
           <TableHeader>
             <TableRow className="text-bold bg-gray-100 text-lg">
               <TableHead>항목</TableHead>
@@ -181,7 +303,10 @@ const TxchartChecklistBasic = ({ txChart, timeMin }: Props) => {
                       value={checktime ? checktime : ''}
                       onChange={changeInputTime}
                     ></Input>
-                    분
+                    분(
+                    {checktime &&
+                      minToLocalTime(txChart.starttime, checktime)[1]}
+                    )
                   </div>
                 )}
               </TableCell>
@@ -194,7 +319,7 @@ const TxchartChecklistBasic = ({ txChart, timeMin }: Props) => {
                     <TableCell>
                       <Input
                         name={list.name}
-                        className="w-auto border-none"
+                        className="w-auto"
                         value={
                           results && results[list.name]
                             ? results[list.name]

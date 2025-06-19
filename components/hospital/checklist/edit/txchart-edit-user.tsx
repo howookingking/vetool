@@ -69,7 +69,7 @@ import { checkListSetArray } from '@/constants/checklist/checklist'
 
 type Props = {
   txData?: ChecklistSidebarData | null
-  setaChecklistEditDialogOpen: Dispatch<SetStateAction<boolean>>
+  setaChecklistEditDialogOpen: (isopen: boolean) => void
 }
 
 const TxFormSchema = z.object({
@@ -121,12 +121,19 @@ export default function TxchartEditUser({
     dueStart: null,
     mode: null,
   })
-
+  const [tags, setTags] = useState<string[]>([])
   useEffect(() => {
     txData && txData.checklist_set && setPreCheckListSet(txData.checklist_set)
     txData && txData.checklist_protocol
       ? setCheckProtocol(txData.checklist_protocol)
       : setCheckProtocol([])
+    const pretags = txData?.checklist_tag && txData.checklist_tag.split('#')
+    if (pretags && pretags.length > 0) {
+      setTags(pretags)
+    } else {
+      setTags([])
+    }
+    console.log(txData)
   }, [txData])
   const isEditMode = !!(txData?.checklist_title && txData?.checklist_type)
 
@@ -207,14 +214,6 @@ export default function TxchartEditUser({
       })
     }
     setaChecklistEditDialogOpen(false)
-    //   preData.checklist_protocol = preCheckProtocol
-    //     ? [...preCheckProtocol]
-    //     : null
-    //   preData.checklist_vet = values.checklistVet
-    //   preData.preinfo = values.preInfo
-    //   preData.comment = values.comment
-
-    //   console.log('🛠 수정하기:', preData)
   }
 
   const addChecklistRow = () => {
@@ -587,7 +586,7 @@ export default function TxchartEditUser({
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="afterStart">치료시작후</SelectItem>
-                    <SelectItem value="afterMain">메인과정 시작 후</SelectItem>
+
                     <SelectItem value="afterSub">직전과정 완료 후</SelectItem>
                   </SelectContent>
                 </Select>
@@ -652,7 +651,7 @@ export default function TxchartEditUser({
                     subProtocol && subProtocol.mode ? subProtocol.mode : ''
                   }
                   onValueChange={(value) => {
-                    changeProtocolMode('main', 'mode', value)
+                    changeProtocolMode('sub', 'mode', value)
                   }}
                 >
                   <SelectTrigger className="w-[180px]">
@@ -660,7 +659,7 @@ export default function TxchartEditUser({
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="afterStart">치료시작후</SelectItem>
-                    <SelectItem value="afterMain">메인과정 시작 후</SelectItem>
+                    {/* <SelectItem value="afterMain">메인과정 시작 후</SelectItem> */}
                     <SelectItem value="afterSub">직전과정 완료 후</SelectItem>
                   </SelectContent>
                 </Select>
@@ -675,13 +674,13 @@ export default function TxchartEditUser({
                       : ''
                   }
                   onChange={(e) => {
-                    changeProtocolMode('main', 'dueStart', e.target.value)
+                    changeProtocolMode('sub', 'dueStart', e.target.value)
                   }}
                 />
                 <div className="ml-2 mr-2 text-sm">분후시작</div>
                 <Popover>
                   <PopoverTrigger asChild>
-                    <Button type="button" variant="outline">
+                    <Button type="button" variant="outline" className="mr-2">
                       추가정보
                     </Button>
                   </PopoverTrigger>

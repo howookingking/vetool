@@ -31,22 +31,29 @@ const ChecklistEditDialogButton = ({ isEdit }: { isEdit: boolean }) => {
   const { push } = useRouter()
   const pathname = usePathname()
   useEffect(() => {
-    const fetchData = async () => {
-      const checklistData: ChecklistSidebarData | null =
-        await getPatientChecklistData(pathname.split('/')[6])
-
-      setPreChecklistData(checklistData)
-    }
-
     fetchData()
     setChecklistEditDialogOpen(isEdit)
   }, [isEdit])
   const isActive = pathname.split('/')[7]
+  const fetchData = async () => {
+    const checklistData: ChecklistSidebarData | null =
+      await getPatientChecklistData(pathname.split('/')[6])
 
+    setPreChecklistData(checklistData)
+  }
+
+  const checklistEditDialogOpen = (isopen: boolean) => {
+    if (isopen) {
+      fetchData()
+      setChecklistEditDialogOpen(true)
+    } else {
+      setChecklistEditDialogOpen(false)
+    }
+  }
   return (
     <Dialog
       open={isChecklistEditDialogOpen}
-      onOpenChange={setChecklistEditDialogOpen}
+      onOpenChange={checklistEditDialogOpen}
     >
       <DialogTrigger asChild>
         <Button
@@ -81,7 +88,7 @@ const ChecklistEditDialogButton = ({ isEdit }: { isEdit: boolean }) => {
         </DialogHeader>
         <TxEditContainer
           pretxdata={prechecklistData ?? null}
-          setaChecklistEditDialogOpen={setChecklistEditDialogOpen}
+          setaChecklistEditDialogOpen={checklistEditDialogOpen}
         ></TxEditContainer>
         {/* <div>{prechecklistData?.patients.name}</div> */}
         {/* <Button

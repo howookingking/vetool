@@ -32,3 +32,12 @@ export const timeInterval = (timetz1: string, timetz2: string) => {
   const min = diffMinutes % 60
   return [String(diffMinutes), String(disphr), String(min)]
 }
+
+export const minToLocalTime = (start: string, min: string) => {
+  const date1 = new Date(start)
+  const date2 = date1.getTime() + Number(min) * 60 * 1000 // 분을 밀리초로 변환
+  const newDate = new Date(date2)
+  const hh = newDate.getHours().toString().padStart(2, '0')
+  const mm = newDate.getMinutes().toString().padStart(2, '0')
+  return [date2, `${hh}:${mm}`]
+}

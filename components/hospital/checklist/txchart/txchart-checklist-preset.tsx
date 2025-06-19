@@ -98,7 +98,7 @@ const TxchartChecklistPreSet = ({ txChart, timeMin }: Props) => {
   const changeresult = (e: React.ChangeEvent<HTMLInputElement>) => {
     const predata = { ...results }
     predata[e.target.name] = e.target.value
-    console.log(predata)
+
     setResults(predata)
   }
   const savetxdata = () => {
@@ -114,14 +114,13 @@ const TxchartChecklistPreSet = ({ txChart, timeMin }: Props) => {
         predata.checklist_set.result = {}
         predata.checklist_set.result[checktime] = { ...results }
 
-        console.log(predata)
         saveTxChart(predata)
         setResults({})
       } else {
         predata.checklist_set = {}
         predata.checklist_set.result = {}
         predata.checklist_set.result[checktime] = { ...results }
-        console.log(predata)
+
         saveTxChart(predata)
         setResults({})
       }

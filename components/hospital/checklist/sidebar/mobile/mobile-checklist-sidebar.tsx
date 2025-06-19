@@ -28,7 +28,7 @@ export default function MobileChecklistSidebar({
   vetsListData,
 }: MobileChecklistSidebarProps) {
   return (
-    <aside className="flex h-full flex-col">
+    <aside className="flex h-full w-full flex-col">
       {isEmpty ? (
         <NoResultSquirrel
           text="당일 치료 목록 없음"

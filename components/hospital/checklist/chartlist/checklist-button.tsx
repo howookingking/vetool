@@ -2,8 +2,10 @@ import { Button } from '@/components/ui/button'
 import { cn, convertPascalCased } from '@/lib/utils/utils'
 import { type IcuSidebarIoData, type Vet } from '@/types/icu/chart'
 import { Cat, Dog, Stethoscope, User, Star } from 'lucide-react'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams, usePathname, useRouter } from 'next/navigation'
 import { ChecklistSidebarData } from '@/types/checklist/checklistchart'
+import path from 'path'
+import { useEffect, useState } from 'react'
 
 type ChecklistButtonProps = {
   hosGroupList: string[]
@@ -16,9 +18,30 @@ export default function ChecklistButton({
   vetsListData,
   checklistchart,
 }: ChecklistButtonProps) {
+  const [timeLabel, setTimeLabel] = useState('')
+  useEffect(() => {
+    if (!checklistchart.starttime) return
+
+    const start = new Date(checklistchart.starttime).toLocaleTimeString(
+      'ko-KR',
+      { hour12: false },
+    )
+    const end = checklistchart.endtime
+      ? new Date(checklistchart.endtime).toLocaleTimeString('ko-KR', {
+          hour12: false,
+        })
+      : null
+
+    if (start && end) {
+      setTimeLabel(`(시작 : ${start} 종료 : ${end})`)
+    } else if (start) {
+      setTimeLabel(`(시작 : ${start})`)
+    }
+  }, [checklistchart.starttime, checklistchart.endtime])
+
   const { push } = useRouter()
   const { hos_id, target_date } = useParams()
-
+  const pathname = usePathname()
   const SpeciesIcon = checklistchart.patients.species === 'canine' ? Dog : Cat
   //   const vetName = vetsListData.find(
   //     (vet) => vet.user_id === vets?.main_vet,
@@ -39,14 +62,16 @@ export default function ChecklistButton({
     hos_patient_id: '',
     breed: 'canine',
   }
+  const path = pathname.split('/')
 
   return (
     <Button
       variant="outline"
       size="sm"
       className={cn(
-        'relative w-full py-9',
-        selectedPatient.hos_patient_id &&
+        'relative w-full py-11',
+        checklistchart &&
+          path.indexOf(checklistchart.checklist_id) !== -1 &&
           'border border-black bg-muted shadow-md',
       )}
       onClick={handlePatientButtonClick}
@@ -59,21 +84,6 @@ export default function ChecklistButton({
       >
         <div className="mb-1 flex justify-between gap-2">
           <span className="flex items-center gap-1 text-sm">
-            {'환자ID(' + selectedPatient.hos_patient_id + ')'}
-          </span>
-        </div>
-        <div className="mb-1 flex justify-between gap-2">
-          <span className="truncate text-xs leading-5">
-            {checklistchart.due_date}
-            {checklistchart.starttime && checklistchart.endtime
-              ? '  완료'
-              : checklistchart.starttime && !checklistchart.endtime
-                ? '  진행중'
-                : '  대기중'}
-          </span>
-        </div>
-        <div className="mb-1 flex justify-between gap-2">
-          <span className="flex items-center gap-1 text-sm">
             <SpeciesIcon />
             {selectedPatient.name}
           </span>
@@ -81,19 +91,30 @@ export default function ChecklistButton({
           <span className="max-w-[96px] truncate text-xs leading-5">
             {convertPascalCased(selectedPatient.breed ?? '')}
           </span>
+          <span className="flex items-center gap-1 text-sm">
+            {'환자ID(' + selectedPatient.hos_patient_id + ')'}
+          </span>
         </div>
-
-        {/* <div className="flex justify-between gap-2">
-          <span className="text- ml-[2px] flex items-center gap-1 text-xs">
-            <Stethoscope style={{ width: 12, height: 12 }} />
-            {vetName ?? '미지정'}
+        {/* // */}
+        <div className="mb-1 flex justify-between gap-2">
+          <span className="max-w-[96px] truncate text-xs leading-5">
+            {checklistchart.checklist_title}
           </span>
-
-          <span className="flex items-center gap-1 truncate text-xs">
-            <User style={{ width: 12, height: 12 }} />
-            <span className="truncate">{patient.owner_name || '미지정'}</span>
+        </div>
+        <div className="mb-1 flex justify-between gap-2">
+          <span className="truncate text-xs leading-5">
+            <span className="truncate text-xs leading-5">
+              {checklistchart.due_date}
+              {checklistchart.starttime && checklistchart.endtime
+                ? '  완료'
+                : checklistchart.starttime && !checklistchart.endtime
+                  ? '  진행중'
+                  : '  대기중'}
+              {timeLabel}
+            </span>
           </span>
-        </div> */}
+        </div>
+        {/* // */}
       </div>
     </Button>
   )

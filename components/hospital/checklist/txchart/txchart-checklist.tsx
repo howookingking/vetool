@@ -19,6 +19,7 @@ import TxChartIntervalMin from './txchart-intervalmin'
 import TxchartChecklistBasic from './txchart-checklist-basic'
 import TxchartChecklistPreSet from './txchart-checklist-preset'
 import TxchartChecklistTable from './txchart-checklist-table'
+import TxchartProtocol from './txchart-protocol'
 type Props = {
   checklistId: string
   txChart: TxChart | null
@@ -58,7 +59,10 @@ const TxchartChecklist = ({ checklistId, txChart }: Props) => {
               ></TxChartIntervalMin>
             </div>
           )}
-          <Tabs defaultValue="inputdata" className="w-[400px]">
+          <Tabs
+            defaultValue="inputdata"
+            className="w-[400px] sm:w-[800px] xl:w-full"
+          >
             <TabsList>
               <TabsTrigger value="inputdata">입력</TabsTrigger>
               <TabsTrigger value="table">체크리스트</TabsTrigger>
@@ -67,24 +71,23 @@ const TxchartChecklist = ({ checklistId, txChart }: Props) => {
             <TabsContent value="inputdata">
               {/* 체크리스트 입력 */}
 
-              {txChart?.checklist_set?.preSet ? (
-                <TxchartChecklistPreSet
-                  txChart={txChart && txChart}
-                  timeMin={timeMin}
-                ></TxchartChecklistPreSet>
-              ) : (
-                <TxchartChecklistBasic
-                  txChart={txChart && txChart}
-                  timeMin={timeMin}
-                ></TxchartChecklistBasic>
-              )}
+              <TxchartChecklistBasic
+                txChart={txChart && txChart}
+                timeMin={timeMin}
+              ></TxchartChecklistBasic>
             </TabsContent>
             <TabsContent value="table" className="w-auto">
               <TxchartChecklistTable
                 txChart={txChart && txChart}
+                timeMin={timeMin}
               ></TxchartChecklistTable>
             </TabsContent>
-            <TabsContent value="protocol">치료과정 시간</TabsContent>
+            <TabsContent value="protocol">
+              <TxchartProtocol
+                txChart={txChart && txChart}
+                timeMin={timeMin}
+              ></TxchartProtocol>
+            </TabsContent>
 
             {/* 테이블 */}
           </Tabs>

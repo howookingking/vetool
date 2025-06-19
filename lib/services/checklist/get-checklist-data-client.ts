@@ -27,6 +27,29 @@ export const getEachTxChartReal = async (
 
   return channel
 }
+export const getAllTxChartReal = async (
+  hosId: string,
+  onDataChange: (payload: any) => void,
+) => {
+  const channel = supabase
+    .channel(`realtime:checklist:${hosId}`)
+    .on(
+      'postgres_changes',
+      {
+        event: '*', // 'INSERT' | 'UPDATE' | 'DELETE'
+        schema: 'public',
+        table: 'checklist',
+        filter: `hos_id=eq.${hosId}`,
+      },
+      (payload) => {
+        console.log('Realtime change: all re-upload')
+        onDataChange(payload.new)
+      },
+    )
+    .subscribe()
+
+  return channel
+}
 
 export const getEachTxChart = async (
   checklistId: string,

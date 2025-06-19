@@ -158,7 +158,9 @@ export const getPatientChecklistData = async (checklistId: string) => {
   endtime,
   comment,
   preinfo,
-  due_date
+  due_date,
+  age_in_days,
+  weight
   `,
     )
     .match({ checklist_id: checklistId })

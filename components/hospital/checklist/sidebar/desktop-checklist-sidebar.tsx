@@ -36,7 +36,7 @@ export default function DesktopChecklistSidebar({
   currentChartNumber,
 }: DesktopChecklistSidebarProps) {
   return (
-    <aside className="fixed z-40 hidden h-desktop w-48 shrink-0 flex-col gap-2 border-r bg-white px-2 pb-0 pt-2 2xl:flex">
+    <aside className="fixed z-40 hidden h-desktop w-96 shrink-0 flex-col gap-2 border-r bg-white px-2 pb-0 pt-2 2xl:flex">
       <ChecklistDateSelector />
 
       <RegisterDialog

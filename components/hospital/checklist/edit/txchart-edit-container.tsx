@@ -15,7 +15,7 @@ const LazyTxChartTypeConrimUser = dynamic(
 
 type Props = {
   pretxdata: ChecklistSidebarData | null
-  setaChecklistEditDialogOpen: Dispatch<SetStateAction<boolean>>
+  setaChecklistEditDialogOpen: (isopen: boolean) => void
 }
 
 const txTypes: string[] = [...TXTYPES]
@@ -40,7 +40,7 @@ export default function TxEditContainer(props: Props | null) {
           breed={txData?.patients?.breed ?? ''}
           gender={txData?.patients?.gender ?? ''}
           birth={txData?.patients?.birth ?? ''}
-          weight={'0'}
+          weight={txData?.weight ? String(txData.weight) : '0'}
         ></PatientDetailInfo>
         <div className="flex flex-wrap">
           {txTypes &&

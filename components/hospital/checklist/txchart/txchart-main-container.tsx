@@ -134,14 +134,24 @@ const TxChartMainContainer = ({ checklistId, txchartdata }: Props) => {
                 종료 취소
               </Button>
             ) : txchart?.starttime && !txchart.endtime ? (
-              <Button
-                className="m-3"
-                type="button"
-                variant="outline"
-                onClick={startCancelBtn}
-              >
-                시작 취소
-              </Button>
+              <>
+                <Button
+                  className="m-3"
+                  type="button"
+                  variant="outline"
+                  onClick={startCancelBtn}
+                >
+                  시작 취소
+                </Button>
+                <Button
+                  className="m-3"
+                  type="button"
+                  variant="outline"
+                  onClick={endBtn}
+                >
+                  종료
+                </Button>
+              </>
             ) : (
               <Button
                 className="m-3"

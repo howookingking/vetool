@@ -50,7 +50,7 @@ export default async function TxChartForm(props: {
           breed={txchartdata?.patients?.breed ?? ''}
           gender={txchartdata?.patients?.gender ?? ''}
           birth={txchartdata?.patients?.birth ?? ''}
-          weight={'0'}
+          weight={txchartdata?.weight ? String(txchartdata.weight) : '0'}
         ></PatientDetailInfo>
       </div>
 

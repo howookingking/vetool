@@ -3,17 +3,21 @@
 import { useEffect, useState } from 'react'
 
 export default function GeneralClock() {
-  const [time, setTime] = useState<string>(getCurrentTime())
+  const [time, setTime] = useState<string>('') // 초기값 제거
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(getCurrentTime())
-    }, 1000)
+    const update = () => setTime(getCurrentTime())
+    update() // mount 시 최초 1회 설정
 
+    const interval = setInterval(update, 1000)
     return () => clearInterval(interval)
   }, [])
 
-  return <div className="ml-3 text-lg font-bold">(현재시간 : {time})</div>
+  return (
+    <div className="ml-3 text-lg font-bold">
+      {time ? `(현재시간 : ${time})` : '(시간 불러오는 중...)'}
+    </div>
+  )
 }
 
 function getCurrentTime(): string {

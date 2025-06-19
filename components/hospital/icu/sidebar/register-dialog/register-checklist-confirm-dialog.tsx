@@ -54,6 +54,7 @@ export default function RegisterCecklistConfirmDialog({
     )
 
     const splittedPathArr = path.split('/')
+
     const currentPatientId = splittedPathArr[6]
     if (currentPatientId) {
       // 입원차트에서 환자를 선택한 경우 : 등록중인 환자의 id로 변경
@@ -62,7 +63,6 @@ export default function RegisterCecklistConfirmDialog({
     } else {
       // 처치표, 종합현황 등에서 입원시키는 경우 : chart라우트로 변경하고 환자아이디 추가
       splittedPathArr[5] = 'chart'
-      splittedPathArr.push(registeringPatient?.patientId!)
     }
 
     const newPatientPath = splittedPathArr.join('/')
