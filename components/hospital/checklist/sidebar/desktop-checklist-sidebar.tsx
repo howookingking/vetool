@@ -9,6 +9,7 @@ import ChecklistDateSelector from '@/components/hospital/checklist/sidebar/date-
 import {
   ChecklistSidebarData,
   Filterdcheck,
+  FilteredTxChart,
 } from '@/types/checklist/checklistchart'
 import ChecklistList from '../chartlist/checklist-list'
 
@@ -16,24 +17,28 @@ type DesktopChecklistSidebarProps = {
   hosId: string
   vetsListData: Vet[]
   hosGroupList: string[]
-  filteredData: Filterdcheck
+
   isEmpty: boolean
   handleCloseMobileDrawer?: () => void
   // filters: Filter
   // setFilters: (filters: Filter) => void
   currentChartNumber: number
+
+  filteredTxData: FilteredTxChart | null
 }
 
 export default function DesktopChecklistSidebar({
   hosId,
   vetsListData,
   hosGroupList,
-  filteredData,
+
   isEmpty,
   handleCloseMobileDrawer,
   // filters,
   // setFilters,
   currentChartNumber,
+
+  filteredTxData,
 }: DesktopChecklistSidebarProps) {
   return (
     <aside className="fixed z-40 hidden h-desktop w-96 shrink-0 flex-col gap-2 border-r bg-white px-2 pb-0 pt-2 2xl:flex">
@@ -45,7 +50,15 @@ export default function DesktopChecklistSidebar({
         defaultGroup={hosGroupList[0]}
         currentChartNumber={currentChartNumber}
       />
+      <Separator className="my-2" />
 
+      {/* <ChecklistToday
+        hosGroupList={hosGroupList}
+        filteredData={filteredData}
+        handleCloseMobileDrawer={handleCloseMobileDrawer}
+        vetsListData={vetsListData}
+        targetDate={targetDate}
+      /> */}
       {isEmpty ? (
         <NoResultSquirrel
           text="당일 치료 목록 없음"
@@ -54,10 +67,10 @@ export default function DesktopChecklistSidebar({
         />
       ) : (
         <ChecklistList
-          filteredData={filteredData}
           hosGroupList={hosGroupList}
           handleCloseMobileDrawer={handleCloseMobileDrawer}
           vetsListData={vetsListData}
+          filteredTxData={filteredTxData}
         />
       )}
     </aside>

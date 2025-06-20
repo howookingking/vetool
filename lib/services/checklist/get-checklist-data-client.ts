@@ -1,3 +1,8 @@
+import {
+  ChecklistPatinet,
+  FilteredTxChart,
+  TxchartData,
+} from './../../../types/checklist/checklistchart'
 import { createClient } from '@/lib/supabase/client' // 클라이언트 컴포넌트용
 import { TxChart } from '@/types/checklist/checklistchart'
 import { createBrowserClient } from '@supabase/ssr'
@@ -18,7 +23,7 @@ export const getEachTxChartReal = async (
         filter: `checklist_id=eq.${checklistId}`,
       },
       (payload) => {
-        console.log('Realtime change:', payload)
+        console.log('Realtime change:')
 
         onDataChange(payload.new)
       },
@@ -26,6 +31,54 @@ export const getEachTxChartReal = async (
     .subscribe()
 
   return channel
+}
+export const getTodayTxDataRealtime = async (
+  targetdate: string,
+  hosId: string,
+  onDataChange: (payload: any) => void,
+) => {
+  const channel = supabase
+    .channel(`realtime:allchecklist:${hosId}`)
+    .on(
+      'postgres_changes',
+      {
+        event: '*', // 'INSERT' | 'UPDATE' | 'DELETE'
+        schema: 'public',
+        table: 'checklist',
+        filter: `hos_id=eq.${hosId}`,
+      },
+      (payload) => {
+        onDataChange(payload.new)
+      },
+    )
+    .subscribe()
+
+  return channel
+}
+export const getTodayTxData = async (targetdate: string, hosId: string) => {
+  const { data, error } = await supabase
+    .from('checklist')
+    .select('*')
+    .eq('hos_id', hosId)
+
+  if (error) {
+    console.error("Error fetching today's tx data:", error)
+    return null
+  }
+  if (data) {
+    const predata: FilteredTxChart = { today: [], todaydone: [], ing: [] }
+
+    data.map((tx: any) => {
+      if (tx.istxing) {
+        predata.ing.push(tx)
+      } else if (tx.enddate === targetdate) {
+        predata.todaydone.push(tx)
+      } else if (tx.due_date === targetdate && !tx.enddate) {
+        predata.today.push(tx)
+      }
+    })
+    return predata
+  }
 }
 export const getAllTxChartReal = async (
   hosId: string,
@@ -73,6 +126,33 @@ export const updateEachTxChart = async (txdata: TxChart) => {
   if (error) {
     console.error('Update failed:', error.message)
     return
+  }
+
+  return data
+}
+
+export const getPatientById = async (
+  patientId: string,
+): Promise<ChecklistPatinet | null> => {
+  const { data, error } = await supabase
+    .from('patients')
+    .select(
+      `
+      patient_id,
+      name,
+      species,
+      gender,
+      birth,
+      breed,
+      hos_patient_id
+    `,
+    )
+    .eq('patient_id', patientId)
+    .single()
+
+  if (error) {
+    console.error('getPatientByHosId error:', error)
+    return null
   }
 
   return data

@@ -36,7 +36,7 @@ export default async function ChecklistPageLayout(props: {
   const { basicHosData, checklistSidebarData, vetsListData } =
     await getChecklistData(hos_id, target_date)
   const { icuSidebarData } = await getIcuData(hos_id, target_date)
-  console.log('ss', checklistSidebarData)
+
   const announcementTitlesData = await getAnnouncementTitlesData()
 
   return (
@@ -65,6 +65,7 @@ export default async function ChecklistPageLayout(props: {
             hosGroupList={basicHosData.group_list}
             checklistSidebarData={checklistSidebarData}
             vetsListData={vetsListData}
+            targetDate={target_date}
           />
 
           <div className="ml-0 w-screen flex-1 2xl:ml-96 2xl:w-auto">

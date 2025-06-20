@@ -9,6 +9,7 @@ import type {
 import type { Vet } from '@/types/icu/chart'
 
 import { redirect } from 'next/navigation'
+import { format } from 'date-fns'
 
 export const getChecklistData = async (hosId: string, targetDate: string) => {
   const supabase = await createClient()
@@ -41,7 +42,13 @@ export const getChecklistData = async (hosId: string, targetDate: string) => {
   endtime,
   comment,
   preinfo,
-  due_date
+  due_date,
+   age_in_days,
+  weight,
+  istxing`,
+      )
+      .or(
+        `due_date.eq.${targetDate},endtime.eq.${targetDate}
   `,
       )
       .match({ hos_id: hosId })
@@ -112,8 +119,9 @@ export const getChecklistData = async (hosId: string, targetDate: string) => {
       list.due_date === targetDate &&
       (list.endtime === null || list.endtime === '') &&
       filteredChecklistData.todaycheck.push(list)
-    list.due_date === targetDate &&
-      list.endtime !== null &&
+
+    list.endtime !== null &&
+      format(new Date(list.endtime), 'yyyy-MM-dd') === targetDate &&
       filteredChecklistData.donecheck.push(list)
   })
 

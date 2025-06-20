@@ -37,12 +37,6 @@ export type Checklistset = {
 
 export type ChecklistResults = Record<string, string>
 
-// export type ChecklistResults =
-//   | {
-//       key: string: string
-//     }
-//   | null
-
 type PreInfo = {
   pre: string | null
   induce: string | null
@@ -54,7 +48,11 @@ export type Filterdcheck = {
   othercheck: [] | ChecklistSidebarData[]
   donecheck: [] | ChecklistSidebarData[]
 }
-
+export type FilteredTxChart = {
+  today: [] | TxchartData[]
+  todaydone: [] | TxchartData[]
+  ing: [] | TxchartData[]
+}
 export type ChecklistPatinet = {
   patient_id: string
   name?: string | null
@@ -84,6 +82,8 @@ export type ChecklistSidebarData = {
   due_date: null | string
   age_in_days: number
   weight: number
+  istxing: boolean
+  enddate: null | string
 }
 export type TxchartData = {
   checklist_id: string
@@ -104,6 +104,8 @@ export type TxchartData = {
   due_date: null | string
   age_in_days: number
   weight: number
+  istxing: boolean
+  enddate: null | string
 }
 export type TxTypes = string[]
 
@@ -126,6 +128,8 @@ export type TxChart = {
   due_date: null | string
   age_in_days: number
   weight: number
+  istxing: boolean
+  enddate: null | string
 }
 
 export type CheckItem = { displayName: string; name: string; type: string }

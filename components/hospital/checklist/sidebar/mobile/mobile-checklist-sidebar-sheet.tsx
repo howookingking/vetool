@@ -8,7 +8,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import { Filterdcheck } from '@/types/checklist/checklistchart'
+import { Filterdcheck, FilteredTxChart } from '@/types/checklist/checklistchart'
 import type { Filter, IcuSidebarIoData, Vet } from '@/types/icu/chart'
 import { Menu } from 'lucide-react'
 import { useState } from 'react'
@@ -17,15 +17,15 @@ import MobileChecklistSidebar from '@/components/hospital/checklist/sidebar/mobi
 export function MobileChecklistSidebarSheet({
   hosGroupList,
   vetsListData,
-  filteredData,
   isEmpty,
+  filteredTxData,
   //   setFilters,
   //   filters,
 }: {
   hosGroupList: string[]
   vetsListData: Vet[]
-  filteredData: Filterdcheck
   isEmpty: boolean
+  filteredTxData: FilteredTxChart | null
   //   setFilters: React.Dispatch<React.SetStateAction<Filter>>
   //   filters: Filter
 }) {
@@ -50,7 +50,7 @@ export function MobileChecklistSidebarSheet({
           </SheetHeader>
 
           <MobileChecklistSidebar
-            filteredData={filteredData}
+            filteredTxData={filteredTxData}
             // filters={filters}
             hosGroupList={hosGroupList}
             isEmpty={isEmpty}

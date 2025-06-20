@@ -3,7 +3,7 @@ import IcuDateSelector from '@/components/hospital/icu/sidebar/date-selector/icu
 import Filters from '@/components/hospital/icu/sidebar/filters/filters'
 import PatientList from '@/components/hospital/icu/sidebar/patient-list/patient-list'
 import { Separator } from '@/components/ui/separator'
-import { Filterdcheck } from '@/types/checklist/checklistchart'
+import { Filterdcheck, FilteredTxChart } from '@/types/checklist/checklistchart'
 import type { Filter, IcuSidebarIoData, Vet } from '@/types/icu/chart'
 import type { Dispatch, SetStateAction } from 'react'
 import ChecklistList from '../../chartlist/checklist-list'
@@ -14,8 +14,8 @@ type MobileChecklistSidebarProps = {
   //   filters: Filter
   hosGroupList: string[]
   handleCloseMobileDrawer?: () => void
-  filteredData: Filterdcheck
   vetsListData: Vet[]
+  filteredTxData: FilteredTxChart
 }
 
 export default function MobileChecklistSidebar({
@@ -24,8 +24,8 @@ export default function MobileChecklistSidebar({
   //   filters,
   hosGroupList,
   handleCloseMobileDrawer,
-  filteredData,
   vetsListData,
+  filteredTxData,
 }: MobileChecklistSidebarProps) {
   return (
     <aside className="flex h-full w-full flex-col">
@@ -38,7 +38,7 @@ export default function MobileChecklistSidebar({
         <>
           <IcuDateSelector />
           <ChecklistList
-            filteredData={filteredData}
+            filteredTxData={filteredTxData}
             hosGroupList={hosGroupList}
             handleCloseMobileDrawer={handleCloseMobileDrawer}
             vetsListData={vetsListData}

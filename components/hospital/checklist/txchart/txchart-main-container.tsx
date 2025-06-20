@@ -31,6 +31,7 @@ import TxChartInformation from './txchart-information'
 import TxchartStatusTxt from './txchart-statustxt'
 import { Pencil } from 'lucide-react'
 import { cn } from '@/lib/utils/utils'
+import { format } from 'date-fns'
 type Props = {
   checklistId: string
   txchartdata: ChecklistSidebarData
@@ -70,6 +71,7 @@ const TxChartMainContainer = ({ checklistId, txchartdata }: Props) => {
     if (txchart) {
       const predata = { ...txchart }
       predata.starttime = new Date().toISOString()
+      predata.istxing = true
       updateEachTxChart(predata)
     }
   }
@@ -78,6 +80,7 @@ const TxChartMainContainer = ({ checklistId, txchartdata }: Props) => {
       const predata = { ...txchart }
       predata.starttime = null
       predata.endtime = null
+      predata.istxing = false
       updateEachTxChart(predata)
     }
   }
@@ -85,6 +88,8 @@ const TxChartMainContainer = ({ checklistId, txchartdata }: Props) => {
     if (txchart) {
       const predata = { ...txchart }
       predata.endtime = new Date().toISOString()
+      predata.istxing = false
+      predata.enddate = format(new Date(), 'yyyy-MM-dd')
       updateEachTxChart(predata)
     }
   }
@@ -92,6 +97,8 @@ const TxChartMainContainer = ({ checklistId, txchartdata }: Props) => {
     if (txchart) {
       const predata = { ...txchart }
       predata.endtime = null
+      predata.istxing = true
+      predata.enddate = null
       updateEachTxChart(predata)
     }
   }

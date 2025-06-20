@@ -8,20 +8,45 @@ import DesktopChecklistSidebar from '@/components/hospital/checklist/sidebar/des
 import type {
   ChecklistSidebarData,
   Filterdcheck,
+  FilteredTxChart,
 } from '@/types/checklist/checklistchart'
 import { MobileChecklistSidebarSheet } from '@/components/hospital/checklist/sidebar/mobile/mobile-checklist-sidebar-sheet'
+import { useEffect, useState } from 'react'
+import {
+  getTodayTxData,
+  getTodayTxDataRealtime,
+} from '@/lib/services/checklist/get-checklist-data-client'
 
 export default function ChekclistSidebar({
   hosId,
   checklistSidebarData,
   vetsListData,
   hosGroupList,
+  targetDate,
 }: {
   hosId: string
   checklistSidebarData: Filterdcheck
   vetsListData: Vet[]
   hosGroupList: string[]
+  targetDate: string
 }) {
+  const [filteredTxchart, setFilteredTxChart] =
+    useState<FilteredTxChart | null>(null)
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getTodayTxData(targetDate, hosId)
+
+      if (data) setFilteredTxChart({ ...data })
+    }
+    fetchData()
+    const channel = getTodayTxDataRealtime(
+      targetDate,
+      hosId,
+      (data: FilteredTxChart) => {
+        if (data) fetchData()
+      },
+    )
+  }, [targetDate])
   // const [filterState, setFilterState] = useLocalStorage(
   //   `patientFilter`,
   //   DEFAULT_FILTER_STATE,
@@ -34,12 +59,15 @@ export default function ChekclistSidebar({
         hosId={hosId}
         hosGroupList={hosGroupList}
         vetsListData={vetsListData}
-        filteredData={checklistSidebarData}
+        filteredTxData={filteredTxchart && filteredTxchart}
         isEmpty={
-          checklistSidebarData.todaycheck.length +
-            checklistSidebarData.donecheck.length +
-            checklistSidebarData.othercheck.length ===
-          0
+          filteredTxchart &&
+          filteredTxchart?.today.length +
+            filteredTxchart?.todaydone.length +
+            filteredTxchart?.ing.length ===
+            0
+            ? true
+            : false
         }
         // filters={filterState}
         // setFilters={setFilterState}
@@ -53,13 +81,17 @@ export default function ChekclistSidebar({
       <MobileChecklistSidebarSheet
         hosGroupList={hosGroupList}
         vetsListData={vetsListData}
-        filteredData={checklistSidebarData}
+        filteredTxData={filteredTxchart && filteredTxchart}
         isEmpty={
-          checklistSidebarData.todaycheck.length +
-            checklistSidebarData.donecheck.length +
-            checklistSidebarData.othercheck.length ===
-          0
+          filteredTxchart &&
+          filteredTxchart?.today.length +
+            filteredTxchart?.todaydone.length +
+            filteredTxchart?.ing.length ===
+            0
+            ? true
+            : false
         }
+
         // filters={filterState}
         // setFilters={setFilterState}
       />
