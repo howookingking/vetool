@@ -196,9 +196,7 @@ export default function TxDetailInsertStep({
         <DialogTitle>처치 상세 입력</DialogTitle>
         <DialogDescription>
           {selectedTxPendingQueue.length === 0 && (
-            <span>
-              {txLocalState?.icuChartOrderName} / {txLocalState?.time}시
-            </span>
+            <span>{txLocalState?.icuChartOrderName}</span>
           )}
         </DialogDescription>
       </DialogHeader>
