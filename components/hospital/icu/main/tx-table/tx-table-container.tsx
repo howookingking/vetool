@@ -5,7 +5,7 @@ import TxTableFilter from '@/components/hospital/icu/main/tx-table/tx-table-filt
 import { DEFAULT_FILTER_STATE } from '@/constants/hospital/icu/chart/filters'
 import { filterTxTableData } from '@/lib/utils/tx-table'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { type IcuTxTableData } from '@/types/icu/tx-table'
+import type { IcuTxTableData } from '@/types/icu/tx-table'
 import { useEffect, useState } from 'react'
 
 export default function TxTableContainer({
