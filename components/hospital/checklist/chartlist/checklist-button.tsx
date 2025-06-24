@@ -69,10 +69,10 @@ export default function ChecklistButton({
         )
   }
 
-  const selectedPatient = checklistchart.patients ?? {
-    hos_patient_id: '',
-    breed: 'canine',
-  }
+  // const selectedPatient = checklistchart.patients ?? {
+  //   hos_patient_id: '',
+  //   breed: 'canine',
+  // }
   const path = pathname.split('/')
 
   return (

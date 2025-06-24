@@ -11,6 +11,8 @@ import type { Vet } from '@/types/icu/chart'
 import { redirect } from 'next/navigation'
 import { format } from 'date-fns'
 
+
+
 export const getChecklistData = async (hosId: string, targetDate: string) => {
   const supabase = await createClient()
 
@@ -109,7 +111,7 @@ export const getChecklistData = async (hosId: string, targetDate: string) => {
     donecheck: [],
   }
   //   checklistSidebarData as ChecklistSidebarData[]
-  checklistSidebarData.map((list) => {
+  checklistSidebarData.forEach((list) => {
     list.due_date &&
       list.due_date !== targetDate &&
       (list.endtime === null || list.endtime === '') &&
@@ -192,3 +194,6 @@ export const saveTxChart = async (txdata: TxChart) => {
     redirect(`/error?message=${error.message}`)
   }
 }
+
+
+

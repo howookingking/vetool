@@ -90,20 +90,6 @@ const ChecklistEditDialogButton = ({ isEdit }: { isEdit: boolean }) => {
           pretxdata={prechecklistData ?? null}
           setaChecklistEditDialogOpen={checklistEditDialogOpen}
         ></TxEditContainer>
-        {/* <div>{prechecklistData?.patients.name}</div> */}
-        {/* <Button
-          onClick={(e) => {
-            setChecklistEditDialogOpen(false)
-          }}
-          type="button"
-        >
-          <div>
-            {' '}
-            {prechecklistData && prechecklistData.checklist_type
-              ? '수정'
-              : '등록'}
-          </div>
-        </Button> */}
       </DialogContent>
     </Dialog>
   )

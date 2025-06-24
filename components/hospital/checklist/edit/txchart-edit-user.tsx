@@ -59,14 +59,24 @@ import {
 import { registerTxChart } from '@/lib/services/checklist/chart/regist-txchart'
 import { toast } from '@/components/ui/use-toast'
 import { createClient } from '@/lib/supabase/client'
-import { redirect } from 'next/navigation'
+import { redirect, usePathname } from 'next/navigation'
 import {
   ChecklistStateSet,
   CheckNameArray,
   ProtocolItem,
 } from '@/types/checklist/checklistchart'
 import { checkListSetArray } from '@/constants/checklist/checklist'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 
+import { Separator } from '@/components/ui/separator'
+import { Trash2 } from 'lucide-react'
+import { ORDER_COLORS } from '@/constants/hospital/icu/chart/colors'
+import { deleteChecklist } from '@/lib/services/checklist/get-checklist-data-client'
+import { useRouter } from 'next/navigation'
+
+import { addDays, format } from 'date-fns'
+
+import TxchartDateselector from '../common/txchart-dateselector'
 type Props = {
   txData?: ChecklistSidebarData | null
   setaChecklistEditDialogOpen: (isopen: boolean) => void
@@ -82,12 +92,13 @@ const TxFormSchema = z.object({
       anesthesia: z.string().nullable(),
     })
     .nullable(),
-  preInfo: z
+  preinfo: z
     .object({
       pre: z.string().nullable(),
       induce: z.string().nullable(),
       main: z.string().nullable(),
       post: z.string().nullable(),
+      other: z.string().nullable(),
     })
     .nullable(),
   comment: z.string().nullable(),
@@ -104,6 +115,7 @@ export default function TxchartEditUser({
     interval: '0',
     preSet: [],
   })
+  const [targetDate, setTargetDate] = useState<string>()
   const [preCheckProtocol, setCheckProtocol] = useState<
     ChecklistProtocol | null | []
   >()
@@ -122,6 +134,8 @@ export default function TxchartEditUser({
     mode: null,
   })
   const [tags, setTags] = useState<string[]>([])
+  const [groups, setGroups] = useState<string[]>([])
+  const basicHosData = useBasicHosDataContext().basicHosData
   useEffect(() => {
     txData && txData.checklist_set && setPreCheckListSet(txData.checklist_set)
     txData && txData.checklist_protocol
@@ -133,12 +147,15 @@ export default function TxchartEditUser({
     } else {
       setTags([])
     }
-    console.log(txData)
+    txData && txData.checklist_group && setGroups(txData.checklist_group)
+    txData && txData.due_date && setTargetDate(txData.due_date)
   }, [txData])
   const isEditMode = !!(txData?.checklist_title && txData?.checklist_type)
 
   const checkingTime = useRef<HTMLInputElement | null>(null)
+  const pathname = usePathname()
 
+  const { push } = useRouter()
   const form = useForm<TxFormValues>({
     resolver: zodResolver(TxFormSchema),
     defaultValues: {
@@ -149,11 +166,12 @@ export default function TxchartEditUser({
         assistence: txData?.checklist_vet?.assistence ?? '',
         anesthesia: txData?.checklist_vet?.anesthesia ?? '',
       },
-      preInfo: {
+      preinfo: {
         pre: txData?.preinfo?.pre ?? '',
         induce: txData?.preinfo?.induce ?? '',
         main: txData?.preinfo?.main ?? '',
         post: txData?.preinfo?.post ?? '',
+        other: txData?.preinfo?.other ?? '',
       },
       comment: txData?.comment ?? '',
     },
@@ -168,14 +186,13 @@ export default function TxchartEditUser({
       checklist_title: txData?.checklist_title,
       checklist_tag: txData?.checklist_tag,
       checklist_protocol: txData?.checklist_protocol,
-      checklist_group: txData?.checklist_group,
+
       checklist_set: txData?.checklist_set,
       checklist_timetable: txData?.checklist_timetable,
       starttime: txData?.starttime,
       endtime: txData?.endtime,
       comment: txData?.comment,
       preinfo: txData?.preinfo,
-      due_date: txData?.due_date,
     } as TxchartData
 
     // 수정 실행
@@ -189,9 +206,15 @@ export default function TxchartEditUser({
     }
     preData.checklist_protocol = preCheckProtocol ? [...preCheckProtocol] : null
     preData.checklist_vet = values.checklistVet
-    preData.preinfo = values.preInfo
+    preData.preinfo = values.preinfo
     preData.comment = values.comment
     preData.checklist_title = values.checklistTitle
+    preData.checklist_group = groups && groups.length > 0 ? [...groups] : null
+    preData.due_date = targetDate
+      ? targetDate
+      : txData
+        ? txData.due_date
+        : format(new Date(), 'yyyy-mm-dd')
 
     const supabase = await createClient()
     const { error } = await supabase
@@ -328,486 +351,553 @@ export default function TxchartEditUser({
       preData.preSet.splice(Number(e.currentTarget.name), 1)
     setPreCheckListSet(preData)
   }
+  const deltxchart = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (window.confirm('정말로 삭제하시겠습니까? 삭제후 복원할 수 없습니다.')) {
+      e.preventDefault()
+
+      txData && deleteChecklist(txData.checklist_id)
+
+      setaChecklistEditDialogOpen(false)
+      const pathnamearray: string[] = pathname.split('/')
+      push(`/hospital/${pathnamearray[2]}/checklist/${pathnamearray[4]}/chart`)
+    } else {
+      e.preventDefault()
+    }
+  }
+
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="checklistTitle"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>1. 치료명(필수)</FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
-                  value={field.value ?? ''}
-                  placeholder="치료명"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <Accordion
-          type="single"
-          collapsible
-          className="w-full"
-          defaultValue={undefined}
-        >
-          <AccordionItem value="item-1">
-            <AccordionTrigger>2. 수의사 설정</AccordionTrigger>
-            <AccordionContent className="flex flex-col gap-4 text-balance">
-              <FormField
-                control={form.control}
-                name="checklistVet.attending"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>담당의(주치의)</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value ?? ''}
-                        placeholder="환자 담당 수의사(주치의)"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="checklistVet.primary"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>술자</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value ?? ''}
-                        placeholder="치료를 진행하는 수의사(생략시 담당의로 지정),ex)수의사1,수의사2..."
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="checklistVet.assistence"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>보조자</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value ?? ''}
-                        placeholder="치료를 보조인원(생략가능) ex)수의사1, 간호사1..."
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-2">
-            <AccordionTrigger>3. 처치정보</AccordionTrigger>
-            <AccordionContent className="flex flex-col gap-4 text-balance">
-              <FormField
-                control={form.control}
-                name="preInfo.pre"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>전처치</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        {...field}
-                        value={field.value ?? ''} // null 대응
-                        placeholder="전처치 내용을 입력해주세요(생략가능)"
-                        className="min-h-[100px]" // 필요한 경우 높이 조정
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="preInfo.main"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>주요처치</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        {...field}
-                        value={field.value ?? ''} // null 대응
-                        placeholder="처치 관련 내용을 입력해주세요(생략가능)"
-                        className="min-h-[100px]" // 필요한 경우 높이 조정
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="preInfo.post"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>후처치</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        {...field}
-                        value={field.value ?? ''} // null 대응
-                        placeholder="후처치 관련 내용을 입력해주세요(생략가능)"
-                        className="min-h-[100px]" // 필요한 경우 높이 조정
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-3">
-            <AccordionTrigger>4. 체크리스트 설정</AccordionTrigger>
-            <AccordionContent className="flex flex-col gap-4 text-balance">
-              <div className="flex flex-wrap items-center">
-                <div className="ml-3 mr-2 text-sm">기본 측정간격</div>
-
-                <Input
-                  value={
-                    preChecklistSet && preChecklistSet.interval
-                      ? preChecklistSet.interval
-                      : ''
+    <>
+      <Separator className="mt-5 border-t-2" />
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <div className="m-3 flex flex-wrap items-center justify-start gap-2 px-3">
+            <div className="flex items-center px-3">
+              <div className="mr-2 text-sm">그룹선택</div>
+              <ToggleGroup
+                onValueChange={(value) => {
+                  if (value) {
+                    setGroups(value)
                   }
-                  onChange={changeinterval}
-                  placeholder="min"
-                  className="w-15"
+                }}
+                type="multiple"
+                variant="outline"
+                size="sm"
+                defaultValue={
+                  txData?.checklist_group ? [...txData.checklist_group] : []
+                }
+              >
+                {basicHosData.groupListData.map((g, i) => (
+                  <ToggleGroupItem
+                    className="data-[state=on]:bg-gray-300"
+                    key={g}
+                    value={g}
+                    aria-label="Toggle bold"
+                  >
+                    <div className="minw-4 h-4">{g}</div>
+                  </ToggleGroupItem>
+                ))}
+              </ToggleGroup>
+            </div>
+            <div className="flex items-center px-3">
+              <div className="mr-2 text-sm">예정일 변경</div>
+              <TxchartDateselector
+                targetDate={targetDate ?? format(new Date(), 'yyyy-mm-dd')}
+                changeDate={setTargetDate}
+              ></TxchartDateselector>
+            </div>
+          </div>
+          <FormField
+            control={form.control}
+            name="checklistTitle"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>1. 치료명(필수)</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    value={field.value ?? ''}
+                    placeholder="치료명"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Accordion
+            type="single"
+            collapsible
+            className="w-full"
+            defaultValue={undefined}
+          >
+            <AccordionItem value="item-1">
+              <AccordionTrigger>2. 수의사 설정</AccordionTrigger>
+              <AccordionContent className="flex flex-col gap-4 text-balance">
+                <FormField
+                  control={form.control}
+                  name="checklistVet.attending"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>담당의(주치의)</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          value={field.value ?? ''}
+                          placeholder="환자 담당 수의사(주치의)"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
-              <div className="flex flex-wrap items-center justify-start gap-2 px-3">
-                <div className="mr-2 text-sm">측정항목</div>
-                <ToggleGroup
-                  onValueChange={(value) => {
-                    if (value) {
-                      setCheckListTitles(value)
+                <FormField
+                  control={form.control}
+                  name="checklistVet.primary"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>술자</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          value={field.value ?? ''}
+                          placeholder="치료를 진행하는 수의사(생략시 담당의로 지정),ex)수의사1,수의사2..."
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="checklistVet.assistence"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>보조자</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          value={field.value ?? ''}
+                          placeholder="치료를 보조인원(생략가능) ex)수의사1, 간호사1..."
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-2">
+              <AccordionTrigger>3. 처치정보</AccordionTrigger>
+              <AccordionContent className="flex flex-col gap-4 text-balance">
+                <FormField
+                  control={form.control}
+                  name="preinfo.pre"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>전처치</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          {...field}
+                          value={field.value ?? ''} // null 대응
+                          placeholder="전처치 내용을 입력해주세요(생략가능)"
+                          className="min-h-[100px]" // 필요한 경우 높이 조정
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="preinfo.main"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>주요처치</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          {...field}
+                          value={field.value ?? ''} // null 대응
+                          placeholder="처치 관련 내용을 입력해주세요(생략가능)"
+                          className="min-h-[100px]" // 필요한 경우 높이 조정
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="preinfo.post"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>후처치</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          {...field}
+                          value={field.value ?? ''} // null 대응
+                          placeholder="후처치 관련 내용을 입력해주세요(생략가능)"
+                          className="min-h-[100px]" // 필요한 경우 높이 조정
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-3">
+              <AccordionTrigger>4. 체크리스트 설정</AccordionTrigger>
+              <AccordionContent className="flex flex-col gap-4 text-balance">
+                <div className="flex flex-wrap items-center">
+                  <div className="ml-3 mr-2 text-sm">기본 측정간격</div>
+
+                  <Input
+                    value={
+                      preChecklistSet && preChecklistSet.interval
+                        ? preChecklistSet.interval
+                        : ''
                     }
-                  }}
-                  type="multiple"
-                  variant="outline"
-                  size="sm"
-                >
-                  {checkListSetArray.map((check, i) => (
-                    <ToggleGroupItem
-                      key={check.name}
-                      value={check.name}
-                      aria-label="Toggle bold"
-                    >
-                      <div className="minw-4 h-4">{check.displayName}</div>
-                    </ToggleGroupItem>
-                  ))}
-                </ToggleGroup>
-                <div className="mr-2 text-sm">측정시간</div>
-                <Input placeholder="min" ref={checkingTime} className="w-13" />
+                    onChange={changeinterval}
+                    placeholder="min"
+                    className="w-15"
+                  />
+                </div>
+                <div className="flex flex-wrap items-center justify-start gap-2 px-3">
+                  <div className="mr-2 text-sm">측정항목</div>
+                  <ToggleGroup
+                    onValueChange={(value) => {
+                      if (value) {
+                        setCheckListTitles(value)
+                      }
+                    }}
+                    type="multiple"
+                    variant="outline"
+                    size="sm"
+                  >
+                    {checkListSetArray.map((check, i) => (
+                      <ToggleGroupItem
+                        key={check.name}
+                        value={check.name}
+                        aria-label="Toggle bold"
+                        className="data-[state=on]:bg-gray-300"
+                      >
+                        <div className="minw-4 h-4">{check.displayName}</div>
+                      </ToggleGroupItem>
+                    ))}
+                  </ToggleGroup>
+                  <div className="mr-2 text-sm">측정시간</div>
+                  <Input
+                    placeholder="min"
+                    ref={checkingTime}
+                    className="w-13"
+                  />
 
-                <Button type="button" onClick={addChecklistRow}>
-                  추가
-                </Button>
-              </div>
-              {preChecklistSet &&
-                preChecklistSet.preSet &&
-                preChecklistSet.preSet.length > 0 && (
-                  <Table className="bg-gray-100">
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead className="w-[200px]">
-                          시작후 측정시간(분)
-                        </TableHead>
-                        <TableHead>측정항목</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {preChecklistSet.preSet.map((set, i) => (
-                        <TableRow key={set.settime}>
-                          <TableCell>{set.settime}</TableCell>
-                          <TableCell>
-                            <div>
-                              {' '}
-                              {set.setname?.map((name) => name + ' ')}
-                              <Button
-                                type="button"
-                                name={String(i)}
-                                onClick={delCheckRow}
-                                variant="outline"
-                                size="sm"
-                              >
-                                X
-                              </Button>
-                            </div>
-                          </TableCell>
+                  <Button type="button" onClick={addChecklistRow}>
+                    추가
+                  </Button>
+                </div>
+                {preChecklistSet &&
+                  preChecklistSet.preSet &&
+                  preChecklistSet.preSet.length > 0 && (
+                    <Table className="bg-gray-100">
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="w-[200px]">
+                            시작후 측정시간(분)
+                          </TableHead>
+                          <TableHead>측정항목</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                )}
-            </AccordionContent>
-          </AccordionItem>
-
-          <AccordionItem value="item-4">
-            <AccordionTrigger>5. 치료과정 설정</AccordionTrigger>
-            <AccordionContent className="flex flex-col gap-4 text-balance">
-              {/* minaprotocol */}
-
-              <div className="flex flex-wrap items-center">
-                <div className="ml-3 mr-2 text-sm">주요과정 추가</div>
-                <Input
-                  value={
-                    mainProtocol && mainProtocol.title ? mainProtocol.title : ''
-                  }
-                  placeholder="주요과정 추가"
-                  className="w-[300px]"
-                  onChange={(e) => {
-                    changeProtocolMode('main', 'title', e.target.value)
-                  }}
-                />
-                <div className="ml-2 mr-2 text-sm">:</div>
-                <Select
-                  defaultValue={
-                    mainProtocol && mainProtocol.mode ? mainProtocol.mode : ''
-                  }
-                  onValueChange={(value) => {
-                    changeProtocolMode('main', 'mode', value)
-                  }}
-                >
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="시간측정 시점 설정" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="afterStart">치료시작후</SelectItem>
-
-                    <SelectItem value="afterSub">직전과정 완료 후</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                <Input
-                  placeholder="min"
-                  type="number"
-                  className="mr-2 w-[100px]"
-                  value={
-                    mainProtocol && mainProtocol.dueStart
-                      ? mainProtocol.dueStart
-                      : ''
-                  }
-                  onChange={(e) => {
-                    changeProtocolMode('main', 'dueStart', e.target.value)
-                  }}
-                />
-                <div className="ml-2 mr-2 text-sm">분후시작</div>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button type="button" variant="outline" className="mr-2">
-                      추가정보
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent>
-                    <Textarea
-                      value={
-                        mainProtocol && mainProtocol.addinfo
-                          ? mainProtocol.addinfo
-                          : ''
-                      }
-                      onChange={(e) => {
-                        changeProtocolMode('main', 'addinfo', e.target.value)
-                      }}
-                    ></Textarea>
-                  </PopoverContent>
-                </Popover>
-                <div>
-                  <Button type="button" name="main" onClick={addProtocol}>
-                    추가
-                  </Button>
-                </div>
-              </div>
-
-              {/* subprotocol */}
-
-              <div className="flex flex-wrap items-center">
-                <div className="ml-3 mr-2 text-sm">세부과정 추가</div>
-                <Input
-                  value={
-                    subProtocol && subProtocol.title ? subProtocol.title : ''
-                  }
-                  placeholder="주요과정 추가"
-                  className="w-[300px]"
-                  onChange={(e) => {
-                    changeProtocolMode('sub', 'title', e.target.value)
-                  }}
-                />
-                <div className="ml-2 mr-2 text-sm">:</div>
-                <Select
-                  defaultValue={
-                    subProtocol && subProtocol.mode ? subProtocol.mode : ''
-                  }
-                  onValueChange={(value) => {
-                    changeProtocolMode('sub', 'mode', value)
-                  }}
-                >
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="시간측정 시점 설정" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="afterStart">치료시작후</SelectItem>
-                    {/* <SelectItem value="afterMain">메인과정 시작 후</SelectItem> */}
-                    <SelectItem value="afterSub">직전과정 완료 후</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                <Input
-                  placeholder="min"
-                  type="number"
-                  className="mr-2 w-[100px]"
-                  value={
-                    subProtocol && subProtocol.dueStart
-                      ? subProtocol.dueStart
-                      : ''
-                  }
-                  onChange={(e) => {
-                    changeProtocolMode('sub', 'dueStart', e.target.value)
-                  }}
-                />
-                <div className="ml-2 mr-2 text-sm">분후시작</div>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button type="button" variant="outline" className="mr-2">
-                      추가정보
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent>
-                    <Textarea
-                      value={
-                        subProtocol && subProtocol.addinfo
-                          ? subProtocol.addinfo
-                          : ''
-                      }
-                      onChange={(e) => {
-                        changeProtocolMode('sub', 'addinfo', e.target.value)
-                      }}
-                    ></Textarea>
-                  </PopoverContent>
-                </Popover>
-                <div>
-                  <Button type="button" name="sub" onClick={addProtocol}>
-                    추가
-                  </Button>
-                </div>
-              </div>
-              <div>
-                {preCheckProtocol && preCheckProtocol.length > 0 && (
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>과정</TableHead>
-                        <TableHead>실행시점</TableHead>
-
-                        <TableHead>추가정보</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {preCheckProtocol.map((protocol, i) => (
-                        <TableRow key={protocol.title + '-' + i}>
-                          <TableCell>
-                            {protocol.type === 'main' ? (
-                              <div className="font-bold">
-                                {protocol.title}(주요과정)
+                      </TableHeader>
+                      <TableBody>
+                        {preChecklistSet.preSet.map((set, i) => (
+                          <TableRow key={set.settime}>
+                            <TableCell>{set.settime}</TableCell>
+                            <TableCell>
+                              <div>
+                                {' '}
+                                {set.setname?.map((name) => name + ' ')}
+                                <Button
+                                  type="button"
+                                  name={String(i)}
+                                  onClick={delCheckRow}
+                                  variant="outline"
+                                  size="sm"
+                                >
+                                  X
+                                </Button>
                               </div>
-                            ) : (
-                              <div className="ml-10">
-                                {protocol.title}(세부과정)
-                              </div>
-                            )}
-                          </TableCell>
-                          <TableCell>
-                            {protocol.mode === 'afterMain'
-                              ? '주요과정 시작 '
-                              : protocol.mode === 'afterStart'
-                                ? '치료 시작 '
-                                : protocol.mode === 'afterSub'
-                                  ? '이전과정 실행 '
-                                  : ''}
-                            {protocol.dueStart
-                              ? protocol.dueStart + '분후'
-                              : ''}
-                          </TableCell>
-                          {/* <TableCell>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  )}
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-4">
+              <AccordionTrigger>5. 치료과정 설정</AccordionTrigger>
+              <AccordionContent className="flex flex-col gap-4 text-balance">
+                {/* minaprotocol */}
+
+                <div className="flex flex-wrap items-center">
+                  <div className="ml-3 mr-2 text-sm">주요과정 추가</div>
+                  <Input
+                    value={
+                      mainProtocol && mainProtocol.title
+                        ? mainProtocol.title
+                        : ''
+                    }
+                    placeholder="주요과정 추가"
+                    className="w-[300px]"
+                    onChange={(e) => {
+                      changeProtocolMode('main', 'title', e.target.value)
+                    }}
+                  />
+                  <div className="ml-2 mr-2 text-sm">:</div>
+                  <Select
+                    defaultValue={
+                      mainProtocol && mainProtocol.mode ? mainProtocol.mode : ''
+                    }
+                    onValueChange={(value) => {
+                      changeProtocolMode('main', 'mode', value)
+                    }}
+                  >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="시간측정 시점 설정" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="afterStart">치료시작후</SelectItem>
+
+                      <SelectItem value="afterSub">직전과정 완료 후</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  <Input
+                    placeholder="min"
+                    type="number"
+                    className="mr-2 w-[100px]"
+                    value={
+                      mainProtocol && mainProtocol.dueStart
+                        ? mainProtocol.dueStart
+                        : ''
+                    }
+                    onChange={(e) => {
+                      changeProtocolMode('main', 'dueStart', e.target.value)
+                    }}
+                  />
+                  <div className="ml-2 mr-2 text-sm">분후시작</div>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button type="button" variant="outline" className="mr-2">
+                        추가정보
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent>
+                      <Textarea
+                        value={
+                          mainProtocol && mainProtocol.addinfo
+                            ? mainProtocol.addinfo
+                            : ''
+                        }
+                        onChange={(e) => {
+                          changeProtocolMode('main', 'addinfo', e.target.value)
+                        }}
+                      ></Textarea>
+                    </PopoverContent>
+                  </Popover>
+                  <div>
+                    <Button type="button" name="main" onClick={addProtocol}>
+                      추가
+                    </Button>
+                  </div>
+                </div>
+
+                {/* subprotocol */}
+
+                <div className="flex flex-wrap items-center">
+                  <div className="ml-3 mr-2 text-sm">세부과정 추가</div>
+                  <Input
+                    value={
+                      subProtocol && subProtocol.title ? subProtocol.title : ''
+                    }
+                    placeholder="주요과정 추가"
+                    className="w-[300px]"
+                    onChange={(e) => {
+                      changeProtocolMode('sub', 'title', e.target.value)
+                    }}
+                  />
+                  <div className="ml-2 mr-2 text-sm">:</div>
+                  <Select
+                    defaultValue={
+                      subProtocol && subProtocol.mode ? subProtocol.mode : ''
+                    }
+                    onValueChange={(value) => {
+                      changeProtocolMode('sub', 'mode', value)
+                    }}
+                  >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="시간측정 시점 설정" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="afterStart">치료시작후</SelectItem>
+                      {/* <SelectItem value="afterMain">메인과정 시작 후</SelectItem> */}
+                      <SelectItem value="afterSub">직전과정 완료 후</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  <Input
+                    placeholder="min"
+                    type="number"
+                    className="mr-2 w-[100px]"
+                    value={
+                      subProtocol && subProtocol.dueStart
+                        ? subProtocol.dueStart
+                        : ''
+                    }
+                    onChange={(e) => {
+                      changeProtocolMode('sub', 'dueStart', e.target.value)
+                    }}
+                  />
+                  <div className="ml-2 mr-2 text-sm">분후시작</div>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button type="button" variant="outline" className="mr-2">
+                        추가정보
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent>
+                      <Textarea
+                        value={
+                          subProtocol && subProtocol.addinfo
+                            ? subProtocol.addinfo
+                            : ''
+                        }
+                        onChange={(e) => {
+                          changeProtocolMode('sub', 'addinfo', e.target.value)
+                        }}
+                      ></Textarea>
+                    </PopoverContent>
+                  </Popover>
+                  <div>
+                    <Button type="button" name="sub" onClick={addProtocol}>
+                      추가
+                    </Button>
+                  </div>
+                </div>
+                <div>
+                  {preCheckProtocol && preCheckProtocol.length > 0 && (
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>과정</TableHead>
+                          <TableHead>실행시점</TableHead>
+
+                          <TableHead>추가정보</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {preCheckProtocol.map((protocol, i) => (
+                          <TableRow key={protocol.title + '-' + i}>
+                            <TableCell>
+                              {protocol.type === 'main' ? (
+                                <div className="font-bold">
+                                  {protocol.title}(주요과정)
+                                </div>
+                              ) : (
+                                <div className="ml-10">
+                                  {protocol.title}(세부과정)
+                                </div>
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              {protocol.mode === 'afterMain'
+                                ? '주요과정 시작 '
+                                : protocol.mode === 'afterStart'
+                                  ? '치료 시작 '
+                                  : protocol.mode === 'afterSub'
+                                    ? '이전과정 실행 '
+                                    : ''}
+                              {protocol.dueStart
+                                ? protocol.dueStart + '분후'
+                                : ''}
+                            </TableCell>
+                            {/* <TableCell>
                             {protocol.dueStart ?? ''}
                             {protocol.dueStart ? '분후' : ''}
                           </TableCell> */}
-                          <TableCell>
-                            {protocol.addinfo ? (
-                              <Popover>
-                                <PopoverTrigger>
-                                  <div>추가정보</div>
-                                </PopoverTrigger>
-                                <PopoverContent>
-                                  <div className="whitespace-pre-wrap">
-                                    {protocol.addinfo}
-                                  </div>
-                                </PopoverContent>
-                              </Popover>
-                            ) : (
-                              ''
-                            )}
-                            <div>
-                              <Button
-                                type="button"
-                                name={String(i)}
-                                onClick={delProtocol}
-                                variant="outline"
-                              >
-                                X
-                              </Button>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                )}
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-        <FormField
-          control={form.control}
-          name="comment"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>종합소견</FormLabel>
-              <FormControl>
-                <Textarea
-                  {...field}
-                  value={field.value ?? ''} // null 대응
-                  placeholder="치료관련 종합 소견 작성"
-                  className="min-h-[100px]" // 필요한 경우 높이 조정
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        {/* 버튼 */}
+                            <TableCell>
+                              {protocol.addinfo ? (
+                                <Popover>
+                                  <PopoverTrigger>
+                                    <div>추가정보</div>
+                                  </PopoverTrigger>
+                                  <PopoverContent>
+                                    <div className="whitespace-pre-wrap">
+                                      {protocol.addinfo}
+                                    </div>
+                                  </PopoverContent>
+                                </Popover>
+                              ) : (
+                                ''
+                              )}
+                              <div>
+                                <Button
+                                  type="button"
+                                  name={String(i)}
+                                  onClick={delProtocol}
+                                  variant="outline"
+                                >
+                                  X
+                                </Button>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  )}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+          <FormField
+            control={form.control}
+            name="comment"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>종합소견</FormLabel>
+                <FormControl>
+                  <Textarea
+                    {...field}
+                    value={field.value ?? ''} // null 대응
+                    placeholder="치료관련 종합 소견 작성"
+                    className="min-h-[100px]" // 필요한 경우 높이 조정
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* 버튼 */}
 
-        <div>
-          <Button type="submit">{isEditMode ? '수정' : '등록'}</Button>
-          {form.formState.errors.checklistTitle && (
-            <div className="text-red-500">
-              {form.formState.errors.checklistTitle.message}
-            </div>
-          )}
-        </div>
-      </form>
-    </Form>
+          <div className="flex">
+            <Button type="submit">{isEditMode ? '수정' : '등록'}</Button>
+            <Button
+              className="ml-3"
+              style={{ backgroundColor: ORDER_COLORS.red400 }}
+              onClick={deltxchart}
+            >
+              <Trash2></Trash2> 삭제
+            </Button>
+            {form.formState.errors.checklistTitle && (
+              <div className="text-red-500">
+                {form.formState.errors.checklistTitle.message}
+              </div>
+            )}
+          </div>
+        </form>
+      </Form>
+    </>
   )
 }

@@ -6,7 +6,8 @@ import {
   getEachTxChartReal,
   updateEachTxChart,
 } from '@/lib/services/checklist/get-checklist-data-client'
-import { type TxChart } from '@/types/checklist/txchart'
+import { TxChart } from '@/types/checklist/checklistchart'
+
 type Props = {
   checklistId: string
 }
@@ -63,7 +64,7 @@ const ChecklistButtonDetail = ({ checklistId }: Props) => {
             {txchart && txchart.due_date}
             {txchart && txchart.starttime && txchart && txchart.endtime
               ? '  완료'
-              : txchart && txchart.starttime && !txchart && txchart.endtime
+              : txchart && txchart.starttime && txchart && !txchart.endtime
                 ? '  진행중'
                 : '  대기중'}
             {timeLabel}

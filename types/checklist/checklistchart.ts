@@ -42,6 +42,7 @@ type PreInfo = {
   induce: string | null
   main: string | null
   post: string | null
+  other: string | null
 } | null
 export type Filterdcheck = {
   todaycheck: [] | ChecklistSidebarData[]
@@ -72,7 +73,7 @@ export type ChecklistSidebarData = {
   checklist_title: null | string
   checklist_tag: null | string
   checklist_protocol: null | ChecklistProtocol
-  checklist_group: null | string
+  checklist_group: null | string[]
   checklist_set: null | Checklistset
   checklist_timetable: null | TimeTable
   starttime: null | string
@@ -94,7 +95,7 @@ export type TxchartData = {
   checklist_title: null | string
   checklist_tag: null | string
   checklist_protocol: null | ChecklistProtocol
-  checklist_group: null | string
+  checklist_group: null | string[]
   checklist_set: null | Checklistset
   checklist_timetable: null | TimeTable
   starttime: null | string
@@ -118,7 +119,7 @@ export type TxChart = {
   checklist_title: null | string
   checklist_tag: null | string
   checklist_protocol: null | ChecklistProtocol
-  checklist_group: null | string
+  checklist_group: null | string[]
   checklist_set: null | Checklistset
   checklist_timetable: null | TimeTable
   starttime: null | string

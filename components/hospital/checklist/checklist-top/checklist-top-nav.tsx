@@ -11,16 +11,22 @@ import {
   useRouter,
   useSearchParams,
 } from 'next/navigation'
-import React from 'react'
+import React, { useEffect } from 'react'
 import ChecklistEditDialogButton from './checklist-edit-dialogbutton'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 
 const ChecklistTopNav = () => {
+  const basichosdata = useBasicHosDataContext().basicHosData
+  useEffect(() => {
+    console.log(basichosdata.groupListData)
+  }, [])
   const pathname = usePathname()
   const { push } = useRouter()
 
   const searchParams = useSearchParams()
   const edit = searchParams.get('edit')
   const isActive = pathname.split('/')[7]
+  const pathnamearray: string[] = pathname.split('/')
 
   return (
     <div className="flex-col">
@@ -34,6 +40,12 @@ const ChecklistTopNav = () => {
           <Button
             type="button"
             variant="outline"
+            name="txchart"
+            onClick={() => {
+              push(
+                `/hospital/${pathnamearray[2]}/checklist/${pathnamearray[4]}/chart/${pathnamearray[6]}/txchart?edit=${false}`,
+              )
+            }}
             className={cn(
               'm-2 ml-14 2xl:m-2 2xl:ml-2',
               isActive === 'txchart' && 'bg-primary text-white',
@@ -51,10 +63,16 @@ const ChecklistTopNav = () => {
           <Button
             type="button"
             variant="outline"
+            name="report"
             className={cn(
               'm-2',
               isActive === 'report' && 'bg-primary text-white',
             )}
+            onClick={() => {
+              push(
+                `/hospital/${pathnamearray[2]}/checklist/${pathnamearray[4]}/chart/${pathnamearray[6]}/report`,
+              )
+            }}
           >
             <ScrollText /> <p className="hidden 2xl:flex">REPORT</p>
           </Button>
@@ -68,6 +86,12 @@ const ChecklistTopNav = () => {
           <Button
             type="button"
             variant="outline"
+            name="monitor"
+            onClick={() => {
+              push(
+                `/hospital/${pathnamearray[2]}/checklist/${pathnamearray[4]}/chart/${pathnamearray[6]}/monitor`,
+              )
+            }}
             className={cn(
               'm-2',
               isActive === 'monitor' && 'bg-primary text-white',

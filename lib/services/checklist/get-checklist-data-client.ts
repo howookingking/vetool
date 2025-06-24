@@ -48,7 +48,17 @@ export const getTodayTxDataRealtime = async (
         filter: `hos_id=eq.${hosId}`,
       },
       (payload) => {
-        onDataChange(payload.new)
+        console.log('Realtime change: all re-upload')
+        // if (payload.eventType === 'DELETE') {
+        //   onDataChange(payload.old)
+        // } else if (
+        //   payload.old?.starttime !== payload.new?.starttime ||
+        //   payload.old?.endtime !== payload.new?.endtime
+        // ) {
+        //   console.log('change sidebar msg')
+        //   onDataChange(payload.new)
+        // }
+        payload.new ? onDataChange(payload.new) : onDataChange(payload.old)
       },
     )
     .subscribe()
@@ -96,7 +106,15 @@ export const getAllTxChartReal = async (
       },
       (payload) => {
         console.log('Realtime change: all re-upload')
-        onDataChange(payload.new)
+        if (
+          payload.old.starttime !== payload.new.starttime ||
+          payload.old.endtime !== payload.new.endtime
+        ) {
+          console.log('change sidebar msg')
+          onDataChange(payload.new)
+        } else if (payload.eventType === 'DELETE') {
+          onDataChange({ msg: 'delete' })
+        }
       },
     )
     .subscribe()
@@ -156,4 +174,17 @@ export const getPatientById = async (
   }
 
   return data
+}
+
+export const deleteChecklist = async (checklistId: string) => {
+  const { data, error } = await supabase
+    .from('checklist')
+    .delete()
+    .eq('checklist_id', checklistId)
+
+  if (error) {
+    console.error('삭제 실패:', error.message)
+  } else {
+    console.log('삭제 완료:', data)
+  }
 }
