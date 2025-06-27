@@ -7,8 +7,8 @@ type ChecklistVet = {
   anesthesia?: null | string
 }
 export type ChecklistProtocolItem = {
-  txStart?: null | string
-  txEnd?: null | string
+  txStart?: null | number
+  txEnd?: null | number
   title?: null | string
   type?: null | string
   addinfo?: null | string
@@ -20,7 +20,7 @@ export type ChecklistProtocolItem = {
 export type ChecklistProtocol = ChecklistProtocolItem[]
 
 export type TimeTable = {
-  time?: null | string
+  time?: null | number
   txt?: null | string
   type?: null | string
   imgurl?: null | string

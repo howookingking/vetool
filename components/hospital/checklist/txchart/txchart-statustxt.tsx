@@ -88,26 +88,20 @@ const TxchartStatusTxt = ({ txChart }: Props) => {
                     </td>
                     <td className="border-b border-gray-200 px-4 py-2">
                       {protocol.txStart &&
-                        minToLocalTime(
-                          String(txChart.starttime),
-                          String(protocol.txStart),
-                        )[1]}
+                        new Date(protocol.txStart).toLocaleTimeString()}
                     </td>
                     <td className="border-b border-gray-200 px-4 py-2">
                       {' '}
                       {protocol.txEnd &&
-                        minToLocalTime(
-                          String(txChart.starttime),
-                          String(protocol.txEnd),
-                        )[1]}
+                        new Date(protocol.txEnd).toLocaleTimeString()}
                     </td>
                     <td className="border-b border-gray-200 px-4 py-2 font-semibold">
                       {' '}
                       {protocol.txStart &&
                         protocol.txEnd &&
-                        Number(protocol.txEnd) -
-                          Number(protocol.txStart) +
-                          '분'}
+                        Math.floor(
+                          (protocol.txEnd - protocol.txStart) / (60 * 1000),
+                        ) + '분'}
                     </td>
                   </tr>
                 ),

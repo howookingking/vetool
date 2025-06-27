@@ -142,14 +142,16 @@ const TxchartChecklistBasic = ({ txChart, timeMin }: Props) => {
       if (!predata.checklist_timetable) {
         predata.checklist_timetable = []
         predata.checklist_timetable.push({
-          time: checktime,
+          time: new Date().getTime(),
           txt: txt,
-          type: 'protocol',
+          type: 'txt',
           imgurl: null,
         })
         saveTxChart(predata)
           .then(() => {
-            inputTxt.current.value = ''
+            if (inputTxt.current) {
+              inputTxt.current.value = ''
+            }
           })
           .catch((error) => {
             console.error('Error saving txChart:', error)
@@ -161,14 +163,16 @@ const TxchartChecklistBasic = ({ txChart, timeMin }: Props) => {
       } else {
         predata.checklist_timetable = [...predata.checklist_timetable]
         predata.checklist_timetable.push({
-          time: checktime,
+          time: new Date().getTime(),
           txt: txt,
-          type: 'protocol',
+          type: 'txt',
           imgurl: null,
         })
         saveTxChart(predata)
           .then(() => {
-            inputTxt.current.value = ''
+            if (inputTxt.current) {
+              inputTxt.current.value = ''
+            }
           })
           .catch((error) => {
             console.error('Error saving txChart:', error)

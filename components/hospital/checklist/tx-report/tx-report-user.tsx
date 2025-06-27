@@ -112,6 +112,35 @@ const TxReportUser = ({ txchartdata }: Props) => {
           </tr>
         </tbody>
       </table>
+      <div className="mb-3 ml-5 text-base">3.주요 과정</div>
+      <table className="m-5 w-full min-w-[600px] border border-gray-300 text-sm">
+        <tbody>
+          <tr>
+            <td className="max-w-[30px] border-b border-gray-300 bg-gray-100 px-4 py-2 text-center font-semibold text-gray-800">
+              전처치
+            </td>
+            <td className="whitespace-pre-wrap border-b border-gray-200 bg-white px-4 py-2 font-medium text-blue-700">
+              {txchartdata?.preinfo?.pre}
+            </td>
+          </tr>
+          <tr>
+            <td className="max-w-[30px] border-b border-gray-300 bg-gray-100 px-4 py-2 text-center font-semibold text-gray-800">
+              주요처치
+            </td>
+            <td className="whitespace-pre-wrap border-b border-gray-200 bg-white px-4 py-2 font-medium text-blue-700">
+              {txchartdata?.preinfo?.main}
+            </td>
+          </tr>
+          <tr>
+            <td className="max-w-[30px] border-b border-gray-300 bg-gray-100 px-4 py-2 text-center font-semibold text-gray-800">
+              후처치
+            </td>
+            <td className="whitespace-pre-wrap border-b border-gray-200 bg-white px-4 py-2 font-medium text-blue-700">
+              {txchartdata?.preinfo?.post}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   )
 }

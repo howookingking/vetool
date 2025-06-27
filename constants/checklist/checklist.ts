@@ -25,7 +25,7 @@ export const timeInterval = (timetz1: string, timetz2: string) => {
   // timestapmtz로 들어온 2개의 시간 분차이
   const date1 = new Date(timetz1)
   const date2 = new Date(timetz2)
-  const diffMs = date2.getTime() - date1.getTime()
+  const diffMs = date2.getTime() - date1.getTime() + 1000
   const diffMinutes = Math.floor(diffMs / (1000 * 60)) // 분
   const hr = Math.floor(diffMinutes / 60)
   const disphr = hr > 0 ? hr : null
@@ -40,4 +40,11 @@ export const minToLocalTime = (start: string, min: string) => {
   const hh = newDate.getHours().toString().padStart(2, '0')
   const mm = newDate.getMinutes().toString().padStart(2, '0')
   return [date2, `${hh}:${mm}`]
+}
+
+export const timestampPlusMin = (time: number, min: string) => {
+  const timeplusmin = time + Number(min) * 60 * 1000
+  const resultDate = new Date(timeplusmin)
+  const resultlocaltime = resultDate.toLocaleTimeString()
+  return [timeplusmin, resultDate, resultlocaltime]
 }

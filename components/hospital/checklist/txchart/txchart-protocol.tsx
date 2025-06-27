@@ -20,10 +20,16 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { saveTxChart } from '@/lib/services/checklist/get-checklist-data'
 import { string } from 'zod'
-import { minToLocalTime, timeInterval } from '@/constants/checklist/checklist'
+import {
+  minToLocalTime,
+  timeInterval,
+  timestampPlusMin,
+} from '@/constants/checklist/checklist'
 import { add } from 'date-fns'
-import { Camera } from 'lucide-react'
+import { Camera, Pencil } from 'lucide-react'
 import { Image } from 'lucide-react'
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
+import TxChartEditorTimetable from './txchart-editor-timetable'
 type Props = {
   txChart: TxChart | null
   timeMin: number
@@ -33,6 +39,19 @@ const TxchartProtocol = ({ txChart, timeMin }: Props) => {
   const [checktime, setCheckTime] = useState<string>('0')
   const [protocol, setProtocol] = useState<ChecklistProtocol | null>([])
   const [timetable, setTimetable] = useState<TimeTable>([])
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isStartEndDialogOpen, setStartEndDialogOpen] = useState(false)
+  const [dialogecontent, setDialogcontent] = useState<{
+    pretime: number
+    index: number
+    name: string
+    txt: ''
+  }>({
+    pretime: 0,
+    index: 0,
+    name: 'txStart',
+    txt: '',
+  })
 
   useEffect(() => {
     txChart &&
@@ -45,13 +64,13 @@ const TxchartProtocol = ({ txChart, timeMin }: Props) => {
   }, [txChart, timeMin])
   const inputTxt = useRef<HTMLInputElement>(null)
 
-  const makeTimetableTx = (pretxt: string) => {
+  const makeTimetableTx = (pretxt: string, type: string | null) => {
     const txt = pretxt
     const newTimetable = [...timetable]
     newTimetable.push({
-      time: checktime,
+      time: new Date().getTime(),
       txt: txt,
-      type: 'protocol',
+      type: type,
       imgurl: null,
     })
     return newTimetable
@@ -77,23 +96,19 @@ const TxchartProtocol = ({ txChart, timeMin }: Props) => {
     if (txChart?.starttime && protocol && protocol.length > 0 && index) {
       const mainProtocol = protocol[Number(index)]
       if (mainProtocol.type === 'main') {
-        mainProtocol.txStart = timeInterval(
-          txChart?.starttime,
-          new Date().toISOString(),
-        )[0]
+        mainProtocol.txStart = new Date().getTime()
         predata.checklist_protocol[Number(index)] = mainProtocol
         predata.checklist_timetable = makeTimetableTx(
           mainProtocol.title + ' 시작',
+          mainProtocol.type + '-' + index,
         )
         saveTxChart(predata)
       } else {
-        mainProtocol.txEnd = timeInterval(
-          txChart?.starttime,
-          new Date().toISOString(),
-        )[0]
+        mainProtocol.txEnd = new Date().getTime()
         predata.checklist_protocol[Number(index)] = mainProtocol
         predata.checklist_timetable = makeTimetableTx(
           mainProtocol.title + ' 완료',
+          mainProtocol.type + '-' + index,
         )
         saveTxChart(predata)
       }
@@ -105,13 +120,11 @@ const TxchartProtocol = ({ txChart, timeMin }: Props) => {
     const index = e.currentTarget.name
     if (txChart?.starttime && protocol && protocol.length > 0 && index) {
       const mainProtocol = protocol[Number(index)]
-      mainProtocol.txEnd = timeInterval(
-        txChart?.starttime,
-        new Date().toISOString(),
-      )[0]
+      mainProtocol.txEnd = new Date().getTime()
       predata.checklist_protocol[Number(index)] = mainProtocol
       predata.checklist_timetable = makeTimetableTx(
         mainProtocol.title + ' 종료',
+        mainProtocol.type + '-' + index,
       )
       saveTxChart(predata)
     }
@@ -162,11 +175,58 @@ const TxchartProtocol = ({ txChart, timeMin }: Props) => {
     if (inputTxt.current && inputTxt.current.value) {
       const txt = inputTxt.current.value
       if (txt && txt.length > 0) {
-        const newTimetable = makeTimetableTx(txt)
+        const newTimetable = makeTimetableTx(txt, 'txt')
         const predata = { ...txChart } as any
         predata.checklist_timetable = newTimetable
         saveTxChart(predata)
         inputTxt.current.value = ''
+      }
+    }
+  }
+  const changeTimeTable = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const predata = { ...txChart }
+    if (predata && predata.checklist_timetable) {
+      const thisTimetable =
+        predata.checklist_timetable[Number(e.currentTarget.name)]
+      const timeTableinfo = thisTimetable.type?.split('-')
+    }
+  }
+  const openEditTime = () => {}
+  const setTime = (time: number, index: number, name: string, txt: string) => {
+    if (txt !== '' && name === 'time') {
+      //timetable 변경
+      const predata = { ...txChart } as any
+      predata.checklist_timetable[index].time = time
+      predata.checklist_timetable[index].txt = txt
+      saveTxChart(predata)
+      setIsDialogOpen(false)
+    } else {
+      //protocol변경
+      const predata = { ...txChart } as any
+      predata.checklist_protocol[index][name] = time
+      if (predata.checklist_protocol[index].type === 'main') {
+        const tableindex =
+          name === 'txStart'
+            ? predata.checklist_timetable.findIndex(
+                (x: any) =>
+                  x.txt === predata.checklist_protocol[index].title + ' 시작',
+              )
+            : predata.checklist_timetable.findIndex(
+                (x: any) =>
+                  x.txt === predata.checklist_protocol[index].title + ' 종료',
+              )
+        console.log(tableindex)
+        predata.checklist_timetable[tableindex].time = time
+        saveTxChart(predata)
+        setIsDialogOpen(false)
+      } else {
+        const tableindex = predata.checklist_timetable.findIndex(
+          (x: any) =>
+            x.txt === predata.checklist_protocol[index].title + ' 완료',
+        )
+        predata.checklist_timetable[tableindex].time = time
+        saveTxChart(predata)
+        setIsDialogOpen(false)
       }
     }
   }
@@ -271,32 +331,61 @@ const TxchartProtocol = ({ txChart, timeMin }: Props) => {
                       </Button>
                     )}
                     {list.txStart && (
-                      <div className="text-sm text-gray-500">
-                        시작 시간:{' '}
-                        {
-                          minToLocalTime(
-                            String(txChart?.starttime),
-                            String(list.txStart),
-                          )[1]
-                        }
-                      </div>
+                      <Button
+                        className="mb-3 mr-2"
+                        variant="outline"
+                        onClick={() => {
+                          setDialogcontent({
+                            pretime: Number(list.txStart),
+                            index: i,
+                            name: 'txStart',
+                            txt: '',
+                          })
+                          setIsDialogOpen(true)
+                        }}
+                      >
+                        시작 시간: {new Date(list.txStart).toLocaleTimeString()}
+                      </Button>
                     )}
                     {list.txEnd && (
-                      <div className="ml-3 text-sm text-gray-500">
+                      <Button
+                        className="mb-3 mr-2"
+                        variant="outline"
+                        onClick={() => {
+                          setDialogcontent({
+                            pretime: Number(list.txEnd),
+                            index: i,
+                            name: 'txEnd',
+                            txt: '',
+                          })
+                          setIsDialogOpen(true)
+                        }}
+                      >
                         종료 시간:{' '}
-                        {
-                          minToLocalTime(
-                            String(txChart?.starttime),
-                            String(list.txEnd),
-                          )[1]
-                        }{' '}
-                      </div>
+                        {new Date(list.txEnd).toLocaleTimeString()}{' '}
+                      </Button>
                     )}
                     {list.txStart && list.txEnd && (
                       <div className="ml-3 text-sm text-gray-500">
-                        경과 시간: {Number(list.txEnd) - Number(list.txStart)}분
+                        경과 시간:{' '}
+                        {Math.floor((list.txEnd - list.txStart) / (60 * 1000))}
+                        분
                       </div>
                     )}
+                    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                      <DialogContent>
+                        <DialogTitle>시간변경</DialogTitle>
+                        <DialogContent>
+                          <TxChartEditorTimetable
+                            pretime={dialogecontent.pretime}
+                            index={dialogecontent.index}
+                            name={dialogecontent.name}
+                            txt={dialogecontent.txt}
+                            setTime={setTime}
+                          ></TxChartEditorTimetable>
+                        </DialogContent>
+                      </DialogContent>
+                    </Dialog>
                   </div>
                 )
               } else {
@@ -305,16 +394,19 @@ const TxchartProtocol = ({ txChart, timeMin }: Props) => {
                     key={list.title && list.title + i}
                     className="ml-6 flex items-center"
                   >
-                    {list.txEnd && (
-                      <div className="text-sm text-gray-500">
-                        {list.title}완료
-                      </div>
-                    )}
-                    {list.txEnd && (
-                      <div className="ml-3 text-sm text-gray-500">
-                        (완료시간: {new Date(list.txEnd).toLocaleTimeString()})
-                      </div>
-                    )}
+                    <div className="felx flex-wrap">
+                      {list.txEnd && (
+                        <div className="mr-3 text-sm text-gray-500">
+                          {list.title}완료
+                        </div>
+                      )}
+                      {list.txEnd && (
+                        <div className="text-sm text-gray-500">
+                          (완료시간: {new Date(list.txEnd).toLocaleTimeString()}
+                          )
+                        </div>
+                      )}
+                    </div>
                     {!list.txEnd && (
                       <Button
                         variant="outline"
@@ -337,38 +429,50 @@ const TxchartProtocol = ({ txChart, timeMin }: Props) => {
                               protocol[i - 1].type === 'main' &&
                               protocol[i - 1].txStart
                             ? '(예정시간' +
-                              minToLocalTime(
-                                String(txChart?.starttime),
-                                String(
-                                  Number(protocol[i - 1].txStart) +
-                                    Number(list.dueStart),
-                                ),
+                              timestampPlusMin(
+                                Number(protocol[i - 1].txStart),
+                                String(list.dueStart),
                               )[1] +
                               ')'
                             : i > 0 &&
                               protocol[i - 1].type === 'sub' &&
                               protocol[i - 1].txEnd &&
                               '(예정시간' +
-                                minToLocalTime(
-                                  String(txChart?.starttime),
-                                  String(
-                                    Number(protocol[i - 1].txEnd) +
-                                      Number(list.dueStart),
-                                  ),
-                                )[1] +
+                                timestampPlusMin(
+                                  Number(protocol[i - 1].txEnd),
+                                  String(list.dueStart),
+                                )[2] +
                                 ')'}
                       </Button>
                     )}
                     {list.txEnd && (
-                      <Button
-                        variant="outline"
-                        className="mb-1 ml-2"
-                        size="sm"
-                        name={String(i)}
-                        onClick={cancelEnd}
-                      >
-                        완료취소
-                      </Button>
+                      <div className="flex items-center">
+                        <Button
+                          variant="outline"
+                          className="mb-1 ml-2"
+                          size="sm"
+                          name={String(i)}
+                          onClick={cancelEnd}
+                        >
+                          완료취소
+                        </Button>
+                        <Button
+                          className="mb-1 ml-2"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setDialogcontent({
+                              pretime: Number(list.txEnd),
+                              index: i,
+                              name: 'txEnd',
+                              txt: '',
+                            })
+                            setIsDialogOpen(true)
+                          }}
+                        >
+                          <Pencil />
+                        </Button>
+                      </div>
                     )}
                   </div>
                 )
@@ -382,7 +486,7 @@ const TxchartProtocol = ({ txChart, timeMin }: Props) => {
           <table className="mb-12 mr-10 w-full min-w-[350px] border border-gray-300 text-center text-sm">
             <thead>
               <tr className="bg-gray-100">
-                <th className="w-[100px] border border-gray-300 px-4 py-2 font-semibold">
+                <th className="max-w-[50px] border border-gray-300 px-4 py-2 font-semibold">
                   +min(시간)
                 </th>
                 <th className="border border-gray-300 px-4 py-2">기록사항</th>
@@ -398,10 +502,18 @@ const TxchartProtocol = ({ txChart, timeMin }: Props) => {
                     key={list.txt && list.txt + i}
                     className="even:bg-gray-100"
                   >
-                    <td className="w-[100px] border border-gray-300 px-4 py-2">
-                      +{String(list.time)}(
-                      {txChart?.starttime && list.time && list.time !== '0'
-                        ? minToLocalTime(txChart?.starttime, list.time)[1]
+                    <td className="max-w-[50px] border border-gray-300 px-4 py-2">
+                      +
+                      {txChart?.starttime &&
+                        list.time &&
+                        list.time !== 0 &&
+                        Math.floor(
+                          (list.time - new Date(txChart?.starttime).getTime()) /
+                            (60 * 1000),
+                        )}
+                      (
+                      {txChart?.starttime && list.time && list.time !== 0
+                        ? new Date(list.time).toLocaleTimeString()
                         : '0'}
                       )
                     </td>
@@ -409,7 +521,7 @@ const TxchartProtocol = ({ txChart, timeMin }: Props) => {
                       {list.txt}
                     </td>
                     <td className="border border-gray-300 px-4 py-2">
-                      {list.type === 'protocol' && (
+                      <div className="flex-wrqp flex">
                         <Button
                           variant="outline"
                           name={String(i)}
@@ -419,7 +531,25 @@ const TxchartProtocol = ({ txChart, timeMin }: Props) => {
                         >
                           -
                         </Button>
-                      )}
+                        {list.type === 'txt' && (
+                          <Button
+                            variant="outline"
+                            name={String(i)}
+                            onClick={() => {
+                              setDialogcontent({
+                                pretime: Number(list.time),
+                                index: i,
+                                name: 'time',
+                                txt: list.txt,
+                              })
+                              setIsDialogOpen(true)
+                            }}
+                            className="w-[50px]"
+                          >
+                            <Pencil></Pencil>
+                          </Button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))}

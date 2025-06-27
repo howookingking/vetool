@@ -4,20 +4,15 @@ import { useEffect, useState } from 'react'
 import { ChecklistSidebarData, TxChart } from '@/types/checklist/checklistchart'
 import React from 'react'
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion'
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 import TxchartChecklist from './txchart-checklist'
 import { Button } from '@/components/ui/button'
 import {
@@ -32,6 +27,7 @@ import TxchartStatusTxt from './txchart-statustxt'
 import { Pencil } from 'lucide-react'
 import { cn } from '@/lib/utils/utils'
 import { format } from 'date-fns'
+import TxChartEditorTxtime from './txchart-editor-txtime'
 type Props = {
   checklistId: string
   txchartdata: ChecklistSidebarData
@@ -40,6 +36,8 @@ type Props = {
 const TxChartMainContainer = ({ checklistId, txchartdata }: Props) => {
   const [txchart, setTxChart] = useState<TxChart | null>()
   const [sttime, setStTime] = useState<number | null>()
+  const [isStartEndDialogOpen, setStartEndDialogOpen] = useState(false)
+  const [isStartDialogOpen, setStartDialogOpen] = useState(false)
 
   useEffect(() => {
     checklistId && getchart(checklistId)
@@ -112,6 +110,22 @@ const TxChartMainContainer = ({ checklistId, txchartdata }: Props) => {
     const min = diffMinutes % 60
     return [diffMinutes, disphr, min]
   }
+  const changeMainTime = (date: Date, timename: string) => {
+    if (txchart) {
+      if (timename === 'starttime') {
+        const predata = { ...txchart }
+        predata.starttime = new Date(date).toISOString()
+        updateEachTxChart(predata)
+        setStartEndDialogOpen(false)
+        setStartDialogOpen(false)
+      } else {
+        const predata = { ...txchart }
+        predata.endtime = new Date(date).toISOString()
+        updateEachTxChart(predata)
+        setStartEndDialogOpen(false)
+      }
+    }
+  }
   return (
     <div>
       {txchart?.checklist_type && txchart?.checklist_title ? (
@@ -132,33 +146,88 @@ const TxChartMainContainer = ({ checklistId, txchartdata }: Props) => {
           </div>
           <div className="flex flex-wrap">
             {txchart?.starttime && txchart?.endtime ? (
-              <Button
-                className="m-3"
-                type="button"
-                variant="outline"
-                onClick={endCancelBtn}
-              >
-                종료 취소
-              </Button>
+              <div className="flex items-center">
+                <div>
+                  <Button
+                    className="m-3"
+                    variant="outline"
+                    onClick={endCancelBtn}
+                  >
+                    종료 취소
+                  </Button>
+                </div>
+                <div>
+                  <Dialog
+                    open={isStartEndDialogOpen}
+                    onOpenChange={setStartEndDialogOpen}
+                  >
+                    <DialogTrigger asChild>
+                      <Button className="m-3" variant="outline">
+                        <Pencil />
+                      </Button>
+                    </DialogTrigger>
+
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>시작 시간변경</DialogTitle>
+                      </DialogHeader>
+                      <TxChartEditorTxtime
+                        pretime={txchart?.starttime}
+                        setTime={changeMainTime}
+                        timename="starttime"
+                      ></TxChartEditorTxtime>
+                      <DialogHeader>
+                        <DialogTitle>종료 시간변경</DialogTitle>
+                      </DialogHeader>
+                      <TxChartEditorTxtime
+                        pretime={txchart?.endtime}
+                        setTime={changeMainTime}
+                        timename="endtime"
+                      ></TxChartEditorTxtime>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              </div>
             ) : txchart?.starttime && !txchart.endtime ? (
-              <>
-                <Button
-                  className="m-3"
-                  type="button"
-                  variant="outline"
-                  onClick={startCancelBtn}
-                >
-                  시작 취소
-                </Button>
-                <Button
-                  className="m-3"
-                  type="button"
-                  variant="outline"
-                  onClick={endBtn}
-                >
-                  종료
-                </Button>
-              </>
+              <div className="flex items-center">
+                <div>
+                  <Button
+                    className="m-3"
+                    variant="outline"
+                    onClick={startCancelBtn}
+                  >
+                    시작 취소
+                  </Button>
+                </div>
+                <div>
+                  <Button className="m-3" variant="outline" onClick={endBtn}>
+                    종료
+                  </Button>
+                </div>
+                <div>
+                  <Dialog
+                    open={isStartDialogOpen}
+                    onOpenChange={setStartDialogOpen}
+                  >
+                    <DialogTrigger asChild>
+                      <Button className="m-3" variant="outline">
+                        <Pencil />
+                      </Button>
+                    </DialogTrigger>
+
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>시작 시간변경</DialogTitle>
+                      </DialogHeader>
+                      <TxChartEditorTxtime
+                        pretime={txchart?.starttime}
+                        setTime={changeMainTime}
+                        timename="starttime"
+                      ></TxChartEditorTxtime>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              </div>
             ) : (
               <Button
                 className="m-3"
@@ -185,8 +254,7 @@ const TxChartMainContainer = ({ checklistId, txchartdata }: Props) => {
             'h-screen',
           )}
         >
-          <Pencil></Pencil>를 클릭하여 치료차트에 대한 세부 정보를 작성 해
-          주세요
+          <Pencil />를 클릭하여 치료차트에 대한 세부 정보를 작성 해 주세요
         </div>
       )}
     </div>
