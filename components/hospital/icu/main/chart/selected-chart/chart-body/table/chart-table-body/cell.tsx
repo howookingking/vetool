@@ -50,6 +50,7 @@ type Props = {
   hasComment: boolean
   isInPendingQueue: boolean
   isInOrderTimePendingQueue: boolean
+  selectedTxPendingQueue: OrderTimePendingQueue[]
 }
 
 export default function Cell({
@@ -78,6 +79,7 @@ export default function Cell({
   hasOrder,
   isInPendingQueue,
   isInOrderTimePendingQueue,
+  selectedTxPendingQueue,
 }: Props) {
   const { upsertTx, isSubmitting } = useUpsertTx({ hosId })
   const { calcVitalResult, isAbnormalVital } = useAbnormalVital(
@@ -199,6 +201,7 @@ export default function Cell({
 
   const handleRightClick = (e: React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault()
+    if (selectedTxPendingQueue.length > 0) return
     if (e.metaKey || e.ctrlKey) {
       e.currentTarget.blur()
       toggleOrderTime(icuChartOrderId, time)
@@ -232,9 +235,9 @@ export default function Cell({
               !isInOrderTimePendingQueue &&
               !isInPendingQueue &&
               'bg-emerald-400/10',
-            !hasOrder && isInOrderTimePendingQueue && 'bg-rose-400/10',
-            isDone && isInPendingQueue && 'bg-emerald-400/40',
-            !isDone && isInPendingQueue && 'bg-cyan-400/10',
+            !hasOrder && isInOrderTimePendingQueue && 'bg-rose-400/30',
+            isDone && isInPendingQueue && 'bg-emerald-400/30',
+            !isDone && isInPendingQueue && 'bg-emerald-400/30',
             'h-11 min-w-12 rounded-none border-none px-1 text-center ring-inset focus-visible:ring-2 md:min-w-0',
           )}
           disabled={preview || isSubmitting}
