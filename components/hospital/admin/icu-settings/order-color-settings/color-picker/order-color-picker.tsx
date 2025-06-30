@@ -9,15 +9,17 @@ import {
 import { ORDER_COLORS } from '@/constants/hospital/icu/chart/colors'
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 
+type Props = {
+  color: string
+  orderType: string
+  handleChangeOrderTypeColor: (orderType: string, color: string) => void
+}
+
 export default function OrderColorPicker({
   color,
   orderType,
   handleChangeOrderTypeColor,
-}: {
-  color: string
-  orderType: string
-  handleChangeOrderTypeColor: (orderType: string, color: string) => void
-}) {
+}: Props) {
   const orderTypeLabel = DEFAULT_ICU_ORDER_TYPE.find(
     (item) => item.value === orderType,
   )?.label
@@ -34,7 +36,7 @@ export default function OrderColorPicker({
       >
         <SelectTrigger className="w-32" id={orderType}>
           <div
-            className="h-5 w-5 rounded-full border"
+            className="h-5 w-full rounded-full border"
             style={{
               backgroundColor: color,
             }}
