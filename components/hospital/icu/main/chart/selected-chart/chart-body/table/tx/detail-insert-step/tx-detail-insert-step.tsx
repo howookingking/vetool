@@ -142,7 +142,7 @@ export default function TxDetailInsertStep({
       await upsertTx(
         {
           ...txLocalState,
-          txResult: values.result,
+          txResult: (values.result ?? '').trim(),
           txComment: values.comment,
           isCrucialChecked: values.isCrucialChecked,
         },

@@ -1,6 +1,5 @@
 'use client'
 
-import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import PatientBriefInfo from '@/components/hospital/common/patient/patient-brief-info'
 import TxUpsertDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/tx-upsert-dialog'
 import TxTableCell from '@/components/hospital/icu/main/tx-table/tx-table-cell'
@@ -10,15 +9,15 @@ import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
 import type { IcuOrderColors } from '@/types/adimin'
+import type { TxLog } from '@/types/icu/chart'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
 import { SquarePlus } from 'lucide-react'
+import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
 type Props = {
   localFilterState: string[]
   filteredTxData: IcuTxTableData[]
-  chartBackgroundMap: Record<string, string>
-  hasOrder: boolean
   showTxUser: boolean
   orderColorsData: IcuOrderColors
 }
@@ -26,11 +25,12 @@ type Props = {
 export default function TxTable({
   localFilterState,
   filteredTxData,
-  chartBackgroundMap,
-  hasOrder,
   showTxUser,
   orderColorsData,
 }: Props) {
+  const { hos_id, target_date } = useParams()
+  const { push } = useRouter()
+
   const { setTxStep, setTxLocalState } = useIcuTxStore()
 
   const scrollAreaRef = useRef<HTMLDivElement>(null)
@@ -71,20 +71,33 @@ export default function TxTable({
     return () => clearTimeout(timeoutId)
   }, [isScrolled])
 
-  // 필터 적용 비활성화
-  // const orderType = localFilterState.map(
-  //   (orderType) =>
-  //     DEFAULT_ICU_ORDER_TYPE.find((type) => type.value === orderType)?.label,
-  // )
-
-  if (!hasOrder) {
-    return (
-      <NoResultSquirrel
-        text={`모든 처치를 완료했습니다`}
-        className="h-screen flex-col"
-        size="lg"
-      />
+  const handleMoveToChart = (
+    patientId: string,
+    time: number,
+    order: IcuTxTableData['orders'][number],
+  ) => {
+    push(
+      `/hospital/${hos_id}/icu/${target_date}/chart/${patientId}?order-id=${order.icu_chart_order_id}&time=${time}`,
     )
+  }
+
+  const handleOpenTxDetail = (
+    order: IcuTxTableData['orders'][number],
+    time: number,
+    treatment?: IcuTxTableData['orders'][number]['treatments'][number],
+  ) => {
+    setTxLocalState({
+      icuChartOrderId: order.icu_chart_order_id,
+      icuChartOrderType: order.icu_chart_order_type,
+      icuChartOrderName: order.icu_chart_order_name,
+      txResult: treatment?.tx_result,
+      txComment: treatment?.tx_comment,
+      txId: treatment?.tx_id,
+      time,
+      txLog: treatment?.tx_log as TxLog[] | null,
+      isCrucialChecked: treatment?.is_crucial,
+    })
+    setTxStep('detailInsert')
   }
 
   return (
@@ -100,13 +113,15 @@ export default function TxTable({
           />
 
           <TableBody>
-            {filteredTxData.flatMap((txData) =>
+            {filteredTxData.flatMap((txData, index) =>
               txData.orders.map((order) => (
                 <TableRow
                   key={order.icu_chart_order_id}
                   style={{
                     background:
-                      chartBackgroundMap[txData.icu_charts.icu_chart_id],
+                      TX_TABLE_BACKGROUD_COLORS[
+                        index % TX_TABLE_BACKGROUD_COLORS.length
+                      ],
                   }}
                   className="divide-x"
                 >
@@ -133,18 +148,36 @@ export default function TxTable({
                     </div>
                   </TableCell>
 
-                  {TIMES.map((time) => (
-                    <TxTableCell
-                      patientName={txData.patient.name}
-                      key={time}
-                      time={time}
-                      order={order}
-                      patientId={txData.patient_id}
-                      setTxStep={setTxStep}
-                      setTxLocalState={setTxLocalState}
-                      orderColorsData={orderColorsData}
-                    />
-                  ))}
+                  {TIMES.map((time) => {
+                    // 해당시간에 스케쥴된 오더가 아닌경우 빈 셀로 처리
+                    const isOrderScheduled =
+                      order.icu_chart_order_time[time - 1] !== '0'
+                    if (!isOrderScheduled) return <TableCell key={time} />
+
+                    // 해당시간에 스케쥴된 오더가 있고, 처치가 완료된 경우 빈 셀로 처리
+                    const isTxCompleted = order.treatments.some(
+                      (tx) => tx.time === time && tx.tx_result,
+                    )
+                    if (isTxCompleted) return <TableCell key={time} />
+
+                    const treatment = order.treatments.find(
+                      (tx) => tx.time === time,
+                    )
+
+                    return (
+                      <TxTableCell
+                        patientName={txData.patient.name}
+                        key={time}
+                        time={time}
+                        order={order}
+                        treatment={treatment}
+                        patientId={txData.patient_id}
+                        orderColorsData={orderColorsData}
+                        handleClickMove={handleMoveToChart}
+                        handleOpenTxDetail={handleOpenTxDetail}
+                      />
+                    )
+                  })}
                 </TableRow>
               )),
             )}
@@ -157,3 +190,30 @@ export default function TxTable({
     </>
   )
 }
+
+const TX_TABLE_BACKGROUD_COLORS = [
+  '#fef2f2',
+  '#fffbeb',
+  '#f7fee7',
+  '#ecfdf5',
+  '#ecfeff',
+  '#eff6ff',
+  '#f5f3ff',
+  '#fdf4ff',
+  '#fff1f2',
+  '#fff7ed',
+  '#fefce8',
+  '#f0fdf4',
+  '#f0fdfa',
+  '#e0f2fe',
+  '#f0f9ff',
+  '#eef2ff',
+  '#faf5ff',
+  '#fdf2f8',
+] as const
+
+// 사이드바 필터 적용 비활성화
+// const orderType = localFilterState.map(
+//   (orderType) =>
+//     DEFAULT_ICU_ORDER_TYPE.find((type) => type.value === orderType)?.label,
+// )

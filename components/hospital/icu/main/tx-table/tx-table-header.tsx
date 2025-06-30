@@ -3,7 +3,7 @@ import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { IcuTxTableData } from '@/types/icu/tx-table'
+import type { IcuTxTableData } from '@/types/icu/tx-table'
 import { useState } from 'react'
 
 type Props = {
@@ -15,13 +15,13 @@ export default function TxTableHeader({
   localFilterState,
   filteredTxData,
 }: Props) {
-  const [copiedTxTime, setCopiedTxTime] = useState<number | null>()
-
   const {
     basicHosData: { baselineTime },
   } = useBasicHosDataContext()
 
-  const handleTimeTxTextCopy = (time: number, i: number) => {
+  const [copiedTxTime, setCopiedTxTime] = useState<number | null>()
+
+  const handleCopyToClipboard = (time: number, index: number) => {
     const title = `${time}시 ${localFilterState.map((order) => DEFAULT_ICU_ORDER_TYPE.find((type) => type.value === order)?.label ?? '전체').join(', ')} 처치`
 
     const filteredTimeTxData = filteredTxData
@@ -29,7 +29,7 @@ export default function TxTableHeader({
         ...data,
         orders: data.orders.filter((order) => {
           return (
-            order.icu_chart_order_time[i] !== '0' &&
+            order.icu_chart_order_time[index] !== '0' &&
             !order.treatments.find((tx) => tx.time === time)
           )
         }),
@@ -79,7 +79,7 @@ export default function TxTableHeader({
             <div className="flex items-center justify-center">
               <span>{time.toString().padStart(2, '0')}</span>
               <TimeTxTextCopy
-                handleClick={() => handleTimeTxTextCopy(time, i)}
+                handleClick={() => handleCopyToClipboard(time, i)}
                 isCopied={copiedTxTime === time}
               />
             </div>
