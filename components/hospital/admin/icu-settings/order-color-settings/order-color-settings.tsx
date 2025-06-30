@@ -8,12 +8,11 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { toast } from '@/components/ui/use-toast'
-import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { updateOrderColorSettings } from '@/lib/services/admin/icu/order-color'
 import { cn } from '@/lib/utils/utils'
-import { type OrderColorDisplay } from '@/providers/basic-hos-data-context-provider'
-import { type IcuOrderColors } from '@/types/adimin'
-import { type SelectedIcuOrder } from '@/types/icu/chart'
+import type { OrderColorDisplay } from '@/providers/basic-hos-data-context-provider'
+import type { IcuOrderColors } from '@/types/adimin'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { LoaderCircle } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -33,6 +32,7 @@ export default function OrderColorSettings({ orderColorSettings }: Props) {
   const { refresh } = useRouter()
 
   const [isUpdating, setIsUpdating] = useState(false)
+
   const [localColorState, setLocalColorState] = useState(
     orderColorSettings.order_color,
   )
@@ -53,28 +53,17 @@ export default function OrderColorSettings({ orderColorSettings }: Props) {
       localColorDisplayMethod,
     )
     toast({
-      title: '오더의 색상을 변경하였습니다.',
+      title: '오더색상 & 표시방법을 변경하였습니다.',
     })
 
     setIsUpdating(false)
     refresh()
   }
 
-  const sortedOrders = Object.entries(localColorState).sort((a, b) => {
-    return (
-      DEFAULT_ICU_ORDER_TYPE.map((order) => order.value).findIndex(
-        (order) => order === a[0],
-      ) -
-      DEFAULT_ICU_ORDER_TYPE.map((order) => order.value).findIndex(
-        (order) => order === b[0],
-      )
-    )
-  })
-
   return (
     <Card>
       <CardHeader>
-        <CardTitle>오더색상 & 표시 방법</CardTitle>
+        <CardTitle>오더색상 & 표시방법</CardTitle>
         <CardDescription>
           오더 타입별 색상과 표시 방법을 설정해주세요
         </CardDescription>
@@ -91,7 +80,7 @@ export default function OrderColorSettings({ orderColorSettings }: Props) {
 
           <OrderColorPickers
             handleOrderColor={handleOrderColor}
-            sortedOrders={sortedOrders}
+            localColorState={localColorState}
           />
 
           <OrderColorDisplayMethod
@@ -125,7 +114,32 @@ const DUMMY_ORDERS: SelectedIcuOrder[] = [
     order_comment: null,
     order_id: '0',
     order_name: '체크리스트',
-    order_times: [],
+    order_times: [
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+    ],
     treatments: [],
   },
   {
@@ -135,7 +149,32 @@ const DUMMY_ORDERS: SelectedIcuOrder[] = [
     order_comment: null,
     order_id: '1',
     order_name: '수액',
-    order_times: [],
+    order_times: [
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+    ],
     treatments: [],
   },
   {
@@ -145,7 +184,32 @@ const DUMMY_ORDERS: SelectedIcuOrder[] = [
     order_comment: null,
     order_id: '2',
     order_name: '주사',
-    order_times: [],
+    order_times: [
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+    ],
     treatments: [],
   },
   {
@@ -155,7 +219,32 @@ const DUMMY_ORDERS: SelectedIcuOrder[] = [
     order_comment: null,
     order_id: '3',
     order_name: '경구',
-    order_times: [],
+    order_times: [
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+    ],
     treatments: [],
   },
 
@@ -166,27 +255,103 @@ const DUMMY_ORDERS: SelectedIcuOrder[] = [
     order_comment: null,
     order_id: '4',
     order_name: '검사',
-    order_times: [],
+    order_times: [
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+    ],
     treatments: [],
   },
+
   {
     id: 5,
-    order_type: 'manual',
-    is_bordered: false,
-    order_comment: null,
-    order_id: '5',
-    order_name: '기타',
-    order_times: [],
-    treatments: [],
-  },
-  {
-    id: 6,
     order_type: 'feed',
     is_bordered: false,
     order_comment: null,
     order_id: '6',
     order_name: '식이',
-    order_times: [],
+    order_times: [
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+    ],
     treatments: [],
   },
-]
+  {
+    id: 6,
+    order_type: 'manual',
+    is_bordered: false,
+    order_comment: null,
+    order_id: '5',
+    order_name: '기타',
+    order_times: [
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+    ],
+    treatments: [],
+  },
+] as const

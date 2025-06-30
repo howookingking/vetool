@@ -1,6 +1,6 @@
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { type OrderColorDisplay } from '@/providers/basic-hos-data-context-provider'
+import type { OrderColorDisplay } from '@/providers/basic-hos-data-context-provider'
 
 type Props = {
   setLocalColorDisplayMethod: (method: OrderColorDisplay) => void
