@@ -1,6 +1,6 @@
-import { type Vet } from '@/types/icu/chart'
-import { type IcuTxTableData } from '@/types/icu/tx-table'
-import { type Filter } from '@/types/icu/chart'
+import type { Vet } from '@/types/icu/chart'
+import type { IcuTxTableData } from '@/types/icu/tx-table'
+import type { Filter } from '@/types/icu/chart'
 
 type FilteredTxTableResult = {
   txTableData: IcuTxTableData[]
