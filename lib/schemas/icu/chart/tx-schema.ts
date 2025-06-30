@@ -16,7 +16,7 @@ export const txDetailRegisterFormSchema = z
     },
     {
       message:
-        '처치결과를 입력하지 않은 경우 커멘트 혹은 확인이 필요한 처치에 체크를 해주세요',
+        '처치결과를 입력하지 않은 경우 코멘트 혹은 확인이 필요한 처치에 체크를 해주세요',
       path: ['comment'],
     },
   )

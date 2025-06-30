@@ -1,13 +1,12 @@
 import { Button } from '@/components/ui/button'
 import { Clipboard, ClipboardCheck } from 'lucide-react'
 
-export default function TimeTxTextCopy({
-  handleClick,
-  isCopied,
-}: {
+type Props = {
   handleClick: () => void
   isCopied: boolean
-}) {
+}
+
+export default function TimeTxTextCopy({ handleClick, isCopied }: Props) {
   return (
     <Button
       variant="ghost"

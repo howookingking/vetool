@@ -10,43 +10,33 @@ import {
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { ChevronDown } from 'lucide-react'
-import { Dispatch, SetStateAction } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 
-export default function TxTableFilter({
-  localFilterState,
-  setLocalFilterState,
-}: {
-  localFilterState: string[]
-  setLocalFilterState: Dispatch<SetStateAction<string[]>>
-}) {
+type Props = {
+  orderTypeFilters: string[]
+  setOrderTypeFilters: Dispatch<SetStateAction<string[]>>
+}
+
+export default function TxTableOrderTypeFilter({
+  orderTypeFilters,
+  setOrderTypeFilters,
+}: Props) {
   const {
     basicHosData: { orderColorsData },
   } = useBasicHosDataContext()
 
-  const handleTriggerMultiSelect = () => {
-    const inputElement = document.querySelector(
-      '[placeholder="오더 타입"]',
-    ) as HTMLInputElement
-    if (inputElement) {
-      inputElement.focus()
-    }
-  }
-
   return (
     <div className="flex h-12 justify-center">
       <MultiSelector
-        values={localFilterState}
+        values={orderTypeFilters}
         options={DEFAULT_ICU_ORDER_TYPE.map((type) => ({
           value: type.value,
           label: type.label,
         }))}
-        onValuesChange={setLocalFilterState}
+        onValuesChange={setOrderTypeFilters}
         className="relative h-12 w-[280px] rounded-none md:w-[560px]"
       >
-        <MultiSelectorTrigger
-          className="relative my-auto cursor-pointer rounded-md p-0"
-          onClick={handleTriggerMultiSelect}
-        >
+        <MultiSelectorTrigger className="relative my-auto cursor-pointer rounded-md p-0">
           <MultiSelectorInput
             placeholder="오더 타입"
             className="cursor-pointer p-2 px-3"
