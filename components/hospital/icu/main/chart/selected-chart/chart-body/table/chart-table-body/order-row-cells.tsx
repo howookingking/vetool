@@ -130,6 +130,7 @@ export default function OrderRowCells({
             hasComment={hasComment}
             isInPendingQueue={isInPendingQueue}
             isInOrderTimePendingQueue={isInOrderTimePendingQueue}
+            selectedTxPendingQueue={selectedTxPendingQueue}
           />
         )
       })}
