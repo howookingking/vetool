@@ -76,6 +76,7 @@ export default function OrderColorSettings({ orderColorSettings }: Props) {
             isSetting
             localColorState={localColorState}
             localColorDisplayMethod={localColorDisplayMethod}
+            isOrderColorSetting
           />
 
           <OrderColorPickers

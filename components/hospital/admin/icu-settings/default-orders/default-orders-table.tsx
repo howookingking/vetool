@@ -24,6 +24,7 @@ type Props = {
   isSetting?: boolean
   localColorState?: IcuOrderColors
   localColorDisplayMethod?: 'dot' | 'full'
+  isOrderColorSetting?: boolean
 }
 
 export default function DefaultOrdersTable({
@@ -31,6 +32,7 @@ export default function DefaultOrdersTable({
   isSetting,
   localColorState,
   localColorDisplayMethod,
+  isOrderColorSetting,
 }: Props) {
   const { hos_id } = useParams()
   const { refresh } = useRouter()
@@ -99,52 +101,62 @@ export default function DefaultOrdersTable({
   }, [isCommandPressed])
 
   return (
-    <Table className="border">
-      <DtTableHeader
-        isSorting={isSorting}
-        orderWidth={orderWidth}
-        setOrderWidth={setOrderWidth}
-        sortedOrders={sortedOrders}
-        setIsSorting={setIsSorting}
-        defaultChartOrders={defaultChartOrders}
-        isSetting={isSetting}
-      />
-
-      {isSorting ? (
-        <DtSortingOrderRows
+    <div className="relative">
+      <Table className="border">
+        <DtTableHeader
           isSorting={isSorting}
-          sortedOrders={sortedOrders}
-          setSortedOrders={setSortedOrders}
           orderWidth={orderWidth}
+          setOrderWidth={setOrderWidth}
+          sortedOrders={sortedOrders}
+          setIsSorting={setIsSorting}
+          defaultChartOrders={defaultChartOrders}
+          isSetting={isSetting}
         />
-      ) : (
-        <TableBody>
-          <DtOrderRows
-            sortedOrders={sortedOrders}
+
+        {isSorting ? (
+          <DtSortingOrderRows
             isSorting={isSorting}
-            orderwidth={orderWidth}
-            isSetting={isSetting}
-            localColorState={localColorState}
-            localColorDisplayMethod={localColorDisplayMethod}
+            sortedOrders={sortedOrders}
+            setSortedOrders={setSortedOrders}
+            orderWidth={orderWidth}
           />
+        ) : (
+          <TableBody>
+            <DtOrderRows
+              sortedOrders={sortedOrders}
+              isSorting={isSorting}
+              orderwidth={orderWidth}
+              isSetting={isSetting}
+              localColorState={localColorState}
+              localColorDisplayMethod={localColorDisplayMethod}
+            />
 
-          <TableRow
-            className={cn('hover:bg-transparent', isSetting && 'hidden')}
-          >
-            <TableCell className="p-0">
-              <DtOrderCreator sortedOrders={sortedOrders} />
-            </TableCell>
+            <TableRow
+              className={cn('hover:bg-transparent', isSetting && 'hidden')}
+            >
+              <TableCell className="p-0">
+                <DtOrderCreator sortedOrders={sortedOrders} />
+              </TableCell>
 
-            <UserKeyGuideMessage isDT />
-          </TableRow>
-        </TableBody>
+              <UserKeyGuideMessage isDT />
+            </TableRow>
+          </TableBody>
+        )}
+
+        <DtOrderDialog
+          setSortedOrders={setSortedOrders}
+          isTemplate={false}
+          isLastDefaultOrder={sortedOrders.length === 1}
+        />
+      </Table>
+
+      {isOrderColorSetting && (
+        <div className="absolute inset-0 flex h-full cursor-not-allowed items-center justify-center">
+          <div className="rounded-sm bg-black/30 px-10 py-5 text-center text-white">
+            <span className="text-xl font-bold">적용된 예시</span>
+          </div>
+        </div>
       )}
-
-      <DtOrderDialog
-        setSortedOrders={setSortedOrders}
-        isTemplate={false}
-        isLastDefaultOrder={sortedOrders.length === 1}
-      />
-    </Table>
+    </div>
   )
 }
