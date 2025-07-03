@@ -8,7 +8,7 @@ export default function ChartBody({ chartData }: { chartData: SelectedChart }) {
   const { memo_a, memo_b, memo_c, icu_io_id } = icu_io
 
   return (
-    <div className="mb-10 mt-12 flex w-[420vw] flex-col gap-2 p-2 sm:w-[300vw] md:w-full">
+    <div className="mt-12 flex w-[420vw] flex-col gap-2 p-2 sm:w-[300vw] md:w-full">
       <ChartInfos chartData={chartData} />
       <ChartTable chartData={chartData} />
       <ChartMemos
