@@ -60,15 +60,15 @@ export default function DefaultOrdersTable({
     for (const order of formattedOrders) {
       const currentOrder = defaultChartOrders.find(
         (o) => o.order_id === order.orderId,
-      )
-      if (!currentOrder) continue
+      )!
 
-      const updatedOrderTimes = currentOrder.order_times.map((time, index) =>
-        order.orderTimes.includes(index + 1)
-          ? time === '0'
-            ? '기본'
-            : '0'
-          : time,
+      const updatedOrderTimes = currentOrder.order_times.map(
+        (ordererOrZero, index) =>
+          order.orderTimes.includes(index)
+            ? ordererOrZero === '0'
+              ? '기본'
+              : '0'
+            : ordererOrZero,
       )
 
       await upsertDefaultChartOrder(
@@ -87,6 +87,7 @@ export default function DefaultOrdersTable({
     toast({
       title: '오더시간을 변경하였습니다',
     })
+
     resetOrderStore()
     refresh()
   }
@@ -153,7 +154,7 @@ export default function DefaultOrdersTable({
       {isOrderColorSetting && (
         <div className="absolute inset-0 flex h-full cursor-not-allowed items-center justify-center">
           <div className="rounded-sm bg-black/30 px-10 py-5 text-center text-white">
-            <span className="text-xl font-bold">적용된 예시</span>
+            <span className="text-xl font-bold">적용 예시</span>
           </div>
         </div>
       )}

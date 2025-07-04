@@ -223,6 +223,8 @@ export const changeTargetDateInUrl = (
 }
 
 // 우클릭 오더 시간 변경시 큐에 저장된 오더 id와 시간 데이터를 formatting
+// ex) [{ orderId: '1', orderTime: 1 }, { orderId: '1', orderTime: 2 }, { orderId: '2', orderTime: 1 }, { orderId: '2', orderTime: 2 }, { orderId: '3', orderTime: 1 }]
+// => [{ orderId: '1', orderTimes: [1, 2] }, { orderId: '2', orderTimes: [1, 2] }, { orderId: '3', orderTimes: [1] }]
 type FormattedOrder = {
   orderId: string
   orderTimes: number[]

@@ -9,7 +9,10 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { CELL_COLORS } from '@/constants/hospital/icu/chart/colors'
-import { TX_ORDER_TIME_INTERVALS } from '@/constants/hospital/icu/chart/time'
+import {
+  TIMES,
+  TX_ORDER_TIME_INTERVALS,
+} from '@/constants/hospital/icu/chart/time'
 import type { Dispatch, SetStateAction } from 'react'
 
 type OrderTimeSettingsProps = {
@@ -19,7 +22,6 @@ type OrderTimeSettingsProps = {
   setStartTime: Dispatch<SetStateAction<string>>
   setTimeTerm: Dispatch<SetStateAction<string>>
   setOrderTime: Dispatch<SetStateAction<string[]>>
-  newTime: number[]
 }
 
 export default function OrderTimeSettings({
@@ -29,7 +31,6 @@ export default function OrderTimeSettings({
   setStartTime,
   setTimeTerm,
   setOrderTime,
-  newTime,
 }: OrderTimeSettingsProps) {
   const handleSelectAllClick = () => {
     setStartTime('undefined')
@@ -70,9 +71,9 @@ export default function OrderTimeSettings({
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                {['undefined', ...newTime].map((time, i) => (
+                {['undefined', ...TIMES].map((time) => (
                   <SelectItem
-                    value={i.toString()}
+                    value={time.toString()}
                     key={time}
                     className="text-xs"
                   >
@@ -127,7 +128,7 @@ export default function OrderTimeSettings({
         </div>
       </div>
       <div className="mt-2 flex w-full flex-wrap md:justify-between">
-        {newTime.map((time, index) => (
+        {TIMES.map((time) => (
           <Button
             tabIndex={-1}
             type="button"
@@ -136,9 +137,9 @@ export default function OrderTimeSettings({
             className="h-6 w-7 px-3 py-2 text-xs"
             style={{
               background:
-                orderTime[index] !== '0' ? CELL_COLORS.NOT_DONE : 'transparent',
+                orderTime[time] !== '0' ? CELL_COLORS.NOT_DONE : 'transparent',
             }}
-            onClick={handleTimeToggle(index)}
+            onClick={handleTimeToggle(time)}
           >
             {time}
           </Button>

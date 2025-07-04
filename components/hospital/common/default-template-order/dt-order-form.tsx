@@ -11,7 +11,6 @@ import { orderSchema } from '@/lib/schemas/icu/chart/order-schema'
 import { upsertDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { cn } from '@/lib/utils/utils'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
@@ -37,9 +36,6 @@ export default function DtOrderForm({
   const { refresh } = useRouter()
 
   const { setOrderStep, selectedChartOrder, reset } = useIcuOrderStore()
-  const {
-    basicHosData: { baselineTime },
-  } = useBasicHosDataContext()
 
   const [startTime, setStartTime] = useState<string>('0')
   const [timeTerm, setTimeTerm] = useState<string>('undefined')
@@ -105,10 +101,6 @@ export default function DtOrderForm({
     refresh()
   }
 
-  const newTime = new Array(24)
-    .fill(0)
-    .map((_, i) => (Number(baselineTime) + i) % 24)
-
   useEffect(() => {
     if (startTime !== 'undefined' && timeTerm !== 'undefined') {
       const start = Number(startTime)
@@ -142,7 +134,6 @@ export default function DtOrderForm({
             setStartTime={setStartTime}
             setTimeTerm={setTimeTerm}
             setOrderTime={setOrderTime}
-            newTime={newTime}
           />
         )}
 
