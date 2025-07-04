@@ -64,6 +64,7 @@ export default function DeleteChartDialog({
             isFirstChart={isFirstChart}
             icuChartId={icuChartId}
             icuIoId={icuIoId}
+            name={name}
           />
         </DialogFooter>
       </DialogContent>
