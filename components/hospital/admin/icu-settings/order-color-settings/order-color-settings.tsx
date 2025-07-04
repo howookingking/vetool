@@ -32,7 +32,6 @@ export default function OrderColorSettings({ orderColorSettings }: Props) {
   const { refresh } = useRouter()
 
   const [isUpdating, setIsUpdating] = useState(false)
-
   const [localColorState, setLocalColorState] = useState(
     orderColorSettings.order_color,
   )
@@ -41,7 +40,10 @@ export default function OrderColorSettings({ orderColorSettings }: Props) {
   )
 
   const handleOrderColor = (orderType: string, color: string) => {
-    setLocalColorState({ ...localColorState, [orderType]: color })
+    setLocalColorState((prev) => ({
+      ...prev,
+      [orderType]: color,
+    }))
   }
 
   const handleUpdateOrderColor = async () => {
@@ -52,6 +54,7 @@ export default function OrderColorSettings({ orderColorSettings }: Props) {
       localColorState,
       localColorDisplayMethod,
     )
+
     toast({
       title: '오더색상 & 표시방법을 변경하였습니다.',
     })
@@ -69,26 +72,24 @@ export default function OrderColorSettings({ orderColorSettings }: Props) {
         </CardDescription>
       </CardHeader>
 
-      <CardContent>
-        <div className="flex flex-col gap-8">
-          <DefaultOrdersTable
-            defaultChartOrders={DUMMY_ORDERS}
-            isSetting
-            localColorState={localColorState}
-            localColorDisplayMethod={localColorDisplayMethod}
-            isOrderColorSetting
-          />
+      <CardContent className="flex flex-col gap-8">
+        <DefaultOrdersTable
+          defaultChartOrders={DUMMY_ORDERS}
+          isSetting
+          localColorState={localColorState}
+          localColorDisplayMethod={localColorDisplayMethod}
+          isOrderColorSetting
+        />
 
-          <OrderColorPickers
-            handleOrderColor={handleOrderColor}
-            localColorState={localColorState}
-          />
+        <OrderColorPickers
+          handleOrderColor={handleOrderColor}
+          localColorState={localColorState}
+        />
 
-          <OrderColorDisplayMethod
-            setLocalColorDisplayMethod={setLocalColorDisplayMethod}
-            localColorDisplayMethod={localColorDisplayMethod}
-          />
-        </div>
+        <OrderColorDisplayMethod
+          setLocalColorDisplayMethod={setLocalColorDisplayMethod}
+          localColorDisplayMethod={localColorDisplayMethod}
+        />
       </CardContent>
       <CardFooter>
         <Button
