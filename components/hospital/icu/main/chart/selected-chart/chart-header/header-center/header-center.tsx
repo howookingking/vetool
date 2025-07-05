@@ -12,7 +12,7 @@ export default function HeaderCenter({
   return (
     <div className="flex h-12 items-center justify-center gap-0.5">
       <IcuPatientUpdateDialog
-        patientData={patient}
+        patient={patient}
         weight={weight}
         weightMeasuredDate={weight_measured_date}
         icuChartId={chartData.icu_chart_id}

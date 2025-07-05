@@ -1,7 +1,7 @@
 import { calculateAge, convertPascalCased } from '@/lib/utils/utils'
 import { Cat, Dog } from 'lucide-react'
 
-type PatientDetailInfoProps = {
+type Props = {
   species: string
   name: string
   breed: string | null
@@ -9,6 +9,7 @@ type PatientDetailInfoProps = {
   birth: string
   weight: string
   weightMeasuredDate?: string | null
+  isAlive: boolean
 }
 
 export default function PatientDetailInfo({
@@ -19,11 +20,16 @@ export default function PatientDetailInfo({
   birth,
   weight,
   weightMeasuredDate,
-}: PatientDetailInfoProps) {
+  isAlive,
+}: Props) {
   return (
     <div className="flex items-center gap-1 sm:gap-2">
       {species === 'canine' ? <Dog size={20} /> : <Cat size={20} />}
-      <span>{name}</span>·
+      <div>
+        <span>{name}</span>
+        {!isAlive && <span className="ml-1">🌈</span>}
+      </div>
+      ·
       <span className="w-12 truncate sm:w-auto">
         {convertPascalCased(breed)}
       </span>

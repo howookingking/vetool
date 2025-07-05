@@ -49,7 +49,7 @@ import {
   updatePatientFromPatientRoute,
 } from '@/lib/services/patient/patient'
 import { cn } from '@/lib/utils/utils'
-import { type Patients } from '@/types'
+import type { Patient } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons'
 import { format } from 'date-fns'
@@ -59,7 +59,7 @@ import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { type DebouncedState, useDebouncedCallback } from 'use-debounce'
 import * as z from 'zod'
-import { type RegisteringPatient } from '../../../hospital/icu/sidebar/register-dialog/register-dialog'
+import type { RegisteringPatient } from '../../../hospital/icu/sidebar/register-dialog/register-dialog'
 
 type BaseProps = {
   hosId: string
@@ -82,7 +82,7 @@ type RegisterFromPatientRoute = BaseProps & {
 
 type UpdateFromPatientRoute = BaseProps & {
   mode: 'updateFromPatientRoute'
-  editingPatient: Patients
+  editingPatient: Patient
   setIsPatientRegisterDialogOpen?: null
   setIsConfirmDialogOpen?: null
   weight: string
@@ -112,7 +112,7 @@ type RegisterFromIcuRoute = BaseProps & {
 
 type UpdateFromIcuRoute = BaseProps & {
   mode: 'updateFromIcuRoute'
-  editingPatient: Patients
+  editingPatient: Patient
   setIsPatientRegisterDialogOpen?: null
   setIsConfirmDialogOpen?: null
   weight: string
@@ -208,6 +208,7 @@ export default function PatientForm({
           weight: weight,
           owner_name: editingPatient?.owner_name ?? '',
           hos_owner_id: editingPatient?.hos_owner_id ?? '',
+          // is_alive: editingPatient?.is_alive ?? true,
         }
       : {
           name: '',
@@ -221,6 +222,7 @@ export default function PatientForm({
           weight: '',
           owner_name: '',
           hos_owner_id: '',
+          // is_alive: true,
         },
   })
 
@@ -709,27 +711,52 @@ export default function PatientForm({
           />
         </div>
 
-        <div className="col-span-2 ml-auto flex gap-2">
-          <Button
-            tabIndex={-1}
-            type="button"
-            disabled={isSubmitting}
-            variant="outline"
-            onClick={() => {
-              isEdit
-                ? setIsPatientUpdateDialogOpen(false)
-                : setIsPatientRegisterDialogOpen!(false)
-            }}
-          >
-            {isEdit ? '취소' : '닫기'}
-          </Button>
+        <div className="col-span-2 flex items-center justify-end gap-2">
+          {/* <FormField
+            control={form.control}
+            name="is_alive"
+            render={({ field }) => (
+              <FormItem>
+                <div
+                  className={cn(
+                    isEdit ? 'flex items-center gap-2 text-sm' : 'hidden',
+                  )}
+                >
+                  <span>사망</span>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <span>생존</span>
+                </div>
+              </FormItem>
+            )}
+          /> */}
 
-          <Button type="submit" disabled={isSubmitting}>
-            {isEdit ? '수정' : '등록'}
-            <LoaderCircle
-              className={cn(isSubmitting ? 'ml-2 animate-spin' : 'hidden')}
-            />
-          </Button>
+          <div className="space-x-2">
+            <Button
+              tabIndex={-1}
+              type="button"
+              disabled={isSubmitting}
+              variant="outline"
+              onClick={() => {
+                isEdit
+                  ? setIsPatientUpdateDialogOpen(false)
+                  : setIsPatientRegisterDialogOpen!(false)
+              }}
+            >
+              {isEdit ? '취소' : '닫기'}
+            </Button>
+
+            <Button type="submit" disabled={isSubmitting}>
+              {isEdit ? '수정' : '등록'}
+              <LoaderCircle
+                className={cn(isSubmitting ? 'ml-2 animate-spin' : 'hidden')}
+              />
+            </Button>
+          </div>
         </div>
       </form>
     </Form>

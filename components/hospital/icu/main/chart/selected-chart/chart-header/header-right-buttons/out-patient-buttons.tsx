@@ -3,19 +3,21 @@ import { DialogClose } from '@/components/ui/dialog'
 import { toast } from '@/components/ui/use-toast'
 import { toggleOutPatient } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { cn, hashtagKeyword } from '@/lib/utils/utils'
-import { type SelectedChart } from '@/types/icu/chart'
+import type { SelectedChart } from '@/types/icu/chart'
 import { LoaderCircle } from 'lucide-react'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { type Dispatch, type SetStateAction, useState } from 'react'
+
+type Props = {
+  isPatientOut: boolean
+  chartData: SelectedChart
+  setIsDialogOpen: Dispatch<SetStateAction<boolean>>
+}
 
 export default function OutPatientButtons({
   isPatientOut,
   chartData,
   setIsDialogOpen,
-}: {
-  isPatientOut: boolean
-  chartData: SelectedChart
-  setIsDialogOpen: Dispatch<SetStateAction<boolean>>
-}) {
+}: Props) {
   const { icu_io, patient } = chartData
 
   const [isOutSubmitting, setIsOutSubmitting] = useState(false)
@@ -55,12 +57,12 @@ export default function OutPatientButtons({
     <>
       {!isPatientOut && (
         <Button
-          variant="destructive"
+          variant="outline"
           className="mr-auto"
           onClick={() => handleOutPatient(false)}
           disabled={isAliveSubmitting}
         >
-          사망
+          🌈 사망
           <LoaderCircle
             className={cn(isAliveSubmitting ? 'ml-2 animate-spin' : 'hidden')}
           />

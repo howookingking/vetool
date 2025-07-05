@@ -9,7 +9,7 @@ import type {
   IcuNotification,
   IcuOrders,
   IcuTxs,
-  Patients,
+  Patient,
   User,
 } from '@/types'
 
@@ -27,7 +27,7 @@ export type TxLog = {
 }
 
 export type IcuNotificationJoined = IcuNotification & {
-  patient_id: Pick<Patients, 'name' | 'breed' | 'gender' | 'patient_id'>
+  patient_id: Pick<Patient, 'name' | 'breed' | 'gender' | 'patient_id'>
 }
 
 export type SelectedChartIcuIo = Pick<
@@ -47,7 +47,7 @@ export type SelectedChartIcuIo = Pick<
   | 'memo_b'
   | 'memo_c'
 >
-export type SelectedChartPatient = Omit<Patients, 'owner_id'>
+export type SelectedChartPatient = Omit<Patient, 'owner_id'>
 
 export type SelectedChart = Pick<
   IcuCharts,
@@ -63,7 +63,7 @@ export type SelectedChart = Pick<
 } & {
   orders: SelectedIcuOrder[]
 } & {
-  patient: Patients
+  patient: Patient
 } & {
   main_vet: Pick<Vet, 'avatar_url' | 'name' | 'user_id'>
 } & {
@@ -71,7 +71,7 @@ export type SelectedChart = Pick<
 }
 
 export type Patient = Pick<
-  Patients,
+  Patient,
   | 'name'
   | 'breed'
   | 'gender'

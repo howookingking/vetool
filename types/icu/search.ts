@@ -1,4 +1,4 @@
-import { IcuCharts, IcuIo, Patients } from '..'
+import { IcuCharts, IcuIo, Patient } from '..'
 
 export type SearchedIcuCharts = Pick<
   IcuCharts,
@@ -15,5 +15,5 @@ export type SearchedIcuIos = Pick<
   | 'icu_io_dx'
   | 'icu_io_cc'
 > & {
-  patient_id: Pick<Patients, 'name' | 'owner_name' | 'species' | 'breed'>
+  patient_id: Pick<Patient, 'name' | 'owner_name' | 'species' | 'breed'>
 }
