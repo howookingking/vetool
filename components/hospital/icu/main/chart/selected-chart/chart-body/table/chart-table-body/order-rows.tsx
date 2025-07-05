@@ -11,9 +11,9 @@ import {
 } from '@/lib/store/icu/icu-order'
 import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
 import { borderedOrderClassName } from '@/lib/utils/utils'
-import { type VitalRefRange } from '@/types/adimin'
-import { type SelectedIcuOrder } from '@/types/icu/chart'
-import { type RefObject } from 'react'
+import type { VitalRefRange } from '@/types/adimin'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
+import type { RefObject } from 'react'
 
 type Props = {
   sortedOrders: SelectedIcuOrder[]
