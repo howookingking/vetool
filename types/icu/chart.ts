@@ -70,17 +70,6 @@ export type SelectedChart = Pick<
   sub_vet: Pick<Vet, 'avatar_url' | 'name' | 'user_id'>
 }
 
-export type Patient = Pick<
-  Patient,
-  | 'name'
-  | 'breed'
-  | 'gender'
-  | 'patient_id'
-  | 'species'
-  | 'owner_name'
-  | 'hos_id'
->
-
 export type SelectedIcuOrder = {
   order_id: string
   order_name: string

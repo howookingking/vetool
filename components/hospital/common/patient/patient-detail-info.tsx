@@ -9,7 +9,7 @@ type Props = {
   birth: string
   weight: string
   weightMeasuredDate?: string | null
-  isAlive: boolean
+  isAlive?: boolean
 }
 
 export default function PatientDetailInfo({
@@ -20,7 +20,7 @@ export default function PatientDetailInfo({
   birth,
   weight,
   weightMeasuredDate,
-  isAlive,
+  isAlive = true,
 }: Props) {
   return (
     <div className="flex items-center gap-1 sm:gap-2">
