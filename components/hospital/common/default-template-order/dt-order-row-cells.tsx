@@ -1,7 +1,7 @@
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { useDtOrderStore } from '@/lib/store/icu/dt-order'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { SelectedIcuOrder } from '@/types/icu/chart'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
 import DtCell from './dt-cell'
 
 export default function DtOrderRowCells({
@@ -37,8 +37,8 @@ export default function DtOrderRowCells({
         const isInOrderTimePendingQueue = orderTimePendingQueue.some(
           (t) => t.orderId === order.order_id && t.orderTime === time,
         )
-        const hasOrder = order_times[time - 1] !== '0'
-        const orderer = order_times[time - 1]
+        const hasOrder = order_times[time] !== '0'
+        const orderer = order_times[time]
         return (
           <DtCell
             hasOrder={hasOrder}

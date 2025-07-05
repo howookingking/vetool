@@ -1,4 +1,4 @@
-import type { IcuCharts, IcuIo, IcuOrders, Patients } from '@/types'
+import type { IcuCharts, IcuIo, IcuOrders, Patient } from '@/types'
 import type { Treatment } from '@/types/icu/chart'
 
 export type IcuTxTableData = {
@@ -9,7 +9,7 @@ export type IcuTxTableData = {
   patient_id: string
   target_date: Date
   icu_io: Pick<IcuIo, 'out_date' | 'created_at' | 'cage' | 'group_list'>
-  patient: Pick<Patients, 'name' | 'breed' | 'species'>
+  patient: Pick<Patient, 'name' | 'breed' | 'species'>
   orders: (Pick<
     IcuOrders,
     | 'icu_chart_order_id'

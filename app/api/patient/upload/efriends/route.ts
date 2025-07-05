@@ -2,7 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { transformCsvData } from '@/lib/utils/insert-patient'
-import { type Patients } from '@/types'
+import type { Patient } from '@/types'
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
 
     const uniquePatientData: any = Array.from(
       new Map(
-        patientData.map((item: Patients) => [
+        patientData.map((item: Patient) => [
           `${item.hos_patient_id}-${item.birth}-${item.name}`,
           item,
         ]),

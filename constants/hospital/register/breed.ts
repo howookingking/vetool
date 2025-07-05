@@ -1482,21 +1482,16 @@ export const FELINE_BREEDS = [
   },
   {
     id: 56,
-    kor: '혼합묘종',
-    eng: 'MIXED',
-  },
-  {
-    id: 57,
     kor: '혼합종',
     eng: 'MIXED',
   },
   {
-    id: 58,
+    id: 57,
     kor: '히말라얀',
     eng: 'HIMALAYAN',
   },
   {
-    id: 59,
+    id: 58,
     kor: '아메리칸 컬',
     eng: 'AMERICAN CURL',
   },

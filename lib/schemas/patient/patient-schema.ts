@@ -25,4 +25,5 @@ export const registerPatientFormSchema = z.object({
   owner_name: z.string({ required_error: '보호자 이름을 입력해주세요' }),
   hos_owner_id: z.string({ required_error: '보호자 번호를 입력해주세요' }),
   memo: z.string({ required_error: '종을 선택해주세요' }),
+  // is_alive: z.boolean().default(true),
 })

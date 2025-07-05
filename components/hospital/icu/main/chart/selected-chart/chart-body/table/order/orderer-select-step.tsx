@@ -113,13 +113,12 @@ export default function OrdererSelectStep({
     const formattedOrders = formatOrders(orderTimePendingQueue)
 
     for (const order of formattedOrders) {
-      const currentOrder = orders.find((o) => o.order_id === order.orderId)
-      if (!currentOrder) continue
+      const currentOrder = orders.find((o) => o.order_id === order.orderId)!
 
       const updatedOrderTimes = [...currentOrder.order_times]
       for (const time of order.orderTimes) {
-        updatedOrderTimes[time - 1] =
-          updatedOrderTimes[time - 1] === '0' ? values.orderer : '0'
+        updatedOrderTimes[time] =
+          updatedOrderTimes[time] === '0' ? values.orderer : '0'
       }
 
       await upsertOrder(

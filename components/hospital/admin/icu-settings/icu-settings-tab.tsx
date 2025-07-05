@@ -8,7 +8,6 @@ import OrderFontSizeTab from './order-font-size/order-font-size-tab'
 import OrdererTab from './orderer/orderer-tab'
 import TimeGuidelineTab from './time-guideline/time-guideline-tab'
 import VitalRefRangeTab from './vital-ref-range/vital-ref-range-tab'
-import BaselineTimeTab from './baseline-time/baseline-time-tab'
 
 const ADMIN_SETTING_ITEMS = [
   { label: '기본 차트', value: 'defaultOrder', Component: DefaultOrdersTab },
@@ -38,11 +37,12 @@ const ADMIN_SETTING_ITEMS = [
     value: 'orderFontSize',
     Component: OrderFontSizeTab,
   },
-  {
-    label: '일 기준 시간',
-    value: 'baselineTime',
-    Component: BaselineTimeTab,
-  },
+  // 복잡도 지나치게 증가해서 기능 삭제
+  // {
+  //   label: '일 기준 시간',
+  //   value: 'baselineTime',
+  //   Component: BaselineTimeTab,
+  // },
   {
     label: '시간 가이드라인',
     value: 'timeGuideLine',
@@ -58,7 +58,7 @@ const ADMIN_SETTING_ITEMS = [
 export default function IcuSettingsTab({ hosId }: { hosId: string }) {
   return (
     <Tabs defaultValue="defaultOrder">
-      <TabsList className="grid grid-cols-10">
+      <TabsList className="grid grid-cols-9">
         {ADMIN_SETTING_ITEMS.map((item) => (
           <TabsTrigger key={item.value} value={item.value} className="text-sm">
             {item.label}

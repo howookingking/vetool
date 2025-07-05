@@ -24,23 +24,23 @@ export default function TxTableContainer({
     orders: data.orders
       .filter((order) => {
         // 오더시간을 배열로 리턴하는 로직
-        // ["0", "0", "슈퍼샤이", "0", "0", "슈퍼샤이", "슈퍼샤이" ...] => [3, 7, 8,...]
+        // ["0", "0", "슈퍼샤이", "0", "0", "슈퍼샤이", "슈퍼샤이" ...] => [2, 5, 6, ...]
         const orderTimes = order.icu_chart_order_time.reduce<number[]>(
           (acc, time, index) => {
-            if (time !== '0') acc.push(index + 1)
+            if (time !== '0') acc.push(index)
             return acc
           },
           [],
         )
 
         // tx_result가 있는 치료시간을 Set으로 리턴하는 로직
-        // [{ time: 3, tx_result: "처치결과" }, { time: 7, tx_result: '' }, { time: 8, tx_result: '결과' }, ...] => {3, 8}
+        // [{ time: 2, tx_result: "처치결과" }, { time: 6, tx_result: '' }, { time: 5, tx_result: '결과' }, ...] => {2, 5}
         const doneTreatmentTimeSet = new Set(
           order.treatments.filter((t) => t.tx_result).map((t) => t.time),
         )
 
         // orderTimes에 있는 시간 중 doneTreatmentTimeSet에 없는 시간일 경우 true
-        // 7번째 오더만 남게 된다.
+        // 6시 오더만 남게 된다.
         return orderTimes.some((time) => !doneTreatmentTimeSet.has(time))
       })
       // 오더 타입 필터링
@@ -75,7 +75,7 @@ export default function TxTableContainer({
         />
       ) : (
         <TxTable
-          localFilterState={orderTypeFilters}
+          orderTypeFilters={orderTypeFilters}
           filteredTxData={filteredTxData}
           showTxUser={showTxUser}
           orderColorsData={orderColorsData}
