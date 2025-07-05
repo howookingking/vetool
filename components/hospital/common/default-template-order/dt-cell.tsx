@@ -49,11 +49,7 @@ export default function DtCell({
         />
 
         {orderer !== '0' && (
-          <div
-            className={cn(
-              'absolute bottom-0.5 right-0.5 text-[10px] leading-none text-muted-foreground',
-            )}
-          >
+          <div className="pointer-events-none absolute bottom-0.5 right-0.5 text-[10px] leading-none text-muted-foreground">
             {orderer}
           </div>
         )}

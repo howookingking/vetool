@@ -1,7 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { type Vet } from '@/types/icu/chart'
+import type { Vet } from '@/types/icu/chart'
 import { redirect } from 'next/navigation'
 
 export const getBasicHosData = async (hosId: string) => {
@@ -21,8 +21,7 @@ export const getBasicHosData = async (hosId: string) => {
           order_color_display,
           show_tx_user,
           plan,
-          is_in_charge_system,
-          baseline_time
+          is_in_charge_system
         `,
     )
     .match({ hos_id: hosId })

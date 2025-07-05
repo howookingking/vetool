@@ -1,6 +1,6 @@
 import { Database } from '@/lib/supabase/database.types'
 
-export type Patients = Database['public']['Tables']['patients']['Row']
+export type Patient = Database['public']['Tables']['patients']['Row']
 export type Owner = Database['public']['Tables']['owners']['Row']
 export type User = Database['public']['Tables']['users']['Row']
 export type IcuIo = Database['public']['Tables']['icu_io']['Row']

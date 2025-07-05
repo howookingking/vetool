@@ -10,7 +10,6 @@ import {
 } from '@/components/ui/card'
 import type { ChartableVital } from '@/constants/hospital/icu/chart/vital-chart'
 import { purifyVitalValue } from '@/lib/utils/vital-chart'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { VitalChartData, VitalData } from '@/types/icu/chart'
 import { type Dispatch, type SetStateAction, useMemo } from 'react'
 
@@ -29,10 +28,6 @@ export default function VitalChart({
   displayCount,
   setDisplayCount,
 }: Props) {
-  const {
-    basicHosData: { baselineTime },
-  } = useBasicHosDataContext()
-
   // 차트 데이터 포맷 변환 및 정렬
   const formattedSelectedVitalData: VitalChartData[] = useMemo(() => {
     const selectedVitalArray = chartableVitals[selectedVital]
@@ -42,7 +37,7 @@ export default function VitalChart({
     return selectedVitalArray
       .map((item) => {
         const value = purifyVitalValue(selectedVital, item.icu_chart_tx_result)
-        const date = `${item.target_date} ${`${((item.time - 1 + baselineTime) % 24).toString().padStart(2, '0')}:00`}`
+        const date = `${item.target_date} ${`${item.time.toString().padStart(2, '0')}:00`}`
 
         if (isNaN(value) || !date) return null
 
@@ -56,7 +51,7 @@ export default function VitalChart({
       .filter((item) => item !== null)
       .slice(0, displayCount)
       .reverse()
-  }, [selectedVital, chartableVitals, displayCount, baselineTime])
+  }, [selectedVital, chartableVitals, displayCount])
 
   const hasMoreData =
     (chartableVitals[selectedVital] ?? []).length > displayCount
