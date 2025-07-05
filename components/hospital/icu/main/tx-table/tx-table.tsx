@@ -16,14 +16,14 @@ import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
 type Props = {
-  localFilterState: string[]
+  orderTypeFilters: string[]
   filteredTxData: IcuTxTableData[]
   showTxUser: boolean
   orderColorsData: IcuOrderColors
 }
 
 export default function TxTable({
-  localFilterState,
+  orderTypeFilters,
   filteredTxData,
   showTxUser,
   orderColorsData,
@@ -109,7 +109,7 @@ export default function TxTable({
         <Table className="border border-l-0" ref={tableRef}>
           <TxTableHeader
             filteredTxData={filteredTxData}
-            localFilterState={localFilterState}
+            orderTypeFilters={orderTypeFilters}
           />
 
           <TableBody>
@@ -151,7 +151,7 @@ export default function TxTable({
                   {TIMES.map((time) => {
                     // 해당시간에 스케쥴된 오더가 아닌경우 빈 셀로 처리
                     const isOrderScheduled =
-                      order.icu_chart_order_time[time - 1] !== '0'
+                      order.icu_chart_order_time[time] !== '0'
                     if (!isOrderScheduled) return <TableCell key={time} />
 
                     // 해당시간에 스케쥴된 오더가 있고, 처치가 완료된 경우 빈 셀로 처리
@@ -213,7 +213,7 @@ const TX_TABLE_BACKGROUD_COLORS = [
 ] as const
 
 // 사이드바 필터 적용 비활성화
-// const orderType = localFilterState.map(
+// const orderType = orderTypeFilters.map(
 //   (orderType) =>
 //     DEFAULT_ICU_ORDER_TYPE.find((type) => type.value === orderType)?.label,
 // )

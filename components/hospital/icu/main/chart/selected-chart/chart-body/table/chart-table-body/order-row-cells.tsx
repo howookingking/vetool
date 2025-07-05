@@ -88,7 +88,7 @@ export default function OrderRowCells({
           treatments.some(
             (treatment) => treatment.time === time && treatment.tx_result,
           )
-        const orderer = order_times[time - 1]
+        const orderer = order_times[time]
         const treatment = treatments.findLast(
           (treatment) => treatment.time === time,
         )

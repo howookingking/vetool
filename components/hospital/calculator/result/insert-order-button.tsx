@@ -42,8 +42,6 @@ export default function InsertOrderButton({
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  console.log(orderName)
-
   const handleSubmit = async (
     values: z.infer<typeof calcResultApplyFormSchema>,
   ) => {

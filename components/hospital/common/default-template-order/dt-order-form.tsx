@@ -108,7 +108,7 @@ export default function DtOrderForm({
       const term = Number(timeTerm)
       const newOrderTime = Array(24).fill('0')
 
-      for (let i = start - 1; i < 24; i += term) {
+      for (let i = start; i < 24; i += term) {
         newOrderTime[i] = '기본'
       }
 
