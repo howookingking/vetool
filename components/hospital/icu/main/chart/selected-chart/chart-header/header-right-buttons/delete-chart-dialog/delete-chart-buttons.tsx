@@ -8,7 +8,7 @@ import {
 import { cn } from '@/lib/utils/utils'
 import { LoaderCircle } from 'lucide-react'
 import { type Dispatch, type SetStateAction, useState } from 'react'
-import DeleteAllChartDialog from './delete-chart-dialog/delete-all-chart-dialog'
+import DeleteAllChartDialog from './delete-all-chart-dialog'
 
 type Props = {
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>
