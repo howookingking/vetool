@@ -24,7 +24,7 @@ export default function HeaderRightButtons({
 
       <DeleteChartDialog
         icuChartId={icu_chart_id}
-        name={patient.name}
+        patientName={patient.name}
         icuIoId={icu_io.icu_io_id}
         inDate={icu_io.in_date}
       />
