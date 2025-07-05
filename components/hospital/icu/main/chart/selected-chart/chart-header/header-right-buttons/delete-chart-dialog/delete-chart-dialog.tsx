@@ -1,6 +1,5 @@
 'use client'
 
-import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import WarningMessage from '@/components/common/warning-message'
 import { Button } from '@/components/ui/button'
 import {
@@ -13,28 +12,23 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Trash2 } from 'lucide-react'
-import dynamic from 'next/dynamic'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
+import DeleteChartButtons from './delete-chart-buttons'
 
-const LazyDeleteChartButtons = dynamic(() => import('./delete-chart-buttons'), {
-  ssr: false,
-  loading: () => <LargeLoaderCircle size={40} />,
-})
-
-type DeleteChartDialogProps = {
+type Props = {
   icuChartId: string
-  name: string
+  patientName: string
   icuIoId: string
   inDate: string
 }
 
 export default function DeleteChartDialog({
   icuChartId,
-  name,
+  patientName,
   icuIoId,
   inDate,
-}: DeleteChartDialogProps) {
+}: Props) {
   const { target_date } = useParams()
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -48,23 +42,37 @@ export default function DeleteChartDialog({
           <Trash2 size={18} />
         </Button>
       </DialogTrigger>
+
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{name}의 차트를 삭제하시겠습니까?</DialogTitle>
-          <DialogDescription className="flex flex-col gap-1">
-            <span>선택차트삭제 : {target_date}날 차트만 삭제합니다</span>
-            <span>모든차트삭제 : 입원기간동안의 차트들을 모두 삭제합니다</span>
+          <DialogTitle className="mb-2">
+            {patientName}의 차트를 삭제하시겠습니까?
+          </DialogTitle>
+
+          <DialogDescription className="flex flex-col gap-2">
+            <span>
+              <span className="mr-2 rounded-sm bg-primary px-2 py-1 text-white">
+                해당일 차트삭제
+              </span>
+              {target_date} 차트만 삭제합니다
+            </span>
+            <span>
+              <span className="mr-2 rounded-sm bg-destructive px-2 py-1 text-white">
+                모든 차트삭제
+              </span>
+              입원기간동안의 모든 차트를 삭제합니다
+            </span>
             <WarningMessage text="해당작업은 실행 후 되될릴 수 없습니다." />
           </DialogDescription>
         </DialogHeader>
 
         <DialogFooter>
-          <LazyDeleteChartButtons
+          <DeleteChartButtons
             setIsDialogOpen={setIsDialogOpen}
             isFirstChart={isFirstChart}
             icuChartId={icuChartId}
             icuIoId={icuIoId}
-            name={name}
+            patientName={patientName}
           />
         </DialogFooter>
       </DialogContent>

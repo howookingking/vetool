@@ -1,5 +1,5 @@
 import CopyChartButton from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/copy-chart-button'
-import DeleteChartDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/delete-chart-dialog'
+import DeleteChartDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/delete-chart-dialog/delete-chart-dialog'
 import ExportDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/export-dialog/export-dialog'
 import OutPatientDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/out-patient-dialog'
 import ShareChartDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/share-chart-dialog'
@@ -24,7 +24,7 @@ export default function HeaderRightButtons({
 
       <DeleteChartDialog
         icuChartId={icu_chart_id}
-        name={patient.name}
+        patientName={patient.name}
         icuIoId={icu_io.icu_io_id}
         inDate={icu_io.in_date}
       />
