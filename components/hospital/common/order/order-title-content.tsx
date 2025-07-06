@@ -1,6 +1,7 @@
 import OrderTypeColorDot from '@/components/hospital/common/order/order-type-color-dot'
-import { type OrderType } from '@/constants/hospital/icu/chart/order'
-import { type IcuOrderColors } from '@/types/adimin'
+import { OrderFontSize } from '@/constants/admin/order-font-size'
+import type { OrderType } from '@/constants/hospital/icu/chart/order'
+import type { IcuOrderColors } from '@/types/adimin'
 
 type Props = {
   orderType: OrderType
@@ -8,7 +9,7 @@ type Props = {
   orderComment: string | null
   orderColorDisplay: string
   orderColorsData: IcuOrderColors
-  orderFontSizeData: number
+  orderFontSizeData: OrderFontSize
   vitalRefRange?: {
     min: number
     max: number

@@ -1,6 +1,6 @@
 import PreviewButton from '@/components/hospital/common/preview/preview-button'
 import { Button } from '@/components/ui/button'
-import type { TemplateChart } from '@/types/icu/template'
+import type { IcuTemplate } from '@/types'
 import type { ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown } from 'lucide-react'
 import type { Dispatch, SetStateAction } from 'react'
@@ -10,7 +10,7 @@ export const templateColumns = (
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>,
   tableHeader?: boolean,
   chartId?: string,
-): ColumnDef<TemplateChart>[] => [
+): ColumnDef<IcuTemplate>[] => [
   {
     accessorKey: 'template_name',
     header: ({ column }) => {

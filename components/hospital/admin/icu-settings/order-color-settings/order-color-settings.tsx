@@ -12,13 +12,12 @@ import { updateOrderColorSettings } from '@/lib/services/admin/icu/order-color'
 import { cn } from '@/lib/utils/utils'
 import type { OrderColorDisplay } from '@/providers/basic-hos-data-context-provider'
 import type { IcuOrderColors } from '@/types/adimin'
-import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { LoaderCircle } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
-import DefaultOrdersTable from '../default-orders/default-orders-table'
 import OrderColorDisplayMethod from './color-display-method/color-display-method'
 import OrderColorPickers from './color-picker/order-color-pickers'
+import DisplayExampleTable from './display-example-table'
 
 type Props = {
   orderColorSettings: {
@@ -73,12 +72,9 @@ export default function OrderColorSettings({ orderColorSettings }: Props) {
       </CardHeader>
 
       <CardContent className="flex flex-col gap-8">
-        <DefaultOrdersTable
-          defaultChartOrders={DUMMY_ORDERS}
-          isSetting
+        <DisplayExampleTable
           localColorState={localColorState}
           localColorDisplayMethod={localColorDisplayMethod}
-          isOrderColorSetting
         />
 
         <OrderColorPickers
@@ -91,6 +87,7 @@ export default function OrderColorSettings({ orderColorSettings }: Props) {
           localColorDisplayMethod={localColorDisplayMethod}
         />
       </CardContent>
+
       <CardFooter>
         <Button
           type="button"
@@ -107,253 +104,3 @@ export default function OrderColorSettings({ orderColorSettings }: Props) {
     </Card>
   )
 }
-
-const DUMMY_ORDERS: SelectedIcuOrder[] = [
-  {
-    id: 0,
-    order_type: 'checklist',
-    is_bordered: false,
-    order_comment: null,
-    order_id: '0',
-    order_name: '체크리스트',
-    order_times: [
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-    ],
-    treatments: [],
-  },
-  {
-    id: 1,
-    order_type: 'fluid',
-    is_bordered: false,
-    order_comment: null,
-    order_id: '1',
-    order_name: '수액',
-    order_times: [
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-    ],
-    treatments: [],
-  },
-  {
-    id: 2,
-    order_type: 'injection',
-    is_bordered: false,
-    order_comment: null,
-    order_id: '2',
-    order_name: '주사',
-    order_times: [
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-    ],
-    treatments: [],
-  },
-  {
-    id: 3,
-    order_type: 'po',
-    is_bordered: false,
-    order_comment: null,
-    order_id: '3',
-    order_name: '경구',
-    order_times: [
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-    ],
-    treatments: [],
-  },
-
-  {
-    id: 4,
-    order_type: 'test',
-    is_bordered: false,
-    order_comment: null,
-    order_id: '4',
-    order_name: '검사',
-    order_times: [
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-    ],
-    treatments: [],
-  },
-
-  {
-    id: 5,
-    order_type: 'feed',
-    is_bordered: false,
-    order_comment: null,
-    order_id: '6',
-    order_name: '식이',
-    order_times: [
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-    ],
-    treatments: [],
-  },
-  {
-    id: 6,
-    order_type: 'manual',
-    is_bordered: false,
-    order_comment: null,
-    order_id: '5',
-    order_name: '기타',
-    order_times: [
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-      '0',
-    ],
-    treatments: [],
-  },
-] as const

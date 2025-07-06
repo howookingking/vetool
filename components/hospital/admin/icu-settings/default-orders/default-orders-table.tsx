@@ -12,28 +12,17 @@ import useIsCommandPressed from '@/hooks/use-is-command-pressed'
 import useLocalStorage from '@/hooks/use-local-storage'
 import { upsertDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
 import { useDtOrderStore } from '@/lib/store/icu/dt-order'
-import { cn, formatOrders } from '@/lib/utils/utils'
-import { IcuOrderColors } from '@/types/adimin'
+import { formatOrders } from '@/lib/utils/utils'
 import type { OrderWidth } from '@/types/hospital/order'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-type Props = {
-  defaultChartOrders: SelectedIcuOrder[]
-  isSetting?: boolean
-  localColorState?: IcuOrderColors
-  localColorDisplayMethod?: 'dot' | 'full'
-  isOrderColorSetting?: boolean
-}
-
 export default function DefaultOrdersTable({
   defaultChartOrders,
-  isSetting,
-  localColorState,
-  localColorDisplayMethod,
-  isOrderColorSetting,
-}: Props) {
+}: {
+  defaultChartOrders: SelectedIcuOrder[]
+}) {
   const { hos_id } = useParams()
   const { refresh } = useRouter()
 
@@ -106,12 +95,11 @@ export default function DefaultOrdersTable({
       <Table className="border">
         <DtTableHeader
           isSorting={isSorting}
+          setIsSorting={setIsSorting}
           orderWidth={orderWidth}
           setOrderWidth={setOrderWidth}
           sortedOrders={sortedOrders}
-          setIsSorting={setIsSorting}
           defaultChartOrders={defaultChartOrders}
-          isSetting={isSetting}
         />
 
         {isSorting ? (
@@ -127,14 +115,9 @@ export default function DefaultOrdersTable({
               sortedOrders={sortedOrders}
               isSorting={isSorting}
               orderwidth={orderWidth}
-              isSetting={isSetting}
-              localColorState={localColorState}
-              localColorDisplayMethod={localColorDisplayMethod}
             />
 
-            <TableRow
-              className={cn('hover:bg-transparent', isSetting && 'hidden')}
-            >
+            <TableRow className="hover:bg-transparent">
               <TableCell className="p-0">
                 <DtOrderCreator sortedOrders={sortedOrders} />
               </TableCell>
@@ -150,14 +133,6 @@ export default function DefaultOrdersTable({
           isLastDefaultOrder={sortedOrders.length === 1}
         />
       </Table>
-
-      {isOrderColorSetting && (
-        <div className="absolute inset-0 flex h-full cursor-not-allowed items-center justify-center">
-          <div className="rounded-sm bg-black/30 px-10 py-5 text-center text-white">
-            <span className="text-xl font-bold">적용 예시</span>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
