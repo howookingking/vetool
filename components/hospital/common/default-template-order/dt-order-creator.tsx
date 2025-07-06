@@ -51,12 +51,12 @@ export default function DtOrderCreator({
 
   const [newOrderInput, setNewOrderInput] = useState('')
   const [orderType, setOrderType] = useState('manual')
-  const [isInserting, setIsInserting] = useState(false)
+  const [isCreating, setIsCreating] = useState(false)
 
   const availableCheckListOrders = getAvailableChecklistOrders(sortedOrders)
 
   const createOrder = async (orderName: string, orderDescription: string) => {
-    setIsInserting(true)
+    setIsCreating(true)
 
     const emptyOrderTimes = Array(24).fill('0')
 
@@ -92,7 +92,7 @@ export default function DtOrderCreator({
       }, 100)
 
     setNewOrderInput('')
-    setIsInserting(false)
+    setIsCreating(false)
   }
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -151,16 +151,16 @@ export default function DtOrderCreator({
         >
           <Input
             className="h-11 rounded-none border-0 focus-visible:ring-0"
-            disabled={isInserting}
+            disabled={isCreating}
             placeholder={OrderTypePlaceholder}
-            value={isInserting ? '등록 중' : newOrderInput}
+            value={isCreating ? '등록 중' : newOrderInput}
             onChange={(e) => setNewOrderInput(e.target.value)}
             ref={inputRef}
           />
           <Button
             className="absolute right-2 2xl:hidden"
             size="icon"
-            disabled={isInserting}
+            disabled={isCreating}
             type="submit"
             variant="ghost"
           >

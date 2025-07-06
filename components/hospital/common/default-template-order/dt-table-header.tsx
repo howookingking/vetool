@@ -7,10 +7,10 @@ import { type SelectedIcuOrder } from '@/types/icu/chart'
 import type { Dispatch, SetStateAction } from 'react'
 type Props = {
   isSorting: boolean
+  setIsSorting: Dispatch<SetStateAction<boolean>>
   orderWidth: OrderWidth
   setOrderWidth: Dispatch<SetStateAction<OrderWidth>>
   sortedOrders: SelectedIcuOrder[]
-  setIsSorting: Dispatch<SetStateAction<boolean>>
   defaultChartOrders: SelectedIcuOrder[]
   isSetting?: boolean
 }
