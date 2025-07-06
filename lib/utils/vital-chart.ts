@@ -115,19 +115,16 @@ export const purifyVitalValue = (
       }
 
       const matches = parenthesesRemoved.match(/\d{1,3}/g)
-      if (matches?.length) {
-        return Number(matches[0])
-      }
-
+      if (matches?.length) return Number(matches[0])
       return NaN
     }
 
     case '심박수': {
       const digitsOnly = parenthesesRemoved.replace(/[^\d]/g, '')
+      if (digitsOnly === '') return NaN
       const value = Number(digitsOnly)
       return isNaN(value) ? NaN : value
     }
-
     default:
       return NaN
   }

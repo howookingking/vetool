@@ -4,7 +4,7 @@ import useShortcutKey from '@/hooks/use-shortcut-key'
 import { reorderDefaultOrders } from '@/lib/services/admin/icu/default-orders'
 import { reorderOrders } from '@/lib/services/icu/chart/order-mutation'
 import { cn, hasOrderSortingChanged } from '@/lib/utils/utils'
-import { type SelectedIcuOrder } from '@/types/icu/chart'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { ArrowUpDown } from 'lucide-react'
 import type { Dispatch, SetStateAction } from 'react'
 
@@ -14,7 +14,6 @@ type SortingButtonProps = {
   sortedOrders: SelectedIcuOrder[]
   setIsSorting: Dispatch<SetStateAction<boolean>>
   isDt?: boolean
-  isSetting?: boolean
 }
 
 export default function SortingButton({
@@ -23,7 +22,6 @@ export default function SortingButton({
   sortedOrders,
   setIsSorting,
   isDt,
-  isSetting,
 }: SortingButtonProps) {
   const handleSortButtonClick = async () => {
     if (!isSorting) {
@@ -70,7 +68,6 @@ export default function SortingButton({
     <Button
       variant="ghost"
       size="icon"
-      disabled={isSetting}
       className={cn(
         isSorting && 'animate-pulse text-primary',
         'hidden shrink-0 md:flex',

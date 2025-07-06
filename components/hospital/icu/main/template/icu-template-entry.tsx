@@ -3,41 +3,42 @@
 import PreviewDialog from '@/components/hospital/common/preview/preview-dialog'
 import { templateColumns } from '@/components/hospital/icu/main/template/template-columns'
 import DataTable from '@/components/ui/data-table'
+import type { IcuTemplate } from '@/types'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
-import type { TemplateChart } from '@/types/icu/template'
 import { useState } from 'react'
 import UpsertTemplateDialog from './upsert-template-dialog'
 
 export default function IcuTemplateEntry({
-  templateCharts,
+  icuTemplates,
 }: {
-  templateCharts: TemplateChart[]
+  icuTemplates: IcuTemplate[]
 }) {
-  const [templateDialogOpen, setTemplateDialogOpen] = useState(false)
+  const [isUpsertTemplateDialogOpen, setIsUpsertTemplateDialogOpen] =
+    useState(false)
   const [sortedOrders, setSortedOrders] = useState<SelectedIcuOrder[]>([])
   const [isEdit, setIsEdit] = useState(false)
   const [selectedTemplateChart, setSelectedTemplateChart] =
-    useState<TemplateChart | null>(null)
+    useState<IcuTemplate | null>(null)
 
   return (
     <div className="relative">
       <DataTable
         searchBarSpace
         columns={templateColumns(
-          setTemplateDialogOpen,
+          setIsUpsertTemplateDialogOpen,
           setSortedOrders,
           setIsEdit,
           setSelectedTemplateChart,
         )}
-        data={templateCharts ?? []}
+        data={icuTemplates}
         searchPlaceHolder="템플릿 이름, 설명으로 검색"
       />
 
       <PreviewDialog />
 
       <UpsertTemplateDialog
-        useUpsertTemplateDialogOpen={templateDialogOpen}
-        setUseUpsertTemplateDialogOpen={setTemplateDialogOpen}
+        isUpsertTemplateDialogOpen={isUpsertTemplateDialogOpen}
+        setIsUpsertTemplateDialogOpen={setIsUpsertTemplateDialogOpen}
         sortedOrders={sortedOrders}
         setSortedOrders={setSortedOrders}
         isEdit={isEdit}
