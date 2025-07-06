@@ -13,8 +13,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { getTemplateCharts } from '@/lib/services/icu/template/template'
-import type { TemplateChart } from '@/types/icu/template'
+import { fetchIcuTemplates } from '@/lib/services/icu/template/template'
+import type { IcuTemplate } from '@/types'
 import { Bookmark, LoaderCircle } from 'lucide-react'
 import { useState } from 'react'
 
@@ -29,14 +29,14 @@ export default function PasteTemplateOrderDialog({
   chartId,
   hosId,
 }: Props) {
-  const [templateCharts, setTemplateCharts] = useState<TemplateChart[]>([])
+  const [templateCharts, setTemplateCharts] = useState<IcuTemplate[]>([])
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isFetching, setIsFetching] = useState(false)
 
   const handleOpenTemplateDialog = async () => {
     setIsFetching(true)
 
-    const templateCharts = await getTemplateCharts(hosId as string)
+    const templateCharts = await fetchIcuTemplates(hosId as string)
     setTemplateCharts(templateCharts)
 
     setIsFetching(false)

@@ -9,27 +9,26 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { useDtOrderStore } from '@/lib/store/icu/dt-order'
+import type { IcuTemplate } from '@/types'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
-import type { TemplateChart } from '@/types/icu/template'
-import type { Dispatch, SetStateAction } from 'react'
+import { useEffect, useRef, type Dispatch, type SetStateAction } from 'react'
 import ConfirmAddTemplateDialog from './confirm-add-template-dialog'
 import TemplateOrderTable from './template-order-table'
 
 type Props = {
-  useUpsertTemplateDialogOpen: boolean
-  setUseUpsertTemplateDialogOpen: Dispatch<SetStateAction<boolean>>
+  isUpsertTemplateDialogOpen: boolean
+  setIsUpsertTemplateDialogOpen: Dispatch<SetStateAction<boolean>>
   sortedOrders: SelectedIcuOrder[]
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   isEdit: boolean
   setIsEdit: Dispatch<SetStateAction<boolean>>
-  selectedTemplateChart: TemplateChart | null
-  setSelectedTemplateChart: Dispatch<SetStateAction<TemplateChart | null>>
+  selectedTemplateChart: IcuTemplate | null
+  setSelectedTemplateChart: Dispatch<SetStateAction<IcuTemplate | null>>
 }
 
 export default function UpsertTemplateDialog({
-  useUpsertTemplateDialogOpen,
-  setUseUpsertTemplateDialogOpen,
+  isUpsertTemplateDialogOpen,
+  setIsUpsertTemplateDialogOpen,
   sortedOrders,
   setSortedOrders,
   isEdit,
@@ -37,23 +36,32 @@ export default function UpsertTemplateDialog({
   selectedTemplateChart,
   setSelectedTemplateChart,
 }: Props) {
-  const { reset } = useDtOrderStore()
+  // const { reset } = useDtOrderStore()
 
   const handleOpenChange = (open: boolean) => {
     if (open) {
       setSortedOrders([])
       setSelectedTemplateChart(null)
       setIsEdit(false)
-      reset()
+      // reset()
     }
-    setUseUpsertTemplateDialogOpen(open)
+    setIsUpsertTemplateDialogOpen(open)
   }
 
+  // Scroll to the bottom when new order is added
+  const scrollRef = useRef<HTMLDivElement | null>(null)
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+    }
+  }, [sortedOrders])
+
   return (
-    <Dialog open={useUpsertTemplateDialogOpen} onOpenChange={handleOpenChange}>
+    <Dialog open={isUpsertTemplateDialogOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild className="absolute right-0 top-0">
         <Button className="h-[34px]">템풀릿 만들기</Button>
       </DialogTrigger>
+
       <DialogContent
         className="md:max-w-[1600px]"
         onInteractOutside={(e) => {
@@ -69,7 +77,7 @@ export default function UpsertTemplateDialog({
           <DialogDescription>자유롭게 템플릿을 만들어주세요</DialogDescription>
         </DialogHeader>
 
-        <div className="max-h-[680px] overflow-y-scroll">
+        <div ref={scrollRef} className="max-h-[680px] overflow-auto">
           <TemplateOrderTable
             setSortedOrders={setSortedOrders}
             sortedOrders={sortedOrders}
@@ -83,7 +91,7 @@ export default function UpsertTemplateDialog({
 
           <ConfirmAddTemplateDialog
             sortedOrders={sortedOrders}
-            setUseUpsertTemplateDialogOpen={setUseUpsertTemplateDialogOpen}
+            setIsUpsertTemplateDialogOpen={setIsUpsertTemplateDialogOpen}
             isEdit={isEdit}
             selectedTemplateChart={selectedTemplateChart}
           />
