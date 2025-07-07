@@ -54,7 +54,7 @@ export default function ConfirmAddTemplateDialog({
   const { refresh } = useRouter()
   const { hos_id } = useParams()
 
-  const { orderTimePendingQueue, reset: resetOrderStore } = useDtOrderStore()
+  const { orderTimePendingQueue } = useDtOrderStore()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
