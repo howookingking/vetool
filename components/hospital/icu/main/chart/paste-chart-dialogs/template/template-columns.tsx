@@ -19,7 +19,7 @@ export const templateColumns = (
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          제목
+          템플릿 이름
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
@@ -51,7 +51,7 @@ export const templateColumns = (
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          템플릿 생성일
+          생성일
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
