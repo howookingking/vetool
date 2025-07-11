@@ -14,16 +14,11 @@ import {
 import { groupCheckFormSchema } from '@/lib/schemas/icu/chart/chart-info-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Component } from 'lucide-react'
-import dynamic from 'next/dynamic'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import GroupBadge from './group-badge'
-
-const LazyGroupForm = dynamic(() => import('./group-form'), {
-  ssr: false,
-  loading: () => <LargeLoaderCircle className="h-[120px]" />,
-})
+import GroupForm from './group-form'
 
 type Props = {
   currentGroups: string[]
@@ -63,7 +58,7 @@ export default function Group({ currentGroups, icuIoId }: Props) {
           <DialogTitle>그룹 수정</DialogTitle>
           <DialogDescription />
         </DialogHeader>
-        <LazyGroupForm
+        <GroupForm
           icuIoId={icuIoId}
           setIsDialogOpen={setIsDialogOpen}
           form={form}

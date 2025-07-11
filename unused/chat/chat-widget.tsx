@@ -8,13 +8,8 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { MessageCircle, X } from 'lucide-react'
-import dynamic from 'next/dynamic'
 import { useState } from 'react'
-
-const LazyChatForm = dynamic(() => import('./chat-form'), {
-  ssr: false,
-  loading: () => <LargeLoaderCircle className="h-[300px]" />,
-})
+import ChatForm from './chat-form'
 
 export default function ChatWidget() {
   const [isChatOpen, setIsChatOpen] = useState(false)
@@ -38,7 +33,7 @@ export default function ChatWidget() {
         </PopoverTrigger>
 
         <PopoverContent className="mr-8 w-80">
-          {isChatOpen && <LazyChatForm setIsChatOpen={setIsChatOpen} />}
+          <ChatForm setIsChatOpen={setIsChatOpen} />
         </PopoverContent>
       </Popover>
     </div>

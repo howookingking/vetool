@@ -1,6 +1,7 @@
 'use client'
 
 import VetsUpdateForm from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/vets/vets-update-form'
+import VetsUpdateFormDynamic from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/vets/vets-update-form-dynamic'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -72,7 +73,7 @@ export default function InChargeSystemTab({ hosId }: { hosId: string }) {
                 : 'opacity-100 ring-2 ring-primary',
             )}
           >
-            <VetsUpdateForm
+            <VetsUpdateFormDynamic
               icuChartId="1"
               inCharge={null}
               mainVet={vetsListData[0]}
@@ -96,7 +97,7 @@ export default function InChargeSystemTab({ hosId }: { hosId: string }) {
                 : 'opacity-30',
             )}
           >
-            <VetsUpdateForm
+            <VetsUpdateFormDynamic
               icuChartId="1"
               inCharge={null}
               mainVet={vetsListData[0]}

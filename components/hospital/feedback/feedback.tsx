@@ -1,6 +1,5 @@
 'use client'
 
-import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import { Button } from '@/components/ui/button'
 import {
   Popover,
@@ -8,13 +7,8 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { MessageCircle } from 'lucide-react'
-import dynamic from 'next/dynamic'
 import { useState } from 'react'
-
-const LazyFeedbackForm = dynamic(() => import('./feedback-form'), {
-  ssr: false,
-  loading: () => <LargeLoaderCircle className="h-[300px]" />,
-})
+import FeedbackForm from './feedback-form'
 
 export default function Feedback() {
   const [isFeedbackPopoverOpen, setIsPopoverFeedbackOpen] = useState(false)
@@ -28,7 +22,6 @@ export default function Feedback() {
         <Button
           size="icon"
           className="h-8 w-8 rounded-full shadow-lg"
-          onClick={() => setIsPopoverFeedbackOpen(true)}
           variant="outline"
         >
           <MessageCircle />
@@ -36,11 +29,7 @@ export default function Feedback() {
       </PopoverTrigger>
 
       <PopoverContent className="w-80">
-        {isFeedbackPopoverOpen && (
-          <LazyFeedbackForm
-            setIsPopoverFeedbackOpen={setIsPopoverFeedbackOpen}
-          />
-        )}
+        <FeedbackForm setIsPopoverFeedbackOpen={setIsPopoverFeedbackOpen} />
       </PopoverContent>
     </Popover>
   )
