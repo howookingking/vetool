@@ -1,7 +1,6 @@
 'use client'
 
 import PatientBriefInfo from '@/components/hospital/common/patient/patient-brief-info'
-import TxUpsertDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/tx-upsert-dialog'
 import TxTableCell from '@/components/hospital/icu/main/tx-table/tx-table-cell'
 import TxTableHeader from '@/components/hospital/icu/main/tx-table/tx-table-header'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
@@ -14,6 +13,7 @@ import type { IcuTxTableData } from '@/types/icu/tx-table'
 import { SquarePlus } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
+import TxUpsertDialogDynamc from '../chart/selected-chart/chart-body/table/tx/tx-upsert-dialog-dynamic'
 
 type Props = {
   orderTypeFilters: string[]
@@ -186,7 +186,7 @@ export default function TxTable({
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
 
-      <TxUpsertDialog showTxUser={showTxUser} />
+      <TxUpsertDialogDynamc showTxUser={showTxUser} />
     </>
   )
 }
