@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Plus, X } from 'lucide-react'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type Props = {
   createOrder: (orderName: string, orderDescription: string) => Promise<void>
@@ -54,14 +54,13 @@ export default function ArbitraryInjectionOrder({
   return (
     <form className="relative w-full" onSubmit={handleSubmit}>
       <Input
-        className="h-11 w-full rounded-none border-0 focus-visible:ring-0"
+        className="h-11 w-full rounded-none border-0 pr-10 focus-visible:ring-0"
         disabled={isInserting}
-        placeholder="주사오더$주사량"
+        placeholder="주사오더$주사량 + Enter ⏎"
         value={isInserting ? '등록 중' : arbitraryInjectionInput}
         onChange={(e) => setArbitraryInjectionInput(e.target.value)}
         ref={inputRef}
       />
-
       <Button
         className="absolute right-8 top-1 2xl:hidden"
         size="icon"
