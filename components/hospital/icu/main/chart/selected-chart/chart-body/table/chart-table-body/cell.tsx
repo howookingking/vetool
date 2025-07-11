@@ -92,11 +92,13 @@ export default function Cell({
   const [briefTxResultInput, setBriefTxResultInput] = useState('')
 
   useEffect(() => {
-    if (treatment?.tx_result || isMutationCanceled) {
+    if (treatment || isMutationCanceled) {
       setBriefTxResultInput('')
-      setIsMutationCanceled(false)
+      if (isMutationCanceled) {
+        setIsMutationCanceled(false)
+      }
     }
-  }, [isMutationCanceled, treatment?.tx_result, setIsMutationCanceled])
+  }, [isMutationCanceled, treatment, setIsMutationCanceled])
 
   const handleOpenTxDetail = () => {
     setTxLocalState({
