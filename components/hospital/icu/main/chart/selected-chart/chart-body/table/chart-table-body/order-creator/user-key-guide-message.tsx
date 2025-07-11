@@ -15,7 +15,7 @@ export default function UserKeyGuideMessage({ isDT }: { isDT?: boolean }) {
             <Separator orientation="vertical" className="h-4" />
             다중선택 : CTRL + 오더 또는 처치칸 좌클릭
             <Separator orientation="vertical" className="h-4" />
-            <div>처치칸에 "처치결과$코멘트" 입력가능</div>
+            <div>처치칸에 &quot;처치결과$코멘트&quot; 입력가능</div>
           </>
         )}
       </div>
