@@ -1,6 +1,6 @@
 'use client'
 
-import PatientForm from '@/components/common/patients/form/patient-form'
+import PatientFormDynamic from '@/components/common/patients/form/patient-form-dynamic'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -36,7 +36,7 @@ export default function PatientRegisterDialog({ hosId }: { hosId: string }) {
           <DialogDescription>신규 환자를 등록합니다</DialogDescription>
         </DialogHeader>
 
-        <PatientForm
+        <PatientFormDynamic
           mode="registerFromPatientRoute"
           hosId={hosId}
           setIsPatientRegisterDialogOpen={setIsPatientRegisterDialogOpen}
