@@ -124,8 +124,6 @@ export default function DtOrderForm({
       >
         <OrderFormField form={form} />
 
-        <OrderBorderCheckbox form={form} />
-
         {!isTemplate && (
           <OrderTimeSettings
             startTime={startTime}
@@ -136,6 +134,8 @@ export default function DtOrderForm({
             setOrderTime={setOrderTime}
           />
         )}
+
+        <OrderBorderCheckbox form={form} />
 
         <DialogFooter className="ml-auto w-full gap-2 md:gap-0">
           <DtDeleteOrderAlertDialog
