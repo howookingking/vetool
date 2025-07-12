@@ -17,7 +17,8 @@ export default function OrderBorderCheckbox({
         <FormItem>
           <FormControl>
             <BgCheckbox
-              checked={field.value}
+              title="테두리 표시"
+              checked={field.value ?? false}
               onCheckedChange={(checked) => {
                 field.onChange(checked)
               }}

@@ -12,7 +12,7 @@ export const orderSchema = z.object({
     })
     .min(1, { message: '오더명을 입력해주세요' }),
   icu_chart_order_comment: z.string().optional(),
-  is_bordered: z.boolean().default(false),
+  is_bordered: z.boolean().default(false).optional(),
 })
 
 export const ordererSchema = z.object({

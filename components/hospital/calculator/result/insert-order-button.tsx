@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/dialog'
 import { Form } from '@/components/ui/form'
 import { toast } from '@/components/ui/use-toast'
-import { type OrderType } from '@/constants/hospital/icu/chart/order'
+import type { OrderType } from '@/constants/hospital/icu/chart/order'
 import { calcResultApplyFormSchema } from '@/lib/schemas/icu/chart/calc-result-apply-schema'
 import { insertCalcResultOrder } from '@/lib/services/icu/chart/order-mutation'
 import { cn } from '@/lib/utils/utils'
