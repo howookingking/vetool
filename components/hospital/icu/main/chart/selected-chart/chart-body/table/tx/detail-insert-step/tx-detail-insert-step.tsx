@@ -1,9 +1,9 @@
 'use no memo'
 
+import StyledCheckbox from '@/components/common/styled-checkbox'
 import TxImageField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/detail-insert-step/images/tx-image-field'
 import TxLog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/detail-insert-step/tx-log'
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
   DialogClose,
   DialogDescription,
@@ -251,18 +251,14 @@ export default function TxDetailInsertStep({
             control={form.control}
             name="isCrucialChecked"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-center space-x-2 space-y-0 rounded-md border p-4 shadow">
+              <FormItem className="">
                 <FormControl>
-                  <Checkbox
+                  <StyledCheckbox
+                    title="확인이 필요한 처치입니다"
                     checked={field.value}
                     onCheckedChange={field.onChange}
-                    id="notification"
-                    name="notification"
                   />
                 </FormControl>
-                <FormLabel htmlFor="notification" className="cursor-pointer">
-                  확인이 필요한 처치입니다
-                </FormLabel>
               </FormItem>
             )}
           />

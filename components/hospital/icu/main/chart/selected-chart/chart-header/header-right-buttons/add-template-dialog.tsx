@@ -1,7 +1,7 @@
 'use no memo'
 
+import StyledCheckbox from '@/components/common/styled-checkbox'
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
   Dialog,
   DialogClose,
@@ -40,7 +40,7 @@ type Props = {
 const DEFAULT_FORM_VALUES = {
   template_name: undefined,
   template_comment: undefined,
-  is_time_included: true,
+  is_time_included: false,
 } as const
 
 export default function AddTemplateDialog({ orders, patientName }: Props) {
@@ -149,17 +149,19 @@ export default function AddTemplateDialog({ orders, patientName }: Props) {
               control={form.control}
               name="is_time_included"
               render={({ field }) => (
-                <FormItem className="flex space-x-2 space-y-0 rounded-md border p-4 shadow">
+                <FormItem>
                   <FormControl>
-                    <Checkbox
+                    <StyledCheckbox
+                      title={
+                        <>
+                          <span className="bg-rose-400/10 p-1">시간정보</span>를
+                          같이 저장합니다
+                        </>
+                      }
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />
                   </FormControl>
-                  <FormLabel className="cursor-pointer">
-                    <span className="bg-rose-400/10 p-1">시간정보</span>를 같이
-                    저장합니다
-                  </FormLabel>
                 </FormItem>
               )}
             />

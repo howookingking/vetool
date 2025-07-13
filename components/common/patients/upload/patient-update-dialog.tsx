@@ -1,4 +1,4 @@
-import PatientForm from '@/components/common/patients/form/patient-form'
+import PatientFormDynamic from '@/components/common/patients/form/patient-form-dynamic'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -65,7 +65,7 @@ export default function PatientUpdateDialog({
           <DialogDescription>환자의 정보를 수정합니다</DialogDescription>
         </DialogHeader>
 
-        <PatientForm
+        <PatientFormDynamic
           mode="updateFromPatientRoute"
           weight={weightInfo.weight}
           weightMeasuredDate={weightInfo.weightMeasuredDate}

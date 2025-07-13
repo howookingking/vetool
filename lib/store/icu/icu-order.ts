@@ -96,6 +96,7 @@ export const useIcuOrderStore = create<IcuOrderState>((set) => ({
 
   reset: () =>
     set({
+      orderStep: 'closed',
       selectedChartOrder: {} as Partial<SelectedIcuOrder>,
       orderTimePendingQueue: [],
       selectedTxPendingQueue: [],

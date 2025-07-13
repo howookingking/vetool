@@ -1,6 +1,5 @@
 'use client'
 
-import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import VitalChartSidebar from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-center/vital-chart/vital-chart-sidebar'
 import { Button } from '@/components/ui/button'
 import {
@@ -15,13 +14,8 @@ import { fetchChartableVitalsData } from '@/lib/services/icu/chart/vitals'
 import type { VitalData } from '@/types/icu/chart'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { LineChart, LoaderCircle } from 'lucide-react'
-import dynamic from 'next/dynamic'
 import { useState } from 'react'
-
-const LazyVitalChart = dynamic(() => import('./vital-chart'), {
-  ssr: false,
-  loading: () => <LargeLoaderCircle />,
-})
+import VitalChart from './vital-chart'
 
 type Props = {
   icuIoId: string
@@ -79,7 +73,7 @@ export default function VitalChartDialog({ icuIoId, inDate }: Props) {
           setDisplayCount={setDisplayCount}
         />
 
-        <LazyVitalChart
+        <VitalChart
           selectedVital={selectedVital}
           inDate={inDate}
           chartableVitals={chartableVitals}

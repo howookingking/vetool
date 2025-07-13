@@ -2,7 +2,7 @@
 
 'use client'
 
-import LargeLoaderCircle from '@/components/common/large-loader-circle'
+import PatientFormDynamic from '@/components/common/patients/form/patient-form-dynamic'
 import PatientDetailInfo from '@/components/hospital/common/patient/patient-detail-info'
 import { Button } from '@/components/ui/button'
 import {
@@ -14,17 +14,8 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import type { Patient } from '@/types'
-import dynamic from 'next/dynamic'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
-
-const LazyPatientForm = dynamic(
-  () => import('@/components/common/patients/form/patient-form'),
-  {
-    ssr: false,
-    loading: () => <LargeLoaderCircle className="h-[544px]" />,
-  },
-)
 
 type Props = {
   patient: Patient
@@ -71,7 +62,7 @@ export default function IcuPatientUpdateDialog({
           <DialogDescription>환자의 정보를 수정합니다</DialogDescription>
         </DialogHeader>
 
-        <LazyPatientForm
+        <PatientFormDynamic
           debouncedSearch={null}
           mode="updateFromIcuRoute"
           hosId={hos_id as string}

@@ -92,11 +92,13 @@ export default function Cell({
   const [briefTxResultInput, setBriefTxResultInput] = useState('')
 
   useEffect(() => {
-    if (treatment?.tx_result || isMutationCanceled) {
+    if (treatment || isMutationCanceled) {
       setBriefTxResultInput('')
-      setIsMutationCanceled(false)
+      if (isMutationCanceled) {
+        setIsMutationCanceled(false)
+      }
     }
-  }, [isMutationCanceled, treatment?.tx_result, setIsMutationCanceled])
+  }, [isMutationCanceled, treatment, setIsMutationCanceled])
 
   const handleOpenTxDetail = () => {
     setTxLocalState({
@@ -215,6 +217,8 @@ export default function Cell({
     }
   }
 
+  const canceldeOrderTime = hasOrder && isInOrderTimePendingQueue
+
   return (
     <TableCell className="handle group p-0">
       <div
@@ -230,7 +234,7 @@ export default function Cell({
           className={cn(
             isGuidelineTime && 'bg-amber-300/10',
             hasOrder && 'bg-rose-400/10',
-            hasOrder && isInOrderTimePendingQueue && 'bg-transparent',
+            canceldeOrderTime && 'bg-transparent',
             isDone &&
               !isInOrderTimePendingQueue &&
               !isInPendingQueue &&
@@ -257,7 +261,9 @@ export default function Cell({
         {hasOrder && showOrderer && (
           <div
             className={cn(
-              'pointer-events-none absolute bottom-0.5 right-0.5 text-[10px] leading-none text-muted-foreground',
+              canceldeOrderTime
+                ? 'hidden'
+                : 'pointer-events-none absolute bottom-0.5 right-0.5 text-[10px] leading-none text-muted-foreground',
             )}
           >
             {orderer}

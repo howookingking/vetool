@@ -1,6 +1,5 @@
 'use client'
 
-import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -10,22 +9,9 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Info } from 'lucide-react'
-import dynamic from 'next/dynamic'
-
-const LazyInstructionShortcutContent = dynamic(
-  () => import('./instruction-shortcut-content'),
-  {
-    ssr: false,
-    loading: () => <LargeLoaderCircle />,
-  },
-)
+import InstructionShortcutContent from './instruction-shortcut-content'
 
 export function InstructionDialog() {
-  // const [currentVideo, setCurrentVideo] = useState({
-  //   menuId: 1,
-  //   slideId: 1,
-  // })
-
   return (
     <Dialog>
       <DialogTrigger asChild className="hidden 2xl:inline-flex">
@@ -36,7 +22,7 @@ export function InstructionDialog() {
       <DialogContent className="h-[720px] p-0 sm:max-h-[720px] sm:max-w-[1400px]">
         <DialogTitle className="hidden" />
         <DialogDescription className="hidden" />
-        <LazyInstructionShortcutContent />
+        <InstructionShortcutContent />
         {/* <InstructionSidebar
             currentVideo={currentVideo}
             setCurrentVideo={setCurrentVideo}

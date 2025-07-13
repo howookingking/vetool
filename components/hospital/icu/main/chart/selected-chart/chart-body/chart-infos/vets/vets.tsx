@@ -1,6 +1,5 @@
 'use client'
 
-import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -11,25 +10,14 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
-import { type Json } from '@/lib/supabase/database.types'
+import type { Json } from '@/lib/supabase/database.types'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { type IcuChartsInCharge } from '@/types/adimin'
-import { type MainAndSubVet } from '@/types/icu/chart'
+import type { IcuChartsInCharge } from '@/types/adimin'
+import type { MainAndSubVet } from '@/types/icu/chart'
 import { Stethoscope } from 'lucide-react'
-import dynamic from 'next/dynamic'
 import { useState } from 'react'
 import VetName from './vet-name'
-
-const LazyVetsUpdateForm = dynamic(
-  () =>
-    import(
-      '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/vets/vets-update-form'
-    ),
-  {
-    ssr: false,
-    loading: () => <LargeLoaderCircle className="h-[200px]" />,
-  },
-)
+import VetsUpdateFormDynamic from './vets-update-form-dynamic'
 
 type VetsProps = {
   mainVet: MainAndSubVet
@@ -92,7 +80,7 @@ export default function Vets({
           <DialogDescription />
         </DialogHeader>
 
-        <LazyVetsUpdateForm
+        <VetsUpdateFormDynamic
           setIsDialogOpen={setIsDialogOpen}
           mainVet={mainVet}
           subVet={subVet}

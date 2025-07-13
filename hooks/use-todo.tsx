@@ -15,8 +15,7 @@ export const useTodos = (hosId: string, selectedDate: Date) => {
 
     const result = await getTodos(hosId, selectedDate)
 
-    // 300밀리초 의도된 딜레이
-    await new Promise((resolve) => setTimeout(resolve, 300))
+    
     setTodos(result)
     setIsLoading(false)
   }
