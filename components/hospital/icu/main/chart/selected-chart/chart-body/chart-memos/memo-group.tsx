@@ -188,6 +188,12 @@ export default function MemoGroup({
     })
   }
 
+  const handleToastGuideMessage = () => {
+    toast({
+      title: '메모 그룹간(좌우↔) 이동도 가능합니다.',
+    })
+  }
+
   return (
     <div className="relative flex w-full flex-col">
       <Label
@@ -205,6 +211,7 @@ export default function MemoGroup({
           className="space-y-2"
           animation={250}
           handle=".handle"
+          onStart={handleToastGuideMessage}
           onEnd={handleReorderMemo}
           group="memo"
           disabled={isUpdating || isMemoNameSetting}
