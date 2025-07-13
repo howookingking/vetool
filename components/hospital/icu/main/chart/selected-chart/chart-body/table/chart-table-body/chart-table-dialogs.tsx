@@ -5,6 +5,7 @@ import { type Dispatch, type SetStateAction } from 'react'
 import MultiSelectOrderDialog from '../order/multil-select-order/multi-select-order-dialog'
 import OrderDialog from '../order/order-dialog'
 import TxUpsertDialog from '../tx/tx-upsert-dialog'
+import TxUpsertDialogDynamc from '../tx/tx-upsert-dialog-dynamic'
 
 type Props = {
   showTxUser: boolean
@@ -36,7 +37,7 @@ export default function ChartTableDialogs({
   return (
     <>
       {/* 처치관련 : 처치 상세 입력, 처치자 입력 */}
-      <TxUpsertDialog showTxUser={showTxUser} />
+      <TxUpsertDialogDynamc showTxUser={showTxUser} />
 
       {/* 다중 오더 선택 후 작업 : 오더 복사, 템플릿저장, 테두리 변경, 오더 삭제 */}
       <MultiSelectOrderDialog

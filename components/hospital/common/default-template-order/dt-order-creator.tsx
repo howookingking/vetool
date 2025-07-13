@@ -105,7 +105,7 @@ export default function DtOrderCreator({
   }
 
   const orderTypeLabel = OrderTypeLabel(orderType as OrderType)
-  const OrderTypePlaceholder = `${orderTypeLabel.orderName}$${orderTypeLabel.orderComment}`
+  const OrderTypePlaceholder = `${orderTypeLabel.orderName}$${orderTypeLabel.orderComment} + Enter ⏎`
 
   return (
     <div className="relative flex w-full items-center">
@@ -158,7 +158,7 @@ export default function DtOrderCreator({
             ref={inputRef}
           />
           <Button
-            className="absolute right-2 2xl:hidden"
+            className="absolute right-2"
             size="icon"
             disabled={isCreating}
             type="submit"

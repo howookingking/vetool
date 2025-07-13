@@ -30,7 +30,7 @@ export default function VitalChartSidebar({
         <span>바이탈 그래프</span>
         <HelperTooltip>
           체크리스트 오더 중 체중, 혈압, 호흡수, 심박수, 체온, 혈당, SPO2를
-          그래프로 보여줍니다. 결과 값에 되도록 숫자만 입력해주세요.
+          그래프로 보여줍니다
         </HelperTooltip>
       </div>
 

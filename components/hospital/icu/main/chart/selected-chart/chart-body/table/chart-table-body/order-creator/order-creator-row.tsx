@@ -132,7 +132,7 @@ export default function OrderCreatorRow({
   }
 
   const orderTypeLabel = OrderTypeLabel(orderType as OrderType)
-  const OrderTypePlaceholder = `${orderTypeLabel.orderName}$${orderTypeLabel.orderComment}`
+  const OrderTypePlaceholder = `${orderTypeLabel.orderName}$${orderTypeLabel.orderComment} + Enter ⏎`
 
   return (
     <TableRow className="hover:bg-transparent">
@@ -183,7 +183,7 @@ export default function OrderCreatorRow({
               onSubmit={handleSubmit}
             >
               <Input
-                className="h-11 rounded-none border-0 focus-visible:ring-0"
+                className="h-11 rounded-none border-0 pr-11 focus-visible:ring-0"
                 disabled={isInserting}
                 placeholder={OrderTypePlaceholder}
                 value={isInserting ? '등록 중' : newOrderInput}
@@ -191,7 +191,7 @@ export default function OrderCreatorRow({
                 ref={inputRef}
               />
               <Button
-                className="absolute right-2 2xl:hidden"
+                className="absolute right-2"
                 size="icon"
                 disabled={isInserting}
                 type="submit"

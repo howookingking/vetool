@@ -16,7 +16,7 @@ import {
   type SetStateAction,
 } from 'react'
 import { ReactSortable, type Sortable } from 'react-sortablejs'
-import { type NewMemoAddedTo } from './chart-memos'
+import type { NewMemoAddedTo } from './chart-memos'
 
 type Props = {
   memo: Memo[]

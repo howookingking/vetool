@@ -6,16 +6,9 @@ import { hasPermissions, type Plan } from '@/constants/plans'
 import { getPatientData } from '@/lib/services/patient/patient'
 import type { PatientWithWeight } from '@/types/patients'
 import { Calculator, LoaderCircle } from 'lucide-react'
-import dynamic from 'next/dynamic'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
-
-const LazyCalculatorSheetContent = dynamic(
-  () => import('@/components/hospital/calculator/calculator-sheet-content'),
-  {
-    ssr: false,
-  },
-)
+import CalculatorSheetContentsDynamic from './calculator-sheet-contents-dynamic'
 
 export default function CalculatorSheet({ plan }: { plan: Plan }) {
   const { patient_id } = useParams()
@@ -59,7 +52,7 @@ export default function CalculatorSheet({ plan }: { plan: Plan }) {
         </Button>
       </SheetTrigger>
 
-      <LazyCalculatorSheetContent
+      <CalculatorSheetContentsDynamic
         patientData={patientData}
         setIsSheetOpen={setIsSheetOpen}
         isCalculatorEnabled={isCalculatorEnabled}

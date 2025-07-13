@@ -5,8 +5,8 @@ import MemoGroup from '@/components/hospital/icu/main/chart/selected-chart/chart
 import NewMemoAddedToButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/new-memo-added-to-button'
 import useLocalStorage from '@/hooks/use-local-storage'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { type Memo } from '@/types/icu/chart'
-import { useState } from 'react'
+import type { Memo } from '@/types/icu/chart'
+import { useEffect, useState } from 'react'
 
 export type NewMemoAddedTo = 'top' | 'bottom'
 
@@ -39,6 +39,15 @@ export default function ChartMemos({
     b: memoB ?? [],
     c: memoC ?? [],
   })
+
+  // realtime update memos when memoA, memoB, or memoC changes
+  useEffect(() => {
+    setMemos({
+      a: memoA ?? [],
+      b: memoB ?? [],
+      c: memoC ?? [],
+    })
+  }, [memoA, memoB, memoC])
 
   return (
     <div className="relative">

@@ -1,6 +1,5 @@
 'use client'
 
-import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -13,13 +12,8 @@ import {
 } from '@/components/ui/dialog'
 import { type SelectedChart } from '@/types/icu/chart'
 import { Share } from 'lucide-react'
-import dynamic from 'next/dynamic'
 import { useState } from 'react'
-
-const LazyExportButtons = dynamic(() => import('./export-buttons'), {
-  ssr: false,
-  loading: () => <LargeLoaderCircle size={40} />,
-})
+import ExportButtons from './export-buttons'
 
 export default function ExportDialog({
   chartData,
@@ -47,7 +41,7 @@ export default function ExportDialog({
         </DialogHeader>
 
         <DialogFooter>
-          <LazyExportButtons
+          <ExportButtons
             chartData={chartData}
             setIsDialogOpen={setIsDialogOpen}
           />

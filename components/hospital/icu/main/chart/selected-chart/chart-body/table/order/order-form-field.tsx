@@ -14,7 +14,7 @@ import {
 import { orderSchema } from '@/lib/schemas/icu/chart/order-schema'
 import { cn } from '@/lib/utils/utils'
 import { useState } from 'react'
-import { type UseFormReturn } from 'react-hook-form'
+import type { UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 
 export default function OrderFormField({

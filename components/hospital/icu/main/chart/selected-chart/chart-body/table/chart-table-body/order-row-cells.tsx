@@ -5,6 +5,7 @@ import type { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
 import type { TxLocalState } from '@/lib/store/icu/icu-tx'
 import type { VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder, Treatment } from '@/types/icu/chart'
+import { useMemo } from 'react'
 
 type Props = {
   hosId: string
@@ -55,19 +56,6 @@ export default function OrderRowCells({
 }: Props) {
   const { order_times, order_id, treatments, order_type, order_name } = order
 
-  const cellDataMap = new Map<
-    number,
-    {
-      isDone: boolean
-      orderer: string
-      treatment: Treatment | undefined
-      hasOrder: boolean
-      hasComment: boolean
-      isInPendingQueue: boolean
-      isInOrderTimePendingQueue: boolean
-    }
-  >()
-
   const foundVital = vitalRefRange.find(
     (vital) => vital.order_name === order_name,
   )
@@ -93,41 +81,68 @@ export default function OrderRowCells({
   }
 
   const timeGuidelineSet = new Set(timeGuidelineData)
-  const selectedTxPendingMap = new Map<string, boolean>()
-  const orderTimePendingMap = new Map<string, boolean>()
+  const selectedTxPendingMap = useMemo(() => {
+    const map = new Map<string, boolean>()
+    for (const item of selectedTxPendingQueue) {
+      map.set(`${item.orderId}_${item.orderTime}`, true)
+    }
+    return map
+  }, [selectedTxPendingQueue])
 
-  for (const item of selectedTxPendingQueue) {
-    selectedTxPendingMap.set(`${item.orderId}_${item.orderTime}`, true)
-  }
+  const orderTimePendingMap = useMemo(() => {
+    const map = new Map<string, boolean>()
+    for (const item of orderTimePendingQueue) {
+      map.set(`${item.orderId}_${item.orderTime}`, true)
+    }
+    return map
+  }, [orderTimePendingQueue])
 
-  for (const item of orderTimePendingQueue) {
-    orderTimePendingMap.set(`${item.orderId}_${item.orderTime}`, true)
-  }
+  const cellDataMap = useMemo(() => {
+    const map = new Map<
+      number,
+      {
+        isDone: boolean
+        orderer: string
+        treatment: Treatment | undefined
+        hasOrder: boolean
+        hasComment: boolean
+        isInPendingQueue: boolean
+        isInOrderTimePendingQueue: boolean
+      }
+    >()
 
-  for (const time of TIMES) {
-    const orderer = order_times[time]
-    const treatment = treatments.findLast(
-      (treatment) => treatment.time === time,
-    )
-    const isDone =
-      orderer !== '0' &&
-      treatments.some(
-        (treatment) => treatment.time === time && treatment.tx_result,
+    for (const time of TIMES) {
+      const orderer = order_times[time]
+      const treatment = treatments.findLast(
+        (treatment) => treatment.time === time,
       )
-    const hasOrder = orderer !== '0'
-    const hasComment = !!treatment?.tx_comment
-    const pendingKey = `${order_id}_${time}`
+      const isDone =
+        orderer !== '0' &&
+        treatments.some(
+          (treatment) => treatment.time === time && treatment.tx_result,
+        )
+      const hasOrder = orderer !== '0'
+      const hasComment = !!treatment?.tx_comment
+      const pendingKey = `${order_id}_${time}`
 
-    cellDataMap.set(time, {
-      isDone,
-      orderer,
-      treatment,
-      hasOrder,
-      hasComment,
-      isInPendingQueue: selectedTxPendingMap.get(pendingKey) || false,
-      isInOrderTimePendingQueue: orderTimePendingMap.get(pendingKey) || false,
-    })
-  }
+      map.set(time, {
+        isDone,
+        orderer,
+        treatment,
+        hasOrder,
+        hasComment,
+        isInPendingQueue: selectedTxPendingMap.get(pendingKey) || false,
+        isInOrderTimePendingQueue: orderTimePendingMap.get(pendingKey) || false,
+      })
+    }
+    return map
+  }, [
+    order_times,
+    treatments,
+    order_id,
+    selectedTxPendingMap,
+    orderTimePendingMap,
+  ])
 
   const commonCellProps = {
     hosId,

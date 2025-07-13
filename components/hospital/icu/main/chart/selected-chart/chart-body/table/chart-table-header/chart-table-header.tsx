@@ -7,6 +7,8 @@ import { cn } from '@/lib/utils/utils'
 import type { OrderWidth } from '@/types/hospital/order'
 import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
 import type { Dispatch, SetStateAction } from 'react'
+import { CurrentTimeIndicator } from './current-time-indicator'
+import { useCurrentTime } from '@/hooks/use-current-time'
 
 type Props = {
   preview?: boolean
@@ -33,6 +35,8 @@ export default function ChartTableHeader({
   chartId,
   hosId,
 }: Props) {
+  const { hours, minutes } = useCurrentTime()
+
   return (
     <TableHeader
       data-guide="order-info"
@@ -76,11 +80,17 @@ export default function ChartTableHeader({
           )}
         </TableHead>
 
-        {TIMES.map((time) => (
-          <TableHead className="border text-center" key={time}>
-            {time.toString().padStart(2, '0')}
-          </TableHead>
-        ))}
+        {TIMES.map((time) => {
+          const shouldShowIndicator = time === hours
+          return (
+            <TableHead className="relative border text-center" key={time}>
+              {time.toString().padStart(2, '0')}
+              {shouldShowIndicator && (
+                <CurrentTimeIndicator minutes={minutes} />
+              )}
+            </TableHead>
+          )
+        })}
       </TableRow>
     </TableHeader>
   )

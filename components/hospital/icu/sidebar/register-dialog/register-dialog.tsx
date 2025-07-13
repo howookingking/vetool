@@ -1,6 +1,7 @@
 'use client'
 
-import LargeLoaderCircle from '@/components/common/large-loader-circle'
+import PatientFormDynamic from '@/components/common/patients/form/patient-form-dynamic'
+import SearchPatientContainer from '@/components/common/patients/search/search-patient-containter'
 import UpgragePlanPromptModal from '@/components/hospital/common/upgrade-plan-prompt-modal'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
@@ -8,33 +9,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { canAddChart } from '@/constants/plans'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import dynamic from 'next/dynamic'
 import { useState } from 'react'
 import RegisterDialogHeader from './register-dialog-header'
-
-const LazyRegisterIcuConfirmDialog = dynamic(
-  () =>
-    import(
-      '@/components/hospital/icu/sidebar/register-dialog/register-icu-confirm-dialog'
-    ),
-  {
-    ssr: false,
-  },
-)
-const LazyPatientForm = dynamic(
-  () => import('@/components/common/patients/form/patient-form'),
-  {
-    ssr: false,
-    loading: () => <LargeLoaderCircle className="h-[544px]" />,
-  },
-)
-const LazySearchPatientContainer = dynamic(
-  () => import('@/components/common/patients/search/search-patient-containter'),
-  {
-    ssr: false,
-    loading: () => <LargeLoaderCircle className="h-[574px]" />,
-  },
-)
+import RegisterIcuConfirmDialog from './register-icu-confirm-dialog'
 
 export type RegisteringPatient = {
   patientId: string
@@ -128,7 +105,7 @@ export default function RegisterDialog({
           </TabsList>
 
           <TabsContent value="search">
-            <LazySearchPatientContainer
+            <SearchPatientContainer
               hosId={hosId}
               isIcu
               setIsConfirmDialogOpen={setIsConfirmDialogOpen}
@@ -137,7 +114,7 @@ export default function RegisterDialog({
           </TabsContent>
 
           <TabsContent value="register">
-            <LazyPatientForm
+            <PatientFormDynamic
               mode="registerFromIcuRoute"
               hosId={hosId}
               setIsPatientRegisterDialogOpen={setIsRegisterDialogOpen}
@@ -158,7 +135,7 @@ export default function RegisterDialog({
       </DialogContent>
 
       {isConfirmDialogOpen && isAvailableAddChart && (
-        <LazyRegisterIcuConfirmDialog
+        <RegisterIcuConfirmDialog
           isConfirmDialogOpen={isConfirmDialogOpen}
           setIsConfirmDialogOpen={setIsConfirmDialogOpen}
           hosId={hosId}
