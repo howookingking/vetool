@@ -10,7 +10,9 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
+import { useCurrentTime } from '@/hooks/use-current-time'
 import type { SummaryData } from '@/types/icu/summary'
+import { CurrentTimeIndicator } from '../../chart/selected-chart/chart-body/table/chart-table-header/current-time-indicator'
 
 export default function SummaryTable({
   summaryData,
@@ -46,6 +48,8 @@ export default function SummaryTable({
   //   vetsListData,
   // })
 
+  const { hours, minutes } = useCurrentTime()
+
   if (summaryData.length === 0) {
     return (
       <NoResultSquirrel
@@ -62,11 +66,20 @@ export default function SummaryTable({
         <TableRow>
           <TableHead className="w-[160px] text-center">환자목록</TableHead>
 
-          {TIMES.map((time) => (
-            <TableHead className="border border-t-0 text-center" key={time}>
-              {time.toString().padStart(2, '0')}
-            </TableHead>
-          ))}
+          {TIMES.map((time) => {
+            const shouldShowIndicator = time === hours
+            return (
+              <TableHead
+                className="relative border border-t-0 text-center"
+                key={time}
+              >
+                {time.toString().padStart(2, '0')}
+                {shouldShowIndicator && (
+                  <CurrentTimeIndicator minutes={minutes} />
+                )}
+              </TableHead>
+            )
+          })}
         </TableRow>
       </TableHeader>
 
