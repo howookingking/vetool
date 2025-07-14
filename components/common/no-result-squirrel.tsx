@@ -32,7 +32,10 @@ export default function NoResultSquirrel({
         className,
       )}
     >
-      <Squirrel className="hover:scale-x-[-1]" size={ICON_SIZE_DIC[size]} />
+      <Squirrel
+        className="transition-transform hover:scale-x-[-1]"
+        size={ICON_SIZE_DIC[size]}
+      />
       <div>{text}</div>
     </div>
   )
