@@ -107,7 +107,7 @@ export default function KclTable({
               <TableCell className="text-center">{maxFluidRate}</TableCell>
               <TableCell className="text-center">
                 {localWeight ? (
-                  (maxFluidRate * Number(localWeight)).toFixed(1)
+                  (maxFluidRate * localWeight).toFixed(1)
                 ) : (
                   <span className="text-destructive">체중입력</span>
                 )}

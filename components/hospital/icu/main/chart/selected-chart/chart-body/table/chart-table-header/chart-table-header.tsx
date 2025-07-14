@@ -3,12 +3,12 @@ import OrderWidthButton from '@/components/hospital/icu/main/chart/selected-char
 import SortingButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/sorting-button'
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
-import { cn } from '@/lib/utils/utils'
+import { useCurrentTime } from '@/hooks/use-current-time'
+import { cn, formatDate } from '@/lib/utils/utils'
 import type { OrderWidth } from '@/types/hospital/order'
 import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
 import type { Dispatch, SetStateAction } from 'react'
 import { CurrentTimeIndicator } from './current-time-indicator'
-import { useCurrentTime } from '@/hooks/use-current-time'
 
 type Props = {
   preview?: boolean
@@ -36,6 +36,7 @@ export default function ChartTableHeader({
   hosId,
 }: Props) {
   const { hours, minutes } = useCurrentTime()
+  const isToday = formatDate(new Date()) === chartData.target_date
 
   return (
     <TableHeader
@@ -81,7 +82,8 @@ export default function ChartTableHeader({
         </TableHead>
 
         {TIMES.map((time) => {
-          const shouldShowIndicator = time === hours
+          const shouldShowIndicator =
+            time === hours && !isSorting && !preview && isToday
           return (
             <TableHead className="relative border text-center" key={time}>
               {time.toString().padStart(2, '0')}

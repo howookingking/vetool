@@ -31,7 +31,7 @@ export default function Kcl({ weight, setIsSheetOpen }: Props) {
 
   const result =
     selectedKClData && localWeight
-      ? `${fluid.toLocaleUpperCase()} + KCl ${kClMl}mL, 최대 수액속도 : ${selectedKClData.maxFluidRate * Number(localWeight)}mL/hr`
+      ? `${fluid.toLocaleUpperCase()} + KCl ${kClMl}mL, 최대 수액속도 : ${(selectedKClData.maxFluidRate * Number(localWeight)).toFixed(1)}mL/hr`
       : null
 
   return (
