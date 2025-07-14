@@ -3,10 +3,12 @@ import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
+import { useCurrentTime } from '@/hooks/use-current-time'
+import { formatDate } from '@/lib/utils/utils'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
+import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import { CurrentTimeIndicator } from '../chart/selected-chart/chart-body/table/chart-table-header/current-time-indicator'
-import { useCurrentTime } from '@/hooks/use-current-time'
 
 type Props = {
   orderTypeFilters: string[]
@@ -18,6 +20,8 @@ export default function TxTableHeader({
   filteredTxData,
 }: Props) {
   const { hours, minutes } = useCurrentTime()
+  const { target_date } = useParams()
+  const isToday = formatDate(new Date()) === target_date
 
   const [copiedTxTime, setCopiedTxTime] = useState<number | null>()
 
@@ -70,7 +74,7 @@ export default function TxTableHeader({
         <TableHead className="w-[120px] text-center">환자목록</TableHead>
 
         {TIMES.map((time) => {
-          const shouldShowIndicator = time === hours
+          const shouldShowIndicator = time === hours && isToday
           return (
             <TableHead className="relative border text-center" key={time}>
               <div className="flex items-center justify-center">

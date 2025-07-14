@@ -11,7 +11,9 @@ import {
 } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { useCurrentTime } from '@/hooks/use-current-time'
+import { formatDate } from '@/lib/utils/utils'
 import type { SummaryData } from '@/types/icu/summary'
+import { useParams } from 'next/navigation'
 import { CurrentTimeIndicator } from '../../chart/selected-chart/chart-body/table/chart-table-header/current-time-indicator'
 
 export default function SummaryTable({
@@ -49,6 +51,8 @@ export default function SummaryTable({
   // })
 
   const { hours, minutes } = useCurrentTime()
+  const { target_date } = useParams()
+  const isToday = formatDate(new Date()) === target_date
 
   if (summaryData.length === 0) {
     return (
@@ -67,7 +71,7 @@ export default function SummaryTable({
           <TableHead className="w-[160px] text-center">환자목록</TableHead>
 
           {TIMES.map((time) => {
-            const shouldShowIndicator = time === hours
+            const shouldShowIndicator = time === hours && isToday
             return (
               <TableHead
                 className="relative border border-t-0 text-center"
