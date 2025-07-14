@@ -12,65 +12,63 @@ type VitalCountState = {
   isPressed: boolean // 하트를 누르고 있는지 여부
 }
 
+const INITIAL_STATE: VitalCountState = {
+  beats: [],
+  averageBpm: null,
+  isActive: false,
+  isPressed: false,
+}
+
+const MILLISECONDS_PER_MINUTE = 60000
+const MINIMUM_BEATS_FOR_CALCULATION = 2
+
 export default function VitalCounter() {
-  const [state, setState] = useState<VitalCountState>({
-    beats: [],
-    averageBpm: null,
-    isActive: false,
-    isPressed: false,
-  })
+  const [vitalCountState, setVitalCountState] =
+    useState<VitalCountState>(INITIAL_STATE)
 
   // ms 단위로 시간 저장
   const handleHeartClick = () => {
-    setState((prev) => {
-      if (prev.isActive) {
-        return {
-          ...prev,
-          beats: [...prev.beats, Date.now()],
-        }
-      } else {
-        return {
-          ...prev,
-          isActive: true,
-          beats: [],
-          averageBpm: null,
-        }
-      }
-    })
+    setVitalCountState((prev) =>
+      prev.isActive
+        ? {
+            ...prev,
+            beats: [...prev.beats, Date.now()],
+          }
+        : {
+            ...prev,
+            isActive: true,
+            beats: [],
+            averageBpm: null,
+          },
+    )
   }
 
-  const handleMouseDown = () => {
-    setState((prev) => ({ ...prev, isPressed: true }))
+  const handlePressHeart = () => {
+    setVitalCountState((prev) => ({ ...prev, isPressed: true }))
   }
 
-  const handleMouseUp = () => {
-    setState((prev) => ({ ...prev, isPressed: false }))
+  const handleUnpressHeart = () => {
+    setVitalCountState((prev) => ({ ...prev, isPressed: false }))
     handleHeartClick()
   }
 
-  const handleReset = () => {
-    setState((prev) => ({
-      ...prev,
-      beats: [],
-      averageBpm: null,
-      isActive: false,
-    }))
-  }
-
   useEffect(() => {
-    const beatsLength = state.beats.length
+    const beatsLength = vitalCountState.beats.length
 
-    if (beatsLength >= 2) {
+    if (beatsLength >= MINIMUM_BEATS_FOR_CALCULATION) {
       // 마지막 측정 시간 - 첫 번째 측정 시간
-      const totalTime = state.beats[beatsLength - 1] - state.beats[0]
+      const totalTime =
+        vitalCountState.beats[beatsLength - 1] - vitalCountState.beats[0]
       // 측정 횟수
       const beatsCount = beatsLength - 1
       // 평균 심박수
-      const avgBpm = Math.round((beatsCount * 60000) / totalTime)
+      const avgBpm = Math.round(
+        (beatsCount * MILLISECONDS_PER_MINUTE) / totalTime,
+      )
 
-      setState((prev) => ({ ...prev, averageBpm: avgBpm }))
+      setVitalCountState((prev) => ({ ...prev, averageBpm: avgBpm }))
     }
-  }, [state.beats])
+  }, [vitalCountState.beats])
 
   return (
     <>
@@ -84,39 +82,41 @@ export default function VitalCounter() {
           <Heart
             className={cn(
               'h-72 w-72 cursor-pointer transition-all duration-200',
-              state.isPressed ? 'scale-100' : 'scale-105',
+              vitalCountState.isPressed ? 'scale-95' : 'scale-100',
             )}
             fill="#e15745"
             stroke="#e15745"
             strokeWidth={1}
-            onMouseDown={handleMouseDown}
-            onMouseUp={handleMouseUp}
+            onMouseDown={handlePressHeart}
+            onMouseUp={handleUnpressHeart}
+            onTouchStart={handlePressHeart}
+            onTouchEnd={handleUnpressHeart}
           />
           <span className="mt-2 text-xl font-bold">심박수, 호흡수 측정</span>
 
           <div className="flex h-32 flex-col items-center justify-center">
-            {!state.isActive && state.beats.length === 0 ? (
+            {!vitalCountState.isActive && vitalCountState.beats.length === 0 ? (
               <span className="text-md text-muted-foreground sm:text-lg">
                 하트를 눌러서 측정을 시작하세요
               </span>
             ) : (
               <div className="flex flex-col items-center">
                 <span className="text-lg text-gray-600">
-                  {state.isActive ? '측정 중...' : '측정 완료'}
+                  {vitalCountState.isActive ? '측정 중...' : '측정 완료'}
                 </span>
 
                 <div className="flex h-12 items-center justify-center">
-                  {state.averageBpm && (
+                  {vitalCountState.averageBpm && (
                     <span className="text-2xl font-bold text-primary sm:text-4xl">
-                      {state.averageBpm} 회/분
+                      {vitalCountState.averageBpm} 회/분
                     </span>
                   )}
                 </div>
 
                 <div className="flex h-6 items-center justify-center">
-                  {state.beats.length >= 0 && (
+                  {vitalCountState.beats.length >= 0 && (
                     <span className="text-sm text-gray-500">
-                      측정 횟수: {state.beats.length + 1}회
+                      측정 횟수: {vitalCountState.beats.length + 1}회
                     </span>
                   )}
                 </div>
@@ -124,10 +124,12 @@ export default function VitalCounter() {
             )}
           </div>
 
-          {state.isActive && (
+          {vitalCountState.isActive && (
             <Button
               variant={'outline'}
-              onClick={handleReset}
+              onClick={() => {
+                setVitalCountState(INITIAL_STATE)
+              }}
               size="icon"
               className="absolute right-0 top-0"
             >
