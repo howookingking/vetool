@@ -43,11 +43,11 @@ export default function VitalCounter() {
     )
   }
 
-  const handlePressHeart = () => {
+  const handlePressStart = () => {
     setVitalCountState((prev) => ({ ...prev, isPressed: true }))
   }
 
-  const handleUnpressHeart = () => {
+  const handlePressEnd = () => {
     setVitalCountState((prev) => ({ ...prev, isPressed: false }))
     handleHeartClick()
   }
@@ -87,10 +87,10 @@ export default function VitalCounter() {
             fill="#e15745"
             stroke="#e15745"
             strokeWidth={1}
-            onMouseDown={handlePressHeart}
-            onMouseUp={handleUnpressHeart}
-            onTouchStart={handlePressHeart}
-            onTouchEnd={handleUnpressHeart}
+            onMouseDown={handlePressStart}
+            onMouseUp={handlePressEnd}
+            onTouchStart={handlePressStart}
+            onTouchEnd={handlePressEnd}
           />
           <span className="mt-2 text-xl font-bold">심박수, 호흡수 측정</span>
 
