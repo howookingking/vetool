@@ -14,10 +14,15 @@ import { Plus } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import ArbitraryInjectionOrder from './arbitrary-injection-order'
+import type { OrderType } from '@/constants/hospital/icu/chart/order'
 
 type Props = {
   weight: string
-  createOrder: (orderName: string, orderDescription: string) => Promise<void>
+  createOrder: (
+    orderName: string,
+    orderType: OrderType,
+    orderDescription: string,
+  ) => Promise<void>
 }
 
 type Option = Record<'value' | 'label', string> & Record<string, string>
@@ -59,7 +64,7 @@ export function InjectionOrderCreator({ weight, createOrder }: Props) {
     setInputValue('')
     setIsAutocompleteOpen(false)
 
-    await createOrder(drugName, totalDose)
+    await createOrder(drugName, 'injection', totalDose)
 
     setTimeout(() => {
       autocompleteInputRef?.current?.blur()
@@ -99,6 +104,7 @@ export function InjectionOrderCreator({ weight, createOrder }: Props) {
 
     createOrder(
       selectedOption.label,
+      'injection',
       `${(Number(selectedOption.value) * Number(weight)).toFixed(2)}ml`,
     )
     setInputValue('')

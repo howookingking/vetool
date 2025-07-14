@@ -19,19 +19,19 @@ type Props = {
 
 export default function Kcl({ weight, setIsSheetOpen }: Props) {
   const [localWeight, setLocalWeight] = useState(weight)
-  const [selectedKCl, setSelectedKCl] = useState<string | null>(null)
-  const [fluid, kClMl] = selectedKCl?.split('-') ?? []
+  const [selectedKcl, setSelectedKcl] = useState<string | null>(null)
+  const [fluid, kclMl] = selectedKcl?.split('-') ?? []
 
-  const selectedKClData = KCL_SUPPLEMENT_TABLE.find(
+  const selectedKclData = KCL_SUPPLEMENT_TABLE.find(
     (row) =>
-      `ns-${row.ns500}` === selectedKCl ||
-      `hs-${row.hs500}` === selectedKCl ||
-      `ps-${row.ps500}` === selectedKCl,
+      `ns-${row.ns500}` === selectedKcl ||
+      `hs-${row.hs500}` === selectedKcl ||
+      `ps-${row.ps500}` === selectedKcl,
   )
 
   const result =
-    selectedKClData && localWeight
-      ? `${fluid.toLocaleUpperCase()} + KCl ${kClMl}mL, 최대 수액속도 : ${(selectedKClData.maxFluidRate * Number(localWeight)).toFixed(1)}mL/hr`
+    selectedKclData && localWeight
+      ? `${fluid.toLocaleUpperCase()} + KCl ${kclMl}mL, 최대 수액속도 : ${(selectedKclData.maxFluidRate * Number(localWeight)).toFixed(1)}mL/hr`
       : null
 
   return (
@@ -70,8 +70,8 @@ export default function Kcl({ weight, setIsSheetOpen }: Props) {
 
         <KclTable
           localWeight={Number(localWeight)}
-          selectedKCl={selectedKCl}
-          setSelectedKCl={setSelectedKCl}
+          selectedKcl={selectedKcl}
+          setSelectedKCl={setSelectedKcl}
         />
 
         {result && (

@@ -12,20 +12,20 @@ import { KCL_SUPPLEMENT_TABLE } from '@/constants/hospital/kcl'
 
 type Props = {
   localWeight: number
-  selectedKCl: string | null
+  selectedKcl: string | null
   setSelectedKCl: (value: string | null) => void
 }
 
 export default function KclTable({
   localWeight,
-  selectedKCl,
+  selectedKcl,
   setSelectedKCl,
 }: Props) {
   const handleCheckboxChange = (id: string) =>
-    setSelectedKCl(selectedKCl === id ? null : id)
+    setSelectedKCl(selectedKcl === id ? null : id)
 
   return (
-    <Table>
+    <Table className="border">
       <TableHeader>
         <TableRow>
           <TableHead className="border-r text-center" rowSpan={2}>
@@ -60,7 +60,7 @@ export default function KclTable({
                 <div className="mx-auto grid w-16 grid-cols-[auto_1fr] items-center justify-center">
                   <Checkbox
                     id={`ns-${ns500}`}
-                    checked={selectedKCl === `ns-${ns500}`}
+                    checked={selectedKcl === `ns-${ns500}`}
                     onCheckedChange={() => handleCheckboxChange(`ns-${ns500}`)}
                   />
                   <Label
@@ -76,7 +76,7 @@ export default function KclTable({
                 <div className="mx-auto grid w-16 grid-cols-[auto_1fr] items-center justify-center">
                   <Checkbox
                     id={`hs-${hs500}`}
-                    checked={selectedKCl === `hs-${hs500}`}
+                    checked={selectedKcl === `hs-${hs500}`}
                     onCheckedChange={() => handleCheckboxChange(`hs-${hs500}`)}
                   />
                   <Label
@@ -92,7 +92,7 @@ export default function KclTable({
                 <div className="mx-auto grid w-16 grid-cols-[auto_1fr] items-center justify-center">
                   <Checkbox
                     id={`ps-${ps500}`}
-                    checked={selectedKCl === `ps-${ps500}`}
+                    checked={selectedKcl === `ps-${ps500}`}
                     onCheckedChange={() => handleCheckboxChange(`ps-${ps500}`)}
                   />
                   <Label
