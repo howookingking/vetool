@@ -1,10 +1,15 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import type { OrderType } from '@/constants/hospital/icu/chart/order'
 import { Plus, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
 type Props = {
-  createOrder: (orderName: string, orderDescription: string) => Promise<void>
+  createOrder: (
+    orderName: string,
+    orderType: OrderType,
+    orderDescription: string,
+  ) => Promise<void>
   setIsArbitraryOrder: React.Dispatch<React.SetStateAction<boolean>>
   setIsAutocompleteOpen: React.Dispatch<React.SetStateAction<boolean>>
   autocompleteInputRef: React.RefObject<HTMLInputElement>
@@ -44,7 +49,7 @@ export default function ArbitraryInjectionOrder({
     setIsInserting(true)
     setArbitraryInjectionInput('')
 
-    await createOrder(orderName, orderDescription ?? '')
+    await createOrder(orderName, 'injection', orderDescription ?? '')
 
     setIsInserting(false)
     setIsArbitraryOrder(false)

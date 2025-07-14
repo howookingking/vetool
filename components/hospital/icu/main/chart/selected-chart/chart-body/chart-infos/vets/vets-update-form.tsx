@@ -18,7 +18,7 @@ import {
 import { toast } from '@/components/ui/use-toast'
 import { vetsFormSchema } from '@/lib/schemas/icu/chart/chart-info-schema'
 import { updateMainSubVet } from '@/lib/services/icu/chart/update-icu-chart-infos'
-import { Json } from '@/lib/supabase/database.types'
+import type { Json } from '@/lib/supabase/database.types'
 import { cn } from '@/lib/utils/utils'
 import { IcuChartsInCharge } from '@/types/adimin'
 import type { MainAndSubVet, Vet } from '@/types/icu/chart'
