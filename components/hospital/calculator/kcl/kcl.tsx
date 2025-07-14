@@ -11,6 +11,7 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { useState } from 'react'
 import CalculatorResult from '../result/calculator-result'
 import KclTable from './kcl-table'
+import { useParams } from 'next/navigation'
 
 type Props = {
   weight: string
@@ -18,6 +19,9 @@ type Props = {
 }
 
 export default function Kcl({ weight, setIsSheetOpen }: Props) {
+  const { patient_id } = useParams()
+  const hasSelectedPatient = Boolean(patient_id)
+
   const [localWeight, setLocalWeight] = useState(weight)
   const [selectedKcl, setSelectedKcl] = useState<string | null>(null)
   const [fluid, kclMl] = selectedKcl?.split('-') ?? []
@@ -80,7 +84,7 @@ export default function Kcl({ weight, setIsSheetOpen }: Props) {
               <span className="font-bold text-primary">{result}</span>
             }
             copyResult={`${result}`}
-            hasInsertOrderButton
+            hasInsertOrderButton={hasSelectedPatient}
             orderType="fluid"
             setIsSheetOpen={setIsSheetOpen}
           />
