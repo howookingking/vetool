@@ -5,11 +5,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import type { OrderType } from '@/constants/hospital/icu/chart/order'
 import React, { useEffect } from 'react'
 
 type Props = {
-  createOrder: (order: string, value: string) => Promise<void>
-  setOrderType: React.Dispatch<React.SetStateAction<string>>
+  createOrder: (
+    orderName: string,
+    orderType: OrderType,
+    orderDescription: string,
+  ) => Promise<void>
+  setOrderType: React.Dispatch<React.SetStateAction<OrderType>>
   availableCheckListOrders: string[]
 }
 
@@ -26,7 +31,9 @@ export default function ChecklistOrderCreator({
   }, [availableCheckListOrders.length, setOrderType])
 
   return (
-    <Select onValueChange={async (value) => await createOrder(value, '')}>
+    <Select
+      onValueChange={async (value) => await createOrder(value, 'checklist', '')}
+    >
       <SelectTrigger className="h-11 w-full rounded-none border-0 ring-0 focus-visible:ring-0">
         <SelectValue placeholder="체크리스트 항목 선택" />
       </SelectTrigger>

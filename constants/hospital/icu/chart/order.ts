@@ -55,34 +55,16 @@ export const DEFAULT_ICU_ORDER_TYPE_DIC = {
   feed: '식이',
 } as const
 
-export const CHECKLIST_ORDER_CANDIDATES = [
-  '체온',
-  '심박수',
-  '호흡수',
-  '혈압',
-  '활력',
-  '활기',
-  '구토',
-  '배변',
-  '배뇨',
-  '체중',
-  '몸무게',
-  'SPO2',
-  'spo2',
-  '대변',
-  '소변',
+export const BG_CANDIDATES = [
   '혈당',
   'bg',
   'blood glucose',
   '간이혈당',
-  'bw',
-  't',
-  'p',
-  'r',
-  'bp',
-  '도플러',
+  '혈당',
   '간이혈당',
   '간이 혈당',
+  '혈당측정',
+  '간이혈당계',
 ] as const
 
 export const DESKTOP_WIDTH_SEQUENCE = [300, 400, 500, 600] as const

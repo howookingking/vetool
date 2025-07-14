@@ -19,19 +19,14 @@ import { useState } from 'react'
 import VetName from './vet-name'
 import VetsUpdateFormDynamic from './vets-update-form-dynamic'
 
-type VetsProps = {
+type Props = {
   mainVet: MainAndSubVet
   subVet: MainAndSubVet | null
   icuChartId: string
   inCharge: Json | null
 }
 
-export default function Vets({
-  mainVet,
-  subVet,
-  icuChartId,
-  inCharge,
-}: VetsProps) {
+export default function Vets({ mainVet, subVet, icuChartId, inCharge }: Props) {
   const { today } = (inCharge as IcuChartsInCharge) || {}
 
   const {
@@ -74,6 +69,7 @@ export default function Vets({
           </div>
         </Button>
       </DialogTrigger>
+
       <DialogContent className="sm:max-w-[640px]">
         <DialogHeader>
           <DialogTitle>담당의 변경</DialogTitle>
