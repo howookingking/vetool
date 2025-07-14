@@ -8,6 +8,10 @@ export const CALCULATORS = [
     label: '수액속도',
   },
   {
+    value: 'kcl',
+    label: 'KCl 첨가',
+  },
+  {
     value: 'rer-mer',
     label: 'RER, MER / 사료량',
   },

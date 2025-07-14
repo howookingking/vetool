@@ -9,8 +9,8 @@ import {
 } from '@/components/ui/select'
 import { CALCULATORS } from '@/constants/hospital/icu/calculator/calculator'
 import { cn } from '@/lib/utils/utils'
-import { type SelectedCalculator } from '@/types/hospital/calculator'
-import { type Dispatch, type SetStateAction } from 'react'
+import type { SelectedCalculator } from '@/types/hospital/calculator'
+import type { Dispatch, SetStateAction } from 'react'
 
 type Props = {
   selectedCalculator: SelectedCalculator
