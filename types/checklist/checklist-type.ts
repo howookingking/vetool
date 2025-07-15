@@ -22,11 +22,11 @@ export type ChecklistData = {
   istxing: boolean
   enddate: null | string
 }
-type ChecklistVet = {
-  attending?: null | string
-  primary?: null | string
-  assistence?: null | string
-  anesthesia?: null | string
+export type ChecklistVet = {
+  attending: string
+  primary: string
+  assistence: string
+  anesthesia: string
 }
 export type ChecklistProtocolItem = {
   txStart?: null | number
@@ -59,13 +59,13 @@ export type Checklistset = {
 
 export type ChecklistResults = Record<string, string>
 
-type PreInfo = {
-  pre: string | null
-  induce: string | null
-  main: string | null
-  post: string | null
-  other: string | null
-} | null
+export type PreInfo = {
+  pre: string
+  induce: string
+  main: string
+  post: string
+  other: string
+}
 
 export type FilteredChecklist = {
   today: [] | ChecklistData[]

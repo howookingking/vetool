@@ -14,10 +14,22 @@ import CustomTooltip from '@/components/ui/custom-tooltip'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils/utils'
 import dynamic from 'next/dynamic'
+import LargeLoaderCircle from '@/components/common/large-loader-circle'
+
+const LazyChecklistEditBasic = dynamic(
+  () =>
+    import(
+      '@/components/hospital/checklist/checklist-edit/checklist-edit-basic'
+    ),
+  {
+    ssr: false,
+    loading: () => <LargeLoaderCircle className="h-[574px]" />,
+  },
+)
 type Props = {
   checklistId: string
   setChecklistEditDialogOpen: (isopen: boolean) => void
-  checklistData: ChecklistData | null | undefined
+  checklistData: ChecklistData
 }
 export default function ChecklistEditContainer({
   checklistId,
@@ -46,7 +58,7 @@ export default function ChecklistEditContainer({
       <ChecklistPatientInfo
         patientId={checklistData ? checklistData.patient_id : null}
       />
-      <div className="flex flex-wrap">
+      <div className="m-3 flex flex-wrap 2xl:m-2">
         {!checklistData?.checklist_type &&
           ChecklistTypes &&
           ChecklistTypes.map((_type) => (
@@ -73,6 +85,16 @@ export default function ChecklistEditContainer({
             </CustomTooltip>
           ))}
       </div>
+      {isActive && isActive === '일반' ? (
+        <div>
+          <LazyChecklistEditBasic
+            checklistData={checklistData}
+            setChecklistEditDialogOpen={setChecklistEditDialogOpen}
+          ></LazyChecklistEditBasic>
+        </div>
+      ) : (
+        <div></div>
+      )}
     </div>
   )
 }

@@ -88,11 +88,13 @@ export default function ChecklistEditDialogButton({
               : '체크리스트를 신규등록합니다'}
           </DialogDescription>
         </DialogHeader>
-        <ChecklistEditContainer
-          checklistId={checklistId}
-          checklistData={checklistData}
-          setChecklistEditDialogOpen={checklistEditDialogOpen}
-        />
+        {checklistData && (
+          <ChecklistEditContainer
+            checklistId={checklistId}
+            checklistData={checklistData}
+            setChecklistEditDialogOpen={checklistEditDialogOpen}
+          />
+        )}
       </DialogContent>
     </Dialog>
   )

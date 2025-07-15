@@ -1,5 +1,8 @@
 import { createClient } from '@/lib/supabase/client' // 클라이언트 컴포넌트용
-import type { ChecklistPatinet } from '@/types/checklist/checklist-type'
+import type {
+  ChecklistData,
+  ChecklistPatinet,
+} from '@/types/checklist/checklist-type'
 import { redirect } from 'next/navigation'
 
 const supabase = createClient()
@@ -67,4 +70,30 @@ export const getChecklistDataByIdChannel = async (
     .subscribe()
 
   return channel
+}
+
+export const updateEachChecklist = async (checklistdata: ChecklistData) => {
+  const { data, error } = await supabase
+    .from('checklist')
+    .update(checklistdata) // ← 여기에 업데이트할 데이터 객체가 필요
+    .eq('checklist_id', checklistdata.checklist_id)
+
+  if (error) {
+    console.error('Update failed:', error.message)
+    return
+  }
+
+  return data
+}
+export const deleteChecklist = async (checklistId: string) => {
+  const { data, error } = await supabase
+    .from('checklist')
+    .delete()
+    .eq('checklist_id', checklistId)
+
+  if (error) {
+    console.error('삭제 실패:', error.message)
+  } else {
+    console.log('삭제 완료:', data)
+  }
 }
