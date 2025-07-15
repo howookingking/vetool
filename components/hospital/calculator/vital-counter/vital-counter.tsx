@@ -43,11 +43,13 @@ export default function VitalCounter() {
     )
   }
 
-  const handlePressStart = () => {
+  const handlePressStart = (e: React.PointerEvent<SVGSVGElement>) => {
+    e.preventDefault()
     setVitalCountState((prev) => ({ ...prev, isPressed: true }))
   }
 
-  const handlePressEnd = () => {
+  const handlePressEnd = (e: React.PointerEvent<SVGSVGElement>) => {
+    e.preventDefault()
     setVitalCountState((prev) => ({ ...prev, isPressed: false }))
     handleHeartClick()
   }
@@ -87,10 +89,8 @@ export default function VitalCounter() {
             fill="#e15745"
             stroke="#e15745"
             strokeWidth={1}
-            onMouseDown={handlePressStart}
-            onMouseUp={handlePressEnd}
-            onTouchStart={handlePressStart}
-            onTouchEnd={handlePressEnd}
+            onPointerDown={handlePressStart}
+            onPointerUp={handlePressEnd}
           />
           <span className="mt-2 text-xl font-bold">심박수, 호흡수 측정</span>
 
