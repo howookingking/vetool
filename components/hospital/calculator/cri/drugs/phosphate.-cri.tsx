@@ -56,9 +56,6 @@ export default function PhosphateCri({
           <span>Phosten (136.1mg/ml)</span>
           <HelperTooltip>
             <p>
-              중증 저인혈증(&lt;1 mg/dL) 환자에서 정맥 인 보충이 필요합니다.
-            </p>
-            <p>
               포스텐은 정맥용 고삼투성 제제로, 반드시 희석하여 사용해야 합니다.
             </p>
             <p className="text-muted-foreground">
@@ -67,9 +64,12 @@ export default function PhosphateCri({
             <p className="text-destructive">
               ⚠️ 락테이트 링거액에 희석하면 칼슘과 침전 발생 위험이 있습니다.
             </p>
-            <p>포스텐(KH₂PO₄) 1mL = 인 1 mmol + 칼륨 1 mEq</p>
+            <br />
 
+            <p>포스텐(KH₂PO₄) 1mL = 인 1 mmol + 칼륨 1 mEq</p>
             <p>💡 수액 내 총 칼륨 보충량을 계산에 포함하세요.</p>
+            <br />
+
             <p>📏 권장 속도: 0.01 ~ 0.12 mmol/kg/hr (인 기준)</p>
             <p className="text-muted-foreground">
               치료 시작 후 4~6시간마다 P, iCa, K 재검사 권장
@@ -78,6 +78,8 @@ export default function PhosphateCri({
               🚨 과량 보충 시: 고인산혈증, 저칼슘혈증, 석회화, 신부전,
               고칼륨혈증 주의
             </p>
+            <br />
+
             <p>
               * Small Animal Critical Cart Medicine Second Edition, Deborah
               Silverstein & Kate Hopper
