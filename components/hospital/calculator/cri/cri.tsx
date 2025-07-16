@@ -10,6 +10,7 @@ import FurosemideCri from './drugs/furosemide-cri'
 import BicarbonateCri from './drugs/bicarbonate-cri'
 import MetoclopramideCri from './drugs/metoclopramide-cri'
 import { useState } from 'react'
+import PhosphateCri from './drugs/phosphate.-cri'
 
 type Props = {
   weight: string
@@ -18,9 +19,8 @@ type Props = {
 
 export default function Cri({ weight, setIsSheetOpen }: Props) {
   const [localWeight, setLocalWeight] = useState(weight)
-  const handleChangeWeight = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeWeight = (e: React.ChangeEvent<HTMLInputElement>) =>
     setLocalWeight(e.target.value)
-  }
 
   return (
     <div className="h-full">
@@ -55,6 +55,12 @@ export default function Cri({ weight, setIsSheetOpen }: Props) {
           weight={localWeight}
           setIsSheetOpen={setIsSheetOpen}
           handleChangeWeight={handleChangeWeight}
+        />
+
+        <PhosphateCri
+          handleChangeWeight={handleChangeWeight}
+          setIsSheetOpen={setIsSheetOpen}
+          weight={localWeight}
         />
       </Accordion>
     </div>
