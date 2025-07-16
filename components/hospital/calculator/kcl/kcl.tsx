@@ -8,10 +8,10 @@ import {
 } from '@/components/ui/sheet'
 import { KCL_SUPPLEMENT_TABLE } from '@/constants/hospital/kcl'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
+import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import CalculatorResult from '../result/calculator-result'
 import KclTable from './kcl-table'
-import { useParams } from 'next/navigation'
 
 type Props = {
   weight: string
@@ -32,11 +32,6 @@ export default function Kcl({ weight, setIsSheetOpen }: Props) {
       `hs-${row.hs500}` === selectedKcl ||
       `ps-${row.ps500}` === selectedKcl,
   )
-
-  const result =
-    selectedKclData && localWeight
-      ? `${fluid.toLocaleUpperCase()} + KCl ${kclMl}mL, 최대 수액속도 : ${(selectedKclData.maxFluidRate * Number(localWeight)).toFixed(1)}mL/hr`
-      : null
 
   return (
     <>
@@ -78,12 +73,22 @@ export default function Kcl({ weight, setIsSheetOpen }: Props) {
           setSelectedKCl={setSelectedKcl}
         />
 
-        {result && (
+        {selectedKclData && localWeight && (
           <CalculatorResult
             displayResult={
-              <span className="font-bold text-primary">{result}</span>
+              <div>
+                {fluid.toLocaleUpperCase()} + KCl{' '}
+                <span className="font-bold text-primary">{kclMl}mL</span>, 최대
+                수액속도 :{' '}
+                <span className="font-bold text-primary">
+                  {(selectedKclData.maxFluidRate * Number(localWeight)).toFixed(
+                    1,
+                  )}
+                  mL/hr
+                </span>
+              </div>
             }
-            copyResult={`${result}`}
+            copyResult={`${fluid.toLocaleUpperCase()} + KCl ${kclMl}mL, 최대 수액속도 : ${(selectedKclData.maxFluidRate * Number(localWeight)).toFixed(1)}mL/hr`}
             hasInsertOrderButton={hasSelectedPatient}
             orderType="fluid"
             setIsSheetOpen={setIsSheetOpen}

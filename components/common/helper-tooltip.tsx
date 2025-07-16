@@ -33,7 +33,11 @@ export default function HelperTooltip({
         </TooltipTrigger>
         <TooltipContent
           side={side}
-          className={cn(variant === 'help' ? '' : 'bg-destructive')}
+          className={cn(
+            variant === 'help'
+              ? 'border-2 border-primary bg-white text-black'
+              : 'bg-destructive',
+          )}
         >
           <div>{children}</div>
         </TooltipContent>
