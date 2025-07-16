@@ -81,7 +81,7 @@ export default function PhosphateCri({
             <br />
 
             <p>
-              * Small Animal Critical Cart Medicine Second Edition, Deborah
+              * Small Animal Critical Care Medicine Second Edition, Deborah
               Silverstein & Kate Hopper
             </p>
           </HelperTooltip>
