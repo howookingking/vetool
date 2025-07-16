@@ -32,7 +32,7 @@ export default function Cri({ weight, setIsSheetOpen }: Props) {
         </SheetDescription>
       </SheetHeader>
 
-      <Accordion type="multiple">
+      <Accordion type="single">
         <FurosemideCri
           weight={localWeight}
           setIsSheetOpen={setIsSheetOpen}
