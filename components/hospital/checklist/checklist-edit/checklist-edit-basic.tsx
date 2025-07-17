@@ -29,9 +29,13 @@ import {
   updateEachChecklist,
 } from '@/lib/services/checklist/get-checklist-data-client'
 import { toast } from '@/components/ui/use-toast'
+import ChecklistEditTxInfo from './checklist-edit-txinfo'
+import { usePathname, useRouter } from 'next/navigation'
+import ChecklistEditVetInfo from './checklist-edit-vetinfo'
 type Props = {
   checklistData: ChecklistData
   setChecklistEditDialogOpen: (isopen: boolean) => void
+  checklistType: string
 }
 
 type keystring = keyof ChecklistData
@@ -39,16 +43,20 @@ type keystring = keyof ChecklistData
 export default function ChecklistEditBasic({
   checklistData,
   setChecklistEditDialogOpen,
+  checklistType,
 }: Props) {
   const [checklistdata, setChecklistData] =
     useState<ChecklistData>(checklistData)
   const [groups, setGroups] = useState<string[]>([])
-  const [targetDate, setTargetDate] = useState<string>()
+  const [targetDate, setTargetDate] = useState<string>(
+    format(new Date(), 'yyyy-MM-dd'),
+  )
   const basicHosData = useBasicHosDataContext().basicHosData
   useEffect(() => {
-    if (checklistData) {
-      if (!checklistData.checklist_set) {
-        checklistData.checklist_set = {
+    const preChecklistData = JSON.parse(JSON.stringify(checklistData))
+    if (preChecklistData) {
+      if (!preChecklistData.checklist_set) {
+        preChecklistData.checklist_set = {
           interval: '1',
           preSet: [
             {
@@ -64,17 +72,21 @@ export default function ChecklistEditBasic({
             },
           ],
         }
+
         setChecklistData(checklistData)
-        checklistData?.checklist_group &&
-          setGroups(checklistData.checklist_group)
-        checklistData?.due_date && setTargetDate(checklistData.due_date)
+        preChecklistData.checklist_group &&
+          setGroups(preChecklistData.checklist_group)
+        preChecklistData.due_date && setTargetDate(preChecklistData.due_date)
       } else {
-        checklistData?.checklist_group &&
-          setGroups(checklistData.checklist_group)
-        checklistData?.due_date && setTargetDate(checklistData.due_date)
+        setChecklistData(checklistData)
+        preChecklistData.checklist_group &&
+          setGroups(preChecklistData.checklist_group)
+        preChecklistData.due_date && setTargetDate(preChecklistData.due_date)
       }
     }
-  }, [checklistData])
+  }, [checklistData, checklistType])
+  const { push } = useRouter()
+  const pathname = usePathname()
   const isEditMode = !!(
     checklistData?.checklist_title && checklistData?.checklist_type
   )
@@ -106,7 +118,7 @@ export default function ChecklistEditBasic({
       preChecklistData.checklist_vet = {
         attending: '',
         primary: '',
-        assistence: '',
+        assistance: '',
         anesthesia: '',
       }
       preChecklistData.checklist_vet[keyname] = e.target.value
@@ -116,7 +128,11 @@ export default function ChecklistEditBasic({
       setChecklistData(preChecklistData)
     }
   }
-  const changePreInfo = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const changePreInfo = (
+    e:
+      | React.ChangeEvent<HTMLTextAreaElement>
+      | React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const preChecklistData: ChecklistData = { ...checklistdata }
     const keyname = e.target.name as keyof PreInfo
     if (!preChecklistData.preinfo) {
@@ -153,7 +169,8 @@ export default function ChecklistEditBasic({
       setChecklistEditDialogOpen(false)
     }
     const preChecklistData: ChecklistData = { ...checklistdata }
-    preChecklistData.checklist_type = '일반'
+    preChecklistData.due_date = targetDate
+    preChecklistData.checklist_type = checklistType
     updateEachChecklist(preChecklistData).then(() => {
       setChecklistEditDialogOpen(false)
       toast({
@@ -173,10 +190,12 @@ export default function ChecklistEditBasic({
     ) {
       deleteChecklist(checklistdata.checklist_id).then(() => {
         setChecklistEditDialogOpen(false)
+
         toast({
           title: '체크리스트 삭제 완료',
           description: '체크리스트를 삭제했습니다.',
         })
+        push(`/hospital/${checklistdata.hos_id}/checklist/${targetDate}/chart`)
       })
     }
   }
@@ -199,7 +218,7 @@ export default function ChecklistEditBasic({
           <div className="flex items-center px-3">
             <div className="mr-2 text-sm">예정일 변경</div>
             <ChecklistEditDateselector
-              targetDate={targetDate ?? format(new Date(), 'yyyy-mm-dd')}
+              targetDate={targetDate}
               changeDate={setTargetDate}
             ></ChecklistEditDateselector>
           </div>
@@ -208,7 +227,7 @@ export default function ChecklistEditBasic({
             <Input
               className="w-20"
               type="number"
-              value={checklistdata.weight ?? 0}
+              value={checklistdata.weight ?? null}
               onChange={(e) => {
                 const preChecklistData: ChecklistData = { ...checklistdata }
                 preChecklistData.weight = Number(e.target.value)
@@ -216,6 +235,18 @@ export default function ChecklistEditBasic({
               }}
             ></Input>
           </div>
+          {(checklistType === '응급' || checklistType === '마취') && (
+            <div className="flex items-center px-3">
+              <div className="mr-2 text-sm">기관튜브</div>
+              <Input
+                className="w-20"
+                type="text"
+                name="other"
+                value={checklistdata.preinfo?.other ?? ''}
+                onChange={changePreInfo}
+              ></Input>
+            </div>
+          )}
         </div>
         <div className="flex items-center px-3">
           <span className="mr-2 text-lg">제목 : </span>
@@ -241,19 +272,11 @@ export default function ChecklistEditBasic({
             </AccordionTrigger>
 
             <AccordionContent className="flex flex-col gap-4 text-balance">
-              <div className="flex-col">
-                <div className="flex items-center px-3">
-                  <span className="text-l mr-xl">담당수의사 : </span>
-                  <Input
-                    className="w-[50%]"
-                    name="attending"
-                    type="text"
-                    value={checklistdata.checklist_vet?.attending ?? ''}
-                    onChange={changevetlist}
-                    placeholder="필수항목입니다. 담당수의사 이름을 입력하세요"
-                  ></Input>
-                </div>
-              </div>
+              <ChecklistEditVetInfo
+                checklistVet={checklistdata.checklist_vet ?? null}
+                changevetlist={changevetlist}
+                checklistType={checklistType ?? '일반'}
+              />
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="preInfo">
@@ -261,41 +284,10 @@ export default function ChecklistEditBasic({
               2. 처치 정보
             </AccordionTrigger>
             <AccordionContent className="flex flex-col gap-4 text-balance">
-              <div className="flex-col">
-                <div className="flex-col items-center px-3">
-                  <span className="text-l m-2">전처치 </span>
-                  <Textarea
-                    className="m-2"
-                    name="pre"
-                    rows={3}
-                    value={checklistdata.preinfo?.pre ?? ''}
-                    onChange={changePreInfo}
-                    placeholder="전처치 정보를 입력하세요"
-                  ></Textarea>
-                </div>
-                <div className="flex-col items-center px-3">
-                  <span className="text-l m-2">주요처치 </span>
-                  <Textarea
-                    className="m-2"
-                    name="main"
-                    rows={3}
-                    value={checklistdata.preinfo?.main ?? ''}
-                    onChange={changePreInfo}
-                    placeholder="주요처치 정보를 입력하세요"
-                  ></Textarea>
-                </div>
-                <div className="flex-col items-center px-3">
-                  <span className="text-l m-2">후처치 </span>
-                  <Textarea
-                    className="m-2"
-                    name="post"
-                    rows={3}
-                    value={checklistdata.preinfo?.post ?? ''}
-                    onChange={changePreInfo}
-                    placeholder="후처치 정보를 입력하세요"
-                  ></Textarea>
-                </div>
-              </div>
+              <ChecklistEditTxInfo
+                Preinfo={checklistdata.preinfo}
+                changePreInfo={changePreInfo}
+              />
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="checklistSet">
@@ -310,7 +302,7 @@ export default function ChecklistEditBasic({
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-        <div className="flex items-center">
+        <div className="m-3 flex items-center">
           <Button onClick={saveChecklist}>
             {isEditMode ? '수정' : '등록'}
           </Button>

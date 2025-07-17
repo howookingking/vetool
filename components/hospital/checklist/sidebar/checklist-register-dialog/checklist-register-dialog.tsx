@@ -1,3 +1,4 @@
+'use client'
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
@@ -102,7 +103,12 @@ export default function ChecklistRegisterDialog({
       >
         {!checklistData && (
           <div className="flex justify-start">
-            <Button size="sm" className="shrink-0 text-sm" onClick={fastRegist}>
+            <Button
+              size="sm"
+              className="text-sm"
+              variant="destructive"
+              onClick={fastRegist}
+            >
               응급 환자 바로 등록
             </Button>
           </div>

@@ -72,7 +72,7 @@ export const getChecklistDataByIdChannel = async (
   return channel
 }
 
-export const updateEachChecklist = async (checklistdata: ChecklistData) => {
+export const updateEachChecklist = async (checklistdata: any) => {
   const { data, error } = await supabase
     .from('checklist')
     .update(checklistdata) // ← 여기에 업데이트할 데이터 객체가 필요

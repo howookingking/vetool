@@ -1,11 +1,18 @@
+'use client'
 import { getPatientById } from '@/lib/services/checklist/get-checklist-data-client'
 import { useEffect, useState } from 'react'
 import { Cat, Dog } from 'lucide-react'
 import { calculateAge, convertPascalCased } from '@/lib/utils/utils'
+import { ChecklistData } from '@/types/checklist/checklist-type'
+import { kgToBsa } from '@/lib/calculators/checklist-calculators'
 type Props = {
   patientId: string | null
+  checklistdata?: ChecklistData
 }
-export default function ChecklistPatientInfo({ patientId }: Props) {
+export default function ChecklistPatientInfo({
+  patientId,
+  checklistdata,
+}: Props) {
   const [patient, setPatient] = useState<any | null>(null)
 
   useEffect(() => {
@@ -18,7 +25,7 @@ export default function ChecklistPatientInfo({ patientId }: Props) {
     fetchData()
   })
   return patient ? (
-    <div className="flex items-center gap-1 sm:gap-2">
+    <div className="m-3 flex items-center gap-1 sm:gap-2">
       {patient.species === 'canine' ? <Dog size={20} /> : <Cat size={20} />}
       <span>{patient.name}</span>·
       <span className="w-12 truncate sm:w-auto">
@@ -26,6 +33,14 @@ export default function ChecklistPatientInfo({ patientId }: Props) {
       </span>
       ·<span className="uppercase">{patient.gender}</span>·
       <span>{calculateAge(patient.birth)} </span>
+      {checklistdata && checklistdata.weight ? (
+        <span className="text-xs sm:text-sm">
+          {checklistdata.weight}kg(
+          {kgToBsa(checklistdata.weight, patient.species)}m²)
+        </span>
+      ) : (
+        <span className="text-xs sm:text-sm">등록된 몸무게가 없습니다.</span>
+      )}
     </div>
   ) : (
     <div className="flex items-center gap-1 sm:gap-2">

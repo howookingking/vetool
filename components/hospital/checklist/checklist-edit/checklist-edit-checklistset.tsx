@@ -96,6 +96,14 @@ export default function ChecklistEditChecklistSet({
       setSetInfo(predata)
     }
   }
+  const changeInterval = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const predata = { ...checklistset }
+    if (predata) {
+      predata.interval = String(e.target.value)
+      setChecklistSet(predata)
+      setSetInfo(predata)
+    }
+  }
   return (
     <div className="flex flex-col gap-4">
       <h2 className="text-lg font-semibold">체크리스트 설정</h2>
@@ -108,12 +116,7 @@ export default function ChecklistEditChecklistSet({
               type="number"
               value={Number(checklistset.interval)}
               step={1}
-              onChange={(e) =>
-                setChecklistSet({
-                  ...checklistset,
-                  interval: String(e.target.value),
-                })
-              }
+              onChange={changeInterval}
               className="w-20 rounded border px-2 py-1"
             />
           </div>

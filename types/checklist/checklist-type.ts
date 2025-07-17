@@ -25,7 +25,7 @@ export type ChecklistData = {
 export type ChecklistVet = {
   attending: string
   primary: string
-  assistence: string
+  assistance: string
   anesthesia: string
 }
 export type ChecklistProtocolItem = {

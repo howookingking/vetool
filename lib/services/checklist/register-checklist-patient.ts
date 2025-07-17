@@ -21,32 +21,33 @@ export const registerChecklist = async (
   targetDate: string,
 ) => {
   const supabase = await createClient()
-
-  const { error } = await supabase.from('checklist').insert([
-    {
-      hos_id: hosId,
-      patient_id: patientId,
-      due_date: targetDate,
-      age_in_days: birth ? getDaysSince(birth) : 0,
-      checklist_type: patientId ? null : '응급',
-      checklist_set: patientId
-        ? null
-        : {
-            preSet: {
-              setname: [
-                '체온(°C)',
-                '심박수',
-                '호흡수',
-                '혈압(mmHg)',
-                'SPO2(%)',
-                '비고',
-              ],
-              settime: '0',
-            },
-            interval: '1',
-          },
+  const checklistdata: any = {
+    hos_id: hosId,
+    patient_id: patientId,
+    due_date: targetDate,
+    age_in_days: birth ? getDaysSince(birth) : 0,
+    checklist_type: patientId ? null : '응급',
+    checklist_set: {
+      preSet: [
+        {
+          setname: [
+            '체온(°C)',
+            '심박수',
+            '호흡수',
+            '혈압(mmHg)',
+            'SPO2(%)',
+            '비고',
+          ],
+          settime: '0',
+        },
+      ],
+      interval: '1',
     },
-  ])
+  }
+  !patientId && (checklistdata.checklist_title = '응급처치')
+  !patientId && (checklistdata.starttime = new Date())
+  !patientId && (checklistdata.istxing = true)
+  const { error } = await supabase.from('checklist').insert([checklistdata])
 
   //   const { error } = await supabase.rpc('register_icu', {
   //     hos_id_input: hosId,
@@ -78,7 +79,6 @@ export const addPatientToChecklist = async (
     .update({
       patient_id: patientId,
       age_in_days: birth ? getDaysSince(birth) : 0,
-      checklist_type: 'basic',
     })
     .match({ checklist_id: checkklistId })
   if (error) {

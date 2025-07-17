@@ -1,0 +1,212 @@
+'use client'
+import { Button } from '@/components/ui/button'
+import { updateEachChecklist } from '@/lib/services/checklist/get-checklist-data-client'
+import { ChecklistData } from '@/types/checklist/checklist-type'
+import { Pencil } from 'lucide-react'
+import { useState } from 'react'
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
+import ChecklistTimetableTimeEditor from './checklist-timetabletime-editor'
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+type Props = {
+  checklistData: ChecklistData
+}
+
+export default function ChecklistTimetableRecord({ checklistData }: Props) {
+  const [dialogecontent, setDialogcontent] = useState<{
+    pretime: number
+    index: number
+    name: string
+    txt: string
+  }>({
+    pretime: 0,
+    index: 0,
+    name: 'txStart',
+    txt: '',
+  })
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const deleteTimetableTx = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const index = e.currentTarget.name
+    if (
+      checklistData.checklist_timetable &&
+      checklistData.checklist_timetable.length > 0 &&
+      index
+    ) {
+      const newTimetable = [...checklistData.checklist_timetable]
+      newTimetable.splice(Number(index), 1)
+      const predata = { ...checklistData } as ChecklistData
+      predata.checklist_timetable = newTimetable
+      updateEachChecklist(predata)
+    }
+  }
+  const setTime = (time: number, index: number, name: string, txt: string) => {
+    if (txt !== '' && name === 'time') {
+      //timetable 변경
+      const predata = { ...checklistData } as ChecklistData
+      predata.checklist_timetable &&
+        (predata.checklist_timetable[index].time = time)
+      predata.checklist_timetable &&
+        (predata.checklist_timetable[index].txt = txt)
+      updateEachChecklist(predata)
+      setIsDialogOpen(false)
+    } else {
+      //protocol변경
+      const predata = { ...checklistData } as any
+      predata.checklist_protocol[index][name] = time
+      if (predata.checklist_protocol[index].type === 'main') {
+        const tableindex =
+          name === 'txStart'
+            ? predata.checklist_timetable.findIndex(
+                (x: any) =>
+                  x.txt === predata.checklist_protocol[index].title + ' 시작',
+              )
+            : predata.checklist_timetable.findIndex(
+                (x: any) =>
+                  x.txt === predata.checklist_protocol[index].title + ' 종료',
+              )
+        predata.checklist_timetable[tableindex].time = time
+        updateEachChecklist(predata)
+        setIsDialogOpen(false)
+      } else {
+        const tableindex = predata.checklist_timetable.findIndex(
+          (x: any) =>
+            x.txt === predata.checklist_protocol[index].title + ' 완료',
+        )
+        predata.checklist_timetable[tableindex].time = time
+        updateEachChecklist(predata)
+        setIsDialogOpen(false)
+      }
+    }
+  }
+  return (
+    <div className="flex-col">
+      <div>과정중 기록사항</div>
+      <div className="overflow-x-auto">
+        <Table className="m-1 mr-3 w-[97%] min-w-[600px] border border-gray-300 text-center text-sm">
+          <TableHeader>
+            <TableRow className="bg-gray-100">
+              <TableHead className="max-w-[40px] border border-gray-300 px-1 py-1 text-center font-semibold">
+                +min(시간)
+              </TableHead>
+              <TableHead className="border border-gray-300 px-1 py-1 text-center">
+                기록사항
+              </TableHead>
+              <TableHead className="w-[50px] border border-gray-300 px-1 py-1 text-center font-semibold">
+                삭제/수정
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {checklistData?.starttime && (
+              <TableRow className="even:bg-gray-100">
+                <TableCell className="max-w-[40px] border border-gray-300 px-1 py-1">
+                  +0({new Date(checklistData?.starttime).toLocaleTimeString()})
+                </TableCell>
+                <TableCell className="border border-gray-300 px-1 py-1">
+                  {checklistData?.checklist_title + ' '} 시작
+                </TableCell>
+              </TableRow>
+            )}
+            {checklistData?.checklist_timetable &&
+              checklistData.checklist_timetable.map((list, i) => (
+                <TableRow
+                  key={list.txt && list.txt + i}
+                  className="even:bg-gray-100"
+                >
+                  <TableCell className="max-w-[40px] border border-gray-300 px-1 py-1">
+                    +
+                    {checklistData?.starttime &&
+                      list.time &&
+                      list.time !== 0 &&
+                      Math.floor(
+                        (list.time -
+                          new Date(checklistData?.starttime).getTime()) /
+                          (60 * 1000),
+                      )}
+                    (
+                    {checklistData?.starttime && list.time && list.time !== 0
+                      ? new Date(list.time).toLocaleTimeString()
+                      : '0'}
+                    )
+                  </TableCell>
+                  <TableCell className="border border-gray-300 px-1 py-1">
+                    {list.txt}
+                  </TableCell>
+                  <TableCell className="w-[60px] border border-gray-300 px-1 py-1">
+                    <div className="flex">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        name={String(i)}
+                        onClick={deleteTimetableTx}
+                        className="w-[50px]"
+                        title="삭제"
+                      >
+                        -
+                      </Button>
+                      {list.type === 'txt' && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          name={String(i)}
+                          onClick={() => {
+                            setDialogcontent({
+                              pretime: Number(list.time),
+                              index: i,
+                              name: 'time',
+                              txt: String(list.txt),
+                            })
+                            setIsDialogOpen(true)
+                          }}
+                          className="w-[50px]"
+                        >
+                          <Pencil size={20}></Pencil>
+                        </Button>
+                      )}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            {checklistData?.endtime && checklistData?.starttime && (
+              <TableRow className="even:bg-gray-100">
+                <TableCell className="max-w-[40px] border border-gray-300 px-1 py-1">
+                  +
+                  {Math.floor(
+                    (new Date(checklistData?.endtime).getTime() -
+                      new Date(checklistData?.starttime).getTime()) /
+                      (60 * 1000),
+                  )}
+                  ({new Date(checklistData?.endtime).toLocaleTimeString()})
+                </TableCell>
+                <TableCell className="border border-gray-300 px-1 py-1">
+                  {checklistData?.checklist_title + ' '} 종료
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogTitle>시간변경</DialogTitle>
+          <DialogContent>
+            <ChecklistTimetableTimeEditor
+              pretime={dialogecontent.pretime}
+              index={dialogecontent.index}
+              name={dialogecontent.name}
+              txt={dialogecontent.txt}
+              setTime={setTime}
+            />
+          </DialogContent>
+        </DialogContent>
+      </Dialog>
+    </div>
+  )
+}

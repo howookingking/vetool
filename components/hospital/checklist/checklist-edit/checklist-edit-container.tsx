@@ -26,6 +26,16 @@ const LazyChecklistEditBasic = dynamic(
     loading: () => <LargeLoaderCircle className="h-[574px]" />,
   },
 )
+const LazyChecklistEditUser = dynamic(
+  () =>
+    import(
+      '@/components/hospital/checklist/checklist-edit/checklist-edit-basic'
+    ),
+  {
+    ssr: false,
+    loading: () => <LargeLoaderCircle className="h-[574px]" />,
+  },
+)
 type Props = {
   checklistId: string
   setChecklistEditDialogOpen: (isopen: boolean) => void
@@ -40,7 +50,7 @@ export default function ChecklistEditContainer({
   useEffect(() => {
     checklistData &&
       setIsActive(
-        checklistData.checklist_type ? checklistData.checklist_type : null,
+        checklistData.checklist_type ? checklistData.checklist_type : '일반',
       )
   }, [checklistData])
   return (
@@ -85,15 +95,25 @@ export default function ChecklistEditContainer({
             </CustomTooltip>
           ))}
       </div>
-      {isActive && isActive === '일반' ? (
+      {isActive &&
+      (isActive === '일반' || isActive === '응급' || isActive === '마취') ? (
         <div>
           <LazyChecklistEditBasic
             checklistData={checklistData}
             setChecklistEditDialogOpen={setChecklistEditDialogOpen}
+            checklistType={checklistData?.checklist_type ?? isActive}
           ></LazyChecklistEditBasic>
         </div>
+      ) : isActive && isActive === '사용자' ? (
+        <div>
+          <LazyChecklistEditUser
+            checklistData={checklistData}
+            setChecklistEditDialogOpen={setChecklistEditDialogOpen}
+            checklistType={checklistData?.checklist_type ?? isActive}
+          ></LazyChecklistEditUser>
+        </div>
       ) : (
-        <div></div>
+        <></>
       )}
     </div>
   )

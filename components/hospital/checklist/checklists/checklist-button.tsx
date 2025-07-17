@@ -58,7 +58,10 @@ export default function ChecklistButton({
   //   )?.name
 
   const handlePatientButtonClick = () => {
-    const isEdit = checklistchart.checklist_type ? true : false
+    const isEdit =
+      checklistchart.checklist_type === '응급' || checklistchart.checklist_title
+        ? true
+        : false
     isEdit
       ? push(
           `/hospital/${hos_id}/checklist/${target_date}/chart/${checklistchart.checklist_id}/checklist?edit=${false}`,
@@ -112,8 +115,13 @@ export default function ChecklistButton({
         {/* // */}
 
         <div className="mb-1 flex justify-between gap-2">
-          <span className="max-w-[96px] truncate text-xs leading-5">
+          <span className="truncate text-xs leading-5">
             ({checklistchart.checklist_type}) {checklistchart.checklist_title}
+            {' ( '}
+            {checklistchart.checklist_vet?.attending
+              ? '담당의 :' + checklistchart.checklist_vet?.attending
+              : ''}{' '}
+            {' ) '}
           </span>
         </div>
         <div className="mb-1 flex justify-between gap-2">
