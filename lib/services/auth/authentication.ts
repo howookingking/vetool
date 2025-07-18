@@ -6,6 +6,8 @@ import { redirect } from 'next/navigation'
 export async function googleLogin(formData: FormData) {
   const path = formData.get('path') as string
 
+  console.log(path)
+
   const supabase = await createClient()
 
   const { data, error } = await supabase.auth.signInWithOAuth({
@@ -27,9 +29,7 @@ export async function googleLogin(formData: FormData) {
     throw new Error(`구글 로그인 중 에러 발생 : ${error.message}`)
   }
 
-  if (data.url) {
-    redirect(data.url)
-  }
+  redirect(data.url)
 }
 
 export async function logout() {
