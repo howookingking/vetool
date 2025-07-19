@@ -42,6 +42,11 @@ export default function MessageWindow({
         },
         (payload) => {
           const newMessage = payload.new as MessageType
+
+          if (newMessage.user_id === loggdedInUser.user_id) {
+            return
+          }
+
           setLocalMessages((prevMessages) =>
             prevMessages.find(
               (message) => message.message_id === newMessage.message_id,
