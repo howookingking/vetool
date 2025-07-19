@@ -9,11 +9,13 @@ import { SendHorizonal } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import SingleMessage from './single-message'
 
+type UIMessage = MessageType & { ui_id: string }
+
 type Props = {
-  localMessages: MessageType[]
+  localMessages: UIMessage[]
   loggdedInUser: VetoolUser
   hosId: string
-  setLocalMessages: React.Dispatch<React.SetStateAction<MessageType[]>>
+  setLocalMessages: React.Dispatch<React.SetStateAction<UIMessage[]>>
 }
 
 export default function MessageWindow({
@@ -47,13 +49,16 @@ export default function MessageWindow({
             return
           }
 
-          setLocalMessages((prevMessages) =>
-            prevMessages.find(
+          setLocalMessages((prevMessages) => {
+            const isAlreadyExist = prevMessages.find(
               (message) => message.message_id === newMessage.message_id,
             )
-              ? prevMessages
-              : [...prevMessages, newMessage],
-          )
+            if (isAlreadyExist) prevMessages
+            return [
+              ...prevMessages,
+              { ...newMessage, ui_id: newMessage.message_id },
+            ]
+          })
         },
       )
       .subscribe((status, err) => {
@@ -66,7 +71,7 @@ export default function MessageWindow({
           })
         } else if (status === 'CHANNEL_ERROR') {
           toast({
-            title: '실시간 채팅 연결에 실패했습니다',
+            title: '채널 연결에 실패했습니다',
             variant: 'destructive',
           })
         }
@@ -93,7 +98,7 @@ export default function MessageWindow({
     setIsCreating(true)
 
     const tempId = Math.random().toString()
-    const optimisticMessage: MessageType = {
+    const optimisticMessage: UIMessage = {
       avatar_url: loggdedInUser.avatar_url!,
       content: messageInput,
       created_at: new Date().toISOString(),
@@ -102,6 +107,7 @@ export default function MessageWindow({
       position: loggdedInUser.position,
       user_id: loggdedInUser.user_id,
       user_name: loggdedInUser.name,
+      ui_id: tempId,
     }
 
     setLocalMessages((prevMessages) => [...prevMessages, optimisticMessage])
@@ -120,7 +126,7 @@ export default function MessageWindow({
 
     if (error) {
       setLocalMessages((prevMessages) =>
-        prevMessages.filter((message) => message.message_id !== tempId),
+        prevMessages.filter((message) => message.ui_id !== tempId),
       )
       return
     }
@@ -129,7 +135,7 @@ export default function MessageWindow({
 
     setLocalMessages((prevMessages) =>
       prevMessages.map((message) =>
-        message.message_id === tempId ? newMessage : message,
+        message.ui_id === tempId ? { ...message, ...newMessage } : message,
       ),
     )
 
@@ -143,7 +149,7 @@ export default function MessageWindow({
         <div className="space-y-4">
           {localMessages.map((message) => (
             <SingleMessage
-              key={message.message_id}
+              key={message.ui_id}
               message={message}
               isSender={message.user_id === loggdedInUser.user_id}
             />

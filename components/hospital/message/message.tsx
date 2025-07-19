@@ -9,13 +9,15 @@ import { LoaderCircle, MessageCircle, X } from 'lucide-react'
 import { useState } from 'react'
 import MessageWindow from './message-window'
 
+type UIMessage = MessageType & { ui_id: string }
+
 type Props = {
   loggdedInUser: VetoolUser
   hosId: string
 }
 
 export default function Message({ loggdedInUser, hosId }: Props) {
-  const [localMessages, setLocalMessages] = useState<MessageType[]>([])
+  const [localMessages, setLocalMessages] = useState<UIMessage[]>([])
   const [isOpen, setIsOpen] = useState(false)
   const [isFetching, setIsFetching] = useState(false)
 
@@ -24,7 +26,12 @@ export default function Message({ loggdedInUser, hosId }: Props) {
       setIsFetching(true)
 
       const fetchedMessages = await fetchMessages(hosId)
-      setLocalMessages(fetchedMessages)
+      setLocalMessages(
+        fetchedMessages.map((message) => ({
+          ...message,
+          ui_id: message.message_id,
+        })),
+      )
 
       setIsFetching(false)
     }
