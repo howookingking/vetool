@@ -15,10 +15,12 @@ export const noticeSchema = z.object({
 
 /* 투두 */
 export const todoSchema = z.object({
+  targaet_date: z.date({
+    required_error: '날짜을 선택해주세요',
+  }),
   todo_title: z
     .string({ required_error: 'TODO를 입력해주세요' })
     .trim()
     .min(1, { message: 'TODO를 입력해주세요' }),
-
   target_user: z.string().optional(),
 })
