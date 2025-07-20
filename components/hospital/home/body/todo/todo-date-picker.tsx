@@ -8,27 +8,32 @@ import {
 import { formatDate } from '@/lib/utils/utils'
 import { ko } from 'date-fns/locale'
 import { CalendarDays } from 'lucide-react'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { type Dispatch, type SetStateAction, useState } from 'react'
+
+type Props = {
+  selectedDate: Date
+  setSelectedDate: Dispatch<SetStateAction<Date>>
+}
 
 export default function TodoDatePicker({
   selectedDate,
   setSelectedDate,
-}: {
-  selectedDate: Date
-  setSelectedDate: Dispatch<SetStateAction<Date>>
-}) {
+}: Props) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
+
   const handleSelectDate = (date?: Date) => {
-    setSelectedDate(date || new Date())
+    setSelectedDate(date!)
     setIsPopoverOpen(false)
   }
+
+  const formattedSelectedDate = formatDate(selectedDate)
 
   return (
     <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
       <PopoverTrigger asChild>
-        <Button variant="ghost">
+        <Button variant="ghost" className="text-md">
           <CalendarDays />
-          <span>{formatDate(selectedDate)}</span>
+          {formattedSelectedDate}
         </Button>
       </PopoverTrigger>
 
