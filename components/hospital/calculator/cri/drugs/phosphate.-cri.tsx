@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import CalculatorResult from '../../result/calculator-result'
+import NewFeature from '@/components/common/new-feature'
 
 // 포스텐 제품 1ml = 인 1mmol, 칼륨 1mEq(=1mmol)
 const PHOSPHATE_CONCENTRATION = 1
@@ -53,7 +54,9 @@ export default function PhosphateCri({
     <AccordionItem value="phosphate">
       <AccordionTrigger>
         <div className="flex items-center gap-2">
-          <span>Phosten (136.1mg/ml)</span>
+          <NewFeature className="-right-1 -top-0.5">
+            <span>Phosten (136.1mg/ml)</span>
+          </NewFeature>
           <HelperTooltip>
             <p>
               포스텐은 정맥용 고삼투성 제제로, 반드시 희석하여 사용해야 합니다.
