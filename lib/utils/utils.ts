@@ -134,6 +134,14 @@ export const formatDate = (date: Date) => {
   return `${year}-${month}-${day}`
 }
 
+export const formatDateToISOString = (date: Date) => {
+  const year = date.getFullYear()
+  const month = date.getMonth()
+  const day = date.getDate()
+  // Create a new Date object representing the start of the day in UTC
+  return new Date(Date.UTC(year, month, day)).toISOString()
+}
+
 // stringifiedHashtagKeywords('사과(apple), banana') => '#apple#banana'
 export const hashtagKeyword = (stringKeywords: string) => {
   return stringKeywords
@@ -268,9 +276,7 @@ export const sortOrders = (orders: SelectedIcuOrder[]): SelectedIcuOrder[] => {
 export const hasOrderSortingChanged = (
   prevOrders: SelectedIcuOrder[],
   sortedOrders: SelectedIcuOrder[],
-) => {
-  return JSON.stringify(prevOrders) !== JSON.stringify(sortedOrders)
-}
+) => JSON.stringify(prevOrders) !== JSON.stringify(sortedOrders)
 
 export const convertPascalCased = (value: string | null) => {
   if (!value) return '품종 선택'
@@ -439,7 +445,6 @@ export const parseTextWithUrls = (text: string) => {
 
 // 미디어 파일 확장자 검사
 export const isVideoFile = (contentType: string) => {
-  if (!contentType) return false
-
+  if (!contentType) false
   return contentType.includes('video')
 }

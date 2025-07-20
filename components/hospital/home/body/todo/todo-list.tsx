@@ -1,14 +1,14 @@
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import SingleTodo from '@/components/hospital/home/body/todo/single-todo'
-import UpsertTodoDialog from '@/components/hospital/home/body/todo/upsert-todo-dialog'
 import { formatDate } from '@/lib/utils/utils'
-import { type ClientTodo } from '@/types/hospital/todo'
+import type { ClientTodo } from '@/types/hospital/todo'
 
-type TodoListProps = {
+type Props = {
   date: Date
   hosId: string
   todos: ClientTodo[]
   refetch: () => Promise<void>
+  activeFilter: 'all' | 'done' | 'not-done'
 }
 
 export default function TodoList({
@@ -16,26 +16,30 @@ export default function TodoList({
   hosId,
   todos,
   refetch,
-}: TodoListProps) {
-  const formattedToday = formatDate(new Date())
+  activeFilter,
+}: Props) {
+  const formattedDate = formatDate(date)
+
+  const filteredTodos = todos.filter((todo) => {
+    if (activeFilter === 'all') return true
+    if (activeFilter === 'done') return todo.is_done
+    if (activeFilter === 'not-done') return !todo.is_done
+    return true
+  })
+
   return (
     <>
-      <div className="mb-2 flex items-center justify-between">
-        <div className="flex items-center gap-2 text-sm">
-          <span>{formatDate(date)}</span>
-          {formattedToday === formatDate(date) && (
-            <span className="font-bold text-primary">오늘</span>
-          )}
-        </div>
+      <span className="font-semibold">{formattedDate}</span>
 
-        <UpsertTodoDialog hosId={hosId} date={date} refetch={refetch} />
-      </div>
-
-      {todos.length === 0 ? (
-        <NoResultSquirrel text="TODO가 없습니다" size="sm" />
+      {filteredTodos.length === 0 ? (
+        <NoResultSquirrel
+          text="TODO가 없습니다"
+          size="sm"
+          className="flex-col pb-2"
+        />
       ) : (
-        <ul className="flex flex-col gap-6">
-          {todos.map((todo) => (
+        <ul className="flex flex-col divide-y divide-gray-200">
+          {filteredTodos.map((todo) => (
             <SingleTodo
               key={todo.id}
               todo={todo}

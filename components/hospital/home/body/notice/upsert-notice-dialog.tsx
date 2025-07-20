@@ -28,7 +28,7 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
 import { NOTICE_COLORS } from '@/constants/hospital/icu/chart/colors'
-import { noticeSchema } from '@/lib/schemas/icu/icu-schema'
+import { noticeSchema } from '@/lib/schemas/hospital-home/hospital-home-schemas'
 import { createNotice, updateNotice } from '@/lib/services/hospital-home/notice'
 import { cn } from '@/lib/utils/utils'
 import { type NoticeColorType } from '@/types/hospital/notice'
@@ -115,7 +115,7 @@ export default function UpsertNoticeDialog({
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[480px]">
+      <DialogContent className="sm:max-w-[640px]">
         <DialogHeader>
           <DialogTitle>
             {isEdit ? '공지사항 수정' : '공지사항 추가'}
