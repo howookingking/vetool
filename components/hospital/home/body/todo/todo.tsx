@@ -8,13 +8,17 @@ import { addDays, subDays } from 'date-fns'
 import { RefreshCcw } from 'lucide-react'
 import { useState } from 'react'
 import TodoDatePicker from './todo-date-picker'
+import TodoFilter from './todo-filter'
 import TodoList from './todo-list'
 import TodoSkeleton from './todo-skeleton'
 import UpsertTodoDialog from './upsert-todo-dialog'
 
 export default function Todo({ hosId }: { hosId: string }) {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date())
-  const { isFetching, todos, refetch } = useTodos(hosId, selectedDate)
+  const [activeFilter, setActiveFilter] = useState<'all' | 'done' | 'not-done'>(
+    'all',
+  )
+  const { isFetching, todos, refetch } = useTodos(hosId, selectedDate, activeFilter)
 
   return (
     <Card className="w-full rounded-sm xl:w-1/2">
@@ -28,10 +32,17 @@ export default function Todo({ hosId }: { hosId: string }) {
               </Button>
             </div>
 
-            <TodoDatePicker
-              selectedDate={selectedDate}
-              setSelectedDate={setSelectedDate}
-            />
+            <div className="flex items-center gap-1">
+              <TodoDatePicker
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+              />
+
+              <TodoFilter
+                activeFilter={activeFilter}
+                setActiveFilter={setActiveFilter}
+              />
+            </div>
 
             <UpsertTodoDialog
               hosId={hosId}
@@ -53,6 +64,7 @@ export default function Todo({ hosId }: { hosId: string }) {
               todos={todos.dayBeforTodos}
               hosId={hosId}
               refetch={refetch}
+              activeFilter={activeFilter}
             />
 
             <Separator className="my-2 bg-gray-800" />
@@ -63,6 +75,7 @@ export default function Todo({ hosId }: { hosId: string }) {
               todos={todos.seletctedDayTodos}
               hosId={hosId}
               refetch={refetch}
+              activeFilter={activeFilter}
             />
 
             <Separator className="my-2 bg-gray-800" />
@@ -73,6 +86,7 @@ export default function Todo({ hosId }: { hosId: string }) {
               todos={todos.dayAfterTodos}
               hosId={hosId}
               refetch={refetch}
+              activeFilter={activeFilter}
             />
           </>
         )}

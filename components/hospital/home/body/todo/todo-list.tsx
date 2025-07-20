@@ -8,15 +8,30 @@ type Props = {
   hosId: string
   todos: ClientTodo[]
   refetch: () => Promise<void>
+  activeFilter: 'all' | 'done' | 'not-done'
 }
 
-export default function TodoList({ date, hosId, todos, refetch }: Props) {
+export default function TodoList({
+  date,
+  hosId,
+  todos,
+  refetch,
+  activeFilter,
+}: Props) {
   const formattedDate = formatDate(date)
+
+  const filteredTodos = todos.filter((todo) => {
+    if (activeFilter === 'all') return true
+    if (activeFilter === 'done') return todo.is_done
+    if (activeFilter === 'not-done') return !todo.is_done
+    return true
+  })
+
   return (
     <>
       <span className="font-semibold">{formattedDate}</span>
 
-      {todos.length === 0 ? (
+      {filteredTodos.length === 0 ? (
         <NoResultSquirrel
           text="TODO가 없습니다"
           size="sm"
@@ -24,7 +39,7 @@ export default function TodoList({ date, hosId, todos, refetch }: Props) {
         />
       ) : (
         <ul className="flex flex-col divide-y divide-gray-200">
-          {todos.map((todo) => (
+          {filteredTodos.map((todo) => (
             <SingleTodo
               key={todo.id}
               todo={todo}

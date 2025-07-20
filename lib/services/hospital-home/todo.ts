@@ -4,16 +4,27 @@ import { createClient } from '@/lib/supabase/server'
 import { getConsecutiveDays } from '@/lib/utils/utils'
 import { redirect } from 'next/navigation'
 
-export const fetchTodos = async (hosId: string, selectedDate: Date) => {
+export const fetchTodos = async (
+  hosId: string,
+  selectedDate: Date,
+  activeFilter: 'all' | 'done' | 'not-done',
+) => {
   const supabase = await createClient()
   const { dayBefore, seletctedDay, dayAfter } = getConsecutiveDays(selectedDate)
 
-  const { data, error } = await supabase
+  let query = supabase
     .from('todos')
     .select('id, is_done, target_date, target_user, todo_title')
     .match({ hos_id: hosId })
     .in('target_date', [dayBefore, seletctedDay, dayAfter])
-    .order('created_at')
+
+  if (activeFilter === 'done') {
+    query = query.eq('is_done', true)
+  } else if (activeFilter === 'not-done') {
+    query = query.eq('is_done', false)
+  }
+
+  const { data, error } = await query.order('created_at')
 
   if (error) {
     console.error(error)
