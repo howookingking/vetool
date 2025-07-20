@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getConsecutiveDays } from '@/lib/utils/utils'
 import { redirect } from 'next/navigation'
 
-export const getTodos = async (hosId: string, selectedDate: Date) => {
+export const fetchTodos = async (hosId: string, selectedDate: Date) => {
   const supabase = await createClient()
   const { dayBefore, seletctedDay, dayAfter } = getConsecutiveDays(selectedDate)
 

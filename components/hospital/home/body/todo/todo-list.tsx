@@ -1,40 +1,29 @@
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import SingleTodo from '@/components/hospital/home/body/todo/single-todo'
-import UpsertTodoDialog from '@/components/hospital/home/body/todo/upsert-todo-dialog'
 import { formatDate } from '@/lib/utils/utils'
-import { type ClientTodo } from '@/types/hospital/todo'
+import type { ClientTodo } from '@/types/hospital/todo'
 
-type TodoListProps = {
+type Props = {
   date: Date
   hosId: string
   todos: ClientTodo[]
   refetch: () => Promise<void>
 }
 
-export default function TodoList({
-  date,
-  hosId,
-  todos,
-  refetch,
-}: TodoListProps) {
-  const formattedToday = formatDate(new Date())
+export default function TodoList({ date, hosId, todos, refetch }: Props) {
+  const formattedDate = formatDate(date)
   return (
     <>
-      <div className="mb-2 flex items-center justify-between">
-        <div className="flex items-center gap-2 text-sm">
-          <span>{formatDate(date)}</span>
-          {formattedToday === formatDate(date) && (
-            <span className="font-bold text-primary">오늘</span>
-          )}
-        </div>
-
-        <UpsertTodoDialog hosId={hosId} date={date} refetch={refetch} />
-      </div>
+      <span className="font-semibold">{formattedDate}</span>
 
       {todos.length === 0 ? (
-        <NoResultSquirrel text="TODO가 없습니다" size="sm" />
+        <NoResultSquirrel
+          text="TODO가 없습니다"
+          size="sm"
+          className="flex-col pb-2"
+        />
       ) : (
-        <ul className="flex flex-col gap-6">
+        <ul className="flex flex-col divide-y divide-gray-200">
           {todos.map((todo) => (
             <SingleTodo
               key={todo.id}

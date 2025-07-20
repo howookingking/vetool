@@ -10,16 +10,17 @@ import { useState } from 'react'
 import TodoDatePicker from './todo-date-picker'
 import TodoList from './todo-list'
 import TodoSkeleton from './todo-skeleton'
+import UpsertTodoDialog from './upsert-todo-dialog'
 
 export default function Todo({ hosId }: { hosId: string }) {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date())
-  const { isLoading, todos, refetch } = useTodos(hosId, selectedDate)
+  const { isFetching, todos, refetch } = useTodos(hosId, selectedDate)
 
   return (
-    <Card className="w-full rounded-sm xl:w-2/5">
-      <CardHeader>
+    <Card className="w-full rounded-sm xl:w-1/2">
+      <CardHeader className="border-b p-4">
         <CardTitle>
-          <div className="flex justify-between gap-1">
+          <div className="flex items-center justify-between gap-1">
             <div className="flex items-center gap-1">
               <h4>TODO</h4>
               <Button variant="ghost" size="icon" onClick={refetch}>
@@ -27,21 +28,26 @@ export default function Todo({ hosId }: { hosId: string }) {
               </Button>
             </div>
 
-            <div>
-              <TodoDatePicker
-                selectedDate={selectedDate}
-                setSelectedDate={setSelectedDate}
-              />
-            </div>
+            <TodoDatePicker
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+            />
+
+            <UpsertTodoDialog
+              hosId={hosId}
+              date={selectedDate}
+              refetch={refetch}
+            />
           </div>
         </CardTitle>
       </CardHeader>
 
-      <CardContent className="flex flex-col gap-4">
-        {isLoading ? (
+      <CardContent className="flex flex-col p-4">
+        {isFetching ? (
           <TodoSkeleton />
         ) : (
           <>
+            {/* 선택일 전날 */}
             <TodoList
               date={subDays(selectedDate, 1)}
               todos={todos.dayBeforTodos}
@@ -49,8 +55,9 @@ export default function Todo({ hosId }: { hosId: string }) {
               refetch={refetch}
             />
 
-            <Separator />
+            <Separator className="my-2 bg-gray-800" />
 
+            {/* 선택일 */}
             <TodoList
               date={selectedDate}
               todos={todos.seletctedDayTodos}
@@ -58,8 +65,9 @@ export default function Todo({ hosId }: { hosId: string }) {
               refetch={refetch}
             />
 
-            <Separator />
+            <Separator className="my-2 bg-gray-800" />
 
+            {/* 선택일 다음날 */}
             <TodoList
               date={addDays(selectedDate, 1)}
               todos={todos.dayAfterTodos}
