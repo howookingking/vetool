@@ -13,6 +13,7 @@ export default function useMessage(hosId: string, loggdedInUser: VetoolUser) {
   const [isFetching, setIsFetching] = useState(true)
   const [messageInput, setMessageInput] = useState('')
   const [isCreating, setIsCreating] = useState(false)
+  const [isConnected, setIsConnected] = useState(false)
 
   useEffect(() => {
     const getInitialMessages = async () => {
@@ -73,16 +74,21 @@ export default function useMessage(hosId: string, loggdedInUser: VetoolUser) {
       .subscribe((status, err) => {
         if (status === 'SUBSCRIBED') {
           console.log('Connected to chat channel!')
+          setIsConnected(true)
         } else if (status === 'TIMED_OUT') {
           toast({
             title: '연결 시간이 초과되었습니다',
             variant: 'destructive',
           })
+          setIsConnected(false)
         } else if (status === 'CHANNEL_ERROR') {
           toast({
             title: '채널 연결에 실패했습니다',
             variant: 'destructive',
           })
+          setIsConnected(false)
+        } else if (status === 'CLOSED') {
+          setIsConnected(false)
         }
 
         if (err) {
@@ -91,6 +97,7 @@ export default function useMessage(hosId: string, loggdedInUser: VetoolUser) {
             description: err.message,
             variant: 'destructive',
           })
+          setIsConnected(false)
         }
       })
 
@@ -160,5 +167,6 @@ export default function useMessage(hosId: string, loggdedInUser: VetoolUser) {
     handleCreateMessage,
     isCreating,
     isFetching,
+    isConnected,
   }
 }

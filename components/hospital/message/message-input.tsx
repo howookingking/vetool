@@ -1,9 +1,10 @@
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { SendHorizonal } from 'lucide-react'
-import type { Dispatch, SetStateAction } from 'react'
+import { type Dispatch, type SetStateAction, useEffect, useRef } from 'react'
 
 type Props = {
+  isConnected: boolean
   messageInput: string
   setMessageInput: Dispatch<SetStateAction<string>>
   isCreating: boolean
@@ -11,14 +12,24 @@ type Props = {
 }
 
 export default function MessageInput({
+  isConnected,
   messageInput,
   setMessageInput,
   isCreating,
   handleCreateMessage,
 }: Props) {
+  const inputRef = useRef<HTMLTextAreaElement>(null)
+
+  useEffect(() => {
+    if (!isCreating) {
+      inputRef.current?.focus()
+    }
+  }, [isCreating])
+
   return (
     <div className="flex items-end gap-2 border-t bg-white p-3">
       <Textarea
+        ref={inputRef}
         value={messageInput}
         onChange={(e) => setMessageInput(e.target.value)}
         onKeyDown={(e) => {
@@ -30,7 +41,7 @@ export default function MessageInput({
         }}
         placeholder="줄 추가 : Shift + Enter ⏎"
         className="resize-none"
-        disabled={isCreating}
+        disabled={isCreating || !isConnected}
       />
       <Button
         onClick={handleCreateMessage}

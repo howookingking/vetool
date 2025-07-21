@@ -19,12 +19,18 @@ export default function MessageWindow({ loggdedInUser, hosId }: Props) {
     localMessages,
     messageInput,
     setMessageInput,
+    isConnected,
   } = useMessage(hosId, loggdedInUser)
 
   const messageEndRef = useAutoScroll(localMessages)
 
   return (
-    <div className="flex h-[60vh] flex-col bg-green-200">
+    <div className="relative flex h-[60vh] flex-col bg-green-200">
+      <div
+        className={`absolute left-2 top-2 h-3 w-3 animate-pulse rounded-full ${
+          isConnected ? 'bg-green-500' : 'bg-red-500'
+        }`}
+      />
       {isFetching ? (
         <LargeLoaderCircle className="flex-1 animate-spin" />
       ) : (
@@ -43,6 +49,7 @@ export default function MessageWindow({ loggdedInUser, hosId }: Props) {
       )}
 
       <MessageInput
+        isConnected={isConnected}
         messageInput={messageInput}
         setMessageInput={setMessageInput}
         isCreating={isCreating}

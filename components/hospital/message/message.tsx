@@ -27,9 +27,7 @@ export default function Message({ loggdedInUser, hosId }: Props) {
           className="rounded-full"
           aria-label={isOpen ? '채팅 닫기' : '채팅 열기'}
         >
-          <NewFeature className="-right-1 -top-1">
-            <MessageCircle />
-          </NewFeature>
+          <MessageCircle />
         </Button>
       </div>
 
@@ -39,10 +37,12 @@ export default function Message({ loggdedInUser, hosId }: Props) {
             ref={nodeRef}
             className="fixed bottom-2 right-2 z-50 ml-2 min-w-[300px] overflow-hidden md:min-w-[400px]"
           >
-            <div className="handle absolute left-1/2 top-1 z-50 h-1.5 w-12 -translate-x-1/2 cursor-move rounded-md bg-gray-50" />
+            {/* draggable */}
+            <div className="handle absolute left-1/2 top-1 z-50 h-1.5 w-12 -translate-x-1/2 cursor-move rounded-md bg-gray-50 transition hover:bg-gray-200" />
 
+            {/* close button */}
             <X
-              className="absolute right-1 top-1 z-50 h-4 w-4 cursor-pointer"
+              className="absolute right-1 top-1 z-50 h-4 w-4 cursor-pointer transition hover:text-muted-foreground"
               onClick={() => setIsOpen(false)}
               aria-label="채팅 닫기"
             />
