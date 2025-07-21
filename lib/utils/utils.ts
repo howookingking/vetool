@@ -115,14 +115,18 @@ export const getDaysDifference = (dateString: string) => {
 }
 
 export const getConsecutiveDays = (selectedDate: Date) => {
-  const dayBefore = new Date(selectedDate)
-  dayBefore.setDate(selectedDate.getDate() - 1)
-  const dayAfter = new Date(selectedDate)
-  dayAfter.setDate(selectedDate.getDate() + 1)
+  // Normalize selectedDate to the start of the day to avoid timezone/time issues
+  const normalizedSelectedDate = new Date(selectedDate)
+  normalizedSelectedDate.setHours(0, 0, 0, 0)
+
+  const dayBefore = new Date(normalizedSelectedDate)
+  dayBefore.setDate(normalizedSelectedDate.getDate() - 1)
+  const dayAfter = new Date(normalizedSelectedDate)
+  dayAfter.setDate(normalizedSelectedDate.getDate() + 1)
 
   return {
     dayBefore: formatDate(dayBefore),
-    seletctedDay: formatDate(selectedDate),
+    seletctedDay: formatDate(normalizedSelectedDate),
     dayAfter: formatDate(dayAfter),
   }
 }
