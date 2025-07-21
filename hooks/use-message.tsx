@@ -100,7 +100,8 @@ export default function useMessage(hosId: string, loggdedInUser: VetoolUser) {
   }, [hosId])
 
   const handleCreateMessage = async () => {
-    if (!messageInput.trim()) {
+    const trimmedMessage = messageInput.trim()
+    if (!trimmedMessage) {
       setMessageInput('')
       return
     }
@@ -109,7 +110,7 @@ export default function useMessage(hosId: string, loggdedInUser: VetoolUser) {
     const tempId = Math.random().toString()
     const optimisticMessage: UIMessage = {
       avatar_url: loggdedInUser.avatar_url!,
-      content: messageInput,
+      content: trimmedMessage,
       created_at: new Date().toISOString(),
       hos_id: hosId,
       message_id: tempId,
@@ -124,7 +125,7 @@ export default function useMessage(hosId: string, loggdedInUser: VetoolUser) {
     const { data, error } = await supabase
       .from('messages')
       .insert({
-        content: messageInput,
+        content: trimmedMessage,
         hos_id: hosId,
         avatar_url: loggdedInUser.avatar_url!,
         user_id: loggdedInUser.user_id,
