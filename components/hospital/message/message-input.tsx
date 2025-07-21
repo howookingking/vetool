@@ -9,6 +9,7 @@ type Props = {
   setMessageInput: Dispatch<SetStateAction<string>>
   isCreating: boolean
   handleCreateMessage: () => Promise<void>
+  selectedCategory: string
 }
 
 export default function MessageInput({
@@ -17,6 +18,7 @@ export default function MessageInput({
   setMessageInput,
   isCreating,
   handleCreateMessage,
+  selectedCategory,
 }: Props) {
   const inputRef = useRef<HTMLTextAreaElement>(null)
 

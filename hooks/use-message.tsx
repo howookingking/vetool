@@ -6,7 +6,11 @@ import { useEffect, useState } from 'react'
 
 type UIMessage = MessageType & { ui_id: string }
 
-export default function useMessage(hosId: string, loggdedInUser: VetoolUser) {
+export default function useMessage(
+  hosId: string,
+  loggdedInUser: VetoolUser,
+  selectedCategory: string,
+) {
   const supabase = createClient()
 
   const [localMessages, setLocalMessages] = useState<UIMessage[]>([])
@@ -125,6 +129,7 @@ export default function useMessage(hosId: string, loggdedInUser: VetoolUser) {
       user_id: loggdedInUser.user_id,
       user_name: loggdedInUser.name,
       ui_id: tempId,
+      category: selectedCategory,
     }
 
     setLocalMessages((prevMessages) => [...prevMessages, optimisticMessage])
@@ -138,6 +143,7 @@ export default function useMessage(hosId: string, loggdedInUser: VetoolUser) {
         user_id: loggdedInUser.user_id,
         position: loggdedInUser.position,
         user_name: loggdedInUser.name,
+        category: selectedCategory,
       })
       .select()
 

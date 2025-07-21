@@ -7,7 +7,6 @@ import { MessageCircle, X } from 'lucide-react'
 import { useRef, useState } from 'react'
 import Draggable from 'react-draggable'
 import MessageWindow from './message-window'
-import NewFeature from '@/components/common/new-feature'
 
 type Props = {
   loggdedInUser: VetoolUser
@@ -35,11 +34,8 @@ export default function Message({ loggdedInUser, hosId }: Props) {
         <Draggable handle=".handle" nodeRef={nodeRef}>
           <Card
             ref={nodeRef}
-            className="fixed bottom-2 right-2 z-50 ml-2 min-w-[300px] overflow-hidden md:min-w-[400px]"
+            className="fixed bottom-2 right-2 z-50 ml-2 overflow-hidden"
           >
-            {/* draggable */}
-            <div className="handle absolute left-1/2 top-1 z-50 h-1.5 w-12 -translate-x-1/2 cursor-move rounded-md bg-gray-50 transition hover:bg-gray-200" />
-
             {/* close button */}
             <X
               className="absolute right-1 top-1 z-50 h-4 w-4 cursor-pointer transition hover:text-muted-foreground"
