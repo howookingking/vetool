@@ -7,7 +7,7 @@ type Props = {
 }
 export default function ChecklistEditTxInfo({ Preinfo, changePreInfo }: Props) {
   return (
-    <div className="flex-col">
+    <div className="flex-col border border-gray-300 p-3">
       <div className="flex-col items-center px-3">
         <span className="text-l m-2">전처치 </span>
         <Textarea

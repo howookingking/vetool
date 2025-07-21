@@ -3,9 +3,8 @@ import { Button } from '@/components/ui/button'
 import { updateEachChecklist } from '@/lib/services/checklist/get-checklist-data-client'
 import { ChecklistData } from '@/types/checklist/checklist-type'
 import { Pencil } from 'lucide-react'
-import { useState } from 'react'
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
-import ChecklistTimetableTimeEditor from './checklist-timetabletime-editor'
+import ChecklistTimetableTimeEditor from '@/components/hospital/checklist/checklist-body/checklist-body-checklist/checklist-timetabletime-editor'
 import {
   Table,
   TableBody,
@@ -15,6 +14,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { useEffect, useState } from 'react'
+import LocalTime from '@/components/hospital/checklist/common/localtime'
+import { LoaderCircle } from 'lucide-react'
+import { cn } from '@/lib/utils/utils'
 type Props = {
   checklistData: ChecklistData
 }
@@ -32,7 +35,13 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
     txt: '',
   })
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isTableLoad, setIsTableLoad] = useState<boolean>(false)
+  useEffect(() => {
+    setIsTableLoad(false)
+  }, [checklistData])
+
   const deleteTimetableTx = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setIsTableLoad(true)
     const index = e.currentTarget.name
     if (
       checklistData.checklist_timetable &&
@@ -40,13 +49,28 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
       index
     ) {
       const newTimetable = [...checklistData.checklist_timetable]
+      const timetableType = newTimetable[Number(index)].type + ''
       newTimetable.splice(Number(index), 1)
       const predata = { ...checklistData } as ChecklistData
       predata.checklist_timetable = newTimetable
-      updateEachChecklist(predata)
+      if (
+        timetableType.indexOf('protocol-') !== -1 ||
+        timetableType.indexOf('check-') !== -1
+      ) {
+        const newProtocol = checklistData.checklist_protocol && [
+          ...checklistData.checklist_protocol,
+        ]
+        const protocolIndex = Number(timetableType.split('-')[1])
+        newProtocol && (newProtocol[protocolIndex].txEnd = null)
+        predata.checklist_protocol = newProtocol
+        updateEachChecklist(predata)
+      } else {
+        updateEachChecklist(predata)
+      }
     }
   }
   const setTime = (time: number, index: number, name: string, txt: string) => {
+    setIsTableLoad(true)
     if (txt !== '' && name === 'time') {
       //timetable 변경
       const predata = { ...checklistData } as ChecklistData
@@ -107,10 +131,13 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
             {checklistData?.starttime && (
               <TableRow className="even:bg-gray-100">
                 <TableCell className="max-w-[40px] border border-gray-300 px-1 py-1">
-                  +0({new Date(checklistData?.starttime).toLocaleTimeString()})
+                  +0(
+                  <LocalTime time={checklistData.starttime} />)
                 </TableCell>
                 <TableCell className="border border-gray-300 px-1 py-1">
-                  {checklistData?.checklist_title + ' '} 시작
+                  {checklistData?.checklist_title
+                    ? checklistData?.checklist_title + ' '
+                    : '시작'}
                 </TableCell>
               </TableRow>
             )}
@@ -131,46 +158,58 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
                           (60 * 1000),
                       )}
                     (
-                    {checklistData?.starttime && list.time && list.time !== 0
-                      ? new Date(list.time).toLocaleTimeString()
-                      : '0'}
+                    {checklistData?.starttime &&
+                    list.time &&
+                    list.time !== 0 ? (
+                      <LocalTime time={list.time} />
+                    ) : (
+                      '0'
+                    )}
                     )
                   </TableCell>
                   <TableCell className="border border-gray-300 px-1 py-1">
                     {list.txt}
                   </TableCell>
                   <TableCell className="w-[60px] border border-gray-300 px-1 py-1">
-                    <div className="flex">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        name={String(i)}
-                        onClick={deleteTimetableTx}
-                        className="w-[50px]"
-                        title="삭제"
-                      >
-                        -
-                      </Button>
-                      {list.type === 'txt' && (
+                    {isTableLoad ? (
+                      <LoaderCircle
+                        className={cn(
+                          isTableLoad ? 'ml-2 animate-spin' : 'hidden',
+                        )}
+                      />
+                    ) : (
+                      <div className="flex">
                         <Button
                           variant="outline"
                           size="sm"
                           name={String(i)}
-                          onClick={() => {
-                            setDialogcontent({
-                              pretime: Number(list.time),
-                              index: i,
-                              name: 'time',
-                              txt: String(list.txt),
-                            })
-                            setIsDialogOpen(true)
-                          }}
+                          onClick={deleteTimetableTx}
                           className="w-[50px]"
+                          title="삭제"
                         >
-                          <Pencil size={20}></Pencil>
+                          -
                         </Button>
-                      )}
-                    </div>
+                        {list.type === 'txt' && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            name={String(i)}
+                            onClick={() => {
+                              setDialogcontent({
+                                pretime: Number(list.time),
+                                index: i,
+                                name: 'time',
+                                txt: String(list.txt),
+                              })
+                              setIsDialogOpen(true)
+                            }}
+                            className="w-[50px]"
+                          >
+                            <Pencil size={20}></Pencil>
+                          </Button>
+                        )}
+                      </div>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}
@@ -183,7 +222,7 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
                       new Date(checklistData?.starttime).getTime()) /
                       (60 * 1000),
                   )}
-                  ({new Date(checklistData?.endtime).toLocaleTimeString()})
+                  (<LocalTime time={checklistData?.endtime} />)
                 </TableCell>
                 <TableCell className="border border-gray-300 px-1 py-1">
                   {checklistData?.checklist_title + ' '} 종료

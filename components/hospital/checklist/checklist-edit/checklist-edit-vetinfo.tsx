@@ -12,7 +12,7 @@ export default function ChecklistEditVetInfo({
   changevetlist,
 }: Props) {
   return (
-    <div className="flex-col">
+    <div className="flex-col border border-gray-300 p-3">
       <div className="mb-3 flex items-center px-3">
         <span className="text-l mr-xl">담당수의사(*) : </span>
         <Input

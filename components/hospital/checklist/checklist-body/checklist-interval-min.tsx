@@ -36,8 +36,3 @@ export default function ChecklistIntervalMin({
 
   return <div className="ml-3 text-lg font-bold">{intermin}분</div>
 }
-
-function getCurrentTime(): string {
-  const now = new Date()
-  return now.toLocaleTimeString('ko-KR', { hour12: false }) // 24시간 형식
-}

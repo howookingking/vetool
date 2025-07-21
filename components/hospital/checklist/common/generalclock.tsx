@@ -19,7 +19,6 @@ export default function GeneralClock() {
     </div>
   )
 }
-
 function getCurrentTime(): string {
   const now = new Date()
   return now.toLocaleTimeString('ko-KR', { hour12: false }) // 24시간 형식

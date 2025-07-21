@@ -12,10 +12,6 @@ type Props = {
 export default function ChecklistTimetable({ checklistData, timeMin }: Props) {
   return (
     <div>
-      {checklistData.checklist_protocol &&
-        checklistData.checklist_protocol.length > 0 && (
-          <ChecklistTimetableProtocol checklistData={checklistData} />
-        )}
       <ChecklistTimetableRecord checklistData={checklistData} />
     </div>
   )

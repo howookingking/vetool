@@ -1,6 +1,7 @@
 import { Separator } from '@/components/ui/separator'
 import {
   ChecklistData,
+  ChecklistProtocol,
   ChecklistVet,
   PreInfo,
 } from '@/types/checklist/checklist-type'
@@ -32,6 +33,8 @@ import { toast } from '@/components/ui/use-toast'
 import ChecklistEditTxInfo from './checklist-edit-txinfo'
 import { usePathname, useRouter } from 'next/navigation'
 import ChecklistEditVetInfo from './checklist-edit-vetinfo'
+import ChecklistTagging from '../common/checklist-tagging'
+import ChecklistEditProtocolset from './checklist-edit-protocolset'
 type Props = {
   checklistData: ChecklistData
   setChecklistEditDialogOpen: (isopen: boolean) => void
@@ -156,7 +159,11 @@ export default function ChecklistEditBasic({
     preChecklistData.checklist_set = checklistset
     setChecklistData(preChecklistData)
   }
-
+  const changeProtocolSet = (protodolset: ChecklistProtocol) => {
+    const preChecklistData: ChecklistData = { ...checklistdata }
+    preChecklistData.checklist_protocol = protodolset
+    setChecklistData(preChecklistData)
+  }
   const saveChecklist = () => {
     if (
       !checklistdata.checklist_title ||
@@ -301,7 +308,32 @@ export default function ChecklistEditBasic({
               />
             </AccordionContent>
           </AccordionItem>
+          {(checklistType === '사용자' ||
+            checklistType === '처치' ||
+            checklistType === '마취') && (
+            <AccordionItem value="protocol">
+              <AccordionTrigger className="text-lg">
+                4. 프로토콜 설정
+              </AccordionTrigger>
+              <AccordionContent className="flex flex-col gap-4 text-balance">
+                <ChecklistEditProtocolset
+                  protocolSet={checklistdata.checklist_protocol}
+                  setProtocol={changeProtocolSet}
+                />
+              </AccordionContent>
+            </AccordionItem>
+          )}
         </Accordion>
+        <ChecklistTagging
+          preTag={checklistdata.checklist_tag ?? ''}
+          preTagArray={null}
+          changeChecklistTag={(tag) => {
+            const preChecklistData: ChecklistData = { ...checklistdata }
+            preChecklistData.checklist_tag = tag
+            setChecklistData(preChecklistData)
+          }}
+          changeChecklistTagArray={() => {}}
+        ></ChecklistTagging>
         <div className="m-3 flex items-center">
           <Button onClick={saveChecklist}>
             {isEditMode ? '수정' : '등록'}

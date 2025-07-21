@@ -7,18 +7,19 @@ import ChecklistStartEndTimeSet from '@/components/hospital/checklist/checklist-
 import ChecklistIntervalMin from '@/components/hospital/checklist/checklist-body/checklist-interval-min'
 import { useState } from 'react'
 import ChecklistBodyInformation from '@/components/hospital/checklist/checklist-body/checklist-body-information'
-import ChecklistBodyTable from './checklist-body-table'
+import ChecklistBodyTable from './checklist-body-checklist/checklist-body-table'
 import useIsMobile from '@/hooks/use-is-mobile'
-import ChecklistBodyTableMobile from './checklist-body-table-mobile'
-import ChecklistTimetable from './checklist-timetable'
+import ChecklistBodyTableMobile from './checklist-body-checklist/checklist-body-table-mobile'
+import ChecklistTimetable from './checklist-body-checklist/checklist-timetable'
+import ChecklistBodyProtocol from './checklist-body-protocol/checklist-body-protocol'
 
 type Props = {
   checklistData: ChecklistData
 }
 export default function ChecklistBodyContainer({ checklistData }: Props) {
   const [timeMin, setTimeMin] = useState<number>(0)
-  // const isMobile = useIsMobile()
-  const isMobile = true
+  const isMobile = useIsMobile()
+  // const isMobile = true
   return (
     <div className="flex-col">
       <div className="flex flex-wrap">
@@ -43,6 +44,10 @@ export default function ChecklistBodyContainer({ checklistData }: Props) {
         <TabsList>
           <TabsTrigger value="checklist">체크리스트</TabsTrigger>
           <TabsTrigger value="info">처치정보</TabsTrigger>
+          {checklistData.checklist_protocol &&
+            checklistData.checklist_protocol.length > 0 && (
+              <TabsTrigger value="protocol">프로토콜</TabsTrigger>
+            )}
           {isMobile && <TabsTrigger value="mobileOnly">모바일전용</TabsTrigger>}
         </TabsList>
         <TabsContent value="checklist">
@@ -52,6 +57,12 @@ export default function ChecklistBodyContainer({ checklistData }: Props) {
         <TabsContent value="info">
           <ChecklistBodyInformation checklistData={checklistData} />
         </TabsContent>
+        {checklistData.checklist_protocol &&
+          checklistData.checklist_protocol.length > 0 && (
+            <TabsContent value="protocol">
+              <ChecklistBodyProtocol checklistData={checklistData} />
+            </TabsContent>
+          )}
         {isMobile && (
           <TabsContent value="mobileOnly">
             <ChecklistBodyTableMobile

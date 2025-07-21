@@ -95,8 +95,7 @@ export default function ChecklistEditContainer({
             </CustomTooltip>
           ))}
       </div>
-      {isActive &&
-      (isActive === '일반' || isActive === '응급' || isActive === '마취') ? (
+      {isActive && (
         <div>
           <LazyChecklistEditBasic
             checklistData={checklistData}
@@ -104,16 +103,6 @@ export default function ChecklistEditContainer({
             checklistType={checklistData?.checklist_type ?? isActive}
           ></LazyChecklistEditBasic>
         </div>
-      ) : isActive && isActive === '사용자' ? (
-        <div>
-          <LazyChecklistEditUser
-            checklistData={checklistData}
-            setChecklistEditDialogOpen={setChecklistEditDialogOpen}
-            checklistType={checklistData?.checklist_type ?? isActive}
-          ></LazyChecklistEditUser>
-        </div>
-      ) : (
-        <></>
       )}
     </div>
   )

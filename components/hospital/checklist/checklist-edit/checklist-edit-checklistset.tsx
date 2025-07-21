@@ -105,13 +105,13 @@ export default function ChecklistEditChecklistSet({
     }
   }
   return (
-    <div className="flex flex-col gap-4">
-      <h2 className="text-lg font-semibold">체크리스트 설정</h2>
+    <div className="flex flex-col gap-4 border border-gray-300 p-2">
+      {/* <h2 className="text-lg font-semibold">체크리스트 설정</h2> */}
       <p className="text-sm text-gray-500">측정 시간 항목 등을 설정합니다.</p>
       {checklistset && (
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
-            <label className="text-sm font-medium">측정 간격 (분):</label>
+            <label className="ml-3 text-sm font-medium">측정 간격 (분):</label>
             <input
               type="number"
               value={Number(checklistset.interval)}
@@ -144,22 +144,22 @@ export default function ChecklistEditChecklistSet({
                 </ToggleGroupItem>
               ))}
             </ToggleGroup>
-            <div className="mr-2 text-sm">측정시간</div>
+            <div className="ml-3 mr-2 text-sm">측정시간</div>
             <Input
               placeholder="min"
               type="number"
               step={1}
               ref={checkingTime}
-              className="w-13"
+              className="w-[80px]"
             />
 
             <Button
               type="button"
               onClick={addChecklistRow}
-              variant="outline"
+              // variant="outline"
               size="sm"
             >
-              추가
+              +
             </Button>
           </div>
         </div>
