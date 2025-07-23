@@ -106,10 +106,14 @@ export default function ChecklistEditBasic({
       setChecklistData(preChecklistData)
     }
   }
-  const changeChecklistValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const changeChecklistValue = (
+    e:
+      | React.ChangeEvent<HTMLTextAreaElement>
+      | React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const preChecklistData: ChecklistData = { ...checklistdata }
     const keyname = e.target.name as keystring
-    if (keyname === 'checklist_title') {
+    if (keyname === 'checklist_title' || keyname === 'comment') {
       preChecklistData[keyname] = e.target.value
       setChecklistData(preChecklistData)
     }
@@ -293,6 +297,7 @@ export default function ChecklistEditBasic({
             <AccordionContent className="flex flex-col gap-4 text-balance">
               <ChecklistEditTxInfo
                 Preinfo={checklistdata.preinfo}
+                type={checklistdata.checklist_type ?? '일반'}
                 changePreInfo={changePreInfo}
               />
             </AccordionContent>
@@ -323,6 +328,19 @@ export default function ChecklistEditBasic({
               </AccordionContent>
             </AccordionItem>
           )}
+          <AccordionItem value="comment">
+            <AccordionTrigger className="text-lg">5. 소견</AccordionTrigger>
+            <AccordionContent className="flex flex-col gap-4 text-balance">
+              <Textarea
+                className="m-2"
+                name="comment"
+                rows={3}
+                value={checklistdata.comment ?? ''}
+                onChange={changeChecklistValue}
+                placeholder="담당의 소견을 입력 해 주세요"
+              ></Textarea>
+            </AccordionContent>
+          </AccordionItem>
         </Accordion>
         <ChecklistTagging
           preTag={checklistdata.checklist_tag ?? ''}

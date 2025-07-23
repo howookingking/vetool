@@ -51,7 +51,7 @@ export default function ChecklistHeader() {
               isActive === 'txchart' && 'bg-primary text-white',
             )}
           >
-            <FileCheck /> <p className="hidden 2xl:flex">TX</p>
+            <FileCheck /> <p className="hidden 2xl:flex">CHECKLIST</p>
           </Button>
         </CustomTooltip>
         <CustomTooltip

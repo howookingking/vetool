@@ -25,6 +25,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import ChecklistTimetableAdd from './checklist-timetable-add'
+import { LoaderCircle } from 'lucide-react'
 export default function ChecklistBodyTable({
   checklistData,
   timeMin,
@@ -37,6 +38,7 @@ export default function ChecklistBodyTable({
   const [interval, setInterval] = useState<string>('1')
   const [checklistname, setCheckListNames] = useState<CheckNameArray>([]) //체크리스트 종류
   const [tabletimes, setTableTimes] = useState<number[]>([])
+  const [isSaving, setIsSaving] = useState(false)
   const [newresult, setNewResult] = useState<{
     time: string
     newresult: ChecklistResults
@@ -98,12 +100,13 @@ export default function ChecklistBodyTable({
       }
     })
     pretimes.sort((a, b) => a - b)
-
+    checklistData && setIsSaving(false)
     setTableTimes(pretimes)
     setCheckListNames([...prenames2])
   }, [checklistData, timeMin])
 
   const savenewChecklistChart = () => {
+    setIsSaving(true)
     if (checklistData && newresult.time && newresult.newresult) {
       const predata = { ...checklistData }
       predata.checklist_set ??= { result: {}, preSet: [] }
@@ -169,6 +172,11 @@ export default function ChecklistBodyTable({
       }
     }
   }
+  const changeTableCellResult = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const predata = { ...newresult }
+    predata.newresult[e.target.name] = e.target.value
+    setNewResult(predata)
+  }
   return (
     <div className="overflow-x-auto">
       <ChecklistTimetableAdd checklistData={checklistData} />
@@ -218,11 +226,16 @@ export default function ChecklistBodyTable({
                       className="border border-gray-300 px-4 py-2"
                       key={'list' + j}
                     >
-                      <ChecklistBodyTableCell
-                        time={String(time)}
-                        name={list.name}
-                        checklistData={checklistData}
-                      ></ChecklistBodyTableCell>
+                      {isSaving ? (
+                        <LoaderCircle className="ml-2 animate-spin" />
+                      ) : (
+                        <ChecklistBodyTableCell
+                          time={String(time)}
+                          name={list.name}
+                          checklistData={checklistData}
+                          setIsSaving={setIsSaving}
+                        ></ChecklistBodyTableCell>
+                      )}
                     </TableCell>
                   ))}
                 <TableCell className="border border-gray-300 px-4 py-2">
@@ -268,15 +281,9 @@ export default function ChecklistBodyTable({
                   key={'list' + j}
                 >
                   <Input
-                    onChange={(e) =>
-                      setNewResult({
-                        ...newresult,
-                        newresult: {
-                          ...newresult.newresult,
-                          [list.name]: e.target.value,
-                        },
-                      })
-                    }
+                    value={newresult.newresult[list.name] ?? ''}
+                    name={list.name}
+                    onChange={changeTableCellResult}
                   ></Input>
                 </TableCell>
               ))}

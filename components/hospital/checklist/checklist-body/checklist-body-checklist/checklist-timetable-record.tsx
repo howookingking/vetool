@@ -110,7 +110,7 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
     }
   }
   return (
-    <div className="flex-col">
+    <div className="mb-20 flex-col">
       <div>과정중 기록사항</div>
       <div className="overflow-x-auto">
         <Table className="m-1 mr-3 w-[97%] min-w-[600px] border border-gray-300 text-center text-sm">
@@ -136,8 +136,8 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
                 </TableCell>
                 <TableCell className="border border-gray-300 px-1 py-1">
                   {checklistData?.checklist_title
-                    ? checklistData?.checklist_title + ' '
-                    : '시작'}
+                    ? checklistData?.checklist_title + ' 시작'
+                    : ''}
                 </TableCell>
               </TableRow>
             )}

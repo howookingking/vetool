@@ -6,11 +6,13 @@ type Props = {
   time: string
   name: string
   checklistData: ChecklistData
+  setIsSaving: React.Dispatch<React.SetStateAction<boolean>>
 }
 export default function ChecklistBodyTableCell({
   time,
   name,
   checklistData,
+  setIsSaving,
 }: Props) {
   const [result, setResult] = useState<string>('')
   useEffect(() => {
@@ -21,6 +23,7 @@ export default function ChecklistBodyTableCell({
     }
   }, [checklistData])
   const saveChecklist = async () => {
+    setIsSaving(true)
     if (checklistData) {
       const predata = { ...checklistData }
 
