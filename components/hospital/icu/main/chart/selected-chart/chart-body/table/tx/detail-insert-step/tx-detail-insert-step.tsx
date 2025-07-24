@@ -1,7 +1,6 @@
 'use no memo'
 
 import StyledCheckbox from '@/components/common/styled-checkbox'
-import TxImageField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/detail-insert-step/images/tx-image-field'
 import TxLog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/detail-insert-step/tx-log'
 import { Button } from '@/components/ui/button'
 import {
@@ -26,12 +25,12 @@ import { txDetailRegisterFormSchema } from '@/lib/schemas/icu/chart/tx-schema'
 import { deleteIcuChartTx } from '@/lib/services/icu/chart/tx-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
-import type { ImageUrlResponse } from '@/types/images'
+// import type { ImageUrlResponse } from '@/types/images'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import { LoaderCircle } from 'lucide-react'
 import { useParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -58,7 +57,7 @@ export default function TxDetailInsertStep({
     },
   })
 
-  const [bucketImages, setBucketImages] = useState<ImageUrlResponse[]>([])
+  // const [bucketImages, setBucketImages] = useState<ImageUrlResponse[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
   const form = useForm<z.infer<typeof txDetailRegisterFormSchema>>({
@@ -73,31 +72,31 @@ export default function TxDetailInsertStep({
   const hasTxOrder = selectedTxPendingQueue.some((order) => order.txId)
   const hasTxLog = txLocalState?.txLog && txLocalState?.txLog?.length > 0
 
-  useEffect(() => {
-    if (!txLocalState?.txId) return
+  // useEffect(() => {
+  //   if (!txLocalState?.txId) return
 
-    const fetchImages = async () => {
-      setIsLoading(true)
+  //   const fetchImages = async () => {
+  //     setIsLoading(true)
 
-      const response = await fetch(
-        `/api/image?prefix=icu-${txLocalState?.txId}`,
-      )
-      const data = await response.json()
-      setBucketImages(data.urls)
-      setTxLocalState({
-        ...txLocalState,
-        bucketImagesLength: data.urls?.length || 0,
-      })
+  //     const response = await fetch(
+  //       `/api/image?prefix=icu-${txLocalState?.txId}`,
+  //     )
+  //     const data = await response.json()
+  //     setBucketImages(data.urls)
+  //     setTxLocalState({
+  //       ...txLocalState,
+  //       bucketImagesLength: data.urls?.length || 0,
+  //     })
 
-      setIsLoading(false)
-    }
+  //     setIsLoading(false)
+  //   }
 
-    fetchImages()
+  //   fetchImages()
 
-    return () => setBucketImages([])
+  //   return () => setBucketImages([])
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [txLocalState?.txId, setTxLocalState])
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [txLocalState?.txId, setTxLocalState])
 
   const handleSubmit = async (
     values: z.infer<typeof txDetailRegisterFormSchema>,
@@ -132,7 +131,7 @@ export default function TxDetailInsertStep({
           orderName: txLocalState?.icuChartOrderName,
           orderType: txLocalState?.icuChartOrderType,
           updatedLogs,
-          txImages: txLocalState?.txImages,
+          // txImages: txLocalState?.txImages,
           bucketImagesLength: txLocalState?.bucketImagesLength,
         })
         return
@@ -165,21 +164,21 @@ export default function TxDetailInsertStep({
         if (order.txId) {
           await deleteIcuChartTx(order.txId)
 
-          const key = `icu-${order.txId}`
-          await fetch(`/api/image?key=${key}`, {
-            method: 'DELETE',
-          })
+          // const key = `icu-${order.txId}`
+          // await fetch(`/api/image?key=${key}`, {
+          //   method: 'DELETE',
+          // })
         }
       })
     } else {
       await deleteIcuChartTx(txLocalState?.txId!)
 
-      if (bucketImages?.length) {
-        const key = `icu-${txLocalState?.txId}`
-        await fetch(`/api/image?key=${key}`, {
-          method: 'DELETE',
-        })
-      }
+      // if (bucketImages?.length) {
+      //   const key = `icu-${txLocalState?.txId}`
+      //   await fetch(`/api/image?key=${key}`, {
+      //     method: 'DELETE',
+      //   })
+      // }
     }
 
     toast({
@@ -239,13 +238,13 @@ export default function TxDetailInsertStep({
           />
           {hasTxLog && <TxLog logs={txLocalState?.txLog} />}
 
-          <TxImageField
+          {/* <TxImageField
             txLocalState={txLocalState}
             setTxLocalState={setTxLocalState}
             bucketImages={bucketImages}
             setBucketImages={setBucketImages}
             isLoading={isLoading}
-          />
+          /> */}
 
           <FormField
             control={form.control}
