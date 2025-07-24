@@ -24,8 +24,22 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 import ChecklistTimetableAdd from './checklist-timetable-add'
-import { LoaderCircle } from 'lucide-react'
+import { LoaderCircle, Pencil } from 'lucide-react'
+
+import ChecklistEditTableRow from './checklist-edit-table-row'
 export default function ChecklistBodyTable({
   checklistData,
   timeMin,
@@ -43,6 +57,7 @@ export default function ChecklistBodyTable({
     time: string
     newresult: ChecklistResults
   }>({ time: '', newresult: {} })
+  const [isEditOpen, setIseditTableRowOpen] = useState(false)
   useEffect(() => {
     checklistData &&
       checklistData?.checklist_set?.result &&
@@ -103,6 +118,8 @@ export default function ChecklistBodyTable({
     checklistData && setIsSaving(false)
     setTableTimes(pretimes)
     setCheckListNames([...prenames2])
+    console.log(prenames2)
+    console.log(pretimes)
   }, [checklistData, timeMin])
 
   const savenewChecklistChart = () => {
@@ -199,8 +216,8 @@ export default function ChecklistBodyTable({
                       : list.displayName}
                 </TableHead>
               ))}
-            <TableHead className="border border-gray-300 px-4 py-2">
-              +/-
+            <TableHead className="w-[90px] border border-gray-300 px-4 py-2">
+              삭제/수정
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -238,14 +255,34 @@ export default function ChecklistBodyTable({
                       )}
                     </TableCell>
                   ))}
-                <TableCell className="border border-gray-300 px-4 py-2">
+                <TableCell className="flex items-center justify-center px-1 py-3">
                   <Button
                     variant="outline"
                     onClick={delTableRow}
+                    size="sm"
                     name={String(time)}
                   >
                     -
                   </Button>
+                  <Dialog key={'dialog' + i}>
+                    <DialogTrigger asChild>
+                      <Button variant="ghost" className="ml-2">
+                        <Pencil size={14} />
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="h-auto w-auto max-w-full pt-6">
+                      <DialogHeader>
+                        <DialogTitle>수정</DialogTitle>
+                      </DialogHeader>
+                      <ChecklistEditTableRow
+                        pretime={String(time)}
+                        checklistData={checklistData}
+                        checklistname={checklistname}
+                        setIsSaving={setIsSaving}
+                        setIseditTableRowOpen={setIseditTableRowOpen}
+                      ></ChecklistEditTableRow>
+                    </DialogContent>
+                  </Dialog>
                 </TableCell>
               </TableRow>
             ))}

@@ -83,7 +83,7 @@ export default function ChecklistHeader() {
           sideOffset={4}
           delayDuration={300}
         >
-          <Button
+          {/* <Button
             type="button"
             variant="outline"
             name="monitor"
@@ -98,7 +98,7 @@ export default function ChecklistHeader() {
             )}
           >
             <Monitor /> <p className="hidden 2xl:flex">MONITOR</p>
-          </Button>
+          </Button> */}
         </CustomTooltip>
         <ChecklistEditDialogButton
           isEdit={edit === 'true' ? true : false}

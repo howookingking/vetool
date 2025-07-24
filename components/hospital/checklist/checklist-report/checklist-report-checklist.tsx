@@ -102,22 +102,32 @@ export default function ChecklistReportChecklist({ checklistData }: Props) {
                   )
                 </TableCell>
                 {checklistname &&
-                  checklistname.map((list, j) => (
-                    <TableCell
-                      className="border border-gray-300 px-4 py-2"
-                      key={'list' + j}
-                    >
-                      {checklistData.checklist_set?.result &&
+                  checklistname.length > 0 &&
+                  checklistname.map((list, j) => {
+                    console.log(list)
+                    return (
+                      <TableCell
+                        className="border border-gray-300 px-4 py-2"
+                        key={'list' + j}
+                      >
+                        {checklistData.checklist_set?.result &&
+                        checklistData.checklist_set.result[String(time)] &&
                         checklistData.checklist_set.result[String(time)][
                           list.name
-                        ]}
-                      {/* <ChecklistBodyTableCell
+                        ]
+                          ? checklistData.checklist_set.result[String(time)][
+                              list.name
+                            ]
+                          : ''}
+
+                        {/* <ChecklistBodyTableCell
                                 time={String(time)}
                                 name={list.name}
                                 checklistData={checklistData}
                               ></ChecklistBodyTableCell> */}
-                    </TableCell>
-                  ))}
+                      </TableCell>
+                    )
+                  })}
               </TableRow>
             ))}
         </TableBody>

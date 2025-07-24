@@ -125,14 +125,19 @@ export type ProtocolItem = {
   mode: string | null
 }
 
-export type TxTemplateChart = {
+export type TemplateChecklist = {
   checklist_template_id: string
   hos_id: string
-  checklist_type: null | string
-  checklist_title: null | string
-  checklist_tag: null | string
+  checklist_type: string //'checklist' | 'surgery'
+  checklist_title: string //tamplate이름
+  checklist_tag: null | string //검색어
   checklist_protocol: null | ChecklistProtocol
   checklist_set: null | Checklistset
-  preinfo: null | PreInfo
-  share_ids: null | string[]
+  preinfo: null | PreInfo //처치 정보
+}
+
+export type HosChecklistSet = {
+  hos_checklist_set_id: string
+  hos_id: string
+  sharing: { hos_id: string; isShared: boolean; class: string }[]
 }
