@@ -13,7 +13,7 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
-import { hasPermissions, type Plan } from '@/constants/plans'
+import type { Plan } from '@/constants/plans'
 import type { VetoolUser } from '@/types'
 import { Menu } from 'lucide-react'
 import { useState } from 'react'
