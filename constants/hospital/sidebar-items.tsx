@@ -7,6 +7,7 @@ import {
   PawPrint,
   Slice,
   Syringe,
+  SquareCheckBig,
 } from 'lucide-react'
 
 export const SIDEBAR_ITEMS = [
@@ -28,11 +29,18 @@ export const SIDEBAR_ITEMS = [
     isReady: true,
     icon: <Syringe />,
   },
+
   {
     name: '외과차트',
     path: 'surgery',
     isReady: false,
     icon: <Slice />,
+  },
+  {
+    name: '체크리스트',
+    path: 'checklist',
+    isReady: true,
+    icon: <SquareCheckBig />,
   },
   {
     name: '심초차트',

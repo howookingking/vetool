@@ -1,0 +1,101 @@
+'use client'
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils/utils'
+import { Pencil } from 'lucide-react'
+import React, { useState, useEffect } from 'react'
+import { ChecklistData } from '@/types/checklist/checklist-type'
+import ChecklistEditContainer from '../checklist-edit/checklist-edit-container'
+import {
+  getChecklistDataById,
+  getChecklistDataByIdChannel,
+} from '@/lib/services/checklist/get-checklist-data-client'
+
+export default function ChecklistEditDialogButton({
+  isEdit,
+  checklistId,
+}: {
+  isEdit: boolean
+  checklistId: string
+}) {
+  const [isChecklistEditDialogOpen, setChecklistEditDialogOpen] =
+    useState(false)
+  const [checklistData, setChecklistData] = useState<ChecklistData | null>()
+
+  useEffect(() => {
+    fetchData()
+    const channel = getChecklistDataByIdChannel(checklistId, (payload) => {
+      setChecklistData(payload)
+    })
+    setChecklistEditDialogOpen(isEdit)
+  }, [isEdit])
+  //   const isActive = pathname.split('/')[7]
+  const fetchData = async () => {
+    const data: any = await getChecklistDataById(checklistId)
+
+    setChecklistData(data)
+  }
+
+  const checklistEditDialogOpen = (isopen: boolean) => {
+    if (isopen) {
+      fetchData()
+      setChecklistEditDialogOpen(true)
+    } else {
+      setChecklistEditDialogOpen(false)
+    }
+  }
+  return (
+    <Dialog
+      open={isChecklistEditDialogOpen}
+      onOpenChange={setChecklistEditDialogOpen}
+    >
+      <DialogTrigger asChild>
+        <Button
+          type="button"
+          variant="outline"
+          className={cn(
+            'm-2',
+            isChecklistEditDialogOpen && 'bg-primary text-white',
+          )}
+        >
+          <Pencil />
+          {/* <div className="hidden 2xl:flex">EDIT</div> */}
+        </Button>
+      </DialogTrigger>
+      <DialogContent
+        className="flex max-h-screen flex-col overflow-y-auto sm:max-w-[1200px]"
+        onInteractOutside={(e) => {
+          e.preventDefault()
+        }}
+      >
+        <DialogHeader>
+          <DialogTitle>
+            {checklistData && checklistData.checklist_type
+              ? '체크리스트 수정'
+              : '체크리스트 등록'}
+          </DialogTitle>
+          <DialogDescription>
+            {checklistData && checklistData.checklist_type
+              ? '체크리스트를 수정합니다'
+              : '체크리스트를 신규등록합니다'}
+          </DialogDescription>
+        </DialogHeader>
+        {checklistData && (
+          <ChecklistEditContainer
+            checklistId={checklistId}
+            checklistData={checklistData}
+            setChecklistEditDialogOpen={checklistEditDialogOpen}
+          />
+        )}
+      </DialogContent>
+    </Dialog>
+  )
+}
