@@ -1,3 +1,4 @@
+import NewFeature from '@/components/common/new-feature'
 import {
   AccordionContent,
   AccordionItem,
@@ -9,7 +10,7 @@ import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import CalculatorResult from '../../result/calculator-result'
 
-const METOCLOPRAMIDE_CONCENTRATION = 5
+const NOREPI_CONCENTRATION = 1 // mg/mL (1mg/1mL)
 
 type Props = {
   weight: string
@@ -17,7 +18,7 @@ type Props = {
   handleChangeWeight: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function MetoclopramideCri({
+export default function NorepinephrineCri({
   weight,
   setIsSheetOpen,
   handleChangeWeight,
@@ -25,29 +26,29 @@ export default function MetoclopramideCri({
   const { patient_id } = useParams()
   const hasSelectedPatient = Boolean(patient_id)
 
-  // fluidVol에 MetoVol를 넣고 fluidRate 속도로 투여
-  // fluidVol + MetoVol = totalVol
-  // MetoDoseRate = 0.01 ~ 0.083mg/kg/hr (0.01mg/kg/hr ~ 2mg/kg/day)
-  const [metoDoseRate, setmetoDoseRate] = useState('0.01')
+  const [norepiDose, setNorepiDose] = useState('0.05')
   const [syringeVol, setSyringeVol] = useState('30')
   const [fluidRate, setFluidRate] = useState('2')
 
-  // 1. 시간당 필요한 메토 용량 계산 (mg/hr)
-  const hourlyDose = Number(metoDoseRate) * Number(weight)
+  // 1. 시간당 필요한 노르에피네프린 용량 계산 (mg/hr)
+  const hourlyDose = (Number(norepiDose) * Number(weight) * 60) / 1000 // µg → mg
 
-  // 2. 시간당 필요한 메토 원액 용량 계산 (mL/hr)
-  const hourlyVolume = hourlyDose / METOCLOPRAMIDE_CONCENTRATION
+  // 2. 시간당 필요한 노르에피네프린 원액 용량 계산 (mL/hr)
+  const hourlyVolume = hourlyDose / NOREPI_CONCENTRATION
 
-  // 3. 주사기 용량에 맞춰 메토와 수액의 비율 계산
-  // (syringeVolume + x) : fluidRate = x : hourlyVolume
-  const metoVol = (
+  // 3. 첨가할 노르에피네프린 볼륨 (mL)
+  const norepiVol = (
     (Number(syringeVol) * hourlyVolume) /
     (Number(fluidRate) - hourlyVolume)
   ).toFixed(2)
 
   return (
-    <AccordionItem value="Meto">
-      <AccordionTrigger>Metoclopramide (5mg/mL)</AccordionTrigger>
+    <AccordionItem value="norepinephrine">
+      <AccordionTrigger>
+        <NewFeature className="-right-2 top-0">
+          Norepinephrine (1mg/mL)
+        </NewFeature>
+      </AccordionTrigger>
 
       <AccordionContent className="space-y-4 px-1">
         <div className="grid grid-cols-2 gap-2">
@@ -67,17 +68,17 @@ export default function MetoclopramideCri({
           </div>
 
           <div className="relative">
-            <Label htmlFor="MetoDose">약물 용량 (0.01 ~ 0.083)</Label>
+            <Label htmlFor="norepiDose">약물 용량 (0.05 ~ 3)</Label>
             <Input
               type="number"
-              id="MetoDose"
+              id="norepiDose"
               className="mt-1"
-              value={metoDoseRate}
-              onChange={(e) => setmetoDoseRate(e.target.value)}
-              placeholder="메토클로프로마이드 용량"
+              value={norepiDose}
+              onChange={(e) => setNorepiDose(e.target.value)}
+              placeholder="노르에피네프린 용량"
             />
             <span className="absolute bottom-2 right-2 text-sm text-muted-foreground">
-              mg/kg/hr
+              µg/kg/min
             </span>
           </div>
 
@@ -89,7 +90,7 @@ export default function MetoclopramideCri({
               className="mt-1"
               value={syringeVol}
               onChange={(e) => setSyringeVol(e.target.value)}
-              placeholder="사용할 주사기"
+              placeholder="주사기 용량"
             />
             <span className="absolute bottom-2 right-2 text-sm text-muted-foreground">
               cc
@@ -104,7 +105,7 @@ export default function MetoclopramideCri({
               className="mt-1"
               value={fluidRate}
               onChange={(e) => setFluidRate(e.target.value)}
-              placeholder="수액속도"
+              placeholder="수액 속도"
             />
             <span className="absolute bottom-2 right-2 text-sm text-muted-foreground">
               mL/hr
@@ -112,21 +113,19 @@ export default function MetoclopramideCri({
           </div>
         </div>
 
-        {Number(metoVol) > 0 && (
+        {Number(norepiVol) > 0 && (
           <CalculatorResult
             displayResult={
               <div>
                 수액{' '}
                 <span className="font-bold text-primary">{syringeVol}mL</span> +
-                Metoclopramide{' '}
-                <span className="font-bold text-primary">{metoVol}mL</span> , FR
-                :{' '}
-                <span className="font-bold text-primary">
-                  {fluidRate}mL/hr
-                </span>{' '}
+                Norepinephrine{' '}
+                <span className="font-bold text-primary">{norepiVol}mL</span> ,
+                FR :{' '}
+                <span className="font-bold text-primary">{fluidRate}mL/hr</span>
               </div>
             }
-            copyResult={`수액 ${syringeVol}mL + Metoclopramide ${metoVol}mL , FR : ${fluidRate}mL/hr`}
+            copyResult={`수액 ${syringeVol}mL + Norepinephrine ${norepiVol}mL , FR : ${fluidRate}mL/hr`}
             hasInsertOrderButton={hasSelectedPatient}
             setIsSheetOpen={setIsSheetOpen}
           />

@@ -9,6 +9,7 @@ import { Calculator, LoaderCircle } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import CalculatorSheetContentsDynamic from './calculator-sheet-contents-dynamic'
+import NewFeature from '@/components/common/new-feature'
 
 export default function CalculatorSheet({ plan }: { plan: Plan }) {
   const { patient_id } = useParams()
@@ -47,7 +48,9 @@ export default function CalculatorSheet({ plan }: { plan: Plan }) {
           {isFetching ? (
             <LoaderCircle className="animate-spin" />
           ) : (
-            <Calculator />
+            <NewFeature className="-right-1.5 -top-1.5">
+              <Calculator />
+            </NewFeature>
           )}
         </Button>
       </SheetTrigger>
