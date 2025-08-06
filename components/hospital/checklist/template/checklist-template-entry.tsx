@@ -44,8 +44,8 @@ export default function ChecklistTemplateEntry({
         // setSortedOrders={setSortedOrders}
         isEdit={isEdit}
         setIsEdit={setIsEdit}
-        // selectedTemplateChart={selectedTemplateChart}
-        // setSelectedTemplateChart={setSelectedTemplateChart}
+        selectedTemplateChart={selectedTemplateChart}
+        setSelectedTemplateChart={setSelectedTemplateChart}
       />
     </div>
   )

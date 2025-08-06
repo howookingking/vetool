@@ -9,7 +9,7 @@ import { set } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import GroupFilter from '../../icu/sidebar/filters/group-filter'
+import GroupFilter from '@/components/hospital/icu/sidebar/filters/group-filter'
 import { Menubar } from '@/components/ui/menubar'
 import ChecklistEditDateselector from '@/components/hospital/checklist/checklist-edit/checklist-edit-dateselector'
 import { format } from 'date-fns'
@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/accordion'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import ChecklistEditChecklistSet from './checklist-edit-checklistset'
+import ChecklistEditChecklistSet from '@/components/hospital/checklist/checklist-edit/checklist-edit-checklistset'
 import { Button } from '@/components/ui/button'
 import { Trash2 } from 'lucide-react'
 import { ORDER_COLORS } from '@/constants/hospital/icu/chart/colors'
@@ -30,11 +30,11 @@ import {
   updateEachChecklist,
 } from '@/lib/services/checklist/get-checklist-data-client'
 import { toast } from '@/components/ui/use-toast'
-import ChecklistEditTxInfo from './checklist-edit-txinfo'
+import ChecklistEditTxInfo from '@/components/hospital/checklist/checklist-edit/checklist-edit-txinfo'
 import { usePathname, useRouter } from 'next/navigation'
-import ChecklistEditVetInfo from './checklist-edit-vetinfo'
-import ChecklistTagging from '../common/checklist-tagging'
-import ChecklistEditProtocolset from './checklist-edit-protocolset'
+import ChecklistEditVetInfo from '@/components/hospital/checklist/checklist-edit/checklist-edit-vetinfo'
+import ChecklistTagging from '@/components/hospital/checklist/common/checklist-tagging'
+import ChecklistEditProtocolset from '@/components/hospital/checklist/checklist-edit/checklist-edit-protocolset'
 type Props = {
   checklistData: ChecklistData
   setChecklistEditDialogOpen: (isopen: boolean) => void

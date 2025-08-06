@@ -9,42 +9,41 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { useDtOrderStore } from '@/lib/store/icu/dt-order'
+
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import type { TemplateChart } from '@/types/icu/template'
 import type { Dispatch, SetStateAction } from 'react'
-import ConfirmAddTemplateDialog from './confirm-add-template-dialog'
-import TemplateOrderTable from './template-order-table'
+import ChecklistTemplateEdit from '@/components/hospital/checklist/template/checklist-template-edit'
+import { TemplateChecklist } from '@/types/checklist/checklist-type'
 
 type Props = {
   useUpsertTemplateDialogOpen: boolean
   setUseUpsertTemplateDialogOpen: Dispatch<SetStateAction<boolean>>
   //   sortedOrders: SelectedIcuOrder[]
-  setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
+  //   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   isEdit: boolean
   setIsEdit: Dispatch<SetStateAction<boolean>>
-  selectedTemplateChart: TemplateChart | null
-  setSelectedTemplateChart: Dispatch<SetStateAction<TemplateChart | null>>
+  selectedTemplateChart: TemplateChecklist | null
+  setSelectedTemplateChart: Dispatch<SetStateAction<TemplateChecklist | null>>
 }
 
 export default function UpsertChecklistTemplateDialog({
   useUpsertTemplateDialogOpen,
   setUseUpsertTemplateDialogOpen,
   //   sortedOrders,
-  setSortedOrders,
+  //   setSortedOrders,
   isEdit,
   setIsEdit,
   selectedTemplateChart,
   setSelectedTemplateChart,
 }: Props) {
-  const { reset } = useDtOrderStore()
+  //   const { reset } = useDtOrderStore()
 
   const handleOpenChange = (open: boolean) => {
     if (open) {
       //   setSortedOrders([])
       //   setSelectedTemplateChart(null)
       setIsEdit(false)
-      reset()
     }
     setUseUpsertTemplateDialogOpen(open)
   }
@@ -63,31 +62,31 @@ export default function UpsertChecklistTemplateDialog({
         <DialogHeader>
           <DialogTitle>
             {isEdit
-              ? `${selectedTemplateChart?.template_name} 템플릿 수정`
+              ? `${selectedTemplateChart?.checklist_title} 템플릿 수정`
               : '템플릿 만들기'}
           </DialogTitle>
           <DialogDescription>자유롭게 템플릿을 만들어주세요</DialogDescription>
         </DialogHeader>
 
         <div className="max-h-[680px] overflow-y-scroll">
-          {/* <TemplateOrderTable
-            setSortedOrders={setSortedOrders}
-            sortedOrders={sortedOrders}
-          /> */}
+          <ChecklistTemplateEdit
+            templateChecklist={null}
+            setChecklistEditDialogOpen={setUseUpsertTemplateDialogOpen}
+          />
         </div>
 
-        <DialogFooter>
+        {/* <DialogFooter>
           <DialogClose asChild>
             <Button variant="outline">취소</Button>
           </DialogClose>
 
-          {/* <ConfirmAddTemplateDialog
+          <ConfirmAddTemplateDialog
             sortedOrders={sortedOrders}
             setUseUpsertTemplateDialogOpen={setUseUpsertTemplateDialogOpen}
             isEdit={isEdit}
             selectedTemplateChart={selectedTemplateChart}
-          /> */}
-        </DialogFooter>
+          />
+        </DialogFooter> */}
       </DialogContent>
     </Dialog>
   )

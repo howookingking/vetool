@@ -77,13 +77,13 @@ export default function ChecklistHeader() {
             <ScrollText /> <p className="hidden 2xl:flex">REPORT</p>
           </Button>
         </CustomTooltip>
-        <CustomTooltip
+        {/* <CustomTooltip
           contents="모니터"
           side="right"
           sideOffset={4}
           delayDuration={300}
         >
-          {/* <Button
+          <Button
             type="button"
             variant="outline"
             name="monitor"
@@ -98,8 +98,8 @@ export default function ChecklistHeader() {
             )}
           >
             <Monitor /> <p className="hidden 2xl:flex">MONITOR</p>
-          </Button> */}
-        </CustomTooltip>
+          </Button>
+        </CustomTooltip> */}
         <ChecklistEditDialogButton
           isEdit={edit === 'true' ? true : false}
           checklistId={pathnamearray[6]}

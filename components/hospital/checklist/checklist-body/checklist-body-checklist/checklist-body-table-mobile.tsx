@@ -91,7 +91,8 @@ export default function ChecklistBodyTableMobile({
       checklistData.checklist_set?.preSet &&
       checklistData.checklist_set?.preSet.length > 0 &&
       setPreSet(checklistData.checklist_set.preSet)
-  }, [checklistData, timeMin])
+  }, [checklistData, timeMin, interval])
+
   const inputTxt = useRef<HTMLInputElement>(null)
   const changeinterval = (e: React.ChangeEvent<HTMLInputElement>) => {
     const _checktime = Number(timeMin)
