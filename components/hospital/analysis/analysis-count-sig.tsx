@@ -10,11 +10,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { IcuIo } from '@/types'
+
 import { set } from 'date-fns'
 import { useEffect, useState } from 'react'
 import AnalysisCountPatients from './analysis-count-patients'
 import AnalysisCountHosday from './analysis-count-hosday'
+import { IcuIo } from './analysis-type'
 
 type Props = {
   IoDatas: IcuIo[] | null
@@ -220,7 +221,12 @@ export default function AnalysisCountSig({
                 />
               </TableCell>
               <TableCell>
-                <Button onClick={() => setSelectedDatas(sigNo.species.canine)}>
+                <Button
+                  onClick={() =>
+                    sigNo.species.canine &&
+                    setSelectedDatas(sigNo.species.canine)
+                  }
+                >
                   자세히
                 </Button>
               </TableCell>
@@ -245,7 +251,12 @@ export default function AnalysisCountSig({
                 />
               </TableCell>
               <TableCell>
-                <Button onClick={() => setSelectedDatas(sigNo.species.feline)}>
+                <Button
+                  onClick={() =>
+                    sigNo.species.feline &&
+                    setSelectedDatas(sigNo.species.feline)
+                  }
+                >
                   자세히
                 </Button>
               </TableCell>
@@ -270,7 +281,11 @@ export default function AnalysisCountSig({
                 />
               </TableCell>
               <TableCell>
-                <Button onClick={() => setSelectedDatas(sigNo.species.other)}>
+                <Button
+                  onClick={() =>
+                    sigNo.species.other && setSelectedDatas(sigNo.species.other)
+                  }
+                >
                   자세히
                 </Button>
               </TableCell>
@@ -310,7 +325,11 @@ export default function AnalysisCountSig({
                 />
               </TableCell>
               <TableCell>
-                <Button onClick={() => setSelectedDatas(sigNo.gender.if)}>
+                <Button
+                  onClick={() =>
+                    sigNo.gender.if && setSelectedDatas(sigNo.gender.if)
+                  }
+                >
                   자세히
                 </Button>
               </TableCell>
@@ -335,7 +354,11 @@ export default function AnalysisCountSig({
                 />
               </TableCell>
               <TableCell>
-                <Button onClick={() => setSelectedDatas(sigNo.gender.sf)}>
+                <Button
+                  onClick={() =>
+                    sigNo.gender.sf && setSelectedDatas(sigNo.gender.sf)
+                  }
+                >
                   자세히
                 </Button>
               </TableCell>
@@ -361,7 +384,11 @@ export default function AnalysisCountSig({
                 />
               </TableCell>
               <TableCell>
-                <Button onClick={() => setSelectedDatas(sigNo.gender.im)}>
+                <Button
+                  onClick={() =>
+                    sigNo.gender.im && setSelectedDatas(sigNo.gender.im)
+                  }
+                >
                   자세히
                 </Button>
               </TableCell>
@@ -387,7 +414,11 @@ export default function AnalysisCountSig({
                 />
               </TableCell>
               <TableCell>
-                <Button onClick={() => setSelectedDatas(sigNo.gender.cm)}>
+                <Button
+                  onClick={() =>
+                    sigNo.gender.cm && setSelectedDatas(sigNo.gender.cm)
+                  }
+                >
                   자세히
                 </Button>
               </TableCell>
@@ -441,7 +472,9 @@ export default function AnalysisCountSig({
                   />
                 </TableCell>
                 <TableCell>
-                  <Button onClick={() => setSelectedDatas(breed[1])}>
+                  <Button
+                    onClick={() => breed[1] && setSelectedDatas(breed[1])}
+                  >
                     자세히
                   </Button>
                 </TableCell>
@@ -482,7 +515,11 @@ export default function AnalysisCountSig({
                   />
                 </TableCell>
                 <TableCell>
-                  <Button onClick={() => setSelectedDatas(sigNo.age[num])}>
+                  <Button
+                    onClick={() =>
+                      sigNo.age[num] && setSelectedDatas(sigNo.age[num])
+                    }
+                  >
                     자세히
                   </Button>
                 </TableCell>
@@ -506,7 +543,11 @@ export default function AnalysisCountSig({
                   />
                 </TableCell>
                 <TableCell>
-                  <Button onClick={() => setSelectedDatas(sigNo.age['20'])}>
+                  <Button
+                    onClick={() =>
+                      sigNo.age['20'] && setSelectedDatas(sigNo.age['20'])
+                    }
+                  >
                     자세히
                   </Button>
                 </TableCell>
@@ -532,7 +573,11 @@ export default function AnalysisCountSig({
                   />
                 </TableCell>
                 <TableCell>
-                  <Button onClick={() => setSelectedDatas(sigNo.age[num])}>
+                  <Button
+                    onClick={() =>
+                      sigNo.age[num] && setSelectedDatas(sigNo.age[num])
+                    }
+                  >
                     자세히
                   </Button>
                 </TableCell>
