@@ -20,7 +20,7 @@ export default function TodoFilter({ activeFilter, setActiveFilter }: Props) {
       }
       defaultValue={activeFilter}
     >
-      <SelectTrigger className="w-[100px]">
+      <SelectTrigger className="hidden w-[100px] md:block">
         <SelectValue placeholder="필터" />
       </SelectTrigger>
       <SelectContent>
