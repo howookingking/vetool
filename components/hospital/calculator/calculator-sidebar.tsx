@@ -67,10 +67,7 @@ export default function CalculatorSidebar({
                 <NewFeature
                   className={cn(
                     '-right-2 -top-0.5',
-                    calculator.value !== 'kcl' &&
-                      'hidden' &&
-                      calculator.value !== 'cri' &&
-                      'hidden',
+                    calculator.value !== 'cri' && 'hidden',
                   )}
                 >
                   {calculator.label}
