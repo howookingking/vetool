@@ -115,14 +115,23 @@ export const getDaysDifference = (dateString: string) => {
 }
 
 export const getConsecutiveDays = (selectedDate: Date) => {
-  // Normalize selectedDate to the start of the day to avoid timezone/time issues
-  const normalizedSelectedDate = new Date(selectedDate)
-  normalizedSelectedDate.setHours(0, 0, 0, 0)
+  // Create a new date in the local timezone to avoid UTC conversion issues
+  const normalizedSelectedDate = new Date(
+    selectedDate.getFullYear(),
+    selectedDate.getMonth(),
+    selectedDate.getDate(),
+  )
 
-  const dayBefore = new Date(normalizedSelectedDate)
-  dayBefore.setDate(normalizedSelectedDate.getDate() - 1)
-  const dayAfter = new Date(normalizedSelectedDate)
-  dayAfter.setDate(normalizedSelectedDate.getDate() + 1)
+  const dayBefore = new Date(
+    normalizedSelectedDate.getFullYear(),
+    normalizedSelectedDate.getMonth(),
+    normalizedSelectedDate.getDate() - 1,
+  )
+  const dayAfter = new Date(
+    normalizedSelectedDate.getFullYear(),
+    normalizedSelectedDate.getMonth(),
+    normalizedSelectedDate.getDate() + 1,
+  )
 
   return {
     dayBefore: formatDate(dayBefore),
@@ -137,7 +146,6 @@ export const formatDate = (date: Date) => {
   const day = String(date.getDate()).padStart(2, '0')
   return `${year}-${month}-${day}`
 }
-
 export const formatDateToISOString = (date: Date) => {
   const year = date.getFullYear()
   const month = date.getMonth()
