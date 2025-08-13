@@ -3,6 +3,7 @@ import ChecklistSidebar from '@/components/hospital/checklist/sidebar/checklist-
 import type { OrderFontSize } from '@/constants/admin/order-font-size'
 import type { Plan } from '@/constants/plans'
 import { getChecklistData } from '@/lib/services/checklist/get-checklist-data'
+import { getChecklistSidebarData } from '@/lib/services/checklist/get-checklist-data-client'
 import {
   BasicHosDataProvider,
   OrderColorDisplay,
@@ -16,6 +17,8 @@ export default async function ChecklistPageLayout(props: {
   const { hos_id, target_date } = await props.params
   const { basicHosData, checklistSidebarData, vetsListData } =
     await getChecklistData(hos_id, target_date)
+  const sidebar = await getChecklistSidebarData(hos_id, target_date)
+  console.log(sidebar)
   return (
     <>
       <BasicHosDataProvider

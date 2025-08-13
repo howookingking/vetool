@@ -26,7 +26,9 @@ import { Trash2 } from 'lucide-react'
 import { ORDER_COLORS } from '@/constants/hospital/icu/chart/colors'
 import {
   deleteChecklist,
+  saveTemplate,
   updateEachChecklist,
+  updateTemplate,
 } from '@/lib/services/checklist/get-checklist-data-client'
 import { toast } from '@/components/ui/use-toast'
 import ChecklistEditTxInfo from '@/components/hospital/checklist/checklist-edit/checklist-edit-txinfo'
@@ -39,7 +41,7 @@ type Props = {
   templateChecklist: TemplateChecklist | null
   setChecklistEditDialogOpen: (isopen: boolean) => void
 }
-
+type TemplateChecklistPre = Omit<TemplateChecklist, 'checklist_template_id'>
 type keystring = keyof ChecklistData
 
 export default function ChecklistTemplateEdit({
@@ -134,14 +136,29 @@ export default function ChecklistTemplateEdit({
       alert('제목은 필수항목입니다. 반드시 입력해주세요.')
       return
     }
-    if (!checklistdata.checklist_template_id) {
-      const preChecklistData: TemplateChecklist = { ...checklistdata }
-      //updatetemplate
-      setChecklistEditDialogOpen(false)
-    } else {
+    if (
+      !checklistdata.checklist_template_id ||
+      checklistdata.checklist_template_id === ''
+    ) {
       const preChecklistData: TemplateChecklist = { ...checklistdata }
       //savetemplate
       preChecklistData.hos_id = pathname.split('/')[2]
+      preChecklistData.checklist_type = 'checklist'
+      saveTemplate(preChecklistData).then(() => {
+        toast({
+          title: '템플릿 저장 완료',
+          description: '템플릿을 저장했습니다.',
+        })
+      })
+      setChecklistEditDialogOpen(false)
+    } else {
+      const preChecklistData: TemplateChecklist = { ...checklistdata }
+      updateTemplate(preChecklistData).then(() => {
+        toast({
+          title: '템플릿 수정 완료',
+          description: '템플릿을 수정했습니다.',
+        })
+      })
       setChecklistEditDialogOpen(false)
     }
 
@@ -156,21 +173,25 @@ export default function ChecklistTemplateEdit({
     // })
   }
   const delchecklistchart = () => {
-    // if (!checklistdata.checklist_id) return
-    // if (
-    //   confirm(
-    //     '정말로 체크리스트를 삭제하시겠습니까? 삭제된 체크리스트는 복구할 수 없습니다.',
-    //   )
-    // ) {
-    //   deleteChecklist(checklistdata.checklist_id).then(() => {
-    //     setChecklistEditDialogOpen(false)
-    //     toast({
-    //       title: '체크리스트 삭제 완료',
-    //       description: '체크리스트를 삭제했습니다.',
-    //     })
-    //     push(`/hospital/${checklistdata.hos_id}/checklist/${targetDate}/chart`)
-    //   })
-    // }
+    const pathname = usePathname()
+    const targetDate = pathname.split('/')[5]
+    if (!checklistdata.checklist_template_id) return
+    if (
+      confirm(
+        '정말로 템플릿을 삭제하시겠습니까? 삭제된 템플릿는 복구할 수 없습니다.',
+      )
+    ) {
+      deleteChecklist(checklistdata.checklist_template_id).then(() => {
+        setChecklistEditDialogOpen(false)
+        toast({
+          title: '체크리스트 삭제 완료',
+          description: '체크리스트를 삭제했습니다.',
+        })
+        push(
+          `/hospital/${checklistdata.hos_id}/checklist/${targetDate}/template`,
+        )
+      })
+    }
   }
   return (
     checklistdata && (

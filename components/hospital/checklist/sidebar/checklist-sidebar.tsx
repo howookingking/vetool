@@ -15,8 +15,7 @@ export default function ChecklistSidebar({
   checklistsidebarData: ChecklistData[]
 }) {
   const filteredData = filterChecklistData(checklistsidebarData, targetDate)
-  console.log(targetDate)
-  console.log(filteredData)
+
   return (
     <>
       <DesktopChecklistSidebar

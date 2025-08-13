@@ -74,19 +74,6 @@ export default function UpsertChecklistTemplateDialog({
             setChecklistEditDialogOpen={setUseUpsertTemplateDialogOpen}
           />
         </div>
-
-        {/* <DialogFooter>
-          <DialogClose asChild>
-            <Button variant="outline">취소</Button>
-          </DialogClose>
-
-          <ConfirmAddTemplateDialog
-            sortedOrders={sortedOrders}
-            setUseUpsertTemplateDialogOpen={setUseUpsertTemplateDialogOpen}
-            isEdit={isEdit}
-            selectedTemplateChart={selectedTemplateChart}
-          />
-        </DialogFooter> */}
       </DialogContent>
     </Dialog>
   )
