@@ -67,11 +67,6 @@ export type PreInfo = {
   other: string
 }
 
-export type FilteredChecklist = {
-  today: [] | ChecklistData[]
-  todaydone: [] | ChecklistData[]
-  ing: [] | ChecklistData[]
-}
 export type ChecklistPatient = {
   patient_id: string
   name?: string | null

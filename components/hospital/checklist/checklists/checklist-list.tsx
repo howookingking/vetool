@@ -1,8 +1,5 @@
 import { Separator } from '@/components/ui/separator'
-import type {
-  ChecklistSidebarData,
-  FilteredChecklist,
-} from '@/types/checklist/checklist-type'
+import type { ChecklistSidebarData } from '@/types/checklist/checklist-type'
 import { useState, useEffect } from 'react'
 import ChecklistButton from '@/components/hospital/checklist/checklists/checklist-button'
 

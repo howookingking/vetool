@@ -2,10 +2,7 @@ import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import IcuDateSelector from '@/components/hospital/icu/sidebar/date-selector/icu-date-selector'
 import { Separator } from '@/components/ui/separator'
 import ChecklistList from '@/components/hospital/checklist/checklists/checklist-list'
-import type {
-  ChecklistSidebarData,
-  FilteredChecklist,
-} from '@/types/checklist/checklist-type'
+import type { ChecklistSidebarData } from '@/types/checklist/checklist-type'
 import ChecklistDateSelector from '@/components/hospital/checklist/sidebar/date-selector/checklist-date-selector'
 import ChecklistRegisterDialog from '@/components/hospital/checklist/sidebar/checklist-register-dialog/checklist-register-dialog'
 type MobileChecklistSidebarProps = {

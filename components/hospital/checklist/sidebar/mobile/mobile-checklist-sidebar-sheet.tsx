@@ -10,11 +10,7 @@ import {
 import { useState } from 'react'
 import { Menu } from 'lucide-react'
 import MobieChecklistSidebar from './mobile-checklist-sidebar'
-import type {
-  ChecklistData,
-  ChecklistSidebarData,
-  FilteredChecklist,
-} from '@/types/checklist/checklist-type'
+import type { ChecklistSidebarData } from '@/types/checklist/checklist-type'
 type Props = {
   checklistsidebarData: ChecklistSidebarData[]
   isEmpty: boolean

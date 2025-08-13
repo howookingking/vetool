@@ -71,7 +71,8 @@ export const getChecklistData = async (hosId: string, targetDate: string) => {
     )
   }
   return {
-    checklistSidebarData: (checklistSidebarData as ChecklistSidebarData) ?? [],
+    checklistSidebarData:
+      (checklistSidebarData as ChecklistSidebarData[]) ?? [],
     vetsListData: vetsListData as Vet[],
     basicHosData,
   }

@@ -1,11 +1,7 @@
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import ChecklistDateSelector from './date-selector/checklist-date-selector'
 import ChecklistRegisterDialog from '@/components/hospital/checklist/sidebar/checklist-register-dialog/checklist-register-dialog'
-import type {
-  ChecklistData,
-  ChecklistSidebarData,
-  FilteredChecklist,
-} from '@/types/checklist/checklist-type'
+import type { ChecklistSidebarData } from '@/types/checklist/checklist-type'
 import ChecklistList from '@/components/hospital/checklist/checklists/checklist-list'
 import { Separator } from '@/components/ui/separator'
 

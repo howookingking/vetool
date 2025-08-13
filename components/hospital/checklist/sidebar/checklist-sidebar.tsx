@@ -1,12 +1,8 @@
 'use client'
 
-import {
-  ChecklistData,
-  ChecklistSidebarData,
-} from '@/types/checklist/checklist-type'
+import type { ChecklistSidebarData } from '@/types/checklist/checklist-type'
 import DesktopChecklistSidebar from './desktop-checklist-sidebar'
 import { MobileChecklistSidebarSheet } from './mobile/mobile-checklist-sidebar-sheet'
-import { filterChecklistData } from '@/lib/utils/checklist-utils'
 
 type Props = {
   hosId: string
@@ -15,11 +11,8 @@ type Props = {
 }
 export default function ChecklistSidebar({
   hosId,
-  targetDate,
   checklistsidebarData,
 }: Props) {
-  // const filteredData = filterChecklistData(checklistsidebarData, targetDate)
-
   return (
     <>
       <DesktopChecklistSidebar

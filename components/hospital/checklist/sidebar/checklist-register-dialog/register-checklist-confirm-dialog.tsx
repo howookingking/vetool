@@ -11,14 +11,14 @@ import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { type RegisteringPatient } from '@/components/hospital/icu/sidebar/register-dialog/register-dialog'
-import { changeTargetDateInUrl, cn } from '@/lib/utils/utils'
+import { cn } from '@/lib/utils/utils'
 import { LoaderCircle } from 'lucide-react'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import {
   addPatientToChecklist,
   registerChecklist,
 } from '@/lib/services/checklist/register-checklist-patient'
-import { ChecklistData } from '@/types/checklist/checklist-type'
+import { Checklist } from '@/types'
 
 type RegisterIcuConfirmDialogProps = {
   hosId: string
@@ -26,7 +26,7 @@ type RegisterIcuConfirmDialogProps = {
   setIsConfirmDialogOpen: Dispatch<SetStateAction<boolean>>
   setIsRegisterDialogOpen: Dispatch<SetStateAction<boolean>>
   registeringPatient: RegisteringPatient
-  checklistData: ChecklistData | null
+  checklistData: Checklist | null
 }
 
 export default function RegisterChecklistConfirmDialog({
@@ -50,30 +50,13 @@ export default function RegisterChecklistConfirmDialog({
         registeringPatient ? registeringPatient.birth : null,
         target_date as string,
       )
-    } else {
+    } else if (checklistData && !checklistData?.patient_id) {
       addPatientToChecklist(
         checklistData.checklist_id,
         registeringPatient?.patientId!,
         registeringPatient?.birth!,
       )
     }
-
-    //   const splittedPathArr = path.split('/')
-
-    //   if (currentPatientId) {
-    //     // 입원차트에서 환자를 선택한 경우 : 등록중인 환자의 id로 변경
-    //     // 예) /hospital/병원아이디/icu/2025-01-31/chart/환자아이디
-    //     splittedPathArr[6] = registeringPatient?.patientId!
-    //   } else {
-    //     // 처치표, 종합현황 등에서 입원시키는 경우 : chart라우트로 변경하고 환자아이디 추가
-    //     splittedPathArr[5] = 'chart'
-    //     splittedPathArr.push(registeringPatient?.patientId!)
-    //   }
-
-    //   const newPatientPath = splittedPathArr.join('/')
-    //   const newPath = changeTargetDateInUrl(newPatientPath, target_date as string)
-
-    //   push(newPath)
 
     toast({
       title: '입원 등록 완료',

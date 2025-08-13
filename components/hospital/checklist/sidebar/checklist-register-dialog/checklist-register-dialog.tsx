@@ -5,9 +5,12 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils/utils'
-import dynamic from 'next/dynamic'
 import RegisterDialogHeader from '@/components/hospital/icu/sidebar/register-dialog/register-dialog-header'
 import { ChecklistData } from '@/types/checklist/checklist-type'
+import RegisterChecklistConfirmDialog from '@/components/hospital/checklist/sidebar/checklist-register-dialog/register-checklist-confirm-dialog'
+import PatientForm from '@/components/common/patients/form/patient-form'
+import NonIcuSearchPatientContainer from '@/components/common/patients/search/non-icu/non-icu-search-patient-container'
+import { Checklist } from '@/types'
 
 export type RegisteringPatient = {
   patientId: string
@@ -26,34 +29,34 @@ export type RegisteringPatient = {
 } | null
 type Props = {
   hosId: string
-  checklistData: ChecklistData | null
+  checklistData: Checklist | null
 }
-const LazyRegisterChecklistConfirmDialog = dynamic(
-  () =>
-    import(
-      '@/components/hospital/checklist/sidebar/checklist-register-dialog/register-checklist-confirm-dialog'
-    ),
-  {
-    ssr: false,
-  },
-)
-const LazyPatientForm = dynamic(
-  () => import('@/components/common/patients/form/patient-form'),
-  {
-    ssr: false,
-    loading: () => <LargeLoaderCircle className="h-[544px]" />,
-  },
-)
-const LazySearchPatientContainer = dynamic(
-  () =>
-    import(
-      '@/components/common/patients/search/non-icu/non-icu-search-patient-container'
-    ),
-  {
-    ssr: false,
-    loading: () => <LargeLoaderCircle className="h-[574px]" />,
-  },
-)
+// const LazyRegisterChecklistConfirmDialog = dynamic(
+//   () =>
+//     import(
+//       '@/components/hospital/checklist/sidebar/checklist-register-dialog/register-checklist-confirm-dialog'
+//     ),
+//   {
+//     ssr: false,
+//   },
+// )
+// const LazyPatientForm = dynamic(
+//   () => import('@/components/common/patients/form/patient-form'),
+//   {
+//     ssr: false,
+//     loading: () => <LargeLoaderCircle className="h-[544px]" />,
+//   },
+// )
+// const LazySearchPatientContainer = dynamic(
+//   () =>
+//     import(
+//       '@/components/common/patients/search/non-icu/non-icu-search-patient-container'
+//     ),
+//   {
+//     ssr: false,
+//     loading: () => <LargeLoaderCircle className="h-[574px]" />,
+//   },
+// )
 export default function ChecklistRegisterDialog({
   hosId,
   checklistData,
@@ -91,7 +94,9 @@ export default function ChecklistRegisterDialog({
     <Dialog open={isRegisterDialogOpen} onOpenChange={handleOpenChage}>
       <DialogTrigger asChild className="hidden md:flex">
         <Button size="sm" className="shrink-0 text-sm">
-          {checklistData ? '환자 등록' : '체크리스트 추가'}
+          {checklistData && !checklistData?.patient_id
+            ? '환자 등록'
+            : '체크리스트 추가'}
         </Button>
       </DialogTrigger>
 
@@ -109,7 +114,7 @@ export default function ChecklistRegisterDialog({
               variant="destructive"
               onClick={fastRegist}
             >
-              응급 환자 바로 등록
+              응급 환자 바로 등록 및 실행
             </Button>
           </div>
         )}
@@ -128,7 +133,7 @@ export default function ChecklistRegisterDialog({
             </TabsTrigger>
           </TabsList>
           <TabsContent value="search">
-            <LazySearchPatientContainer
+            <NonIcuSearchPatientContainer
               hosId={hosId}
               isIcu={true}
               setIsConfirmDialogOpen={setIsConfirmDialogOpen}
@@ -136,7 +141,7 @@ export default function ChecklistRegisterDialog({
             />
           </TabsContent>
           <TabsContent value="register">
-            <LazyPatientForm
+            <PatientForm
               mode="registerFromIcuRoute"
               hosId={hosId}
               setIsPatientRegisterDialogOpen={setIsRegisterDialogOpen}
@@ -149,7 +154,7 @@ export default function ChecklistRegisterDialog({
         </Tabs>
       </DialogContent>
       {isConfirmDialogOpen && (
-        <LazyRegisterChecklistConfirmDialog
+        <RegisterChecklistConfirmDialog
           hosId={hosId}
           isConfirmDialogOpen={isConfirmDialogOpen}
           setIsConfirmDialogOpen={setIsConfirmDialogOpen}
