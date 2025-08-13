@@ -1,7 +1,10 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import type { ChecklistData } from '@/types/checklist/checklist-type'
+import type {
+  ChecklistData,
+  ChecklistSidebarData,
+} from '@/types/checklist/checklist-type'
 import type { IcuSidebarIoData, Vet } from '@/types/icu/chart'
 import { redirect } from 'next/navigation'
 
@@ -9,11 +12,15 @@ export const getChecklistData = async (hosId: string, targetDate: string) => {
   const supabase = await createClient()
 
   const promiseArray = Promise.all([
-    supabase
-      .from('checklist')
-      .select('*')
-      .match({ hos_id: hosId })
-      .order('created_at', { ascending: true }),
+    // supabase
+    //   .from('checklist')
+    //   .select('*')
+    //   .match({ hos_id: hosId })
+    //   .order('created_at', { ascending: true }),
+    supabase.rpc('checklist_sidebar_data', {
+      _hos_id: hosId,
+      _due_date: targetDate,
+    }),
 
     supabase
       .from('users')
@@ -64,7 +71,7 @@ export const getChecklistData = async (hosId: string, targetDate: string) => {
     )
   }
   return {
-    checklistSidebarData: (checklistSidebarData as any) ?? [],
+    checklistSidebarData: (checklistSidebarData as ChecklistSidebarData) ?? [],
     vetsListData: vetsListData as Vet[],
     basicHosData,
   }

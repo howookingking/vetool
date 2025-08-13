@@ -84,25 +84,25 @@ export type ChecklistPatient = {
 export type ChecklistSidebarData = {
   checklist_id: string
   hos_id: string
-  patient_id: string
-  patients: ChecklistPatient
+  // patient_id: string
+  patient: ChecklistPatient
   checklist_type: null | string
   checklist_vet: null | ChecklistVet
   checklist_title: null | string
-  checklist_tag: null | string
-  checklist_protocol: null | ChecklistProtocol
+  // checklist_tag: null | string
+  // checklist_protocol: null | ChecklistProtocol
   checklist_group: null | string[]
-  checklist_set: null | Checklistset
-  checklist_timetable: null | TimeTable
+  // checklist_set: null | Checklistset
+  // checklist_timetable: null | TimeTable
   starttime: null | string
   endtime: null | string
-  comment: null | string
-  preinfo: null | PreInfo
+  // comment: null | string
+  // preinfo: null | PreInfo
   due_date: null | string
-  age_in_days: number
+  // age_in_days: number
   weight: number
   istxing: boolean
-  enddate: null | string
+  // enddate: null | string
 }
 
 export type TxTypes = string[]
