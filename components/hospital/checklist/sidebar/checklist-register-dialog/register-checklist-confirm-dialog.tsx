@@ -27,6 +27,7 @@ type RegisterIcuConfirmDialogProps = {
   setIsRegisterDialogOpen: Dispatch<SetStateAction<boolean>>
   registeringPatient: RegisteringPatient
   checklistData: Checklist | null
+  isEmergency: boolean
 }
 
 export default function RegisterChecklistConfirmDialog({
@@ -36,6 +37,7 @@ export default function RegisterChecklistConfirmDialog({
   setIsRegisterDialogOpen,
   registeringPatient,
   checklistData,
+  isEmergency,
 }: RegisterIcuConfirmDialogProps) {
   const { target_date } = useParams()
   const { push } = useRouter()
@@ -43,14 +45,27 @@ export default function RegisterChecklistConfirmDialog({
   const [isSubmitting, setIsSubmitting] = useState(false)
   const handleConfirm = async () => {
     setIsSubmitting(true)
-    if (!checklistData) {
+
+    if (isEmergency) {
+      await registerChecklist(
+        hosId,
+        null,
+        null,
+        target_date as string,
+        true as boolean,
+      )
+    } else if (!checklistData) {
+      // 체크리스트가 최초 등록시
+      // registeriingPatient정보가 있다면(환자가 선택됬다면), 선택된 환자로 ID로 등록, 정보가 없다면 응급으로 판단하고 응급등록
       registerChecklist(
         hosId,
         registeringPatient ? registeringPatient.patientId : null,
         registeringPatient ? registeringPatient.birth : null,
         target_date as string,
+        false,
       )
     } else if (checklistData && !checklistData?.patient_id) {
+      // 기존에 만들어진 체크리스트가 있지만, 환자등록이 아직 안된경우, 선택된 환자정보만 새로 추가
       addPatientToChecklist(
         checklistData.checklist_id,
         registeringPatient?.patientId!,

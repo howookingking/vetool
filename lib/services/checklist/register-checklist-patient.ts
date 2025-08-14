@@ -19,6 +19,7 @@ export const registerChecklist = async (
   patientId: string | null,
   birth: string | null,
   targetDate: string,
+  isEmergency: boolean,
 ) => {
   const supabase = await createClient()
   const checklistdata: any = {
@@ -26,7 +27,7 @@ export const registerChecklist = async (
     patient_id: patientId,
     due_date: targetDate,
     age_in_days: birth ? getDaysSince(birth) : 0,
-    checklist_type: patientId ? null : '응급',
+    checklist_type: null,
     checklist_set: {
       preSet: [
         {
@@ -44,23 +45,11 @@ export const registerChecklist = async (
       interval: '1',
     },
   }
-  !patientId && (checklistdata.checklist_title = '응급처치')
-  !patientId && (checklistdata.starttime = new Date())
-  !patientId && (checklistdata.istxing = true)
+  isEmergency && (checklistdata.checklist_title = '응급처치') //응급일경우 타이틀을 바로 지정
+  isEmergency && (checklistdata.checklist_type = '응급')
+  isEmergency && (checklistdata.starttime = new Date()) // 응급일경우 바로 시작시간 기록
+  isEmergency && (checklistdata.istxing = true)
   const { error } = await supabase.from('checklist').insert([checklistdata])
-
-  //   const { error } = await supabase.rpc('register_icu', {
-  //     hos_id_input: hosId,
-  //     icu_io_dx_input: '',
-  //     icu_io_cc_input: '',
-  //     in_date_input: in_date,
-  //     out_due_date_input: out_due_date,
-  //     group_list_input: JSON.stringify(group_list),
-  //     age_in_days_input: getDaysSince(birth),
-  //     patient_id_input: patientId,
-  //     main_vet_input: main_vet,
-  //     sub_vet_input: '',
-  //   })
 
   if (error) {
     console.error(error)

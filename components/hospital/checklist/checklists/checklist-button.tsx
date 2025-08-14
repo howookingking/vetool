@@ -53,10 +53,10 @@ export default function ChecklistButton({
     isEdit
       ? push(
           `/hospital/${hos_id}/checklist/${target_date}/chart/${checklistchart.checklist_id}/checklist?edit=${false}`,
-        )
+        ) // 체크리스트 등록 후 기본정보 기록 안된경구(제목, 주치의 등)로 클릭시 edit창 바로 실행됨
       : push(
           `/hospital/${hos_id}/checklist/${target_date}/chart/${checklistchart.checklist_id}/checklist?edit=${true}`,
-        )
+        ) // 체크리스트 등록 후 기본정보 기록완료 된 경우
   }
 
   const path = pathname.split('/')

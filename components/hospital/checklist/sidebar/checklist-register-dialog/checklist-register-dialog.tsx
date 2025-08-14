@@ -66,6 +66,7 @@ export default function ChecklistRegisterDialog({
   const [registeringPatient, setRegisteringPatient] =
     useState<RegisteringPatient>(null)
   const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false)
+  const [isEmergency, setIsEmergency] = useState(false)
 
   const handleTabValueChange = (value: string) => {
     if (value === 'search') {
@@ -87,8 +88,9 @@ export default function ChecklistRegisterDialog({
     setIsRegisterDialogOpen(open)
   }
   const fastRegist = () => {
-    setIsConfirmDialogOpen(true)
+    setIsEmergency(true)
     setRegisteringPatient(null)
+    setIsConfirmDialogOpen(true)
   }
   return (
     <Dialog open={isRegisterDialogOpen} onOpenChange={handleOpenChage}>
@@ -161,6 +163,7 @@ export default function ChecklistRegisterDialog({
           registeringPatient={registeringPatient}
           setIsRegisterDialogOpen={setIsRegisterDialogOpen}
           checklistData={checklistData ? checklistData : null}
+          isEmergency={isEmergency}
         />
       )}
     </Dialog>
