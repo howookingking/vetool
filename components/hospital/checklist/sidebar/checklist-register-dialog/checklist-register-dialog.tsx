@@ -92,6 +92,11 @@ export default function ChecklistRegisterDialog({
     setRegisteringPatient(null)
     setIsConfirmDialogOpen(true)
   }
+  const noPatientfastRegist = () => {
+    setIsEmergency(false)
+    setRegisteringPatient(null)
+    setIsRegisterDialogOpen(true)
+  }
   return (
     <Dialog open={isRegisterDialogOpen} onOpenChange={handleOpenChage}>
       <DialogTrigger asChild className="hidden md:flex">
@@ -117,6 +122,13 @@ export default function ChecklistRegisterDialog({
               onClick={fastRegist}
             >
               응급 환자 바로 등록 및 실행
+            </Button>
+            <Button
+              size="sm"
+              className="ml-2 text-sm"
+              onClick={noPatientfastRegist}
+            >
+              환자 미등록 차트생성
             </Button>
           </div>
         )}
