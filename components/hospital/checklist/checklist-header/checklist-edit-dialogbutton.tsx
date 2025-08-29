@@ -18,14 +18,15 @@ import {
   getChecklistDataById,
   getChecklistDataByIdChannel,
 } from '@/lib/services/checklist/get-checklist-data-client'
-
+import { Checklist } from '@/types'
+type Props = {
+  isEdit: boolean
+  checklistId: string
+}
 export default function ChecklistEditDialogButton({
   isEdit,
   checklistId,
-}: {
-  isEdit: boolean
-  checklistId: string
-}) {
+}: Props) {
   const [isChecklistEditDialogOpen, setChecklistEditDialogOpen] =
     useState(false)
   const [checklistData, setChecklistData] = useState<ChecklistData | null>()
@@ -33,15 +34,22 @@ export default function ChecklistEditDialogButton({
   useEffect(() => {
     fetchData()
     const channel = getChecklistDataByIdChannel(checklistId, (payload) => {
-      setChecklistData(payload)
+      let prepayload: ChecklistData = {} as ChecklistData
+      if (payload) {
+        prepayload = payload as ChecklistData
+      }
+      setChecklistData(prepayload)
     })
     setChecklistEditDialogOpen(isEdit)
   }, [isEdit])
   //   const isActive = pathname.split('/')[7]
   const fetchData = async () => {
-    const data: any = await getChecklistDataById(checklistId)
-
-    setChecklistData(data)
+    const data: Checklist = await getChecklistDataById(checklistId)
+    let predata: ChecklistData = {} as ChecklistData
+    if (data) {
+      predata = data as ChecklistData
+    }
+    setChecklistData(predata)
   }
 
   const checklistEditDialogOpen = (isopen: boolean) => {

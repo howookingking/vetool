@@ -31,32 +31,7 @@ type Props = {
   hosId: string
   checklistData: Checklist | null
 }
-// const LazyRegisterChecklistConfirmDialog = dynamic(
-//   () =>
-//     import(
-//       '@/components/hospital/checklist/sidebar/checklist-register-dialog/register-checklist-confirm-dialog'
-//     ),
-//   {
-//     ssr: false,
-//   },
-// )
-// const LazyPatientForm = dynamic(
-//   () => import('@/components/common/patients/form/patient-form'),
-//   {
-//     ssr: false,
-//     loading: () => <LargeLoaderCircle className="h-[544px]" />,
-//   },
-// )
-// const LazySearchPatientContainer = dynamic(
-//   () =>
-//     import(
-//       '@/components/common/patients/search/non-icu/non-icu-search-patient-container'
-//     ),
-//   {
-//     ssr: false,
-//     loading: () => <LargeLoaderCircle className="h-[574px]" />,
-//   },
-// )
+
 export default function ChecklistRegisterDialog({
   hosId,
   checklistData,
@@ -91,11 +66,12 @@ export default function ChecklistRegisterDialog({
     setIsEmergency(true)
     setRegisteringPatient(null)
     setIsConfirmDialogOpen(true)
+    setIsEmergency(false)
   }
   const noPatientfastRegist = () => {
     setIsEmergency(false)
     setRegisteringPatient(null)
-    setIsRegisterDialogOpen(true)
+    setIsConfirmDialogOpen(true)
   }
   return (
     <Dialog open={isRegisterDialogOpen} onOpenChange={handleOpenChage}>

@@ -1,7 +1,7 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import { updateEachChecklist } from '@/lib/services/checklist/get-checklist-data-client'
-import { ChecklistData } from '@/types/checklist/checklist-type'
+import { ChecklistData, TimeTable } from '@/types/checklist/checklist-type'
 import { Pencil } from 'lucide-react'
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import ChecklistTimetableTimeEditor from '@/components/hospital/checklist/checklist-body/checklist-body-checklist/checklist-timetabletime-editor'
@@ -36,19 +36,22 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
   })
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isTableLoad, setIsTableLoad] = useState<boolean>(false)
+  const [timetable, setTableTime] = useState<TimeTable | null>(null)
   useEffect(() => {
+    checklistData?.checklist_timetable &&
+      setTableTime(
+        checklistData.checklist_timetable.sort((a, b) => {
+          return a.time! - b.time!
+        }),
+      )
     setIsTableLoad(false)
   }, [checklistData])
 
   const deleteTimetableTx = (e: React.MouseEvent<HTMLButtonElement>) => {
     setIsTableLoad(true)
     const index = e.currentTarget.name
-    if (
-      checklistData.checklist_timetable &&
-      checklistData.checklist_timetable.length > 0 &&
-      index
-    ) {
-      const newTimetable = [...checklistData.checklist_timetable]
+    if (timetable && timetable.length > 0 && index) {
+      const newTimetable = [...timetable]
       const timetableType = newTimetable[Number(index)].type + ''
       newTimetable.splice(Number(index), 1)
       const predata = { ...checklistData } as ChecklistData
@@ -64,8 +67,10 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
         newProtocol && (newProtocol[protocolIndex].txEnd = null)
         predata.checklist_protocol = newProtocol
         updateEachChecklist(predata)
+        setIsDialogOpen(false)
       } else {
         updateEachChecklist(predata)
+        setIsDialogOpen(false)
       }
     }
   }
@@ -136,13 +141,14 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
                 </TableCell>
                 <TableCell className="border border-gray-300 px-1 py-1">
                   {checklistData?.checklist_title
-                    ? checklistData?.checklist_title + ' 시작'
-                    : ''}
+                    ? checklistData?.checklist_title + ' '
+                    : ''}{' '}
+                  시작
                 </TableCell>
               </TableRow>
             )}
-            {checklistData?.checklist_timetable &&
-              checklistData.checklist_timetable.map((list, i) => (
+            {timetable &&
+              timetable.map((list, i) => (
                 <TableRow
                   key={list.txt && list.txt + i}
                   className="even:bg-gray-100"
@@ -225,7 +231,10 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
                   (<LocalTime time={checklistData?.endtime} />)
                 </TableCell>
                 <TableCell className="border border-gray-300 px-1 py-1">
-                  {checklistData?.checklist_title + ' '} 종료
+                  {checklistData?.checklist_title
+                    ? checklistData?.checklist_title + ' '
+                    : ''}{' '}
+                  종료
                 </TableCell>
               </TableRow>
             )}

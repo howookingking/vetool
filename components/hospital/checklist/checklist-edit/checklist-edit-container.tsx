@@ -6,7 +6,6 @@ import {
   useEffect,
   useState,
 } from 'react'
-import { ChecklistData } from '@/types/checklist/checklist-type'
 import ChecklistPatientInfo from '../common/checklist-patient-info'
 import ChecklistRegisterDialog from '../sidebar/checklist-register-dialog/checklist-register-dialog'
 import { ChecklistTypes } from '@/constants/checklist/checklist'
@@ -15,6 +14,9 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils/utils'
 import dynamic from 'next/dynamic'
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
+import type { Checklist } from '@/types'
+import ChecklistEditBasic from '@/components/hospital/checklist/checklist-edit/checklist-edit-basic'
+import { ChecklistData } from '@/types/checklist/checklist-type'
 
 const LazyChecklistEditBasic = dynamic(
   () =>
@@ -26,16 +28,7 @@ const LazyChecklistEditBasic = dynamic(
     loading: () => <LargeLoaderCircle className="h-[574px]" />,
   },
 )
-const LazyChecklistEditUser = dynamic(
-  () =>
-    import(
-      '@/components/hospital/checklist/checklist-edit/checklist-edit-basic'
-    ),
-  {
-    ssr: false,
-    loading: () => <LargeLoaderCircle className="h-[574px]" />,
-  },
-)
+
 type Props = {
   checklistId: string
   setChecklistEditDialogOpen: (isopen: boolean) => void
@@ -97,11 +90,11 @@ export default function ChecklistEditContainer({
       </div>
       {isActive && (
         <div>
-          <LazyChecklistEditBasic
+          <ChecklistEditBasic
             checklistData={checklistData}
             setChecklistEditDialogOpen={setChecklistEditDialogOpen}
             checklistType={checklistData?.checklist_type ?? isActive}
-          ></LazyChecklistEditBasic>
+          />
         </div>
       )}
     </div>

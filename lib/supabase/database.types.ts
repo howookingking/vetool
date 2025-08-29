@@ -66,6 +66,10 @@ export type Database = {
           patient_id: string | null
           preinfo: Json | null
           starttime: string | null
+          age_in_days: number
+          weight: number
+          istxing: boolean
+          enddate: string | null
         }
         Insert: {
           checklist_group?: string | null
@@ -85,6 +89,10 @@ export type Database = {
           patient_id?: string | null
           preinfo?: Json | null
           starttime?: string | null
+          age_in_days?: number
+          weight?: number
+          istxing?: boolean
+          enddate?: string | null
         }
         Update: {
           checklist_group?: string | null
@@ -104,6 +112,10 @@ export type Database = {
           patient_id?: string | null
           preinfo?: Json | null
           starttime?: string | null
+          age_in_days?: number
+          weight?: number
+          istxing?: boolean
+          enddate?: string | null
         }
         Relationships: [
           {

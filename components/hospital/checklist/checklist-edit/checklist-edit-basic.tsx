@@ -35,13 +35,14 @@ import { usePathname, useRouter } from 'next/navigation'
 import ChecklistEditVetInfo from '@/components/hospital/checklist/checklist-edit/checklist-edit-vetinfo'
 import ChecklistTagging from '@/components/hospital/checklist/common/checklist-tagging'
 import ChecklistEditProtocolset from '@/components/hospital/checklist/checklist-edit/checklist-edit-protocolset'
+import { Checklist } from '@/types'
 type Props = {
   checklistData: ChecklistData
   setChecklistEditDialogOpen: (isopen: boolean) => void
   checklistType: string
 }
 
-type keystring = keyof ChecklistData
+type keystring = keyof Checklist
 
 export default function ChecklistEditBasic({
   checklistData,
@@ -114,6 +115,7 @@ export default function ChecklistEditBasic({
     const preChecklistData: ChecklistData = { ...checklistdata }
     const keyname = e.target.name as keystring
     if (keyname === 'checklist_title' || keyname === 'comment') {
+      console.log('keyname', keyname)
       preChecklistData[keyname] = e.target.value
       setChecklistData(preChecklistData)
     }

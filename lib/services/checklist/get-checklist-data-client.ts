@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client' // 클라이언트 컴포넌트용
+import { Checklist } from '@/types'
 import type {
   ChecklistData,
   ChecklistPatient,
@@ -49,12 +50,12 @@ export const getChecklistDataById = async (checklistId: string) => {
     console.error(error)
     redirect(`/error?message=${error.message}`)
   }
-  return data
+  return data as Checklist
 }
 
 export const getChecklistDataByIdChannel = async (
   checklistId: string,
-  onDataChange: (payload: any) => void,
+  onDataChange: (payload: Checklist) => void,
 ) => {
   const channel = supabase
     .channel(`realtime:gechecklistbyId:${checklistId}`)
@@ -67,8 +68,9 @@ export const getChecklistDataByIdChannel = async (
         filter: `checklist_id=eq.${checklistId}`,
       },
       (payload) => {
-        console.log('Realtime change: all re-upload')
-        payload.new ? onDataChange(payload.new) : onDataChange(payload.old)
+        payload.new
+          ? onDataChange(payload.new as Checklist)
+          : onDataChange(payload.old as Checklist)
       },
     )
     .subscribe()

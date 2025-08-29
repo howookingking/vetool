@@ -37,7 +37,6 @@ export default function ChecklistEditChecklistSet({
             '심박수',
             '호흡수',
             '혈압(mmHg)',
-            'SPO2(%)',
             '비고',
           ],
         )
@@ -46,14 +45,7 @@ export default function ChecklistEditChecklistSet({
         interval: '1',
         preSet: [
           {
-            setname: [
-              '체온(°C)',
-              '심박수',
-              '호흡수',
-              '혈압(mmHg)',
-              'SPO2(%)',
-              '비고',
-            ],
+            setname: ['체온(°C)', '심박수', '호흡수', '혈압(mmHg)', '비고'],
             settime: '0',
           },
         ],
@@ -64,7 +56,6 @@ export default function ChecklistEditChecklistSet({
           '심박수',
           '호흡수',
           '혈압(mmHg)',
-          'SPO2(%)',
           '비고',
         ])
     }
