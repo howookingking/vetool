@@ -12,19 +12,24 @@ import { Separator } from '@/components/ui/separator'
 import { Textarea } from '@/components/ui/textarea'
 import { useEffect, useState } from 'react'
 import { updateEachChecklist } from '@/lib/services/checklist/get-checklist-data-client'
+import { Button } from '@/components/ui/button'
+import { LoaderCircle } from 'lucide-react'
 type Props = {
   checklistData: ChecklistData
 }
 export default function ChecklistBodyInformation({ checklistData }: Props) {
-  const [comment, setComment] = useState<string>(checklistData?.comment ?? '')
+  const [comment, setComment] = useState<string>('')
+  const [isSaving, setIsSaving] = useState(false)
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (checklistData?.comment !== comment) {
-        const predata = { ...checklistData } as ChecklistData
-        predata.comment = comment
-        updateEachChecklist(predata)
-      }
-    }, 2000)
+    checklistData?.comment && setComment(checklistData.comment)
+    // const timer = setTimeout(() => {
+    //   if (checklistData?.comment !== comment) {
+    //     const predata = { ...checklistData } as ChecklistData
+    //     predata.comment = comment
+    //     updateEachChecklist(predata)
+    //   }
+    // }, 2000)
+    setIsSaving(false)
   }, [checklistData])
   const type = checklistData?.checklist_type
   return (
@@ -133,6 +138,27 @@ export default function ChecklistBodyInformation({ checklistData }: Props) {
         value={comment ?? ''}
         onChange={(e) => setComment(e.target.value)}
       ></Textarea>
+      {checklistData?.comment !== comment && (
+        <div className="m-3 w-[100px]">
+          {isSaving ? (
+            <LoaderCircle className="ml-2 animate-spin" />
+          ) : (
+            <Button
+              variant="default"
+              size="sm"
+              onClick={() => {
+                setIsSaving(true)
+                const predata: ChecklistData = { ...checklistData }
+                predata.comment = comment
+                updateEachChecklist(predata)
+                setIsSaving(true)
+              }}
+            >
+              저장
+            </Button>
+          )}{' '}
+        </div>
+      )}
     </div>
   )
 }

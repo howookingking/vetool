@@ -118,16 +118,16 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
     <div className="mb-20 flex-col">
       <div>과정중 기록사항</div>
       <div className="overflow-x-auto">
-        <Table className="m-1 mr-3 w-[97%] min-w-[600px] border border-gray-300 text-center text-sm">
+        <Table className="m-1 mr-3 w-[97%] min-w-[400px] border border-gray-300 text-center text-sm">
           <TableHeader>
             <TableRow className="bg-gray-100">
               <TableHead className="max-w-[40px] border border-gray-300 px-1 py-1 text-center font-semibold">
-                +min(시간)
+                +min
               </TableHead>
               <TableHead className="border border-gray-300 px-1 py-1 text-center">
                 기록사항
               </TableHead>
-              <TableHead className="w-[50px] border border-gray-300 px-1 py-1 text-center font-semibold">
+              <TableHead className="w-[100px] border border-gray-300 px-1 py-1 text-center font-semibold">
                 삭제/수정
               </TableHead>
             </TableRow>
@@ -176,7 +176,7 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
                   <TableCell className="border border-gray-300 px-1 py-1">
                     {list.txt}
                   </TableCell>
-                  <TableCell className="w-[60px] border border-gray-300 px-1 py-1">
+                  <TableCell className="border border-gray-300 px-1 py-1">
                     {isTableLoad ? (
                       <LoaderCircle
                         className={cn(
@@ -190,7 +190,7 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
                           size="sm"
                           name={String(i)}
                           onClick={deleteTimetableTx}
-                          className="w-[50px]"
+                          className="w-[40px]"
                           title="삭제"
                         >
                           -
@@ -209,7 +209,7 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
                               })
                               setIsDialogOpen(true)
                             }}
-                            className="w-[50px]"
+                            className="w-[40px]"
                           >
                             <Pencil size={20}></Pencil>
                           </Button>

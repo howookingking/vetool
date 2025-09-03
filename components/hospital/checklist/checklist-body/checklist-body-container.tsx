@@ -7,18 +7,19 @@ import ChecklistStartEndTimeSet from '@/components/hospital/checklist/checklist-
 import ChecklistIntervalMin from '@/components/hospital/checklist/checklist-body/checklist-interval-min'
 import { useState } from 'react'
 import ChecklistBodyInformation from '@/components/hospital/checklist/checklist-body/checklist-body-information'
-import ChecklistBodyTable from './checklist-body-checklist/checklist-body-table'
+import ChecklistBodyTable from '@/components/hospital/checklist/checklist-body/checklist-body-checklist/checklist-body-table'
 import useIsMobile from '@/hooks/use-is-mobile'
-import ChecklistBodyTableMobile from './checklist-body-checklist/checklist-body-table-mobile'
-import ChecklistBodyProtocol from './checklist-body-protocol/checklist-body-protocol'
-import ChecklistTimetableRecord from './checklist-body-checklist/checklist-timetable-record'
+import ChecklistBodyTableMobile from '@/components/hospital/checklist/checklist-body/checklist-body-checklist/checklist-body-table-mobile'
+import ChecklistBodyProtocol from '@/components/hospital/checklist/checklist-body/checklist-body-protocol/checklist-body-protocol'
+import ChecklistTimetableRecord from '@/components/hospital/checklist/checklist-body/checklist-body-checklist/checklist-timetable-record'
 
 type Props = {
   checklistData: ChecklistData
 }
 export default function ChecklistBodyContainer({ checklistData }: Props) {
   const [timeMin, setTimeMin] = useState<number>(0)
-  const isMobile = useIsMobile()
+  // const isMobile = useIsMobile()
+  const isMobile = true
   // const isMobile = true
   return (
     <div className="flex-col">

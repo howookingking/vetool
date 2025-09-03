@@ -6,6 +6,7 @@ import type {
 } from '@/types/checklist/checklist-type'
 import {
   checkListSetArray,
+  defaultChecklistSet,
   minToLocalTime,
 } from '@/constants/checklist/checklist'
 import { useEffect, useState } from 'react'
@@ -87,7 +88,7 @@ export default function ChecklistBodyTable({
               prenames.push(...set.setname)
           }
         })
-      : prenames.push('체온(°C)', '심박수', '호흡수', '혈압(mmHg)', '비고')
+      : prenames.push(...defaultChecklistSet.preSet[0].setname)
 
     if (timeMin && interval && Number(interval) >= 1) {
       const _checktime = Number(timeMin)

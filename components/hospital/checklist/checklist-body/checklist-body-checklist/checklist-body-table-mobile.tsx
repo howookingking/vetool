@@ -1,347 +1,277 @@
 'use client'
-
+import type {
+  ChecklistData,
+  ChecklistResults,
+  CheckNameArray,
+} from '@/types/checklist/checklist-type'
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
+  checkListSetArray,
+  defaultChecklistSet,
+  minToLocalTime,
+} from '@/constants/checklist/checklist'
+import { useEffect, useState } from 'react'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+// import TxchartChecklistTabecell from './txchart-checklist-tabecell'
+import { updateEachChecklist } from '@/lib/services/checklist/get-checklist-data-client'
+import { toast } from '@/components/ui/use-toast'
+import ChecklistBodyTableCell from '@/components/hospital/checklist/checklist-body/checklist-body-checklist/checklist-body-tablecell'
 import {
   Table,
-  TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Input } from '@/components/ui/input'
-import {
-  ChecklistResults,
-  CheckNameArray,
-  PreSetItem,
-} from '@/types/checklist/checklist-type'
-import React, { useState, useEffect, useRef } from 'react'
-import { Button } from '@/components/ui/button'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-
-import {
-  checkListSetArray,
-  minToLocalTime,
-  timeInterval,
-} from '@/constants/checklist/checklist'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-
-import { redirect } from 'next/navigation'
-import { toast } from '@/components/ui/use-toast'
-import { Camera } from 'lucide-react'
-import { Image } from 'lucide-react'
-import { updateEachChecklist } from '@/lib/services/checklist/get-checklist-data-client'
-import { ChecklistData } from '@/types/checklist/checklist-type'
 import ChecklistTimetableAdd from './checklist-timetable-add'
-
-type Props = {
-  checklistData: ChecklistData
-  timeMin: number
-}
-export default function ChecklistBodyTableMobile({
+import { LoaderCircle, Pencil } from 'lucide-react'
+import { Separator } from '@/components/ui/separator'
+import ChecklistTimetableRecord from '@/components/hospital/checklist/checklist-body/checklist-body-checklist/checklist-timetable-record'
+export default function ChecklistBodyTable({
   checklistData,
   timeMin,
-}: Props) {
+}: {
+  checklistData: ChecklistData
+  timeMin: number
+}) {
+  const [result, setResult] = useState<Record<string, ChecklistResults>>({})
   const [checktime, setCheckTime] = useState<string>('0')
-  const [interval, setInterval] = useState<string>('1')
-  const [checklistTitles, setCheckListTitles] = useState<string[]>([]) //체크리스트 종류
-  const [results, setResults] = useState<ChecklistResults>({})
-  const [preset, setPreSet] = useState<PreSetItem[]>([])
+  const [interval, setInterval] = useState<string>('1') //측정간격
+  const [checklistname, setCheckListNames] = useState<CheckNameArray>([]) //체크리스트 종류
+  const [tabletimes, setTableTimes] = useState<number[]>([])
+  const [isSaving, setIsSaving] = useState(false)
+  const [newresult, setNewResult] = useState<{
+    time: string
+    newresult: ChecklistResults
+  }>({ time: '', newresult: {} })
 
   useEffect(() => {
-    if (
-      timeMin &&
-      interval &&
-      Number(interval) >= 1
-      //   &&
-      //   (!checklistData?.checklist_set?.preSet ||
-      //     checklistData?.checklist_set?.preSet.length === 0)
-    ) {
+    checklistData &&
+      checklistData?.checklist_set?.result &&
+      setResult({ ...checklistData.checklist_set.result })
+    const prenames: string[] = []
+    const pretimes: number[] = []
+    checklistData?.checklist_set?.result &&
+      Object.keys(checklistData.checklist_set.result).map((key) => {
+        Number(key) && Number(key) >= 0 && pretimes.push(Number(key))
+        checklistData?.checklist_set?.result &&
+          prenames.push(...Object.keys(checklistData.checklist_set.result[key]))
+      })
+    prenames.push('비고')
+    checklistData &&
+    checklistData.checklist_set?.preSet &&
+    checklistData.checklist_set.preSet.length > 0
+      ? checklistData?.checklist_set?.preSet.map((set) => {
+          if (
+            set.settime &&
+            set.settime !== '' &&
+            Number(set.settime) >= 0 &&
+            pretimes.indexOf(Number(set.settime)) === -1
+          ) {
+            pretimes.push(Number(set.settime))
+            set.setname &&
+              set.setname.length > 0 &&
+              prenames.push(...set.setname)
+          }
+        })
+      : prenames.push(...defaultChecklistSet.preSet[0].setname)
+
+    if (timeMin && interval && Number(interval) >= 1) {
       const _checktime = Number(timeMin)
       const _interval = Number(interval)
       const cal1 = Math.floor(_checktime / _interval)
       const cal2 = _checktime & _interval
       if (_checktime >= _interval) {
-        setCheckTime(String(_interval * cal1))
+        const preNewResult = { ...newresult }
+        preNewResult.time = String(_interval * cal1)
+        setNewResult(preNewResult)
       } else if (_checktime < _interval) {
-        setCheckTime('0')
+        const preNewResult = { ...newresult }
+        preNewResult.time = '0'
+        setNewResult(preNewResult)
       }
     } else {
-      timeMin && setCheckTime(String(timeMin))
+      const preNewResult = { ...newresult }
+      preNewResult.time = String(timeMin)
+      timeMin && setNewResult(preNewResult)
     }
     checklistData &&
       checklistData.checklist_set?.interval &&
       setInterval(String(checklistData.checklist_set.interval))
-    const pretitle: string[] = []
-    checkListSetArray.map((list) => {
-      pretitle.push(list && list.name)
+    const prenames2: CheckNameArray = []
+    checkListSetArray.map((set) => {
+      if (set.name && prenames.indexOf(set.name) !== -1) {
+        prenames2.push(set)
+      }
     })
-    checklistData &&
-      checklistData.checklist_set?.preSet &&
-      checklistData.checklist_set?.preSet.length > 0 &&
-      setPreSet(checklistData.checklist_set.preSet)
-  }, [checklistData, timeMin, interval])
+    pretimes.sort((a, b) => a - b)
+    checklistData && setIsSaving(false)
+    setTableTimes(pretimes)
+    setCheckListNames([...prenames2])
+  }, [checklistData, timeMin])
 
-  const inputTxt = useRef<HTMLInputElement>(null)
-  const changeinterval = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const _checktime = Number(timeMin)
-    const _interval = Number(e.target.value)
-    const cal1 = Math.floor(_checktime / _interval)
-    const cal2 = _checktime & _interval
-    if (_checktime >= _interval) {
-      setCheckTime(String(_interval * cal1))
-      setInterval(String(e.target.value))
-    } else if (_checktime < _interval) {
-      setCheckTime('0')
-      setInterval(String(e.target.value))
-    }
-  }
-  const changeInputTime = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.target.value && setCheckTime(String(Number(e.target.value)))
-  }
-  const changeresult = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const predata = { ...results }
-    predata[e.target.name] = e.target.value
-
-    setResults(predata)
-  }
-  const savetxdata = () => {
-    const predata: ChecklistData = JSON.parse(
-      JSON.stringify({ ...checklistData }),
-    ) as ChecklistData
-
-    if (predata?.checklist_set?.result) {
-      predata.checklist_set.result[checktime] = { ...results }
-
-      updateEachChecklist(predata)
-      setResults({})
+  const savenewChecklistChart = () => {
+    setIsSaving(true)
+    if (checklistData && newresult.time && newresult.newresult) {
+      const predata = { ...checklistData }
+      predata.checklist_set ??= { result: {}, preSet: [] }
+      predata.checklist_set.result ??= {}
+      if (predata.checklist_set.result[newresult.time]) {
+        const confirmed = window.confirm(
+          '이미 해당 시간에 결과가 있습니다. 덮어쓰시겠습니까?',
+        )
+        if (confirmed) {
+          predata.checklist_set.result[newresult.time] = newresult.newresult
+          updateEachChecklist(predata)
+            .then(() => {
+              setNewResult({ time: '', newresult: {} })
+            })
+            .catch((error) => {
+              console.error('Error saving txChart:', error)
+            })
+        }
+      } else {
+        predata.checklist_set.result[newresult.time] = newresult.newresult
+        updateEachChecklist(predata)
+          .then(() => {
+            setNewResult({ time: '', newresult: {} })
+          })
+          .catch((error) => {
+            console.error('Error saving txChart:', error)
+          })
+      }
     } else {
-      if (predata?.checklist_set) {
-        predata.checklist_set.result = {}
-        predata.checklist_set.result[checktime] = { ...results }
+      toast({
+        title: '오류',
+        description: '시간과 결과를 입력해주세요.',
+      })
+    }
+  }
 
-        updateEachChecklist(predata)
-        setResults({})
-      } else {
-        predata.checklist_set = {}
-        predata.checklist_set.result = {}
-        predata.checklist_set.result[checktime] = { ...results }
-
-        updateEachChecklist(predata)
-        setResults({})
+  const delTableRow = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (window.confirm('해당 행을 삭제하시겠습니까?')) {
+      const time = e.currentTarget.name
+      if (checklistData && time) {
+        const predata = { ...checklistData }
+        if (
+          predata.checklist_set?.result &&
+          predata.checklist_set.result[time]
+        ) {
+          delete predata.checklist_set.result[time]
+          updateEachChecklist(predata)
+            .then(() => {
+              toast({
+                title: '성공',
+                description: '해당 행이 삭제되었습니다.',
+              })
+            })
+            .catch((error) => {
+              console.error('Error deleting row:', error)
+            })
+        } else {
+          toast({
+            title: '오류',
+            description: '해당 행이 존재하지 않습니다.',
+          })
+        }
       }
     }
   }
-  const addtimetableTx = () => {
-    if (inputTxt.current && inputTxt.current.value) {
-      const txt = inputTxt.current.value
-      const predata = { ...checklistData } as any
-      if (!predata.checklist_timetable) {
-        predata.checklist_timetable = []
-        predata.checklist_timetable.push({
-          time: new Date().getTime(),
-          txt: txt,
-          type: 'txt',
-          imgurl: null,
-        })
-        updateEachChecklist(predata)
-          .then(() => {
-            if (inputTxt.current) {
-              inputTxt.current.value = ''
-            }
-          })
-          .catch((error) => {
-            console.error('Error saving checklistChart:', error)
-            toast({
-              title: '오류',
-              description: '저장에 실패했습니다.',
-            })
-          })
-      } else {
-        predata.checklist_timetable = [...predata.checklist_timetable]
-        predata.checklist_timetable.push({
-          time: new Date().getTime(),
-          txt: txt,
-          type: 'txt',
-          imgurl: null,
-        })
-        updateEachChecklist(predata)
-          .then(() => {
-            if (inputTxt.current) {
-              inputTxt.current.value = ''
-            }
-          })
-          .catch((error) => {
-            console.error('Error saving checklistChart:', error)
-            toast({
-              title: '오류',
-              description: '저장에 실패했습니다.',
-            })
-          })
-      }
-    }
+  const changeTableCellResult = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const predata = { ...newresult }
+    predata.newresult[e.target.name] = e.target.value
+    setNewResult(predata)
   }
   return (
-    <div>
+    <div className="overflow-x-auto">
       <ChecklistTimetableAdd checklistData={checklistData} />
-      <div className="flex items-center">
-        {checklistData?.checklist_set?.preSet &&
-        checklistData.checklist_set.preSet.length > 0 ? (
-          <div>
-            <Select
-              onValueChange={(value: string) => {
-                const predata: any =
-                  preset && preset.find((x) => x.settime === String(value))
-
-                setCheckTime(predata?.settime ?? '0')
-                setCheckListTitles(
-                  predata?.setname ? [...predata.setname, '비고'] : [],
-                )
-              }}
-            >
-              <SelectTrigger className="w-auto">
-                <SelectValue placeholder="측정시간선택" />
-              </SelectTrigger>
-              <SelectContent className="w-auto">
-                {preset &&
-                  preset.map((set) => {
-                    let names = ''
-                    set.setname &&
-                      set.setname.map((name) => {
-                        names = names + name + ' '
-                      })
-                    return (
-                      <SelectItem
-                        key={set.settime}
-                        value={set?.settime ? set.settime : ''}
-                      >
-                        {set.settime + '분후' + '(' + names + ')'}
-                      </SelectItem>
-                    )
-                  })}
-              </SelectContent>
-            </Select>
-          </div>
-        ) : (
-          <div className="flex items-center">
-            {' '}
-            <div>측정간격 :</div>
-            <Input
-              type="number"
-              className="m-3 w-[60px]"
-              defaultValue={interval && Number(interval)}
-              onChange={changeinterval}
-            ></Input>
-            <div>분</div>
-          </div>
-        )}
-
-        <div>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button type="button" variant="outline" className="ml-2">
-                항목선택
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="min-w-[300px]">
-              <ToggleGroup
-                onValueChange={(value) => {
-                  if (value) {
-                    setCheckListTitles(value)
-                  }
-                }}
-                type="multiple"
-                variant="outline"
-                defaultValue={checklistTitles ? [...checklistTitles] : []}
+      <div className="flex">
+        <div className="width=[30%] flex-col border-r p-2">
+          {
+            <div className="mb-2">
+              <Button
                 size="sm"
-                className="flex flex-wrap"
+                className="w-[100px]"
+                variant={checktime === 'new' ? 'default' : 'destructive'}
+                onClick={() => setCheckTime('new')}
               >
-                {checkListSetArray.map((check, i) => (
-                  <ToggleGroupItem
-                    key={check.name}
-                    value={check.name}
-                    aria-label="Toggle bold"
-                  >
-                    {check.displayName}
-                  </ToggleGroupItem>
-                ))}
-              </ToggleGroup>
-            </PopoverContent>
-          </Popover>
+                +{newresult.time}
+              </Button>
+            </div>
+          }
+          {tabletimes &&
+            tabletimes.map((time, i) => (
+              <div key={'time' + i} className="mb-2">
+                <Button
+                  size="sm"
+                  className="w-[100px]"
+                  variant={Number(checktime) === time ? 'default' : 'outline'}
+                  onClick={() => setCheckTime(String(time))}
+                >{`+${time}분`}</Button>
+              </div>
+            ))}
         </div>
-      </div>
-      <div>
-        <Table className="m-3 mb-7 max-w-[400px]">
-          <TableHeader>
-            <TableRow className="text-bold bg-gray-100 text-lg">
-              <TableHead>항목</TableHead>
-              <TableHead>입력값</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow>
-              <TableCell className="bg-gray-100">입력시간</TableCell>
-              <TableCell className="bg-gray-100">
-                {checklistData?.starttime && (
-                  <div className="flex items-center">
-                    시작후
-                    <Input
-                      className="w-[60px]"
-                      value={checktime ? checktime : ''}
-                      onChange={changeInputTime}
-                    ></Input>
-                    분(
-                    {checktime &&
-                      minToLocalTime(checklistData.starttime, checktime)[1]}
-                    )
-                  </div>
-                )}
-              </TableCell>
-            </TableRow>
-            {checkListSetArray.map((list, i) => {
-              if (checklistTitles?.indexOf(list.name) !== -1) {
-                return (
-                  <TableRow key={list.name}>
-                    <TableCell>{list.name}</TableCell>
-                    <TableCell>
-                      <Input
-                        name={list.name}
-                        className="w-auto"
-                        value={
-                          results && results[list.name]
-                            ? results[list.name]
-                            : ''
-                        }
-                        onChange={changeresult}
-                      ></Input>
+        <div className="p-2">
+          <Table className="border border-gray-300 text-center text-sm">
+            <TableHeader>
+              <TableRow className="bg-gray-100">
+                <TableHead className="border border-gray-300 px-4 py-2 text-center font-semibold">
+                  항목
+                </TableHead>
+                <TableHead className="border border-gray-300 px-4 py-2 text-center font-semibold">
+                  결과
+                </TableHead>
+              </TableRow>
+              {checklistname &&
+                checklistname.map((list, i) => (
+                  <TableRow key={'list' + i} className="even:bg-gray-100">
+                    <TableCell className="border border-gray-300 px-4 py-2">
+                      {list.name}
+                    </TableCell>
+                    <TableCell className="border border-gray-300 px-4 py-2">
+                      {checktime === 'new' ? (
+                        <Input
+                          key={'input' + i}
+                          name={list.name}
+                          value={newresult.newresult[list.name] ?? ''}
+                          onChange={changeTableCellResult}
+                        />
+                      ) : isSaving ? (
+                        <LoaderCircle className="ml-2 animate-spin" />
+                      ) : (
+                        <ChecklistBodyTableCell
+                          time={String(checktime)}
+                          name={list.name}
+                          checklistData={checklistData}
+                          setIsSaving={setIsSaving}
+                        />
+                      )}
                     </TableCell>
                   </TableRow>
-                )
-              }
-            })}
-            <TableRow>
-              <TableCell className="bg-gray-100">입력</TableCell>
-              <TableCell className="bg-gray-100">
-                {checklistData && results && (
-                  <Button variant="outline" onClick={savetxdata}>
-                    입력
-                  </Button>
-                )}
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+                ))}
+              {checktime === 'new' && (
+                <TableRow className="even:bg-gray-100">
+                  <TableCell className="border border-gray-300 px-4 py-2">
+                    {' '}
+                  </TableCell>
+                  <TableCell className="border border-gray-300 px-4 py-2">
+                    <Button
+                      size="sm"
+                      className="w-[100px]"
+                      onClick={savenewChecklistChart}
+                    >
+                      추가
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableHeader>
+          </Table>
+        </div>
+      </div>
+      <Separator className="m-2" />
+      <div className="m-2 max-w-[600px]">
+        <ChecklistTimetableRecord checklistData={checklistData} />
       </div>
     </div>
   )
