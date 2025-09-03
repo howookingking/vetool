@@ -186,19 +186,20 @@ export default function ChecklistBodyTable({
     <div className="overflow-x-auto">
       <ChecklistTimetableAdd checklistData={checklistData} />
       <div className="flex">
-        <div className="width=[30%] flex-col border-r p-2">
-          {
-            <div className="mb-2">
-              <Button
-                size="sm"
-                className="w-[100px]"
-                variant={checktime === 'new' ? 'default' : 'destructive'}
-                onClick={() => setCheckTime('new')}
-              >
-                +{newresult.time}
-              </Button>
-            </div>
-          }
+        <div className="width=[30%] flex-col border-r p-2 text-center">
+          <div className="mb-1 text-sm">시작후(+Min)</div>
+          <div className="mb-2">
+            <Button
+              size="sm"
+              className="w-[100px]"
+              variant={checktime === 'new' ? 'default' : 'destructive'}
+              onClick={() => setCheckTime('new')}
+            >
+              +{newresult.time}
+            </Button>
+          </div>
+          <Separator className="m-2 w-[70%]" />
+          <div className="mb-1 text-sm">시간(+Min)</div>
           {tabletimes &&
             tabletimes.map((time, i) => (
               <div key={'time' + i} className="mb-2">
