@@ -18,8 +18,8 @@ type Props = {
 }
 export default function ChecklistBodyContainer({ checklistData }: Props) {
   const [timeMin, setTimeMin] = useState<number>(0)
-  // const isMobile = useIsMobile()
-  const isMobile = true
+  const isMobile = useIsMobile()
+
   // const isMobile = true
   return (
     <div className="flex-col">

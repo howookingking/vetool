@@ -29,7 +29,7 @@ export default function ChecklistEditVetInfo({
           <span className="text-l mr-xl">보조 수의사 또는 스탭 : </span>
           <Input
             className="w-[50%]"
-            name="assistant"
+            name="assistance"
             type="text"
             value={checklistVet?.assistance ?? ''}
             onChange={changevetlist}

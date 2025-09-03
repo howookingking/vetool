@@ -35,7 +35,7 @@ export default function ChecklistBodyTable({
   timeMin: number
 }) {
   const [result, setResult] = useState<Record<string, ChecklistResults>>({})
-  const [checktime, setCheckTime] = useState<string>('0')
+  const [checktime, setCheckTime] = useState<string>('new')
   const [interval, setInterval] = useState<string>('1') //측정간격
   const [checklistname, setCheckListNames] = useState<CheckNameArray>([]) //체크리스트 종류
   const [tabletimes, setTableTimes] = useState<number[]>([])

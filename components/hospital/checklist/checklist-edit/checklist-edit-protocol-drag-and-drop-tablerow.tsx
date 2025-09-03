@@ -91,6 +91,9 @@ export default function ChecklistEditProtocolDragAndDropTableRow({
                     : '주의/확인사항'}{' '}
                 </div>
                 <div>{protocol.title || '(제목 없음)'} </div>
+                <div className="whitespace-pre text-left">
+                  {protocol.addinfo || ''}
+                </div>
                 <div className="w-[150px]">
                   {' '}
                   {protocol.mode === 'afterMain'
@@ -117,73 +120,6 @@ export default function ChecklistEditProtocolDragAndDropTableRow({
           })}
         </ReactSortable>
       )}
-
-      {/* {protocolSet.length > 0 &&
-        protocolSet.map((protocol, i) => <div>{'4'}</div>)} */}
-      {/* <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>구분</TableHead>
-            <TableHead>실행시점</TableHead>
-
-            <TableHead>추가정보</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <ReactSortable list={protocolSet} setList={changeProtocolRow}>
-            {protocolSet.length > 0 &&
-              protocolSet.map((protocol, i) => (
-                <TableRow key={protocol.title + '-' + i}>
-                  <TableCell>
-                    <div className="font-bold">
-                      {protocol.title}
-                      {protocol.type === 'protocol'
-                        ? '(주요과정)'
-                        : '(주의/확인사항)'}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    {protocol.mode === 'afterMain'
-                      ? '주요과정 시작 '
-                      : protocol.mode === 'afterStart'
-                        ? '치료 시작 '
-                        : protocol.mode === 'afterSub'
-                          ? '이전과정 실행 '
-                          : ''}
-                    {protocol.dueStart ? protocol.dueStart + '분후' : ''}
-                  </TableCell>
-
-                  <TableCell>
-                    {protocol.addinfo ? (
-                      <Popover>
-                        <PopoverTrigger>
-                          <div>추가정보</div>
-                        </PopoverTrigger>
-                        <PopoverContent>
-                          <div className="whitespace-pre-wrap">
-                            {protocol.addinfo}
-                          </div>
-                        </PopoverContent>
-                      </Popover>
-                    ) : (
-                      <div></div>
-                    )}
-                    <div>
-                      <Button
-                        type="button"
-                        name={String(i)}
-                        onClick={delProtocol}
-                        variant="outline"
-                      >
-                        X
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-          </ReactSortable>
-        </TableBody>
-      </Table> */}
     </div>
   )
 }

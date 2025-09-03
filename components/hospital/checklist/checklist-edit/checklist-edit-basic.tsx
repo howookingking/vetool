@@ -187,9 +187,8 @@ export default function ChecklistEditBasic({
         '정말로 체크리스트를 삭제하시겠습니까? 삭제된 체크리스트는 복구할 수 없습니다.',
       )
     ) {
+      setChecklistEditDialogOpen(false)
       deleteChecklist(checklistdata.checklist_id).then(() => {
-        setChecklistEditDialogOpen(false)
-
         toast({
           title: '체크리스트 삭제 완료',
           description: '체크리스트를 삭제했습니다.',
