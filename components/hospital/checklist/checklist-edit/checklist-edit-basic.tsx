@@ -36,6 +36,7 @@ import ChecklistEditVetInfo from '@/components/hospital/checklist/checklist-edit
 import ChecklistTagging from '@/components/hospital/checklist/common/checklist-tagging'
 import ChecklistEditProtocolset from '@/components/hospital/checklist/checklist-edit/checklist-edit-protocolset'
 import { Checklist } from '@/types'
+import { defaultChecklistSet } from '@/constants/checklist/checklist'
 type Props = {
   checklistData: ChecklistData
   setChecklistEditDialogOpen: (isopen: boolean) => void
@@ -60,22 +61,7 @@ export default function ChecklistEditBasic({
     const preChecklistData = JSON.parse(JSON.stringify(checklistData))
     if (preChecklistData) {
       if (!preChecklistData.checklist_set) {
-        preChecklistData.checklist_set = {
-          interval: '1',
-          preSet: [
-            {
-              setname: [
-                '체온(°C)',
-                '심박수',
-                '호흡수',
-                '혈압(mmHg)',
-                'SPO2(%)',
-                '비고',
-              ],
-              settime: '0',
-            },
-          ],
-        }
+        preChecklistData.checklist_set = defaultChecklistSet
 
         setChecklistData(checklistData)
         preChecklistData.checklist_group &&

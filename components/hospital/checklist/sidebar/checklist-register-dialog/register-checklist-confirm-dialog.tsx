@@ -59,6 +59,7 @@ export default function RegisterChecklistConfirmDialog({
     } else if (!checklistData) {
       // 체크리스트가 최초 등록시
       // registeriingPatient정보가 있다면(환자가 선택됬다면), 선택된 환자로 ID로 등록, 정보가 없다면 null로 등록
+      console.log('registerChecklist', registeringPatient)
       registerChecklist(
         hosId,
         registeringPatient ? registeringPatient.patientId : null,

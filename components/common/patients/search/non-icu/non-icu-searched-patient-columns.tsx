@@ -126,11 +126,17 @@ export const nonIcusearchedPatientsColumns = ({
         const birth = row.original.birth
         const patientId = row.original.patient_id
         const name = row.original.name
+        const species = row.original.species
+        const breed = row.original.breed
+        const gender = row.original.gender
         return (
           <NonIcuRegisterButton
             birth={birth}
             patientId={patientId}
             patientName={name}
+            species={species ?? ''}
+            breed={breed ?? ''}
+            gender={gender ?? ''}
             setIsConfirmDialogOpen={setIsConfirmDialogOpen!}
             setRegisteringPatient={setRegisteringPatient!}
           />
