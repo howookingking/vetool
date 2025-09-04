@@ -4,16 +4,16 @@
 // import { templateColumns } from '@/components/hospital/icu/main/template/template-columns'
 import DataTable from '@/components/ui/data-table'
 import { TemplateChecklist } from '@/types/checklist/checklist-type'
-
-import type { TemplateChart } from '@/types/icu/template'
 import { useState } from 'react'
-import ChecklistPreviewDialog from './checklist-preview-dialog'
-import UpsertChecklistTemplateDialog from './upsert-checklist-template-dialog'
+import ChecklistPreviewDialog from '@/components/hospital/checklist/template//checklist-preview-dialog'
+import UpsertChecklistTemplateDialog from '@/components/hospital/checklist/template/upsert-checklist-template-dialog'
+import { ChecklistTemplate } from '@/types'
+import { checklistTemplateColumns } from '@/components/hospital/checklist/template/checklist-template-columns'
 
 export default function ChecklistTemplateEntry({
-  templateChecklists,
+  checklistTemplateCharts,
 }: {
-  templateChecklists: TemplateChecklist[]
+  checklistTemplateCharts: TemplateChecklist[] | null
 }) {
   const [templateDialogOpen, setTemplateDialogOpen] = useState(false)
 
@@ -23,25 +23,22 @@ export default function ChecklistTemplateEntry({
 
   return (
     <div className="relative">
-      {/* <DataTable
+      <DataTable
         searchBarSpace
-        columns={templateColumns(
+        columns={checklistTemplateColumns(
           setTemplateDialogOpen,
-          setSortedOrders,
           setIsEdit,
           setSelectedTemplateChart,
         )}
-        data={templateCharts ?? []}
-        searchPlaceHolder="템플릿 이름, 설명으로 검색"
-      /> */}
+        data={checklistTemplateCharts ?? []}
+        searchPlaceHolder="템플릿 제목으로 검색"
+      />
 
       <ChecklistPreviewDialog />
 
       <UpsertChecklistTemplateDialog
         useUpsertTemplateDialogOpen={templateDialogOpen}
         setUseUpsertTemplateDialogOpen={setTemplateDialogOpen}
-        // sortedOrders={sortedOrders}
-        // setSortedOrders={setSortedOrders}
         isEdit={isEdit}
         setIsEdit={setIsEdit}
         selectedTemplateChart={selectedTemplateChart}

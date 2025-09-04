@@ -26,9 +26,7 @@ import { Trash2 } from 'lucide-react'
 import { ORDER_COLORS } from '@/constants/hospital/icu/chart/colors'
 import {
   deleteChecklist,
-  saveTemplate,
   updateEachChecklist,
-  updateTemplate,
 } from '@/lib/services/checklist/get-checklist-data-client'
 import { toast } from '@/components/ui/use-toast'
 import ChecklistEditTxInfo from '@/components/hospital/checklist/checklist-edit/checklist-edit-txinfo'
@@ -36,6 +34,10 @@ import { usePathname, useRouter } from 'next/navigation'
 import ChecklistEditVetInfo from '@/components/hospital/checklist/checklist-edit/checklist-edit-vetinfo'
 import ChecklistTagging from '@/components/hospital/checklist/common/checklist-tagging'
 import ChecklistEditProtocolset from '@/components/hospital/checklist/checklist-edit/checklist-edit-protocolset'
+import {
+  saveTemplate,
+  updateTemplate,
+} from '@/lib/services/checklist/checklist-template'
 
 type Props = {
   templateChecklist: TemplateChecklist | null

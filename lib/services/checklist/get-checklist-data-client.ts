@@ -104,42 +104,6 @@ export const deleteChecklist = async (checklistId: string) => {
   }
 }
 
-export const saveTemplate = async (template: TemplateChecklist) => {
-  type TemplateChecklistPre = {
-    checklist_template_id?: string
-    hos_id?: string
-    checklist_type?: string //'checklist' | 'surgery'
-    checklist_title?: string //tamplate이름
-    checklist_tag?: null | string //검색어
-    checklist_protocol?: null | ChecklistProtocol
-    checklist_set?: null | Checklistset
-    preinfo?: null | PreInfo //처치 정보
-  }
-  const templatepre: TemplateChecklistPre = {
-    ...template,
-  }
-  delete templatepre.checklist_template_id
-
-  const { data, error } = await supabase
-    .from('checklist_template')
-    .insert(templatepre)
-  if (error) {
-    console.error(error)
-    redirect(`/error?message=${error.message}`)
-  }
-}
-
-export const updateTemplate = async (template: TemplateChecklist) => {
-  const { data, error } = await supabase
-    .from('checklist_template')
-    .update(template)
-    .eq('checklist_template_id', template.checklist_template_id)
-  if (error) {
-    console.error(error)
-    redirect(`/error?message=${error.message}`)
-  }
-}
-
 export const getChecklistSidebarData = async (
   hosId: string,
   targetDate: string,
