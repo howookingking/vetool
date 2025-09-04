@@ -9,6 +9,7 @@ import { type TemplateChart } from '@/types/icu/template'
 import { type ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown } from 'lucide-react'
 import { type Dispatch, type SetStateAction } from 'react'
+import EditChecklilstTemplateButton from './edit-checklist-template-button'
 // import EditTemplateButton from './edit-template-button'
 
 export const checklistTemplateColumns = (
@@ -17,7 +18,7 @@ export const checklistTemplateColumns = (
   setSelectedTemplateChart: Dispatch<SetStateAction<TemplateChecklist | null>>,
 ): ColumnDef<TemplateChecklist>[] => [
   {
-    accessorKey: 'template_name',
+    accessorKey: 'checklist_title',
     header: ({ column }) => {
       return (
         <Button
@@ -30,20 +31,20 @@ export const checklistTemplateColumns = (
       )
     },
   },
-  //   {
-  //     accessorKey: 'template_comment',
-  //     header: ({ column }) => {
-  //       return (
-  //         <Button
-  //           variant="ghost"
-  //           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-  //         >
-  //           설명
-  //           <ArrowUpDown className="ml-2 h-4 w-4" />
-  //         </Button>
-  //       )
-  //     },
-  //   },
+  {
+    accessorKey: 'checklist_tag',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Tag
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+  },
   {
     accessorKey: 'created_at',
     header: ({ column }) => {
@@ -60,7 +61,7 @@ export const checklistTemplateColumns = (
     cell: ({ row }) => {
       const createdAt = row.original.created_at
 
-      return <span>{createdAt.slice(0, 10)}</span>
+      return <span>{createdAt ? createdAt.slice(0, 10) : '-'}</span>
     },
   },
 
@@ -86,7 +87,13 @@ export const checklistTemplateColumns = (
 
       return (
         <div className="flex justify-center">
-          editbutton
+          <EditChecklilstTemplateButton
+            setUseUpsertTemplateDialogOpen={setTemplateDialogOpen}
+            chartId={chartId}
+            template={template}
+            setIsEdtit={setIsEdtit}
+            setSelectedTemplateChart={setSelectedTemplateChart}
+          />
           {/* <EditTemplateButton
             setUseUpsertTemplateDialogOpen={setTemplateDialogOpen}
             chartId={chartId}

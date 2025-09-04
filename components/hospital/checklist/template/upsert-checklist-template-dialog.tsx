@@ -70,7 +70,7 @@ export default function UpsertChecklistTemplateDialog({
 
         <div className="max-h-[680px] overflow-y-scroll">
           <ChecklistTemplateEdit
-            templateChecklist={null}
+            templateChecklist={selectedTemplateChart}
             setChecklistEditDialogOpen={setUseUpsertTemplateDialogOpen}
           />
         </div>

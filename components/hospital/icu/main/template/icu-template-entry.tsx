@@ -30,7 +30,7 @@ export default function IcuTemplateEntry({
           setSelectedTemplateChart,
         )}
         data={templateCharts ?? []}
-        searchPlaceHolder="템플릿 이름, 설명으로 검색"
+        searchPlaceHolder="템플릿 이름, Tag로 검색"
       />
 
       <PreviewDialog />

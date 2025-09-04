@@ -123,7 +123,7 @@ export type ProtocolItem = {
 export type TemplateChecklist = {
   checklist_template_id: string
   hos_id: string
-  created_at: string
+  created_at?: string
   checklist_type: string //'checklist' | 'surgery'
   checklist_title: string //tamplate이름
   checklist_tag: null | string //검색어

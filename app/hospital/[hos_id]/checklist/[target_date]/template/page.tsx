@@ -16,7 +16,6 @@ export default async function ChecklistTemplatePage(props: TemplatePageProps) {
   let checklistTemplateCharts: TemplateChecklist[] | null = null
   if (_checklistTemplateCharts) {
     checklistTemplateCharts = _checklistTemplateCharts as TemplateChecklist[]
-    console.log(checklistTemplateCharts)
   }
 
   return (
