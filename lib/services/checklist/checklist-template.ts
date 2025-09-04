@@ -63,3 +63,34 @@ export const getChecklistTemplateCharts = async (hosId: string) => {
 
   return data as ChecklistTemplate[]
 }
+
+export const getChecklistEachTemplateChart = async (
+  checklistTemplateId: string,
+) => {
+  const { data, error } = await supabase
+    .from('checklist_template')
+    .select('*')
+    .match({
+      checklist_template_id: checklistTemplateId,
+    })
+
+  if (error) {
+    console.error(error)
+    redirect(`/error/?message=${error.message}`)
+  }
+
+  return data as ChecklistTemplate[]
+}
+
+export const deleteChecklistTemplate = async (checklistTemplateId: string) => {
+  const { data, error } = await supabase
+    .from('checklist_template')
+    .delete()
+    .eq('checklist_template_id', checklistTemplateId)
+
+  if (error) {
+    console.error('삭제 실패:', error.message)
+  } else {
+    console.log('삭제 완료:', data)
+  }
+}

@@ -1,15 +1,13 @@
 'use client'
 
-import PreviewButton from '@/components/hospital/common/preview/preview-button'
-import DeleteTemplateDialog from '@/components/hospital/icu/main/template/delete-template-dialog'
 import { Button } from '@/components/ui/button'
 import { TemplateChecklist } from '@/types/checklist/checklist-type'
-import { type SelectedIcuOrder } from '@/types/icu/chart'
-import { type TemplateChart } from '@/types/icu/template'
 import { type ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown } from 'lucide-react'
 import { type Dispatch, type SetStateAction } from 'react'
-import EditChecklilstTemplateButton from './edit-checklist-template-button'
+import EditChecklilstTemplateButton from '@/components/hospital/checklist/template/edit-checklist-template-button'
+import ChecklistTemplatePreviewButton from '@/components/hospital/checklist/template/checklist-template-preview-button'
+import DeleteChecklistTemplateDialog from '@/components/hospital/checklist/template/delete-checklist-template-dialog'
 // import EditTemplateButton from './edit-template-button'
 
 export const checklistTemplateColumns = (
@@ -73,7 +71,7 @@ export const checklistTemplateColumns = (
 
       return (
         <div className="flex justify-center">
-          <PreviewButton chartId={chartId} isTemplate />
+          <ChecklistTemplatePreviewButton chartId={chartId} isTemplate={true} />
         </div>
       )
     },
@@ -94,14 +92,6 @@ export const checklistTemplateColumns = (
             setIsEdtit={setIsEdtit}
             setSelectedTemplateChart={setSelectedTemplateChart}
           />
-          {/* <EditTemplateButton
-            setUseUpsertTemplateDialogOpen={setTemplateDialogOpen}
-            chartId={chartId}
-            template={template}
-            setSortedOrders={setSortedOrders}
-            setIsEdtit={setIsEdtit}
-            setSelectedTemplateChart={setSelectedTemplateChart}
-          /> */}
         </div>
       )
     },
@@ -114,7 +104,7 @@ export const checklistTemplateColumns = (
 
       return (
         <div className="flex justify-center">
-          <DeleteTemplateDialog
+          <DeleteChecklistTemplateDialog
             templateName={row.original.checklist_title}
             chartId={chartId}
           />
