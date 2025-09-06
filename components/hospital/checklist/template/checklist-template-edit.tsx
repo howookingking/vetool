@@ -24,10 +24,7 @@ import ChecklistEditChecklistSet from '@/components/hospital/checklist/checklist
 import { Button } from '@/components/ui/button'
 import { Trash2 } from 'lucide-react'
 import { ORDER_COLORS } from '@/constants/hospital/icu/chart/colors'
-import {
-  deleteChecklist,
-  updateEachChecklist,
-} from '@/lib/services/checklist/get-checklist-data-client'
+
 import { toast } from '@/components/ui/use-toast'
 import ChecklistEditTxInfo from '@/components/hospital/checklist/checklist-edit/checklist-edit-txinfo'
 import { usePathname, useRouter } from 'next/navigation'
@@ -35,6 +32,7 @@ import ChecklistEditVetInfo from '@/components/hospital/checklist/checklist-edit
 import ChecklistTagging from '@/components/hospital/checklist/common/checklist-tagging'
 import ChecklistEditProtocolset from '@/components/hospital/checklist/checklist-edit/checklist-edit-protocolset'
 import {
+  deleteChecklistTemplate,
   saveTemplate,
   updateTemplate,
 } from '@/lib/services/checklist/checklist-template'
@@ -183,7 +181,7 @@ export default function ChecklistTemplateEdit({
         '정말로 템플릿을 삭제하시겠습니까? 삭제된 템플릿는 복구할 수 없습니다.',
       )
     ) {
-      deleteChecklist(checklistdata.checklist_template_id).then(() => {
+      deleteChecklistTemplate(checklistdata.checklist_template_id).then(() => {
         setChecklistEditDialogOpen(false)
         toast({
           title: '체크리스트 삭제 완료',
@@ -216,7 +214,7 @@ export default function ChecklistTemplateEdit({
           type="single"
           collapsible
           className="w-full"
-          defaultValue={'checklistVet'}
+          // defaultValue=
         >
           <AccordionItem value="preInfo">
             <AccordionTrigger className="text-lg">

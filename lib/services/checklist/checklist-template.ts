@@ -94,3 +94,31 @@ export const deleteChecklistTemplate = async (checklistTemplateId: string) => {
     console.log('삭제 완료:', data)
   }
 }
+
+type Prechecklist = {
+  hos_id: string
+  checklist_type: string
+  checklist_protocol: ChecklistProtocol
+  checklist_set: Checklistset
+  preinfo: PreInfo
+  due_date: string
+}
+export const templateToChecklist = async (
+  template: TemplateChecklist,
+  targetDate: string,
+) => {
+  const prechecklist = {
+    hos_id: template.hos_id,
+    checklist_type: '사용자',
+    checklist_protocol: template.checklist_protocol,
+    checklist_set: template.checklist_set,
+    preinfo: template.preinfo,
+    due_date: targetDate,
+  } as Prechecklist
+
+  const { data, error } = await supabase.from('checklist').insert(prechecklist)
+  if (error) {
+    console.error(error)
+    redirect(`/error?message=${error.message}`)
+  }
+}

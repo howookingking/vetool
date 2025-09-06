@@ -83,8 +83,8 @@ export default function RegisterChecklistConfirmDialog({
     }
 
     toast({
-      title: '입원 등록 완료',
-      description: '입원 등록을 완료했습니다. 차트를 생성하세요',
+      title: '체크리스트 등록 완료',
+      description: '체크리스트 등록을 완료했습니다',
     })
 
     setIsSubmitting(false)

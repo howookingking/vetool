@@ -6,14 +6,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import { TemplateChecklist } from '@/types/checklist/checklist-type'
 import { Eye, LoaderCircle } from 'lucide-react'
 import { useState } from 'react'
+import ChecklistPreview from '../preview/checklist-preview'
 
 export default function ChecklistTemplatePreviewButton({
-  chartId,
+  chart,
   isTemplate,
 }: {
-  chartId: string
+  chart: TemplateChecklist
   isTemplate: boolean
 }) {
   const [isPreviewing, setIsPreviewing] = useState(false)
@@ -35,7 +37,7 @@ export default function ChecklistTemplatePreviewButton({
         )}
       </Button>
       <Dialog open={isPreviewDialogOpen} onOpenChange={setIsPreviewDialogOpen}>
-        <DialogContent>
+        <DialogContent className="sm:min-w-[1600px]">
           <DialogHeader>
             <DialogTitle>
               {isTemplate ? '템플릿 미리보기' : '차트 챠트 미리보기'}
@@ -43,9 +45,7 @@ export default function ChecklistTemplatePreviewButton({
             <DialogDescription />
           </DialogHeader>
 
-          <div className="max-h-[800px] w-[auto] overflow-y-auto">
-            {/* <ChartTable preview chartData={copiedChart!} /> */}
-          </div>
+          <ChecklistPreview templateChecklist={chart} />
         </DialogContent>
       </Dialog>
     </>
