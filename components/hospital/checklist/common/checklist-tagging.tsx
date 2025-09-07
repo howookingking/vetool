@@ -22,7 +22,7 @@ export default function ChecklistTagging({
       ? setTags([...preTagArray])
       : preTag && setTags([...preTag?.split('#').splice(1)])
   }, [preTag, preTagArray])
-  const addTag = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const addTag = () => {
     if (txt) {
       if (tags.includes(txt)) return
       setTags([...tags, txt])
@@ -69,27 +69,33 @@ export default function ChecklistTagging({
       <div className="mr-3 flex items-center">
         #Tag
         <Input
-          className="ml-3 w-[200px]"
+          className="ml-3 mr-3 w-[200px]"
           value={txt ?? ''}
           onChange={(e) => setTxt(e.target.value)}
+          onKeyUp={(e) => {
+            e.key === 'Enter' && addTag()
+          }}
         ></Input>
         <Button variant={'outline'} onClick={addTag}>
           +
         </Button>
       </div>
       <div className="mb-3 mt-3 flex flex-wrap text-sm">
-        {tags.map((tag, index) => (
-          <Button
-            key={index}
-            variant={'outline'}
-            className="mb-2 mr-2"
-            size="sm"
-            name={String(index)}
-            onClick={deltag}
-          >
-            #{tag}
-          </Button>
-        ))}
+        {tags.map(
+          (tag, index) =>
+            index >= 5 && (
+              <Button
+                key={index}
+                variant={'outline'}
+                className="mb-2 mr-2"
+                size="sm"
+                name={String(index)}
+                onClick={deltag}
+              >
+                #{tag}
+              </Button>
+            ),
+        )}
       </div>
     </div>
   )

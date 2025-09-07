@@ -30,9 +30,21 @@ export const registerChecklist = async (
   species: string,
   breed: string,
   gender: string,
+  patientName: string,
+  hosPatientId: string,
 ) => {
   const supabase = await createClient()
-  const pretag = '#' + species + '#' + breed + '#' + gender
+  const pretag =
+    '#' +
+    species +
+    '#' +
+    breed +
+    '#' +
+    gender +
+    '#' +
+    patientName +
+    '#' +
+    hosPatientId
   const checklistdata: any = {
     hos_id: hosId,
     patient_id: patientId ?? null,
@@ -61,9 +73,43 @@ export const addPatientToChecklist = async (
   species: string,
   breed: string,
   gender: string,
+  patientName: string,
+  hosPatientId: string,
+  checklist_tag: string,
 ) => {
   const supabase = await createClient()
-  const pretag = '#' + species + '#' + breed + '#' + gender
+  const prechecklisttag = checklist_tag.split('#')
+  const prechecklisttagB = prechecklisttag.filter((tag) => tag !== '')
+  let checklisttag = ''
+  for (let i = 0; i < prechecklisttagB.length; i++) {
+    checklisttag = checklisttag + '#' + prechecklisttagB[i]
+  }
+  const pretag =
+    checklist_tag === '' ||
+    checklist_tag === null ||
+    checklist_tag === undefined
+      ? '#' +
+        species +
+        '#' +
+        breed +
+        '#' +
+        gender +
+        '#' +
+        patientName +
+        '#' +
+        hosPatientId
+      : '#' +
+        species +
+        '#' +
+        breed +
+        '#' +
+        gender +
+        '#' +
+        patientName +
+        '#' +
+        hosPatientId +
+        checklisttag
+
   const { error } = await supabase
     .from('checklist')
     .update({

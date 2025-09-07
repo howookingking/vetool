@@ -11,6 +11,7 @@ type Props = {
   patientId: string
   birth: string
   patientName: string
+  hosPatientId: string
   species: string
   breed: string
   gender: string
@@ -22,6 +23,7 @@ export default function NonIcuRegisterButton({
   patientId,
   birth,
   patientName,
+  hosPatientId,
   species,
   breed,
   gender,
@@ -43,6 +45,7 @@ export default function NonIcuRegisterButton({
       breed,
       gender,
       ageInDays: getDaysSince(birth),
+      hosPatientId,
     })
 
     setIsConfirmDialogOpen!(true)

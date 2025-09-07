@@ -23,7 +23,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import ChecklistEditChecklistSet from '@/components/hospital/checklist/checklist-edit/checklist-edit-checklistset'
 import { Button } from '@/components/ui/button'
-import { Trash2 } from 'lucide-react'
+import { Bookmark, Trash2 } from 'lucide-react'
 import { ORDER_COLORS } from '@/constants/hospital/icu/chart/colors'
 import {
   deleteChecklist,
@@ -249,7 +249,7 @@ export default function ChecklistEditBasic({
         <div className="flex items-center px-3">
           <span className="mr-2 text-lg">제목 : </span>
           <Input
-            className="w-[50%]"
+            className="mr-3 w-[50%]"
             name="checklist_title"
             type="text"
             value={checklistdata.checklist_title ?? ''}
@@ -257,6 +257,9 @@ export default function ChecklistEditBasic({
             placeholder="필수항목입니다. 처치,투약,검사 등 체크리스트 제목을 입력하세요"
             autoFocus
           ></Input>
+          <Button title="템플릿으로 저장" variant={'outline'}>
+            <Bookmark />
+          </Button>
         </div>
         <Accordion
           type="single"

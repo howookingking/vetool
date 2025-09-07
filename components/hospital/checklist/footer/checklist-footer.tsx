@@ -94,10 +94,10 @@ const FOOTER_MAIN_VIEW_MENUS = [
     icon: <Bookmark />,
     hideInMobile: true,
   },
-  {
-    label: '통계',
-    value: 'analysis',
-    icon: <BarChartHorizontal />,
-    hideInMobile: true,
-  },
+  // {
+  //   label: '통계',
+  //   value: 'analysis',
+  //   icon: <BarChartHorizontal />,
+  //   hideInMobile: true,
+  // },
 ] as const

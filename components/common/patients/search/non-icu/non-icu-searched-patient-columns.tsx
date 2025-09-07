@@ -129,11 +129,13 @@ export const nonIcusearchedPatientsColumns = ({
         const species = row.original.species
         const breed = row.original.breed
         const gender = row.original.gender
+        const hospatientid = row.original.hos_patient_id
         return (
           <NonIcuRegisterButton
             birth={birth}
             patientId={patientId}
             patientName={name}
+            hosPatientId={hospatientid}
             species={species ?? ''}
             breed={breed ?? ''}
             gender={gender ?? ''}

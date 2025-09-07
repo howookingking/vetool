@@ -28,6 +28,7 @@ type RegisterIcuConfirmDialogProps = {
   registeringPatient: RegisteringPatient
   checklistData: Checklist | null
   isEmergency: boolean
+  setIsEmergency: Dispatch<SetStateAction<boolean>>
 }
 
 export default function RegisterChecklistConfirmDialog({
@@ -38,6 +39,7 @@ export default function RegisterChecklistConfirmDialog({
   registeringPatient,
   checklistData,
   isEmergency,
+  setIsEmergency,
 }: RegisterIcuConfirmDialogProps) {
   const { target_date } = useParams()
 
@@ -55,7 +57,11 @@ export default function RegisterChecklistConfirmDialog({
         '',
         '',
         '',
-      )
+        '',
+        '',
+      ).then(() => {
+        setIsEmergency(false)
+      })
     } else if (!checklistData) {
       // 체크리스트가 최초 등록시
       // registeriingPatient정보가 있다면(환자가 선택됬다면), 선택된 환자로 ID로 등록, 정보가 없다면 null로 등록
@@ -69,6 +75,8 @@ export default function RegisterChecklistConfirmDialog({
         registeringPatient?.species ?? '',
         registeringPatient?.breed ?? '',
         registeringPatient?.gender ?? '',
+        registeringPatient?.patientName ?? '',
+        registeringPatient?.hosPatientId ?? '',
       )
     } else if (checklistData && !checklistData?.patient_id) {
       // 기존에 만들어진 체크리스트가 있지만, 환자등록이 아직 안된경우, 선택된 환자정보만 새로 추가
@@ -79,6 +87,9 @@ export default function RegisterChecklistConfirmDialog({
         registeringPatient?.species ?? '',
         registeringPatient?.breed ?? '',
         registeringPatient?.gender ?? '',
+        registeringPatient?.patientName ?? '',
+        registeringPatient?.hosPatientId ?? '',
+        checklistData.checklist_tag ?? '',
       )
     }
 

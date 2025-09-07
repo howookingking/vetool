@@ -66,7 +66,7 @@ export default function ChecklistRegisterDialog({
     setIsEmergency(true)
     setRegisteringPatient(null)
     setIsConfirmDialogOpen(true)
-    setIsEmergency(false)
+    // setIsEmergency(false)
   }
   const noPatientfastRegist = () => {
     setIsEmergency(false)
@@ -152,6 +152,7 @@ export default function ChecklistRegisterDialog({
           setIsRegisterDialogOpen={setIsRegisterDialogOpen}
           checklistData={checklistData ? checklistData : null}
           isEmergency={isEmergency}
+          setIsEmergency={setIsEmergency}
         />
       )}
     </Dialog>

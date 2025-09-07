@@ -24,6 +24,7 @@ export default function RegistChecklistByTemplateDialog({
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { target_date } = useParams()
+  const { push } = useRouter()
   const [open, setOpen] = useState(false)
   const handleConfirm = async () => {
     setIsSubmitting(true)
