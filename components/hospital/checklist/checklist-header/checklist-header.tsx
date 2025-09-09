@@ -79,29 +79,7 @@ export default function ChecklistHeader({
             <ScrollText /> <p className="hidden 2xl:flex">REPORT</p>
           </Button>
         </CustomTooltip>
-        {/* <CustomTooltip
-          contents="모니터"
-          side="right"
-          sideOffset={4}
-          delayDuration={300}
-        >
-          <Button
-            type="button"
-            variant="outline"
-            name="monitor"
-            onClick={() => {
-              push(
-                `/hospital/${pathnamearray[2]}/checklist/${pathnamearray[4]}/chart/${pathnamearray[6]}/monitor`,
-              )
-            }}
-            className={cn(
-              'm-2',
-              isActive === 'monitor' && 'bg-primary text-white',
-            )}
-          >
-            <Monitor /> <p className="hidden 2xl:flex">MONITOR</p>
-          </Button>
-        </CustomTooltip> */}
+
         <ChecklistEditDialogButton
           isEdit={edit === 'true' ? true : false}
           checklistId={checklistId}

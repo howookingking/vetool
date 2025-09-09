@@ -108,8 +108,6 @@ export const getChecklistSidebarData = async (
   hosId: string,
   targetDate: string,
 ) => {
-  const supabase = await createClient()
-
   const { data, error } = await supabase.rpc('checklist_sidebar_data', {
     _hos_id: hosId,
     _due_date: targetDate,
@@ -120,4 +118,26 @@ export const getChecklistSidebarData = async (
   } else {
     return data as any
   }
+}
+
+export const searchChecklistCharts = async (
+  searchTerms: string[],
+  hosId: string,
+) => {
+  let queryBuilder = supabase.from('checklist').select('*').match({
+    hos_id: hosId,
+  })
+
+  searchTerms.forEach((term) => {
+    queryBuilder = queryBuilder.or(`checklist_tag.ilike.%${term}%`)
+  })
+  const { data, error } = await queryBuilder.order('created_at', {
+    ascending: false,
+  })
+
+  if (error) {
+    console.error(error)
+    redirect(`/error?message=${error.message}`)
+  }
+  return data
 }

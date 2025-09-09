@@ -62,8 +62,7 @@ export default function ChecklistEditContainer({
         patientId={checklistData ? checklistData.patient_id : null}
       />
       <div className="m-3 flex flex-wrap 2xl:m-2">
-        {!checklistData?.checklist_type &&
-          ChecklistTypes &&
+        {ChecklistTypes &&
           ChecklistTypes.map((_type) => (
             <CustomTooltip
               key={_type}
@@ -93,7 +92,7 @@ export default function ChecklistEditContainer({
           <ChecklistEditBasic
             checklistData={checklistData}
             setChecklistEditDialogOpen={setChecklistEditDialogOpen}
-            checklistType={checklistData?.checklist_type ?? isActive}
+            checklistType={isActive}
           />
         </div>
       )}

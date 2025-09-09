@@ -98,13 +98,25 @@ export default function ChecklistButton({
         )}
         {/* // */}
 
-        <div className="mb-1 flex justify-between gap-2">
-          <span className="truncate text-xs leading-5">
-            ({checklistchart.checklist_type}) {checklistchart.checklist_title}
-            {' ( '}
-            {checklistchart.checklist_vet?.attending
-              ? '담당의 :' + checklistchart.checklist_vet?.attending
+        <div className="mb-1 flex gap-2">
+          <span
+            className={
+              checklistchart.checklist_type === '응급'
+                ? 'truncate text-xs leading-5 text-red-500'
+                : 'truncate text-xs leading-5'
+            }
+          >
+            {checklistchart.checklist_type &&
+            checklistchart.checklist_type !== '사용자'
+              ? '(' + checklistchart.checklist_type + ')'
               : ''}{' '}
+          </span>
+          <span className="truncate text-xs leading-5">
+            {checklistchart.checklist_title ?? '미지정'}
+            {' ( 담당의 : '}
+            {checklistchart.checklist_vet?.attending
+              ? checklistchart.checklist_vet?.attending
+              : '미지정'}{' '}
             {' ) '}
           </span>
         </div>

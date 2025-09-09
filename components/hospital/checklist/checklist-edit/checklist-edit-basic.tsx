@@ -287,7 +287,7 @@ export default function ChecklistEditBasic({
             <AccordionContent className="flex flex-col gap-4 text-balance">
               <ChecklistEditTxInfo
                 Preinfo={checklistdata.preinfo}
-                type={checklistdata.checklist_type ?? '일반'}
+                type={checklistType ?? '일반'}
                 changePreInfo={changePreInfo}
               />
             </AccordionContent>

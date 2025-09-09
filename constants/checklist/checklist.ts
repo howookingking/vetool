@@ -3,7 +3,6 @@ import { CheckNameArray, TxTypes } from '@/types/checklist/checklist-type'
 export const ChecklistTypes: TxTypes = [
   '일반',
   '응급',
-  '수혈',
   '처치',
   '마취',
   '사용자',
