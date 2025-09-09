@@ -168,8 +168,16 @@ export default function ChecklistEditBasic({
       setChecklistEditDialogOpen(false)
     }
     const preChecklistData: ChecklistData = { ...checklistdata }
+    const pretag = preChecklistData.checklist_tag + ''
     preChecklistData.due_date = targetDate
     preChecklistData.checklist_type = checklistType
+    preChecklistData.checklist_title &&
+    preChecklistData.checklist_tag?.indexOf(
+      preChecklistData.checklist_title,
+    ) === -1
+      ? (preChecklistData.checklist_tag =
+          pretag + '#' + preChecklistData.checklist_title)
+      : (preChecklistData.checklist_tag = pretag)
     updateEachChecklist(preChecklistData).then(() => {
       setChecklistEditDialogOpen(false)
       toast({

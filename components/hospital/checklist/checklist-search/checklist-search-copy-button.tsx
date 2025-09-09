@@ -6,7 +6,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { TemplateChecklist } from '@/types/checklist/checklist-type'
+import {
+  ChecklistData,
+  TemplateChecklist,
+} from '@/types/checklist/checklist-type'
 import { Copy, Eye, LoaderCircle } from 'lucide-react'
 import { useState } from 'react'
 import ChecklistPreview from '../preview/checklist-preview'
@@ -14,17 +17,26 @@ import { Checklist } from '@/types'
 import { Separator } from '@/components/ui/separator'
 import { useParams } from 'next/navigation'
 import useIsMobile from '@/hooks/use-is-mobile'
+import { ChecklistCopy } from '@/lib/services/checklist/register-checklist-patient'
+import { set } from 'date-fns'
 export default function ChecklistSearchCopyButton({
   chart,
   isTemplate,
 }: {
-  chart: TemplateChecklist | Checklist
+  chart: Checklist
   isTemplate: boolean
 }) {
   const [isPreviewing, setIsPreviewing] = useState(false)
   const [isPreviewDialogOpen, setIsPreviewDialogOpen] = useState(false)
   const { target_date } = useParams()
   const isMobile = useIsMobile()
+
+  const handleConfirm = async (isSamePatient: boolean) => {
+    const predata = JSON.parse(JSON.stringify(chart)) as ChecklistData
+    !isSamePatient && (predata.patient_id = '')
+    await ChecklistCopy(predata, target_date as string)
+    setIsPreviewDialogOpen(false)
+  }
   return (
     <>
       <Button
@@ -48,13 +60,25 @@ export default function ChecklistSearchCopyButton({
           </DialogHeader>
           <span></span>
           <span>
-            <Button variant={'default'} className="max-w-[150px]">
+            <Button
+              variant={'default'}
+              className="max-w-[150px]"
+              onClick={() => {
+                handleConfirm(true)
+              }}
+            >
               동일 환자로 복사
             </Button>{' '}
             : 동일 환자로 복사된 체크리스트 차트를 생성
           </span>
           <span>
-            <Button variant={'outline'} className="max-w-[150px]">
+            <Button
+              variant={'outline'}
+              className="max-w-[150px]"
+              onClick={() => {
+                handleConfirm(false)
+              }}
+            >
               환자 미등록 복사
             </Button>{' '}
             : 복사된 체크리스트를 생성 후 새로운 환자 등록
