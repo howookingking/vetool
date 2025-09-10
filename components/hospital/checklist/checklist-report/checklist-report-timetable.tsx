@@ -17,6 +17,55 @@ export default function ChecklistReportTimetable({ checklistData }: Props) {
     <div>
       {' '}
       <div className="mb-3 ml-5 text-base">4.과정 및 시간</div>
+      <Table className="m-5 w-[400px] border text-left text-sm text-gray-700">
+        <TableBody>
+          <TableRow className="transition-colors hover:bg-muted/20">
+            <TableCell className="border border-gray-300 bg-gray-200">
+              시작시간
+            </TableCell>
+            <TableCell>
+              {checklistData.starttime &&
+                new Date(checklistData.starttime).toLocaleTimeString('ko-KR', {
+                  hour12: false,
+                })}
+            </TableCell>
+          </TableRow>
+          <TableRow className="bg-muted/30 hover:bg-muted/40">
+            <TableCell className="border border-gray-300 bg-gray-200">
+              종료시간
+            </TableCell>
+            <TableCell>
+              {checklistData.endtime &&
+                new Date(checklistData.endtime).toLocaleTimeString('ko-KR', {
+                  hour12: false,
+                })}
+            </TableCell>
+          </TableRow>
+          <TableRow className="transition-colors hover:bg-muted/20">
+            <TableCell className="border border-gray-300 bg-gray-200">
+              총소요시간
+            </TableCell>
+            <TableCell>
+              {checklistData?.starttime &&
+              checklistData?.endtime &&
+              timeInterval(checklistData.starttime, checklistData.endtime)[1]
+                ? timeInterval(
+                    checklistData.starttime,
+                    checklistData.endtime,
+                  )[1] + '시간 '
+                : ''}
+              {checklistData?.starttime &&
+              checklistData?.endtime &&
+              timeInterval(checklistData.starttime, checklistData.endtime)[2]
+                ? timeInterval(
+                    checklistData.starttime,
+                    checklistData.endtime,
+                  )[2] + '분'
+                : '0분'}
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
       <Table className="m-5 w-[95%] min-w-[600px] border border-gray-300 text-center text-sm">
         <TableHeader>
           <TableRow className="bg-gray-200">
@@ -90,42 +139,6 @@ export default function ChecklistReportTimetable({ checklistData }: Props) {
               </TableCell>
             </TableRow>
           )}
-          <TableRow className="even:bg-gray-100">
-            <TableCell className="max-w-[40px] border border-gray-300 px-1 py-1">
-              요약
-            </TableCell>
-            <TableCell className="border border-gray-300 px-1 py-1">
-              시작 :{' '}
-              {checklistData?.starttime &&
-                new Date(checklistData?.starttime).toLocaleTimeString('ko-KR', {
-                  hour12: false,
-                })}
-              <br />
-              종료 :{' '}
-              {checklistData?.endtime &&
-                new Date(checklistData?.endtime).toLocaleTimeString('ko-KR', {
-                  hour12: false,
-                })}
-              <br />
-              소요시간 :{' '}
-              {checklistData?.starttime &&
-              checklistData?.endtime &&
-              timeInterval(checklistData.starttime, checklistData.endtime)[1]
-                ? timeInterval(
-                    checklistData.starttime,
-                    checklistData.endtime,
-                  )[1] + '시간 '
-                : ''}
-              {checklistData?.starttime &&
-              checklistData?.endtime &&
-              timeInterval(checklistData.starttime, checklistData.endtime)[2]
-                ? timeInterval(
-                    checklistData.starttime,
-                    checklistData.endtime,
-                  )[2] + '분'
-                : '0분'}
-            </TableCell>
-          </TableRow>
         </TableBody>
       </Table>
     </div>

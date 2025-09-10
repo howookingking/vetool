@@ -38,9 +38,11 @@ export default function ChecklistSearchPreviewButton({
         )}
       </Button>
       <Dialog open={isPreviewDialogOpen} onOpenChange={setIsPreviewDialogOpen}>
-        <DialogContent className="sm:min-w-[1600px]">
+        <DialogContent className="h-[80vh] w-[80vw] max-w-none overflow-hidden p-0">
           <DialogHeader>
-            <DialogTitle>{'체크리스트 챠트 미리보기'}</DialogTitle>
+            <DialogTitle className="m-3">
+              {'체크리스트 챠트 미리보기'}
+            </DialogTitle>
             <DialogDescription />
           </DialogHeader>
           <ChecklistReport checklistData={chart} />

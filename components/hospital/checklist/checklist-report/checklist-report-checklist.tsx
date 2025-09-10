@@ -104,7 +104,6 @@ export default function ChecklistReportChecklist({ checklistData }: Props) {
                 {checklistname &&
                   checklistname.length > 0 &&
                   checklistname.map((list, j) => {
-                    console.log(list)
                     return (
                       <TableCell
                         className="border border-gray-300 px-4 py-2"

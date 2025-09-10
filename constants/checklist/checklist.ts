@@ -63,7 +63,7 @@ export const timeInterval = (timetz1: string, timetz2: string) => {
   const diffMs = date2.getTime() - date1.getTime() + 1000
   const diffMinutes = Math.floor(diffMs / (1000 * 60)) // 분
   const hr = Math.floor(diffMinutes / 60)
-  const disphr = hr > 0 ? hr : null
+  const disphr = hr > 0 ? hr : 0
   const min = diffMinutes % 60
   return [String(diffMinutes), String(disphr), String(min)]
 }

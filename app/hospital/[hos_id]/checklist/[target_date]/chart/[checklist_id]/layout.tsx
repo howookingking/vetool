@@ -19,7 +19,7 @@ export default async function ChecklistChartPage(props: {
   // )
 
   return (
-    <div className="flex-col">
+    <div className="relative flex h-desktop flex-col overflow-auto">
       <ChecklistHeader checklistId={params.checklist_id} />
       <div>{props.children}</div>
     </div>

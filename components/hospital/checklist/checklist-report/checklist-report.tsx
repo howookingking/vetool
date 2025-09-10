@@ -30,7 +30,7 @@ export default function ChecklistReport({ checklistData }: Props) {
     fetchData()
   })
   return (
-    <div>
+    <div className="flex-1 overflow-y-auto p-6">
       <div className="fle-wrap flex items-center">
         <div className="m-5 text-2xl font-bold">
           {checklistData?.checklist_title}
