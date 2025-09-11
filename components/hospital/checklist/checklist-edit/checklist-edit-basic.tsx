@@ -37,6 +37,7 @@ import ChecklistTagging from '@/components/hospital/checklist/common/checklist-t
 import ChecklistEditProtocolset from '@/components/hospital/checklist/checklist-edit/checklist-edit-protocolset'
 import { Checklist } from '@/types'
 import { defaultChecklistSet } from '@/constants/checklist/checklist'
+
 type Props = {
   checklistData: ChecklistData
   setChecklistEditDialogOpen: (isopen: boolean) => void
@@ -265,9 +266,6 @@ export default function ChecklistEditBasic({
             placeholder="필수항목입니다. 처치,투약,검사 등 체크리스트 제목을 입력하세요"
             autoFocus
           ></Input>
-          <Button title="템플릿으로 저장" variant={'outline'}>
-            <Bookmark />
-          </Button>
         </div>
         <Accordion
           type="single"

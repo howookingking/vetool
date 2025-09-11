@@ -103,15 +103,23 @@ export const ChecklistCopy = async (
     '#' +
     pretagarray[5] +
     '#' +
-    pretagarray.splice(6, pretagarray.length)
+    pretagarray.splice(7, pretagarray.length)
   const prepreset = { ...checklistchart.checklist_set } as Checklistset
   prepreset.result && delete prepreset.result
+
+  const postprotocol: ChecklistProtocol = []
+  checklistchart.checklist_protocol &&
+    checklistchart.checklist_protocol.forEach((protocol) => {
+      const protocol2 = { ...protocol }
+      protocol2.txEnd = null
+      postprotocol.push(protocol2)
+    })
   const prechecklist = {
     hos_id: checklistchart.hos_id,
     patient_id:
       checklistchart.patient_id === '' ? null : checklistchart.patient_id,
     checklist_type: checklistchart.checklist_type,
-    checklist_protocol: checklistchart.checklist_protocol,
+    checklist_protocol: postprotocol,
     checklist_set: prepreset,
     preinfo: checklistchart.preinfo,
     due_date: targetDate,

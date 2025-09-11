@@ -1,3 +1,4 @@
+import { toast } from '@/components/ui/use-toast'
 import { createClient } from '@/lib/supabase/client' // 클라이언트 컴포넌트용
 import { Checklist, ChecklistTemplate } from '@/types'
 import type {
@@ -65,13 +66,13 @@ export const updateTemplate = async (template: TemplateChecklist) => {
 // }
 export const getChecklistTemplateCharts = async (_hosId: string) => {
   const hosIds = [_hosId, '00fd3b03-9f70-40f2-bfb5-f2e34eb44ae5']
-  const ids = [...new Set(hosIds)].filter(Boolean)
-  if (ids.length === 0) return []
+  // const ids = [...new Set(hosIds)].filter(Boolean)
+  if (hosIds.length === 0) return []
 
   const { data, error } = await supabase
     .from('checklist_template')
     .select('*')
-    .in('hos_id', ids) // hos_id ∈ ids
+    .in('hos_id', hosIds) // hos_id ∈ ids
 
   if (error) {
     console.error(error)
@@ -123,9 +124,10 @@ type Prechecklist = {
 export const templateToChecklist = async (
   template: TemplateChecklist,
   targetDate: string,
+  hosId: string,
 ) => {
   const prechecklist = {
-    hos_id: template.hos_id,
+    hos_id: hosId,
     checklist_type: '사용자',
     checklist_protocol: template.checklist_protocol,
     checklist_set: template.checklist_set,
@@ -134,6 +136,43 @@ export const templateToChecklist = async (
   } as Prechecklist
 
   const { data, error } = await supabase.from('checklist').insert(prechecklist)
+  if (error) {
+    console.error(error)
+    redirect(`/error?message=${error.message}`)
+  }
+}
+
+export const checklistToTemplate = async (checklist: ChecklistData) => {
+  const prepreset = checklist?.checklist_set
+    ? ({ ...checklist.checklist_set } as Checklistset)
+    : {}
+  prepreset.result && delete prepreset.result
+
+  const postprotocol: ChecklistProtocol = []
+  checklist.checklist_protocol &&
+    checklist.checklist_protocol.forEach((protocol) => {
+      const protocol2 = { ...protocol }
+      protocol2.txEnd = null
+      postprotocol.push(protocol2)
+    })
+  const pretemplate = {
+    hos_id: checklist.hos_id,
+    checklist_type: checklist.checklist_type,
+    checklist_title: checklist.checklist_title,
+    checklist_tag: null,
+    checklist_protocol: postprotocol,
+    checklist_set: prepreset,
+    preinfo: checklist.preinfo,
+  } as TemplateChecklist
+
+  const { data, error } = await supabase
+    .from('checklist_template')
+    .insert(pretemplate)
+  if (data) {
+    toast({
+      title: '템플릿에 저장되었습니다.',
+    })
+  }
   if (error) {
     console.error(error)
     redirect(`/error?message=${error.message}`)

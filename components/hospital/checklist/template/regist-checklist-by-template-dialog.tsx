@@ -23,12 +23,16 @@ export default function RegistChecklistByTemplateDialog({
   templatechecklistchart: TemplateChecklist
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const { target_date } = useParams()
+  const { target_date, hos_id } = useParams()
   const { push } = useRouter()
   const [open, setOpen] = useState(false)
   const handleConfirm = async () => {
     setIsSubmitting(true)
-    templateToChecklist(templatechecklistchart, target_date as string)
+    templateToChecklist(
+      templatechecklistchart,
+      target_date as string,
+      hos_id as string,
+    )
     toast({
       title: '체크리스트 등록 완료',
       description:
