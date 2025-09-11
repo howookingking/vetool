@@ -7,7 +7,10 @@ import {
 } from '@/components/ui/table'
 import { getPatientById } from '@/lib/services/checklist/get-checklist-data-client'
 import { calculateAge } from '@/lib/utils/utils'
-import type { ChecklistData } from '@/types/checklist/checklist-type'
+import type {
+  ChecklistData,
+  ReportPatient,
+} from '@/types/checklist/checklist-type'
 import { Check } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import ChecklistReportTimetable from '@/components/hospital/checklist/checklist-report/checklist-report-timetable'
@@ -116,7 +119,7 @@ export default function ChecklistReport({ checklistData }: Props) {
       <ChecklistReportChecklist checklistData={checklistData} />
       {checklistData?.comment && (
         <div className="mb-10">
-          <div className="ml-5 text-base">5.종합소견</div>
+          <div className="ml-5 text-base">6.종합소견</div>
 
           <div className="borer-grey-300 m-3 ml-5 w-[95%] whitespace-pre rounded border p-3">
             {checklistData?.comment}

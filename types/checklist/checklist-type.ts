@@ -137,3 +137,13 @@ export type HosChecklistSet = {
   hos_id: string
   sharing: { hos_id: string; isShared: boolean; class: string }[]
 }
+
+export type ReportPatient = {
+  patient_id: string | null
+  name: string | null
+  species: string | null
+  breed: string | null
+  gender: string | null
+  birth: string | null
+  hos_patient_id: string | null
+}
