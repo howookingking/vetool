@@ -64,7 +64,7 @@ export default function ChecklistPreview({
 
   return (
     checklistdata && (
-      <div className="flex-col">
+      <div className="flex-1 overflow-y-auto p-6">
         <Separator className="mb-3" />
 
         <div className="mb-3 flex items-center">

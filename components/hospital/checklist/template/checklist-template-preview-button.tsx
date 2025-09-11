@@ -38,9 +38,9 @@ export default function ChecklistTemplatePreviewButton({
         )}
       </Button>
       <Dialog open={isPreviewDialogOpen} onOpenChange={setIsPreviewDialogOpen}>
-        <DialogContent className="sm:min-w-[1600px]">
+        <DialogContent className="h-[80vh] w-[80vw] max-w-none overflow-hidden p-0">
           <DialogHeader>
-            <DialogTitle>
+            <DialogTitle className="m-3">
               {isTemplate ? '템플릿 미리보기' : '차트 미리보기'}
             </DialogTitle>
             <DialogDescription />

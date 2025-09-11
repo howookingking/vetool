@@ -73,29 +73,37 @@ export default function ChecklistReportTxtDialogButton({
       pretxt + '   어시스트: ' + checklistData?.checklist_vet?.assistance + '\n'
     pretxt = pretxt + '5. 처치정보 ' + '\n'
     checklistData.preinfo?.pre &&
-      (pretxt = pretxt + '- 전처치: \n' + checklistData.preinfo.pre + '\n')
+      (pretxt = pretxt + ' <전처치> \n' + checklistData.preinfo.pre + '\n')
     checklistData.preinfo?.induce &&
       (pretxt =
-        pretxt + '- 유도마취: \n ' + checklistData.preinfo.induce + '\n')
+        pretxt + ' <유도마취> \n ' + checklistData.preinfo.induce + '\n')
     checklistData.preinfo?.main &&
-      (pretxt = pretxt + '- 주요처치: \n ' + checklistData.preinfo.main + '\n')
+      (pretxt =
+        pretxt +
+        (checklistData.checklist_type === '마취'
+          ? '<유지마취>\n'
+          : '<주요처치>\n ') +
+        checklistData.preinfo.main +
+        '\n')
     checklistData.preinfo?.post &&
-      (pretxt = pretxt + '- 후처치: \n ' + checklistData.preinfo.post + '\n')
+      (pretxt = pretxt + '<후처치> \n ' + checklistData.preinfo.post + '\n')
     checklistData.checklist_set &&
       checklistData.checklist_set.result &&
       (pretxt =
         pretxt +
-        '6.체크리스트: \n' +
+        '6.체크리스트 \n' +
         makeresulttxt(checklistData.checklist_set.result))
     checklistData.checklist_timetable &&
       checklistData.checklist_timetable.length > 0 &&
       (pretxt =
         pretxt +
-        '7.기록사항: \n' +
+        '7.기록사항 \n' +
         maketimetxt(checklistData.checklist_timetable, checklistData))
 
-    pretxt = pretxt + '8.종합소견: \n'
-    pretxt = pretxt + checklistData.comment + '\n'
+    pretxt = pretxt + '8.종합소견 \n'
+    pretxt = checklistData.comment
+      ? pretxt + checklistData.comment + '\n'
+      : pretxt + ''
     setTxt(pretxt)
   }, [checklistData])
 

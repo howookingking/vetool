@@ -41,7 +41,10 @@ export default function ChecklistReportMain({ checklistData }: Props) {
   const reportRef = useRef<HTMLDivElement>(null)
 
   const handleExportPng = async () => {
-    if (!reportRef.current) return toast.error('캡쳐할 영역이 없습니다.')
+    if (!reportRef.current)
+      return toast({
+        title: '다운로드할 이미지(PNG)가 없습니다.',
+      })
 
     try {
       setIsExporting(true)

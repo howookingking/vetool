@@ -48,22 +48,39 @@ export const updateTemplate = async (template: TemplateChecklist) => {
   }
 }
 
-export const getChecklistTemplateCharts = async (hosId: string) => {
+// export const getChecklistTemplateCharts = async (hosId: string) => {
+//   const { data, error } = await supabase
+//     .from('checklist_template')
+//     .select('*')
+//     .match({
+//       hos_id: hosId,
+//     })
+
+//   if (error) {
+//     console.error(error)
+//     redirect(`/error/?message=${error.message}`)
+//   }
+
+//   return (data ?? []) as ChecklistTemplate[]
+// }
+export const getChecklistTemplateCharts = async (_hosId: string) => {
+  const hosIds = [_hosId, '00fd3b03-9f70-40f2-bfb5-f2e34eb44ae5']
+  const ids = [...new Set(hosIds)].filter(Boolean)
+  if (ids.length === 0) return []
+
   const { data, error } = await supabase
     .from('checklist_template')
     .select('*')
-    .match({
-      hos_id: hosId,
-    })
+    .in('hos_id', ids) // hos_id ∈ ids
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${encodeURIComponent(error.message)}`)
   }
 
-  return data as ChecklistTemplate[]
+  return (data ?? []) as ChecklistTemplate[]
 }
-
+// 00fd3b03-9f70-40f2-bfb5-f2e34eb44ae5
 export const getChecklistEachTemplateChart = async (
   checklistTemplateId: string,
 ) => {

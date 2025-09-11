@@ -39,8 +39,8 @@ export default function ChecklistSearchChartEntry({ hosId }: Props) {
     }
   }, 500)
   return (
-    <div className="flex h-[540px] flex-col gap-2">
-      <div className="flex justify-between gap-2">
+    <div className="relative">
+      <div className="flex gap-2">
         <div className="relative w-full">
           <Input
             placeholder="환자 번호, 환자명, Tag 로 검색하세요. (예 : 김벳툴, 호우, 수혈, ..)"
