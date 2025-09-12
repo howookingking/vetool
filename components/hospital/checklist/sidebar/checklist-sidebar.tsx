@@ -16,20 +16,10 @@ export default async function ChecklistSidebar({ hosId, targetDate }: Props) {
     <>
       <DesktopChecklistSidebar
         hosId={hosId}
-        isEmpty={
-          checklistSidebarData && checklistSidebarData.length === 0
-            ? true
-            : false
-        }
         checklistsidebarData={checklistSidebarData}
       />
 
       <MobileChecklistSidebarSheet
-        isEmpty={
-          checklistSidebarData && checklistSidebarData.length === 0
-            ? true
-            : false
-        }
         checklistsidebarData={checklistSidebarData}
         hosId={hosId}
       />

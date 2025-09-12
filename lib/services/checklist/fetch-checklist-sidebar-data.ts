@@ -18,5 +18,5 @@ export const fetchChecklistSidebarData = async (
     console.error(error)
     throw new Error(error.message)
   }
-  return data as ChecklistSidebarData[]
+  return (data ?? []) as ChecklistSidebarData[]
 }

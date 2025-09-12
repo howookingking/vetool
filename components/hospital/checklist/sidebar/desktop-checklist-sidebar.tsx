@@ -5,28 +5,27 @@ import { Separator } from '@/components/ui/separator'
 import type { ChecklistSidebarData } from '@/types/checklist/checklist-type'
 import ChecklistDateSelector from './date-selector/checklist-date-selector'
 
-type ChecklistIcuSidebarProps = {
+type Props = {
   hosId: string
-  isEmpty: boolean
-  checklistsidebarData?: ChecklistSidebarData[]
+  checklistsidebarData: ChecklistSidebarData[]
   handleCloseMobileDrawer?: () => void
 }
 export default function DesktopChecklistSidebar({
   hosId,
-  isEmpty,
   checklistsidebarData,
   handleCloseMobileDrawer,
-}: ChecklistIcuSidebarProps) {
+}: Props) {
   return (
     <aside className="fixed z-40 hidden h-desktop w-96 shrink-0 flex-col gap-2 border-r bg-white px-2 pb-0 pt-2 2xl:flex">
       <ChecklistDateSelector />
 
       <ChecklistRegisterDialog hosId={hosId} checklistData={null} />
-      {isEmpty ? (
+
+      {checklistsidebarData.length === 0 ? (
         <NoResultSquirrel
-          text="👆 환자를 선택해주세요"
-          className="mt-20 flex-col"
+          text="체크리스트 환자 없음"
           size="md"
+          className="mt-20 flex-col"
         />
       ) : (
         <>

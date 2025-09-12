@@ -13,14 +13,13 @@ import type { ChecklistSidebarData } from '@/types/checklist/checklist-type'
 import { Menu } from 'lucide-react'
 import { useState } from 'react'
 import MobieChecklistSidebar from './mobile-checklist-sidebar'
+
 type Props = {
   checklistsidebarData: ChecklistSidebarData[]
-  isEmpty: boolean
-
   hosId: string
 }
+
 export default function MobileChecklistSidebarSheet({
-  isEmpty,
   checklistsidebarData,
   hosId,
 }: Props) {
@@ -45,7 +44,6 @@ export default function MobileChecklistSidebarSheet({
           </SheetHeader>
 
           <MobieChecklistSidebar
-            isEmpty={isEmpty}
             handleCloseMobileDrawer={handleCloseMobileDrawer}
             checklistsidebarData={checklistsidebarData}
             hosId={hosId}

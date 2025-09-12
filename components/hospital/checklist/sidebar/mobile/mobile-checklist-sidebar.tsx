@@ -1,26 +1,23 @@
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
-import IcuDateSelector from '@/components/hospital/icu/sidebar/date-selector/icu-date-selector'
-import { Separator } from '@/components/ui/separator'
 import ChecklistList from '@/components/hospital/checklist/checklists/checklist-list'
-import type { ChecklistSidebarData } from '@/types/checklist/checklist-type'
 import ChecklistDateSelector from '@/components/hospital/checklist/sidebar/date-selector/checklist-date-selector'
-import ChecklistRegisterDialog from '@/components/hospital/checklist/sidebar/checklist-register-dialog/checklist-register-dialog'
+import { Separator } from '@/components/ui/separator'
+import type { ChecklistSidebarData } from '@/types/checklist/checklist-type'
+
 type MobileChecklistSidebarProps = {
-  isEmpty: boolean
   checklistsidebarData?: ChecklistSidebarData[]
   handleCloseMobileDrawer?: () => void
   hosId: string
 }
 
 export default function MobieChecklistSidebar({
-  isEmpty,
   checklistsidebarData,
   handleCloseMobileDrawer,
   hosId,
 }: MobileChecklistSidebarProps) {
   return (
     <aside className="flex h-full flex-col">
-      {isEmpty ? (
+      {checklistsidebarData?.length === 0 ? (
         <div className="flex h-full flex-col gap-3 p-2">
           <ChecklistDateSelector />
           {/* <ChecklistRegisterDialog hosId={hosId} /> */}
