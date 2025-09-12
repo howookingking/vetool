@@ -2,8 +2,6 @@ import { Button } from '@/components/ui/button'
 import { getTemplateChart } from '@/lib/services/icu/template/template'
 import { useDtOrderStore } from '@/lib/store/icu/dt-order'
 import { TemplateChecklist } from '@/types/checklist/checklist-type'
-import type { SelectedIcuOrder } from '@/types/icu/chart'
-import type { TemplateChart } from '@/types/icu/template'
 import { Edit, LoaderCircle } from 'lucide-react'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 

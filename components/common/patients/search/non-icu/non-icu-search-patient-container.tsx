@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import DataTable from '@/components/ui/data-table'
 import { Input } from '@/components/ui/input'
 import { searchPatients } from '@/lib/services/patient/patient'
-import { type Patients } from '@/types'
+import { type Patient } from '@/types'
 import { X } from 'lucide-react'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
@@ -31,7 +31,7 @@ export default function NonIcuSearchPatientContainer({
   const [searchTerm, setSearchTerm] = useState('')
   const [isSearching, setIsSearching] = useState(false)
   const [searchedPatientsData, setSearchedPatientsData] = useState(
-    [] as Patients[],
+    [] as Patient[],
   )
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

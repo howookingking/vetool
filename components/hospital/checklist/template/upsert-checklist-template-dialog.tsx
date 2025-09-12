@@ -1,20 +1,15 @@
+import ChecklistTemplateEdit from '@/components/hospital/checklist/template/checklist-template-edit'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-
-import type { SelectedIcuOrder } from '@/types/icu/chart'
-import type { TemplateChart } from '@/types/icu/template'
-import type { Dispatch, SetStateAction } from 'react'
-import ChecklistTemplateEdit from '@/components/hospital/checklist/template/checklist-template-edit'
 import { TemplateChecklist } from '@/types/checklist/checklist-type'
+import type { Dispatch, SetStateAction } from 'react'
 
 type Props = {
   useUpsertTemplateDialogOpen: boolean

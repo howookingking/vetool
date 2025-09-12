@@ -2,7 +2,7 @@ import DeletePatientAlert from '@/components/common/patients/search/delete-patie
 import PatientUpdateDialog from '@/components/common/patients/upload/patient-update-dialog'
 import SpeciesToIcon from '@/components/common/species-to-icon'
 import { calculateAge } from '@/lib/utils/utils'
-import { type Patients } from '@/types'
+import { type Patient } from '@/types'
 import { type Species } from '@/types/hospital/calculator'
 import { type ColumnDef } from '@tanstack/react-table'
 import { type Dispatch, type SetStateAction } from 'react'
@@ -22,8 +22,8 @@ export const nonIcusearchedPatientsColumns = ({
   setIsConfirmDialogOpen,
   setRegisteringPatient,
   debouncedSearch,
-}: Props): ColumnDef<Patients>[] => {
-  const columns: ColumnDef<Patients>[] = [
+}: Props): ColumnDef<Patient>[] => {
+  const columns: ColumnDef<Patient>[] = [
     {
       accessorKey: 'species',
       header: () => <>종</>,

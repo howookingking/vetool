@@ -30,7 +30,7 @@ export default function IcuTemplateEntry({
           setIsEdit,
           setSelectedTemplateChart,
         )}
-        data={templateCharts ?? []}
+        data={icuTemplates ?? []}
         searchPlaceHolder="템플릿 이름, Tag로 검색"
       />
 
