@@ -19,7 +19,7 @@ type Props = {
 
   hosId: string
 }
-export function MobileChecklistSidebarSheet({
+export default function MobileChecklistSidebarSheet({
   isEmpty,
   checklistsidebarData,
   hosId,

@@ -1,6 +1,6 @@
 import { fetchChecklistSidebarData } from '@/lib/services/checklist/fetch-checklist-sidebar-data'
 import DesktopChecklistSidebar from './desktop-checklist-sidebar'
-import { MobileChecklistSidebarSheet } from './mobile/mobile-checklist-sidebar-sheet'
+import MobileChecklistSidebarSheet from './mobile/mobile-checklist-sidebar-sheet'
 
 type Props = {
   hosId: string
