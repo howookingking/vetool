@@ -1,27 +1,18 @@
 'use client'
 
+import ChecklistEditDialogButton from '@/components/hospital/checklist/checklist-header/checklist-edit-dialogbutton'
 import { Button } from '@/components/ui/button'
 import CustomTooltip from '@/components/ui/custom-tooltip'
-import { cn } from '@/lib/utils/utils'
 import { Separator } from '@/components/ui/separator'
-import { Pencil, FileCheck, ScrollText, Monitor } from 'lucide-react'
-import {
-  useParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from 'next/navigation'
-import React, { useEffect } from 'react'
-import ChecklistEditDialogButton from '@/components/hospital/checklist/checklist-header/checklist-edit-dialogbutton'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
+import { cn } from '@/lib/utils/utils'
+import { FileCheck, ScrollText } from 'lucide-react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 export default function ChecklistHeader({
   checklistId,
 }: {
   checklistId: string
 }) {
-  const basichosdata = useBasicHosDataContext().basicHosData
-
   const pathname = usePathname()
   const { push } = useRouter()
 
@@ -83,7 +74,7 @@ export default function ChecklistHeader({
         <ChecklistEditDialogButton
           isEdit={edit === 'true' ? true : false}
           checklistId={checklistId}
-        ></ChecklistEditDialogButton>
+        />
       </div>
 
       <Separator className="m-2" />

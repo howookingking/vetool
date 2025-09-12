@@ -1,42 +1,38 @@
-import { Separator } from '@/components/ui/separator'
-import {
-  ChecklistData,
-  ChecklistProtocol,
-  ChecklistVet,
-  PreInfo,
-} from '@/types/checklist/checklist-type'
-import { set } from 'date-fns'
-import { useEffect, useState } from 'react'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import GroupFilter from '@/components/hospital/icu/sidebar/filters/group-filter'
-import { Menubar } from '@/components/ui/menubar'
+import ChecklistEditChecklistSet from '@/components/hospital/checklist/checklist-edit/checklist-edit-checklistset'
 import ChecklistEditDateselector from '@/components/hospital/checklist/checklist-edit/checklist-edit-dateselector'
-import { format } from 'date-fns'
+import ChecklistEditProtocolset from '@/components/hospital/checklist/checklist-edit/checklist-edit-protocolset'
+import ChecklistEditTxInfo from '@/components/hospital/checklist/checklist-edit/checklist-edit-txinfo'
+import ChecklistEditVetInfo from '@/components/hospital/checklist/checklist-edit/checklist-edit-vetinfo'
+import ChecklistTagging from '@/components/hospital/checklist/common/checklist-tagging'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import ChecklistEditChecklistSet from '@/components/hospital/checklist/checklist-edit/checklist-edit-checklistset'
 import { Button } from '@/components/ui/button'
-import { Bookmark, Trash2 } from 'lucide-react'
+import { Input } from '@/components/ui/input'
+import { Menubar } from '@/components/ui/menubar'
+import { Separator } from '@/components/ui/separator'
+import { Textarea } from '@/components/ui/textarea'
+import { toast } from '@/components/ui/use-toast'
+import { defaultChecklistSet } from '@/constants/checklist/checklist'
 import { ORDER_COLORS } from '@/constants/hospital/icu/chart/colors'
 import {
   deleteChecklist,
   updateEachChecklist,
 } from '@/lib/services/checklist/get-checklist-data-client'
-import { toast } from '@/components/ui/use-toast'
-import ChecklistEditTxInfo from '@/components/hospital/checklist/checklist-edit/checklist-edit-txinfo'
-import { usePathname, useRouter } from 'next/navigation'
-import ChecklistEditVetInfo from '@/components/hospital/checklist/checklist-edit/checklist-edit-vetinfo'
-import ChecklistTagging from '@/components/hospital/checklist/common/checklist-tagging'
-import ChecklistEditProtocolset from '@/components/hospital/checklist/checklist-edit/checklist-edit-protocolset'
 import { Checklist } from '@/types'
-import { defaultChecklistSet } from '@/constants/checklist/checklist'
+import {
+  ChecklistData,
+  ChecklistProtocol,
+  ChecklistVet,
+  PreInfo,
+} from '@/types/checklist/checklist-type'
+import { format } from 'date-fns'
+import { Trash2 } from 'lucide-react'
+import { usePathname, useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 type Props = {
   checklistData: ChecklistData
@@ -57,7 +53,6 @@ export default function ChecklistEditBasic({
   const [targetDate, setTargetDate] = useState<string>(
     format(new Date(), 'yyyy-MM-dd'),
   )
-  const basicHosData = useBasicHosDataContext().basicHosData
   useEffect(() => {
     const preChecklistData = JSON.parse(JSON.stringify(checklistData))
     if (preChecklistData) {
@@ -215,11 +210,12 @@ export default function ChecklistEditBasic({
             <div className="mr-2 text-sm">그룹선택</div>
 
             <Menubar>
-              <GroupFilter
+              TODO: 병원 그룹 목록 가져오기
+              {/* <GroupFilter
                 hosGroupList={basicHosData.groupListData}
                 selectedGroup={groups}
                 onGroupChange={addgroup}
-              />
+              /> */}
             </Menubar>
           </div>
           <div className="flex items-center px-3">
