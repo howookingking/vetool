@@ -2,11 +2,13 @@ import PasteTemplateOrderDialog from '@/components/hospital/icu/main/chart/paste
 import OrderWidthButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/order-width-button'
 import SortingButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/sorting-button'
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { cn } from '@/lib/utils/utils'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
+import { TIMES } from '@/constants/hospital/icu/chart/time'
+import { useCurrentTime } from '@/hooks/use-current-time'
+import { cn, formatDate } from '@/lib/utils/utils'
 import type { OrderWidth } from '@/types/hospital/order'
 import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
 import type { Dispatch, SetStateAction } from 'react'
+import { CurrentTimeIndicator } from './current-time-indicator'
 
 type Props = {
   preview?: boolean
@@ -33,13 +35,8 @@ export default function ChartTableHeader({
   chartId,
   hosId,
 }: Props) {
-  const {
-    basicHosData: { baselineTime },
-  } = useBasicHosDataContext()
-
-  const newTime = new Array(24)
-    .fill(0)
-    .map((_, i) => (Number(baselineTime) + i) % 24)
+  const { hours, minutes } = useCurrentTime()
+  const isToday = formatDate(new Date()) === chartData.target_date
 
   return (
     <TableHeader
@@ -84,11 +81,18 @@ export default function ChartTableHeader({
           )}
         </TableHead>
 
-        {newTime.map((time) => (
-          <TableHead className="border text-center" key={time}>
-            {time.toString().padStart(2, '0')}
-          </TableHead>
-        ))}
+        {TIMES.map((time) => {
+          const shouldShowIndicator =
+            time === hours && !isSorting && !preview && isToday
+          return (
+            <TableHead className="relative border text-center" key={time}>
+              {time.toString().padStart(2, '0')}
+              {shouldShowIndicator && (
+                <CurrentTimeIndicator minutes={minutes} />
+              )}
+            </TableHead>
+          )
+        })}
       </TableRow>
     </TableHeader>
   )

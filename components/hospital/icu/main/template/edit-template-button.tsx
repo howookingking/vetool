@@ -1,18 +1,18 @@
 import { Button } from '@/components/ui/button'
 import { getTemplateChart } from '@/lib/services/icu/template/template'
 import { useDtOrderStore } from '@/lib/store/icu/dt-order'
+import type { IcuTemplate } from '@/types'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
-import type { TemplateChart } from '@/types/icu/template'
 import { Edit, LoaderCircle } from 'lucide-react'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 
 type EditTemplateButtonProps = {
   chartId: string
-  template: TemplateChart
+  template: IcuTemplate
   setUseUpsertTemplateDialogOpen: Dispatch<SetStateAction<boolean>>
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   setIsEdtit: Dispatch<SetStateAction<boolean>>
-  setSelectedTemplateChart: Dispatch<SetStateAction<TemplateChart | null>>
+  setSelectedTemplateChart: Dispatch<SetStateAction<IcuTemplate | null>>
 }
 
 export default function EditTemplateButton({
@@ -23,7 +23,7 @@ export default function EditTemplateButton({
   setIsEdtit,
   setSelectedTemplateChart,
 }: EditTemplateButtonProps) {
-  const { reset, setOrderTimePendingQueue } = useDtOrderStore()
+  const { reset } = useDtOrderStore()
 
   const [isFetching, setIsFetching] = useState(false)
 

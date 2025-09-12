@@ -2,12 +2,12 @@ import DeletePatientAlert from '@/components/common/patients/search/delete-patie
 import PatientUpdateDialog from '@/components/common/patients/upload/patient-update-dialog'
 import SpeciesToIcon from '@/components/common/species-to-icon'
 import { calculateAge } from '@/lib/utils/utils'
-import { type Patients } from '@/types'
-import { type Species } from '@/types/hospital/calculator'
-import { type ColumnDef } from '@tanstack/react-table'
-import { type Dispatch, type SetStateAction } from 'react'
-import { type DebouncedState } from 'use-debounce'
-import { type RegisteringPatient } from '../../../hospital/icu/sidebar/register-dialog/register-dialog'
+import type { Patient } from '@/types'
+import type { Species } from '@/types/hospital/calculator'
+import type { ColumnDef } from '@tanstack/react-table'
+import type { Dispatch, SetStateAction } from 'react'
+import type { DebouncedState } from 'use-debounce'
+import type { RegisteringPatient } from '../../../hospital/icu/sidebar/register-dialog/register-dialog'
 import RegisterIcuButton from './register-icu-button'
 
 type Props = {
@@ -22,11 +22,11 @@ export const searchedPatientsColumns = ({
   setIsConfirmDialogOpen,
   setRegisteringPatient,
   debouncedSearch,
-}: Props): ColumnDef<Patients>[] => {
-  const columns: ColumnDef<Patients>[] = [
+}: Props): ColumnDef<Patient>[] => {
+  const columns: ColumnDef<Patient>[] = [
     {
       accessorKey: 'species',
-      header: () => <>종</>,
+      header: () => '종',
       cell: ({ row }) => {
         const species = row.original.species as Species
         return (
@@ -38,7 +38,7 @@ export const searchedPatientsColumns = ({
     },
     {
       accessorKey: 'hos_patient_id',
-      header: () => <>환자번호</>,
+      header: () => '환자번호',
       cell: ({ row }) => {
         const hosPatientId = row.original.hos_patient_id
         return (
@@ -50,7 +50,7 @@ export const searchedPatientsColumns = ({
     },
     {
       accessorKey: 'name',
-      header: () => <>환자명</>,
+      header: () => '환자명',
       cell: ({ row }) => {
         const name = row.original.name
         return (
@@ -60,7 +60,7 @@ export const searchedPatientsColumns = ({
     },
     {
       accessorKey: 'breed',
-      header: () => <>품종</>,
+      header: () => '품종',
       cell: ({ row }) => {
         const breed = row.original.breed
         return (
@@ -70,7 +70,7 @@ export const searchedPatientsColumns = ({
     },
     {
       accessorKey: 'gender',
-      header: () => <>성별</>,
+      header: () => '성별',
       cell: ({ row }) => {
         const gender = row.original.gender
         return (
@@ -82,7 +82,7 @@ export const searchedPatientsColumns = ({
     },
     {
       accessorKey: 'birth',
-      header: () => <>나이 (생일)</>,
+      header: () => '나이 (생일)',
       cell: ({ row }) => {
         const birth = row.original.birth
         return (
@@ -94,7 +94,7 @@ export const searchedPatientsColumns = ({
     },
     {
       accessorKey: 'owner_name',
-      header: () => <>보호자</>,
+      header: () => '보호자',
       cell: ({ row }) => {
         const ownerName = row.original.owner_name
         return (
@@ -106,7 +106,7 @@ export const searchedPatientsColumns = ({
     },
     {
       accessorKey: 'created_at',
-      header: () => <>등록일</>,
+      header: () => '등록일',
       cell: ({ row }) => {
         const createdAt = row.original.created_at
         return (
@@ -121,7 +121,7 @@ export const searchedPatientsColumns = ({
   if (isIcu) {
     columns.push({
       accessorKey: 'register_icu_action',
-      header: () => <>환자선택</>,
+      header: () => '환자선택',
       cell: ({ row }) => {
         const birth = row.original.birth
         const patientId = row.original.patient_id
@@ -140,7 +140,7 @@ export const searchedPatientsColumns = ({
   } else {
     columns.push({
       accessorKey: 'update_patient_action',
-      header: () => <>수정</>,
+      header: () => '수정',
       cell: ({ row }) => {
         const patientData = row.original
         return (
@@ -154,7 +154,7 @@ export const searchedPatientsColumns = ({
 
     columns.push({
       accessorKey: 'delete_patient_action',
-      header: () => <>삭제</>,
+      header: () => '삭제',
       cell: ({ row }) => {
         const patientId = row.original.patient_id
         const patientName = row.original.name

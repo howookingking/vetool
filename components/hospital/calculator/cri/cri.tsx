@@ -4,12 +4,14 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
+import { useState } from 'react'
 import DisabledFeedbackButton from '../../common/disabled-feedback-button'
+import BicarbonateCri from './drugs/bicarbonate-cri'
 import DobutamineCri from './drugs/dobutamine-cri'
 import FurosemideCri from './drugs/furosemide-cri'
-import BicarbonateCri from './drugs/bicarbonate-cri'
 import MetoclopramideCri from './drugs/metoclopramide-cri'
-import { useState } from 'react'
+import NorepinephrineCri from './drugs/norepinephrine-cri'
+import PhosphateCri from './drugs/phosphate.-cri'
 
 type Props = {
   weight: string
@@ -18,9 +20,8 @@ type Props = {
 
 export default function Cri({ weight, setIsSheetOpen }: Props) {
   const [localWeight, setLocalWeight] = useState(weight)
-  const handleChangeWeight = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeWeight = (e: React.ChangeEvent<HTMLInputElement>) =>
     setLocalWeight(e.target.value)
-  }
 
   return (
     <div className="h-full">
@@ -32,7 +33,7 @@ export default function Cri({ weight, setIsSheetOpen }: Props) {
         </SheetDescription>
       </SheetHeader>
 
-      <Accordion type="multiple">
+      <Accordion type="single">
         <FurosemideCri
           weight={localWeight}
           setIsSheetOpen={setIsSheetOpen}
@@ -45,6 +46,12 @@ export default function Cri({ weight, setIsSheetOpen }: Props) {
           handleChangeWeight={handleChangeWeight}
         />
 
+        <NorepinephrineCri
+          handleChangeWeight={handleChangeWeight}
+          setIsSheetOpen={setIsSheetOpen}
+          weight={localWeight}
+        />
+
         <MetoclopramideCri
           weight={localWeight}
           setIsSheetOpen={setIsSheetOpen}
@@ -55,6 +62,12 @@ export default function Cri({ weight, setIsSheetOpen }: Props) {
           weight={localWeight}
           setIsSheetOpen={setIsSheetOpen}
           handleChangeWeight={handleChangeWeight}
+        />
+
+        <PhosphateCri
+          handleChangeWeight={handleChangeWeight}
+          setIsSheetOpen={setIsSheetOpen}
+          weight={localWeight}
         />
       </Accordion>
     </div>

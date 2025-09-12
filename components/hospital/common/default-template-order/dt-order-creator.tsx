@@ -50,13 +50,13 @@ export default function DtOrderCreator({
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const [newOrderInput, setNewOrderInput] = useState('')
-  const [orderType, setOrderType] = useState('manual')
-  const [isInserting, setIsInserting] = useState(false)
+  const [orderType, setOrderType] = useState<OrderType>('manual')
+  const [isCreating, setIsCreating] = useState(false)
 
   const availableCheckListOrders = getAvailableChecklistOrders(sortedOrders)
 
   const createOrder = async (orderName: string, orderDescription: string) => {
-    setIsInserting(true)
+    setIsCreating(true)
 
     const emptyOrderTimes = Array(24).fill('0')
 
@@ -92,7 +92,7 @@ export default function DtOrderCreator({
       }, 100)
 
     setNewOrderInput('')
-    setIsInserting(false)
+    setIsCreating(false)
   }
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -105,11 +105,14 @@ export default function DtOrderCreator({
   }
 
   const orderTypeLabel = OrderTypeLabel(orderType as OrderType)
-  const OrderTypePlaceholder = `${orderTypeLabel.orderName}$${orderTypeLabel.orderComment}`
+  const OrderTypePlaceholder = `${orderTypeLabel.orderName}$${orderTypeLabel.orderComment} + Enter ⏎`
 
   return (
     <div className="relative flex w-full items-center">
-      <Select onValueChange={setOrderType} value={orderType}>
+      <Select
+        onValueChange={(value) => setOrderType(value as OrderType)}
+        value={orderType}
+      >
         <SelectTrigger className="h-11 w-[128px] shrink-0 rounded-none border-0 border-r px-2 shadow-none ring-0 focus:ring-0">
           <SelectValue />
         </SelectTrigger>
@@ -151,16 +154,16 @@ export default function DtOrderCreator({
         >
           <Input
             className="h-11 rounded-none border-0 focus-visible:ring-0"
-            disabled={isInserting}
+            disabled={isCreating}
             placeholder={OrderTypePlaceholder}
-            value={isInserting ? '등록 중' : newOrderInput}
+            value={isCreating ? '등록 중' : newOrderInput}
             onChange={(e) => setNewOrderInput(e.target.value)}
             ref={inputRef}
           />
           <Button
-            className="absolute right-2 2xl:hidden"
+            className="absolute right-2"
             size="icon"
-            disabled={isInserting}
+            disabled={isCreating}
             type="submit"
             variant="ghost"
           >

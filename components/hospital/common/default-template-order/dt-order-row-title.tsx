@@ -4,15 +4,14 @@ import { TableCell } from '@/components/ui/table'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { type IcuOrderColors } from '@/types/adimin'
-import { type SelectedIcuOrder } from '@/types/icu/chart'
+import type { IcuOrderColors } from '@/types/adimin'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
 
 type Props = {
   order: SelectedIcuOrder
   index: number
   isSorting: boolean
   orderWidth: number
-  isSetting?: boolean
   localColorState?: IcuOrderColors
   localColorDisplayMethod?: 'dot' | 'full'
 }
@@ -22,7 +21,6 @@ export default function DtOrderRowTitle({
   isSorting,
   index,
   orderWidth,
-  isSetting,
   localColorDisplayMethod,
   localColorState,
 }: Props) {
@@ -32,16 +30,15 @@ export default function DtOrderRowTitle({
     basicHosData: { orderColorsData, orderColorDisplay, orderFontSizeData },
   } = useBasicHosDataContext()
 
-  const orderColor = isSetting ? localColorState : orderColorsData
-  const orderColorMethod = isSetting
-    ? localColorDisplayMethod
-    : orderColorDisplay
+  // local state가 있다는 것은 오더 색상 설정이라는 것임
+  const orderColor = localColorState ?? orderColorsData
+  const orderColorMethod = localColorDisplayMethod ?? orderColorDisplay
 
   const { reset, setOrderStep, setSelectedChartOrder } = useIcuOrderStore()
 
   const handleClickOrderTitle = () => {
     reset()
-    !isSetting && setOrderStep!('edit')
+    setOrderStep!('edit')
     setSelectedChartOrder(order)
   }
 
@@ -78,8 +75,8 @@ export default function DtOrderRowTitle({
           orderType={order_type}
           orderName={order_name}
           orderComment={order_comment}
-          orderColorDisplay={orderColorMethod!}
-          orderColorsData={orderColor!}
+          orderColorDisplay={orderColorMethod}
+          orderColorsData={orderColor}
           orderFontSizeData={orderFontSizeData}
         />
       </Button>

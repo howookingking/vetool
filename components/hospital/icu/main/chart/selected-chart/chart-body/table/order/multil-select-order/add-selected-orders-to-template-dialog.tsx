@@ -1,7 +1,7 @@
 'use no memo'
 
+import StyledCheckbox from '@/components/common/styled-checkbox'
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
   Dialog,
   DialogClose,
@@ -32,6 +32,12 @@ import { type Dispatch, type SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+const DEFAULT_FORM_VALUES = {
+  template_name: undefined,
+  template_comment: undefined,
+  is_time_included: false,
+}
+
 export default function AddSelectedOrdersToTemplateDialog({
   setIsMultiOrderDialogOpen,
 }: {
@@ -45,11 +51,7 @@ export default function AddSelectedOrdersToTemplateDialog({
   const { selectedOrderPendingQueue, reset: orderReset } = useIcuOrderStore()
   const form = useForm<z.infer<typeof templateFormSchema>>({
     resolver: zodResolver(templateFormSchema),
-    defaultValues: {
-      template_name: undefined,
-      template_comment: undefined,
-      is_time_included: true,
-    },
+    defaultValues: DEFAULT_FORM_VALUES,
   })
 
   const handleSubmit = async (values: z.infer<typeof templateFormSchema>) => {
@@ -84,11 +86,7 @@ export default function AddSelectedOrdersToTemplateDialog({
 
   const handleOpenChange = (open: boolean) => {
     if (open) {
-      form.reset({
-        template_name: undefined,
-        template_comment: undefined,
-        is_time_included: true,
-      })
+      form.reset(DEFAULT_FORM_VALUES)
     }
     setIsDialogOpen(open)
   }
@@ -157,17 +155,19 @@ export default function AddSelectedOrdersToTemplateDialog({
               control={form.control}
               name="is_time_included"
               render={({ field }) => (
-                <FormItem className="flex space-x-2 space-y-0 rounded-md border p-4 shadow">
+                <FormItem>
                   <FormControl>
-                    <Checkbox
+                    <StyledCheckbox
+                      title={
+                        <>
+                          <span className="bg-rose-400/10 p-1">시간정보</span>를
+                          같이 저장합니다
+                        </>
+                      }
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />
                   </FormControl>
-                  <FormLabel className="cursor-pointer">
-                    <span className="bg-rose-400/10 p-1">시간정보</span>를 같이
-                    저장합니다
-                  </FormLabel>
                 </FormItem>
               )}
             />

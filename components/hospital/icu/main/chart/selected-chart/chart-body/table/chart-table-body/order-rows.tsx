@@ -11,9 +11,9 @@ import {
 } from '@/lib/store/icu/icu-order'
 import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
 import { borderedOrderClassName } from '@/lib/utils/utils'
-import { type VitalRefRange } from '@/types/adimin'
-import { type SelectedIcuOrder } from '@/types/icu/chart'
-import { type RefObject } from 'react'
+import type { VitalRefRange } from '@/types/adimin'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
+import { useMemo, type RefObject } from 'react'
 
 type Props = {
   sortedOrders: SelectedIcuOrder[]
@@ -95,56 +95,82 @@ export default function OrderRows({
     resetOrderStore()
   }
 
-  return (
-    <>
-      {sortedOrders.map((order, index) => {
-        const isInOrderPendingQueue = selectedOrderPendingQueue.some(
-          (o) => o.order_id === order.order_id,
-        )
-        return (
-          <TableRow
-            className="relative w-full divide-x"
-            key={order.order_id}
-            ref={cellRef}
-            style={borderedOrderClassName(sortedOrders, order, index)}
-          >
-            <OrderRowTitle
-              isInOrderPendingQueue={isInOrderPendingQueue}
-              index={index}
-              order={order}
-              preview={preview}
-              isSorting={isSorting}
-              vitalRefRange={vitalRefRange}
-              species={species}
-              orderWidth={orderwidth}
-              resetOrderStore={resetOrderStore}
-              setSelectedOrderPendingQueue={setSelectedOrderPendingQueue}
-              setOrderStep={setOrderStep}
-              setSelectedChartOrder={setSelectedChartOrder}
-            />
+  const memoizedOrderRows = useMemo(() => {
+    return sortedOrders.map((order, index) => {
+      const isInOrderPendingQueue = selectedOrderPendingQueue.some(
+        (o) => o.order_id === order.order_id,
+      )
+      return (
+        <TableRow
+          className="relative w-full divide-x"
+          key={order.order_id}
+          ref={cellRef}
+          style={borderedOrderClassName(sortedOrders, order, index)}
+        >
+          <OrderRowTitle
+            isInOrderPendingQueue={isInOrderPendingQueue}
+            index={index}
+            order={order}
+            preview={preview}
+            isSorting={isSorting}
+            vitalRefRange={vitalRefRange}
+            species={species}
+            orderWidth={orderwidth}
+            resetOrderStore={resetOrderStore}
+            setSelectedOrderPendingQueue={setSelectedOrderPendingQueue}
+            setOrderStep={setOrderStep}
+            setSelectedChartOrder={setSelectedChartOrder}
+          />
 
-            <OrderRowCells
-              hosId={hosId}
-              preview={preview}
-              order={order}
-              showOrderer={showOrderer}
-              showTxUser={showTxUser}
-              selectedTxPendingQueue={selectedTxPendingQueue}
-              orderTimePendingQueueLength={orderTimePendingQueueLength}
-              vitalRefRange={vitalRefRange}
-              species={species}
-              setOrderTimePendingQueue={setOrderTimePendingQueue}
-              setSelectedTxPendingQueue={setSelectedTxPendingQueue}
-              isMutationCanceled={isMutationCanceled}
-              setIsMutationCanceled={setIsMutationCanceled}
-              setTxStep={setTxStep}
-              setTxLocalState={setTxLocalState}
-              timeGuidelineData={timeGuidelineData}
-              orderTimePendingQueue={orderTimePendingQueue}
-            />
-          </TableRow>
-        )
-      })}
-    </>
-  )
+          <OrderRowCells
+            hosId={hosId}
+            preview={preview}
+            order={order}
+            showOrderer={showOrderer}
+            showTxUser={showTxUser}
+            selectedTxPendingQueue={selectedTxPendingQueue}
+            orderTimePendingQueueLength={orderTimePendingQueueLength}
+            vitalRefRange={vitalRefRange}
+            species={species}
+            setOrderTimePendingQueue={setOrderTimePendingQueue}
+            setSelectedTxPendingQueue={setSelectedTxPendingQueue}
+            isMutationCanceled={isMutationCanceled}
+            setIsMutationCanceled={setIsMutationCanceled}
+            setTxStep={setTxStep}
+            setTxLocalState={setTxLocalState}
+            timeGuidelineData={timeGuidelineData}
+            orderTimePendingQueue={orderTimePendingQueue}
+          />
+        </TableRow>
+      )
+    })
+  }, [
+    sortedOrders,
+    selectedOrderPendingQueue,
+    cellRef,
+    preview,
+    isSorting,
+    vitalRefRange,
+    species,
+    orderwidth,
+    resetOrderStore,
+    setSelectedOrderPendingQueue,
+    setOrderStep,
+    setSelectedChartOrder,
+    hosId,
+    showOrderer,
+    showTxUser,
+    selectedTxPendingQueue,
+    orderTimePendingQueueLength,
+    setOrderTimePendingQueue,
+    setSelectedTxPendingQueue,
+    isMutationCanceled,
+    setIsMutationCanceled,
+    setTxStep,
+    setTxLocalState,
+    timeGuidelineData,
+    orderTimePendingQueue,
+  ])
+
+  return <>{memoizedOrderRows}</>
 }

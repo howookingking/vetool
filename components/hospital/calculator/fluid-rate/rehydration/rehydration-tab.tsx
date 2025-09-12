@@ -16,6 +16,8 @@ import {
 import { calculateRehydration } from '@/lib/calculators/fluid-rate'
 import { useState } from 'react'
 import CalculatorResult from '../../result/calculator-result'
+import HelperTooltip from '@/components/common/helper-tooltip'
+import DehydrationTooltip from './dehydration-tooltip'
 
 type Props = {
   weight: string
@@ -59,17 +61,25 @@ export default function RehydrationTab({
           </span>
         </div>
 
-        <div>
-          <Label>탈수 정도</Label>
+        <div className="flex flex-col justify-end">
+          <Label htmlFor="dehydration" className="flex items-center gap-1">
+            <span>탈수 정도</span>
+            <DehydrationTooltip />
+          </Label>
+
           <Select onValueChange={setDehydrationRate} value={dehydrationRate}>
-            <SelectTrigger className="mt-1">
+            <SelectTrigger className="mt-1" id="dehydration">
               <SelectValue placeholder="탈수 정도 선택" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="5">5%</SelectItem>
+              <SelectItem value="6">6%</SelectItem>
               <SelectItem value="7">7%</SelectItem>
+              <SelectItem value="8">8%</SelectItem>
               <SelectItem value="9">9%</SelectItem>
+              <SelectItem value="10">10%</SelectItem>
               <SelectItem value="11">11%</SelectItem>
+              <SelectItem value="12">12%</SelectItem>
             </SelectContent>
           </Select>
         </div>

@@ -1,4 +1,4 @@
-import PatientForm from '@/components/common/patients/form/patient-form'
+import PatientFormDynamic from '@/components/common/patients/form/patient-form-dynamic'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -9,23 +9,24 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { getWeightInfo } from '@/lib/services/patient/patient'
-import { Patients } from '@/types'
+import type { Patient } from '@/types'
 import { format } from 'date-fns'
 import { Edit } from 'lucide-react'
 import { useParams } from 'next/navigation'
-import { useState, type Dispatch, type SetStateAction } from 'react'
-import { type DebouncedState } from 'use-debounce'
+import { useState } from 'react'
+import type { DebouncedState } from 'use-debounce'
 
-type PatientUpdateDialogProps = {
-  editingPatient: Patients
+type Props = {
+  editingPatient: Patient
   debouncedSearch: DebouncedState<() => Promise<void>>
 }
 
 export default function PatientUpdateDialog({
   editingPatient,
   debouncedSearch,
-}: PatientUpdateDialogProps) {
+}: Props) {
   const { hos_id } = useParams()
+
   const [isPatientUpdateDialogOpen, setIsPatientUpdateDialogOpen] =
     useState(false)
   const [weightInfo, setWeightInfo] = useState({
@@ -64,7 +65,7 @@ export default function PatientUpdateDialog({
           <DialogDescription>환자의 정보를 수정합니다</DialogDescription>
         </DialogHeader>
 
-        <PatientForm
+        <PatientFormDynamic
           mode="updateFromPatientRoute"
           weight={weightInfo.weight}
           weightMeasuredDate={weightInfo.weightMeasuredDate}

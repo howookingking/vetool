@@ -45,7 +45,6 @@ export default async function IcuSharePage(props: IcuSharePageProps) {
         vitalRefRange: [],
         plan: 'severe',
         isInChargeSystem: false,
-        baselineTime: 0,
       }}
     >
       <div className="flex flex-col gap-4 p-4">

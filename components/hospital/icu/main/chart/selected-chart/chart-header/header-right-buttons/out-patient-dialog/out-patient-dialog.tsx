@@ -1,6 +1,5 @@
 'use client'
 
-import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -11,15 +10,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { type SelectedChart } from '@/types/icu/chart'
+import type { SelectedChart } from '@/types/icu/chart'
 import { LogOut, Undo2 } from 'lucide-react'
-import dynamic from 'next/dynamic'
 import { useState } from 'react'
-
-const LazyOutPatientButtons = dynamic(() => import('./out-patient-buttons'), {
-  ssr: false,
-  loading: () => <LargeLoaderCircle size={40} />,
-})
+import OutPatientButtons from './out-patient-buttons'
 
 export default function OutPatientDialog({
   chartData,
@@ -50,7 +44,7 @@ export default function OutPatientDialog({
         </DialogHeader>
 
         <DialogFooter>
-          <LazyOutPatientButtons
+          <OutPatientButtons
             isPatientOut={isPatientOut}
             chartData={chartData}
             setIsDialogOpen={setIsDialogOpen}

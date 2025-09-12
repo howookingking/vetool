@@ -30,7 +30,7 @@ export default function SingleTodo({ todo, hosId, date, refetch }: Props) {
   }
 
   return (
-    <li className="flex justify-between gap-2">
+    <li className="flex justify-between gap-2 py-2">
       <div className="flex items-center gap-1.5">
         <Checkbox
           id={todo.id}

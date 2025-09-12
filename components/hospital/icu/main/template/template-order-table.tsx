@@ -6,13 +6,13 @@ import DtSortingOrderRows from '@/components/hospital/common/default-template-or
 import DtTableHeader from '@/components/hospital/common/default-template-order/dt-table-header'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import useLocalStorage from '@/hooks/use-local-storage'
-import { useDtOrderStore } from '@/lib/store/icu/dt-order'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { OrderWidth } from '@/types/hospital/order'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import UserKeyGuideMessage from '../chart/selected-chart/chart-body/table/chart-table-body/order-creator/user-key-guide-message'
 
-type TemplateOrderTableProps = {
+type Props = {
   sortedOrders: SelectedIcuOrder[]
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
 }
@@ -20,8 +20,7 @@ type TemplateOrderTableProps = {
 export default function TemplateOrderTable({
   sortedOrders,
   setSortedOrders,
-}: TemplateOrderTableProps) {
-  const { orderTimePendingQueue } = useDtOrderStore()
+}: Props) {
   const [orderWidth, setOrderWidth] = useLocalStorage<OrderWidth>(
     'orderWidth',
     400,
@@ -33,10 +32,10 @@ export default function TemplateOrderTable({
     <Table className="border">
       <DtTableHeader
         isSorting={isSorting}
+        setIsSorting={setIsSorting}
         orderWidth={orderWidth}
         setOrderWidth={setOrderWidth}
         sortedOrders={sortedOrders}
-        setIsSorting={setIsSorting}
         defaultChartOrders={[]}
       />
 

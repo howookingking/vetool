@@ -115,14 +115,27 @@ export const getDaysDifference = (dateString: string) => {
 }
 
 export const getConsecutiveDays = (selectedDate: Date) => {
-  const dayBefore = new Date(selectedDate)
-  dayBefore.setDate(selectedDate.getDate() - 1)
-  const dayAfter = new Date(selectedDate)
-  dayAfter.setDate(selectedDate.getDate() + 1)
+  // Create a new date in the local timezone to avoid UTC conversion issues
+  const normalizedSelectedDate = new Date(
+    selectedDate.getFullYear(),
+    selectedDate.getMonth(),
+    selectedDate.getDate(),
+  )
+
+  const dayBefore = new Date(
+    normalizedSelectedDate.getFullYear(),
+    normalizedSelectedDate.getMonth(),
+    normalizedSelectedDate.getDate() - 1,
+  )
+  const dayAfter = new Date(
+    normalizedSelectedDate.getFullYear(),
+    normalizedSelectedDate.getMonth(),
+    normalizedSelectedDate.getDate() + 1,
+  )
 
   return {
     dayBefore: formatDate(dayBefore),
-    seletctedDay: formatDate(selectedDate),
+    seletctedDay: formatDate(normalizedSelectedDate),
     dayAfter: formatDate(dayAfter),
   }
 }
@@ -132,6 +145,13 @@ export const formatDate = (date: Date) => {
   const month = String(date.getMonth() + 1).padStart(2, '0')
   const day = String(date.getDate()).padStart(2, '0')
   return `${year}-${month}-${day}`
+}
+export const formatDateToISOString = (date: Date) => {
+  const year = date.getFullYear()
+  const month = date.getMonth()
+  const day = date.getDate()
+  // Create a new Date object representing the start of the day in UTC
+  return new Date(Date.UTC(year, month, day)).toISOString()
 }
 
 // stringifiedHashtagKeywords('사과(apple), banana') => '#apple#banana'
@@ -223,6 +243,8 @@ export const changeTargetDateInUrl = (
 }
 
 // 우클릭 오더 시간 변경시 큐에 저장된 오더 id와 시간 데이터를 formatting
+// ex) [{ orderId: '1', orderTime: 1 }, { orderId: '1', orderTime: 2 }, { orderId: '2', orderTime: 1 }, { orderId: '2', orderTime: 2 }, { orderId: '3', orderTime: 1 }]
+// => [{ orderId: '1', orderTimes: [1, 2] }, { orderId: '2', orderTimes: [1, 2] }, { orderId: '3', orderTimes: [1] }]
 type FormattedOrder = {
   orderId: string
   orderTimes: number[]
@@ -266,9 +288,7 @@ export const sortOrders = (orders: SelectedIcuOrder[]): SelectedIcuOrder[] => {
 export const hasOrderSortingChanged = (
   prevOrders: SelectedIcuOrder[],
   sortedOrders: SelectedIcuOrder[],
-) => {
-  return JSON.stringify(prevOrders) !== JSON.stringify(sortedOrders)
-}
+) => JSON.stringify(prevOrders) !== JSON.stringify(sortedOrders)
 
 export const convertPascalCased = (value: string | null) => {
   if (!value) return '품종 선택'
@@ -437,7 +457,6 @@ export const parseTextWithUrls = (text: string) => {
 
 // 미디어 파일 확장자 검사
 export const isVideoFile = (contentType: string) => {
-  if (!contentType) return false
-
+  if (!contentType) false
   return contentType.includes('video')
 }

@@ -67,7 +67,7 @@ export default function MetoclopramideCri({
           </div>
 
           <div className="relative">
-            <Label htmlFor="MetoDose">약물 용량 (0.01 ~ 0.083mg/kg/hr)</Label>
+            <Label htmlFor="MetoDose">약물 용량 (0.01 ~ 0.083)</Label>
             <Input
               type="number"
               id="MetoDose"
@@ -121,7 +121,9 @@ export default function MetoclopramideCri({
                 Metoclopramide{' '}
                 <span className="font-bold text-primary">{metoVol}mL</span> , FR
                 :{' '}
-                <span className="font-bold text-primary">{fluidRate}mL/hr</span>{' '}
+                <span className="font-bold text-primary">
+                  {fluidRate}mL/hr
+                </span>{' '}
               </div>
             }
             copyResult={`수액 ${syringeVol}mL + Metoclopramide ${metoVol}mL , FR : ${fluidRate}mL/hr`}

@@ -11,14 +11,9 @@ import { DEFAULT_ICU_ORDER_TYPE_DIC } from '@/constants/hospital/icu/chart/order
 import { useIcuOrderStore, type OrderStep } from '@/lib/store/icu/icu-order'
 import type { IcuOrderColors } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
-import dynamic from 'next/dynamic'
 import type { Dispatch, SetStateAction } from 'react'
 import OrdererSelectStep from './orderer-select-step'
-
-const LazyOrderForm = dynamic(() => import('./order-form'), {
-  ssr: false,
-  loading: () => <LargeLoaderCircle className="h-[360px]" />,
-})
+import OrderForm from './order-form'
 
 type Props = {
   icuChartId: string
@@ -73,7 +68,7 @@ export default function OrderDialog({
                 </span>
               </DialogTitle>
 
-              <LazyOrderForm
+              <OrderForm
                 showOrderer={showOrderer}
                 icuChartId={icuChartId}
                 setSortedOrders={setSortedOrders}

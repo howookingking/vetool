@@ -3,19 +3,19 @@
 import PreviewButton from '@/components/hospital/common/preview/preview-button'
 import DeleteTemplateDialog from '@/components/hospital/icu/main/template/delete-template-dialog'
 import { Button } from '@/components/ui/button'
-import { type SelectedIcuOrder } from '@/types/icu/chart'
-import { type TemplateChart } from '@/types/icu/template'
-import { type ColumnDef } from '@tanstack/react-table'
+import type { IcuTemplate } from '@/types'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
+import type { ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown } from 'lucide-react'
-import { type Dispatch, type SetStateAction } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 import EditTemplateButton from './edit-template-button'
 
 export const templateColumns = (
   setTemplateDialogOpen: Dispatch<SetStateAction<boolean>>,
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>,
   setIsEdtit: Dispatch<SetStateAction<boolean>>,
-  setSelectedTemplateChart: Dispatch<SetStateAction<TemplateChart | null>>,
-): ColumnDef<TemplateChart>[] => [
+  setSelectedTemplateChart: Dispatch<SetStateAction<IcuTemplate | null>>,
+): ColumnDef<IcuTemplate>[] => [
   {
     accessorKey: 'template_name',
     header: ({ column }) => {
@@ -24,7 +24,7 @@ export const templateColumns = (
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          탬플릿 이름
+          템플릿 이름
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
@@ -52,7 +52,7 @@ export const templateColumns = (
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          템플릿 생성일
+          생성일
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )

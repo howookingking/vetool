@@ -12,26 +12,17 @@ import useIsCommandPressed from '@/hooks/use-is-command-pressed'
 import useLocalStorage from '@/hooks/use-local-storage'
 import { upsertDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
 import { useDtOrderStore } from '@/lib/store/icu/dt-order'
-import { cn, formatOrders } from '@/lib/utils/utils'
-import { IcuOrderColors } from '@/types/adimin'
+import { formatOrders } from '@/lib/utils/utils'
 import type { OrderWidth } from '@/types/hospital/order'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-type Props = {
-  defaultChartOrders: SelectedIcuOrder[]
-  isSetting?: boolean
-  localColorState?: IcuOrderColors
-  localColorDisplayMethod?: 'dot' | 'full'
-}
-
 export default function DefaultOrdersTable({
   defaultChartOrders,
-  isSetting,
-  localColorState,
-  localColorDisplayMethod,
-}: Props) {
+}: {
+  defaultChartOrders: SelectedIcuOrder[]
+}) {
   const { hos_id } = useParams()
   const { refresh } = useRouter()
 
@@ -58,15 +49,15 @@ export default function DefaultOrdersTable({
     for (const order of formattedOrders) {
       const currentOrder = defaultChartOrders.find(
         (o) => o.order_id === order.orderId,
-      )
-      if (!currentOrder) continue
+      )!
 
-      const updatedOrderTimes = currentOrder.order_times.map((time, index) =>
-        order.orderTimes.includes(index + 1)
-          ? time === '0'
-            ? '기본'
-            : '0'
-          : time,
+      const updatedOrderTimes = currentOrder.order_times.map(
+        (ordererOrZero, index) =>
+          order.orderTimes.includes(index)
+            ? ordererOrZero === '0'
+              ? '기본'
+              : '0'
+            : ordererOrZero,
       )
 
       await upsertDefaultChartOrder(
@@ -85,6 +76,7 @@ export default function DefaultOrdersTable({
     toast({
       title: '오더시간을 변경하였습니다',
     })
+
     resetOrderStore()
     refresh()
   }
@@ -99,52 +91,48 @@ export default function DefaultOrdersTable({
   }, [isCommandPressed])
 
   return (
-    <Table className="border">
-      <DtTableHeader
-        isSorting={isSorting}
-        orderWidth={orderWidth}
-        setOrderWidth={setOrderWidth}
-        sortedOrders={sortedOrders}
-        setIsSorting={setIsSorting}
-        defaultChartOrders={defaultChartOrders}
-        isSetting={isSetting}
-      />
-
-      {isSorting ? (
-        <DtSortingOrderRows
+    <div className="relative">
+      <Table className="border">
+        <DtTableHeader
           isSorting={isSorting}
-          sortedOrders={sortedOrders}
-          setSortedOrders={setSortedOrders}
+          setIsSorting={setIsSorting}
           orderWidth={orderWidth}
+          setOrderWidth={setOrderWidth}
+          sortedOrders={sortedOrders}
+          defaultChartOrders={defaultChartOrders}
         />
-      ) : (
-        <TableBody>
-          <DtOrderRows
-            sortedOrders={sortedOrders}
+
+        {isSorting ? (
+          <DtSortingOrderRows
             isSorting={isSorting}
-            orderwidth={orderWidth}
-            isSetting={isSetting}
-            localColorState={localColorState}
-            localColorDisplayMethod={localColorDisplayMethod}
+            sortedOrders={sortedOrders}
+            setSortedOrders={setSortedOrders}
+            orderWidth={orderWidth}
           />
+        ) : (
+          <TableBody>
+            <DtOrderRows
+              sortedOrders={sortedOrders}
+              isSorting={isSorting}
+              orderwidth={orderWidth}
+            />
 
-          <TableRow
-            className={cn('hover:bg-transparent', isSetting && 'hidden')}
-          >
-            <TableCell className="p-0">
-              <DtOrderCreator sortedOrders={sortedOrders} />
-            </TableCell>
+            <TableRow className="hover:bg-transparent">
+              <TableCell className="p-0">
+                <DtOrderCreator sortedOrders={sortedOrders} />
+              </TableCell>
 
-            <UserKeyGuideMessage isDT />
-          </TableRow>
-        </TableBody>
-      )}
+              <UserKeyGuideMessage isDT />
+            </TableRow>
+          </TableBody>
+        )}
 
-      <DtOrderDialog
-        setSortedOrders={setSortedOrders}
-        isTemplate={false}
-        isLastDefaultOrder={sortedOrders.length === 1}
-      />
-    </Table>
+        <DtOrderDialog
+          setSortedOrders={setSortedOrders}
+          isTemplate={false}
+          isLastDefaultOrder={sortedOrders.length === 1}
+        />
+      </Table>
+    </div>
   )
 }

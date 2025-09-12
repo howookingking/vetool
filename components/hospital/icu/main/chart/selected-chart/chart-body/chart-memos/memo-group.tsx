@@ -16,7 +16,7 @@ import {
   type SetStateAction,
 } from 'react'
 import { ReactSortable, type Sortable } from 'react-sortablejs'
-import { type NewMemoAddedTo } from './chart-memos'
+import type { NewMemoAddedTo } from './chart-memos'
 
 type Props = {
   memo: Memo[]
@@ -188,6 +188,12 @@ export default function MemoGroup({
     })
   }
 
+  const handleToastGuideMessage = () => {
+    toast({
+      title: '메모 그룹간(좌우↔) 이동도 가능합니다.',
+    })
+  }
+
   return (
     <div className="relative flex w-full flex-col">
       <Label
@@ -205,6 +211,7 @@ export default function MemoGroup({
           className="space-y-2"
           animation={250}
           handle=".handle"
+          onStart={handleToastGuideMessage}
           onEnd={handleReorderMemo}
           group="memo"
           disabled={isUpdating || isMemoNameSetting}
@@ -237,7 +244,7 @@ export default function MemoGroup({
       <div className="relative">
         <Textarea
           disabled={isUpdating || isMemoNameSetting}
-          placeholder="Shift + Enter를 눌러 줄을 추가할 수 있습니다"
+          placeholder="줄 추가 : Shift + Enter ⏎"
           id={`memo-${memoId}`}
           value={memoInput}
           onChange={(e) => setMemoInput(e.target.value)}

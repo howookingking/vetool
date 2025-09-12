@@ -1,29 +1,35 @@
-import { getTodos } from '@/lib/services/hospital-home/todo'
-import { type ClientTodo } from '@/types/hospital/todo'
+import { fetchTodos } from '@/lib/services/hospital-home/todo'
+import type { ClientTodo } from '@/types/hospital/todo'
 import { useEffect, useState } from 'react'
 
-export const useTodos = (hosId: string, selectedDate: Date) => {
-  const [isLoading, setIsLoading] = useState(true)
-  const [todos, setTodos] = useState({
-    dayBeforTodos: [] as ClientTodo[],
-    seletctedDayTodos: [] as ClientTodo[],
-    dayAfterTodos: [] as ClientTodo[],
+export const useTodos = (
+  hosId: string,
+  selectedDate: Date,
+  activeFilter: 'all' | 'done' | 'not-done',
+) => {
+  const [isFetching, setIsFetching] = useState(true)
+  const [todos, setTodos] = useState<{
+    dayBeforTodos: ClientTodo[]
+    seletctedDayTodos: ClientTodo[]
+    dayAfterTodos: ClientTodo[]
+  }>({
+    dayBeforTodos: [],
+    seletctedDayTodos: [],
+    dayAfterTodos: [],
   })
 
-  const fetchTodos = async () => {
-    setIsLoading(true)
+  const getTodos = async () => {
+    setIsFetching(true)
 
-    const result = await getTodos(hosId, selectedDate)
+    const todosData = await fetchTodos(hosId, selectedDate, activeFilter)
 
-    // 300밀리초 의도된 딜레이
-    await new Promise((resolve) => setTimeout(resolve, 300))
-    setTodos(result)
-    setIsLoading(false)
+    setTodos(todosData)
+    setIsFetching(false)
   }
 
   useEffect(() => {
-    fetchTodos()
-  }, [selectedDate, hosId])
+    getTodos()
+  }, [selectedDate, hosId, activeFilter])
 
-  return { todos, isLoading, refetch: fetchTodos }
+  return { todos, isFetching, refetch: getTodos }
 }

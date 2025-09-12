@@ -1,7 +1,6 @@
 'use client'
 
 import PatientBriefInfo from '@/components/hospital/common/patient/patient-brief-info'
-import TxUpsertDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/tx-upsert-dialog'
 import TxTableCell from '@/components/hospital/icu/main/tx-table/tx-table-cell'
 import TxTableHeader from '@/components/hospital/icu/main/tx-table/tx-table-header'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
@@ -14,16 +13,17 @@ import type { IcuTxTableData } from '@/types/icu/tx-table'
 import { SquarePlus } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
+import TxUpsertDialogDynamc from '../chart/selected-chart/chart-body/table/tx/tx-upsert-dialog-dynamic'
 
 type Props = {
-  localFilterState: string[]
+  orderTypeFilters: string[]
   filteredTxData: IcuTxTableData[]
   showTxUser: boolean
   orderColorsData: IcuOrderColors
 }
 
 export default function TxTable({
-  localFilterState,
+  orderTypeFilters,
   filteredTxData,
   showTxUser,
   orderColorsData,
@@ -109,7 +109,7 @@ export default function TxTable({
         <Table className="border border-l-0" ref={tableRef}>
           <TxTableHeader
             filteredTxData={filteredTxData}
-            localFilterState={localFilterState}
+            orderTypeFilters={orderTypeFilters}
           />
 
           <TableBody>
@@ -151,7 +151,7 @@ export default function TxTable({
                   {TIMES.map((time) => {
                     // 해당시간에 스케쥴된 오더가 아닌경우 빈 셀로 처리
                     const isOrderScheduled =
-                      order.icu_chart_order_time[time - 1] !== '0'
+                      order.icu_chart_order_time[time] !== '0'
                     if (!isOrderScheduled) return <TableCell key={time} />
 
                     // 해당시간에 스케쥴된 오더가 있고, 처치가 완료된 경우 빈 셀로 처리
@@ -186,7 +186,7 @@ export default function TxTable({
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
 
-      <TxUpsertDialog showTxUser={showTxUser} />
+      <TxUpsertDialogDynamc showTxUser={showTxUser} />
     </>
   )
 }
@@ -213,7 +213,7 @@ const TX_TABLE_BACKGROUD_COLORS = [
 ] as const
 
 // 사이드바 필터 적용 비활성화
-// const orderType = localFilterState.map(
+// const orderType = orderTypeFilters.map(
 //   (orderType) =>
 //     DEFAULT_ICU_ORDER_TYPE.find((type) => type.value === orderType)?.label,
 // )

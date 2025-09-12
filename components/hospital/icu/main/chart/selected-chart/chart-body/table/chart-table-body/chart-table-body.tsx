@@ -76,7 +76,7 @@ export default function ChartTableBody({
       if (!currentOrder) continue
 
       const updatedOrderTimes = currentOrder.order_times.map((time, index) =>
-        order.orderTimes.includes(index + 1)
+        order.orderTimes.includes(index)
           ? time === '0'
             ? vetsListData[0].name
             : '0'

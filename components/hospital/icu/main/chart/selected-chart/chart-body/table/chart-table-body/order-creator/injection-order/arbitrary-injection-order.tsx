@@ -1,10 +1,15 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import type { OrderType } from '@/constants/hospital/icu/chart/order'
 import { Plus, X } from 'lucide-react'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type Props = {
-  createOrder: (orderName: string, orderDescription: string) => Promise<void>
+  createOrder: (
+    orderName: string,
+    orderType: OrderType,
+    orderDescription: string,
+  ) => Promise<void>
   setIsArbitraryOrder: React.Dispatch<React.SetStateAction<boolean>>
   setIsAutocompleteOpen: React.Dispatch<React.SetStateAction<boolean>>
   autocompleteInputRef: React.RefObject<HTMLInputElement>
@@ -44,7 +49,7 @@ export default function ArbitraryInjectionOrder({
     setIsInserting(true)
     setArbitraryInjectionInput('')
 
-    await createOrder(orderName, orderDescription ?? '')
+    await createOrder(orderName, 'injection', orderDescription ?? '')
 
     setIsInserting(false)
     setIsArbitraryOrder(false)
@@ -54,14 +59,13 @@ export default function ArbitraryInjectionOrder({
   return (
     <form className="relative w-full" onSubmit={handleSubmit}>
       <Input
-        className="h-11 w-full rounded-none border-0 focus-visible:ring-0"
+        className="h-11 w-full rounded-none border-0 pr-10 focus-visible:ring-0"
         disabled={isInserting}
-        placeholder="주사오더$주사량"
+        placeholder="주사오더$주사량 + Enter ⏎"
         value={isInserting ? '등록 중' : arbitraryInjectionInput}
         onChange={(e) => setArbitraryInjectionInput(e.target.value)}
         ref={inputRef}
       />
-
       <Button
         className="absolute right-8 top-1 2xl:hidden"
         size="icon"

@@ -1,5 +1,5 @@
 import { formatDate } from '@/lib/utils/utils'
-import { type PatientWithWeight } from '@/types/patients'
+import type { PatientWithWeight } from '@/types/patients'
 import PatientDetailInfo from '../common/patient/patient-detail-info'
 
 export default function SelectedPatient({

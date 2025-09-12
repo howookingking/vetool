@@ -29,8 +29,8 @@ import {
   type DtOrderTimePendingQueue,
   useDtOrderStore,
 } from '@/lib/store/icu/dt-order'
+import type { IcuTemplate } from '@/types'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
-import type { TemplateChart } from '@/types/icu/template'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
@@ -40,21 +40,21 @@ import { z } from 'zod'
 
 type ConfirmAddTemplateDialogProps = {
   sortedOrders: SelectedIcuOrder[]
-  setUseUpsertTemplateDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setIsUpsertTemplateDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
   isEdit: boolean
-  selectedTemplateChart: TemplateChart | null
+  selectedTemplateChart: IcuTemplate | null
 }
 
 export default function ConfirmAddTemplateDialog({
   sortedOrders,
-  setUseUpsertTemplateDialogOpen,
+  setIsUpsertTemplateDialogOpen,
   isEdit,
   selectedTemplateChart,
 }: ConfirmAddTemplateDialogProps) {
   const { refresh } = useRouter()
   const { hos_id } = useParams()
 
-  const { orderTimePendingQueue, reset: resetOrderStore } = useDtOrderStore()
+  const { orderTimePendingQueue } = useDtOrderStore()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -103,7 +103,7 @@ export default function ConfirmAddTemplateDialog({
 
     setIsSubmitting(false)
     setIsDialogOpen(false)
-    setUseUpsertTemplateDialogOpen(false)
+    setIsUpsertTemplateDialogOpen(false)
     refresh()
   }
 
@@ -217,7 +217,7 @@ function applyAndToggleTimePendingQueueToTemplateOrders(
 
     // 기존 order_times 복사해서 수정
     const updatedTimes = order.order_times.map((time, index) => {
-      const hour = index + 1
+      const hour = index
       if (!toggleTimes.includes(hour)) return time
 
       // 값이 "기본"이면 "0"으로, "0"이면 "기본"으로

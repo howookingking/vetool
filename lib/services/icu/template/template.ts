@@ -2,7 +2,6 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
-import type { TemplateChart } from '@/types/icu/template'
 import { redirect } from 'next/navigation'
 
 export const createTemplateChart = async (
@@ -67,20 +66,21 @@ export const deleteTemplateChart = async (chartId: string) => {
   }
 }
 
-// template 페이지에서 모든 템플릿들을 테이블에서 보여줌
-export const getTemplateCharts = async (hosId: string) => {
+export const fetchIcuTemplates = async (hosId: string) => {
   const supabase = await createClient()
 
-  const { data, error } = await supabase.rpc('get_icu_template_charts_data', {
-    hos_id_input: hosId,
-  })
+  const { data, error } = await supabase
+    .from('icu_templates')
+    .select('*')
+    .match({ hos_id: hosId })
+    .order('created_at', { ascending: false })
 
   if (error) {
     console.error(error)
     redirect(`/error/?message=${error.message}`)
   }
 
-  return data as TemplateChart[]
+  return data
 }
 
 // 단일 템플릿 차트를 가져옴 : template페이지에서 preview 또는 수정시

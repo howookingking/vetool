@@ -7,8 +7,8 @@ import UpsertNoticeDialog from './upsert-notice-dialog'
 
 export default function Notice({ hosId }: { hosId: string }) {
   return (
-    <Card className="w-full rounded-sm xl:w-3/5">
-      <CardHeader>
+    <Card className="w-full rounded-sm xl:w-1/2">
+      <CardHeader className="border-b p-4">
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-1">
             <h4>공지사항</h4>
@@ -19,7 +19,7 @@ export default function Notice({ hosId }: { hosId: string }) {
         </CardTitle>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="p-4">
         <Suspense fallback={<NoticeSkeleton />}>
           <NoticeDataFetchingLayer hosId={hosId} />
         </Suspense>

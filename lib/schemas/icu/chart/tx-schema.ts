@@ -4,7 +4,7 @@ export const txDetailRegisterFormSchema = z
   .object({
     result: z.string().optional(),
     comment: z.string().optional(),
-    isCrucialChecked: z.boolean().default(false).optional(),
+    isCrucialChecked: z.boolean().default(false),
   })
   .refine(
     (data) => {

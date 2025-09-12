@@ -50,6 +50,7 @@ export default function ShareChartDialog({ icuIoId }: { icuIoId: string }) {
           <Share2 size={18} />
         </Button>
       </DialogTrigger>
+
       <DialogContent>
         <DialogHeader>
           <DialogTitle>입원 환자 차트 공유</DialogTitle>

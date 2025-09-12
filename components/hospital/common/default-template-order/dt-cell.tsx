@@ -29,6 +29,8 @@ export default function DtCell({
     }
   }
 
+  const canceledOrderTime = hasOrder && isInOrderTimePendingQueue
+
   return (
     <TableCell className="handle group p-0">
       <div
@@ -40,7 +42,7 @@ export default function DtCell({
           className={cn(
             isGuidelineTime && 'bg-amber-300/10',
             hasOrder && 'bg-rose-400/10',
-            hasOrder && isInOrderTimePendingQueue && 'bg-transparent',
+            canceledOrderTime && 'bg-transparent',
             !hasOrder && isInOrderTimePendingQueue && 'bg-rose-400/10',
             'h-11 min-w-12 rounded-none border-none px-1 text-center ring-inset focus-visible:ring-2 md:min-w-0',
           )}
@@ -51,7 +53,9 @@ export default function DtCell({
         {orderer !== '0' && (
           <div
             className={cn(
-              'absolute bottom-0.5 right-0.5 text-[10px] leading-none text-muted-foreground',
+              canceledOrderTime
+                ? 'hidden'
+                : 'pointer-events-none absolute bottom-0.5 right-0.5 text-[10px] leading-none text-muted-foreground',
             )}
           >
             {orderer}

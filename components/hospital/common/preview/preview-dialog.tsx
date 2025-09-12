@@ -11,7 +11,6 @@ import { usePreviewDialogStore } from '@/lib/store/icu/preview-dialog'
 
 export default function PreviewDialog() {
   const { copiedChart } = useCopiedChartStore()
-
   const { setPreviewDialogOpen, isPreviewDialogOpen } = usePreviewDialogStore()
 
   return (

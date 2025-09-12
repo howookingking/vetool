@@ -2,7 +2,7 @@
 
 'use client'
 
-import LargeLoaderCircle from '@/components/common/large-loader-circle'
+import PatientFormDynamic from '@/components/common/patients/form/patient-form-dynamic'
 import PatientDetailInfo from '@/components/hospital/common/patient/patient-detail-info'
 import { Button } from '@/components/ui/button'
 import {
@@ -13,33 +13,24 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { type Patients } from '@/types'
-import dynamic from 'next/dynamic'
+import type { Patient } from '@/types'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 
-const LazyPatientForm = dynamic(
-  () => import('@/components/common/patients/form/patient-form'),
-  {
-    ssr: false,
-    loading: () => <LargeLoaderCircle className="h-[544px]" />,
-  },
-)
-
 type Props = {
-  patientData: Patients
+  patient: Patient
   weight: string
   weightMeasuredDate: string | null
   icuChartId: string
 }
 
 export default function IcuPatientUpdateDialog({
-  patientData,
+  patient,
   weight,
   weightMeasuredDate,
   icuChartId,
 }: Props) {
-  const { name, breed, gender, species, birth } = patientData
+  const { name, breed, gender, species, birth, is_alive } = patient
 
   const { hos_id } = useParams()
 
@@ -60,6 +51,7 @@ export default function IcuPatientUpdateDialog({
             birth={birth}
             weight={weight}
             weightMeasuredDate={weightMeasuredDate}
+            isAlive={is_alive}
           />
         </Button>
       </DialogTrigger>
@@ -70,11 +62,11 @@ export default function IcuPatientUpdateDialog({
           <DialogDescription>환자의 정보를 수정합니다</DialogDescription>
         </DialogHeader>
 
-        <LazyPatientForm
+        <PatientFormDynamic
           debouncedSearch={null}
           mode="updateFromIcuRoute"
           hosId={hos_id as string}
-          editingPatient={patientData}
+          editingPatient={patient}
           setIsPatientUpdateDialogOpen={setIsDialogOpen}
           weight={weight}
           weightMeasuredDate={weightMeasuredDate}

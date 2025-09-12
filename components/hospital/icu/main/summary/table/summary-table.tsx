@@ -9,22 +9,18 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { DEFAULT_FILTER_STATE } from '@/constants/hospital/icu/chart/filters'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
-import { filterSummaryData } from '@/lib/utils/summary'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
+import { useCurrentTime } from '@/hooks/use-current-time'
+import { formatDate } from '@/lib/utils/utils'
 import type { SummaryData } from '@/types/icu/summary'
-import { useEffect, useState } from 'react'
+import { useParams } from 'next/navigation'
+import { CurrentTimeIndicator } from '../../chart/selected-chart/chart-body/table/chart-table-header/current-time-indicator'
 
 export default function SummaryTable({
   summaryData,
 }: {
   summaryData: SummaryData[]
 }) {
-  const {
-    basicHosData: { vetsListData },
-  } = useBasicHosDataContext()
-
   // 필터 적용 일단 비활성화
   // const [patientFilter, setPatientFilter] = useState(DEFAULT_FILTER_STATE)
 
@@ -54,13 +50,9 @@ export default function SummaryTable({
   //   vetsListData,
   // })
 
-  const {
-    basicHosData: { baselineTime },
-  } = useBasicHosDataContext()
-
-  const newTime = new Array(24)
-    .fill(0)
-    .map((_, i) => (Number(baselineTime) + i) % 24)
+  const { hours, minutes } = useCurrentTime()
+  const { target_date } = useParams()
+  const isToday = formatDate(new Date()) === target_date
 
   if (summaryData.length === 0) {
     return (
@@ -78,11 +70,20 @@ export default function SummaryTable({
         <TableRow>
           <TableHead className="w-[160px] text-center">환자목록</TableHead>
 
-          {newTime.map((time) => (
-            <TableHead className="border border-t-0 text-center" key={time}>
-              {time.toString().padStart(2, '0')}
-            </TableHead>
-          ))}
+          {TIMES.map((time) => {
+            const shouldShowIndicator = time === hours && isToday
+            return (
+              <TableHead
+                className="relative border border-t-0 text-center"
+                key={time}
+              >
+                {time.toString().padStart(2, '0')}
+                {shouldShowIndicator && (
+                  <CurrentTimeIndicator minutes={minutes} />
+                )}
+              </TableHead>
+            )
+          })}
         </TableRow>
       </TableHeader>
 
