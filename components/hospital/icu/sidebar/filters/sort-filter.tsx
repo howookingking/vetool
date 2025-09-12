@@ -5,7 +5,6 @@ import {
   MenubarMenu,
   MenubarTrigger,
 } from '@/components/ui/menubar'
-import { SORT_FILTER_ITEMS } from '@/constants/hospital/sidebar-items'
 import { ArrowDownNarrowWide } from 'lucide-react'
 
 export default function SortFilter({
@@ -39,3 +38,10 @@ export default function SortFilter({
     </MenubarMenu>
   )
 }
+
+const SORT_FILTER_ITEMS = [
+  { label: '입원일순', value: 'date' },
+  { label: '수의사순', value: 'vet' },
+  { label: '가나다순', value: 'name' },
+  { label: '응급도순', value: 'urgency' },
+] as const
