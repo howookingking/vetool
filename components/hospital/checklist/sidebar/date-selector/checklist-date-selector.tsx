@@ -1,34 +1,23 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react'
-import {
-  useParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from 'next/navigation'
-
 import { addDays, format } from 'date-fns'
-import { useState } from 'react'
+import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import ChecklistDatePicker from './checklist-date-picker'
-export default function ChecklistDateSelector() {
-  const searchParams = useSearchParams()
-  const params = useParams()
-  const pathname = usePathname()
-  const router = useRouter()
 
-  const [targetDate, setTargetDate] = useState(
-    new Date(params.target_date as string),
-  )
+type Props = {
+  hosId: string
+  targetDate: string
+}
+
+export default function ChecklistDateSelector({ hosId, targetDate }: Props) {
+  const { push } = useRouter()
+
   const updateDate = (newDate: Date) => {
     const newDateString = format(newDate, 'yyyy-MM-dd')
-    const pathnamearray: string[] = pathname.split('/')
 
-    router.push(
-      `/hospital/${pathnamearray[2]}/checklist/${newDateString}/chart`,
-    )
-    setTargetDate(newDate)
+    push(`/hospital/${hosId}/checklist/${newDateString}/chart`)
   }
 
   const handleUpdateDate = (days: number) => {
@@ -46,7 +35,8 @@ export default function ChecklistDateSelector() {
       >
         <ArrowLeftIcon />
       </Button>
-      <ChecklistDatePicker targetDate={format(targetDate, 'yyyy-MM-dd')} />
+
+      <ChecklistDatePicker hosId={hosId} targetDate={targetDate} />
 
       <Button
         onClick={() => handleUpdateDate(1)}

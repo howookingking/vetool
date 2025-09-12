@@ -1,5 +1,3 @@
-'use client'
-
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
@@ -7,28 +5,27 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { changeTargetDateInUrl } from '@/lib/utils/utils'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-export default function ChecklistDatePicker({
-  targetDate,
-}: {
+type Props = {
   targetDate: string
-}) {
-  const { push } = useRouter()
-  const [open, setOpen] = useState(false)
-  const searchParams = useSearchParams()
-  const params = new URLSearchParams(searchParams)
-  const path = usePathname()
+  hosId: string
+}
 
-  const handleSelectDate = (date: Date | undefined) => {
+export default function ChecklistDatePicker({ targetDate, hosId }: Props) {
+  const { push } = useRouter()
+
+  const [open, setOpen] = useState(false)
+
+  const handleSelectDate = (date?: Date) => {
     if (date) {
       const formattedDate = format(date, 'yyyy-MM-dd')
-      const newPath = changeTargetDateInUrl(path, formattedDate, params)
-      push(newPath)
+
+      push(`/hospital/${hosId}/checklist/${formattedDate}/chart`)
+
       setOpen(false)
     }
   }
@@ -57,7 +54,7 @@ export default function ChecklistDatePicker({
           mode="single"
           initialFocus
           selected={new Date(targetDate)}
-          onSelect={(date) => handleSelectDate(date)}
+          onSelect={handleSelectDate}
         />
       </PopoverContent>
     </Popover>

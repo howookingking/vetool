@@ -7,19 +7,23 @@ import ChecklistDateSelector from './date-selector/checklist-date-selector'
 
 type Props = {
   hosId: string
+  targetDate: string
   checklistsidebarData: ChecklistSidebarData[]
   handleCloseMobileDrawer?: () => void
 }
 export default function DesktopChecklistSidebar({
   hosId,
+  targetDate,
   checklistsidebarData,
   handleCloseMobileDrawer,
 }: Props) {
   return (
     <aside className="fixed z-40 hidden h-desktop w-96 shrink-0 flex-col gap-2 border-r bg-white px-2 pb-0 pt-2 2xl:flex">
-      <ChecklistDateSelector />
+      <ChecklistDateSelector hosId={hosId} targetDate={targetDate} />
 
       <ChecklistRegisterDialog hosId={hosId} checklistData={null} />
+
+      <Separator />
 
       {checklistsidebarData.length === 0 ? (
         <NoResultSquirrel
@@ -28,13 +32,10 @@ export default function DesktopChecklistSidebar({
           className="mt-20 flex-col"
         />
       ) : (
-        <>
-          <Separator />
-          <ChecklistList
-            checklistsidebarData={checklistsidebarData}
-            handleCloseMobileDrawer={handleCloseMobileDrawer}
-          />
-        </>
+        <ChecklistList
+          checklistsidebarData={checklistsidebarData}
+          handleCloseMobileDrawer={handleCloseMobileDrawer}
+        />
       )}
     </aside>
   )

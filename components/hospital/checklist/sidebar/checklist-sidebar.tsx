@@ -16,12 +16,14 @@ export default async function ChecklistSidebar({ hosId, targetDate }: Props) {
     <>
       <DesktopChecklistSidebar
         hosId={hosId}
+        targetDate={targetDate}
         checklistsidebarData={checklistSidebarData}
       />
 
       <MobileChecklistSidebarSheet
-        checklistsidebarData={checklistSidebarData}
         hosId={hosId}
+        targetDate={targetDate}
+        checklistsidebarData={checklistSidebarData}
       />
     </>
   )

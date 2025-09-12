@@ -5,39 +5,40 @@ import { Separator } from '@/components/ui/separator'
 import type { ChecklistSidebarData } from '@/types/checklist/checklist-type'
 
 type MobileChecklistSidebarProps = {
-  checklistsidebarData?: ChecklistSidebarData[]
+  checklistsidebarData: ChecklistSidebarData[]
   handleCloseMobileDrawer?: () => void
   hosId: string
+  targetDate: string
 }
 
-export default function MobieChecklistSidebar({
+export default function MobileChecklistSidebar({
   checklistsidebarData,
   handleCloseMobileDrawer,
   hosId,
+  targetDate,
 }: MobileChecklistSidebarProps) {
   return (
     <aside className="flex h-full flex-col">
-      {checklistsidebarData?.length === 0 ? (
-        <div className="flex h-full flex-col gap-3 p-2">
-          <ChecklistDateSelector />
-          {/* <ChecklistRegisterDialog hosId={hosId} /> */}
-          <Separator />
+      <div className="flex h-full flex-col gap-3 p-2">
+        <ChecklistDateSelector hosId={hosId} targetDate={targetDate} />
+
+        {/* <ChecklistRegisterDialog hosId={hosId} /> */}
+
+        <Separator />
+
+        {checklistsidebarData.length === 0 ? (
           <NoResultSquirrel
-            text="입원환자가 없습니다"
-            className="mt-10 flex-col"
+            text="체크리스트 환자 없음"
+            size="md"
+            className="mt-20 flex-col"
           />
-        </div>
-      ) : (
-        <div className="flex h-full flex-col gap-3 p-2">
-          <ChecklistDateSelector />
-          {/* <ChecklistRegisterDialog hosId={hosId} /> */}
-          <Separator />
+        ) : (
           <ChecklistList
             checklistsidebarData={checklistsidebarData}
             handleCloseMobileDrawer={handleCloseMobileDrawer}
           />
-        </div>
-      )}
+        )}
+      </div>
     </aside>
   )
 }
