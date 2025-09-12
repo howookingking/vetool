@@ -1,16 +1,17 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
 import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react'
 import {
-  useRouter,
   useParams,
   usePathname,
+  useRouter,
   useSearchParams,
 } from 'next/navigation'
 
-import { changeTargetDateInUrl } from '@/lib/utils/utils'
-import ChecklistDatePicker from './checklist-date-picker'
 import { addDays, format } from 'date-fns'
 import { useState } from 'react'
+import ChecklistDatePicker from './checklist-date-picker'
 export default function ChecklistDateSelector() {
   const searchParams = useSearchParams()
   const params = useParams()

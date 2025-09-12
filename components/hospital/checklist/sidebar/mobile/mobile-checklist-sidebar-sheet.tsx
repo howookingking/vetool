@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
 import {
   Sheet,
@@ -7,10 +9,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import { useState } from 'react'
-import { Menu } from 'lucide-react'
-import MobieChecklistSidebar from './mobile-checklist-sidebar'
 import type { ChecklistSidebarData } from '@/types/checklist/checklist-type'
+import { Menu } from 'lucide-react'
+import { useState } from 'react'
+import MobieChecklistSidebar from './mobile-checklist-sidebar'
 type Props = {
   checklistsidebarData: ChecklistSidebarData[]
   isEmpty: boolean

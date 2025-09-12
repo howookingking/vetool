@@ -1,38 +1,36 @@
-'use client'
-
-import type { ChecklistSidebarData } from '@/types/checklist/checklist-type'
+import { fetchChecklistSidebarData } from '@/lib/services/checklist/fetch-checklist-sidebar-data'
 import DesktopChecklistSidebar from './desktop-checklist-sidebar'
 import { MobileChecklistSidebarSheet } from './mobile/mobile-checklist-sidebar-sheet'
 
 type Props = {
   hosId: string
   targetDate: string
-  checklistsidebarData: ChecklistSidebarData[]
 }
-export default function ChecklistSidebar({
-  hosId,
-  checklistsidebarData,
-}: Props) {
+export default async function ChecklistSidebar({ hosId, targetDate }: Props) {
+  const checklistSidebarData = await fetchChecklistSidebarData(
+    hosId,
+    targetDate,
+  )
+
   return (
     <>
       <DesktopChecklistSidebar
         hosId={hosId}
         isEmpty={
-          checklistsidebarData && checklistsidebarData.length === 0
+          checklistSidebarData && checklistSidebarData.length === 0
             ? true
             : false
         }
-        currentChartNumber={0}
-        checklistsidebarData={checklistsidebarData}
+        checklistsidebarData={checklistSidebarData}
       />
 
       <MobileChecklistSidebarSheet
         isEmpty={
-          checklistsidebarData && checklistsidebarData.length === 0
+          checklistSidebarData && checklistSidebarData.length === 0
             ? true
             : false
         }
-        checklistsidebarData={checklistsidebarData}
+        checklistsidebarData={checklistSidebarData}
         hosId={hosId}
       />
     </>

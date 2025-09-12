@@ -1,9 +1,11 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
 import { cn, convertPascalCased } from '@/lib/utils/utils'
+import { ChecklistSidebarData } from '@/types/checklist/checklist-type'
 import { Cat, Dog } from 'lucide-react'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { ChecklistSidebarData } from '@/types/checklist/checklist-type'
 
 type ChecklistButtonProps = {
   checklistchart: ChecklistSidebarData
