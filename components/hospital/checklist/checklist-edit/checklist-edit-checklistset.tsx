@@ -59,7 +59,7 @@ export default function ChecklistEditChecklistSet({
           '비고',
         ])
     }
-  }, [checklistSet])
+  }, [checklistSet, checklistTitles])
 
   const addChecklistRow = () => {
     if (checkingTime.current?.value && checklistTitles) {

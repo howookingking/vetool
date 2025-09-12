@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { updateEachChecklist } from '@/lib/services/checklist/get-checklist-data-client'
 import { ChecklistData } from '@/types/checklist/checklist-type'
-import { Camera, Image } from 'lucide-react'
+import { CameraIcon, ImageIcon } from 'lucide-react'
 import { useRef } from 'react'
 import { toast } from '@/components/ui/use-toast'
 import useIsMobile from '@/hooks/use-is-mobile'
@@ -82,10 +82,10 @@ export default function ChecklistTimetableAdd({ checklistData }: Props) {
       </Button>
       <Button variant="outline" className="ml-3">
         {' '}
-        <Camera />
+        <CameraIcon />
       </Button>
       <Button variant="outline" className="ml-3">
-        <Image />
+        <ImageIcon />
       </Button>
     </div>
   )

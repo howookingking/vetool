@@ -50,7 +50,7 @@ export default function ChecklistEditTableRow({
         : (preResult.newresult[list.name] = '')
     })
     setNewResult(preResult)
-  }, [pretime, checklistData])
+  }, [pretime, checklistData, checklistname])
 
   const changeTableCellResult = (e: React.ChangeEvent<HTMLInputElement>) => {
     const predata = { ...newresult }

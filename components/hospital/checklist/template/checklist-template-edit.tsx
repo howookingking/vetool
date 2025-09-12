@@ -4,38 +4,32 @@ import {
   ChecklistData,
   ChecklistProtocol,
   Checklistset,
-  ChecklistVet,
   PreInfo,
   TemplateChecklist,
 } from '@/types/checklist/checklist-type'
-import { set } from 'date-fns'
 import { useEffect, useState } from 'react'
-
-import { format } from 'date-fns'
+import ChecklistEditChecklistSet from '@/components/hospital/checklist/checklist-edit/checklist-edit-checklistset'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import ChecklistEditChecklistSet from '@/components/hospital/checklist/checklist-edit/checklist-edit-checklistset'
 import { Button } from '@/components/ui/button'
-import { Trash2 } from 'lucide-react'
+import { Input } from '@/components/ui/input'
 import { ORDER_COLORS } from '@/constants/hospital/icu/chart/colors'
+import { Trash2 } from 'lucide-react'
 
-import { toast } from '@/components/ui/use-toast'
-import ChecklistEditTxInfo from '@/components/hospital/checklist/checklist-edit/checklist-edit-txinfo'
-import { usePathname, useRouter } from 'next/navigation'
-import ChecklistEditVetInfo from '@/components/hospital/checklist/checklist-edit/checklist-edit-vetinfo'
-import ChecklistTagging from '@/components/hospital/checklist/common/checklist-tagging'
 import ChecklistEditProtocolset from '@/components/hospital/checklist/checklist-edit/checklist-edit-protocolset'
+import ChecklistEditTxInfo from '@/components/hospital/checklist/checklist-edit/checklist-edit-txinfo'
+import ChecklistTagging from '@/components/hospital/checklist/common/checklist-tagging'
+import { toast } from '@/components/ui/use-toast'
 import {
   deleteChecklistTemplate,
   saveTemplate,
   updateTemplate,
 } from '@/lib/services/checklist/checklist-template'
+import { usePathname, useRouter } from 'next/navigation'
 
 type Props = {
   templateChecklist: TemplateChecklist | null
@@ -48,6 +42,9 @@ export default function ChecklistTemplateEdit({
   templateChecklist,
   setChecklistEditDialogOpen,
 }: Props) {
+  const pathname = usePathname()
+  const { push } = useRouter()
+
   const [checklistdata, setChecklistData] = useState<{
     checklist_template_id: string
     hos_id: string
@@ -79,8 +76,7 @@ export default function ChecklistTemplateEdit({
       setChecklistData(preTemplateData)
     }
   }, [templateChecklist])
-  const { push } = useRouter()
-  const pathname = usePathname()
+
   const isEditMode = templateChecklist?.checklist_template_id ? true : false
 
   const changeChecklistValue = (
@@ -173,7 +169,6 @@ export default function ChecklistTemplateEdit({
     // })
   }
   const delchecklistchart = () => {
-    const pathname = usePathname()
     const targetDate = pathname.split('/')[5]
     if (!checklistdata.checklist_template_id) return
     if (

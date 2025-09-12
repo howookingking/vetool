@@ -1,5 +1,3 @@
-import { string } from 'zod'
-
 export type ChecklistData = {
   checklist_id: string
   hos_id: string

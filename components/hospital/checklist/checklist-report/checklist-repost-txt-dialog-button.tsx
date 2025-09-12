@@ -105,7 +105,7 @@ export default function ChecklistReportTxtDialogButton({
       ? pretxt + checklistData.comment + '\n'
       : pretxt + ''
     setTxt(pretxt)
-  }, [checklistData])
+  }, [checklistData, prepatient, resultTxt, txt, isPreviewDialogOpen])
 
   const makeresulttxt = (result: Record<string, ChecklistResults>) => {
     const predata: Record<string, number[]> = {}

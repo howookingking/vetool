@@ -10,7 +10,7 @@ import ChecklistReportTxtDialogButton from './checklist-repost-txt-dialog-button
 import { useEffect, useRef, useState } from 'react'
 import { getPatientById } from '@/lib/services/checklist/get-checklist-data-client'
 import html2canvas from 'html2canvas'
-import { Image, LoaderCircle } from 'lucide-react'
+import { ImageIcon, LoaderCircle } from 'lucide-react'
 import { cn } from '@/lib/utils/utils'
 import { toast } from '@/components/ui/use-toast'
 type Props = {
@@ -84,7 +84,7 @@ export default function ChecklistReportMain({ checklistData }: Props) {
           disabled={isExporting}
           onClick={handleExportPng}
         >
-          <Image />{' '}
+          <ImageIcon />{' '}
           <LoaderCircle
             className={cn(isExporting ? 'ml-2 animate-spin' : 'hidden')}
           />

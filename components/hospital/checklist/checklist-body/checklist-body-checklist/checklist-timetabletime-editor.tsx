@@ -29,7 +29,7 @@ export default function ChecklistTimetableTimeEditor({
   useEffect(() => {
     pretime && setTableTime(pretime)
     txt ? setPostTxt(txt) : setPostTxt('')
-  }, [pretime])
+  }, [pretime, txt])
 
   const setTimeToDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     const hhmmss = e.target.value

@@ -1,27 +1,13 @@
 import ChecklistBodyContainer from '@/components/hospital/checklist/checklist-body/checklist-body-container'
 import ChecklistPatientInfo from '@/components/hospital/checklist/common/checklist-patient-info'
+import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { getChecklistDataById } from '@/lib/services/checklist/get-checklist-data-client'
-import type {
-  ChecklistData,
-  ChecklistVet,
-} from '@/types/checklist/checklist-type'
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-
-import ChecklistRegisterDialog from '@/components/hospital/checklist/sidebar/checklist-register-dialog/checklist-register-dialog'
+import type { ChecklistData } from '@/types/checklist/checklist-type'
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
+import ChecklistRegisterDialog from '@/components/hospital/checklist/sidebar/checklist-register-dialog/checklist-register-dialog'
 import { Checklist } from '@/types'
 
 export default async function ChecklistBody(props: {
-  children: React.ReactNode
   params: Promise<{
     hos_id: string
     target_date: string

@@ -4,7 +4,6 @@ import { cn } from '@/lib/utils/utils'
 import ChecklistReportMain from '@/components/hospital/checklist/checklist-report/checklist-report-main'
 
 export default async function ReportPage(props: {
-  children: React.ReactNode
   params: Promise<{
     hos_id: string
     target_date: string

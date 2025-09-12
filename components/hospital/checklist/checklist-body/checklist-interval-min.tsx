@@ -32,7 +32,7 @@ export default function ChecklistIntervalMin({
     }, 1000)
 
     return () => clearInterval(interval)
-  }, [startime])
+  }, [startime, intermin, setChecklistTimes])
 
   return <div className="ml-3 text-lg font-bold">{intermin}분</div>
 }

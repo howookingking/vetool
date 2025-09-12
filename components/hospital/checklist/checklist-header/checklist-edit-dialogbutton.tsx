@@ -11,7 +11,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils/utils'
 import { Pencil } from 'lucide-react'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { ChecklistData } from '@/types/checklist/checklist-type'
 import ChecklistEditContainer from '../checklist-edit/checklist-edit-container'
 import {
@@ -31,6 +31,15 @@ export default function ChecklistEditDialogButton({
     useState(false)
   const [checklistData, setChecklistData] = useState<ChecklistData | null>()
 
+  const fetchData = useCallback(async () => {
+    const data: Checklist = await getChecklistDataById(checklistId)
+    let predata: ChecklistData = {} as ChecklistData
+    if (data) {
+      predata = data as ChecklistData
+    }
+    setChecklistData(predata)
+  }, [checklistId])
+
   useEffect(() => {
     fetchData()
     const channel = getChecklistDataByIdChannel(checklistId, (payload) => {
@@ -41,16 +50,8 @@ export default function ChecklistEditDialogButton({
       setChecklistData(prepayload)
     })
     setChecklistEditDialogOpen(isEdit)
-  }, [isEdit])
+  }, [isEdit, checklistId, fetchData])
   //   const isActive = pathname.split('/')[7]
-  const fetchData = async () => {
-    const data: Checklist = await getChecklistDataById(checklistId)
-    let predata: ChecklistData = {} as ChecklistData
-    if (data) {
-      predata = data as ChecklistData
-    }
-    setChecklistData(predata)
-  }
 
   const checklistEditDialogOpen = (isopen: boolean) => {
     if (isopen) {

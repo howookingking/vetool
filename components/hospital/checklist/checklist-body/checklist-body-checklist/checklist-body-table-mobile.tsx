@@ -1,4 +1,5 @@
 'use client'
+
 import type {
   ChecklistData,
   ChecklistResults,
@@ -108,7 +109,7 @@ export default function ChecklistBodyTable({
     checklistData && setIsSaving(false)
     setTableTimes(pretimes)
     setCheckListNames([...prenames2])
-  }, [checklistData, timeMin])
+  }, [checklistData, timeMin, interval, newresult.time, newresult])
 
   const savenewChecklistChart = () => {
     setIsSaving(true)

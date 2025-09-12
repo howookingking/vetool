@@ -123,7 +123,7 @@ export default function ChecklistBodyTable({
     checklistData && setIsSaving(false)
     setTableTimes(pretimes)
     setCheckListNames([...prenames2])
-  }, [checklistData, timeMin])
+  }, [checklistData, timeMin, interval, newresult]) //체크리스트 종류
 
   const savenewChecklistChart = () => {
     setIsSaving(true)
