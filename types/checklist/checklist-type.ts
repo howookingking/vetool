@@ -67,11 +67,6 @@ export type PreInfo = {
   other: string
 }
 
-export type FilteredChecklist = {
-  today: [] | ChecklistData[]
-  todaydone: [] | ChecklistData[]
-  ing: [] | ChecklistData[]
-}
 export type ChecklistPatient = {
   patient_id: string
   name?: string | null
@@ -84,25 +79,25 @@ export type ChecklistPatient = {
 export type ChecklistSidebarData = {
   checklist_id: string
   hos_id: string
-  patient_id: string
-  patients: ChecklistPatient
+  // patient_id: string
+  patient: ChecklistPatient
   checklist_type: null | string
   checklist_vet: null | ChecklistVet
   checklist_title: null | string
-  checklist_tag: null | string
-  checklist_protocol: null | ChecklistProtocol
+  // checklist_tag: null | string
+  // checklist_protocol: null | ChecklistProtocol
   checklist_group: null | string[]
-  checklist_set: null | Checklistset
-  checklist_timetable: null | TimeTable
+  // checklist_set: null | Checklistset
+  // checklist_timetable: null | TimeTable
   starttime: null | string
   endtime: null | string
-  comment: null | string
-  preinfo: null | PreInfo
+  // comment: null | string
+  // preinfo: null | PreInfo
   due_date: null | string
-  age_in_days: number
+  // age_in_days: number
   weight: number
   istxing: boolean
-  enddate: null | string
+  // enddate: null | string
 }
 
 export type TxTypes = string[]
@@ -128,6 +123,7 @@ export type ProtocolItem = {
 export type TemplateChecklist = {
   checklist_template_id: string
   hos_id: string
+  created_at?: string
   checklist_type: string //'checklist' | 'surgery'
   checklist_title: string //tamplate이름
   checklist_tag: null | string //검색어
@@ -140,4 +136,14 @@ export type HosChecklistSet = {
   hos_checklist_set_id: string
   hos_id: string
   sharing: { hos_id: string; isShared: boolean; class: string }[]
+}
+
+export type ReportPatient = {
+  patient_id: string | null
+  name: string | null
+  species: string | null
+  breed: string | null
+  gender: string | null
+  birth: string | null
+  hos_patient_id: string | null
 }

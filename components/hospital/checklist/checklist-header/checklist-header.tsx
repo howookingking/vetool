@@ -15,11 +15,13 @@ import React, { useEffect } from 'react'
 import ChecklistEditDialogButton from '@/components/hospital/checklist/checklist-header/checklist-edit-dialogbutton'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 
-export default function ChecklistHeader() {
+export default function ChecklistHeader({
+  checklistId,
+}: {
+  checklistId: string
+}) {
   const basichosdata = useBasicHosDataContext().basicHosData
-  useEffect(() => {
-    console.log(basichosdata.groupListData)
-  }, [])
+
   const pathname = usePathname()
   const { push } = useRouter()
 
@@ -29,11 +31,11 @@ export default function ChecklistHeader() {
   const pathnamearray: string[] = pathname.split('/')
 
   return (
-    <div className="flex-col">
+    <div className="ml-3 flex-col">
       <div className="flex">
         <CustomTooltip
           contents="체크리스트 작성"
-          side="right"
+          side="bottom"
           sideOffset={4}
           delayDuration={300}
         >
@@ -48,7 +50,7 @@ export default function ChecklistHeader() {
             }}
             className={cn(
               'm-2 ml-14 2xl:m-2 2xl:ml-2',
-              isActive === 'txchart' && 'bg-primary text-white',
+              isActive === 'checklist' && 'bg-primary text-white',
             )}
           >
             <FileCheck /> <p className="hidden 2xl:flex">CHECKLIST</p>
@@ -56,7 +58,7 @@ export default function ChecklistHeader() {
         </CustomTooltip>
         <CustomTooltip
           contents="리포트"
-          side="right"
+          side="bottom"
           sideOffset={4}
           delayDuration={300}
         >
@@ -77,32 +79,10 @@ export default function ChecklistHeader() {
             <ScrollText /> <p className="hidden 2xl:flex">REPORT</p>
           </Button>
         </CustomTooltip>
-        <CustomTooltip
-          contents="모니터"
-          side="right"
-          sideOffset={4}
-          delayDuration={300}
-        >
-          {/* <Button
-            type="button"
-            variant="outline"
-            name="monitor"
-            onClick={() => {
-              push(
-                `/hospital/${pathnamearray[2]}/checklist/${pathnamearray[4]}/chart/${pathnamearray[6]}/monitor`,
-              )
-            }}
-            className={cn(
-              'm-2',
-              isActive === 'monitor' && 'bg-primary text-white',
-            )}
-          >
-            <Monitor /> <p className="hidden 2xl:flex">MONITOR</p>
-          </Button> */}
-        </CustomTooltip>
+
         <ChecklistEditDialogButton
           isEdit={edit === 'true' ? true : false}
-          checklistId={pathnamearray[6]}
+          checklistId={checklistId}
         ></ChecklistEditDialogButton>
       </div>
 

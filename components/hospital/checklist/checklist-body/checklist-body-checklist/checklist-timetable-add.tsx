@@ -65,7 +65,18 @@ export default function ChecklistTimetableAdd({ checklistData }: Props) {
   return (
     <div className="m-3 flex items-center">
       {isMobile ? <div>+</div> : <div>기록 추가</div>}
-      <Input className="ml-3 w-[250px]" ref={inputTxt}></Input>
+      <Input
+        className="ml-3 w-[250px]"
+        ref={inputTxt}
+        onKeyDown={(e) => {
+          console.log(e.key)
+          e.key === 'Enter'
+            ? addtimetableTx()
+            : e.key === 'Escape' &&
+              inputTxt.current &&
+              (inputTxt.current.value = '')
+        }}
+      ></Input>
       <Button variant="outline" className="ml-1" onClick={addtimetableTx}>
         +
       </Button>

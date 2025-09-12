@@ -8,7 +8,7 @@ import {
   OrderColorDisplay,
 } from '@/providers/basic-hos-data-context-provider'
 import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
-import { ChecklistData } from '@/types/checklist/checklist-type'
+
 export default async function ChecklistPageLayout(props: {
   children: React.ReactNode
   params: Promise<{ target_date: string; hos_id: string }>
@@ -16,6 +16,7 @@ export default async function ChecklistPageLayout(props: {
   const { hos_id, target_date } = await props.params
   const { basicHosData, checklistSidebarData, vetsListData } =
     await getChecklistData(hos_id, target_date)
+
   return (
     <>
       <BasicHosDataProvider

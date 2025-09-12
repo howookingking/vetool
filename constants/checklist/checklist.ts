@@ -3,7 +3,6 @@ import { CheckNameArray, TxTypes } from '@/types/checklist/checklist-type'
 export const ChecklistTypes: TxTypes = [
   '일반',
   '응급',
-  '수혈',
   '처치',
   '마취',
   '사용자',
@@ -47,6 +46,15 @@ export const emergencyPhrase: string[] = [
   '기관튜브 삽관',
   '정맥카테터 장착',
 ]
+export const defaultChecklistSet = {
+  interval: '1',
+  preSet: [
+    {
+      setname: ['체온(°C)', '심박수', '호흡수', '혈압(mmHg)', '비고'],
+      settime: '0',
+    },
+  ],
+}
 
 export const timeInterval = (timetz1: string, timetz2: string) => {
   // timestapmtz로 들어온 2개의 시간 분차이
@@ -55,7 +63,7 @@ export const timeInterval = (timetz1: string, timetz2: string) => {
   const diffMs = date2.getTime() - date1.getTime() + 1000
   const diffMinutes = Math.floor(diffMs / (1000 * 60)) // 분
   const hr = Math.floor(diffMinutes / 60)
-  const disphr = hr > 0 ? hr : null
+  const disphr = hr > 0 ? hr : 0
   const min = diffMinutes % 60
   return [String(diffMinutes), String(disphr), String(min)]
 }

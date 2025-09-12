@@ -1,7 +1,12 @@
 import { createClient } from '@/lib/supabase/client' // 클라이언트 컴포넌트용
+import { Checklist } from '@/types'
 import type {
   ChecklistData,
-  ChecklistPatinet,
+  ChecklistPatient,
+  ChecklistProtocol,
+  Checklistset,
+  PreInfo,
+  TemplateChecklist,
 } from '@/types/checklist/checklist-type'
 import { redirect } from 'next/navigation'
 
@@ -9,7 +14,7 @@ const supabase = createClient()
 
 export const getPatientById = async (
   patientId: string,
-): Promise<ChecklistPatinet | null> => {
+): Promise<ChecklistPatient | null> => {
   const { data, error } = await supabase
     .from('patients')
     .select(
@@ -45,12 +50,12 @@ export const getChecklistDataById = async (checklistId: string) => {
     console.error(error)
     redirect(`/error?message=${error.message}`)
   }
-  return data
+  return data as Checklist
 }
 
 export const getChecklistDataByIdChannel = async (
   checklistId: string,
-  onDataChange: (payload: any) => void,
+  onDataChange: (payload: Checklist) => void,
 ) => {
   const channel = supabase
     .channel(`realtime:gechecklistbyId:${checklistId}`)
@@ -63,8 +68,9 @@ export const getChecklistDataByIdChannel = async (
         filter: `checklist_id=eq.${checklistId}`,
       },
       (payload) => {
-        console.log('Realtime change: all re-upload')
-        payload.new ? onDataChange(payload.new) : onDataChange(payload.old)
+        payload.new
+          ? onDataChange(payload.new as Checklist)
+          : onDataChange(payload.old as Checklist)
       },
     )
     .subscribe()
@@ -96,4 +102,42 @@ export const deleteChecklist = async (checklistId: string) => {
   } else {
     console.log('삭제 완료:', data)
   }
+}
+
+export const getChecklistSidebarData = async (
+  hosId: string,
+  targetDate: string,
+) => {
+  const { data, error } = await supabase.rpc('checklist_sidebar_data', {
+    _hos_id: hosId,
+    _due_date: targetDate,
+  })
+
+  if (error) {
+    console.error(error)
+  } else {
+    return data as any
+  }
+}
+
+export const searchChecklistCharts = async (
+  searchTerms: string[],
+  hosId: string,
+) => {
+  let queryBuilder = supabase.from('checklist').select('*').match({
+    hos_id: hosId,
+  })
+
+  searchTerms.forEach((term) => {
+    queryBuilder = queryBuilder.or(`checklist_tag.ilike.%${term}%`)
+  })
+  const { data, error } = await queryBuilder.order('created_at', {
+    ascending: false,
+  })
+
+  if (error) {
+    console.error(error)
+    redirect(`/error?message=${error.message}`)
+  }
+  return data
 }

@@ -3,11 +3,11 @@ import { getPatientById } from '@/lib/services/checklist/get-checklist-data-clie
 import { useEffect, useState } from 'react'
 import { Cat, Dog } from 'lucide-react'
 import { calculateAge, convertPascalCased } from '@/lib/utils/utils'
-import { ChecklistData } from '@/types/checklist/checklist-type'
 import { kgToBsa } from '@/lib/calculators/checklist-calculators'
+import { Checklist } from '@/types'
 type Props = {
   patientId: string | null
-  checklistdata?: ChecklistData
+  checklistdata?: Checklist
 }
 export default function ChecklistPatientInfo({
   patientId,

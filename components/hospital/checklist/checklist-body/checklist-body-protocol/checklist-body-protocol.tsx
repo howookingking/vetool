@@ -93,6 +93,7 @@ export default function ChecklistBodyProtocol({ checklistData }: Props) {
             <TableHead>체크</TableHead>
             <TableHead>구분</TableHead>
             <TableHead>내용</TableHead>
+            <TableHead>추가정보</TableHead>
             <TableHead>예정시간</TableHead>
             <TableHead>완료시간</TableHead>
           </TableRow>
@@ -127,6 +128,9 @@ export default function ChecklistBodyProtocol({ checklistData }: Props) {
                 {protocol?.type === 'protocol' ? '과정' : '주의/확인'}
               </TableCell>
               <TableCell>{protocol?.title}</TableCell>
+              <TableCell className="whitespace-pre">
+                {protocol?.addinfo}
+              </TableCell>
               <TableCell>
                 <div className="flex items-center text-sm">
                   <div>
@@ -157,7 +161,7 @@ export default function ChecklistBodyProtocol({ checklistData }: Props) {
                     checklistData.checklist_protocol[index - 1].txEnd &&
                     protocol?.dueStart && (
                       <div>
-                        (예정시간
+                        (예정시간{' '}
                         <LocalTime
                           time={
                             Number(

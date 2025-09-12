@@ -11,6 +11,10 @@ type Props = {
   patientId: string
   birth: string
   patientName: string
+  hosPatientId: string
+  species: string
+  breed: string
+  gender: string
   setIsConfirmDialogOpen: Dispatch<SetStateAction<boolean>>
   setRegisteringPatient: Dispatch<SetStateAction<RegisteringPatient | null>>
 }
@@ -19,6 +23,10 @@ export default function NonIcuRegisterButton({
   patientId,
   birth,
   patientName,
+  hosPatientId,
+  species,
+  breed,
+  gender,
   setIsConfirmDialogOpen,
   setRegisteringPatient,
 }: Props) {
@@ -33,7 +41,11 @@ export default function NonIcuRegisterButton({
       patientId,
       birth,
       patientName,
+      species,
+      breed,
+      gender,
       ageInDays: getDaysSince(birth),
+      hosPatientId,
     })
 
     setIsConfirmDialogOpen!(true)

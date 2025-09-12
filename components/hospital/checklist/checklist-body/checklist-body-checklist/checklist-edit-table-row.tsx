@@ -101,7 +101,7 @@ export default function ChecklistEditTableRow({
               </TableHead>
             ))}
           <TableHead className="w-[90px] border border-gray-300 px-4 py-2">
-            삭제/수정
+            수정
           </TableHead>
         </TableRow>
       </TableHeader>
@@ -148,7 +148,7 @@ export default function ChecklistEditTableRow({
             ))}
           <TableCell className="border border-gray-300 px-4 py-2">
             <Button variant="outline" onClick={savenewChecklistChart}>
-              +
+              수정
             </Button>
           </TableCell>
         </TableRow>

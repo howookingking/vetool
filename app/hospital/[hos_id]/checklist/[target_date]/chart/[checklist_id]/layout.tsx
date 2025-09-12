@@ -7,7 +7,7 @@ export default async function ChecklistChartPage(props: {
   params: Promise<{
     hos_id: string
     target_date: string
-    patient_id: string
+    checklist_id: string
   }>
 }) {
   const params = await props.params
@@ -19,8 +19,8 @@ export default async function ChecklistChartPage(props: {
   // )
 
   return (
-    <div className="flex-col">
-      <ChecklistHeader />
+    <div className="relative flex h-desktop flex-col overflow-auto">
+      <ChecklistHeader checklistId={params.checklist_id} />
       <div>{props.children}</div>
     </div>
   )

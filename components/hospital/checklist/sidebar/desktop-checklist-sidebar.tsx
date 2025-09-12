@@ -1,10 +1,7 @@
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import ChecklistDateSelector from './date-selector/checklist-date-selector'
 import ChecklistRegisterDialog from '@/components/hospital/checklist/sidebar/checklist-register-dialog/checklist-register-dialog'
-import type {
-  ChecklistData,
-  FilteredChecklist,
-} from '@/types/checklist/checklist-type'
+import type { ChecklistSidebarData } from '@/types/checklist/checklist-type'
 import ChecklistList from '@/components/hospital/checklist/checklists/checklist-list'
 import { Separator } from '@/components/ui/separator'
 
@@ -12,14 +9,14 @@ type ChecklistIcuSidebarProps = {
   hosId: string
   isEmpty: boolean
   currentChartNumber: number
-  filteredData?: FilteredChecklist
+  checklistsidebarData?: ChecklistSidebarData[]
   handleCloseMobileDrawer?: () => void
 }
 export default function DesktopChecklistSidebar({
   hosId,
   isEmpty,
   currentChartNumber,
-  filteredData,
+  checklistsidebarData,
   handleCloseMobileDrawer,
 }: ChecklistIcuSidebarProps) {
   return (
@@ -36,7 +33,7 @@ export default function DesktopChecklistSidebar({
         <>
           <Separator />
           <ChecklistList
-            filteredData={filteredData}
+            checklistsidebarData={checklistsidebarData}
             handleCloseMobileDrawer={handleCloseMobileDrawer}
           />
         </>

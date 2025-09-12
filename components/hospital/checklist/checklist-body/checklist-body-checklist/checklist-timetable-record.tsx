@@ -1,7 +1,7 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import { updateEachChecklist } from '@/lib/services/checklist/get-checklist-data-client'
-import { ChecklistData } from '@/types/checklist/checklist-type'
+import { ChecklistData, TimeTable } from '@/types/checklist/checklist-type'
 import { Pencil } from 'lucide-react'
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import ChecklistTimetableTimeEditor from '@/components/hospital/checklist/checklist-body/checklist-body-checklist/checklist-timetabletime-editor'
@@ -36,19 +36,22 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
   })
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isTableLoad, setIsTableLoad] = useState<boolean>(false)
+  const [timetable, setTableTime] = useState<TimeTable | null>(null)
   useEffect(() => {
+    checklistData?.checklist_timetable &&
+      setTableTime(
+        checklistData.checklist_timetable.sort((a, b) => {
+          return a.time! - b.time!
+        }),
+      )
     setIsTableLoad(false)
   }, [checklistData])
 
   const deleteTimetableTx = (e: React.MouseEvent<HTMLButtonElement>) => {
     setIsTableLoad(true)
     const index = e.currentTarget.name
-    if (
-      checklistData.checklist_timetable &&
-      checklistData.checklist_timetable.length > 0 &&
-      index
-    ) {
-      const newTimetable = [...checklistData.checklist_timetable]
+    if (timetable && timetable.length > 0 && index) {
+      const newTimetable = [...timetable]
       const timetableType = newTimetable[Number(index)].type + ''
       newTimetable.splice(Number(index), 1)
       const predata = { ...checklistData } as ChecklistData
@@ -64,8 +67,10 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
         newProtocol && (newProtocol[protocolIndex].txEnd = null)
         predata.checklist_protocol = newProtocol
         updateEachChecklist(predata)
+        setIsDialogOpen(false)
       } else {
         updateEachChecklist(predata)
+        setIsDialogOpen(false)
       }
     }
   }
@@ -113,16 +118,16 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
     <div className="mb-20 flex-col">
       <div>과정중 기록사항</div>
       <div className="overflow-x-auto">
-        <Table className="m-1 mr-3 w-[97%] min-w-[600px] border border-gray-300 text-center text-sm">
+        <Table className="m-1 mr-3 w-[97%] min-w-[400px] border border-gray-300 text-center text-sm">
           <TableHeader>
             <TableRow className="bg-gray-100">
               <TableHead className="max-w-[40px] border border-gray-300 px-1 py-1 text-center font-semibold">
-                +min(시간)
+                +min
               </TableHead>
               <TableHead className="border border-gray-300 px-1 py-1 text-center">
                 기록사항
               </TableHead>
-              <TableHead className="w-[50px] border border-gray-300 px-1 py-1 text-center font-semibold">
+              <TableHead className="w-[100px] border border-gray-300 px-1 py-1 text-center font-semibold">
                 삭제/수정
               </TableHead>
             </TableRow>
@@ -136,13 +141,14 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
                 </TableCell>
                 <TableCell className="border border-gray-300 px-1 py-1">
                   {checklistData?.checklist_title
-                    ? checklistData?.checklist_title + ' 시작'
-                    : ''}
+                    ? checklistData?.checklist_title + ' '
+                    : ''}{' '}
+                  시작
                 </TableCell>
               </TableRow>
             )}
-            {checklistData?.checklist_timetable &&
-              checklistData.checklist_timetable.map((list, i) => (
+            {timetable &&
+              timetable.map((list, i) => (
                 <TableRow
                   key={list.txt && list.txt + i}
                   className="even:bg-gray-100"
@@ -170,7 +176,7 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
                   <TableCell className="border border-gray-300 px-1 py-1">
                     {list.txt}
                   </TableCell>
-                  <TableCell className="w-[60px] border border-gray-300 px-1 py-1">
+                  <TableCell className="border border-gray-300 px-1 py-1">
                     {isTableLoad ? (
                       <LoaderCircle
                         className={cn(
@@ -184,7 +190,7 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
                           size="sm"
                           name={String(i)}
                           onClick={deleteTimetableTx}
-                          className="w-[50px]"
+                          className="w-[40px]"
                           title="삭제"
                         >
                           -
@@ -203,7 +209,7 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
                               })
                               setIsDialogOpen(true)
                             }}
-                            className="w-[50px]"
+                            className="w-[40px]"
                           >
                             <Pencil size={20}></Pencil>
                           </Button>
@@ -225,7 +231,10 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
                   (<LocalTime time={checklistData?.endtime} />)
                 </TableCell>
                 <TableCell className="border border-gray-300 px-1 py-1">
-                  {checklistData?.checklist_title + ' '} 종료
+                  {checklistData?.checklist_title
+                    ? checklistData?.checklist_title + ' '
+                    : ''}{' '}
+                  종료
                 </TableCell>
               </TableRow>
             )}

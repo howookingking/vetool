@@ -6,6 +6,7 @@ import type {
 } from '@/types/checklist/checklist-type'
 import {
   checkListSetArray,
+  defaultChecklistSet,
   minToLocalTime,
 } from '@/constants/checklist/checklist'
 import { useEffect, useState } from 'react'
@@ -71,19 +72,23 @@ export default function ChecklistBodyTable({
           prenames.push(...Object.keys(checklistData.checklist_set.result[key]))
       })
     prenames.push('비고')
-    checklistData?.checklist_set?.preSet &&
-      checklistData?.checklist_set?.preSet.length > 0 &&
-      checklistData?.checklist_set?.preSet.map((set) => {
-        if (
-          set.settime &&
-          set.settime !== '' &&
-          Number(set.settime) >= 0 &&
-          pretimes.indexOf(Number(set.settime)) === -1
-        ) {
-          pretimes.push(Number(set.settime))
-          set.setname && set.setname.length > 0 && prenames.push(...set.setname)
-        }
-      })
+    checklistData &&
+    checklistData.checklist_set?.preSet &&
+    checklistData.checklist_set.preSet.length > 0
+      ? checklistData?.checklist_set?.preSet.map((set) => {
+          if (
+            set.settime &&
+            set.settime !== '' &&
+            Number(set.settime) >= 0 &&
+            pretimes.indexOf(Number(set.settime)) === -1
+          ) {
+            pretimes.push(Number(set.settime))
+            set.setname &&
+              set.setname.length > 0 &&
+              prenames.push(...set.setname)
+          }
+        })
+      : prenames.push(...defaultChecklistSet.preSet[0].setname)
 
     if (timeMin && interval && Number(interval) >= 1) {
       const _checktime = Number(timeMin)
@@ -118,8 +123,6 @@ export default function ChecklistBodyTable({
     checklistData && setIsSaving(false)
     setTableTimes(pretimes)
     setCheckListNames([...prenames2])
-    console.log(prenames2)
-    console.log(pretimes)
   }, [checklistData, timeMin])
 
   const savenewChecklistChart = () => {
@@ -200,13 +203,13 @@ export default function ChecklistBodyTable({
       <Table className="m-1 mr-3 w-[97%] min-w-[600px] border border-gray-300 text-center text-sm">
         <TableHeader>
           <TableRow className="bg-gray-100">
-            <TableHead className="border border-gray-300 px-4 py-2 font-semibold">
+            <TableHead className="border border-gray-300 px-4 py-2 text-center font-semibold">
               +min(시간)
             </TableHead>
             {checklistname &&
               checklistname.map((list, i) => (
                 <TableHead
-                  className="border border-gray-300 px-4 py-2"
+                  className="border border-gray-300 px-4 py-2 text-center"
                   key={'name' + i}
                 >
                   {window.innerWidth > 800
@@ -287,8 +290,8 @@ export default function ChecklistBodyTable({
               </TableRow>
             ))}
           <TableRow className="even:bg-gray-100">
-            <TableCell className="flex flex-wrap items-center justify-center border border-gray-300 px-1 py-2 font-semibold">
-              <div className="flex items-center">
+            <TableCell className="flex flex-wrap justify-center px-1 font-semibold">
+              <div className="flex">
                 <div>+</div>
                 <Input
                   className="h-[20px] w-[50px]"

@@ -8,10 +8,29 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { Separator } from '@/components/ui/separator'
+import { Textarea } from '@/components/ui/textarea'
+import { useEffect, useState } from 'react'
+import { updateEachChecklist } from '@/lib/services/checklist/get-checklist-data-client'
+import { Button } from '@/components/ui/button'
+import { LoaderCircle } from 'lucide-react'
 type Props = {
   checklistData: ChecklistData
 }
 export default function ChecklistBodyInformation({ checklistData }: Props) {
+  const [comment, setComment] = useState<string>('')
+  const [isSaving, setIsSaving] = useState(false)
+  useEffect(() => {
+    checklistData?.comment && setComment(checklistData.comment)
+    // const timer = setTimeout(() => {
+    //   if (checklistData?.comment !== comment) {
+    //     const predata = { ...checklistData } as ChecklistData
+    //     predata.comment = comment
+    //     updateEachChecklist(predata)
+    //   }
+    // }, 2000)
+    setIsSaving(false)
+  }, [checklistData])
   const type = checklistData?.checklist_type
   return (
     <div className="flex w-full flex-col">
@@ -37,12 +56,12 @@ export default function ChecklistBodyInformation({ checklistData }: Props) {
                 <TableCell>{checklistData?.checklist_vet?.primary}</TableCell>
               </TableRow>
             )}
-          {checklistData?.checklist_vet?.assistence &&
-            checklistData?.checklist_vet?.assistence !== '' && (
+          {checklistData?.checklist_vet?.assistance &&
+            checklistData?.checklist_vet?.assistance !== '' && (
               <TableRow>
                 <TableCell>{type === '사용자' ? '보조자' : '술자'}</TableCell>
                 <TableCell>
-                  {checklistData?.checklist_vet?.assistence}
+                  {checklistData?.checklist_vet?.assistance}
                 </TableCell>
               </TableRow>
             )}
@@ -108,42 +127,38 @@ export default function ChecklistBodyInformation({ checklistData }: Props) {
           {/* {checklistData?.preinfo?.other && checklistData?.preinfo?.other !== ''&& <TableRow><TableCell>기타처치</TableCell><TableCell>{checklistData?.preinfo?.other}</TableCell></TableRow>}  */}
         </TableBody>
       </Table>
-      {/* <div className="flex-col">
-        <div>전처치</div>
-        <div className="m-3 overflow-y-auto whitespace-pre-wrap rounded-md border border-gray-300 p-2 text-sm text-gray-800">
-          {checklistData?.preinfo?.pre}
+      <Separator className="m-3" />
+      <h1 className="ml-3 text-xl font-bold tracking-tight text-foreground">
+        소견
+      </h1>
+      <Textarea
+        className="m-3 min-w-[400px] max-w-2xl"
+        name="pre"
+        rows={8}
+        value={comment ?? ''}
+        onChange={(e) => setComment(e.target.value)}
+      ></Textarea>
+      {checklistData?.comment !== comment && (
+        <div className="m-3 w-[100px]">
+          {isSaving ? (
+            <LoaderCircle className="ml-2 animate-spin" />
+          ) : (
+            <Button
+              variant="default"
+              size="sm"
+              onClick={() => {
+                setIsSaving(true)
+                const predata: ChecklistData = { ...checklistData }
+                predata.comment = comment
+                updateEachChecklist(predata)
+                setIsSaving(true)
+              }}
+            >
+              저장
+            </Button>
+          )}{' '}
         </div>
-        {(checklistData?.checklist_type === '마취' ||
-          checklistData?.checklist_type === '수술') && (
-          <div>
-            <div>유도마취</div>
-            <div className="m-3 overflow-y-auto whitespace-pre-wrap rounded-md border border-gray-300 p-2 text-sm text-gray-800">
-              {checklistData?.preinfo?.induce}
-            </div>
-          </div>
-        )}
-        <div>
-          {checklistData?.checklist_type === '마취' ||
-          checklistData?.checklist_type === '수술'
-            ? '유지마취'
-            : '주요처치'}
-        </div>
-        <div className="m-3 overflow-y-auto whitespace-pre-wrap rounded-md border border-gray-300 p-2 text-sm text-gray-800">
-          {checklistData?.preinfo?.main}
-        </div>
-        <div>후처치</div>
-        <div className="m-3 overflow-y-auto whitespace-pre-wrap rounded-md border border-gray-300 p-2 text-sm text-gray-800">
-          {checklistData?.preinfo?.post}
-          {checklistData?.checklist_type === '수술' ? '유지마취' : '주요처치'}
-        </div>
-        <div className="m-3 overflow-y-auto whitespace-pre-wrap rounded-md border border-gray-300 p-2 text-sm text-gray-800">
-          {checklistData?.preinfo?.main}
-        </div>
-        <div>후처치</div>
-        <div className="m-3 overflow-y-auto whitespace-pre-wrap rounded-md border border-gray-300 p-2 text-sm text-gray-800">
-          {checklistData?.preinfo?.post}
-        </div>
-      </div> */}
+      )}
     </div>
   )
 }

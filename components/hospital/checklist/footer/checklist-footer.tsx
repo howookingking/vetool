@@ -78,26 +78,26 @@ const FOOTER_MAIN_VIEW_MENUS = [
   {
     label: '체크리스트',
     value: 'chart',
-    // icon: <LayoutDashboard />,
+    icon: <LayoutDashboard />,
     hideInMobile: false,
   },
 
   {
     label: '검색',
     value: 'search',
-    // icon: <Search />,
+    icon: <Search />,
     hideInMobile: true,
   },
   {
     label: '템플릿',
     value: 'template',
-    // icon: <Bookmark />,
+    icon: <Bookmark />,
     hideInMobile: true,
   },
-  {
-    label: '통계',
-    value: 'analysis',
-    // icon: <BarChartHorizontal />,
-    hideInMobile: true,
-  },
+  // {
+  //   label: '통계',
+  //   value: 'analysis',
+  //   icon: <BarChartHorizontal />,
+  //   hideInMobile: true,
+  // },
 ] as const

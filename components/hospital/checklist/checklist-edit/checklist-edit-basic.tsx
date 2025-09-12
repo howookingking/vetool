@@ -9,7 +9,7 @@ import { set } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import GroupFilter from '../../icu/sidebar/filters/group-filter'
+import GroupFilter from '@/components/hospital/icu/sidebar/filters/group-filter'
 import { Menubar } from '@/components/ui/menubar'
 import ChecklistEditDateselector from '@/components/hospital/checklist/checklist-edit/checklist-edit-dateselector'
 import { format } from 'date-fns'
@@ -21,27 +21,30 @@ import {
 } from '@/components/ui/accordion'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import ChecklistEditChecklistSet from './checklist-edit-checklistset'
+import ChecklistEditChecklistSet from '@/components/hospital/checklist/checklist-edit/checklist-edit-checklistset'
 import { Button } from '@/components/ui/button'
-import { Trash2 } from 'lucide-react'
+import { Bookmark, Trash2 } from 'lucide-react'
 import { ORDER_COLORS } from '@/constants/hospital/icu/chart/colors'
 import {
   deleteChecklist,
   updateEachChecklist,
 } from '@/lib/services/checklist/get-checklist-data-client'
 import { toast } from '@/components/ui/use-toast'
-import ChecklistEditTxInfo from './checklist-edit-txinfo'
+import ChecklistEditTxInfo from '@/components/hospital/checklist/checklist-edit/checklist-edit-txinfo'
 import { usePathname, useRouter } from 'next/navigation'
-import ChecklistEditVetInfo from './checklist-edit-vetinfo'
-import ChecklistTagging from '../common/checklist-tagging'
-import ChecklistEditProtocolset from './checklist-edit-protocolset'
+import ChecklistEditVetInfo from '@/components/hospital/checklist/checklist-edit/checklist-edit-vetinfo'
+import ChecklistTagging from '@/components/hospital/checklist/common/checklist-tagging'
+import ChecklistEditProtocolset from '@/components/hospital/checklist/checklist-edit/checklist-edit-protocolset'
+import { Checklist } from '@/types'
+import { defaultChecklistSet } from '@/constants/checklist/checklist'
+
 type Props = {
   checklistData: ChecklistData
   setChecklistEditDialogOpen: (isopen: boolean) => void
   checklistType: string
 }
 
-type keystring = keyof ChecklistData
+type keystring = keyof Checklist
 
 export default function ChecklistEditBasic({
   checklistData,
@@ -59,22 +62,7 @@ export default function ChecklistEditBasic({
     const preChecklistData = JSON.parse(JSON.stringify(checklistData))
     if (preChecklistData) {
       if (!preChecklistData.checklist_set) {
-        preChecklistData.checklist_set = {
-          interval: '1',
-          preSet: [
-            {
-              setname: [
-                '체온(°C)',
-                '심박수',
-                '호흡수',
-                '혈압(mmHg)',
-                'SPO2(%)',
-                '비고',
-              ],
-              settime: '0',
-            },
-          ],
-        }
+        preChecklistData.checklist_set = defaultChecklistSet
 
         setChecklistData(checklistData)
         preChecklistData.checklist_group &&
@@ -114,6 +102,7 @@ export default function ChecklistEditBasic({
     const preChecklistData: ChecklistData = { ...checklistdata }
     const keyname = e.target.name as keystring
     if (keyname === 'checklist_title' || keyname === 'comment') {
+      console.log('keyname', keyname)
       preChecklistData[keyname] = e.target.value
       setChecklistData(preChecklistData)
     }
@@ -180,8 +169,16 @@ export default function ChecklistEditBasic({
       setChecklistEditDialogOpen(false)
     }
     const preChecklistData: ChecklistData = { ...checklistdata }
+    const pretag = preChecklistData.checklist_tag + ''
     preChecklistData.due_date = targetDate
     preChecklistData.checklist_type = checklistType
+    preChecklistData.checklist_title &&
+    preChecklistData.checklist_tag?.indexOf(
+      preChecklistData.checklist_title,
+    ) === -1
+      ? (preChecklistData.checklist_tag =
+          pretag + '#' + preChecklistData.checklist_title)
+      : (preChecklistData.checklist_tag = pretag)
     updateEachChecklist(preChecklistData).then(() => {
       setChecklistEditDialogOpen(false)
       toast({
@@ -199,9 +196,8 @@ export default function ChecklistEditBasic({
         '정말로 체크리스트를 삭제하시겠습니까? 삭제된 체크리스트는 복구할 수 없습니다.',
       )
     ) {
+      setChecklistEditDialogOpen(false)
       deleteChecklist(checklistdata.checklist_id).then(() => {
-        setChecklistEditDialogOpen(false)
-
         toast({
           title: '체크리스트 삭제 완료',
           description: '체크리스트를 삭제했습니다.',
@@ -262,7 +258,7 @@ export default function ChecklistEditBasic({
         <div className="flex items-center px-3">
           <span className="mr-2 text-lg">제목 : </span>
           <Input
-            className="w-[50%]"
+            className="mr-3 w-[50%]"
             name="checklist_title"
             type="text"
             value={checklistdata.checklist_title ?? ''}
@@ -297,7 +293,7 @@ export default function ChecklistEditBasic({
             <AccordionContent className="flex flex-col gap-4 text-balance">
               <ChecklistEditTxInfo
                 Preinfo={checklistdata.preinfo}
-                type={checklistdata.checklist_type ?? '일반'}
+                type={checklistType ?? '일반'}
                 changePreInfo={changePreInfo}
               />
             </AccordionContent>

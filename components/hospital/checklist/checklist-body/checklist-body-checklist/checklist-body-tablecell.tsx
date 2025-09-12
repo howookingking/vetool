@@ -21,7 +21,7 @@ export default function ChecklistBodyTableCell({
         checklistData.checklist_set.result[time] &&
         setResult(checklistData.checklist_set.result[time][name] || '')
     }
-  }, [checklistData])
+  }, [checklistData, time, name])
   const saveChecklist = async () => {
     setIsSaving(true)
     if (checklistData) {

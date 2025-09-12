@@ -65,6 +65,11 @@ export function useChecklistRealtime(hosId: string) {
         { event: 'DELETE', schema: 'public', table: 'checklist' },
         handleChange,
       )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'checklist_template' },
+        handleChange,
+      )
 
     subscriptionRef.current = channel.subscribe((status) => {
       if (status === 'SUBSCRIBED') {
