@@ -35,7 +35,6 @@ export default async function ChecklistPageLayout(props: {
             basicHosData.order_color_display as OrderColorDisplay,
           plan: basicHosData.plan as Plan,
           isInChargeSystem: basicHosData.is_in_charge_system,
-          baselineTime: basicHosData.baseline_time,
         }}
       >
         <div className="flex h-desktop">
