@@ -2,7 +2,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { getHosPatientCount } from '@/lib/services/patient/patient'
 import { useEffect, useState } from 'react'
 
-export default function PatientNumber({ hosId }: { hosId: string }) {
+export default function PatientCount({ hosId }: { hosId: string }) {
   const [isFetching, setIsFetching] = useState(false)
   const [totalPatientCount, setTotalPatientCount] = useState<number>()
 

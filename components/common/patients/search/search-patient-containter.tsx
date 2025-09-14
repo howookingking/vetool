@@ -7,10 +7,10 @@ import DataTable from '@/components/ui/data-table'
 import { Input } from '@/components/ui/input'
 import { searchPatients } from '@/lib/services/patient/patient'
 import type { Patient } from '@/types'
-import { X } from 'lucide-react'
+import { XIcon } from 'lucide-react'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-import PatientNumber from './paitent-number'
+import PatientCount from './paitent-count'
 import RegisterPatientButton from './register-patient-buttons'
 import { searchedPatientsColumns } from './searched-patient-columns'
 
@@ -29,8 +29,8 @@ export default function SearchPatientContainer({
 }: Props) {
   const [searchTerm, setSearchTerm] = useState('')
   const [isSearching, setIsSearching] = useState(false)
-  const [searchedPatientsData, setSearchedPatientsData] = useState(
-    [] as Patient[],
+  const [searchedPatientsData, setSearchedPatientsData] = useState<Patient[]>(
+    [],
   )
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,13 +62,14 @@ export default function SearchPatientContainer({
             onChange={handleInputChange}
             id="search-chart"
           />
+
           <Button
             size="icon"
             variant="ghost"
             className="absolute right-2 top-2 h-5 w-5 text-muted-foreground"
             onClick={() => setSearchTerm('')}
           >
-            <X size={12} />
+            <XIcon />
           </Button>
         </div>
 
@@ -92,7 +93,7 @@ export default function SearchPatientContainer({
         )}
       </div>
 
-      <PatientNumber hosId={hosId} />
+      <PatientCount hosId={hosId} />
     </div>
   )
 }

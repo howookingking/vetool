@@ -93,7 +93,7 @@ export default function NonIcuSearchPatientContainer({
         )}
       </div>
 
-      <PatientNumber hosId={hosId} />
+      <PatientCount hosId={hosId} />
     </div>
   )
 }
