@@ -1,6 +1,6 @@
 import { fetchChecklistSidebarData } from '@/lib/services/checklist/fetch-checklist-sidebar-data'
-import DesktopChecklistSidebar from './desktop-checklist-sidebar'
-import MobileChecklistSidebarSheet from './mobile/mobile-checklist-sidebar-sheet'
+import ClDesktopSidebar from './cl-desktop-sidebar'
+import ClMobileSidebarSheet from './mobile/cl-mobile-sidebar-sheet'
 
 type Props = {
   hosId: string
@@ -14,16 +14,16 @@ export default async function ChecklistSidebar({ hosId, targetDate }: Props) {
 
   return (
     <>
-      <DesktopChecklistSidebar
+      <ClDesktopSidebar
         hosId={hosId}
         targetDate={targetDate}
-        checklistsidebarData={checklistSidebarData}
+        checklistSidebarData={checklistSidebarData}
       />
 
-      <MobileChecklistSidebarSheet
+      <ClMobileSidebarSheet
         hosId={hosId}
         targetDate={targetDate}
-        checklistsidebarData={checklistSidebarData}
+        checklistSidebarData={checklistSidebarData}
       />
     </>
   )

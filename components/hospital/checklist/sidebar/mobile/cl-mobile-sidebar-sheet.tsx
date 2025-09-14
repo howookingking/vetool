@@ -12,17 +12,17 @@ import {
 import type { ChecklistSidebarData } from '@/types/checklist/checklist-type'
 import { Menu } from 'lucide-react'
 import { useState } from 'react'
-import MobileChecklistSidebar from './mobile-checklist-sidebar'
+import ClMobileSidebar from './cl-mobile-sidebar'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 
 type Props = {
-  checklistsidebarData: ChecklistSidebarData[]
+  checklistSidebarData: ChecklistSidebarData[]
   hosId: string
   targetDate: string
 }
 
-export default function MobileChecklistSidebarSheet({
-  checklistsidebarData,
+export default function ClMobileSidebarSheet({
+  checklistSidebarData,
   hosId,
   targetDate,
 }: Props) {
@@ -48,9 +48,9 @@ export default function MobileChecklistSidebarSheet({
             </VisuallyHidden>
           </SheetHeader>
 
-          <MobileChecklistSidebar
+          <ClMobileSidebar
             handleCloseMobileDrawer={handleCloseMobileDrawer}
-            checklistsidebarData={checklistsidebarData}
+            checklistSidebarData={checklistSidebarData}
             hosId={hosId}
             targetDate={targetDate}
           />

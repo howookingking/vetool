@@ -1,28 +1,28 @@
-import ChecklistButton from '@/components/hospital/checklist/checklists/checklist-button'
+import ClPatientButton from '@/components/hospital/checklist/sidebar/cl-patient-button'
 import type { ChecklistSidebarData } from '@/types/checklist/checklist-type'
 
 type Props = {
-  checklistsidebarData: ChecklistSidebarData[]
+  checklistSidebarData: ChecklistSidebarData[]
   handleCloseMobileDrawer?: () => void
 }
-export default function ChecklistList({
-  checklistsidebarData,
+export default function ClPatientList({
+  checklistSidebarData,
   handleCloseMobileDrawer,
 }: Props) {
   return (
     <div className="overflow-y-auto">
       <span className="text-xs font-bold text-muted-foreground">
-        체크리스트({checklistsidebarData?.length})
+        체크리스트({checklistSidebarData?.length})
       </span>
 
       <ul className="flex flex-col gap-2">
-        {checklistsidebarData.map((list) => (
+        {checklistSidebarData.map((list) => (
           <li
             key={list.checklist_id}
             className="w-full last:mb-2"
             onClick={handleCloseMobileDrawer}
           >
-            <ChecklistButton checklistchart={list} />
+            <ClPatientButton checklistchart={list} />
           </li>
         ))}
       </ul>

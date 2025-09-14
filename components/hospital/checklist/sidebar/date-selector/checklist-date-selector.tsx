@@ -11,7 +11,7 @@ type Props = {
   targetDate: string
 }
 
-export default function ChecklistDateSelector({ hosId, targetDate }: Props) {
+export default function ClDateSelector({ hosId, targetDate }: Props) {
   const { push } = useRouter()
 
   const updateDate = (newDate: Date) => {

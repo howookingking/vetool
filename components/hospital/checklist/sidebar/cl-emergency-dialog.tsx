@@ -22,7 +22,7 @@ type Props = {
   targetDate: string
 }
 
-export function EmergencyDialog({ hosId, targetDate }: Props) {
+export function ClEmergencyDialog({ hosId, targetDate }: Props) {
   const { push } = useRouter()
 
   const [isSubmitting, setIsSubmitting] = useState(false)

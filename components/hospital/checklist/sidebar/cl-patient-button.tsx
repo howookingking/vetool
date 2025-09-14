@@ -13,7 +13,7 @@ type ChecklistButtonProps = {
   checklistchart: ChecklistSidebarData
 }
 
-export default function ChecklistButton({
+export default function ClPatientButton({
   checklistchart,
 }: ChecklistButtonProps) {
   const [timeLabel, setTimeLabel] = useState('')
