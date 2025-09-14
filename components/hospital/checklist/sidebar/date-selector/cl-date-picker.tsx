@@ -15,7 +15,7 @@ type Props = {
   hosId: string
 }
 
-export default function ChecklistDatePicker({ targetDate, hosId }: Props) {
+export default function ClDatePicker({ targetDate, hosId }: Props) {
   const { push } = useRouter()
 
   const [open, setOpen] = useState(false)

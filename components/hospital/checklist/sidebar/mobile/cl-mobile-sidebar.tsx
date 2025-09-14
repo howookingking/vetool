@@ -1,6 +1,6 @@
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import ClPatientList from '@/components/hospital/checklist/sidebar/cl-patient-list'
-import ClDateSelector from '@/components/hospital/checklist/sidebar/date-selector/checklist-date-selector'
+import ClDateSelector from '@/components/hospital/checklist/sidebar/date-selector/cl-date-selector'
 import { Separator } from '@/components/ui/separator'
 import type { ChecklistSidebarData } from '@/types/checklist/checklist-type'
 

@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { addDays, format } from 'date-fns'
 import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import ChecklistDatePicker from './checklist-date-picker'
+import ClDatePicker from './cl-date-picker'
 
 type Props = {
   hosId: string
@@ -36,7 +36,7 @@ export default function ClDateSelector({ hosId, targetDate }: Props) {
         <ArrowLeftIcon />
       </Button>
 
-      <ChecklistDatePicker hosId={hosId} targetDate={targetDate} />
+      <ClDatePicker hosId={hosId} targetDate={targetDate} />
 
       <Button
         onClick={() => handleUpdateDate(1)}

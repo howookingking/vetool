@@ -3,7 +3,7 @@ import ClPatientList from '@/components/hospital/checklist/sidebar/cl-patient-li
 import ClRegisterDialog from '@/components/hospital/checklist/sidebar/checklist-register-dialog/cl-register-dialog'
 import { Separator } from '@/components/ui/separator'
 import type { ChecklistSidebarData } from '@/types/checklist/checklist-type'
-import ClDateSelector from './date-selector/checklist-date-selector'
+import ClDateSelector from './date-selector/cl-date-selector'
 import { ClEmergencyDialog } from './cl-emergency-dialog'
 
 type Props = {
