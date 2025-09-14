@@ -23,7 +23,7 @@ export default function DesktopChecklistSidebar({
       <ChecklistDateSelector hosId={hosId} targetDate={targetDate} />
 
       <div className="flex justify-between gap-2">
-        <ChecklistRegisterDialog hosId={hosId} />
+        <ChecklistRegisterDialog hosId={hosId} targetDate={targetDate} />
 
         <EmergencyDialog hosId={hosId} targetDate={targetDate} />
       </div>

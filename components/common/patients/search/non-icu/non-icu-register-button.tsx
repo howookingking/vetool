@@ -1,11 +1,8 @@
+import { RegisteringPatient } from '@/components/hospital/checklist/sidebar/checklist-register-dialog/checklist-register-dialog'
 import { Button } from '@/components/ui/button'
-import { toast } from '@/components/ui/use-toast'
-import { getLatestIoByPatientId } from '@/lib/services/icu/chart/get-icu-io-by-patient-id'
 import { getDaysSince } from '@/lib/utils/utils'
-import { Check, LoaderCircle } from 'lucide-react'
-import { useParams } from 'next/navigation'
-import { type Dispatch, type SetStateAction, useState } from 'react'
-import { type RegisteringPatient } from '@/components/hospital/icu/sidebar/register-dialog/register-dialog'
+import { CheckIcon } from 'lucide-react'
+import type { Dispatch, SetStateAction } from 'react'
 
 type Props = {
   patientId: string
@@ -30,13 +27,7 @@ export default function NonIcuRegisterButton({
   setIsConfirmDialogOpen,
   setRegisteringPatient,
 }: Props) {
-  const { target_date } = useParams()
-
-  const [isLoading, setIsLoading] = useState(false)
-
   const handlePatientClick = async () => {
-    setIsLoading(true)
-
     setRegisteringPatient!({
       patientId,
       birth,
@@ -48,7 +39,7 @@ export default function NonIcuRegisterButton({
       hosPatientId,
     })
 
-    setIsConfirmDialogOpen!(true)
+    setIsConfirmDialogOpen(true)
   }
 
   return (
@@ -57,13 +48,8 @@ export default function NonIcuRegisterButton({
       size="icon"
       variant="ghost"
       onClick={handlePatientClick}
-      disabled={isLoading}
     >
-      {isLoading ? (
-        <LoaderCircle size={16} className="animate-spin" />
-      ) : (
-        <Check size={16} />
-      )}
+      <CheckIcon />
     </Button>
   )
 }

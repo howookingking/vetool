@@ -1,9 +1,8 @@
 'use server'
 
-import { defaultChecklistSet } from '@/constants/checklist/checklist'
 import { createClient } from '@/lib/supabase/server'
 import { getDaysSince } from '@/lib/utils/utils'
-import {
+import type {
   ChecklistData,
   ChecklistProtocol,
   Checklistset,
@@ -11,29 +10,11 @@ import {
 } from '@/types/checklist/checklist-type'
 import { redirect } from 'next/navigation'
 
-/**
- * 입원 환자 등록
- * @param hosId 병원 ID
- * @param patientId 환자 ID
- * @param birth 생년월일
- * @param in_date 입원일
- * @param out_due_date 퇴원 예정일
- * @param group_list 그룹 리스트
- * @param main_vet 주치의 ID
- */
-// tag[1]: 'species'
-// tag[2] : 'breed'
-// tag[3] : 'gender'
-// tag[4] : 'age'
-// tag[5] : 'name'
-// tag[6] : 'owner_name'
-
 export const registerChecklist = async (
   hosId: string,
-  patientId: string | null,
-  birth: string | null,
+  patientId: string,
+  birth: string,
   targetDate: string,
-  isEmergency: boolean,
   species: string,
   breed: string,
   gender: string,
@@ -42,44 +23,28 @@ export const registerChecklist = async (
 ) => {
   const supabase = await createClient()
 
-  const pretag =
-    '#' +
-    species +
-    '#' +
-    breed +
-    '#' +
-    gender +
-    '#' +
-    patientName +
-    '#' +
-    hosPatientId
+  const pretag = `#${species}#${breed}#${gender}#${patientName}#${hosPatientId}}`
 
-  const checklistdata: any = {
-    hos_id: hosId,
-    patient_id: patientId ?? null,
-    due_date: targetDate,
-    age_in_days: birth ? getDaysSince(birth) : 0,
-    checklist_type: null,
-    checklist_set: defaultChecklistSet,
-    checklist_tag: pretag,
-  }
-
-  isEmergency && (checklistdata.checklist_title = '응급처치') //응급일경우 타이틀을 바로 지정
-
-  isEmergency && (checklistdata.checklist_type = '응급')
-
-  isEmergency && (checklistdata.starttime = new Date()) // 응급일경우 바로 시작시간 기록
-
-  isEmergency && (checklistdata.istxing = true)
-
-  isEmergency && (checklistdata.checklist_tag = pretag + '#응급처치')
-
-  const { error } = await supabase.from('checklist').insert([checklistdata])
+  const { data, error } = await supabase
+    .from('checklist')
+    .insert({
+      checklist_title: '',
+      checklist_type: '일반',
+      hos_id: hosId,
+      age_in_days: getDaysSince(birth),
+      checklist_tag: pretag,
+      patient_id: patientId,
+      due_date: targetDate,
+    })
+    .select('checklist_id')
+    .single()
 
   if (error) {
     console.error(error)
     redirect(`/error?message=${error.message}`)
   }
+
+  return data.checklist_id
 }
 
 export const registerEmergencyChecklist = async (

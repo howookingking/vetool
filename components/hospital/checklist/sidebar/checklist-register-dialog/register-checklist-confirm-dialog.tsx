@@ -1,4 +1,3 @@
-import type { RegisteringPatient } from '@/components/hospital/icu/sidebar/register-dialog/register-dialog'
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -11,78 +10,70 @@ import {
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 import { registerChecklist } from '@/lib/services/checklist/register-checklist-patient'
-import { cn } from '@/lib/utils/utils'
-import { LoaderCircle } from 'lucide-react'
-import { useParams } from 'next/navigation'
+import { LoaderCircleIcon } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useState } from 'react'
+import type { RegisteringPatient } from './checklist-register-dialog'
 
-type RegisterIcuConfirmDialogProps = {
+type Props = {
   hosId: string
+  targetDate: string
   isConfirmDialogOpen: boolean
   setIsConfirmDialogOpen: Dispatch<SetStateAction<boolean>>
   setIsRegisterDialogOpen: Dispatch<SetStateAction<boolean>>
   registeringPatient: RegisteringPatient
-  isEmergency: boolean
-  setIsEmergency: Dispatch<SetStateAction<boolean>>
 }
 
 export default function RegisterChecklistConfirmDialog({
   hosId,
+  targetDate,
   isConfirmDialogOpen,
   setIsConfirmDialogOpen,
   setIsRegisterDialogOpen,
   registeringPatient,
-  isEmergency,
-  setIsEmergency,
-}: RegisterIcuConfirmDialogProps) {
-  const { target_date } = useParams()
+}: Props) {
+  const { push } = useRouter()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleConfirm = async () => {
     setIsSubmitting(true)
 
-    if (isEmergency) {
-      await registerChecklist(
-        hosId,
-        null,
-        null,
-        target_date as string,
-        true as boolean,
-        '',
-        '',
-        '',
-        '',
-        '',
-      ).then(() => {
-        setIsEmergency(false)
-      })
-    } else {
-      // 체크리스트가 최초 등록시
-      // registeriingPatient정보가 있다면(환자가 선택됬다면), 선택된 환자로 ID로 등록, 정보가 없다면 null로 등록
-      registerChecklist(
-        hosId,
-        registeringPatient ? registeringPatient.patientId : null,
-        registeringPatient ? registeringPatient.birth : null,
-        target_date as string,
-        false,
-        registeringPatient?.species ?? '',
-        registeringPatient?.breed ?? '',
-        registeringPatient?.gender ?? '',
-        registeringPatient?.patientName ?? '',
-        registeringPatient?.hosPatientId ?? '',
-      )
-    }
+    const {
+      patientId,
+      birth,
+      patientName,
+      species,
+      breed,
+      gender,
+      hosPatientId,
+    } = registeringPatient!
+
+    const returningChecklistId = await registerChecklist(
+      hosId,
+      patientId,
+      birth,
+      targetDate,
+      species!,
+      breed!,
+      gender!,
+      patientName,
+      hosPatientId!,
+    )
 
     toast({
-      title: '체크리스트 등록 완료',
-      description: '체크리스트 등록을 완료했습니다',
+      title: `${patientName} 체크리스트 등록 완료`,
     })
 
     setIsSubmitting(false)
     setIsConfirmDialogOpen(false)
     setIsRegisterDialogOpen(false)
+
+    push(
+      `/hospital/${hosId}/checklist/${targetDate}/chart/${returningChecklistId}/checklist`,
+    )
   }
+
   return (
     <AlertDialog
       open={isConfirmDialogOpen}
@@ -93,19 +84,23 @@ export default function RegisterChecklistConfirmDialog({
           <AlertDialogTitle>채크리스트 등록</AlertDialogTitle>
         </AlertDialogHeader>
         <AlertDialogDescription>
-          {registeringPatient
-            ? ` ${target_date}에 ${registeringPatient?.patientName}(이)의 체크리스트를 등록 하시겠습니까 ?`
-            : ` ${target_date}에 체크리스트를 등록 하시겠습니까 ?`}
+          {targetDate}에 {registeringPatient?.patientName}(이)의 체크리스트를
+          등록 하시겠습니까 ?
         </AlertDialogDescription>
 
         <AlertDialogFooter className="pt-8">
           <AlertDialogCancel>닫기</AlertDialogCancel>
 
-          <Button onClick={handleConfirm} disabled={isSubmitting}>
-            확인
-            <LoaderCircle
-              className={cn(isSubmitting ? 'ml-2 animate-spin' : 'hidden')}
-            />
+          <Button
+            onClick={handleConfirm}
+            disabled={isSubmitting}
+            className="w-14"
+          >
+            {isSubmitting ? (
+              <LoaderCircleIcon className="animate-spin" />
+            ) : (
+              '확인'
+            )}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

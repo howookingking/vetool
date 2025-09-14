@@ -27,13 +27,17 @@ export type RegisteringPatient = {
   hosPatientId?: string
 } | null
 
-export default function ChecklistRegisterDialog({ hosId }: { hosId: string }) {
+type Props = {
+  hosId: string
+  targetDate: string
+}
+
+export default function ChecklistRegisterDialog({ hosId, targetDate }: Props) {
   const [tab, setTab] = useState('search')
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
   const [registeringPatient, setRegisteringPatient] =
     useState<RegisteringPatient>(null)
   const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false)
-  const [isEmergency, setIsEmergency] = useState(false)
 
   const handleTabValueChange = (value: string) => {
     if (value === 'search') {
@@ -66,9 +70,7 @@ export default function ChecklistRegisterDialog({ hosId }: { hosId: string }) {
 
       <DialogContent
         className={cn('flex flex-col sm:max-w-[1200px]')}
-        onInteractOutside={(e) => {
-          e.preventDefault()
-        }}
+        onInteractOutside={(e) => e.preventDefault()}
       >
         <RegisterDialogHeader tab={tab} />
         <Tabs
@@ -89,7 +91,6 @@ export default function ChecklistRegisterDialog({ hosId }: { hosId: string }) {
           <TabsContent value="search">
             <NonIcuSearchPatientContainer
               hosId={hosId}
-              isIcu={true}
               setIsConfirmDialogOpen={setIsConfirmDialogOpen}
               setRegisteringPatient={setRegisteringPatient}
             />
@@ -112,12 +113,11 @@ export default function ChecklistRegisterDialog({ hosId }: { hosId: string }) {
       {isConfirmDialogOpen && (
         <RegisterChecklistConfirmDialog
           hosId={hosId}
+          targetDate={targetDate}
           isConfirmDialogOpen={isConfirmDialogOpen}
           setIsConfirmDialogOpen={setIsConfirmDialogOpen}
           registeringPatient={registeringPatient}
           setIsRegisterDialogOpen={setIsRegisterDialogOpen}
-          isEmergency={isEmergency}
-          setIsEmergency={setIsEmergency}
         />
       )}
     </Dialog>
