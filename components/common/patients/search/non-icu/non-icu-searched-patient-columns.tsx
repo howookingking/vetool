@@ -1,27 +1,21 @@
-import DeletePatientAlert from '@/components/common/patients/search/delete-patient-alert'
-import PatientUpdateDialog from '@/components/common/patients/upload/patient-update-dialog'
 import SpeciesToIcon from '@/components/common/species-to-icon'
 import { calculateAge } from '@/lib/utils/utils'
-import { type Patient } from '@/types'
-import { type Species } from '@/types/hospital/calculator'
-import { type ColumnDef } from '@tanstack/react-table'
-import { type Dispatch, type SetStateAction } from 'react'
-import { type DebouncedState } from 'use-debounce'
-import { type RegisteringPatient } from '@/components/hospital/icu/sidebar/register-dialog/register-dialog'
-import NonIcuRegisterButton from './non-icu-register-button'
+import type { Patient } from '@/types'
+import type { Species } from '@/types/hospital/calculator'
+import type { ColumnDef } from '@tanstack/react-table'
+import RegisterSelectedPatientToCL from './register-selected-patient-to-cl'
+import type { Dispatch, SetStateAction } from 'react'
 
 type Props = {
-  isIcu: boolean
-  setIsConfirmDialogOpen?: Dispatch<SetStateAction<boolean>>
-  setRegisteringPatient?: Dispatch<SetStateAction<RegisteringPatient | null>>
-  debouncedSearch: DebouncedState<() => Promise<void>>
+  hosId: string
+  targetDate: string
+  setIsRegisterDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export const nonIcusearchedPatientsColumns = ({
-  isIcu,
-  setIsConfirmDialogOpen,
-  setRegisteringPatient,
-  debouncedSearch,
+  hosId,
+  targetDate,
+  setIsRegisterDialogOpen,
 }: Props): ColumnDef<Patient>[] => {
   const columns: ColumnDef<Patient>[] = [
     {
@@ -116,66 +110,26 @@ export const nonIcusearchedPatientsColumns = ({
         )
       },
     },
-  ]
-
-  if (isIcu) {
-    columns.push({
-      accessorKey: 'register_icu_action',
+    {
+      accessorKey: 'register_checklist_action',
       header: () => <>환자선택</>,
       cell: ({ row }) => {
-        const birth = row.original.birth
         const patientId = row.original.patient_id
         const name = row.original.name
-        const species = row.original.species
-        const breed = row.original.breed
-        const gender = row.original.gender
-        const hospatientid = row.original.hos_patient_id
+        const birth = row.original.birth
         return (
-          <NonIcuRegisterButton
+          <RegisterSelectedPatientToCL
+            patientId={patientId}
+            name={name}
             birth={birth}
-            patientId={patientId}
-            patientName={name}
-            hosPatientId={hospatientid}
-            species={species ?? ''}
-            breed={breed ?? ''}
-            gender={gender ?? ''}
-            setIsConfirmDialogOpen={setIsConfirmDialogOpen!}
-            setRegisteringPatient={setRegisteringPatient!}
+            hosId={hosId}
+            targetDate={targetDate}
+            setIsRegisterDialogOpen={setIsRegisterDialogOpen}
           />
         )
       },
-    })
-  } else {
-    columns.push({
-      accessorKey: 'update_patient_action',
-      header: () => <>수정</>,
-      cell: ({ row }) => {
-        const patientData = row.original
-        return (
-          <PatientUpdateDialog
-            editingPatient={patientData}
-            debouncedSearch={debouncedSearch}
-          />
-        )
-      },
-    })
-
-    columns.push({
-      accessorKey: 'delete_patient_action',
-      header: () => <>삭제</>,
-      cell: ({ row }) => {
-        const patientId = row.original.patient_id
-        const patientName = row.original.name
-        return (
-          <DeletePatientAlert
-            patientId={patientId}
-            patientName={patientName}
-            debouncedSearch={debouncedSearch}
-          />
-        )
-      },
-    })
-  }
+    },
+  ]
 
   return columns
 }

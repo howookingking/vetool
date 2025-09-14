@@ -12,18 +12,11 @@ import { redirect } from 'next/navigation'
 
 export const registerChecklist = async (
   hosId: string,
+  targetDate: string,
   patientId: string,
   birth: string,
-  targetDate: string,
-  species: string,
-  breed: string,
-  gender: string,
-  patientName: string,
-  hosPatientId: string,
 ) => {
   const supabase = await createClient()
-
-  const pretag = `#${species}#${breed}#${gender}#${patientName}#${hosPatientId}}`
 
   const { data, error } = await supabase
     .from('checklist')
@@ -32,7 +25,6 @@ export const registerChecklist = async (
       checklist_type: '일반',
       hos_id: hosId,
       age_in_days: getDaysSince(birth),
-      checklist_tag: pretag,
       patient_id: patientId,
       due_date: targetDate,
     })

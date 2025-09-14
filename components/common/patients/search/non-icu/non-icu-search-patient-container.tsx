@@ -1,8 +1,5 @@
-'use client'
-
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import PatientCount from '@/components/common/patients/search/paitent-count'
-import type { RegisteringPatient } from '@/components/hospital/checklist/sidebar/checklist-register-dialog/checklist-register-dialog'
 import { Button } from '@/components/ui/button'
 import DataTable from '@/components/ui/data-table'
 import { Input } from '@/components/ui/input'
@@ -15,14 +12,14 @@ import { nonIcusearchedPatientsColumns } from './non-icu-searched-patient-column
 
 type Props = {
   hosId: string
-  setIsConfirmDialogOpen?: Dispatch<SetStateAction<boolean>>
-  setRegisteringPatient?: Dispatch<SetStateAction<RegisteringPatient | null>>
+  targetDate: string
+  setIsRegisterDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export default function NonIcuSearchPatientContainer({
   hosId,
-  setIsConfirmDialogOpen,
-  setRegisteringPatient,
+  targetDate,
+  setIsRegisterDialogOpen,
 }: Props) {
   const [searchTerm, setSearchTerm] = useState('')
   const [isSearching, setIsSearching] = useState(false)
@@ -77,10 +74,9 @@ export default function NonIcuSearchPatientContainer({
             rowLength={6}
             data={searchedPatientsData}
             columns={nonIcusearchedPatientsColumns({
-              isIcu: true,
-              setIsConfirmDialogOpen,
-              setRegisteringPatient,
-              debouncedSearch,
+              hosId,
+              targetDate,
+              setIsRegisterDialogOpen,
             })}
           />
         )}

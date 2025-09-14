@@ -1,8 +1,6 @@
 'use client'
 
-import PatientForm from '@/components/common/patients/form/patient-form'
 import NonIcuSearchPatientContainer from '@/components/common/patients/search/non-icu/non-icu-search-patient-container'
-import RegisterChecklistConfirmDialog from '@/components/hospital/checklist/sidebar/checklist-register-dialog/register-checklist-confirm-dialog'
 import RegisterDialogHeader from '@/components/hospital/icu/sidebar/register-dialog/register-dialog-header'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
@@ -11,22 +9,6 @@ import { cn } from '@/lib/utils/utils'
 import { PlusIcon } from 'lucide-react'
 import { useState } from 'react'
 
-export type RegisteringPatient = {
-  patientId: string
-  birth: string
-  patientName: string
-  ageInDays?: number
-  species?: string
-  breed?: string
-  gender?: string
-  microchipNo?: string
-  memo?: string
-  weight?: string
-  ownerName?: string
-  ownerId?: string
-  hosPatientId?: string
-} | null
-
 type Props = {
   hosId: string
   targetDate: string
@@ -34,9 +16,6 @@ type Props = {
 
 export default function ChecklistRegisterDialog({ hosId, targetDate }: Props) {
   const [tab, setTab] = useState('search')
-  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
-  const [registeringPatient, setRegisteringPatient] =
-    useState<RegisteringPatient>(null)
   const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false)
 
   const handleTabValueChange = (value: string) => {
@@ -54,7 +33,6 @@ export default function ChecklistRegisterDialog({ hosId, targetDate }: Props) {
   const handleOpenChage = (open: boolean) => {
     if (open) {
       setTab('search')
-      setRegisteringPatient(null)
     }
     setIsRegisterDialogOpen(open)
   }
@@ -91,35 +69,20 @@ export default function ChecklistRegisterDialog({ hosId, targetDate }: Props) {
           <TabsContent value="search">
             <NonIcuSearchPatientContainer
               hosId={hosId}
-              setIsConfirmDialogOpen={setIsConfirmDialogOpen}
-              setRegisteringPatient={setRegisteringPatient}
+              targetDate={targetDate}
+              setIsRegisterDialogOpen={setIsRegisterDialogOpen}
             />
           </TabsContent>
 
-          <TabsContent value="register">
-            <PatientForm
-              mode="registerFromIcuRoute"
+          {/* <TabsContent value="register">
+            <PatientFormInChecklist
               hosId={hosId}
               setIsPatientRegisterDialogOpen={setIsRegisterDialogOpen}
               setIsConfirmDialogOpen={setIsConfirmDialogOpen}
-              registeringPatient={registeringPatient}
-              setRegisteringPatient={setRegisteringPatient}
-              debouncedSearch={null}
             />
-          </TabsContent>
+          </TabsContent> */}
         </Tabs>
       </DialogContent>
-
-      {isConfirmDialogOpen && (
-        <RegisterChecklistConfirmDialog
-          hosId={hosId}
-          targetDate={targetDate}
-          isConfirmDialogOpen={isConfirmDialogOpen}
-          setIsConfirmDialogOpen={setIsConfirmDialogOpen}
-          registeringPatient={registeringPatient}
-          setIsRegisterDialogOpen={setIsRegisterDialogOpen}
-        />
-      )}
     </Dialog>
   )
 }
