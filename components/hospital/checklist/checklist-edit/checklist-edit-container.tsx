@@ -7,7 +7,7 @@ import {
   useState,
 } from 'react'
 import ChecklistPatientInfo from '../common/checklist-patient-info'
-import ChecklistRegisterDialog from '../sidebar/checklist-register-dialog/checklist-register-dialog'
+import ClRegisterDialog from '../sidebar/checklist-register-dialog/cl-register-dialog'
 import { ChecklistTypes } from '@/constants/checklist/checklist'
 import CustomTooltip from '@/components/ui/custom-tooltip'
 import { Button } from '@/components/ui/button'

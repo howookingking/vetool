@@ -8,7 +8,7 @@ import type { Patient } from '@/types'
 import { XIcon } from 'lucide-react'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-import { nonIcusearchedPatientsColumns } from './non-icu-searched-patient-columns'
+import { clSearchedPatientsColumns } from './cl-searched-patient-columns'
 
 type Props = {
   hosId: string
@@ -16,7 +16,7 @@ type Props = {
   setIsRegisterDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export default function NonIcuSearchPatientContainer({
+export default function ClSearchPatientContainer({
   hosId,
   targetDate,
   setIsRegisterDialogOpen,
@@ -73,7 +73,7 @@ export default function NonIcuSearchPatientContainer({
           <DataTable
             rowLength={6}
             data={searchedPatientsData}
-            columns={nonIcusearchedPatientsColumns({
+            columns={clSearchedPatientsColumns({
               hosId,
               targetDate,
               setIsRegisterDialogOpen,

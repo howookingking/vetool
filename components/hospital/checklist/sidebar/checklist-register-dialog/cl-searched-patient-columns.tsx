@@ -3,7 +3,7 @@ import { calculateAge } from '@/lib/utils/utils'
 import type { Patient } from '@/types'
 import type { Species } from '@/types/hospital/calculator'
 import type { ColumnDef } from '@tanstack/react-table'
-import RegisterSelectedPatientToCL from './register-selected-patient-to-cl'
+import SelectedPatientToClDialog from './selected-patient-to-cl-dialog'
 import type { Dispatch, SetStateAction } from 'react'
 
 type Props = {
@@ -12,7 +12,7 @@ type Props = {
   setIsRegisterDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export const nonIcusearchedPatientsColumns = ({
+export const clSearchedPatientsColumns = ({
   hosId,
   targetDate,
   setIsRegisterDialogOpen,
@@ -118,7 +118,7 @@ export const nonIcusearchedPatientsColumns = ({
         const name = row.original.name
         const birth = row.original.birth
         return (
-          <RegisterSelectedPatientToCL
+          <SelectedPatientToClDialog
             patientId={patientId}
             name={name}
             birth={birth}

@@ -24,7 +24,7 @@ type Props = {
   setIsRegisterDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export default function RegisterSelectedPatientToCL({
+export default function SelectedPatientToClDialog({
   patientId,
   name,
   birth,

@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { getChecklistDataById } from '@/lib/services/checklist/get-checklist-data-client'
 import type { ChecklistData } from '@/types/checklist/checklist-type'
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
-import ChecklistRegisterDialog from '@/components/hospital/checklist/sidebar/checklist-register-dialog/checklist-register-dialog'
+import ClRegisterDialog from '@/components/hospital/checklist/sidebar/checklist-register-dialog/cl-register-dialog'
 import { Checklist } from '@/types'
 
 export default async function ChecklistBody(props: {

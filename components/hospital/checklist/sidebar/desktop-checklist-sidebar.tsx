@@ -1,6 +1,6 @@
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import ChecklistList from '@/components/hospital/checklist/checklists/checklist-list'
-import ChecklistRegisterDialog from '@/components/hospital/checklist/sidebar/checklist-register-dialog/checklist-register-dialog'
+import ClRegisterDialog from '@/components/hospital/checklist/sidebar/checklist-register-dialog/cl-register-dialog'
 import { Separator } from '@/components/ui/separator'
 import type { ChecklistSidebarData } from '@/types/checklist/checklist-type'
 import ChecklistDateSelector from './date-selector/checklist-date-selector'
@@ -23,7 +23,7 @@ export default function DesktopChecklistSidebar({
       <ChecklistDateSelector hosId={hosId} targetDate={targetDate} />
 
       <div className="flex justify-between gap-2">
-        <ChecklistRegisterDialog hosId={hosId} targetDate={targetDate} />
+        <ClRegisterDialog hosId={hosId} targetDate={targetDate} />
 
         <EmergencyDialog hosId={hosId} targetDate={targetDate} />
       </div>

@@ -1,6 +1,6 @@
 'use client'
 
-import NonIcuSearchPatientContainer from '@/components/common/patients/search/non-icu/non-icu-search-patient-container'
+import ClSearchPatientContainer from '@/components/hospital/checklist/sidebar/checklist-register-dialog/cl-search-patient-container'
 import RegisterDialogHeader from '@/components/hospital/icu/sidebar/register-dialog/register-dialog-header'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
@@ -14,7 +14,7 @@ type Props = {
   targetDate: string
 }
 
-export default function ChecklistRegisterDialog({ hosId, targetDate }: Props) {
+export default function ClRegisterDialog({ hosId, targetDate }: Props) {
   const [tab, setTab] = useState('search')
   const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false)
 
@@ -67,7 +67,7 @@ export default function ChecklistRegisterDialog({ hosId, targetDate }: Props) {
           </TabsList>
 
           <TabsContent value="search">
-            <NonIcuSearchPatientContainer
+            <ClSearchPatientContainer
               hosId={hosId}
               targetDate={targetDate}
               setIsRegisterDialogOpen={setIsRegisterDialogOpen}
