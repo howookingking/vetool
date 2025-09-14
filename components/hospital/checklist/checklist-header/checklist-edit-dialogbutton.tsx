@@ -1,3 +1,5 @@
+// data type 바뀌면서 에러나는 부분 주석 처리
+
 'use client'
 
 import {
@@ -31,36 +33,37 @@ export default function ChecklistEditDialogButton({
     useState(false)
   const [checklistData, setChecklistData] = useState<ChecklistData | null>()
 
-  const fetchData = useCallback(async () => {
-    const data: Checklist = await getChecklistDataById(checklistId)
-    let predata: ChecklistData = {} as ChecklistData
-    if (data) {
-      predata = data as ChecklistData
-    }
-    setChecklistData(predata)
-  }, [checklistId])
+  // const fetchData = useCallback(async () => {
+  //   const data: Checklist = await getChecklistDataById(checklistId)
+  //   let predata: ChecklistData = {} as ChecklistData
+  //   if (data) {
+  //     predata = data as ChecklistData
+  //   }
+  //   setChecklistData(predata)
+  // }, [checklistId])
 
-  useEffect(() => {
-    fetchData()
-    const channel = getChecklistDataByIdChannel(checklistId, (payload) => {
-      let prepayload: ChecklistData = {} as ChecklistData
-      if (payload) {
-        prepayload = payload as ChecklistData
-      }
-      setChecklistData(prepayload)
-    })
-    setChecklistEditDialogOpen(isEdit)
-  }, [isEdit, checklistId, fetchData])
-  //   const isActive = pathname.split('/')[7]
+  // useEffect(() => {
+  //   fetchData()
+  //   const channel = getChecklistDataByIdChannel(checklistId, (payload) => {
+  //     let prepayload: ChecklistData = {} as ChecklistData
+  //     if (payload) {
+  //       prepayload = payload as ChecklistData
+  //     }
+  //     setChecklistData(prepayload)
+  //   })
+  //   setChecklistEditDialogOpen(isEdit)
+  // }, [isEdit, checklistId, fetchData])
+  // //   const isActive = pathname.split('/')[7]
 
-  const checklistEditDialogOpen = (isopen: boolean) => {
-    if (isopen) {
-      fetchData()
-      setChecklistEditDialogOpen(true)
-    } else {
-      setChecklistEditDialogOpen(false)
-    }
-  }
+  // const checklistEditDialogOpen = (isopen: boolean) => {
+  //   if (isopen) {
+  //     fetchData()
+  //     setChecklistEditDialogOpen(true)
+  //   } else {
+  //     setChecklistEditDialogOpen(false)
+  //   }
+  // }
+
   return (
     <Dialog
       open={isChecklistEditDialogOpen}
@@ -97,13 +100,13 @@ export default function ChecklistEditDialogButton({
               : '체크리스트를 신규등록합니다'}
           </DialogDescription>
         </DialogHeader>
-        {checklistData && (
+        {/* {checklistData && (
           <ChecklistEditContainer
             checklistId={checklistId}
             checklistData={checklistData}
             setChecklistEditDialogOpen={checklistEditDialogOpen}
           />
-        )}
+        )} */}
       </DialogContent>
     </Dialog>
   )

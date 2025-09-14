@@ -1,3 +1,5 @@
+// data type 바뀌면서 에러나는 부분 주석 처리
+
 'use client'
 
 import { Button } from '@/components/ui/button'
@@ -82,9 +84,9 @@ export const SearchedChecklistColumns = ({
     cell: ({ row }) => {
       //   const createdAt = row.original.created_at
       const state =
-        row.original.starttime && row.original.endtime
+        row.original.start_time && row.original.end_time
           ? '완료'
-          : row.original.starttime
+          : row.original.start_time
             ? '진행중'
             : '대기중'
       return (
@@ -103,20 +105,20 @@ export const SearchedChecklistColumns = ({
     },
   },
 
-  {
-    id: 'preview',
-    header: '미리보기',
-    cell: ({ row }) => {
-      const chart = row.original
-      const checklistreport = { ...chart } as ChecklistData
+  // {
+  //   id: 'preview',
+  //   header: '미리보기',
+  //   cell: ({ row }) => {
+  //     const chart = row.original
+  //     const checklistreport = { ...chart } as ChecklistData
 
-      return (
-        <div className="flex justify-center">
-          <ChecklistSearchPreviewButton chart={checklistreport} />
-        </div>
-      )
-    },
-  },
+  //     return (
+  //       <div className="flex justify-center">
+  //         <ChecklistSearchPreviewButton chart={checklistreport} />
+  //       </div>
+  //     )
+  //   },
+  // },
   {
     id: 'delete',
     header: '복사',

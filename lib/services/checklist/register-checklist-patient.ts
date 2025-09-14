@@ -27,6 +27,7 @@ import { redirect } from 'next/navigation'
 // tag[4] : 'age'
 // tag[5] : 'name'
 // tag[6] : 'owner_name'
+
 export const registerChecklist = async (
   hosId: string,
   patientId: string | null,
@@ -40,6 +41,7 @@ export const registerChecklist = async (
   hosPatientId: string,
 ) => {
   const supabase = await createClient()
+
   const pretag =
     '#' +
     species +
@@ -51,6 +53,7 @@ export const registerChecklist = async (
     patientName +
     '#' +
     hosPatientId
+
   const checklistdata: any = {
     hos_id: hosId,
     patient_id: patientId ?? null,
@@ -60,11 +63,17 @@ export const registerChecklist = async (
     checklist_set: defaultChecklistSet,
     checklist_tag: pretag,
   }
+
   isEmergency && (checklistdata.checklist_title = '응급처치') //응급일경우 타이틀을 바로 지정
+
   isEmergency && (checklistdata.checklist_type = '응급')
+
   isEmergency && (checklistdata.starttime = new Date()) // 응급일경우 바로 시작시간 기록
+
   isEmergency && (checklistdata.istxing = true)
+
   isEmergency && (checklistdata.checklist_tag = pretag + '#응급처치')
+
   const { error } = await supabase.from('checklist').insert([checklistdata])
 
   if (error) {
@@ -72,6 +81,35 @@ export const registerChecklist = async (
     redirect(`/error?message=${error.message}`)
   }
 }
+
+export const registerEmergencyChecklist = async (
+  hosId: string,
+  targetDate: string,
+) => {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from('checklist')
+    .insert({
+      hos_id: hosId,
+      checklist_title: '응급처치',
+      due_date: targetDate,
+      checklist_type: '응급',
+      checklist_tag: '#응급처치',
+      start_time: new Date().toISOString(), // 시간 이거 맞는지 봐야함
+      is_txing: true,
+    })
+    .select('checklist_id')
+    .single()
+
+  if (error) {
+    console.error(error)
+    redirect(`/error?message=${error.message}`)
+  }
+
+  return data.checklist_id
+}
+
 type Prechecklist = {
   hos_id: string
   patient_id: string | null
@@ -104,6 +142,7 @@ export const ChecklistCopy = async (
     pretagarray[5] +
     '#' +
     pretagarray.splice(7, pretagarray.length)
+
   const prepreset = { ...checklistchart.checklist_set } as Checklistset
   prepreset.result && delete prepreset.result
 
@@ -114,6 +153,7 @@ export const ChecklistCopy = async (
       protocol2.txEnd = null
       postprotocol.push(protocol2)
     })
+
   const prechecklist = {
     hos_id: checklistchart.hos_id,
     patient_id:
@@ -126,11 +166,12 @@ export const ChecklistCopy = async (
     checklist_tag: pretag,
   } as Prechecklist
 
-  const { data, error } = await supabase.from('checklist').insert(prechecklist)
-  if (error) {
-    console.error(error)
-    redirect(`/error?message=${error.message}`)
-  }
+  // const { error } = await supabase.from('checklist').insert(prechecklist)
+
+  // if (error) {
+  //   console.error(error)
+  //   redirect(`/error?message=${error.message}`)
+  // }
 }
 
 export const addPatientToChecklist = async (

@@ -1,3 +1,4 @@
+import type { RegisteringPatient } from '@/components/hospital/icu/sidebar/register-dialog/register-dialog'
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -9,16 +10,11 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
-import { type Dispatch, type SetStateAction, useState } from 'react'
-import { type RegisteringPatient } from '@/components/hospital/icu/sidebar/register-dialog/register-dialog'
+import { registerChecklist } from '@/lib/services/checklist/register-checklist-patient'
 import { cn } from '@/lib/utils/utils'
 import { LoaderCircle } from 'lucide-react'
-import { useParams, usePathname, useRouter } from 'next/navigation'
-import {
-  addPatientToChecklist,
-  registerChecklist,
-} from '@/lib/services/checklist/register-checklist-patient'
-import { Checklist } from '@/types'
+import { useParams } from 'next/navigation'
+import { type Dispatch, type SetStateAction, useState } from 'react'
 
 type RegisterIcuConfirmDialogProps = {
   hosId: string
@@ -26,7 +22,6 @@ type RegisterIcuConfirmDialogProps = {
   setIsConfirmDialogOpen: Dispatch<SetStateAction<boolean>>
   setIsRegisterDialogOpen: Dispatch<SetStateAction<boolean>>
   registeringPatient: RegisteringPatient
-  checklistData: Checklist | null
   isEmergency: boolean
   setIsEmergency: Dispatch<SetStateAction<boolean>>
 }
@@ -37,13 +32,13 @@ export default function RegisterChecklistConfirmDialog({
   setIsConfirmDialogOpen,
   setIsRegisterDialogOpen,
   registeringPatient,
-  checklistData,
   isEmergency,
   setIsEmergency,
 }: RegisterIcuConfirmDialogProps) {
   const { target_date } = useParams()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
+
   const handleConfirm = async () => {
     setIsSubmitting(true)
 
@@ -62,10 +57,9 @@ export default function RegisterChecklistConfirmDialog({
       ).then(() => {
         setIsEmergency(false)
       })
-    } else if (!checklistData) {
+    } else {
       // 체크리스트가 최초 등록시
       // registeriingPatient정보가 있다면(환자가 선택됬다면), 선택된 환자로 ID로 등록, 정보가 없다면 null로 등록
-      console.log('registerChecklist', registeringPatient)
       registerChecklist(
         hosId,
         registeringPatient ? registeringPatient.patientId : null,
@@ -77,19 +71,6 @@ export default function RegisterChecklistConfirmDialog({
         registeringPatient?.gender ?? '',
         registeringPatient?.patientName ?? '',
         registeringPatient?.hosPatientId ?? '',
-      )
-    } else if (checklistData && !checklistData?.patient_id) {
-      // 기존에 만들어진 체크리스트가 있지만, 환자등록이 아직 안된경우, 선택된 환자정보만 새로 추가
-      addPatientToChecklist(
-        checklistData.checklist_id,
-        registeringPatient?.patientId!,
-        registeringPatient?.birth!,
-        registeringPatient?.species ?? '',
-        registeringPatient?.breed ?? '',
-        registeringPatient?.gender ?? '',
-        registeringPatient?.patientName ?? '',
-        registeringPatient?.hosPatientId ?? '',
-        checklistData.checklist_tag ?? '',
       )
     }
 

@@ -1,3 +1,5 @@
+// data type 바뀌면서 에러나는 부분 주석 처리
+
 import { toast } from '@/components/ui/use-toast'
 import { createClient } from '@/lib/supabase/client' // 클라이언트 컴포넌트용
 import { Checklist, ChecklistTemplate } from '@/types'
@@ -135,11 +137,12 @@ export const templateToChecklist = async (
     due_date: targetDate,
   } as Prechecklist
 
-  const { data, error } = await supabase.from('checklist').insert(prechecklist)
-  if (error) {
-    console.error(error)
-    redirect(`/error?message=${error.message}`)
-  }
+  // const { data, error } = await supabase.from('checklist').insert(prechecklist)
+
+  // if (error) {
+  //   console.error(error)
+  //   redirect(`/error?message=${error.message}`)
+  // }
 }
 
 export const checklistToTemplate = async (checklist: ChecklistData) => {

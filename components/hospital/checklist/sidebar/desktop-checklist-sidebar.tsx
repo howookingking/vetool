@@ -4,6 +4,7 @@ import ChecklistRegisterDialog from '@/components/hospital/checklist/sidebar/che
 import { Separator } from '@/components/ui/separator'
 import type { ChecklistSidebarData } from '@/types/checklist/checklist-type'
 import ChecklistDateSelector from './date-selector/checklist-date-selector'
+import { EmergencyDialog } from './emergency-dialog'
 
 type Props = {
   hosId: string
@@ -18,10 +19,14 @@ export default function DesktopChecklistSidebar({
   handleCloseMobileDrawer,
 }: Props) {
   return (
-    <aside className="fixed z-40 hidden h-desktop w-96 shrink-0 flex-col gap-2 border-r bg-white px-2 pb-0 pt-2 2xl:flex">
+    <aside className="fixed z-40 hidden h-desktop w-80 shrink-0 flex-col gap-2 border-r bg-white px-2 pb-0 pt-2 2xl:flex">
       <ChecklistDateSelector hosId={hosId} targetDate={targetDate} />
 
-      <ChecklistRegisterDialog hosId={hosId} checklistData={null} />
+      <div className="flex justify-between gap-2">
+        <ChecklistRegisterDialog hosId={hosId} />
+
+        <EmergencyDialog hosId={hosId} targetDate={targetDate} />
+      </div>
 
       <Separator />
 

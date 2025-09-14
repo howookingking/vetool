@@ -83,7 +83,7 @@ export default function RegisterDialog({
       </DialogTrigger>
 
       <DialogContent
-        className={cn('flex h-[704px] flex-col sm:max-w-[1200px]')}
+        className={cn('flex flex-col sm:max-w-[1200px]')}
         onInteractOutside={(e) => {
           e.preventDefault()
         }}

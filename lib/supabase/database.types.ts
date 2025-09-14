@@ -54,73 +54,73 @@ export type Database = {
       }
       checklist: {
         Row: {
-          age_in_days: number
+          age_in_days: number | null
           checklist_group: Json | null
           checklist_id: string
           checklist_protocol: Json | null
           checklist_set: Json | null
           checklist_tag: string | null
           checklist_timetable: Json | null
-          checklist_title: string | null
-          checklist_type: string | null
+          checklist_title: string
+          checklist_type: string
           checklist_vet: Json | null
           comment: string | null
           created_at: string
           due_date: string | null
-          enddate: string | null
-          endtime: string | null
+          end_date: string | null
+          end_time: string | null
           hos_id: string
-          istxing: boolean | null
+          is_txing: boolean | null
           patient_id: string | null
-          preinfo: Json | null
-          starttime: string | null
-          weight: number
+          pre_info: Json | null
+          start_time: string | null
+          weight: number | null
         }
         Insert: {
-          age_in_days?: number
+          age_in_days?: number | null
           checklist_group?: Json | null
           checklist_id?: string
           checklist_protocol?: Json | null
           checklist_set?: Json | null
           checklist_tag?: string | null
           checklist_timetable?: Json | null
-          checklist_title?: string | null
-          checklist_type?: string | null
+          checklist_title: string
+          checklist_type: string
           checklist_vet?: Json | null
           comment?: string | null
           created_at?: string
           due_date?: string | null
-          enddate?: string | null
-          endtime?: string | null
+          end_date?: string | null
+          end_time?: string | null
           hos_id: string
-          istxing?: boolean | null
+          is_txing?: boolean | null
           patient_id?: string | null
-          preinfo?: Json | null
-          starttime?: string | null
-          weight?: number
+          pre_info?: Json | null
+          start_time?: string | null
+          weight?: number | null
         }
         Update: {
-          age_in_days?: number
+          age_in_days?: number | null
           checklist_group?: Json | null
           checklist_id?: string
           checklist_protocol?: Json | null
           checklist_set?: Json | null
           checklist_tag?: string | null
           checklist_timetable?: Json | null
-          checklist_title?: string | null
-          checklist_type?: string | null
+          checklist_title?: string
+          checklist_type?: string
           checklist_vet?: Json | null
           comment?: string | null
           created_at?: string
           due_date?: string | null
-          enddate?: string | null
-          endtime?: string | null
+          end_date?: string | null
+          end_time?: string | null
           hos_id?: string
-          istxing?: boolean | null
+          is_txing?: boolean | null
           patient_id?: string | null
-          preinfo?: Json | null
-          starttime?: string | null
-          weight?: number
+          pre_info?: Json | null
+          start_time?: string | null
+          weight?: number | null
         }
         Relationships: [
           {
