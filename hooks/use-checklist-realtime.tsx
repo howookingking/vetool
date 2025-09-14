@@ -22,10 +22,7 @@ export function useChecklistRealtime(hosId: string) {
       }
       debouncedRefresh()
 
-      console.log(
-        `%c${payload.table} ${payload.eventType}`,
-        `background:checklist`,
-      )
+      console.log(`%c${payload.table} ${payload.eventType}`)
     },
     [debouncedRefresh],
   )
@@ -65,11 +62,12 @@ export function useChecklistRealtime(hosId: string) {
         { event: 'DELETE', schema: 'public', table: 'checklist' },
         handleChange,
       )
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'checklist_template' },
-        handleChange,
-      )
+    // TODO: 템플릿도 리얼타입 필요? 필터 안걸려있음
+    // .on(
+    //   'postgres_changes',
+    //   { event: '*', schema: 'public', table: 'checklist_template' },
+    //   handleChange,
+    // )
 
     subscriptionRef.current = channel.subscribe((status) => {
       if (status === 'SUBSCRIBED') {
@@ -79,7 +77,6 @@ export function useChecklistRealtime(hosId: string) {
         }, 1000)
       } else {
         console.log('Subscription failed with status:', status)
-        // setIsSubscriptionReady(false)
         setIsRealtimeReady(false)
       }
     })
@@ -90,7 +87,6 @@ export function useChecklistRealtime(hosId: string) {
       console.log('Unsubscribing from channel...')
       supabase.removeChannel(subscriptionRef.current)
       subscriptionRef.current = null
-      // setIsSubscriptionReady(false)
       setIsRealtimeReady(false)
     }
   }, [])
@@ -120,18 +116,3 @@ export function useChecklistRealtime(hosId: string) {
 
   return isRealtimeReady
 }
-
-// function getLogColor(table: string): string {
-//   switch (table) {
-//     case 'icu_io':
-//       return 'blue'
-//     case 'icu_charts':
-//       return 'red'
-//     case 'icu_orders':
-//       return 'green'
-//     case 'icu_txs':
-//       return 'purple'
-//     default:
-//       return 'gray'
-//   }
-// }

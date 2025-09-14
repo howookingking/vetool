@@ -1,37 +1,26 @@
 'use client'
-import RealtimeStatus from '@/components/hospital/icu/footer/realtime-status'
+
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
+import { useChecklistRealtime } from '@/hooks/use-checklist-realtime'
 import { cn } from '@/lib/utils/utils'
-import { useIcuRealtime } from '@/hooks/use-icu-realtime'
-import {
-  BarChartHorizontal,
-  Bookmark,
-  ClipboardList,
-  LayoutDashboard,
-  ListChecks,
-  LogOut,
-  Search,
-} from 'lucide-react'
+import { BookmarkIcon, CheckIcon, SearchIcon } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import ChecklistRealtimeStatus from './checklist-realtime-status'
-import { useChecklistRealtime } from '@/hooks/use-checklist-realtime'
 
-type ChecklistFooterProps = {
+type Props = {
   hosId: string
   targetDate: string
 }
 
-export default function ChecklistFooter({
-  hosId,
-  targetDate,
-}: ChecklistFooterProps) {
+export default function ChecklistFooter({ hosId, targetDate }: Props) {
   const { push, refresh } = useRouter()
   const path = usePathname()
 
   const isRealtimeReady = useChecklistRealtime(hosId)
   const currentChecklistPath = path.split('/').at(5)
+
   useEffect(() => {
     if (isRealtimeReady) {
       toast({
@@ -78,26 +67,20 @@ const FOOTER_MAIN_VIEW_MENUS = [
   {
     label: '체크리스트',
     value: 'chart',
-    icon: <LayoutDashboard />,
+    icon: <CheckIcon />,
     hideInMobile: false,
   },
 
   {
     label: '검색',
     value: 'search',
-    icon: <Search />,
+    icon: <SearchIcon />,
     hideInMobile: true,
   },
   {
     label: '템플릿',
     value: 'template',
-    icon: <Bookmark />,
+    icon: <BookmarkIcon />,
     hideInMobile: true,
   },
-  // {
-  //   label: '통계',
-  //   value: 'analysis',
-  //   icon: <BarChartHorizontal />,
-  //   hideInMobile: true,
-  // },
 ] as const
