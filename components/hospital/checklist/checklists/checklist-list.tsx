@@ -1,9 +1,8 @@
-import { Separator } from '@/components/ui/separator'
-import type { ChecklistSidebarData } from '@/types/checklist/checklist-type'
 import ChecklistButton from '@/components/hospital/checklist/checklists/checklist-button'
+import type { ChecklistSidebarData } from '@/types/checklist/checklist-type'
 
 type Props = {
-  checklistsidebarData?: ChecklistSidebarData[]
+  checklistsidebarData: ChecklistSidebarData[]
   handleCloseMobileDrawer?: () => void
 }
 export default function ChecklistList({
@@ -11,23 +10,22 @@ export default function ChecklistList({
   handleCloseMobileDrawer,
 }: Props) {
   return (
-    <div className="flex h-full flex-col gap-3 p-2">
-      <div className="flex items-center justify-between text-xs font-bold text-muted-foreground">
-        <span className="font-bold">
-          당일 체크리스트({checklistsidebarData?.length})
-        </span>
-      </div>
-      {checklistsidebarData &&
-        checklistsidebarData.map((list) => (
-          <div
+    <div className="overflow-y-auto">
+      <span className="text-xs font-bold text-muted-foreground">
+        체크리스트({checklistsidebarData?.length})
+      </span>
+
+      <ul className="flex flex-col gap-2">
+        {checklistsidebarData.map((list) => (
+          <li
             key={list.checklist_id}
             className="w-full last:mb-2"
             onClick={handleCloseMobileDrawer}
           >
             <ChecklistButton checklistchart={list} />
-          </div>
+          </li>
         ))}
-      <Separator />
+      </ul>
     </div>
   )
 }
