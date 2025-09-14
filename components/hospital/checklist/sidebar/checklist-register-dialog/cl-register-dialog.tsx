@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils/utils'
 import { PlusIcon } from 'lucide-react'
 import { useState } from 'react'
+import ClPatientRegisterForm from './cl-patient-register-form'
 
 type Props = {
   hosId: string
@@ -74,13 +75,13 @@ export default function ClRegisterDialog({ hosId, targetDate }: Props) {
             />
           </TabsContent>
 
-          {/* <TabsContent value="register">
-            <PatientFormInChecklist
+          <TabsContent value="register">
+            <ClPatientRegisterForm
               hosId={hosId}
+              targetDate={targetDate}
               setIsPatientRegisterDialogOpen={setIsRegisterDialogOpen}
-              setIsConfirmDialogOpen={setIsConfirmDialogOpen}
             />
-          </TabsContent> */}
+          </TabsContent>
         </Tabs>
       </DialogContent>
     </Dialog>
