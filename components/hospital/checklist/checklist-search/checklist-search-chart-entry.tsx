@@ -3,12 +3,11 @@ import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import { Button } from '@/components/ui/button'
 import DataTable from '@/components/ui/data-table'
 import { Input } from '@/components/ui/input'
-import { Checklist } from '@/types'
-import { useState } from 'react'
-import { X } from 'lucide-react'
-import { useDebouncedCallback } from 'use-debounce'
 import { searchChecklistCharts } from '@/lib/services/checklist/get-checklist-data-client'
-import { set } from 'date-fns'
+import { Checklist } from '@/types'
+import { XIcon } from 'lucide-react'
+import { useState } from 'react'
+import { useDebouncedCallback } from 'use-debounce'
 import { SearchedChecklistColumns } from './searched-checklist-columns'
 type Props = {
   hosId: string
@@ -19,7 +18,7 @@ export default function ChecklistSearchChartEntry({ hosId }: Props) {
   const [searchedChecklistData, setSearchedChecklistData] = useState(
     [] as Checklist[],
   )
-  // const [searchedChecklist, setSearchedChecklist] = useState<Checklist>()
+  const [searchedChecklist, setSearchedChecklist] = useState<Checklist>()
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value)
     debouncedSearch()
@@ -54,7 +53,7 @@ export default function ChecklistSearchChartEntry({ hosId }: Props) {
             className="absolute right-2 top-2 h-5 w-5 text-muted-foreground"
             onClick={() => setSearchTerm('')}
           >
-            <X size={12} />
+            <XIcon size={12} />
           </Button>
         </div>
       </div>

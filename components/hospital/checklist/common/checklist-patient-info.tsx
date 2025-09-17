@@ -1,51 +1,34 @@
-'use client'
-import { getPatientById } from '@/lib/services/checklist/get-checklist-data-client'
-import { useEffect, useState } from 'react'
-import { Cat, Dog } from 'lucide-react'
-import { calculateAge, convertPascalCased } from '@/lib/utils/utils'
-import { kgToBsa } from '@/lib/calculators/checklist-calculators'
-import { Checklist } from '@/types'
-type Props = {
-  patientId: string | null
-  checklistdata?: Checklist
-}
-export default function ChecklistPatientInfo({
-  patientId,
-  checklistdata,
-}: Props) {
-  const [patient, setPatient] = useState<any | null>(null)
+import { Patient } from '@/types'
+import PatientDetailInfo from '../../common/patient/patient-detail-info'
+import { ChecklistWithPatientWithWeight } from '@/lib/services/checklist/get-checklist-data-client'
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (patientId) {
-        const pdata = await getPatientById(patientId)
-        if (pdata) setPatient(pdata)
-      }
-    }
-    fetchData()
-  })
-  return patient ? (
-    <div className="m-3 flex items-center gap-1 sm:gap-2">
-      {patient.species === 'canine' ? <Dog size={20} /> : <Cat size={20} />}
-      <span>{patient.name}</span>·
-      <span className="w-12 truncate sm:w-auto">
-        {convertPascalCased(patient.breed)}
-      </span>
-      ·<span className="uppercase">{patient.gender}</span>·
-      <span>{calculateAge(patient.birth)} </span>
-      {checklistdata && checklistdata.weight ? (
-        <span className="text-xs sm:text-sm">
-          {checklistdata.weight}kg(
-          {kgToBsa(checklistdata.weight, patient.species)}m²)
-        </span>
-      ) : (
-        <span className="text-xs sm:text-sm">등록된 몸무게가 없습니다.</span>
-      )}
-    </div>
-  ) : (
-    <div className="flex items-center gap-1 sm:gap-2">
-      {' '}
-      환자가 등록되지 않았습니다.
-    </div>
+export default function ChecklistPatientInfo({
+  checklistData,
+}: {
+  checklistData: ChecklistWithPatientWithWeight
+}) {
+  // 환자 정보와 몸무게를 한번에 가져오기 때문에 useEffect로 환자 데이터 fetching이 필요없으며 클라이언트 컴포넌트화 시킬 필요가 없음
+  const {
+    species,
+    name,
+    breed,
+    gender,
+    birth,
+    is_alive,
+    weight_measured_date,
+    body_weight,
+  } = checklistData.patient
+
+  return (
+    <PatientDetailInfo
+      species={species}
+      name={name}
+      breed={breed}
+      gender={gender}
+      birth={birth}
+      weight={body_weight}
+      weightMeasuredDate={weight_measured_date}
+      isAlive={is_alive}
+    />
   )
 }

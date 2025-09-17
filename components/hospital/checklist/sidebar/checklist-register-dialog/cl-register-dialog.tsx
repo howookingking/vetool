@@ -13,9 +13,14 @@ import ClPatientRegisterForm from './cl-patient-register-form'
 type Props = {
   hosId: string
   targetDate: string
+  isEmergency?: boolean
 }
 
-export default function ClRegisterDialog({ hosId, targetDate }: Props) {
+export default function ClRegisterDialog({
+  hosId,
+  targetDate,
+  isEmergency,
+}: Props) {
   const [tab, setTab] = useState('search')
   const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false)
 
@@ -41,9 +46,12 @@ export default function ClRegisterDialog({ hosId, targetDate }: Props) {
   return (
     <Dialog open={isRegisterDialogOpen} onOpenChange={handleOpenChage}>
       <DialogTrigger asChild>
-        <Button size="sm" className="w-1/2 text-sm">
+        <Button
+          size="sm"
+          className={cn(isEmergency ? 'w-32' : 'w-1/2', 'text-sm')}
+        >
           <PlusIcon />
-          체크리스트 등록
+          {isEmergency ? '환자 등록' : '체크리스트 등록'}
         </Button>
       </DialogTrigger>
 

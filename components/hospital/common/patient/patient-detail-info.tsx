@@ -7,7 +7,7 @@ type Props = {
   breed: string | null
   gender: string
   birth: string
-  weight: string
+  weight: string | null
   weightMeasuredDate?: string | null
   isAlive?: boolean
 }
@@ -37,6 +37,7 @@ export default function PatientDetailInfo({
       <span>{calculateAge(birth)} </span>
       <span>·</span>
       <span>
+        {/* TODO: icu에서도 로직 변경시 여기 부분 수정해야함 */}
         {weight === '' ? '체중 입력' : `${weight}kg`}
 
         {weightMeasuredDate && (

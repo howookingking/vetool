@@ -48,15 +48,15 @@ export const emergencyPhrase: string[] = [
 ]
 
 // db default 값으로 설정
-// export const defaultChecklistSet = {
-//   interval: '1',
-//   preSet: [
-//     {
-//       setname: ['체온(°C)', '심박수', '호흡수', '혈압(mmHg)', '비고'],
-//       settime: '0',
-//     },
-//   ],
-// }
+export const defaultChecklistSet = {
+  interval: '1',
+  preSet: [
+    {
+      setname: ['체온(°C)', '심박수', '호흡수', '혈압(mmHg)', '비고'],
+      settime: '0',
+    },
+  ],
+}
 
 export const timeInterval = (timetz1: string, timetz2: string) => {
   // timestapmtz로 들어온 2개의 시간 분차이

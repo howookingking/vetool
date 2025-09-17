@@ -22,7 +22,7 @@ export default function ChecklistHeader({
   const pathnamearray: string[] = pathname.split('/')
 
   return (
-    <div className="ml-3 flex-col">
+    <header className="border-b">
       <div className="flex">
         <CustomTooltip
           contents="체크리스트 작성"
@@ -47,6 +47,7 @@ export default function ChecklistHeader({
             <FileCheck /> <p className="hidden 2xl:flex">CHECKLIST</p>
           </Button>
         </CustomTooltip>
+
         <CustomTooltip
           contents="리포트"
           side="bottom"
@@ -76,8 +77,6 @@ export default function ChecklistHeader({
           checklistId={checklistId}
         />
       </div>
-
-      <Separator className="m-2" />
-    </div>
+    </header>
   )
 }

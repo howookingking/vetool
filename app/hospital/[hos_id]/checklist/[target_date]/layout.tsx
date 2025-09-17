@@ -12,7 +12,7 @@ export default async function ChecklistPageLayout(props: {
       <div className="flex h-desktop">
         <ChecklistSidebar hosId={hos_id} targetDate={target_date} />
 
-        <div className="ml-0 w-screen flex-1 2xl:ml-96 2xl:w-auto">
+        <div className="ml-0 w-screen flex-1 2xl:ml-80 2xl:w-auto">
           {props.children}
         </div>
       </div>

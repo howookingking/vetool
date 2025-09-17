@@ -1,13 +1,9 @@
 // data type 바뀌면서 에러나는 부분 주석 처리
 
-import ChecklistBodyContainer from '@/components/hospital/checklist/checklist-body/checklist-body-container'
-import ChecklistPatientInfo from '@/components/hospital/checklist/common/checklist-patient-info'
-import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
-import { getChecklistDataById } from '@/lib/services/checklist/get-checklist-data-client'
-import type { ChecklistData } from '@/types/checklist/checklist-type'
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
+import ChecklistPatientInfo from '@/components/hospital/checklist/common/checklist-patient-info'
 import ClRegisterDialog from '@/components/hospital/checklist/sidebar/checklist-register-dialog/cl-register-dialog'
-import { Checklist } from '@/types'
+import { fetchChecklistWithPatientWithWeight } from '@/lib/services/checklist/get-checklist-data-client'
 
 export default async function ChecklistBody(props: {
   params: Promise<{
@@ -16,80 +12,70 @@ export default async function ChecklistBody(props: {
     checklist_id: string
   }>
 }) {
-  const params = await props.params
-  // const _checklistdata: Checklist = await getChecklistDataById(
-  //   params.checklist_id,
-  // )
-  // let checklistdata: ChecklistData | null = null
-  // if (_checklistdata) {
-  //   checklistdata = _checklistdata as ChecklistData
-  // }
+  const { checklist_id, hos_id, target_date } = await props.params
+  const checklistData = await fetchChecklistWithPatientWithWeight(checklist_id)
 
-  return null
+  if (!checklistData) {
+    return (
+      <NoResultSquirrel
+        text="체크리스트가 없습니다"
+        className="mt-40 flex-col"
+        size="lg"
+      />
+    )
+  }
 
-  // checklistdata &&
-  //   ((checklistdata.checklist_title &&
-  //     checklistdata.checklist_vet?.attending) ||
-  //     checklistdata.checklist_type === '응급') ? (
-  //   <div className="ml-3 flex-col">
-  //     <div className="m-3 text-xl font-bold">
-  //       {checklistdata.checklist_title}
-  //     </div>
-  //     {checklistdata.patient_id ? (
-  //       <ChecklistPatientInfo
-  //         patientId={checklistdata.patient_id}
-  //         checklistdata={_checklistdata}
-  //       />
-  //     ) : (
-  //       checklistdata && (
-  //         <div className="m-3">
-  //           {' '}
-  //           <ChecklistRegisterDialog
-  //             hosId={checklistdata.hos_id ?? ''}
-  //             checklistData={_checklistdata}
-  //           />
-  //         </div>
-  //       )
-  //     )}
+  return (
+    <div className="flex-col">
+      <h3 className="m-3 text-xl font-bold">{checklistData.checklist_title}</h3>
 
-  //     <Table className="m-3 w-[400px] border text-left text-sm text-gray-700">
-  //       <TableBody>
-  //         <TableRow className="transition-colors hover:bg-muted/20">
-  //           <TableCell>시작시간</TableCell>
-  //           <TableCell>
-  //             {checklistdata.starttime &&
-  //               new Date(checklistdata.starttime).toLocaleTimeString('ko-KR', {
-  //                 hour12: false,
-  //               })}
-  //           </TableCell>
-  //         </TableRow>
-  //         <TableRow className="bg-muted/30 hover:bg-muted/40">
-  //           <TableCell>종료시간</TableCell>
-  //           <TableCell>
-  //             {checklistdata.endtime &&
-  //               new Date(checklistdata.endtime).toLocaleTimeString('ko-KR', {
-  //                 hour12: false,
-  //               })}
-  //           </TableCell>
-  //         </TableRow>
-  //         <TableRow className="transition-colors hover:bg-muted/20">
-  //           <TableCell>추가정보</TableCell>
-  //           <TableCell>
-  //             {checklistdata.checklist_type === '응급' &&
-  //             checklistdata.preinfo?.other
-  //               ? '기관튜브(' + checklistdata.preinfo?.other.split('#')[0] + ')'
-  //               : null}
-  //           </TableCell>
-  //         </TableRow>
-  //       </TableBody>
-  //     </Table>
-  //     <ChecklistBodyContainer checklistData={checklistdata as ChecklistData} />
-  //   </div>
-  // ) : (
-  //   <NoResultSquirrel
-  //     text="👆 담당의 및 제목 설정이 필요합니다."
-  //     className="h-screen flex-col"
-  //     size="lg"
-  //   />
-  // )
+      {checklistData.patient ? (
+        <ChecklistPatientInfo checklistData={checklistData} />
+      ) : (
+        <div className="m-3">
+          <ClRegisterDialog
+            hosId={hos_id}
+            targetDate={target_date}
+            // TODO:isEmergency관련 로직 컴포넌트 내부에서 수정해야함
+            isEmergency
+          />
+        </div>
+      )}
+
+      {/* <Table className="m-3 w-[400px] border text-left text-sm text-gray-700">
+        <TableBody>
+          <TableRow className="transition-colors hover:bg-muted/20">
+            <TableCell>시작시간</TableCell>
+            <TableCell>
+              {checklistData.start_time &&
+                new Date(checklistData.start_time).toLocaleTimeString('ko-KR', {
+                  hour12: false,
+                })}
+            </TableCell>
+          </TableRow>
+          <TableRow className="bg-muted/30 hover:bg-muted/40">
+            <TableCell>종료시간</TableCell>
+            <TableCell>
+              {checklistData.end_time &&
+                new Date(checklistData.end_time).toLocaleTimeString('ko-KR', {
+                  hour12: false,
+                })}
+            </TableCell>
+          </TableRow>
+          <TableRow className="transition-colors hover:bg-muted/20">
+            <TableCell>추가정보</TableCell>
+            <TableCell>
+              {checklistData.checklist_type === '응급' &&
+              checklistData.pre_info?.other
+                ? '기관튜브(' +
+                  checklistData.pre_info?.other.split('#')[0] +
+                  ')'
+                : null}
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table> */}
+      {/* <ChecklistBodyContainer checklistData={checklistData} /> */}
+    </div>
+  )
 }

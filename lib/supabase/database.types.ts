@@ -58,7 +58,7 @@ export type Database = {
           checklist_group: Json | null
           checklist_id: string
           checklist_protocol: Json | null
-          checklist_set: Json | null
+          checklist_set: Json
           checklist_tag: string | null
           checklist_timetable: Json | null
           checklist_title: string
@@ -81,7 +81,7 @@ export type Database = {
           checklist_group?: Json | null
           checklist_id?: string
           checklist_protocol?: Json | null
-          checklist_set?: Json | null
+          checklist_set?: Json
           checklist_tag?: string | null
           checklist_timetable?: Json | null
           checklist_title: string
@@ -104,7 +104,7 @@ export type Database = {
           checklist_group?: Json | null
           checklist_id?: string
           checklist_protocol?: Json | null
-          checklist_set?: Json | null
+          checklist_set?: Json
           checklist_tag?: string | null
           checklist_timetable?: Json | null
           checklist_title?: string
@@ -1761,6 +1761,10 @@ export type Database = {
       }
       fetch_checklist_sidebar_data: {
         Args: { due_date_input: string; hos_id_input: string }
+        Returns: Json
+      }
+      fetch_checklist_with_patient_with_weight: {
+        Args: { checklist_id_input: string }
         Returns: Json
       }
       get_chartable_vitals_data: {
