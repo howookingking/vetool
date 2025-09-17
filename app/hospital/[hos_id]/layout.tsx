@@ -1,4 +1,3 @@
-import Message from '@/components/hospital/message/message'
 import HospitalSidebar from '@/components/hospital/sidebar/hospital-sidebar'
 import { getVetoolUserData } from '@/lib/services/auth/authorization'
 import { getHosName } from '@/lib/services/hospital-home/get-hos-name'
@@ -26,7 +25,7 @@ export default async function Layout(props: {
 
       <main className="ml-0 flex-1 2xl:ml-10">{props.children}</main>
 
-      <Message loggdedInUser={loggdedInUser} hosId={params.hos_id} />
+      {/* <Message loggdedInUser={loggdedInUser} hosId={params.hos_id} /> */}
     </div>
   )
 }

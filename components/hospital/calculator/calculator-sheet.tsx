@@ -48,9 +48,7 @@ export default function CalculatorSheet({ plan }: { plan: Plan }) {
           {isFetching ? (
             <LoaderCircle className="animate-spin" />
           ) : (
-            <NewFeature className="-right-1.5 -top-1.5">
-              <Calculator />
-            </NewFeature>
+            <Calculator />
           )}
         </Button>
       </SheetTrigger>
