@@ -1,4 +1,3 @@
-import useLocalStorage from '@/hooks/use-local-storage'
 import { cn } from '@/lib/utils/utils'
 import React from 'react'
 
@@ -11,6 +10,7 @@ export default function NewFeature({
   children: React.ReactNode
   className?: string
 }) {
+  // 보면 없에는 기능인데 그냥 없어도 될 듯
   // const [hasSeen, setHasSeen] = useLocalStorage(LocalStoragekey, false)
   return (
     <div
