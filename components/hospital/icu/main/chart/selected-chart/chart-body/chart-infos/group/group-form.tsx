@@ -10,12 +10,12 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { toast } from '@/components/ui/use-toast'
 import { groupCheckFormSchema } from '@/lib/schemas/icu/chart/chart-info-schema'
 import { updateGroup } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { type Dispatch, type SetStateAction, useState } from 'react'
-import { type UseFormReturn } from 'react-hook-form'
+import type { UseFormReturn } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 type Props = {
@@ -36,9 +36,7 @@ export default function GroupForm({ icuIoId, setIsDialogOpen, form }: Props) {
 
     await updateGroup(icuIoId, values.groupList)
 
-    toast({
-      title: '그룹을 변경하였습니다',
-    })
+    toast.success('그룹을 변경하였습니다')
 
     setIsSubmitting(false)
     setIsDialogOpen(false)

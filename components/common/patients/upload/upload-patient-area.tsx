@@ -14,13 +14,13 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { toast } from '@/components/ui/use-toast'
 import usePatientFileUpload from '@/hooks/use-patient-file-upload'
 import { cn } from '@/lib/utils/utils'
 import { DialogClose } from '@radix-ui/react-dialog'
-import { LoaderCircle } from 'lucide-react'
+import { LoaderCircleIcon } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 export default function UploadPatientArea() {
   const { refresh } = useRouter()
@@ -39,10 +39,7 @@ export default function UploadPatientArea() {
   } = usePatientFileUpload(hos_id as string, () => {
     setIsDialogOpen(false)
     refresh()
-    toast({
-      title: '환자 목록을 업로드하였습니다',
-      className: 'bg-green-600 text-white',
-    })
+    toast.success('환자 목록을 업로드하였습니다')
   })
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -160,7 +157,7 @@ export default function UploadPatientArea() {
           >
             업로드
             {isLoading && (
-              <LoaderCircle className="ml-2 h-4 w-4 animate-spin" />
+              <LoaderCircleIcon className="ml-2 h-4 w-4 animate-spin" />
             )}
           </Button>
         </DialogFooter>

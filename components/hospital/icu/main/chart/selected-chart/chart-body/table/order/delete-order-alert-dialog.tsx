@@ -11,11 +11,11 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { toast } from '@/components/ui/use-toast'
 import { deleteOrder } from '@/lib/services/icu/chart/order-mutation'
 import { type OrderStep } from '@/lib/store/icu/icu-order'
 import { type SelectedIcuOrder } from '@/types/icu/chart'
 import { type Dispatch, type SetStateAction, useState } from 'react'
+import { toast } from 'sonner'
 
 type DeleteOrderAlertDialogProps = {
   selectedChartOrder: Partial<SelectedIcuOrder>
@@ -41,9 +41,8 @@ export default function DeleteOrderAlertDialog({
 
     await deleteOrder(selectedChartOrder.order_id!)
 
-    toast({
-      title: `${selectedChartOrder.order_name} 오더를 삭제하였습니다`,
-    })
+    toast.success(`${selectedChartOrder.order_name} 오더를 삭제하였습니다`)
+
     setOrderStep('closed')
   }
 

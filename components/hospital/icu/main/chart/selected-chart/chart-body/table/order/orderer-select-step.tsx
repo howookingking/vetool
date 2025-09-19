@@ -17,7 +17,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { toast } from '@/components/ui/use-toast'
 import { ordererSchema } from '@/lib/schemas/icu/chart/order-schema'
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
@@ -25,10 +24,11 @@ import { cn, formatOrders } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { LoaderCircle } from 'lucide-react'
+import { LoaderCircleIcon } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import * as z from 'zod'
 
 type Props = {
@@ -98,9 +98,8 @@ export default function OrdererSelectStep({
       },
     )
 
-    toast({
-      title: `${order_name!.split('#')[0]} 오더를 수정하였습니다`,
-    })
+    toast.success(`${order_name!.split('#')[0]} 오더를 수정하였습니다`)
+
     reset()
     setOrderStep('closed')
     setIsUpdating(false)
@@ -135,9 +134,8 @@ export default function OrdererSelectStep({
       )
     }
 
-    toast({
-      title: '오더시간을 변경하였습니다',
-    })
+    toast.success('오더시간을 변경하였습니다')
+
     reset()
     setOrderStep('closed')
     setIsUpdating(false)
@@ -166,9 +164,8 @@ export default function OrdererSelectStep({
       )
     }
 
-    toast({
-      title: '오더를 붙여넣었습니다',
-    })
+    toast.success('오더를 붙여넣었습니다')
+
     reset()
     setOrderStep('closed')
     setIsUpdating(false)
@@ -246,7 +243,7 @@ export default function OrdererSelectStep({
           ref={okButtonRef}
         >
           확인
-          <LoaderCircle
+          <LoaderCircleIcon
             className={cn(isUpdating ? 'ml-2 animate-spin' : 'hidden')}
           />
         </Button>

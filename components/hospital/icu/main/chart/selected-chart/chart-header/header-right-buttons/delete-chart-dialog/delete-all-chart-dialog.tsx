@@ -11,11 +11,11 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
-import { toast } from '@/components/ui/use-toast'
 import { deleteAllCharts } from '@/lib/services/icu/chart/delete-icu-chart'
 import { cn } from '@/lib/utils/utils'
-import { LoaderCircle } from 'lucide-react'
+import { LoaderCircleIcon } from 'lucide-react'
 import { type Dispatch, type SetStateAction, useState } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   icuIoId: string
@@ -36,9 +36,7 @@ export default function DeleteAllChartDialog({ icuIoId, patientName }: Props) {
 
     await deleteAllCharts(icuIoId)
 
-    toast({
-      title: `${patientName}의 모든차트가 삭제되었습니다`,
-    })
+    toast.success(`${patientName}의 모든차트가 삭제되었습니다`)
 
     setIsDeletingAllCharts(false)
     setIsDeleteAllChartsAvailable(false)
@@ -98,7 +96,7 @@ export default function DeleteAllChartDialog({ icuIoId, patientName }: Props) {
                 disabled={isDeletingAllCharts || !isDeleteAllChartsAvailable}
               >
                 삭제
-                <LoaderCircle
+                <LoaderCircleIcon
                   className={cn(
                     isDeletingAllCharts ? 'ml-2 animate-spin' : 'hidden',
                   )}

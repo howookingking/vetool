@@ -9,13 +9,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { toast } from '@/components/ui/use-toast'
 import { pasteDefaultOrders } from '@/lib/services/icu/chart/add-icu-chart'
 import { cn } from '@/lib/utils/utils'
 import type { SelectedChart } from '@/types/icu/chart'
-import { File, LoaderCircle } from 'lucide-react'
+import { FileIcon, LoaderCircleIcon } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 export default function PasteDefaultChartDialog({
   chartData,
@@ -33,9 +33,7 @@ export default function PasteDefaultChartDialog({
 
     await pasteDefaultOrders(hos_id as string, chartData.icu_chart_id as string)
 
-    toast({
-      title: '기본형식의 차트를 생성했습니다',
-    })
+    toast.success('기본형식의 차트를 생성했습니다')
 
     setIsLoading(false)
     setIsDialogOpen(false)
@@ -49,7 +47,7 @@ export default function PasteDefaultChartDialog({
           variant="outline"
           className="flex h-1/3 w-full items-center justify-center gap-2 md:w-2/3 lg:w-1/2"
         >
-          <File size={20} />
+          <FileIcon size={20} />
           <span>기본형식 차트생성</span>
         </Button>
       </DialogTrigger>
@@ -67,7 +65,7 @@ export default function PasteDefaultChartDialog({
           </DialogClose>
           <Button onClick={handleAddDefaultChart} disabled={isLoading}>
             확인
-            <LoaderCircle
+            <LoaderCircleIcon
               className={cn(isLoading ? 'animate-spin' : 'hidden')}
             />
           </Button>

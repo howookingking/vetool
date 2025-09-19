@@ -1,19 +1,17 @@
 'use client'
 
 import Autocomplete from '@/components/common/auto-complete/auto-complete'
-import { toast } from '@/components/ui/use-toast'
 import { updateDiagnosis } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
-export default function Diagnosis({
-  diagnosis,
-  icuIoId,
-  isShare,
-}: {
+type Props = {
   diagnosis: string
   icuIoId: string
   isShare?: boolean
-}) {
+}
+
+export default function Diagnosis({ diagnosis, icuIoId, isShare }: Props) {
   const [isUpdating, setIsUpdating] = useState(false)
 
   const handleUpdateDiagnosis = async (value: string) => {
@@ -27,9 +25,7 @@ export default function Diagnosis({
 
     await updateDiagnosis(icuIoId, trimmedValue)
 
-    toast({
-      title: '진단명을 변경하였습니다',
-    })
+    toast.success('진단명을 변경하였습니다')
 
     setIsUpdating(false)
   }

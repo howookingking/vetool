@@ -2,18 +2,17 @@
 
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { toast } from '@/components/ui/use-toast'
 import { updateOwnerName } from '@/lib/services/icu/chart/update-icu-chart-infos'
-import { User } from 'lucide-react'
+import { UserIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
-export default function OwnerName({
-  ownerName,
-  patientId,
-}: {
+type Props = {
   ownerName: string
   patientId: string
-}) {
+}
+
+export default function OwnerName({ ownerName, patientId }: Props) {
   const [ownerNameInput, setOwnerNameInput] = useState(ownerName)
   const [isUpdating, setIsUpdating] = useState(false)
 
@@ -26,9 +25,7 @@ export default function OwnerName({
     setIsUpdating(true)
     await updateOwnerName(patientId, ownerNameInput.trim())
 
-    toast({
-      title: '보호자명을 변경하였습니다',
-    })
+    toast.success('보호자명을 변경하였습니다')
 
     setIsUpdating(false)
   }
@@ -43,7 +40,7 @@ export default function OwnerName({
         className="absolute left-2 text-xs text-muted-foreground"
         htmlFor="ownerName"
       >
-        <User size={16} className="text-muted-foreground" />
+        <UserIcon size={16} className="text-muted-foreground" />
       </Label>
       <Input
         placeholder="보호자"

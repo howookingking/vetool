@@ -35,7 +35,6 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { toast } from '@/components/ui/use-toast'
 import {
   CANINE_BREEDS,
   FELINE_BREEDS,
@@ -51,12 +50,12 @@ import {
 import { cn } from '@/lib/utils/utils'
 import type { Patient } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons'
 import { format } from 'date-fns'
-import { LoaderCircle } from 'lucide-react'
+import { CheckIcon, ChevronDownIcon, LoaderCircleIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { type DebouncedState, useDebouncedCallback } from 'use-debounce'
 import * as z from 'zod'
 import type { RegisteringPatient } from '../../../hospital/icu/sidebar/register-dialog/register-dialog'
@@ -278,9 +277,7 @@ export default function PatientForm({
       hosId,
     )
 
-    toast({
-      title: '환자가 등록되었습니다',
-    })
+    toast.success('환자가 등록되었습니다')
 
     // 2. 환자 등록 완료 및 다음 스텝
     if (!isRegisterFromIcuRoute) {
@@ -375,37 +372,13 @@ export default function PatientForm({
       )
     }
 
-    toast({
-      title: '환자 정보가 수정되었습니다',
-    })
+    toast.success('환자 정보가 수정되었습니다')
 
     // if (setIsEdited) setIsEdited(true)
     setIsSubmitting(false)
     setIsPatientUpdateDialogOpen!(false)
     refresh()
   }
-
-  const handleHosPatientIdInputChange = useDebouncedCallback(async () => {
-    if (
-      watchHosPatientId.trim() === '' ||
-      watchHosPatientId === editingPatient?.hos_patient_id
-    ) {
-      form.clearErrors('hos_patient_id')
-      return
-    }
-
-    const result = await isHosPatientIdDuplicated(watchHosPatientId, hosId)
-    setIsDuplicatedId(result)
-
-    if ((!isEdit && result) || (isEdit && result)) {
-      form.setError('hos_patient_id', {
-        type: 'manual',
-        message: '이 환자 번호는 이미 존재합니다',
-      })
-    } else {
-      form.clearErrors('hos_patient_id')
-    }
-  }, 700)
 
   return (
     <Form {...form}>
@@ -449,10 +422,7 @@ export default function PatientForm({
                 <Input
                   {...field}
                   value={field.value || ''}
-                  onChange={(e) => {
-                    field.onChange(e)
-                    handleHosPatientIdInputChange()
-                  }}
+                  onChange={field.onChange}
                   className="h-8 text-sm"
                 />
               </FormControl>
@@ -528,7 +498,7 @@ export default function PatientForm({
                             ? '품종을 선택해주세요'
                             : '종을 먼저 선택해주세요'}
                       </span>
-                      <CaretSortIcon className="absolute right-3 h-4 w-4 shrink-0 opacity-50" />
+                      <ChevronDownIcon className="absolute right-3 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
@@ -559,7 +529,7 @@ export default function PatientForm({
                               <CheckIcon
                                 className={cn(
                                   'ml-auto h-4 w-4',
-                                  breed.eng === field.value
+                                  breed.eng === field.value.split('#')[0]
                                     ? 'opacity-100'
                                     : 'opacity-0',
                                 )}
@@ -752,7 +722,7 @@ export default function PatientForm({
 
             <Button type="submit" disabled={isSubmitting}>
               {isEdit ? '수정' : '등록'}
-              <LoaderCircle
+              <LoaderCircleIcon
                 className={cn(isSubmitting ? 'ml-2 animate-spin' : 'hidden')}
               />
             </Button>

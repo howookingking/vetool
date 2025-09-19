@@ -27,7 +27,6 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { Textarea } from '@/components/ui/textarea'
-import { toast } from '@/components/ui/use-toast'
 import { todoSchema } from '@/lib/schemas/hospital-home/hospital-home-schemas'
 import { upsertTodo } from '@/lib/services/hospital-home/todo'
 import { cn, formatDateToISOString } from '@/lib/utils/utils'
@@ -35,9 +34,15 @@ import type { ClientTodo } from '@/types/hospital/todo'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
-import { CalendarIcon, Edit, LoaderCircle, Plus } from 'lucide-react'
+import {
+  CalendarIcon,
+  EditIcon,
+  LoaderCircleIcon,
+  PlusIcon,
+} from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 type Props = {
@@ -80,9 +85,8 @@ export default function UpsertTodoDialog({
       todo?.id,
     )
 
-    toast({
-      title: 'TODO를 추가하였습니다',
-    })
+    toast.success('TODO를 추가하였습니다')
+
     setIsDialogOpen(false)
     setIsSubmitting(false)
 
@@ -105,7 +109,7 @@ export default function UpsertTodoDialog({
       <DialogTrigger asChild>
         {isEdit ? (
           <Button size="icon" className="h-6 w-6" variant="ghost">
-            <Edit
+            <EditIcon
               style={{
                 width: '14px',
                 height: '14px',
@@ -118,7 +122,7 @@ export default function UpsertTodoDialog({
             size="icon"
             className="h-6 w-6 rounded-full"
           >
-            <Plus size={14} />
+            <PlusIcon size={14} />
           </Button>
         )}
       </DialogTrigger>
@@ -241,7 +245,7 @@ export default function UpsertTodoDialog({
                 </DialogClose>
                 <Button type="submit" className="ml-2" disabled={isSubmitting}>
                   등록
-                  <LoaderCircle
+                  <LoaderCircleIcon
                     className={cn(
                       isSubmitting ? 'ml-2 animate-spin' : 'hidden',
                     )}

@@ -19,7 +19,6 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { toast } from '@/components/ui/use-toast'
 import useUpsertTx from '@/hooks/use-upsert-tx'
 import { txDetailRegisterFormSchema } from '@/lib/schemas/icu/chart/tx-schema'
 import { deleteIcuChartTx } from '@/lib/services/icu/chart/tx-mutation'
@@ -28,10 +27,11 @@ import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
 // import type { ImageUrlResponse } from '@/types/images'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
-import { LoaderCircle } from 'lucide-react'
+import { LoaderCircleIcon } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 export default function TxDetailInsertStep({
@@ -181,9 +181,7 @@ export default function TxDetailInsertStep({
       // }
     }
 
-    toast({
-      title: '처치내역을 삭제하였습니다',
-    })
+    toast.success('처치내역을 삭제하였습니다')
 
     resetTxStore()
     resetOrderStore()
@@ -287,7 +285,7 @@ export default function TxDetailInsertStep({
               <Button type="submit" disabled={isSubmitting}>
                 {showTxUser ? '다음' : '확인'}
                 {isSubmitting && (
-                  <LoaderCircle className="h-4 w-4 animate-spin" />
+                  <LoaderCircleIcon className="h-4 w-4 animate-spin" />
                 )}
               </Button>
             </div>

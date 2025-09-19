@@ -1,4 +1,3 @@
-import { toast } from '@/components/ui/use-toast'
 import { upsertIcuTx } from '@/lib/services/icu/chart/tx-mutation'
 import { uploadTxImages } from '@/lib/services/icu/chart/upload-images'
 import type { TxPendingQueue } from '@/lib/store/icu/icu-order'
@@ -6,6 +5,7 @@ import type { TxLocalState } from '@/lib/store/icu/icu-tx'
 import type { TxLog } from '@/types/icu/chart'
 import { format } from 'date-fns'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 type TxUpdateOptions = {
   hosId: string
@@ -42,9 +42,12 @@ export default function useUpsertTx({ hosId, onSuccess }: TxUpdateOptions) {
           await uploadTxImages(images, txId, bucketImagesLength.toString())
         } catch (error) {
           console.error('이미지 업로드 실패:', error)
-          toast({
-            variant: 'destructive',
-            title: '처치 내역은 저장되었으나 이미지 업로드에 실패했습니다.',
+          // toast({
+          //   variant: 'destructive',
+          //   title: '처치 내역은 저장되었으나 이미지 업로드에 실패했습니다.',
+          //   description: '다시 시도해주세요.',
+          // })
+          toast('처치 내역은 저장되었으나 이미지 업로드에 실패했습니다', {
             description: '다시 시도해주세요.',
           })
           setIsSubmitting(false)
@@ -52,16 +55,13 @@ export default function useUpsertTx({ hosId, onSuccess }: TxUpdateOptions) {
         }
       }
 
-      toast({
-        title: '처치 내역이 업데이트 되었습니다',
-      })
+      toast.success('처치 내역이 업데이트 되었습니다')
 
       onSuccess?.()
     } catch (error) {
       console.error('처치 내역 업데이트 실패:', error)
-      toast({
-        variant: 'destructive',
-        title: '처치 내역 업데이트에 실패했습니다',
+
+      toast.error('처치 내역 업데이트에 실패했습니다', {
         description: '다시 시도해주세요.',
       })
     } finally {
