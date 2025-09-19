@@ -1,4 +1,9 @@
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
+import {
+  CANINE_BREEDS,
+  FELINE_BREEDS,
+  type SpeciesTypeEnum,
+} from '@/constants/hospital/register/breed'
 import type { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
 import type { VetoolUser } from '@/types'
 import type {
@@ -459,4 +464,18 @@ export const parseTextWithUrls = (text: string) => {
 export const isVideoFile = (contentType: string) => {
   if (!contentType) false
   return contentType.includes('video')
+}
+
+// 환자 수정 다이얼로그(icu와 checklist 상단에)에서 품종 formatting
+export function formatEditingBreed(
+  editingSpecies: SpeciesTypeEnum,
+  editingBreed: string,
+) {
+  if (editingSpecies === 'canine') {
+    return `${editingBreed}#${CANINE_BREEDS.find((breed) => breed.eng === editingBreed)?.kor}`
+  }
+
+  if (editingSpecies === 'feline') {
+    return `${editingBreed}#${FELINE_BREEDS.find((breed) => breed.eng === editingBreed)?.kor}`
+  }
 }

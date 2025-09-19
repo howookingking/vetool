@@ -1,62 +1,29 @@
 'use client'
 
-import ChecklistEditDialogButton from '@/components/hospital/checklist/checklist-header/checklist-edit-dialogbutton'
-import { Button } from '@/components/ui/button'
-import CustomTooltip from '@/components/ui/custom-tooltip'
-import type { ChecklistWithPatientWithWeight } from '@/lib/services/checklist/get-checklist-data-client'
-import { cn } from '@/lib/utils/utils'
-import { ScrollTextIcon } from 'lucide-react'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import ChecklistPatientInfo from '../common/checklist-patient-info'
+import type { ChecklistWithPatientWithWeight } from '@/lib/services/checklist/checklist-data'
+import ClHeaderActions from './cl-header-actions'
+import ClPatientUpdateDialog from './cl-patient-update-dialog'
+
+type Props = {
+  hosId: string
+  targetDate: string
+  checklistData: ChecklistWithPatientWithWeight
+}
 
 export default function ChecklistHeader({
+  hosId,
+  targetDate,
   checklistData,
-}: {
-  checklistData: ChecklistWithPatientWithWeight
-}) {
-  const pathname = usePathname()
-  const { push } = useRouter()
-
-  const searchParams = useSearchParams()
-  const edit = searchParams.get('edit')
-  const isActive = pathname.split('/')[7]
-  const pathnamearray: string[] = pathname.split('/')
-
+}: Props) {
   return (
-    <header className="flex justify-between border-b">
-      <ChecklistPatientInfo checklistData={checklistData} />
+    <header className="flex h-12 items-center justify-center border-b">
+      <ClPatientUpdateDialog
+        hosId={hosId}
+        targetDate={targetDate}
+        checklistData={checklistData}
+      />
 
-      <div className="flex">
-        <CustomTooltip
-          contents="리포트"
-          side="bottom"
-          sideOffset={4}
-          delayDuration={300}
-        >
-          <Button
-            type="button"
-            size="icon"
-            variant="outline"
-            name="report"
-            className={cn(
-              'm-2',
-              isActive === 'report' && 'bg-primary text-white',
-            )}
-            onClick={() => {
-              push(
-                `/hospital/${pathnamearray[2]}/checklist/${pathnamearray[4]}/chart/${pathnamearray[6]}/report`,
-              )
-            }}
-          >
-            <ScrollTextIcon />
-          </Button>
-        </CustomTooltip>
-
-        <ChecklistEditDialogButton
-          isEdit={edit === 'true'}
-          checklistId={checklistData.patient.patient_id}
-        />
-      </div>
+      <ClHeaderActions checklistData={checklistData} />
     </header>
   )
 }

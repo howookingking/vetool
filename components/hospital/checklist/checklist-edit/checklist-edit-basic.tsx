@@ -22,7 +22,7 @@ import {
   type ChecklistWithPatientWithWeight,
   deleteChecklist,
   updateEachChecklist,
-} from '@/lib/services/checklist/get-checklist-data-client'
+} from '@/lib/services/checklist/checklist-data'
 import { Checklist } from '@/types'
 import {
   ChecklistProtocol,
@@ -249,7 +249,7 @@ export default function ChecklistEditBasic({
                 const preChecklistData: ChecklistWithPatientWithWeight = {
                   ...checklistdata,
                 }
-                preChecklistData.weight = Number(e.target.value)
+                preChecklistData.patient.body_weight = e.target.value
                 setChecklistData(preChecklistData)
               }}
             ></Input>

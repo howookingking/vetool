@@ -142,8 +142,8 @@ export default function BirthDatePicker({ form, birth }: Props) {
               <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
                 <PopoverTrigger asChild>
                   <Button
-                    variant="outline"
-                    className="h-8 w-8 border-none px-2"
+                    variant="ghost"
+                    className="ml-1 h-8 w-8 border-none px-2"
                     aria-label="Open calendar"
                   >
                     <CalendarIcon className="h-4 w-4" />

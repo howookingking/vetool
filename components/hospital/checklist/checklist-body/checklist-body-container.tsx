@@ -10,9 +10,7 @@ import GeneralClock from '@/components/hospital/checklist/common/generalclock'
 import { Separator } from '@/components/ui/separator'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import useIsMobile from '@/hooks/use-is-mobile'
-import type { ChecklistWithPatientWithWeight } from '@/lib/services/checklist/get-checklist-data-client'
-import { useState } from 'react'
-import ChecklistBodyTableMobile from './checklist-body-checklist/checklist-body-table-mobile'
+import type { ChecklistWithPatientWithWeight } from '@/lib/services/checklist/checklist-data'
 
 type Props = {
   checklistData: ChecklistWithPatientWithWeight
@@ -72,6 +70,7 @@ export default function ChecklistBodyContainer({ checklistData }: Props) {
           </TabsContent>
         )} */}
       </Tabs>
+
       <Separator className="m-3" />
     </div>
   )

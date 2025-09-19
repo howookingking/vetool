@@ -11,9 +11,9 @@ import {
 import {
   type ChecklistWithPatientWithWeight,
   updateEachChecklist,
-} from '@/lib/services/checklist/get-checklist-data-client'
+} from '@/lib/services/checklist/checklist-data'
 import { format } from 'date-fns'
-import { Pencil } from 'lucide-react'
+import { PencilIcon } from 'lucide-react'
 import { useState } from 'react'
 import ChecklistTimeEditor from './checklist-time-editor'
 
@@ -90,7 +90,7 @@ export default function ChecklistStartEndTimeSet({ checklistData }: Props) {
             >
               <DialogTrigger asChild>
                 <Button className="m-3" variant="outline">
-                  <Pencil />
+                  <PencilIcon />
                 </Button>
               </DialogTrigger>
 
@@ -132,7 +132,7 @@ export default function ChecklistStartEndTimeSet({ checklistData }: Props) {
             <Dialog open={isStartDialogOpen} onOpenChange={setStartDialogOpen}>
               <DialogTrigger asChild>
                 <Button className="m-3" variant="outline">
-                  <Pencil />
+                  <PencilIcon />
                 </Button>
               </DialogTrigger>
 

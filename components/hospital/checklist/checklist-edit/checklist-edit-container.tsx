@@ -1,34 +1,10 @@
-'use client'
-import {
-  type Dispatch,
-  type SetStateAction,
-  use,
-  useEffect,
-  useState,
-} from 'react'
-import ChecklistPatientInfo from '../common/checklist-patient-info'
-import ClRegisterDialog from '../sidebar/checklist-register-dialog/cl-register-dialog'
-import { ChecklistTypes } from '@/constants/checklist/checklist'
-import CustomTooltip from '@/components/ui/custom-tooltip'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils/utils'
-import dynamic from 'next/dynamic'
-import LargeLoaderCircle from '@/components/common/large-loader-circle'
-import type { Checklist } from '@/types'
 import ChecklistEditBasic from '@/components/hospital/checklist/checklist-edit/checklist-edit-basic'
-import { ChecklistData } from '@/types/checklist/checklist-type'
-import type { ChecklistWithPatientWithWeight } from '@/lib/services/checklist/get-checklist-data-client'
-
-const LazyChecklistEditBasic = dynamic(
-  () =>
-    import(
-      '@/components/hospital/checklist/checklist-edit/checklist-edit-basic'
-    ),
-  {
-    ssr: false,
-    loading: () => <LargeLoaderCircle className="h-[574px]" />,
-  },
-)
+import { Button } from '@/components/ui/button'
+import CustomTooltip from '@/components/ui/custom-tooltip'
+import { ChecklistTypes } from '@/constants/checklist/checklist'
+import type { ChecklistWithPatientWithWeight } from '@/lib/services/checklist/checklist-data'
+import { cn } from '@/lib/utils/utils'
+import { useEffect, useState } from 'react'
 
 type Props = {
   checklistId: string
@@ -59,7 +35,7 @@ export default function ChecklistEditContainer({
     //   )}
     // </div>
     <div className="flex-col">
-      <ChecklistPatientInfo checklistData={checklistData} />
+      {/* <ChecklistPatientInfo checklistData={checklistData} /> */}
       <div className="m-3 flex flex-wrap 2xl:m-2">
         {ChecklistTypes &&
           ChecklistTypes.map((_type) => (

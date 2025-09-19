@@ -2,34 +2,31 @@ import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Textarea } from '@/components/ui/textarea'
+import { toast } from '@/components/ui/use-toast'
 import { checkListSetArray } from '@/constants/checklist/checklist'
-import { getPatientById } from '@/lib/services/checklist/get-checklist-data-client'
 import { calculateAge } from '@/lib/utils/utils'
 import {
   CheckItem,
   ChecklistData,
   ChecklistResults,
   ReportPatient,
-  TemplateChecklist,
   TimeTable,
 } from '@/types/checklist/checklist-type'
-import { PatientDataTable } from '@/types/patients'
-import { set } from 'date-fns'
-import { toast } from '@/components/ui/use-toast'
 import { useEffect, useState } from 'react'
+
+type Props = {
+  checklistData: ChecklistData
+  prepatient: ReportPatient
+}
 
 export default function ChecklistReportTxtDialogButton({
   checklistData,
   prepatient,
-}: {
-  checklistData: ChecklistData
-  prepatient: ReportPatient
-}) {
+}: Props) {
   const [isPreviewDialogOpen, setIsPreviewDialogOpen] = useState(false)
   const [txt, setTxt] = useState('')
   const [resultTxt, setResultTxt] = useState('')

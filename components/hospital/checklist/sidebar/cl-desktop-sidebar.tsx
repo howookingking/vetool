@@ -2,9 +2,8 @@ import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import ClRegisterDialog from '@/components/hospital/checklist/sidebar/checklist-register-dialog/cl-register-dialog'
 import ClPatientList from '@/components/hospital/checklist/sidebar/cl-patient-list'
 import { Separator } from '@/components/ui/separator'
-
 import type { ChecklistSidebarData } from '@/lib/services/checklist/fetch-checklist-sidebar-data'
-import { ClEmergencyDialog } from './cl-emergency-dialog'
+import ClEmergencyDialog from './cl-emergency-dialog'
 import ClDateSelector from './date-selector/cl-date-selector'
 
 type Props = {

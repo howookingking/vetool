@@ -87,7 +87,7 @@ export default function ClRegisterDialog({
             <ClPatientRegisterForm
               hosId={hosId}
               targetDate={targetDate}
-              setIsPatientRegisterDialogOpen={setIsRegisterDialogOpen}
+              setIsDialogOpen={setIsRegisterDialogOpen}
             />
           </TabsContent>
         </Tabs>

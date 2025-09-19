@@ -1922,6 +1922,24 @@ export type Database = {
         }
         Returns: undefined
       }
+      update_patient_from_checklist: {
+        Args: {
+          birth_input: string
+          breed_input: string
+          gender_input: string
+          hos_owner_id_input: string
+          hos_patient_id_input: string
+          is_weight_changed_input: boolean
+          memo_input: string
+          microchip_no_input: string
+          name_input: string
+          owner_name_input: string
+          patient_id_input: string
+          species_input: string
+          weight_input: string
+        }
+        Returns: undefined
+      }
       update_patient_from_icu_route: {
         Args: {
           birth_input: string

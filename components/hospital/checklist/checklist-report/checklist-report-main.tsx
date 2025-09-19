@@ -1,18 +1,19 @@
 'use client'
 
+import ChecklistReport from '@/components/hospital/checklist/checklist-report/checklist-report'
 import { Button } from '@/components/ui/button'
+import { toast } from '@/components/ui/use-toast'
+import { getPatientById } from '@/lib/services/checklist/checklist-data'
+import { cn } from '@/lib/utils/utils'
 import type {
   ChecklistData,
   ReportPatient,
 } from '@/types/checklist/checklist-type'
-import ChecklistReport from '@/components/hospital/checklist/checklist-report/checklist-report'
-import ChecklistReportTxtDialogButton from './checklist-repost-txt-dialog-button'
-import { useEffect, useRef, useState } from 'react'
-import { getPatientById } from '@/lib/services/checklist/get-checklist-data-client'
 import html2canvas from 'html2canvas'
-import { ImageIcon, LoaderCircle } from 'lucide-react'
-import { cn } from '@/lib/utils/utils'
-import { toast } from '@/components/ui/use-toast'
+import { ImageIcon, LoaderCircleIcon } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import ChecklistReportTxtDialogButton from './checklist-repost-txt-dialog-button'
+
 type Props = {
   checklistData: ChecklistData
 }
@@ -26,6 +27,7 @@ const nonpatient: ReportPatient = {
   birth: '',
   hos_patient_id: '',
 }
+
 export default function ChecklistReportMain({ checklistData }: Props) {
   const [patient, setPatient] = useState<ReportPatient | null>(null)
   const [isExporting, setIsExporting] = useState(false)
@@ -85,7 +87,7 @@ export default function ChecklistReportMain({ checklistData }: Props) {
           onClick={handleExportPng}
         >
           <ImageIcon />{' '}
-          <LoaderCircle
+          <LoaderCircleIcon
             className={cn(isExporting ? 'ml-2 animate-spin' : 'hidden')}
           />
         </Button>

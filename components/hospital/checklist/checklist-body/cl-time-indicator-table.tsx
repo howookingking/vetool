@@ -1,5 +1,5 @@
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
-import type { ChecklistWithPatientWithWeight } from '@/lib/services/checklist/get-checklist-data-client'
+import type { ChecklistWithPatientWithWeight } from '@/lib/services/checklist/checklist-data'
 
 export default function ClTimeIndicatorTable({
   checklistData,

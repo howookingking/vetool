@@ -39,45 +39,61 @@ import {
   CANINE_BREEDS,
   FELINE_BREEDS,
   SEX,
+  SpeciesTypeEnum,
 } from '@/constants/hospital/register/breed'
 import { registerPatientFormSchema } from '@/lib/schemas/patient/patient-schema'
+import { ChecklistPatient } from '@/lib/services/checklist/checklist-data'
 import { registerChecklist } from '@/lib/services/checklist/register-checklist-patient'
 import {
   insertPatient,
   isHosPatientIdDuplicated,
+  updatePatientFromChecklist,
 } from '@/lib/services/patient/patient'
-import { cn } from '@/lib/utils/utils'
+import { cn, formatEditingBreed } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons'
 import { format } from 'date-fns'
-import { LoaderCircleIcon } from 'lucide-react'
+import { CheckIcon, ChevronDownIcon, LoaderCircleIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useDebouncedCallback } from 'use-debounce'
 import * as z from 'zod'
 
-type Props = {
-  hosId: string
-  targetDate: string
-  setIsPatientRegisterDialogOpen: Dispatch<SetStateAction<boolean>>
-}
+type Props =
+  | {
+      hosId: string
+      targetDate: string
+      setIsDialogOpen: Dispatch<SetStateAction<boolean>>
+      isEdit: true
+      patient: ChecklistPatient
+    }
+  | {
+      hosId: string
+      targetDate: string
+      setIsDialogOpen: Dispatch<SetStateAction<boolean>>
+      isEdit?: false
+      patient?: ChecklistPatient
+    }
 
 export default function ClPatientRegisterForm({
   hosId,
   targetDate,
-  setIsPatientRegisterDialogOpen,
+  setIsDialogOpen,
+  isEdit,
+  patient,
 }: Props) {
-  const { push } = useRouter()
+  const { push, refresh } = useRouter()
 
   const [breedOpen, setBreedOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isDuplicatedId, setIsDuplicatedId] = useState(false)
 
   const form = useForm<z.infer<typeof registerPatientFormSchema>>({
     resolver: zodResolver(
       registerPatientFormSchema.refine(
         async (data) => {
+          if (isEdit && data.hos_patient_id === patient.hos_patient_id) {
+            return true
+          }
+
           const isDuplicate = await isHosPatientIdDuplicated(
             data.hos_patient_id,
             hosId,
@@ -91,22 +107,38 @@ export default function ClPatientRegisterForm({
       ),
     ),
 
-    defaultValues: {
-      name: '',
-      hos_patient_id: '',
-      species: undefined,
-      breed: undefined,
-      gender: undefined,
-      birth: undefined,
-      microchip_no: '',
-      memo: '',
-      weight: '',
-      owner_name: '',
-      hos_owner_id: '',
-    },
+    defaultValues: isEdit
+      ? {
+          name: patient.name,
+          hos_patient_id: patient.hos_patient_id,
+          species: patient.species,
+          breed: formatEditingBreed(
+            patient.species as SpeciesTypeEnum,
+            patient.breed!,
+          ),
+          gender: patient.gender,
+          birth: new Date(patient.birth),
+          microchip_no: patient.microchip_no ?? '',
+          memo: patient.memo ?? '',
+          weight: patient.body_weight ?? '',
+          owner_name: patient.owner_name ?? '',
+          hos_owner_id: patient.hos_owner_id ?? '',
+        }
+      : {
+          name: '',
+          hos_patient_id: '',
+          species: undefined,
+          breed: undefined,
+          gender: undefined,
+          birth: undefined,
+          microchip_no: '',
+          memo: '',
+          weight: '',
+          owner_name: '',
+          hos_owner_id: '',
+        },
   })
 
-  const watchHosPatientId = form.watch('hos_patient_id')
   const watchSpecies = form.watch('species')
   const watchBreed = form.watch('breed')
   const BREEDS = watchSpecies === 'canine' ? CANINE_BREEDS : FELINE_BREEDS
@@ -115,13 +147,11 @@ export default function ClPatientRegisterForm({
     if (watchBreed) {
       setBreedOpen(false)
     }
-  }, [watchBreed, form])
+  }, [watchBreed])
 
   const handleRegister = async (
     values: z.infer<typeof registerPatientFormSchema>,
   ) => {
-    if (isDuplicatedId) return
-
     setIsSubmitting(true)
 
     const {
@@ -167,36 +197,65 @@ export default function ClPatientRegisterForm({
     })
 
     setIsSubmitting(false)
-    setIsPatientRegisterDialogOpen(false)
+    setIsDialogOpen(false)
 
     push(
       `/hospital/${hosId}/checklist/${targetDate}/chart/${returningChecklistId}/checklist`,
     )
   }
 
-  const handleHosPatientIdInputChange = useDebouncedCallback(async () => {
-    if (watchHosPatientId.trim() === '') {
-      form.clearErrors('hos_patient_id')
-      return
-    }
+  const handleUpdate = async (
+    values: z.infer<typeof registerPatientFormSchema>,
+  ) => {
+    const {
+      birth,
+      breed,
+      gender,
+      hos_owner_id,
+      hos_patient_id,
+      memo,
+      microchip_no,
+      name,
+      owner_name,
+      species,
+      weight,
+    } = values
 
-    const result = await isHosPatientIdDuplicated(watchHosPatientId, hosId)
-    setIsDuplicatedId(result)
+    const isWeightChanged = weight !== patient!.body_weight
 
-    if (result) {
-      form.setError('hos_patient_id', {
-        type: 'manual',
-        message: '이 환자 번호는 이미 존재합니다',
-      })
-    } else {
-      form.clearErrors('hos_patient_id')
-    }
-  }, 700)
+    setIsSubmitting(true)
+
+    await updatePatientFromChecklist(
+      {
+        birth: format(birth, 'yyyy-MM-dd'),
+        breed: breed.split('#')[0],
+        gender,
+        hos_patient_id,
+        memo,
+        microchip_no,
+        name,
+        species,
+        owner_name,
+        hos_owner_id,
+        weight,
+      },
+      patient!.patient_id,
+      isWeightChanged!,
+    )
+
+    toast({
+      title: `${name} 정보를 수정했습니다`,
+    })
+
+    setIsSubmitting(false)
+    setIsDialogOpen(false)
+    refresh()
+  }
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(handleRegister)}
+        onSubmit={form.handleSubmit(isEdit ? handleUpdate : handleRegister)}
         className="grid grid-cols-2 gap-4"
       >
         <FormField
@@ -235,10 +294,7 @@ export default function ClPatientRegisterForm({
                 <Input
                   {...field}
                   value={field.value || ''}
-                  onChange={(e) => {
-                    field.onChange(e)
-                    handleHosPatientIdInputChange()
-                  }}
+                  onChange={field.onChange}
                   className="h-8 text-sm"
                 />
               </FormControl>
@@ -314,7 +370,7 @@ export default function ClPatientRegisterForm({
                             ? '품종을 선택해주세요'
                             : '종을 먼저 선택해주세요'}
                       </span>
-                      <CaretSortIcon className="absolute right-3 h-4 w-4 shrink-0 opacity-50" />
+                      <ChevronDownIcon className="absolute right-3 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
@@ -345,7 +401,7 @@ export default function ClPatientRegisterForm({
                               <CheckIcon
                                 className={cn(
                                   'ml-auto h-4 w-4',
-                                  breed.eng === field.value
+                                  breed.eng === field.value.split('#')[0]
                                     ? 'opacity-100'
                                     : 'opacity-0',
                                 )}
@@ -404,7 +460,10 @@ export default function ClPatientRegisterForm({
           )}
         />
 
-        <BirthDatePicker form={form} />
+        <BirthDatePicker
+          form={form}
+          birth={isEdit ? new Date(patient?.birth!) : new Date()}
+        />
 
         <FormField
           control={form.control}
@@ -492,9 +551,7 @@ export default function ClPatientRegisterForm({
               type="button"
               disabled={isSubmitting}
               variant="outline"
-              onClick={() => {
-                setIsPatientRegisterDialogOpen!(false)
-              }}
+              onClick={() => setIsDialogOpen(false)}
             >
               닫기
             </Button>

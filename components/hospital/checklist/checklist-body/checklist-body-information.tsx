@@ -1,28 +1,29 @@
-import { ChecklistData } from '@/types/checklist/checklist-type'
+import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Separator } from '@/components/ui/separator'
 import { Textarea } from '@/components/ui/textarea'
-import { useEffect, useState } from 'react'
 import {
   type ChecklistWithPatientWithWeight,
   updateEachChecklist,
-} from '@/lib/services/checklist/get-checklist-data-client'
-import { Button } from '@/components/ui/button'
-import { LoaderCircle } from 'lucide-react'
+} from '@/lib/services/checklist/checklist-data'
+import { LoaderCircleIcon } from 'lucide-react'
+import { useEffect, useState } from 'react'
+
 type Props = {
   checklistData: ChecklistWithPatientWithWeight
 }
+
 export default function ChecklistBodyInformation({ checklistData }: Props) {
   const [comment, setComment] = useState<string>('')
   const [isSaving, setIsSaving] = useState(false)
+
   useEffect(() => {
     checklistData?.comment && setComment(checklistData.comment)
     // const timer = setTimeout(() => {
@@ -34,7 +35,9 @@ export default function ChecklistBodyInformation({ checklistData }: Props) {
     // }, 2000)
     setIsSaving(false)
   }, [checklistData])
+
   const type = checklistData?.checklist_type
+
   return (
     <div className="flex w-full flex-col">
       <h1 className="ml-3 text-xl font-bold tracking-tight text-foreground">
@@ -144,7 +147,7 @@ export default function ChecklistBodyInformation({ checklistData }: Props) {
       {checklistData?.comment !== comment && (
         <div className="m-3 w-[100px]">
           {isSaving ? (
-            <LoaderCircle className="ml-2 animate-spin" />
+            <LoaderCircleIcon className="ml-2 animate-spin" />
           ) : (
             <Button
               variant="default"

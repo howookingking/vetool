@@ -6,7 +6,7 @@ import useIsMobile from '@/hooks/use-is-mobile'
 import {
   type ChecklistWithPatientWithWeight,
   updateEachChecklist,
-} from '@/lib/services/checklist/get-checklist-data-client'
+} from '@/lib/services/checklist/checklist-data'
 import { CameraIcon, ImageIcon } from 'lucide-react'
 import { useRef } from 'react'
 
@@ -17,6 +17,7 @@ type Props = {
 export default function ChecklistTimetableAdd({ checklistData }: Props) {
   const inputTxt = useRef<HTMLInputElement>(null)
   const isMobile = useIsMobile()
+
   const addtimetableTx = () => {
     if (inputTxt.current && inputTxt.current.value) {
       const txt = inputTxt.current.value
@@ -66,6 +67,7 @@ export default function ChecklistTimetableAdd({ checklistData }: Props) {
       }
     }
   }
+
   return (
     <div className="m-3 flex items-center">
       {isMobile ? <div>+</div> : <div>기록 추가</div>}

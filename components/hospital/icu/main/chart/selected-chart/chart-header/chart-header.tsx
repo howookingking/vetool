@@ -10,6 +10,7 @@ export default function ChartHeader({
   return (
     <div className="fixed z-30 w-full border-b bg-white 2xl:w-exclude-sidebar">
       <HeaderCenter chartData={chartData} />
+
       <HeaderRightButtons chartData={chartData} />
     </div>
   )

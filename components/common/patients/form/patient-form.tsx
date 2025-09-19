@@ -40,6 +40,7 @@ import {
   CANINE_BREEDS,
   FELINE_BREEDS,
   SEX,
+  SpeciesTypeEnum,
 } from '@/constants/hospital/register/breed'
 import { registerPatientFormSchema } from '@/lib/schemas/patient/patient-schema'
 import {
@@ -48,16 +49,15 @@ import {
   updatePatientFromIcu,
   updatePatientFromPatientRoute,
 } from '@/lib/services/patient/patient'
-import { cn } from '@/lib/utils/utils'
+import { cn, formatEditingBreed } from '@/lib/utils/utils'
 import type { Patient } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons'
 import { format } from 'date-fns'
-import { LoaderCircle } from 'lucide-react'
+import { LoaderCircleIcon, CheckIcon, ChevronDownIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { type DebouncedState, useDebouncedCallback } from 'use-debounce'
+import { type DebouncedState } from 'use-debounce'
 import * as z from 'zod'
 import type { RegisteringPatient } from '../../../hospital/icu/sidebar/register-dialog/register-dialog'
 
@@ -154,21 +154,6 @@ export default function PatientForm({
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDuplicatedId, setIsDuplicatedId] = useState(false)
 
-  let defaultBreed: string
-
-  if (editingPatient?.species === 'canine') {
-    defaultBreed = [
-      editingPatient?.breed,
-      CANINE_BREEDS.find((breed) => breed.eng === editingPatient?.breed)?.kor,
-    ].join('#')
-  }
-  if (editingPatient?.species === 'feline') {
-    defaultBreed = [
-      editingPatient?.breed,
-      FELINE_BREEDS.find((breed) => breed.eng === editingPatient?.breed)?.kor,
-    ].join('#')
-  }
-
   const form = useForm<z.infer<typeof registerPatientFormSchema>>({
     resolver: zodResolver(
       registerPatientFormSchema.refine(
@@ -200,7 +185,10 @@ export default function PatientForm({
           name: editingPatient?.name,
           hos_patient_id: editingPatient?.hos_patient_id,
           species: editingPatient?.species,
-          breed: defaultBreed!,
+          breed: formatEditingBreed(
+            editingPatient.species as SpeciesTypeEnum,
+            editingPatient?.breed!,
+          ),
           gender: editingPatient?.gender,
           birth: new Date(editingPatient?.birth!),
           microchip_no: editingPatient?.microchip_no ?? '',
@@ -226,7 +214,6 @@ export default function PatientForm({
         },
   })
 
-  const watchHosPatientId = form.watch('hos_patient_id')
   const watchSpecies = form.watch('species')
   const watchBreed = form.watch('breed')
   const BREEDS = watchSpecies === 'canine' ? CANINE_BREEDS : FELINE_BREEDS
@@ -241,9 +228,6 @@ export default function PatientForm({
   const handleRegister = async (
     values: z.infer<typeof registerPatientFormSchema>,
   ) => {
-    // 0. 환자 번호 중복 확인
-    if (isDuplicatedId) return
-
     setIsSubmitting(true)
 
     const {
@@ -312,9 +296,6 @@ export default function PatientForm({
   const handleUpdate = async (
     values: z.infer<typeof registerPatientFormSchema>,
   ) => {
-    if (isDuplicatedId) {
-      return
-    }
     const {
       birth,
       breed,
@@ -328,6 +309,7 @@ export default function PatientForm({
       species,
       weight: weightInput,
     } = values
+
     const isWeightChanged = weightInput !== weight
 
     setIsSubmitting(true)
@@ -379,33 +361,10 @@ export default function PatientForm({
       title: '환자 정보가 수정되었습니다',
     })
 
-    // if (setIsEdited) setIsEdited(true)
     setIsSubmitting(false)
     setIsPatientUpdateDialogOpen!(false)
     refresh()
   }
-
-  const handleHosPatientIdInputChange = useDebouncedCallback(async () => {
-    if (
-      watchHosPatientId.trim() === '' ||
-      watchHosPatientId === editingPatient?.hos_patient_id
-    ) {
-      form.clearErrors('hos_patient_id')
-      return
-    }
-
-    const result = await isHosPatientIdDuplicated(watchHosPatientId, hosId)
-    setIsDuplicatedId(result)
-
-    if ((!isEdit && result) || (isEdit && result)) {
-      form.setError('hos_patient_id', {
-        type: 'manual',
-        message: '이 환자 번호는 이미 존재합니다',
-      })
-    } else {
-      form.clearErrors('hos_patient_id')
-    }
-  }, 700)
 
   return (
     <Form {...form}>
@@ -449,10 +408,7 @@ export default function PatientForm({
                 <Input
                   {...field}
                   value={field.value || ''}
-                  onChange={(e) => {
-                    field.onChange(e)
-                    handleHosPatientIdInputChange()
-                  }}
+                  onChange={field.onChange}
                   className="h-8 text-sm"
                 />
               </FormControl>
@@ -528,7 +484,7 @@ export default function PatientForm({
                             ? '품종을 선택해주세요'
                             : '종을 먼저 선택해주세요'}
                       </span>
-                      <CaretSortIcon className="absolute right-3 h-4 w-4 shrink-0 opacity-50" />
+                      <ChevronDownIcon className="absolute right-3 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
@@ -559,7 +515,7 @@ export default function PatientForm({
                               <CheckIcon
                                 className={cn(
                                   'ml-auto h-4 w-4',
-                                  breed.eng === field.value
+                                  breed.eng === field.value.split('#')[0]
                                     ? 'opacity-100'
                                     : 'opacity-0',
                                 )}
@@ -752,7 +708,7 @@ export default function PatientForm({
 
             <Button type="submit" disabled={isSubmitting}>
               {isEdit ? '수정' : '등록'}
-              <LoaderCircle
+              <LoaderCircleIcon
                 className={cn(isSubmitting ? 'ml-2 animate-spin' : 'hidden')}
               />
             </Button>

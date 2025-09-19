@@ -27,12 +27,12 @@ import useMinutesPassed from '@/hooks/use-minute-passed'
 import {
   type ChecklistWithPatientWithWeight,
   updateEachChecklist,
-} from '@/lib/services/checklist/get-checklist-data-client'
+} from '@/lib/services/checklist/checklist-data'
 import type {
   ChecklistResults,
   CheckNameArray,
 } from '@/types/checklist/checklist-type'
-import { LoaderCircle, Pencil } from 'lucide-react'
+import { LoaderCircleIcon, PencilIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import ChecklistBodyTableCell from './checklist-body-tablecell'
 import ChecklistEditTableRow from './checklist-edit-table-row'
@@ -245,7 +245,7 @@ export default function ChecklistBodyTable({ checklistData }: Props) {
                       key={'list' + j}
                     >
                       {isSaving ? (
-                        <LoaderCircle className="ml-2 animate-spin" />
+                        <LoaderCircleIcon className="ml-2 animate-spin" />
                       ) : (
                         <ChecklistBodyTableCell
                           time={String(time)}
@@ -268,7 +268,7 @@ export default function ChecklistBodyTable({ checklistData }: Props) {
                   <Dialog key={'dialog' + i}>
                     <DialogTrigger asChild>
                       <Button variant="ghost" className="ml-2">
-                        <Pencil size={14} />
+                        <PencilIcon size={14} />
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="h-auto w-auto max-w-full pt-6">

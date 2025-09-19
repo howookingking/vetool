@@ -1,26 +1,26 @@
 'use client'
-import { Button } from '@/components/ui/button'
-import {
-  ChecklistWithPatientWithWeight,
-  updateEachChecklist,
-} from '@/lib/services/checklist/get-checklist-data-client'
-import { ChecklistData, TimeTable } from '@/types/checklist/checklist-type'
-import { Pencil } from 'lucide-react'
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
+
 import ChecklistTimetableTimeEditor from '@/components/hospital/checklist/checklist-body/checklist-body-checklist/checklist-timetabletime-editor'
+import LocalTime from '@/components/hospital/checklist/common/localtime'
+import { Button } from '@/components/ui/button'
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { useEffect, useState } from 'react'
-import LocalTime from '@/components/hospital/checklist/common/localtime'
-import { LoaderCircle } from 'lucide-react'
+import {
+  ChecklistWithPatientWithWeight,
+  updateEachChecklist,
+} from '@/lib/services/checklist/checklist-data'
 import { cn } from '@/lib/utils/utils'
+import { TimeTable } from '@/types/checklist/checklist-type'
+import { LoaderCircleIcon, PencilIcon } from 'lucide-react'
+import { useEffect, useState } from 'react'
+
 type Props = {
   checklistData: ChecklistWithPatientWithWeight
 }
@@ -37,9 +37,11 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
     name: 'txStart',
     txt: '',
   })
+
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isTableLoad, setIsTableLoad] = useState<boolean>(false)
   const [timetable, setTableTime] = useState<TimeTable | null>(null)
+
   useEffect(() => {
     checklistData?.checklist_timetable &&
       setTableTime(
@@ -77,6 +79,7 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
       }
     }
   }
+
   const setTime = (time: number, index: number, name: string, txt: string) => {
     setIsTableLoad(true)
     if (txt !== '' && name === 'time') {
@@ -181,7 +184,7 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
                   </TableCell>
                   <TableCell className="border border-gray-300 px-1 py-1">
                     {isTableLoad ? (
-                      <LoaderCircle
+                      <LoaderCircleIcon
                         className={cn(
                           isTableLoad ? 'ml-2 animate-spin' : 'hidden',
                         )}
@@ -214,7 +217,7 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
                             }}
                             className="w-[40px]"
                           >
-                            <Pencil size={20}></Pencil>
+                            <PencilIcon size={20}></PencilIcon>
                           </Button>
                         )}
                       </div>

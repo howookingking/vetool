@@ -13,10 +13,9 @@ import { minToLocalTime } from '@/constants/checklist/checklist'
 import {
   type ChecklistWithPatientWithWeight,
   updateEachChecklist,
-} from '@/lib/services/checklist/get-checklist-data-client'
+} from '@/lib/services/checklist/checklist-data'
 import { cn } from '@/lib/utils/utils'
-import { ChecklistData } from '@/types/checklist/checklist-type'
-import { LoaderCircle } from 'lucide-react'
+import { LoaderCircleIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 type Props = {
@@ -124,7 +123,7 @@ export default function ChecklistBodyProtocol({ checklistData }: Props) {
                     changeCheckbox(checked, index)
                   }
                 />{' '}
-                <LoaderCircle
+                <LoaderCircleIcon
                   className={cn(isCheckLoad ? 'ml-2 animate-spin' : 'hidden')}
                 />
               </TableCell>

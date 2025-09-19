@@ -1,18 +1,13 @@
-'use client'
-import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-
-import { timeInterval } from '@/constants/checklist/checklist'
-import { updateEachChecklist } from '@/lib/services/checklist/get-checklist-data-client'
+import { useEffect, useState } from 'react'
 
 type Props = {
   pretime: number
   index: number
   name: string // start or end
   txt: string
-
   setTime: (time: number, index: number, name: string, txt: string) => void
 }
 

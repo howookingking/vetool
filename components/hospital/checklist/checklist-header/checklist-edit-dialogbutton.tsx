@@ -1,5 +1,3 @@
-// data type 바뀌면서 에러나는 부분 주석 처리
-
 'use client'
 
 import { Button } from '@/components/ui/button'
@@ -15,50 +13,20 @@ import { cn } from '@/lib/utils/utils'
 import { ChecklistData } from '@/types/checklist/checklist-type'
 import { Pencil } from 'lucide-react'
 import { useState } from 'react'
+import ChecklistEditContainer from '../checklist-edit/checklist-edit-container'
+import { ChecklistWithPatientWithWeight } from '@/lib/services/checklist/checklist-data'
 
 type Props = {
   isEdit: boolean
-  checklistId: string
+  checklistData: ChecklistWithPatientWithWeight
 }
 
 export default function ChecklistEditDialogButton({
   isEdit,
-  checklistId,
+  checklistData,
 }: Props) {
   const [isChecklistEditDialogOpen, setChecklistEditDialogOpen] =
     useState(false)
-  const [checklistData, setChecklistData] = useState<ChecklistData | null>()
-
-  // const fetchData = useCallback(async () => {
-  //   const data: Checklist = await getChecklistDataById(checklistId)
-  //   let predata: ChecklistData = {} as ChecklistData
-  //   if (data) {
-  //     predata = data as ChecklistData
-  //   }
-  //   setChecklistData(predata)
-  // }, [checklistId])
-
-  // useEffect(() => {
-  //   fetchData()
-  //   const channel = getChecklistDataByIdChannel(checklistId, (payload) => {
-  //     let prepayload: ChecklistData = {} as ChecklistData
-  //     if (payload) {
-  //       prepayload = payload as ChecklistData
-  //     }
-  //     setChecklistData(prepayload)
-  //   })
-  //   setChecklistEditDialogOpen(isEdit)
-  // }, [isEdit, checklistId, fetchData])
-  // //   const isActive = pathname.split('/')[7]
-
-  // const checklistEditDialogOpen = (isopen: boolean) => {
-  //   if (isopen) {
-  //     fetchData()
-  //     setChecklistEditDialogOpen(true)
-  //   } else {
-  //     setChecklistEditDialogOpen(false)
-  //   }
-  // }
 
   return (
     <Dialog
@@ -67,13 +35,9 @@ export default function ChecklistEditDialogButton({
     >
       <DialogTrigger asChild>
         <Button
-          type="button"
           size="icon"
-          variant="outline"
-          className={cn(
-            'm-2',
-            isChecklistEditDialogOpen && 'bg-primary text-white',
-          )}
+          variant="ghost"
+          className={cn(isChecklistEditDialogOpen && 'bg-primary text-white')}
         >
           <Pencil />
           {/* <div className="hidden 2xl:flex">EDIT</div> */}

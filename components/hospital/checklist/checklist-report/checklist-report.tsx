@@ -1,21 +1,11 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import { getPatientById } from '@/lib/services/checklist/get-checklist-data-client'
-import { calculateAge } from '@/lib/utils/utils'
-import type {
-  ChecklistData,
-  ReportPatient,
-} from '@/types/checklist/checklist-type'
-import { Check } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import ChecklistReportTimetable from '@/components/hospital/checklist/checklist-report/checklist-report-timetable'
 import ChecklistReportChecklist from '@/components/hospital/checklist/checklist-report/checklist-report-checklist'
+import ChecklistReportTimetable from '@/components/hospital/checklist/checklist-report/checklist-report-timetable'
 import ChecklistReportTxInfo from '@/components/hospital/checklist/checklist-report/checklist-report-txinfo'
+import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
+import { getPatientById } from '@/lib/services/checklist/checklist-data'
+import { calculateAge } from '@/lib/utils/utils'
+import type { ChecklistData } from '@/types/checklist/checklist-type'
+import { useEffect, useState } from 'react'
 
 type Props = {
   checklistData: ChecklistData

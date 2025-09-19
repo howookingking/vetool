@@ -83,10 +83,9 @@ export const getPatientsData = async (hosId: string) => {
 export const getPatientData = async (patientId: string) => {
   const supabase = await createClient()
 
-  const { data, error } = await supabase
-    .rpc('get_patient_data_with_vitals', {
-      patient_id_input: patientId,
-    })
+  const { data, error } = await supabase.rpc('get_patient_data_with_vitals', {
+    patient_id_input: patientId,
+  })
 
   if (error) {
     console.error(error)
@@ -298,4 +297,45 @@ export const getWeightInfo = async (patientId: string) => {
     redirect(`/error?message=${error.message}`)
   }
   return data
+}
+
+export const updatePatientFromChecklist = async (
+  updatePatient: {
+    birth: string
+    breed: string
+    gender: string
+    hos_patient_id: string
+    memo: string
+    microchip_no: string
+    name: string
+    species: string
+    owner_name: string
+    hos_owner_id: string
+    weight: string
+  },
+  patientId: string,
+  isWeightChanged: boolean,
+) => {
+  const supabase = await createClient()
+
+  const { error } = await supabase.rpc('update_patient_from_checklist', {
+    birth_input: updatePatient.birth,
+    breed_input: updatePatient.breed,
+    gender_input: updatePatient.gender,
+    patient_id_input: patientId,
+    memo_input: updatePatient.memo,
+    microchip_no_input: updatePatient.microchip_no,
+    name_input: updatePatient.name,
+    species_input: updatePatient.species,
+    owner_name_input: updatePatient.owner_name,
+    hos_owner_id_input: updatePatient.hos_owner_id,
+    hos_patient_id_input: updatePatient.hos_patient_id,
+    is_weight_changed_input: isWeightChanged,
+    weight_input: updatePatient.weight,
+  })
+
+  if (error) {
+    console.error(error)
+    redirect(`/error?message=${error.message}`)
+  }
 }

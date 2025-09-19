@@ -1,18 +1,9 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import {
-  checkListSetArray,
-  defaultChecklistSet,
-} from '@/constants/checklist/checklist'
-import type {
-  ChecklistResults,
-  CheckNameArray,
-} from '@/types/checklist/checklist-type'
-import { useEffect, useState } from 'react'
 import ChecklistBodyTableCell from '@/components/hospital/checklist/checklist-body/checklist-body-checklist/checklist-body-tablecell'
 import ChecklistTimetableRecord from '@/components/hospital/checklist/checklist-body/checklist-body-checklist/checklist-timetable-record'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import {
   Table,
@@ -23,10 +14,19 @@ import {
 } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
 import {
+  checkListSetArray,
+  defaultChecklistSet,
+} from '@/constants/checklist/checklist'
+import {
   type ChecklistWithPatientWithWeight,
   updateEachChecklist,
-} from '@/lib/services/checklist/get-checklist-data-client'
-import { LoaderCircle } from 'lucide-react'
+} from '@/lib/services/checklist/checklist-data'
+import type {
+  ChecklistResults,
+  CheckNameArray,
+} from '@/types/checklist/checklist-type'
+import { LoaderCircleIcon } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import ChecklistTimetableAdd from './checklist-timetable-add'
 
 export default function ChecklistBodyTable({
@@ -240,7 +240,7 @@ export default function ChecklistBodyTable({
                           onChange={changeTableCellResult}
                         />
                       ) : isSaving ? (
-                        <LoaderCircle className="ml-2 animate-spin" />
+                        <LoaderCircleIcon className="ml-2 animate-spin" />
                       ) : (
                         <ChecklistBodyTableCell
                           time={String(checktime)}

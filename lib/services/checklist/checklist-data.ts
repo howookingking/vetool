@@ -1,9 +1,8 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { Checklist, Patient } from '@/types'
+import type { Checklist, Patient } from '@/types'
 import type {
-  ChecklistPatient,
   ChecklistProtocol,
   Checklistset,
   ChecklistVet,
@@ -12,9 +11,7 @@ import type {
 } from '@/types/checklist/checklist-type'
 import { redirect } from 'next/navigation'
 
-export const getPatientById = async (
-  patientId: string,
-): Promise<ChecklistPatient | null> => {
+export const getPatientById = async (patientId: string) => {
   const supabase = await createClient()
 
   const { data, error } = await supabase
@@ -65,6 +62,15 @@ export const getPatientById = async (
 // }
 
 // rpc로 필요한 데이터(환자 및 환자의 체중)을 한번에 가져옴
+
+export type ChecklistPatient = Omit<
+  Patient,
+  'hos_id' | 'created_at' | 'owner_id'
+> & {
+  body_weight: string | null
+  weight_measured_date: string | null
+}
+
 export type ChecklistWithPatientWithWeight = Omit<
   Checklist,
   | 'patient_id'
@@ -74,13 +80,7 @@ export type ChecklistWithPatientWithWeight = Omit<
   | 'checklist_protocol'
   | 'checklist_vet'
 > & {
-  patient: Omit<
-    Patient,
-    'hos_id' | 'created_at' | 'owner_id' | 'hos_owner_id'
-  > & {
-    body_weight: string | null
-    weight_measured_date: string | null
-  }
+  patient: ChecklistPatient
 } & {
   checklist_set: Checklistset
 } & {

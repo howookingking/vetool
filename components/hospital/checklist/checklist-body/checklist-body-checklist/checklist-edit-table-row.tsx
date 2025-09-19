@@ -13,7 +13,7 @@ import { minToLocalTime } from '@/constants/checklist/checklist'
 import {
   type ChecklistWithPatientWithWeight,
   updateEachChecklist,
-} from '@/lib/services/checklist/get-checklist-data-client'
+} from '@/lib/services/checklist/checklist-data'
 import {
   CheckItem,
   ChecklistResults,
@@ -40,6 +40,7 @@ export default function ChecklistEditTableRow({
     time: string
     newresult: ChecklistResults
   }>({ time: '', newresult: {} })
+
   useEffect(() => {
     const preResult = { time: '', newresult: {} as ChecklistResults }
     pretime && (preResult.time = pretime)
@@ -83,6 +84,7 @@ export default function ChecklistEditTableRow({
     }
     setIseditTableRowOpen(false)
   }
+
   return (
     <Table className="mt-3">
       <TableHeader>

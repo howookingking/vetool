@@ -86,7 +86,7 @@ export default function ClPatientButton({ checklistchart }: Props) {
           <div className="mb-1 flex justify-between gap-2">
             <span className="flex items-center gap-1 text-sm">
               <SpeciesIcon />
-              {checklistchart.patient?.name}({checklistchart.weight}kg)
+              {checklistchart.patient?.name}({checklistchart.patient.breed}kg)
             </span>
 
             <span className="max-w-[96px] truncate text-xs leading-5">
