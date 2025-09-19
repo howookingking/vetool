@@ -1,38 +1,10 @@
-'use client'
-
-import { timeInterval } from '@/constants/checklist/checklist'
-import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
+import useMinutesPassed from '@/hooks/use-minute-passed'
 
 type Props = {
-  startime: string | null
-  setChecklistTimes: (intervaltime: string) => void
+  startime: string
 }
-export default function ChecklistIntervalMin({
-  startime,
-  setChecklistTimes,
-}: Props) {
-  const [time, setTime] = useState<String | null>(null)
-  const [intermin, setInterMin] = useState<String>('0')
+export default function ChecklistIntervalMin({ startime }: Props) {
+  const minutesPassed = useMinutesPassed(startime)
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      //   setTime(getCurrentTime())
-      if (startime) {
-        if (intermin) {
-          if (
-            intermin !== timeInterval(startime, new Date().toISOString())[0]
-          ) {
-            setInterMin(timeInterval(startime, new Date().toISOString())[0])
-            setChecklistTimes(
-              String(timeInterval(startime, new Date().toISOString())[0]),
-            )
-          }
-        }
-      }
-    }, 1000)
-
-    return () => clearInterval(interval)
-  }, [startime, intermin, setChecklistTimes])
-
-  return <div className="ml-3 text-lg font-bold">{intermin}분</div>
+  return <div className="ml-3 text-lg font-bold">시작 후 {minutesPassed}분</div>
 }

@@ -2,6 +2,7 @@
 
 'use client'
 
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -10,21 +11,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils/utils'
-import { Pencil } from 'lucide-react'
-import React, { useState, useEffect, useCallback } from 'react'
 import { ChecklistData } from '@/types/checklist/checklist-type'
-import ChecklistEditContainer from '../checklist-edit/checklist-edit-container'
-import {
-  getChecklistDataById,
-  getChecklistDataByIdChannel,
-} from '@/lib/services/checklist/get-checklist-data-client'
-import { Checklist } from '@/types'
+import { Pencil } from 'lucide-react'
+import { useState } from 'react'
+
 type Props = {
   isEdit: boolean
   checklistId: string
 }
+
 export default function ChecklistEditDialogButton({
   isEdit,
   checklistId,
@@ -72,6 +68,7 @@ export default function ChecklistEditDialogButton({
       <DialogTrigger asChild>
         <Button
           type="button"
+          size="icon"
           variant="outline"
           className={cn(
             'm-2',

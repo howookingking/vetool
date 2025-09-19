@@ -1,15 +1,19 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { updateEachChecklist } from '@/lib/services/checklist/get-checklist-data-client'
-import { ChecklistData } from '@/types/checklist/checklist-type'
-import { CameraIcon, ImageIcon } from 'lucide-react'
-import { useRef } from 'react'
 import { toast } from '@/components/ui/use-toast'
 import useIsMobile from '@/hooks/use-is-mobile'
+import {
+  type ChecklistWithPatientWithWeight,
+  updateEachChecklist,
+} from '@/lib/services/checklist/get-checklist-data-client'
+import { CameraIcon, ImageIcon } from 'lucide-react'
+import { useRef } from 'react'
+
 type Props = {
-  checklistData: ChecklistData
+  checklistData: ChecklistWithPatientWithWeight
 }
+
 export default function ChecklistTimetableAdd({ checklistData }: Props) {
   const inputTxt = useRef<HTMLInputElement>(null)
   const isMobile = useIsMobile()

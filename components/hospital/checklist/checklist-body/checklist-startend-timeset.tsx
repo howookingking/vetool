@@ -1,4 +1,5 @@
 'use client'
+
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -7,14 +8,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { updateEachChecklist } from '@/lib/services/checklist/get-checklist-data-client'
-import { ChecklistData } from '@/types/checklist/checklist-type'
+import {
+  type ChecklistWithPatientWithWeight,
+  updateEachChecklist,
+} from '@/lib/services/checklist/get-checklist-data-client'
+import { format } from 'date-fns'
 import { Pencil } from 'lucide-react'
 import { useState } from 'react'
-import { format } from 'date-fns'
 import ChecklistTimeEditor from './checklist-time-editor'
+
 type Props = {
-  checklistData: ChecklistData
+  checklistData: ChecklistWithPatientWithWeight
 }
 
 export default function ChecklistStartEndTimeSet({ checklistData }: Props) {
@@ -24,57 +28,55 @@ export default function ChecklistStartEndTimeSet({ checklistData }: Props) {
   const endCancelBtn = () => {
     if (checklistData) {
       const predata = { ...checklistData }
-      predata.endtime = null
-      predata.istxing = true
-      predata.enddate = null
+      predata.end_time = null
+      predata.is_txing = true
+      predata.end_date = null
       updateEachChecklist(predata)
     }
   }
   const startCancelBtn = () => {
     if (checklistData) {
       const predata = { ...checklistData }
-      predata.starttime = null
-      predata.endtime = null
-      predata.istxing = false
+      predata.start_time = null
+      predata.end_time = null
+      predata.is_txing = false
       updateEachChecklist(predata)
     }
   }
-  const startBtn = () => {
-    if (checklistData) {
-      const predata = { ...checklistData }
-      predata.starttime = new Date().toISOString()
-      predata.istxing = true
-      updateEachChecklist(predata)
-    }
+  const handleStart = () => {
+    const predata = { ...checklistData }
+    predata.start_time = new Date().toISOString()
+    predata.is_txing = true
+
+    updateEachChecklist(predata)
   }
-  const endBtn = () => {
-    if (checklistData) {
-      const predata = { ...checklistData }
-      predata.endtime = new Date().toISOString()
-      predata.istxing = false
-      predata.enddate = format(new Date(), 'yyyy-MM-dd')
-      updateEachChecklist(predata)
-    }
+
+  const handleEnd = () => {
+    const predata = { ...checklistData }
+    predata.end_time = new Date().toISOString()
+    predata.is_txing = false
+    predata.end_date = format(new Date(), 'yyyy-MM-dd')
+
+    updateEachChecklist(predata)
   }
+
   const changeMainTime = (date: Date, timename: string) => {
-    if (checklistData) {
-      if (timename === 'starttime') {
-        const predata = { ...checklistData }
-        predata.starttime = new Date(date).toISOString()
-        updateEachChecklist(predata)
-        setStartEndDialogOpen(false)
-        setStartDialogOpen(false)
-      } else {
-        const predata = { ...checklistData }
-        predata.endtime = new Date(date).toISOString()
-        updateEachChecklist(predata)
-        setStartEndDialogOpen(false)
-      }
+    if (timename === 'start_time') {
+      const predata = { ...checklistData }
+      predata.start_time = new Date(date).toISOString()
+      updateEachChecklist(predata)
+      setStartEndDialogOpen(false)
+      setStartDialogOpen(false)
+    } else {
+      const predata = { ...checklistData }
+      predata.end_time = new Date(date).toISOString()
+      updateEachChecklist(predata)
+      setStartEndDialogOpen(false)
     }
   }
   return (
     <div className="flex flex-wrap">
-      {checklistData?.starttime && checklistData?.endtime ? (
+      {checklistData?.start_time && checklistData?.end_time ? (
         <div className="flex items-center">
           <div>
             <Button className="m-3" variant="outline" onClick={endCancelBtn}>
@@ -97,23 +99,23 @@ export default function ChecklistStartEndTimeSet({ checklistData }: Props) {
                   <DialogTitle>시작 시간변경</DialogTitle>
                 </DialogHeader>
                 <ChecklistTimeEditor
-                  pretime={checklistData?.starttime}
+                  pretime={checklistData?.start_time}
                   setTime={changeMainTime}
-                  timename="starttime"
+                  timename="start_time"
                 />
                 <DialogHeader>
                   <DialogTitle>종료 시간변경</DialogTitle>
                 </DialogHeader>
                 <ChecklistTimeEditor
-                  pretime={checklistData?.endtime}
+                  pretime={checklistData?.end_time}
                   setTime={changeMainTime}
-                  timename="endtime"
+                  timename="end_time"
                 />
               </DialogContent>
             </Dialog>
           </div>
         </div>
-      ) : checklistData?.starttime && !checklistData.endtime ? (
+      ) : checklistData?.start_time && !checklistData.end_time ? (
         <div className="flex items-center">
           <div>
             <Button className="m-3" variant="outline" onClick={startCancelBtn}>
@@ -121,10 +123,11 @@ export default function ChecklistStartEndTimeSet({ checklistData }: Props) {
             </Button>
           </div>
           <div>
-            <Button className="m-3" variant="outline" onClick={endBtn}>
+            <Button className="m-3" variant="outline" onClick={handleEnd}>
               종료
             </Button>
           </div>
+
           <div>
             <Dialog open={isStartDialogOpen} onOpenChange={setStartDialogOpen}>
               <DialogTrigger asChild>
@@ -138,9 +141,9 @@ export default function ChecklistStartEndTimeSet({ checklistData }: Props) {
                   <DialogTitle>시작 시간변경</DialogTitle>
                 </DialogHeader>
                 <ChecklistTimeEditor
-                  pretime={checklistData?.starttime}
+                  pretime={checklistData?.start_time}
                   setTime={changeMainTime}
-                  timename="starttime"
+                  timename="start_time"
                 />
               </DialogContent>
             </Dialog>
@@ -151,7 +154,7 @@ export default function ChecklistStartEndTimeSet({ checklistData }: Props) {
           className="m-3"
           type="button"
           variant="outline"
-          onClick={startBtn}
+          onClick={handleStart}
         >
           시작
         </Button>

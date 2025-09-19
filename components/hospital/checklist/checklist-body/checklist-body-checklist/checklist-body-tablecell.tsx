@@ -1,11 +1,13 @@
-import type { ChecklistData } from '@/types/checklist/checklist-type'
 import { Input } from '@/components/ui/input'
-import { updateEachChecklist } from '@/lib/services/checklist/get-checklist-data-client'
-import React, { use, useEffect, useState } from 'react'
+import {
+  type ChecklistWithPatientWithWeight,
+  updateEachChecklist,
+} from '@/lib/services/checklist/get-checklist-data-client'
+import React, { useEffect, useState } from 'react'
 type Props = {
   time: string
   name: string
-  checklistData: ChecklistData
+  checklistData: ChecklistWithPatientWithWeight
   setIsSaving: React.Dispatch<React.SetStateAction<boolean>>
 }
 export default function ChecklistBodyTableCell({

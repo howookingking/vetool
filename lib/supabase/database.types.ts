@@ -74,7 +74,6 @@ export type Database = {
           patient_id: string | null
           pre_info: Json | null
           start_time: string | null
-          weight: number | null
         }
         Insert: {
           age_in_days?: number | null
@@ -97,7 +96,6 @@ export type Database = {
           patient_id?: string | null
           pre_info?: Json | null
           start_time?: string | null
-          weight?: number | null
         }
         Update: {
           age_in_days?: number | null
@@ -120,7 +118,6 @@ export type Database = {
           patient_id?: string | null
           pre_info?: Json | null
           start_time?: string | null
-          weight?: number | null
         }
         Relationships: [
           {

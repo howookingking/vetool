@@ -19,12 +19,12 @@ import { toast } from '@/components/ui/use-toast'
 import { defaultChecklistSet } from '@/constants/checklist/checklist'
 import { ORDER_COLORS } from '@/constants/hospital/icu/chart/colors'
 import {
+  type ChecklistWithPatientWithWeight,
   deleteChecklist,
   updateEachChecklist,
 } from '@/lib/services/checklist/get-checklist-data-client'
 import { Checklist } from '@/types'
 import {
-  ChecklistData,
   ChecklistProtocol,
   ChecklistVet,
   PreInfo,
@@ -35,7 +35,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 type Props = {
-  checklistData: ChecklistData
+  checklistData: ChecklistWithPatientWithWeight
   setChecklistEditDialogOpen: (isopen: boolean) => void
   checklistType: string
 }
@@ -48,7 +48,7 @@ export default function ChecklistEditBasic({
   checklistType,
 }: Props) {
   const [checklistdata, setChecklistData] =
-    useState<ChecklistData>(checklistData)
+    useState<ChecklistWithPatientWithWeight>(checklistData)
   const [groups, setGroups] = useState<string[]>([])
   const [targetDate, setTargetDate] = useState<string>(
     format(new Date(), 'yyyy-MM-dd'),
@@ -94,7 +94,9 @@ export default function ChecklistEditBasic({
       | React.ChangeEvent<HTMLTextAreaElement>
       | React.ChangeEvent<HTMLInputElement>,
   ) => {
-    const preChecklistData: ChecklistData = { ...checklistdata }
+    const preChecklistData: ChecklistWithPatientWithWeight = {
+      ...checklistdata,
+    }
     const keyname = e.target.name as keystring
     if (keyname === 'checklist_title' || keyname === 'comment') {
       console.log('keyname', keyname)
@@ -103,7 +105,9 @@ export default function ChecklistEditBasic({
     }
   }
   const changevetlist = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const preChecklistData: ChecklistData = { ...checklistdata }
+    const preChecklistData: ChecklistWithPatientWithWeight = {
+      ...checklistdata,
+    }
     const keyname = e.target.name as keyof ChecklistVet
     if (!preChecklistData.checklist_vet) {
       preChecklistData.checklist_vet = {
@@ -124,31 +128,39 @@ export default function ChecklistEditBasic({
       | React.ChangeEvent<HTMLTextAreaElement>
       | React.ChangeEvent<HTMLInputElement>,
   ) => {
-    const preChecklistData: ChecklistData = { ...checklistdata }
+    const preChecklistData: ChecklistWithPatientWithWeight = {
+      ...checklistdata,
+    }
     const keyname = e.target.name as keyof PreInfo
-    if (!preChecklistData.preinfo) {
-      preChecklistData.preinfo = {
+    if (!preChecklistData.pre_info) {
+      preChecklistData.pre_info = {
         pre: '',
         induce: '',
         post: '',
         main: '',
         other: '',
       }
-      preChecklistData.preinfo[keyname] = e.target.value
+      preChecklistData.pre_info[keyname] = e.target.value
       setChecklistData(preChecklistData)
     } else {
-      preChecklistData.preinfo[keyname] = e.target.value
+      preChecklistData.pre_info[keyname] = e.target.value
       setChecklistData(preChecklistData)
     }
   }
 
-  const changeChecklistSet = (checklistset: ChecklistData['checklist_set']) => {
-    const preChecklistData: ChecklistData = { ...checklistdata }
+  const changeChecklistSet = (
+    checklistset: ChecklistWithPatientWithWeight['checklist_set'],
+  ) => {
+    const preChecklistData: ChecklistWithPatientWithWeight = {
+      ...checklistdata,
+    }
     preChecklistData.checklist_set = checklistset
     setChecklistData(preChecklistData)
   }
   const changeProtocolSet = (protodolset: ChecklistProtocol) => {
-    const preChecklistData: ChecklistData = { ...checklistdata }
+    const preChecklistData: ChecklistWithPatientWithWeight = {
+      ...checklistdata,
+    }
     preChecklistData.checklist_protocol = protodolset
     setChecklistData(preChecklistData)
   }
@@ -163,7 +175,9 @@ export default function ChecklistEditBasic({
     if (!checklistdata.checklist_id) {
       setChecklistEditDialogOpen(false)
     }
-    const preChecklistData: ChecklistData = { ...checklistdata }
+    const preChecklistData: ChecklistWithPatientWithWeight = {
+      ...checklistdata,
+    }
     const pretag = preChecklistData.checklist_tag + ''
     preChecklistData.due_date = targetDate
     preChecklistData.checklist_type = checklistType
@@ -230,9 +244,11 @@ export default function ChecklistEditBasic({
             <Input
               className="w-20"
               type="number"
-              value={checklistdata.weight ?? null}
+              value={checklistdata.patient.body_weight ?? ''}
               onChange={(e) => {
-                const preChecklistData: ChecklistData = { ...checklistdata }
+                const preChecklistData: ChecklistWithPatientWithWeight = {
+                  ...checklistdata,
+                }
                 preChecklistData.weight = Number(e.target.value)
                 setChecklistData(preChecklistData)
               }}
@@ -245,7 +261,7 @@ export default function ChecklistEditBasic({
                 className="w-20"
                 type="text"
                 name="other"
-                value={checklistdata.preinfo?.other ?? ''}
+                value={checklistdata.pre_info?.other ?? ''}
                 onChange={changePreInfo}
               ></Input>
             </div>
@@ -288,7 +304,7 @@ export default function ChecklistEditBasic({
             </AccordionTrigger>
             <AccordionContent className="flex flex-col gap-4 text-balance">
               <ChecklistEditTxInfo
-                Preinfo={checklistdata.preinfo}
+                Preinfo={checklistdata.pre_info}
                 type={checklistType ?? '일반'}
                 changePreInfo={changePreInfo}
               />
@@ -338,7 +354,9 @@ export default function ChecklistEditBasic({
           preTag={checklistdata.checklist_tag ?? ''}
           preTagArray={null}
           changeChecklistTag={(tag) => {
-            const preChecklistData: ChecklistData = { ...checklistdata }
+            const preChecklistData: ChecklistWithPatientWithWeight = {
+              ...checklistdata,
+            }
             preChecklistData.checklist_tag = tag
             setChecklistData(preChecklistData)
           }}

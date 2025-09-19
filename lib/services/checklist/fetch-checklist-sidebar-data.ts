@@ -1,7 +1,30 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { ChecklistSidebarData } from '@/types/checklist/checklist-type'
+import { Checklist, Patient } from '@/types'
+import { ChecklistVet } from '@/types/checklist/checklist-type'
+
+export type ChecklistSidebarData = Omit<
+  Checklist,
+  | 'created_at'
+  | 'patient_id'
+  | 'checklist_tag'
+  | 'checklist_protocol'
+  | 'checklist_set'
+  | 'checklist_timetable'
+  | 'preinfo'
+  | 'end_date'
+  | 'age_in_days'
+  | 'comment'
+  | 'checklist_vet'
+> & {
+  patient: Pick<
+    Patient,
+    'name' | 'breed' | 'species' | 'patient_id' | 'birth' | 'hos_patient_id'
+  >
+} & {
+  checklist_vet: ChecklistVet
+}
 
 export const fetchChecklistSidebarData = async (
   hosId: string,
@@ -18,5 +41,6 @@ export const fetchChecklistSidebarData = async (
     console.error(error)
     throw new Error(error.message)
   }
+
   return (data ?? []) as ChecklistSidebarData[]
 }

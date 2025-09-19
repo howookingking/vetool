@@ -3,30 +3,29 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import { ChecklistSidebarData } from '@/lib/services/checklist/fetch-checklist-sidebar-data'
 import { cn, convertPascalCased } from '@/lib/utils/utils'
-import { ChecklistSidebarData } from '@/types/checklist/checklist-type'
+
 import { Cat, Dog } from 'lucide-react'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-type ChecklistButtonProps = {
+type Props = {
   checklistchart: ChecklistSidebarData
 }
 
-export default function ClPatientButton({
-  checklistchart,
-}: ChecklistButtonProps) {
+export default function ClPatientButton({ checklistchart }: Props) {
   const [timeLabel, setTimeLabel] = useState('')
 
   useEffect(() => {
-    if (!checklistchart.starttime) return
+    if (!checklistchart.start_time) return
 
-    const start = new Date(checklistchart.starttime).toLocaleTimeString(
+    const start = new Date(checklistchart.start_time).toLocaleTimeString(
       'ko-KR',
       { hour12: false },
     )
-    const end = checklistchart.endtime
-      ? new Date(checklistchart.endtime).toLocaleTimeString('ko-KR', {
+    const end = checklistchart.end_time
+      ? new Date(checklistchart.end_time).toLocaleTimeString('ko-KR', {
           hour12: false,
         })
       : null
@@ -36,7 +35,7 @@ export default function ClPatientButton({
     } else if (start) {
       setTimeLabel(`(시작 : ${start})`)
     }
-  }, [checklistchart.starttime, checklistchart.endtime])
+  }, [checklistchart.start_time, checklistchart.end_time])
 
   const { push } = useRouter()
   const { hos_id, target_date } = useParams()
@@ -80,7 +79,7 @@ export default function ClPatientButton({
       <div
         className={cn(
           'flex w-full flex-col justify-between',
-          checklistchart.endtime && 'text-muted-foreground line-through',
+          checklistchart.end_time && 'text-muted-foreground line-through',
         )}
       >
         {checklistchart.patient ? (
@@ -128,9 +127,9 @@ export default function ClPatientButton({
           <span className="truncate text-xs leading-5">
             <span className="truncate text-xs leading-5">
               {checklistchart.due_date}
-              {checklistchart.starttime && checklistchart.endtime
+              {checklistchart.start_time && checklistchart.end_time
                 ? '  완료'
-                : checklistchart.starttime && !checklistchart.endtime
+                : checklistchart.start_time && !checklistchart.end_time
                   ? '  진행중'
                   : '  대기중'}
               {timeLabel}

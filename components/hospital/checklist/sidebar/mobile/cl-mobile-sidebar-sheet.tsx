@@ -9,11 +9,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import type { ChecklistSidebarData } from '@/types/checklist/checklist-type'
+import type { ChecklistSidebarData } from '@/lib/services/checklist/fetch-checklist-sidebar-data'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { Menu } from 'lucide-react'
 import { useState } from 'react'
 import ClMobileSidebar from './cl-mobile-sidebar'
-import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 
 type Props = {
   checklistSidebarData: ChecklistSidebarData[]

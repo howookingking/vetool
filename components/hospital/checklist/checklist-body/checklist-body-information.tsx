@@ -11,11 +11,14 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { Textarea } from '@/components/ui/textarea'
 import { useEffect, useState } from 'react'
-import { updateEachChecklist } from '@/lib/services/checklist/get-checklist-data-client'
+import {
+  type ChecklistWithPatientWithWeight,
+  updateEachChecklist,
+} from '@/lib/services/checklist/get-checklist-data-client'
 import { Button } from '@/components/ui/button'
 import { LoaderCircle } from 'lucide-react'
 type Props = {
-  checklistData: ChecklistData
+  checklistData: ChecklistWithPatientWithWeight
 }
 export default function ChecklistBodyInformation({ checklistData }: Props) {
   const [comment, setComment] = useState<string>('')
@@ -87,44 +90,44 @@ export default function ChecklistBodyInformation({ checklistData }: Props) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {checklistData?.preinfo?.pre &&
-            checklistData?.preinfo?.pre !== '' && (
+          {checklistData?.pre_info?.pre &&
+            checklistData?.pre_info?.pre !== '' && (
               <TableRow>
                 <TableCell>전처치</TableCell>
                 <TableCell className="whitespace-pre-wrap">
-                  {checklistData?.preinfo?.pre}
+                  {checklistData?.pre_info?.pre}
                 </TableCell>
               </TableRow>
             )}
-          {checklistData?.preinfo?.induce &&
-            checklistData?.preinfo?.induce !== '' && (
+          {checklistData?.pre_info?.induce &&
+            checklistData?.pre_info?.induce !== '' && (
               <TableRow>
                 <TableCell>유도마취</TableCell>
                 <TableCell className="whitespace-pre-wrap">
-                  {checklistData?.preinfo?.induce}
+                  {checklistData?.pre_info?.induce}
                 </TableCell>
               </TableRow>
             )}
-          {checklistData?.preinfo?.main &&
-            checklistData?.preinfo?.main !== '' && (
+          {checklistData?.pre_info?.main &&
+            checklistData?.pre_info?.main !== '' && (
               <TableRow>
                 <TableCell>주요처치</TableCell>
                 <TableCell className="whitespace-pre-wrap">
-                  {checklistData?.preinfo?.main}
+                  {checklistData?.pre_info?.main}
                 </TableCell>
               </TableRow>
             )}
-          {checklistData?.preinfo?.post &&
-            checklistData?.preinfo?.post !== '' && (
+          {checklistData?.pre_info?.post &&
+            checklistData?.pre_info?.post !== '' && (
               <TableRow>
                 <TableCell>후처치</TableCell>
                 <TableCell className="whitespace-pre-wrap">
-                  {checklistData?.preinfo?.post}
+                  {checklistData?.pre_info?.post}
                 </TableCell>
               </TableRow>
             )}
 
-          {/* {checklistData?.preinfo?.other && checklistData?.preinfo?.other !== ''&& <TableRow><TableCell>기타처치</TableCell><TableCell>{checklistData?.preinfo?.other}</TableCell></TableRow>}  */}
+          {/* {checklistData?.pre_info?.other && checklistData?.pre_info?.other !== ''&& <TableRow><TableCell>기타처치</TableCell><TableCell>{checklistData?.pre_info?.other}</TableCell></TableRow>}  */}
         </TableBody>
       </Table>
       <Separator className="m-3" />
@@ -148,7 +151,9 @@ export default function ChecklistBodyInformation({ checklistData }: Props) {
               size="sm"
               onClick={() => {
                 setIsSaving(true)
-                const predata: ChecklistData = { ...checklistData }
+                const predata: ChecklistWithPatientWithWeight = {
+                  ...checklistData,
+                }
                 predata.comment = comment
                 updateEachChecklist(predata)
                 setIsSaving(true)

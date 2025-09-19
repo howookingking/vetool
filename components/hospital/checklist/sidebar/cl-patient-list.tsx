@@ -1,5 +1,5 @@
 import ClPatientButton from '@/components/hospital/checklist/sidebar/cl-patient-button'
-import type { ChecklistSidebarData } from '@/types/checklist/checklist-type'
+import type { ChecklistSidebarData } from '@/lib/services/checklist/fetch-checklist-sidebar-data'
 
 type Props = {
   checklistSidebarData: ChecklistSidebarData[]

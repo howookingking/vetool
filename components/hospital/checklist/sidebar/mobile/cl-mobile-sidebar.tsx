@@ -2,7 +2,7 @@ import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import ClPatientList from '@/components/hospital/checklist/sidebar/cl-patient-list'
 import ClDateSelector from '@/components/hospital/checklist/sidebar/date-selector/cl-date-selector'
 import { Separator } from '@/components/ui/separator'
-import type { ChecklistSidebarData } from '@/types/checklist/checklist-type'
+import type { ChecklistSidebarData } from '@/lib/services/checklist/fetch-checklist-sidebar-data'
 
 type Props = {
   checklistSidebarData: ChecklistSidebarData[]

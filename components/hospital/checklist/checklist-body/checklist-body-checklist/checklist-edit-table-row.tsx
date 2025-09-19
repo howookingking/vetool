@@ -1,31 +1,34 @@
-import {
-  CheckItem,
-  ChecklistData,
-  ChecklistResults,
-  CheckNameArray,
-} from '@/types/checklist/checklist-type'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Input } from '@/components/ui/input'
-import React, { useEffect, useState } from 'react'
-import { minToLocalTime } from '@/constants/checklist/checklist'
-import { Button } from '@/components/ui/button'
-import { updateEachChecklist } from '@/lib/services/checklist/get-checklist-data-client'
 import { toast } from '@/components/ui/use-toast'
+import { minToLocalTime } from '@/constants/checklist/checklist'
+import {
+  type ChecklistWithPatientWithWeight,
+  updateEachChecklist,
+} from '@/lib/services/checklist/get-checklist-data-client'
+import {
+  CheckItem,
+  ChecklistResults,
+  CheckNameArray,
+} from '@/types/checklist/checklist-type'
+import React, { useEffect, useState } from 'react'
+
 type Props = {
-  checklistData: ChecklistData
+  checklistData: ChecklistWithPatientWithWeight
   checklistname: CheckNameArray
   pretime: string
   setIsSaving: React.Dispatch<React.SetStateAction<boolean>> | null
   setIseditTableRowOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
+
 export default function ChecklistEditTableRow({
   checklistData,
   checklistname,
@@ -125,7 +128,7 @@ export default function ChecklistEditTableRow({
               (
               {
                 minToLocalTime(
-                  checklistData?.starttime ?? '0',
+                  checklistData?.start_time ?? '0',
                   String(newresult.time),
                 )[1]
               }

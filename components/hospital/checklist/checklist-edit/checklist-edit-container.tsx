@@ -17,6 +17,7 @@ import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import type { Checklist } from '@/types'
 import ChecklistEditBasic from '@/components/hospital/checklist/checklist-edit/checklist-edit-basic'
 import { ChecklistData } from '@/types/checklist/checklist-type'
+import type { ChecklistWithPatientWithWeight } from '@/lib/services/checklist/get-checklist-data-client'
 
 const LazyChecklistEditBasic = dynamic(
   () =>
@@ -32,7 +33,7 @@ const LazyChecklistEditBasic = dynamic(
 type Props = {
   checklistId: string
   setChecklistEditDialogOpen: (isopen: boolean) => void
-  checklistData: ChecklistData
+  checklistData: ChecklistWithPatientWithWeight
 }
 export default function ChecklistEditContainer({
   checklistId,
@@ -58,9 +59,7 @@ export default function ChecklistEditContainer({
     //   )}
     // </div>
     <div className="flex-col">
-      <ChecklistPatientInfo
-        patientId={checklistData ? checklistData.patient_id : null}
-      />
+      <ChecklistPatientInfo checklistData={checklistData} />
       <div className="m-3 flex flex-wrap 2xl:m-2">
         {ChecklistTypes &&
           ChecklistTypes.map((_type) => (

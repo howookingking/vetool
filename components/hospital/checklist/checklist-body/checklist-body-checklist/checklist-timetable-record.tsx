@@ -1,6 +1,9 @@
 'use client'
 import { Button } from '@/components/ui/button'
-import { updateEachChecklist } from '@/lib/services/checklist/get-checklist-data-client'
+import {
+  ChecklistWithPatientWithWeight,
+  updateEachChecklist,
+} from '@/lib/services/checklist/get-checklist-data-client'
 import { ChecklistData, TimeTable } from '@/types/checklist/checklist-type'
 import { Pencil } from 'lucide-react'
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
@@ -19,7 +22,7 @@ import LocalTime from '@/components/hospital/checklist/common/localtime'
 import { LoaderCircle } from 'lucide-react'
 import { cn } from '@/lib/utils/utils'
 type Props = {
-  checklistData: ChecklistData
+  checklistData: ChecklistWithPatientWithWeight
 }
 
 export default function ChecklistTimetableRecord({ checklistData }: Props) {
@@ -54,7 +57,7 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
       const newTimetable = [...timetable]
       const timetableType = newTimetable[Number(index)].type + ''
       newTimetable.splice(Number(index), 1)
-      const predata = { ...checklistData } as ChecklistData
+      const predata = { ...checklistData } as ChecklistWithPatientWithWeight
       predata.checklist_timetable = newTimetable
       if (
         timetableType.indexOf('protocol-') !== -1 ||
@@ -78,7 +81,7 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
     setIsTableLoad(true)
     if (txt !== '' && name === 'time') {
       //timetable 변경
-      const predata = { ...checklistData } as ChecklistData
+      const predata = { ...checklistData } as ChecklistWithPatientWithWeight
       predata.checklist_timetable &&
         (predata.checklist_timetable[index].time = time)
       predata.checklist_timetable &&
@@ -133,11 +136,11 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {checklistData?.starttime && (
+            {checklistData?.start_time && (
               <TableRow className="even:bg-gray-100">
                 <TableCell className="max-w-[40px] border border-gray-300 px-1 py-1">
                   +0(
-                  <LocalTime time={checklistData.starttime} />)
+                  <LocalTime time={checklistData.start_time} />)
                 </TableCell>
                 <TableCell className="border border-gray-300 px-1 py-1">
                   {checklistData?.checklist_title
@@ -155,16 +158,16 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
                 >
                   <TableCell className="max-w-[40px] border border-gray-300 px-1 py-1">
                     +
-                    {checklistData?.starttime &&
+                    {checklistData?.start_time &&
                       list.time &&
                       list.time !== 0 &&
                       Math.floor(
                         (list.time -
-                          new Date(checklistData?.starttime).getTime()) /
+                          new Date(checklistData?.start_time).getTime()) /
                           (60 * 1000),
                       )}
                     (
-                    {checklistData?.starttime &&
+                    {checklistData?.start_time &&
                     list.time &&
                     list.time !== 0 ? (
                       <LocalTime time={list.time} />
@@ -219,16 +222,16 @@ export default function ChecklistTimetableRecord({ checklistData }: Props) {
                   </TableCell>
                 </TableRow>
               ))}
-            {checklistData?.endtime && checklistData?.starttime && (
+            {checklistData?.end_time && checklistData?.start_time && (
               <TableRow className="even:bg-gray-100">
                 <TableCell className="max-w-[40px] border border-gray-300 px-1 py-1">
                   +
                   {Math.floor(
-                    (new Date(checklistData?.endtime).getTime() -
-                      new Date(checklistData?.starttime).getTime()) /
+                    (new Date(checklistData?.end_time).getTime() -
+                      new Date(checklistData?.start_time).getTime()) /
                       (60 * 1000),
                   )}
-                  (<LocalTime time={checklistData?.endtime} />)
+                  (<LocalTime time={checklistData?.end_time} />)
                 </TableCell>
                 <TableCell className="border border-gray-300 px-1 py-1">
                   {checklistData?.checklist_title

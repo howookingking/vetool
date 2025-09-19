@@ -1,22 +1,19 @@
 'use client'
 
-import type {
-  ChecklistData,
-  ChecklistResults,
-  CheckNameArray,
-} from '@/types/checklist/checklist-type'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import {
   checkListSetArray,
   defaultChecklistSet,
-  minToLocalTime,
 } from '@/constants/checklist/checklist'
+import type {
+  ChecklistResults,
+  CheckNameArray,
+} from '@/types/checklist/checklist-type'
 import { useEffect, useState } from 'react'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-// import TxchartChecklistTabecell from './txchart-checklist-tabecell'
-import { updateEachChecklist } from '@/lib/services/checklist/get-checklist-data-client'
-import { toast } from '@/components/ui/use-toast'
 import ChecklistBodyTableCell from '@/components/hospital/checklist/checklist-body/checklist-body-checklist/checklist-body-tablecell'
+import ChecklistTimetableRecord from '@/components/hospital/checklist/checklist-body/checklist-body-checklist/checklist-timetable-record'
+import { Separator } from '@/components/ui/separator'
 import {
   Table,
   TableCell,
@@ -24,15 +21,19 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { toast } from '@/components/ui/use-toast'
+import {
+  type ChecklistWithPatientWithWeight,
+  updateEachChecklist,
+} from '@/lib/services/checklist/get-checklist-data-client'
+import { LoaderCircle } from 'lucide-react'
 import ChecklistTimetableAdd from './checklist-timetable-add'
-import { LoaderCircle, Pencil } from 'lucide-react'
-import { Separator } from '@/components/ui/separator'
-import ChecklistTimetableRecord from '@/components/hospital/checklist/checklist-body/checklist-body-checklist/checklist-timetable-record'
+
 export default function ChecklistBodyTable({
   checklistData,
   timeMin,
 }: {
-  checklistData: ChecklistData
+  checklistData: ChecklistWithPatientWithWeight
   timeMin: number
 }) {
   const [result, setResult] = useState<Record<string, ChecklistResults>>({})

@@ -1,30 +1,6 @@
 'use client'
-import type {
-  ChecklistData,
-  ChecklistResults,
-  CheckNameArray,
-} from '@/types/checklist/checklist-type'
-import {
-  checkListSetArray,
-  defaultChecklistSet,
-  minToLocalTime,
-} from '@/constants/checklist/checklist'
-import { useEffect, useState } from 'react'
-import { Input } from '@/components/ui/input'
+
 import { Button } from '@/components/ui/button'
-// import TxchartChecklistTabecell from './txchart-checklist-tabecell'
-import { updateEachChecklist } from '@/lib/services/checklist/get-checklist-data-client'
-import { toast } from '@/components/ui/use-toast'
-import ChecklistBodyTableCell from './checklist-body-tablecell'
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
 import {
   Dialog,
   DialogContent,
@@ -32,26 +8,46 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
-import ChecklistTimetableAdd from './checklist-timetable-add'
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { toast } from '@/components/ui/use-toast'
+import {
+  checkListSetArray,
+  defaultChecklistSet,
+  minToLocalTime,
+} from '@/constants/checklist/checklist'
+import useMinutesPassed from '@/hooks/use-minute-passed'
+import {
+  type ChecklistWithPatientWithWeight,
+  updateEachChecklist,
+} from '@/lib/services/checklist/get-checklist-data-client'
+import type {
+  ChecklistResults,
+  CheckNameArray,
+} from '@/types/checklist/checklist-type'
 import { LoaderCircle, Pencil } from 'lucide-react'
-
+import { useEffect, useState } from 'react'
+import ChecklistBodyTableCell from './checklist-body-tablecell'
 import ChecklistEditTableRow from './checklist-edit-table-row'
-export default function ChecklistBodyTable({
-  checklistData,
-  timeMin,
-}: {
-  checklistData: ChecklistData
-  timeMin: number
-}) {
-  const [result, setResult] = useState<Record<string, ChecklistResults>>({})
+import ChecklistTimetableAdd from './checklist-timetable-add'
+
+type Props = {
+  checklistData: ChecklistWithPatientWithWeight
+}
+
+export default function ChecklistBodyTable({ checklistData }: Props) {
+  const timeMin = useMinutesPassed(checklistData.start_time)
+
   const [checktime, setCheckTime] = useState<string>('0')
   const [interval, setInterval] = useState<string>('1')
-  const [checklistname, setCheckListNames] = useState<CheckNameArray>([]) //체크리스트 종류
+  const [checklistname, setCheckListNames] = useState<CheckNameArray>([])
   const [tabletimes, setTableTimes] = useState<number[]>([])
   const [isSaving, setIsSaving] = useState(false)
   const [newresult, setNewResult] = useState<{
@@ -59,10 +55,8 @@ export default function ChecklistBodyTable({
     newresult: ChecklistResults
   }>({ time: '', newresult: {} })
   const [isEditOpen, setIseditTableRowOpen] = useState(false)
+
   useEffect(() => {
-    checklistData &&
-      checklistData?.checklist_set?.result &&
-      setResult({ ...checklistData.checklist_set.result })
     const prenames: string[] = []
     const pretimes: number[] = []
     checklistData?.checklist_set?.result &&
@@ -71,7 +65,9 @@ export default function ChecklistBodyTable({
         checklistData?.checklist_set?.result &&
           prenames.push(...Object.keys(checklistData.checklist_set.result[key]))
       })
+
     prenames.push('비고')
+
     checklistData &&
     checklistData.checklist_set?.preSet &&
     checklistData.checklist_set.preSet.length > 0
@@ -91,8 +87,8 @@ export default function ChecklistBodyTable({
       : prenames.push(...defaultChecklistSet.preSet[0].setname)
 
     if (timeMin && interval && Number(interval) >= 1) {
-      const _checktime = Number(timeMin)
-      const _interval = Number(interval)
+      const _checktime = Number(timeMin) // 시작후
+      const _interval = Number(interval) // 세팅된 측정간격
       const cal1 = Math.floor(_checktime / _interval)
       const cal2 = _checktime & _interval
       if (_checktime >= _interval) {
@@ -123,7 +119,7 @@ export default function ChecklistBodyTable({
     checklistData && setIsSaving(false)
     setTableTimes(pretimes)
     setCheckListNames([...prenames2])
-  }, [checklistData, timeMin, interval, newresult]) //체크리스트 종류
+  }, []) //체크리스트 종류
 
   const savenewChecklistChart = () => {
     setIsSaving(true)
@@ -226,7 +222,7 @@ export default function ChecklistBodyTable({
         </TableHeader>
         <TableBody>
           {checklistData &&
-            checklistData.starttime &&
+            checklistData.start_time &&
             tabletimes &&
             tabletimes.map((time, i) => (
               <TableRow key={time + i} className="even:bg-gray-100">
@@ -234,7 +230,9 @@ export default function ChecklistBodyTable({
                   +{String(time)}(
                   {
                     minToLocalTime(
-                      checklistData?.starttime ? checklistData.starttime : '0',
+                      checklistData?.start_time
+                        ? checklistData.start_time
+                        : '0',
                       String(time),
                     )[1]
                   }
@@ -254,7 +252,7 @@ export default function ChecklistBodyTable({
                           name={list.name}
                           checklistData={checklistData}
                           setIsSaving={setIsSaving}
-                        ></ChecklistBodyTableCell>
+                        />
                       )}
                     </TableCell>
                   ))}
@@ -307,7 +305,7 @@ export default function ChecklistBodyTable({
                 (
                 {
                   minToLocalTime(
-                    checklistData?.starttime ?? '0',
+                    checklistData?.start_time ?? '0',
                     String(newresult.time),
                   )[1]
                 }

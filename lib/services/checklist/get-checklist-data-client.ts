@@ -2,10 +2,15 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { Checklist, Patient } from '@/types'
-import type { ChecklistPatient } from '@/types/checklist/checklist-type'
+import type {
+  ChecklistPatient,
+  ChecklistProtocol,
+  Checklistset,
+  ChecklistVet,
+  PreInfo,
+  TimeTable,
+} from '@/types/checklist/checklist-type'
 import { redirect } from 'next/navigation'
-
-const supabase = createClient()
 
 export const getPatientById = async (
   patientId: string,
@@ -60,7 +65,15 @@ export const getPatientById = async (
 // }
 
 // rpc로 필요한 데이터(환자 및 환자의 체중)을 한번에 가져옴
-export type ChecklistWithPatientWithWeight = Omit<Checklist, 'patient_id'> & {
+export type ChecklistWithPatientWithWeight = Omit<
+  Checklist,
+  | 'patient_id'
+  | 'checklist_set'
+  | 'pre_info'
+  | 'checklist_timetable'
+  | 'checklist_protocol'
+  | 'checklist_vet'
+> & {
   patient: Omit<
     Patient,
     'hos_id' | 'created_at' | 'owner_id' | 'hos_owner_id'
@@ -68,6 +81,16 @@ export type ChecklistWithPatientWithWeight = Omit<Checklist, 'patient_id'> & {
     body_weight: string | null
     weight_measured_date: string | null
   }
+} & {
+  checklist_set: Checklistset
+} & {
+  pre_info: PreInfo
+} & {
+  checklist_timetable: TimeTable | null
+} & {
+  checklist_protocol: ChecklistProtocol | null
+} & {
+  checklist_vet: ChecklistVet | null
 }
 
 export const fetchChecklistWithPatientWithWeight = async (
@@ -114,13 +137,38 @@ export const fetchChecklistWithPatientWithWeight = async (
 //   return channel
 // }
 
-export const updateEachChecklist = async (checklistdata: any) => {
+export const updateEachChecklist = async (
+  predata: ChecklistWithPatientWithWeight,
+) => {
+  const newChecklist: Checklist = {
+    age_in_days: predata.age_in_days,
+    checklist_group: predata.checklist_group,
+    checklist_id: predata.checklist_id,
+    checklist_protocol: predata.checklist_protocol,
+    checklist_set: predata.checklist_set,
+    checklist_tag: predata.checklist_tag,
+    checklist_timetable: predata.checklist_timetable,
+    checklist_title: predata.checklist_title,
+    checklist_type: predata.checklist_type,
+    checklist_vet: predata.checklist_vet,
+    comment: predata.comment,
+    created_at: predata.created_at,
+    due_date: predata.due_date,
+    end_date: predata.end_date,
+    end_time: predata.end_time,
+    hos_id: predata.hos_id,
+    is_txing: predata.is_txing,
+    patient_id: predata.patient.patient_id,
+    pre_info: predata.pre_info,
+    start_time: predata.start_time,
+  }
+
   const supabase = await createClient()
 
   const { data, error } = await supabase
     .from('checklist')
-    .update(checklistdata) // ← 여기에 업데이트할 데이터 객체가 필요
-    .eq('checklist_id', checklistdata.checklist_id)
+    .update(newChecklist)
+    .match({ checklist_id: predata.checklist_id })
 
   if (error) {
     console.error('Update failed:', error.message)
@@ -130,34 +178,20 @@ export const updateEachChecklist = async (checklistdata: any) => {
   return data
 }
 
-// export const deleteChecklist = async (checklistId: string) => {
-//   const { data, error } = await supabase
-//     .from('checklist')
-//     .delete()
-//     .eq('checklist_id', checklistId)
+export const deleteChecklist = async (checklistId: string) => {
+  const supabase = await createClient()
 
-//   if (error) {
-//     console.error('삭제 실패:', error.message)
-//   } else {
-//     console.log('삭제 완료:', data)
-//   }
-// }
+  const { data, error } = await supabase
+    .from('checklist')
+    .delete()
+    .eq('checklist_id', checklistId)
 
-// export const getChecklistSidebarData = async (
-//   hosId: string,
-//   targetDate: string,
-// ) => {
-//   const { data, error } = await supabase.rpc('checklist_sidebar_data', {
-//     _hos_id: hosId,
-//     _due_date: targetDate,
-//   })
-
-//   if (error) {
-//     console.error(error)
-//   } else {
-//     return data as any
-//   }
-// }
+  if (error) {
+    console.error('삭제 실패:', error.message)
+  } else {
+    console.log('삭제 완료:', data)
+  }
+}
 
 export const searchChecklistCharts = async (
   searchTerms: string[],

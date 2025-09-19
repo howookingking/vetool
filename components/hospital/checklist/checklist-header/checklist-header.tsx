@@ -3,15 +3,16 @@
 import ChecklistEditDialogButton from '@/components/hospital/checklist/checklist-header/checklist-edit-dialogbutton'
 import { Button } from '@/components/ui/button'
 import CustomTooltip from '@/components/ui/custom-tooltip'
-import { Separator } from '@/components/ui/separator'
+import type { ChecklistWithPatientWithWeight } from '@/lib/services/checklist/get-checklist-data-client'
 import { cn } from '@/lib/utils/utils'
-import { FileCheck, ScrollText } from 'lucide-react'
+import { ScrollTextIcon } from 'lucide-react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import ChecklistPatientInfo from '../common/checklist-patient-info'
 
 export default function ChecklistHeader({
-  checklistId,
+  checklistData,
 }: {
-  checklistId: string
+  checklistData: ChecklistWithPatientWithWeight
 }) {
   const pathname = usePathname()
   const { push } = useRouter()
@@ -22,32 +23,10 @@ export default function ChecklistHeader({
   const pathnamearray: string[] = pathname.split('/')
 
   return (
-    <header className="border-b">
-      <div className="flex">
-        <CustomTooltip
-          contents="체크리스트 작성"
-          side="bottom"
-          sideOffset={4}
-          delayDuration={300}
-        >
-          <Button
-            type="button"
-            variant="outline"
-            name="checklist"
-            onClick={() => {
-              push(
-                `/hospital/${pathnamearray[2]}/checklist/${pathnamearray[4]}/chart/${pathnamearray[6]}/checklist?edit=${false}`,
-              )
-            }}
-            className={cn(
-              'm-2 ml-14 2xl:m-2 2xl:ml-2',
-              isActive === 'checklist' && 'bg-primary text-white',
-            )}
-          >
-            <FileCheck /> <p className="hidden 2xl:flex">CHECKLIST</p>
-          </Button>
-        </CustomTooltip>
+    <header className="flex justify-between border-b">
+      <ChecklistPatientInfo checklistData={checklistData} />
 
+      <div className="flex">
         <CustomTooltip
           contents="리포트"
           side="bottom"
@@ -56,6 +35,7 @@ export default function ChecklistHeader({
         >
           <Button
             type="button"
+            size="icon"
             variant="outline"
             name="report"
             className={cn(
@@ -68,13 +48,13 @@ export default function ChecklistHeader({
               )
             }}
           >
-            <ScrollText /> <p className="hidden 2xl:flex">REPORT</p>
+            <ScrollTextIcon />
           </Button>
         </CustomTooltip>
 
         <ChecklistEditDialogButton
-          isEdit={edit === 'true' ? true : false}
-          checklistId={checklistId}
+          isEdit={edit === 'true'}
+          checklistId={checklistData.patient.patient_id}
         />
       </div>
     </header>

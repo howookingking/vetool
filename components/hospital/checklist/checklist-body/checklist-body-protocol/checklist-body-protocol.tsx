@@ -1,24 +1,28 @@
 'use client'
-import { ChecklistData } from '@/types/checklist/checklist-type'
+import LocalTime from '@/components/hospital/checklist/common/localtime'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Checkbox } from '@/components/ui/checkbox'
 import { minToLocalTime } from '@/constants/checklist/checklist'
-import { updateEachChecklist } from '@/lib/services/checklist/get-checklist-data-client'
-import LocalTime from '@/components/hospital/checklist/common/localtime'
-import { useEffect, useState } from 'react'
-import { LoaderCircle } from 'lucide-react'
+import {
+  type ChecklistWithPatientWithWeight,
+  updateEachChecklist,
+} from '@/lib/services/checklist/get-checklist-data-client'
 import { cn } from '@/lib/utils/utils'
+import { ChecklistData } from '@/types/checklist/checklist-type'
+import { LoaderCircle } from 'lucide-react'
+import { useEffect, useState } from 'react'
+
 type Props = {
-  checklistData: ChecklistData
+  checklistData: ChecklistWithPatientWithWeight
 }
+
 export default function ChecklistBodyProtocol({ checklistData }: Props) {
   const [isCheckLoad, setIsCheckLoad] = useState<boolean>(false)
   useEffect(() => {
@@ -31,7 +35,7 @@ export default function ChecklistBodyProtocol({ checklistData }: Props) {
     ]
     if (checked && newProtocol && newProtocol.length > 0) {
       newProtocol[index].txEnd = new Date().getTime()
-      const predata = { ...checklistData } as ChecklistData
+      const predata = { ...checklistData } as ChecklistWithPatientWithWeight
       predata.checklist_protocol = newProtocol
       !predata.checklist_timetable && (predata.checklist_timetable = [])
       predata.checklist_timetable = makeTimetableTx(
@@ -41,7 +45,7 @@ export default function ChecklistBodyProtocol({ checklistData }: Props) {
       updateEachChecklist(predata)
     } else if (!checked && newProtocol && newProtocol.length > 0) {
       newProtocol[index].txEnd = null
-      const predata = { ...checklistData } as ChecklistData
+      const predata = { ...checklistData } as ChecklistWithPatientWithWeight
       predata.checklist_protocol = newProtocol
       !predata.checklist_timetable && (predata.checklist_timetable = [])
       predata.checklist_timetable =
@@ -141,14 +145,14 @@ export default function ChecklistBodyProtocol({ checklistData }: Props) {
                     {protocol?.dueStart && protocol.dueStart + '분후'}
                   </div>
 
-                  {checklistData.starttime &&
+                  {checklistData.start_time &&
                   protocol?.mode === 'afterstart' &&
                   protocol?.dueStart ? (
                     <div>
                       (예정시간{' '}
                       {
                         minToLocalTime(
-                          String(checklistData.starttime),
+                          String(checklistData.start_time),
                           String(protocol.dueStart),
                         )[1]
                       }
@@ -156,7 +160,7 @@ export default function ChecklistBodyProtocol({ checklistData }: Props) {
                     </div>
                   ) : (
                     index > 0 &&
-                    checklistData.starttime &&
+                    checklistData.start_time &&
                     checklistData.checklist_protocol &&
                     checklistData.checklist_protocol[index - 1].txEnd &&
                     protocol?.dueStart && (
