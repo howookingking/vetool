@@ -41,8 +41,6 @@ export default async function IcuPageLayout(props: {
     target_date,
   )
 
-  const announcementTitlesData = await fetchAnnouncementTitles()
-
   return (
     <>
       <BasicHosDataProvider
@@ -77,11 +75,7 @@ export default async function IcuPageLayout(props: {
         </div>
       </BasicHosDataProvider>
 
-      <IcuFooter
-        hosId={hos_id}
-        targetDate={target_date}
-        announcementTitlesData={announcementTitlesData}
-      />
+      <IcuFooter hosId={hos_id} targetDate={target_date} />
     </>
   )
 }

@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.1 (8cbcf98)"
@@ -54,73 +54,70 @@ export type Database = {
       }
       checklist: {
         Row: {
-          age_in_days: number
+          age_in_days: number | null
           checklist_group: Json | null
           checklist_id: string
           checklist_protocol: Json | null
-          checklist_set: Json | null
+          checklist_set: Json
           checklist_tag: string | null
           checklist_timetable: Json | null
-          checklist_title: string | null
-          checklist_type: string | null
+          checklist_title: string
+          checklist_type: string
           checklist_vet: Json | null
           comment: string | null
           created_at: string
           due_date: string | null
-          enddate: string | null
-          endtime: string | null
-          hos_id: string | null
-          istxing: boolean | null
+          end_date: string | null
+          end_time: string | null
+          hos_id: string
+          is_txing: boolean | null
           patient_id: string | null
-          preinfo: Json | null
-          starttime: string | null
-          weight: number
+          pre_info: Json | null
+          start_time: string | null
         }
         Insert: {
-          age_in_days?: number
+          age_in_days?: number | null
           checklist_group?: Json | null
           checklist_id?: string
           checklist_protocol?: Json | null
-          checklist_set?: Json | null
+          checklist_set?: Json
           checklist_tag?: string | null
           checklist_timetable?: Json | null
-          checklist_title?: string | null
-          checklist_type?: string | null
+          checklist_title: string
+          checklist_type: string
           checklist_vet?: Json | null
           comment?: string | null
           created_at?: string
           due_date?: string | null
-          enddate?: string | null
-          endtime?: string | null
-          hos_id?: string | null
-          istxing?: boolean | null
+          end_date?: string | null
+          end_time?: string | null
+          hos_id: string
+          is_txing?: boolean | null
           patient_id?: string | null
-          preinfo?: Json | null
-          starttime?: string | null
-          weight?: number
+          pre_info?: Json | null
+          start_time?: string | null
         }
         Update: {
-          age_in_days?: number
+          age_in_days?: number | null
           checklist_group?: Json | null
           checklist_id?: string
           checklist_protocol?: Json | null
-          checklist_set?: Json | null
+          checklist_set?: Json
           checklist_tag?: string | null
           checklist_timetable?: Json | null
-          checklist_title?: string | null
-          checklist_type?: string | null
+          checklist_title?: string
+          checklist_type?: string
           checklist_vet?: Json | null
           comment?: string | null
           created_at?: string
           due_date?: string | null
-          enddate?: string | null
-          endtime?: string | null
-          hos_id?: string | null
-          istxing?: boolean | null
+          end_date?: string | null
+          end_time?: string | null
+          hos_id?: string
+          is_txing?: boolean | null
           patient_id?: string | null
-          preinfo?: Json | null
-          starttime?: string | null
-          weight?: number
+          pre_info?: Json | null
+          start_time?: string | null
         }
         Relationships: [
           {
@@ -150,7 +147,6 @@ export type Database = {
           created_at: string
           hos_id: string | null
           preinfo: Json | null
-          share_ids: Json | null
         }
         Insert: {
           checklist_protocol?: Json | null
@@ -162,7 +158,6 @@ export type Database = {
           created_at?: string
           hos_id?: string | null
           preinfo?: Json | null
-          share_ids?: Json | null
         }
         Update: {
           checklist_protocol?: Json | null
@@ -174,7 +169,6 @@ export type Database = {
           created_at?: string
           hos_id?: string | null
           preinfo?: Json | null
-          share_ids?: Json | null
         }
         Relationships: [
           {
@@ -460,7 +454,6 @@ export type Database = {
       }
       hospitals: {
         Row: {
-          baseline_time: number
           business_number: string
           city: string
           created_at: string
@@ -482,7 +475,6 @@ export type Database = {
           vital_ref_range: Json
         }
         Insert: {
-          baseline_time?: number
           business_number?: string
           city: string
           created_at?: string
@@ -504,7 +496,6 @@ export type Database = {
           vital_ref_range?: Json
         }
         Update: {
-          baseline_time?: number
           business_number?: string
           city?: string
           created_at?: string
@@ -1732,31 +1723,43 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      checklist_sidebar_data: {
+        Args: { _due_date: string; _hos_id: string }
+        Returns: Json
+      }
       copy_prev_orders: {
-        Args: { prev_chart_id_input: string; new_chart_id_input: string }
+        Args: { new_chart_id_input: string; prev_chart_id_input: string }
         Returns: undefined
       }
       copy_selected_orders: {
         Args: {
-          selected_chart_id_input: string
           new_chart_id_input: string
           orderer_name_input: string
+          selected_chart_id_input: string
         }
         Returns: undefined
       }
       copy_template_orders: {
-        Args: { prev_chart_id_input: string; new_chart_id_input: string }
+        Args: { new_chart_id_input: string; prev_chart_id_input: string }
         Returns: undefined
       }
       create_template_orders: {
         Args: {
           hos_id_input: string
-          template_name_input: string
-          template_comment_input: string
-          template_orders_input: Json
           is_time_included_input: boolean
+          template_comment_input: string
+          template_name_input: string
+          template_orders_input: Json
         }
         Returns: undefined
+      }
+      fetch_checklist_sidebar_data: {
+        Args: { due_date_input: string; hos_id_input: string }
+        Returns: Json
+      }
+      fetch_checklist_with_patient_with_weight: {
+        Args: { checklist_id_input: string }
+        Returns: Json
       }
       get_chartable_vitals_data: {
         Args: { icu_io_id_input: string }
@@ -1772,10 +1775,10 @@ export type Database = {
       }
       get_icu_analysis_data: {
         Args: {
-          hos_id_input: string
-          target_date_input: string
-          start_date_input: string
           end_date_input: string
+          hos_id_input: string
+          start_date_input: string
+          target_date_input: string
         }
         Returns: Json
       }
@@ -1786,8 +1789,8 @@ export type Database = {
       get_icu_chart_data: {
         Args: {
           hos_id_input: string
-          target_date_input: string
           patient_id_input: string
+          target_date_input: string
         }
         Returns: Json
       }
@@ -1834,11 +1837,11 @@ export type Database = {
       insert_calc_result_order: {
         Args: {
           hos_id_input: string
-          target_date_input: string
-          order_type_input: string
-          order_name_input: string
           order_comment_input: string
+          order_name_input: string
+          order_type_input: string
           patient_id_input: string
+          target_date_input: string
         }
         Returns: undefined
       }
@@ -1847,64 +1850,64 @@ export type Database = {
         Returns: undefined
       }
       paste_default_icu_chart: {
-        Args: { icu_chart_id_input: string; hos_id_input: string }
+        Args: { hos_id_input: string; icu_chart_id_input: string }
         Returns: undefined
       }
       register_icu: {
         Args: {
-          hos_id_input: string
-          patient_id_input: string
-          icu_io_dx_input: string
-          icu_io_cc_input: string
-          in_date_input: string
-          out_due_date_input: string
-          main_vet_input: string
-          sub_vet_input: string
-          group_list_input: Json
           age_in_days_input: number
+          group_list_input: Json
+          hos_id_input: string
+          icu_io_cc_input: string
+          icu_io_dx_input: string
+          in_date_input: string
+          main_vet_input: string
+          out_due_date_input: string
+          patient_id_input: string
+          sub_vet_input: string
         }
         Returns: undefined
       }
       register_patient: {
         Args: {
-          hos_id_input: string
-          name_input: string
-          hos_patient_id_input: string
-          species_input: string
+          birth_input: string
+          body_weight_input: string
           breed_input: string
           gender_input: string
-          microchip_no_input: string
-          body_weight_input: string
-          owner_name_input: string
+          hos_id_input: string
           hos_owner_id_input: string
+          hos_patient_id_input: string
           memo_input: string
-          birth_input: string
+          microchip_no_input: string
+          name_input: string
+          owner_name_input: string
+          species_input: string
         }
         Returns: string
       }
       search_patients: {
         Args: {
           hos_id_input: string
-          search_term_input: string
           is_icu_input?: boolean
-          page_number_input?: number
           items_per_page_input?: number
+          page_number_input?: number
+          search_term_input: string
         }
         Returns: Json
       }
       toggle_io_patient_out: {
         Args: {
+          age_in_days_input: number
+          gender_input: string
           icu_io_id_input: string
-          patient_id_input: string
+          is_alive_input: boolean
           is_patient_out_input: boolean
           keywords_input: string
+          owner_name_input: string
           patient_breed_input: string
+          patient_id_input: string
           patient_name_input: string
           patient_species_input: string
-          owner_name_input: string
-          gender_input: string
-          age_in_days_input: number
-          is_alive_input: boolean
         }
         Returns: undefined
       }
@@ -1916,75 +1919,93 @@ export type Database = {
         }
         Returns: undefined
       }
+      update_patient_from_checklist: {
+        Args: {
+          birth_input: string
+          breed_input: string
+          gender_input: string
+          hos_owner_id_input: string
+          hos_patient_id_input: string
+          is_weight_changed_input: boolean
+          memo_input: string
+          microchip_no_input: string
+          name_input: string
+          owner_name_input: string
+          patient_id_input: string
+          species_input: string
+          weight_input: string
+        }
+        Returns: undefined
+      }
       update_patient_from_icu_route: {
         Args: {
           birth_input: string
-          species_input: string
           breed_input: string
           gender_input: string
-          name_input: string
+          hos_owner_id_input: string
+          hos_patient_id_input: string
+          icu_chart_id_input: string
+          is_weight_changed_input: boolean
           memo_input: string
           microchip_no_input: string
+          name_input: string
           owner_name_input: string
-          hos_owner_id_input: string
           patient_id_input: string
-          hos_patient_id_input: string
+          species_input: string
           weight_input: string
-          is_weight_changed_input: boolean
           weight_measured_date_input: string
-          icu_chart_id_input: string
         }
         Returns: undefined
       }
       update_patient_from_patient_route: {
         Args: {
           birth_input: string
-          species_input: string
           breed_input: string
           gender_input: string
-          name_input: string
-          memo_input: string
-          microchip_no_input: string
-          owner_name_input: string
           hos_owner_id_input: string
           hos_patient_id_input: string
-          patient_id_input: string
-          weight_input: string
           is_weight_changed_input: boolean
+          memo_input: string
+          microchip_no_input: string
+          name_input: string
+          owner_name_input: string
+          patient_id_input: string
+          species_input: string
+          weight_input: string
         }
         Returns: undefined
       }
       update_template_chart: {
         Args: {
+          hos_id_input: string
           icu_chart_id_input: string
-          template_orders_input: Json
+          template_comment_input: string
           template_id_input: string
           template_name_input: string
-          template_comment_input: string
-          hos_id_input: string
+          template_orders_input: Json
         }
         Returns: undefined
       }
       update_user_approval_and_user_hos_id_when_approved: {
-        Args: { user_id_input: string; hos_id_input: string }
+        Args: { hos_id_input: string; user_id_input: string }
         Returns: undefined
       }
       update_user_info_when_create_new_hospital: {
         Args: {
-          hos_name_input: string
-          user_name_input: string
-          is_vet_input: boolean
+          business_number_input: string
           city_input: string
           district_input: string
-          business_number_input: string
+          hos_name_input: string
+          is_vet_input: boolean
+          user_name_input: string
         }
         Returns: string
       }
       update_user_info_when_sending_approval: {
         Args: {
-          name_input: string
-          is_vet_input: boolean
           hos_id_input: string
+          is_vet_input: boolean
+          name_input: string
         }
         Returns: undefined
       }

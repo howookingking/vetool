@@ -22,14 +22,9 @@ import { toast } from 'sonner'
 type IcuFooterProps = {
   hosId: string
   targetDate: string
-  announcementTitlesData: AnnouncementTitles[]
 }
 
-export default function IcuFooter({
-  hosId,
-  targetDate,
-  announcementTitlesData,
-}: IcuFooterProps) {
+export default function IcuFooter({ hosId, targetDate }: IcuFooterProps) {
   const { push, refresh } = useRouter()
   const path = usePathname()
 
@@ -74,7 +69,8 @@ export default function IcuFooter({
         ))}
       </ul>
 
-      <AnnouncementsCarousel announcementTitlesData={announcementTitlesData} />
+      {/* 보지도 않음, 홈에서만 유지 */}
+      {/* <AnnouncementsCarousel announcementTitlesData={announcementTitlesData} /> */}
     </footer>
   )
 }
