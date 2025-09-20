@@ -16,7 +16,7 @@ export default function RootLayout({
     <html lang="ko">
       <body className="antialiased">
         {children}
-        <Toaster richColors />
+        <Toaster richColors closeButton />
       </body>
     </html>
   )
