@@ -66,7 +66,7 @@ export default function PhosphateCri({
             </p>
             <br />
 
-            <p>포스텐(KH₂PO₄) 1mL = 인 1 mmol + 칼륨 1 mEq</p>
+            <p>포스텐(KH₂PO₄) 1mL = 인 1mmol + 칼륨 1mEq</p>
             <p>💡 수액 내 총 칼륨 보충량을 계산에 포함하세요.</p>
             <br />
 

@@ -9,12 +9,12 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
-import { toast } from '@/components/ui/use-toast'
 import { updateHosGroupList } from '@/lib/services/admin/staff'
 import { cn } from '@/lib/utils/utils'
 import { Edit, LoaderCircle, X } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 export function GroupListDialog({ groupList }: { groupList: string[] }) {
   const { refresh } = useRouter()
@@ -35,9 +35,8 @@ export function GroupListDialog({ groupList }: { groupList: string[] }) {
 
     await updateHosGroupList(hos_id as string, tempGroupList)
 
-    toast({
-      title: '병원 그룹목록을 변경하였습니다',
-    })
+    toast.success('병원 그룹목록을 변경하였습니다')
+
     setIsDialogOpen(false)
     setIsSubmitting(false)
     refresh()

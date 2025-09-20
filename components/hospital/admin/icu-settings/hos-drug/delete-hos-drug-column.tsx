@@ -11,12 +11,12 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { toast } from '@/components/ui/use-toast'
 import { deleteHosDrug } from '@/lib/services/admin/icu/hos-drugs'
 import { cn } from '@/lib/utils/utils'
 import { LoaderCircle, Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   hosDrugId: string
@@ -34,9 +34,7 @@ export function DeleteHosDrugColumn({ hosDrugId, hosDrugName }: Props) {
 
     await deleteHosDrug(hosDrugId)
 
-    toast({
-      title: `${hosDrugName} 삭제하였습니다`,
-    })
+    toast.success(`${hosDrugName} 삭제하였습니다`)
 
     setIsDeleting(false)
     setIsDialogOpen(false)

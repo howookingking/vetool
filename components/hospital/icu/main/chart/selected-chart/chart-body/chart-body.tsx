@@ -10,7 +10,9 @@ export default function ChartBody({ chartData }: { chartData: SelectedChart }) {
   return (
     <div className="mt-12 flex w-[420vw] flex-col gap-2 p-2 sm:w-[300vw] md:w-full">
       <ChartInfos chartData={chartData} />
+
       <ChartTable chartData={chartData} />
+
       <ChartMemos
         memoA={memo_a as Memo[] | null}
         memoB={memo_b as Memo[] | null}

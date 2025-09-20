@@ -1,8 +1,8 @@
 import { Input } from '@/components/ui/input'
-import { toast } from '@/components/ui/use-toast'
 import { updateStaffRank } from '@/lib/services/admin/staff'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   rank: number
@@ -28,10 +28,8 @@ export default function RankColumn({ rank, userId, masterUserId }: Props) {
     }
 
     if (isNaN(parsedRank) || parsedRank <= 0 || parsedRank > 500) {
-      toast({
-        variant: 'destructive',
-        title: '500이하의 자연수를 입력해주세요',
-      })
+      toast.warning('500이하의 자연수를 입력해주세요')
+
       setRankInput(rank.toString())
       return
     }
@@ -40,9 +38,8 @@ export default function RankColumn({ rank, userId, masterUserId }: Props) {
 
     await updateStaffRank(userId, rankInput)
 
-    toast({
-      title: '순번을 변경하였습니다',
-    })
+    toast.success('순번을 변경하였습니다')
+
     setIsUpdating(false)
     refresh()
   }

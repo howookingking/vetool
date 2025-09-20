@@ -2,7 +2,6 @@ import { TxDetailHover } from '@/components/hospital/icu/main/chart/selected-cha
 import { VitalResultIndication } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/vital-result-indication'
 import { Input } from '@/components/ui/input'
 import { TableCell } from '@/components/ui/table'
-import { toast } from '@/components/ui/use-toast'
 import useAbnormalVital from '@/hooks/use-abnormal-vital'
 import useCellAutofocus from '@/hooks/use-cell-autofocus'
 import { useLongPress } from '@/hooks/use-long-press'
@@ -12,8 +11,9 @@ import { TxLocalState } from '@/lib/store/icu/icu-tx'
 import { cn } from '@/lib/utils/utils'
 import type { Treatment, TxLog } from '@/types/icu/chart'
 import { format } from 'date-fns'
-import { Image as ImageIcon } from 'lucide-react'
+import { ImageIcon } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   time: number
@@ -195,9 +195,7 @@ export default function Cell({
 
       await upsertTx(txData, updatedLogs)
 
-      toast({
-        title: '처치 내역이 업데이트 되었습니다',
-      })
+      toast.success('처치 결과를 업데이트 하었습니다')
     }
   }
 

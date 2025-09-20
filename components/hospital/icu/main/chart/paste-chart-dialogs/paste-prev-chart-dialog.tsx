@@ -11,12 +11,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { toast } from '@/components/ui/use-toast'
 import { copyPrevChart } from '@/lib/services/icu/chart/add-icu-chart'
 import { cn } from '@/lib/utils/utils'
-import { ClipboardPaste, LoaderCircle } from 'lucide-react'
+import { ClipboardPasteIcon, LoaderCircleIcon } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 export default function PastePrevChartDialog() {
   const { refresh } = useRouter()
@@ -34,19 +34,16 @@ export default function PastePrevChartDialog() {
     )
 
     if (error) {
-      toast({
-        title: '전일 차트를 복사할 수 없습니다',
+      toast.error('전일 차트를 복사할 수 없습니다', {
         description: '전일 차트가 있는지 확인해주세요',
-        variant: 'destructive',
       })
+
       setIsLoading(false)
       setIsDialogOpen(false)
       return
     }
 
-    toast({
-      title: '전일 차트를 복사하였습니다',
-    })
+    toast.success('전일 차트를 복사하였습니다')
     setIsLoading(false)
     setIsDialogOpen(false)
     refresh()
@@ -59,7 +56,7 @@ export default function PastePrevChartDialog() {
           variant="outline"
           className="flex h-1/3 w-full items-center justify-center gap-2 md:h-1/3 md:w-2/3 lg:w-1/2"
         >
-          <ClipboardPaste size={20} />
+          <ClipboardPasteIcon size={20} />
           <span>전일 차트 붙여넣기</span>
         </Button>
       </DialogTrigger>
@@ -79,7 +76,7 @@ export default function PastePrevChartDialog() {
           </DialogClose>
           <Button onClick={handleCopyPrevSelectedChart} disabled={isLoading}>
             확인
-            <LoaderCircle
+            <LoaderCircleIcon
               className={cn(isLoading ? 'animate-spin' : 'hidden')}
             />
           </Button>

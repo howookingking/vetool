@@ -1,8 +1,8 @@
 import { Input } from '@/components/ui/input'
-import { toast } from '@/components/ui/use-toast'
 import { updateCaution } from '@/lib/services/admin/icu/hos-drugs'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   caution: string
@@ -29,9 +29,8 @@ export default function CautionColumn({ hosDrugId, caution }: Props) {
 
     await updateCaution(cautionInput, hosDrugId)
 
-    toast({
-      title: '주사 특이사항을 변경되었습니다',
-    })
+    toast.success('주사 특이사항을 변경하였습니다')
+
     setIsUpdating(false)
     refresh()
   }

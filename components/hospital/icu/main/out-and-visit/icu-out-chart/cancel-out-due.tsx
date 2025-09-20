@@ -10,9 +10,9 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { toast } from '@/components/ui/use-toast'
 import { updateOutDueDate } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { X } from 'lucide-react'
+import { toast } from 'sonner'
 
 export function CancelOutDue({
   icuIoId,
@@ -24,9 +24,7 @@ export function CancelOutDue({
   const handleUpdateOutDueDate = async () => {
     await updateOutDueDate(icuIoId, null)
 
-    toast({
-      title: '퇴원예정일을 취소하였습니다',
-    })
+    toast.success('퇴원예정일을 취소하였습니다')
   }
 
   return (

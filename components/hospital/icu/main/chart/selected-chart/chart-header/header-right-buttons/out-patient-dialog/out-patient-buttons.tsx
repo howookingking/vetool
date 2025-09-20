@@ -1,11 +1,11 @@
 import { Button } from '@/components/ui/button'
 import { DialogClose } from '@/components/ui/dialog'
-import { toast } from '@/components/ui/use-toast'
 import { toggleOutPatient } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { cn, hashtagKeyword } from '@/lib/utils/utils'
 import type { SelectedChart } from '@/types/icu/chart'
-import { LoaderCircle } from 'lucide-react'
+import { LoaderCircleIcon } from 'lucide-react'
 import { type Dispatch, type SetStateAction, useState } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   isPatientOut: boolean
@@ -43,11 +43,11 @@ export default function OutPatientButtons({
       isAlive,
     )
 
-    toast({
-      title: isPatientOut
+    toast.success(
+      isPatientOut
         ? `${patient.name}의 퇴원을 취소하였습니다`
         : `${patient.name}을(를) 퇴원처리 하였습니다`,
-    })
+    )
 
     isAlive ? setIsOutSubmitting(false) : setIsAliveSubmitting(false)
     setIsDialogOpen(false)
@@ -63,7 +63,7 @@ export default function OutPatientButtons({
           disabled={isAliveSubmitting}
         >
           🌈 사망
-          <LoaderCircle
+          <LoaderCircleIcon
             className={cn(isAliveSubmitting ? 'ml-2 animate-spin' : 'hidden')}
           />
         </Button>
@@ -76,7 +76,7 @@ export default function OutPatientButtons({
       </DialogClose>
       <Button onClick={() => handleOutPatient(true)} disabled={isOutSubmitting}>
         {isPatientOut ? '퇴원취소' : '퇴원'}
-        <LoaderCircle
+        <LoaderCircleIcon
           className={cn(isOutSubmitting ? 'ml-2 animate-spin' : 'hidden')}
         />
       </Button>

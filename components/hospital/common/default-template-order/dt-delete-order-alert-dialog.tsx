@@ -11,12 +11,12 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { toast } from '@/components/ui/use-toast'
 import { deleteDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
 import { type OrderStep } from '@/lib/store/icu/icu-order'
 import { type SelectedIcuOrder } from '@/types/icu/chart'
 import { useRouter } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useState } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   selectedChartOrder: Partial<SelectedIcuOrder>
@@ -40,9 +40,7 @@ export default function DtDeleteOrderAlertDialog({
 
   const handleDeleteOrderClick = async () => {
     if (!isTemplate && isLastDefaultOrder) {
-      toast({
-        title: '기본오더는 적어도 1개 이상이여야 합니다',
-      })
+      toast.warning('기본오더는 적어도 1개 이상이여야 합니다')
       return
     }
 
@@ -54,9 +52,7 @@ export default function DtDeleteOrderAlertDialog({
 
     !isTemplate && (await deleteDefaultChartOrder(selectedChartOrder.order_id!))
 
-    toast({
-      title: `${selectedChartOrder.order_name} 오더를 삭제하였습니다`,
-    })
+    toast.success(`${selectedChartOrder.order_name} 오더를 삭제하였습니다`)
 
     refresh()
   }

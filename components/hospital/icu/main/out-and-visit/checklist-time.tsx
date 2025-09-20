@@ -1,10 +1,10 @@
 'use client'
 
 import { Input } from '@/components/ui/input'
-import { toast } from '@/components/ui/use-toast'
 import { updatePatientMovement } from '@/lib/services/icu/out-and-visit/update-checklist'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 export default function ChecklistTime({
   icuIoId,
@@ -37,9 +37,8 @@ export default function ChecklistTime({
 
     await updatePatientMovement(icuIoId, timeInput, checkType, visitId)
 
-    toast({
-      title: '관리 사항을 변경하였습니다',
-    })
+    toast.success('관리 사항을 변경하였습니다')
+
     refresh()
   }
 

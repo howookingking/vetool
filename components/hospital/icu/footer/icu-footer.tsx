@@ -3,33 +3,28 @@
 import AnnouncementsCarousel from '@/components/hospital/home/header/announcements-carousel'
 import RealtimeStatus from '@/components/hospital/icu/footer/realtime-status'
 import { Button } from '@/components/ui/button'
-import { toast } from '@/components/ui/use-toast'
 import { useIcuRealtime } from '@/hooks/use-icu-realtime'
 import { cn } from '@/lib/utils/utils'
 import type { AnnouncementTitles } from '@/types/vetool'
 import {
-  BarChartHorizontal,
-  Bookmark,
-  ClipboardList,
-  LayoutDashboard,
-  ListChecks,
-  LogOut,
-  Search,
+  BarChartHorizontalIcon,
+  BookmarkIcon,
+  ClipboardListIcon,
+  LayoutDashboardIcon,
+  ListChecksIcon,
+  LogOutIcon,
+  SearchIcon,
 } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
+import { toast } from 'sonner'
 
 type IcuFooterProps = {
   hosId: string
   targetDate: string
-  announcementTitlesData: AnnouncementTitles[]
 }
 
-export default function IcuFooter({
-  hosId,
-  targetDate,
-  announcementTitlesData,
-}: IcuFooterProps) {
+export default function IcuFooter({ hosId, targetDate }: IcuFooterProps) {
   const { push, refresh } = useRouter()
   const path = usePathname()
 
@@ -39,10 +34,7 @@ export default function IcuFooter({
 
   useEffect(() => {
     if (isRealtimeReady) {
-      toast({
-        title: '차트의 실시간 변경을 감지하고 있습니다',
-        className: 'bg-green-600 text-white',
-      })
+      toast.success('차트에 실시간 변경을 감지하고 있습니다')
       refresh()
     }
   }, [isRealtimeReady, refresh])
@@ -77,7 +69,8 @@ export default function IcuFooter({
         ))}
       </ul>
 
-      <AnnouncementsCarousel announcementTitlesData={announcementTitlesData} />
+      {/* 보지도 않음, 홈에서만 유지 */}
+      {/* <AnnouncementsCarousel announcementTitlesData={announcementTitlesData} /> */}
     </footer>
   )
 }
@@ -86,43 +79,43 @@ const FOOTER_MAIN_VIEW_MENUS = [
   {
     label: '종합현황',
     value: 'summary',
-    icon: <LayoutDashboard />,
+    icon: <LayoutDashboardIcon />,
     hideInMobile: false,
   },
   {
     label: '처치표',
     value: 'tx-table',
-    icon: <ListChecks />,
+    icon: <ListChecksIcon />,
     hideInMobile: false,
   },
   {
     label: '입원차트',
     value: 'chart',
-    icon: <ClipboardList />,
+    icon: <ClipboardListIcon />,
     hideInMobile: false,
   },
   {
     label: '퇴원/면회',
     value: 'out-and-visit',
-    icon: <LogOut />,
+    icon: <LogOutIcon />,
     hideInMobile: true,
   },
   {
     label: '검색',
     value: 'search',
-    icon: <Search />,
+    icon: <SearchIcon />,
     hideInMobile: true,
   },
   {
     label: '템플릿',
     value: 'template',
-    icon: <Bookmark />,
+    icon: <BookmarkIcon />,
     hideInMobile: true,
   },
   {
     label: '통계',
     value: 'analysis',
-    icon: <BarChartHorizontal />,
+    icon: <BarChartHorizontalIcon />,
     hideInMobile: true,
   },
 ] as const

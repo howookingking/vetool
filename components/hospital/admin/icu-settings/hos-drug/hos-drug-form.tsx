@@ -17,7 +17,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { toast } from '@/components/ui/use-toast'
 import {
   hosDrugFormSchema,
   HosDrugFormSchema,
@@ -29,6 +28,7 @@ import { LoaderCircle } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 export default function HosDrugForm({
   setIsDialogOpen,
@@ -74,9 +74,7 @@ export default function HosDrugForm({
       caution ?? '',
     )
 
-    toast({
-      title: '선호 약물을 등록하였습니다',
-    })
+    toast.success('선호 약물을 등록하였습니다')
 
     setIsInserting(false)
     setIsDialogOpen(false)

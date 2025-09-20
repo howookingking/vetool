@@ -9,7 +9,6 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { toast } from '@/components/ui/use-toast'
 import {
   chartSchema,
   type ChatFormValues,
@@ -45,11 +44,11 @@ export default function ChatForm({
       [data.email, data.hospital, data.message].join(' '),
     )
 
-    toast({
-      title: '전송 완료',
-      description:
-        '기재하신 이메일로 벳툴팀이 최대한 빠르게 답장을 드리겠습니다',
-    })
+    // toast({
+    //   title: '전송 완료',
+    //   description:
+    //     '기재하신 이메일로 벳툴팀이 최대한 빠르게 답장을 드리겠습니다',
+    // })
 
     setIsSubmitting(false)
   }

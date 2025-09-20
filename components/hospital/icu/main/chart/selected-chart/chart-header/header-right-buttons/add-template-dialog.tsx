@@ -20,16 +20,16 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { toast } from '@/components/ui/use-toast'
 import { templateFormSchema } from '@/lib/schemas/icu/chart/template-schema'
 import { createTemplateChart } from '@/lib/services/icu/template/template'
 import { cn } from '@/lib/utils/utils'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { BookmarkPlus, LoaderCircle } from 'lucide-react'
+import { BookmarkPlusIcon, LoaderCircleIcon } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 type Props = {
@@ -74,9 +74,7 @@ export default function AddTemplateDialog({ orders, patientName }: Props) {
       template_comment,
     )
 
-    toast({
-      title: '템플릿이 추가되었습니다',
-    })
+    toast.success('템플릿을 추가하였습니다')
 
     setIsSubmitting(false)
     setIsDialogOpen(false)
@@ -91,7 +89,7 @@ export default function AddTemplateDialog({ orders, patientName }: Props) {
     <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon">
-          <BookmarkPlus size={18} />
+          <BookmarkPlusIcon size={18} />
         </Button>
       </DialogTrigger>
 
@@ -175,7 +173,7 @@ export default function AddTemplateDialog({ orders, patientName }: Props) {
                 </DialogClose>
                 <Button type="submit" disabled={isSubmitting} className="ml-2">
                   저장
-                  <LoaderCircle
+                  <LoaderCircleIcon
                     className={cn(
                       isSubmitting ? 'ml-2 animate-spin' : 'hidden',
                     )}

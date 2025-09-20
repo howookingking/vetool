@@ -11,12 +11,12 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { toast } from '@/components/ui/use-toast'
 import { deletePatient } from '@/lib/services/patient/patient'
 import { cn } from '@/lib/utils/utils'
-import { LoaderCircle, Trash2 } from 'lucide-react'
+import { LoaderCircleIcon, Trash2Icon } from 'lucide-react'
 import { useState } from 'react'
-import { type DebouncedState } from 'use-debounce'
+import { toast } from 'sonner'
+import type { DebouncedState } from 'use-debounce'
 
 type Props = {
   patientName: string
@@ -36,9 +36,7 @@ export default function DeletePatientAlert({
 
     await deletePatient(patientId)
 
-    toast({
-      title: `${patientName}이(가) 삭제되었습니다.`,
-    })
+    toast(`${patientName}이(가) 삭제되었습니다.`)
 
     setIsLoading(false)
     debouncedSearch()
@@ -48,7 +46,7 @@ export default function DeletePatientAlert({
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button size="icon" variant="ghost">
-          <Trash2 size={16} />
+          <Trash2Icon size={16} />
         </Button>
       </AlertDialogTrigger>
 
@@ -71,7 +69,7 @@ export default function DeletePatientAlert({
             className="bg-destructive hover:bg-destructive/90"
           >
             삭제
-            <LoaderCircle
+            <LoaderCircleIcon
               className={cn(isLoading ? 'ml-2 animate-spin' : 'hidden')}
             />
           </AlertDialogAction>

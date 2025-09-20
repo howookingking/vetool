@@ -11,12 +11,12 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { toast } from '@/components/ui/use-toast'
 import { deleteOrder } from '@/lib/services/icu/chart/order-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
-import { type SelectedIcuOrder } from '@/types/icu/chart'
-import { Trash2 } from 'lucide-react'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
+import { Trash2Icon } from 'lucide-react'
 import { type Dispatch, type SetStateAction } from 'react'
+import { toast } from 'sonner'
 
 type DeleteSelectedOrdersDialogProps = {
   setIsMultiSelectOrderActionDialogOpen: Dispatch<SetStateAction<boolean>>
@@ -38,9 +38,8 @@ export default function DeleteSelectedOrdersDialog({
       await deleteOrder(order.order_id!)
     })
 
-    toast({
-      title: `오더를 삭제하였습니다`,
-    })
+    toast.success('오더를 삭제하였습니다')
+
     setIsMultiSelectOrderActionDialogOpen(false)
     orderReset()
   }
@@ -52,7 +51,7 @@ export default function DeleteSelectedOrdersDialog({
           className="flex items-center justify-start gap-2 py-5 text-base"
           variant="outline"
         >
-          <Trash2 />
+          <Trash2Icon />
           오더 삭제
         </Button>
       </AlertDialogTrigger>

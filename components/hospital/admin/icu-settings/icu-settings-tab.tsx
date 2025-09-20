@@ -37,12 +37,6 @@ const ADMIN_SETTING_ITEMS = [
     value: 'orderFontSize',
     Component: OrderFontSizeTab,
   },
-  // 복잡도 지나치게 증가해서 기능 삭제
-  // {
-  //   label: '일 기준 시간',
-  //   value: 'baselineTime',
-  //   Component: BaselineTimeTab,
-  // },
   {
     label: '시간 가이드라인',
     value: 'timeGuideLine',

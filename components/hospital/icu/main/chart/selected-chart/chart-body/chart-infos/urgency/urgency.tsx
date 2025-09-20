@@ -6,25 +6,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { toast } from '@/components/ui/use-toast'
 import { updateUrgency } from '@/lib/services/icu/chart/update-icu-chart-infos'
-import { Siren, Star } from 'lucide-react'
+import { SirenIcon, StarIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
-const URGENCY = [
-  { label: '없음', value: 0 },
-  { label: 1, value: 1 },
-  { label: 2, value: 2 },
-  { label: 3, value: 3 },
-]
-
-export default function Urgency({
-  urgency,
-  icuChartId,
-}: {
+type Props = {
   urgency: number | null
   icuChartId: string
-}) {
+}
+
+export default function Urgency({ urgency, icuChartId }: Props) {
   const [isUpdating, setIsUpdating] = useState(false)
   const [localUrgency, setLocalUrgency] = useState<number | null>(urgency)
 
@@ -37,7 +29,8 @@ export default function Urgency({
 
     setLocalUrgency(numValue !== 0 ? numValue : null)
 
-    toast({ title: '응급도를 변경하였습니다' })
+    toast.success('응급도를 변경하였습니다')
+
     setIsUpdating(false)
   }
 
@@ -51,7 +44,7 @@ export default function Urgency({
         className="absolute left-2 text-xs text-muted-foreground"
         htmlFor="urgency"
       >
-        <Siren size={16} className="text-muted-foreground" />
+        <SirenIcon size={16} className="text-muted-foreground" />
       </Label>
 
       <Select
@@ -69,7 +62,7 @@ export default function Urgency({
                 {Array(localUrgency)
                   .fill(0)
                   .map((_, index) => (
-                    <Star
+                    <StarIcon
                       key={index}
                       className="h-4 w-4 fill-yellow-400 text-yellow-400"
                     />
@@ -91,7 +84,7 @@ export default function Urgency({
                   {Array(urgency.value)
                     .fill(0)
                     .map((_, index) => (
-                      <Star
+                      <StarIcon
                         key={index}
                         className="h-4 w-4 fill-yellow-400 text-yellow-400"
                       />
@@ -105,3 +98,10 @@ export default function Urgency({
     </div>
   )
 }
+
+const URGENCY = [
+  { label: '없음', value: 0 },
+  { label: 1, value: 1 },
+  { label: 2, value: 2 },
+  { label: 3, value: 3 },
+]

@@ -1,4 +1,3 @@
-import NewFeature from '@/components/common/new-feature'
 import {
   AccordionContent,
   AccordionItem,
@@ -44,11 +43,7 @@ export default function NorepinephrineCri({
 
   return (
     <AccordionItem value="norepinephrine">
-      <AccordionTrigger>
-        <NewFeature className="-right-2 top-0">
-          Norepinephrine (1mg/mL)
-        </NewFeature>
-      </AccordionTrigger>
+      <AccordionTrigger>Norepinephrine (1mg/mL)</AccordionTrigger>
 
       <AccordionContent className="space-y-4 px-1">
         <div className="grid grid-cols-2 gap-2">

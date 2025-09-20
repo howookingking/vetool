@@ -19,13 +19,13 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { toast } from '@/components/ui/use-toast'
 import { GroupCheckFormSchema } from '@/lib/schemas/admin/admin-schema'
 import { updateStaffGroup } from '@/lib/services/admin/staff'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 type Props = {
@@ -53,9 +53,8 @@ export function GroupColumnDialog({ groupList, userId, group, name }: Props) {
 
     await updateStaffGroup(userId, values.items)
 
-    toast({
-      title: '그룹을 변경하였습니다',
-    })
+    toast.success('그룹을 변경하였습니다')
+
     refresh()
     setIsDialogOpen(false)
     setIsUpdating(false)

@@ -1,9 +1,9 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
-import { toast } from '@/components/ui/use-toast'
 import { updateStaffName } from '@/lib/services/admin/staff'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   userId: string
@@ -27,10 +27,7 @@ export default function NameColumn({ userId, avatarUrl, name }: Props) {
     }
 
     if (nameInput && nameInput.length > 10) {
-      toast({
-        variant: 'destructive',
-        title: '10자 내로 입력해주세요',
-      })
+      toast.warning('10자 내로 입력해주세요')
 
       setNameInput(name)
       return
@@ -40,9 +37,8 @@ export default function NameColumn({ userId, avatarUrl, name }: Props) {
 
     await updateStaffName(userId, nameInput)
 
-    toast({
-      title: '스태프 이름을 변경하였습니다',
-    })
+    toast.success('스태프 이름을 변경하였습니다')
+
     setIsUpdating(false)
     refresh()
   }
