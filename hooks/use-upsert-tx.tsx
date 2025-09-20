@@ -42,11 +42,7 @@ export default function useUpsertTx({ hosId, onSuccess }: TxUpdateOptions) {
           await uploadTxImages(images, txId, bucketImagesLength.toString())
         } catch (error) {
           console.error('이미지 업로드 실패:', error)
-          // toast({
-          //   variant: 'destructive',
-          //   title: '처치 내역은 저장되었으나 이미지 업로드에 실패했습니다.',
-          //   description: '다시 시도해주세요.',
-          // })
+
           toast('처치 내역은 저장되었으나 이미지 업로드에 실패했습니다', {
             description: '다시 시도해주세요.',
           })
@@ -139,15 +135,15 @@ export default function useUpsertTx({ hosId, onSuccess }: TxUpdateOptions) {
         }
       }
 
-      toast.success('처치 내역을 업데이트 하였습니다')
+      // toast.success('처치 내역을 업데이트 하였습니다')
 
       onSuccess?.()
     } catch (error) {
       console.error('처치 내역 업데이트 실패:', error)
 
-      toast.error('처치 내역 업데이트에 실패했습니다', {
-        description: '다시 시도해주세요',
-      })
+      // toast.error('처치 내역 업데이트에 실패했습니다', {
+      //   description: '다시 시도해주세요',
+      // })
     } finally {
       setIsSubmitting(false)
     }
