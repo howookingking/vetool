@@ -17,7 +17,6 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { toast } from '@/components/ui/use-toast'
 import {
   FEEDBACK_CATEGORY_ENUM,
   feedbackFormSchema,
@@ -25,9 +24,10 @@ import {
 import { sendFeedback } from '@/lib/services/super/feedback/feedback'
 import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { LoaderCircle, X } from 'lucide-react'
+import { LoaderCircleIcon, XIcon } from 'lucide-react'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 export default function FeedbackForm({
@@ -53,15 +53,13 @@ export default function FeedbackForm({
     await sendFeedback(data.feedback_category, data.feedback_description)
 
     setIsSubmitting(false)
-    toast({
-      title: '피드백 주셔서 감사합니다',
-    })
+    toast.success('피드백 주셔서 감사합니다')
     setIsPopoverFeedbackOpen(false)
   }
   return (
     <>
       <h3 className="mb-2 text-center text-lg font-semibold">사용자 피드백</h3>
-      <X
+      <XIcon
         onClick={() => setIsPopoverFeedbackOpen(false)}
         className="absolute right-3 top-3 cursor-pointer text-muted-foreground"
         size={12}
@@ -119,7 +117,7 @@ export default function FeedbackForm({
           />
           <Button type="submit" disabled={isSubmitting} className="w-full">
             전송
-            <LoaderCircle
+            <LoaderCircleIcon
               className={cn(isSubmitting ? 'ml-2 animate-spin' : 'hidden')}
             />
           </Button>

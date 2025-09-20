@@ -23,6 +23,7 @@ import { LoaderCircle } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 type Props = {
@@ -82,7 +83,7 @@ export default function TxSelectUserStep({ handleClose, isSetting }: Props) {
         updatedLogs,
         txImages: txLocalState?.txImages,
         bucketImagesLength: txLocalState?.bucketImagesLength,
-      })
+      }).then(() => toast.success('다중 처치 결과를 입력했습니다'))
 
       return
     }

@@ -1,8 +1,8 @@
 import { Input } from '@/components/ui/input'
-import { toast } from '@/components/ui/use-toast'
 import { updateUnitPerKg } from '@/lib/services/admin/icu/hos-drugs'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   unitPerKg: string
@@ -27,10 +27,8 @@ export default function UnitPerKgColumn({ hosDrugId, unitPerKg, unit }: Props) {
     }
 
     if (isNaN(Number(unitPerKgInput))) {
-      toast({
-        variant: 'destructive',
-        title: '숫자를 입력해주세요',
-      })
+      toast.warning('숫자를 입력해주세요')
+
       setUnitPerKgInput(unitPerKg)
       return
     }
@@ -39,9 +37,8 @@ export default function UnitPerKgColumn({ hosDrugId, unitPerKg, unit }: Props) {
 
     await updateUnitPerKg(unitPerKgInput, hosDrugId)
 
-    toast({
-      title: '기본용량이 변경되었습니다',
-    })
+    toast.success('기본용량을 변경하였습니다')
+
     setIsUpdating(false)
     refresh()
   }

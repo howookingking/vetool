@@ -7,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { toast } from '@/components/ui/use-toast'
 import { updateOrderColorSettings } from '@/lib/services/admin/icu/order-color'
 import { cn } from '@/lib/utils/utils'
 import type { OrderColorDisplay } from '@/providers/basic-hos-data-context-provider'
@@ -18,6 +17,7 @@ import { useState } from 'react'
 import OrderColorDisplayMethod from './color-display-method/color-display-method'
 import OrderColorPickers from './color-picker/order-color-pickers'
 import DisplayExampleTable from './display-example-table'
+import { toast } from 'sonner'
 
 type Props = {
   orderColorSettings: {
@@ -54,9 +54,7 @@ export default function OrderColorSettings({ orderColorSettings }: Props) {
       localColorDisplayMethod,
     )
 
-    toast({
-      title: '오더색상 & 표시방법을 변경하였습니다.',
-    })
+    toast.success('오더색상 & 표시방법을 변경하였습니다.')
 
     setIsUpdating(false)
     refresh()

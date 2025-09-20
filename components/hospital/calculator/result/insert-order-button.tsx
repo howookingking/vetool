@@ -12,17 +12,17 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Form } from '@/components/ui/form'
-import { toast } from '@/components/ui/use-toast'
 import type { OrderType } from '@/constants/hospital/icu/chart/order'
 import { calcResultApplyFormSchema } from '@/lib/schemas/icu/chart/calc-result-apply-schema'
 import { insertCalcResultOrder } from '@/lib/services/icu/chart/order-mutation'
 import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
-import { ListPlus, LoaderCircle } from 'lucide-react'
+import { ListPlusIcon, LoaderCircleIcon } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 import OrderFormField from '../../icu/main/chart/selected-chart/chart-body/table/order/order-form-field'
 
@@ -56,10 +56,10 @@ export default function InsertOrderButton({
       values.icu_chart_order_comment ?? '',
     )
 
-    toast({
-      title: '오더 추가 완료',
+    toast.success('오더가 추가되었습니다', {
       description: '최하단에 오더가 추가되었습니다',
     })
+
     setIsSubmitting(false)
     setIsDialogOpen(false)
     setIsSheetOpen!(false)
@@ -82,7 +82,7 @@ export default function InsertOrderButton({
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon">
-          <ListPlus />
+          <ListPlusIcon />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px]">
@@ -109,7 +109,7 @@ export default function InsertOrderButton({
 
               <Button type="submit" disabled={isSubmitting}>
                 확인
-                <LoaderCircle
+                <LoaderCircleIcon
                   className={cn(isSubmitting ? 'animate-spin' : 'hidden')}
                 />
               </Button>

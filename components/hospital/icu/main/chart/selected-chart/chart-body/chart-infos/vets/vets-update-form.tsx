@@ -15,7 +15,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { toast } from '@/components/ui/use-toast'
 import { vetsFormSchema } from '@/lib/schemas/icu/chart/chart-info-schema'
 import { updateMainSubVet } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import type { Json } from '@/lib/supabase/database.types'
@@ -23,9 +22,10 @@ import { cn } from '@/lib/utils/utils'
 import { IcuChartsInCharge } from '@/types/adimin'
 import type { MainAndSubVet, Vet } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { LoaderCircle } from 'lucide-react'
+import { LoaderCircleIcon } from 'lucide-react'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import * as z from 'zod'
 
 type Props = {
@@ -77,9 +77,7 @@ export default function VetsUpdateForm({
       values.sub_vet,
     )
 
-    toast({
-      title: '담당의를 변경하였습니다',
-    })
+    toast.success('담당의를 변경하였습니다')
 
     setIsUpdating(false)
     setIsDialogOpen(false)
@@ -539,7 +537,7 @@ export default function VetsUpdateForm({
 
           <Button type="submit" className="ml-2" disabled={isUpdating}>
             변경
-            <LoaderCircle
+            <LoaderCircleIcon
               className={cn(isUpdating ? 'ml-2 animate-spin' : 'hidden')}
             />
           </Button>

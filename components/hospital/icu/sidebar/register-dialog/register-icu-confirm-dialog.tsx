@@ -8,13 +8,13 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { toast } from '@/components/ui/use-toast'
 import { registerIcuPatient } from '@/lib/services/icu/register-icu-patient'
 import { changeTargetDateInUrl, cn } from '@/lib/utils/utils'
-import { LoaderCircle } from 'lucide-react'
+import { LoaderCircleIcon } from 'lucide-react'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { type RegisteringPatient } from './register-dialog'
+import { toast } from 'sonner'
 
 type RegisterIcuConfirmDialogProps = {
   hosId: string
@@ -73,9 +73,8 @@ export default function RegisterIcuConfirmDialog({
 
     push(newPath)
 
-    toast({
-      title: '입원 등록 완료',
-      description: '입원 등록을 완료했습니다. 차트를 생성하세요',
+    toast.success('입원 등록 완료', {
+      description: '차트를 생성하세요',
     })
 
     setIsSubmitting(false)
@@ -101,7 +100,7 @@ export default function RegisterIcuConfirmDialog({
 
           <Button onClick={handleConfirm} disabled={isSubmitting}>
             확인
-            <LoaderCircle
+            <LoaderCircleIcon
               className={cn(isSubmitting ? 'ml-2 animate-spin' : 'hidden')}
             />
           </Button>

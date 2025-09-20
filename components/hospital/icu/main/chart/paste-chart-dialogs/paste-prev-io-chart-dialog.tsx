@@ -20,14 +20,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { toast } from '@/components/ui/use-toast'
 import { pasteChart } from '@/lib/services/icu/chart/paste-chart'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { type PrevIoChartData } from '@/types/icu/chart'
-import { CalendarPlus, LoaderCircle } from 'lucide-react'
+import type { PrevIoChartData } from '@/types/icu/chart'
+import { CalendarPlusIcon, LoaderCircleIcon } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 export default function PastePrevIoChartDialog({
   prevIoChartData,
@@ -57,9 +57,7 @@ export default function PastePrevIoChartDialog({
       orderer,
     )
 
-    toast({
-      title: '최근 입원 차트를 복사하였습니다',
-    })
+    toast.success('최근 입원 차트를 복사하였습니다')
 
     setIsLoading(false)
     setIsDialogOpen(false)
@@ -73,7 +71,7 @@ export default function PastePrevIoChartDialog({
           variant="outline"
           className="hidden h-1/3 w-full items-center justify-center gap-2 md:flex md:h-1/3 md:w-2/3 lg:w-1/2"
         >
-          <CalendarPlus size={20} />
+          <CalendarPlusIcon size={20} />
           <div className="flex flex-wrap justify-center">
             <span>최근 차트 붙여넣기</span>
             <span>{`(${prevDate})`}</span>
@@ -132,7 +130,7 @@ export default function PastePrevIoChartDialog({
           </DialogClose>
           <Button onClick={handleCopyPrevIoChart} disabled={isLoading}>
             확인
-            <LoaderCircle
+            <LoaderCircleIcon
               className={cn(isLoading ? 'animate-spin' : 'hidden')}
             />
           </Button>

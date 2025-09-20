@@ -2,12 +2,12 @@ import MemoColorPicker from '@/components/hospital/icu/main/chart/selected-chart
 import DeleteMemoDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/single-memo/delete-memo-dialog'
 import MemoTimeStamp from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-memos/single-memo/memo-time-stamp'
 import { Textarea } from '@/components/ui/textarea'
-import { toast } from '@/components/ui/use-toast'
 import { MEMO_COLORS } from '@/constants/hospital/icu/chart/colors'
 import { cn } from '@/lib/utils/utils'
-import { type Memo } from '@/types/icu/chart'
-import { Check, GripVertical, Pencil } from 'lucide-react'
+import type { Memo } from '@/types/icu/chart'
+import { CheckIcon, GripVerticalIcon, PencilIcon } from 'lucide-react'
 import React, { useEffect, useRef, useState } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   memo: Memo
@@ -44,9 +44,7 @@ const SingleMemo = React.forwardRef<HTMLLIElement, Props>(
 
     const handleUpdateSingleMemo = () => {
       if (editedMemo.trim().length === 0) {
-        toast({
-          title: '메모를 입력해주세요',
-        })
+        toast.warning('메모를 입력해주세요')
         editingTextAreaRef.current?.focus()
         return
       }
@@ -78,7 +76,7 @@ const SingleMemo = React.forwardRef<HTMLLIElement, Props>(
           backgroundColor: editedMemoColor ?? MEMO_COLORS[0],
         }}
       >
-        <GripVertical
+        <GripVerticalIcon
           className="handle z-20 hidden shrink-0 2xl:block"
           size={16}
           cursor="grab"
@@ -101,7 +99,7 @@ const SingleMemo = React.forwardRef<HTMLLIElement, Props>(
                     isMemoNameSetting && 'hidden',
                   )}
                 >
-                  <Pencil
+                  <PencilIcon
                     size={14}
                     onClick={() => setIsEditMode(true)}
                     className="hover:opacity-70"
@@ -125,7 +123,7 @@ const SingleMemo = React.forwardRef<HTMLLIElement, Props>(
                   memoColor={editedMemoColor}
                   setMemoColor={setEditedMemoColor}
                 />
-                <Check
+                <CheckIcon
                   size={14}
                   onClick={handleUpdateSingleMemo}
                   className="absolute -top-5 right-0 cursor-pointer hover:opacity-70"

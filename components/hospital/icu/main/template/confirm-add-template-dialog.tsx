@@ -19,7 +19,6 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { toast } from '@/components/ui/use-toast'
 import { templateFormSchema } from '@/lib/schemas/icu/chart/template-schema'
 import {
   createTemplateChart,
@@ -36,6 +35,7 @@ import { LoaderCircle } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 type ConfirmAddTemplateDialogProps = {
@@ -97,9 +97,9 @@ export default function ConfirmAddTemplateDialog({
       )
     }
 
-    toast({
-      title: isEdit ? '템플릿이 수정되었습니다' : '템플릿이 추가되었습니다',
-    })
+    toast.success(
+      isEdit ? '템플릿이 수정되었습니다' : '템플릿이 추가되었습니다',
+    )
 
     setIsSubmitting(false)
     setIsDialogOpen(false)

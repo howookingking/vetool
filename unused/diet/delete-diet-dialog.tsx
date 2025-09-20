@@ -13,7 +13,6 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { toast } from '@/components/ui/use-toast'
 import { deleteDietData } from '@/lib/services/admin/diet'
 import { LoaderCircle, Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -34,9 +33,9 @@ export default function DeleteDietDialog({
 
     await deleteDietData(dietProductId)
 
-    toast({
-      title: `${name} 사료를 삭제하였습니다`,
-    })
+    // toast({
+    //   title: `${name} 사료를 삭제하였습니다`,
+    // })
 
     setIsDeleting(false)
     refresh()

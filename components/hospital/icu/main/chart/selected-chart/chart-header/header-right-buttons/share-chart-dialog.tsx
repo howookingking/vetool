@@ -10,10 +10,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { toast } from '@/components/ui/use-toast'
-import { Share2 } from 'lucide-react'
+import { Share2Icon } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 export default function ShareChartDialog({ icuIoId }: { icuIoId: string }) {
   const { target_date } = useParams()
@@ -33,9 +33,8 @@ export default function ShareChartDialog({ icuIoId }: { icuIoId: string }) {
     navigator.clipboard.writeText(sharedChartUrl)
 
     setIsDialogOpen(false)
-    toast({
-      title: '클립보드에 링크가 복사되었습니다.',
-    })
+
+    toast.success('링크가 클립보드에 복사되었습니다.')
   }
 
   const handleMove = () => {
@@ -47,7 +46,7 @@ export default function ShareChartDialog({ icuIoId }: { icuIoId: string }) {
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon">
-          <Share2 size={18} />
+          <Share2Icon size={18} />
         </Button>
       </DialogTrigger>
 

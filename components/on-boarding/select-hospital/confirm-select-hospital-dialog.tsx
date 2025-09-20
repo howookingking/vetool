@@ -9,12 +9,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { toast } from '@/components/ui/use-toast'
 import { sendApprovalToHospital } from '@/lib/services/on-boarding/on-boarding'
 import { cn } from '@/lib/utils/utils'
 import { Check, LoaderCircle } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 export default function ConfirmSelectHospitalDialog({
   hosId,
@@ -36,10 +36,10 @@ export default function ConfirmSelectHospitalDialog({
 
     await sendApprovalToHospital(hosId, isVet === 'true', username!)
 
-    toast({
-      title: '승인 요청을 보냈습니다',
+    toast.success('승인 요청을 전송하였습니다', {
       description: '승인 완료 후 로그인 해주세요',
     })
+
     setIsSubmitting(false)
     setIsDialogOpen(false)
     push('/on-boarding/approval-waiting')

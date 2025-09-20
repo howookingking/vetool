@@ -7,6 +7,11 @@ export type Json =
   | Json[]
 
 export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "12.1 (8cbcf98)"
+  }
   public: {
     Tables: {
       announcements: {
@@ -49,61 +54,70 @@ export type Database = {
       }
       checklist: {
         Row: {
-          checklist_group: string | null
+          age_in_days: number | null
+          checklist_group: Json | null
           checklist_id: string
           checklist_protocol: Json | null
-          checklist_set: Json | null
+          checklist_set: Json
           checklist_tag: string | null
           checklist_timetable: Json | null
-          checklist_title: string | null
-          checklist_type: string | null
+          checklist_title: string
+          checklist_type: string
           checklist_vet: Json | null
           comment: string | null
           created_at: string
           due_date: string | null
-          endtime: string | null
-          hos_id: string | null
+          end_date: string | null
+          end_time: string | null
+          hos_id: string
+          is_txing: boolean | null
           patient_id: string | null
-          preinfo: string | null
-          starttime: string | null
+          pre_info: Json | null
+          start_time: string | null
         }
         Insert: {
-          checklist_group?: string | null
+          age_in_days?: number | null
+          checklist_group?: Json | null
           checklist_id?: string
           checklist_protocol?: Json | null
-          checklist_set?: Json | null
+          checklist_set?: Json
           checklist_tag?: string | null
           checklist_timetable?: Json | null
-          checklist_title?: string | null
-          checklist_type?: string | null
+          checklist_title: string
+          checklist_type: string
           checklist_vet?: Json | null
           comment?: string | null
           created_at?: string
           due_date?: string | null
-          endtime?: string | null
-          hos_id?: string | null
+          end_date?: string | null
+          end_time?: string | null
+          hos_id: string
+          is_txing?: boolean | null
           patient_id?: string | null
-          preinfo?: string | null
-          starttime?: string | null
+          pre_info?: Json | null
+          start_time?: string | null
         }
         Update: {
-          checklist_group?: string | null
+          age_in_days?: number | null
+          checklist_group?: Json | null
           checklist_id?: string
           checklist_protocol?: Json | null
-          checklist_set?: Json | null
+          checklist_set?: Json
           checklist_tag?: string | null
           checklist_timetable?: Json | null
-          checklist_title?: string | null
-          checklist_type?: string | null
+          checklist_title?: string
+          checklist_type?: string
           checklist_vet?: Json | null
           comment?: string | null
           created_at?: string
           due_date?: string | null
-          endtime?: string | null
-          hos_id?: string | null
+          end_date?: string | null
+          end_time?: string | null
+          hos_id?: string
+          is_txing?: boolean | null
           patient_id?: string | null
-          preinfo?: string | null
-          starttime?: string | null
+          pre_info?: Json | null
+          start_time?: string | null
         }
         Relationships: [
           {
@@ -119,6 +133,50 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "patients"
             referencedColumns: ["patient_id"]
+          },
+        ]
+      }
+      checklist_template: {
+        Row: {
+          checklist_protocol: Json | null
+          checklist_set: Json | null
+          checklist_tag: string | null
+          checklist_template_id: string
+          checklist_title: string | null
+          checklist_type: string | null
+          created_at: string
+          hos_id: string | null
+          preinfo: Json | null
+        }
+        Insert: {
+          checklist_protocol?: Json | null
+          checklist_set?: Json | null
+          checklist_tag?: string | null
+          checklist_template_id?: string
+          checklist_title?: string | null
+          checklist_type?: string | null
+          created_at?: string
+          hos_id?: string | null
+          preinfo?: Json | null
+        }
+        Update: {
+          checklist_protocol?: Json | null
+          checklist_set?: Json | null
+          checklist_tag?: string | null
+          checklist_template_id?: string
+          checklist_title?: string | null
+          checklist_type?: string | null
+          created_at?: string
+          hos_id?: string | null
+          preinfo?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "checklist_template_hos_id_fkey"
+            columns: ["hos_id"]
+            isOneToOne: false
+            referencedRelation: "hospitals"
+            referencedColumns: ["hos_id"]
           },
         ]
       }
@@ -396,7 +454,6 @@ export type Database = {
       }
       hospitals: {
         Row: {
-          baseline_time: number
           business_number: string
           city: string
           created_at: string
@@ -418,7 +475,6 @@ export type Database = {
           vital_ref_range: Json
         }
         Insert: {
-          baseline_time?: number
           business_number?: string
           city: string
           created_at?: string
@@ -440,7 +496,6 @@ export type Database = {
           vital_ref_range?: Json
         }
         Update: {
-          baseline_time?: number
           business_number?: string
           city?: string
           created_at?: string
@@ -1174,6 +1229,57 @@ export type Database = {
           },
         ]
       }
+      messages: {
+        Row: {
+          avatar_url: string
+          category: string
+          content: string | null
+          created_at: string
+          hos_id: string
+          message_id: string
+          position: string
+          user_id: string
+          user_name: string
+        }
+        Insert: {
+          avatar_url?: string
+          category?: string
+          content?: string | null
+          created_at?: string
+          hos_id?: string
+          message_id?: string
+          position?: string
+          user_id?: string
+          user_name?: string
+        }
+        Update: {
+          avatar_url?: string
+          category?: string
+          content?: string | null
+          created_at?: string
+          hos_id?: string
+          message_id?: string
+          position?: string
+          user_id?: string
+          user_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_hos_id_fkey"
+            columns: ["hos_id"]
+            isOneToOne: false
+            referencedRelation: "hospitals"
+            referencedColumns: ["hos_id"]
+          },
+          {
+            foreignKeyName: "chat_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       notices: {
         Row: {
           created_at: string
@@ -1617,31 +1723,43 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      checklist_sidebar_data: {
+        Args: { _due_date: string; _hos_id: string }
+        Returns: Json
+      }
       copy_prev_orders: {
-        Args: { prev_chart_id_input: string; new_chart_id_input: string }
+        Args: { new_chart_id_input: string; prev_chart_id_input: string }
         Returns: undefined
       }
       copy_selected_orders: {
         Args: {
-          selected_chart_id_input: string
           new_chart_id_input: string
           orderer_name_input: string
+          selected_chart_id_input: string
         }
         Returns: undefined
       }
       copy_template_orders: {
-        Args: { prev_chart_id_input: string; new_chart_id_input: string }
+        Args: { new_chart_id_input: string; prev_chart_id_input: string }
         Returns: undefined
       }
       create_template_orders: {
         Args: {
           hos_id_input: string
-          template_name_input: string
-          template_comment_input: string
-          template_orders_input: Json
           is_time_included_input: boolean
+          template_comment_input: string
+          template_name_input: string
+          template_orders_input: Json
         }
         Returns: undefined
+      }
+      fetch_checklist_sidebar_data: {
+        Args: { due_date_input: string; hos_id_input: string }
+        Returns: Json
+      }
+      fetch_checklist_with_patient_with_weight: {
+        Args: { checklist_id_input: string }
+        Returns: Json
       }
       get_chartable_vitals_data: {
         Args: { icu_io_id_input: string }
@@ -1657,10 +1775,10 @@ export type Database = {
       }
       get_icu_analysis_data: {
         Args: {
-          hos_id_input: string
-          target_date_input: string
-          start_date_input: string
           end_date_input: string
+          hos_id_input: string
+          start_date_input: string
+          target_date_input: string
         }
         Returns: Json
       }
@@ -1671,17 +1789,13 @@ export type Database = {
       get_icu_chart_data: {
         Args: {
           hos_id_input: string
-          target_date_input: string
           patient_id_input: string
+          target_date_input: string
         }
         Returns: Json
       }
       get_icu_out_due_patients: {
         Args: { hos_id_input: string; target_date_input: string }
-        Returns: Json
-      }
-      get_icu_share_data: {
-        Args: { icu_io_id_input: string; target_date_input: string }
         Returns: Json
       }
       get_icu_sidebar_data: {
@@ -1690,14 +1804,6 @@ export type Database = {
       }
       get_icu_summary_data: {
         Args: { hos_id_input: string; target_date_input: string }
-        Returns: Json
-      }
-      get_icu_template_charts_data: {
-        Args: { hos_id_input: string }
-        Returns: Json
-      }
-      get_icu_template_data: {
-        Args: { hos_id_input: string }
         Returns: Json
       }
       get_icu_tx_table_data: {
@@ -1712,10 +1818,6 @@ export type Database = {
         Args: { hos_id_input: string; target_date_input: string }
         Returns: Json
       }
-      get_icu_vital_tx_data: {
-        Args: { patient_id_input: string; target_date_input: string }
-        Returns: Json
-      }
       get_not_out_due_patients: {
         Args: { hos_id_input: string; target_date_input: string }
         Returns: Json
@@ -1728,14 +1830,6 @@ export type Database = {
         Args: { hos_id_input: string; species_input: string }
         Returns: Json
       }
-      get_pinned_diet_data_new: {
-        Args: { hos_id_input: string; species_input: string }
-        Returns: Json
-      }
-      get_pinned_diets_1: {
-        Args: { hos_id_input: string; species_input: string }
-        Returns: Json
-      }
       get_template_chart_data: {
         Args: { icu_chart_id_input: string }
         Returns: Json
@@ -1743,53 +1837,11 @@ export type Database = {
       insert_calc_result_order: {
         Args: {
           hos_id_input: string
-          target_date_input: string
-          order_type_input: string
-          order_name_input: string
           order_comment_input: string
-          patient_id_input: string
-        }
-        Returns: undefined
-      }
-      insert_calc_result_order1: {
-        Args: {
-          hos_id_input: string
-          target_date_input: string
-          order_type_input: string
           order_name_input: string
-          order_comment_input: string
-          patient_id_input: string
-        }
-        Returns: undefined
-      }
-      insert_calc_result_order2: {
-        Args: {
-          hos_id_input: string
-          target_date_input: string
           order_type_input: string
-          order_name_input: string
-          order_comment_input: string
           patient_id_input: string
-        }
-        Returns: undefined
-      }
-      insert_default_chart_orders: {
-        Args: {
-          hos_id_input: string
-          icu_chart_id_input: string
-          icu_io_id_input: string
-        }
-        Returns: undefined
-      }
-      insert_default_orders: {
-        Args: { hos_id_input: string; icu_chart_id_input: string }
-        Returns: undefined
-      }
-      insert_default_orders_with_orderer: {
-        Args: {
-          hos_id_input: string
-          icu_chart_id_input: string
-          oderer: string
+          target_date_input: string
         }
         Returns: undefined
       }
@@ -1797,143 +1849,65 @@ export type Database = {
         Args: { hos_id_input: string }
         Returns: undefined
       }
-      insert_patient_when_register: {
-        Args: {
-          hos_id_input: string
-          name_input: string
-          hos_patient_id_input: string
-          species_input: string
-          breed_input: string
-          gender_input: string
-          microchip_no_input: string
-          body_weight_input: string
-          owner_name_input: string
-          owner_id_input: string
-          memo_input: string
-          birth_input: string
-        }
-        Returns: string
-      }
-      insert_template_orders: {
-        Args: {
-          hos_id_input: string
-          template_name_input: string
-          template_comment_input: string
-          template_orders_input: Json
-        }
-        Returns: undefined
-      }
       paste_default_icu_chart: {
-        Args: { icu_chart_id_input: string; hos_id_input: string }
-        Returns: undefined
-      }
-      paste_default_orders: {
-        Args: {
-          hos_id_input: string
-          icu_chart_id_input: string
-          oderer_input: string
-        }
+        Args: { hos_id_input: string; icu_chart_id_input: string }
         Returns: undefined
       }
       register_icu: {
         Args: {
-          hos_id_input: string
-          patient_id_input: string
-          icu_io_dx_input: string
-          icu_io_cc_input: string
-          in_date_input: string
-          out_due_date_input: string
-          main_vet_input: string
-          sub_vet_input: string
-          group_list_input: Json
           age_in_days_input: number
-        }
-        Returns: undefined
-      }
-      register_icu_patient: {
-        Args: {
-          hos_id_input: string
-          patient_id_input: string
-          icu_io_dx_input: string
-          icu_io_cc_input: string
-          in_date_input: string
-          out_due_date_input: string
-          main_vet_input: string
-          sub_vet_input: string
           group_list_input: Json
-          age_in_days_input: number
+          hos_id_input: string
+          icu_io_cc_input: string
+          icu_io_dx_input: string
+          in_date_input: string
+          main_vet_input: string
+          out_due_date_input: string
+          patient_id_input: string
+          sub_vet_input: string
         }
         Returns: undefined
       }
       register_patient: {
         Args: {
-          hos_id_input: string
-          name_input: string
-          hos_patient_id_input: string
-          species_input: string
+          birth_input: string
+          body_weight_input: string
           breed_input: string
           gender_input: string
-          microchip_no_input: string
-          body_weight_input: string
-          owner_name_input: string
+          hos_id_input: string
           hos_owner_id_input: string
+          hos_patient_id_input: string
           memo_input: string
-          birth_input: string
+          microchip_no_input: string
+          name_input: string
+          owner_name_input: string
+          species_input: string
         }
         Returns: string
-      }
-      search_diet: {
-        Args: {
-          hos_id_input: string
-          search_term_input: string
-          page_number_input: number
-          items_per_page_input: number
-        }
-        Returns: Json
-      }
-      search_icu_templates_data: {
-        Args: { hos_id_input: string; search_value: string }
-        Returns: Json
       }
       search_patients: {
         Args: {
           hos_id_input: string
-          search_term_input: string
           is_icu_input?: boolean
-          page_number_input?: number
           items_per_page_input?: number
+          page_number_input?: number
+          search_term_input: string
         }
         Returns: Json
       }
       toggle_io_patient_out: {
         Args: {
-          icu_io_id_input: string
-          patient_id_input: string
-          is_patient_out_input: boolean
-          keywords_input: string
-          patient_breed_input: string
-          patient_name_input: string
-          patient_species_input: string
-          owner_name_input: string
+          age_in_days_input: number
           gender_input: string
-          age_in_days_input: number
-          is_alive_input: boolean
-        }
-        Returns: undefined
-      }
-      toggle_patient_out: {
-        Args: {
           icu_io_id_input: string
-          patient_id_input: string
+          is_alive_input: boolean
           is_patient_out_input: boolean
-          chart_orders_input: string
           keywords_input: string
+          owner_name_input: string
           patient_breed_input: string
+          patient_id_input: string
           patient_name_input: string
           patient_species_input: string
-          owner_name_input: string
-          age_in_days_input: number
-          is_alive_input: boolean
         }
         Returns: undefined
       }
@@ -1945,151 +1919,93 @@ export type Database = {
         }
         Returns: undefined
       }
-      update_icu_patient_weight: {
-        Args: {
-          patient_id_input: string
-          icu_chart_id_input: string
-          weight_input: string
-          weight_measured_date_input: string
-        }
-        Returns: undefined
-      }
-      update_patient: {
+      update_patient_from_checklist: {
         Args: {
           birth_input: string
-          species_input: string
           breed_input: string
           gender_input: string
-          name_input: string
+          hos_owner_id_input: string
+          hos_patient_id_input: string
+          is_weight_changed_input: boolean
           memo_input: string
           microchip_no_input: string
+          name_input: string
           owner_name_input: string
-          hos_owner_id_input: string
           patient_id_input: string
+          species_input: string
           weight_input: string
-          weight_measured_date_input: string
-          icu_chart_id_input: string
         }
         Returns: undefined
       }
       update_patient_from_icu_route: {
         Args: {
           birth_input: string
-          species_input: string
           breed_input: string
           gender_input: string
-          name_input: string
+          hos_owner_id_input: string
+          hos_patient_id_input: string
+          icu_chart_id_input: string
+          is_weight_changed_input: boolean
           memo_input: string
           microchip_no_input: string
+          name_input: string
           owner_name_input: string
-          hos_owner_id_input: string
           patient_id_input: string
-          hos_patient_id_input: string
+          species_input: string
           weight_input: string
-          is_weight_changed_input: boolean
           weight_measured_date_input: string
-          icu_chart_id_input: string
         }
         Returns: undefined
       }
       update_patient_from_patient_route: {
         Args: {
           birth_input: string
-          species_input: string
           breed_input: string
           gender_input: string
-          name_input: string
-          memo_input: string
-          microchip_no_input: string
-          owner_name_input: string
           hos_owner_id_input: string
           hos_patient_id_input: string
-          patient_id_input: string
-          weight_input: string
           is_weight_changed_input: boolean
-        }
-        Returns: undefined
-      }
-      "update_patient_from_patient_route`": {
-        Args: {
-          birth_input: string
-          species_input: string
-          breed_input: string
-          gender_input: string
-          name_input: string
           memo_input: string
           microchip_no_input: string
-          owner_name_input: string
-          hos_owner_id_input: string
-          patient_id_input: string
-          weight_input: string
-        }
-        Returns: undefined
-      }
-      update_patient_from_patient_route1: {
-        Args: {
-          birth_input: string
-          species_input: string
-          breed_input: string
-          gender_input: string
           name_input: string
-          memo_input: string
-          microchip_no_input: string
           owner_name_input: string
-          hos_owner_id_input: string
-          hos_patient_id_input: string
           patient_id_input: string
+          species_input: string
           weight_input: string
         }
         Returns: undefined
       }
       update_template_chart: {
         Args: {
+          hos_id_input: string
           icu_chart_id_input: string
-          template_orders_input: Json
+          template_comment_input: string
           template_id_input: string
           template_name_input: string
-          template_comment_input: string
-          hos_id_input: string
+          template_orders_input: Json
         }
         Returns: undefined
       }
       update_user_approval_and_user_hos_id_when_approved: {
-        Args: { user_id_input: string; hos_id_input: string }
+        Args: { hos_id_input: string; user_id_input: string }
         Returns: undefined
       }
       update_user_info_when_create_new_hospital: {
         Args: {
-          hos_name_input: string
-          user_name_input: string
-          is_vet_input: boolean
+          business_number_input: string
           city_input: string
           district_input: string
-          business_number_input: string
+          hos_name_input: string
+          is_vet_input: boolean
+          user_name_input: string
         }
         Returns: string
       }
       update_user_info_when_sending_approval: {
         Args: {
-          name_input: string
-          is_vet_input: boolean
           hos_id_input: string
-        }
-        Returns: undefined
-      }
-      update_user_info_when_sending_approval1: {
-        Args: {
           is_vet_input: boolean
           name_input: string
-          hos_id_input: string
-        }
-        Returns: undefined
-      }
-      update_weight_and_insert_vitals_by_order: {
-        Args: {
-          icu_chart_order_id_input: string
-          weight_input: string
-          weight_measured_date_input: string
         }
         Returns: undefined
       }
@@ -2103,21 +2019,25 @@ export type Database = {
   }
 }
 
-type DefaultSchema = Database[Extract<keyof Database, "public">]
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
+
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-        Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-      Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
       Row: infer R
     }
     ? R
@@ -2135,14 +2055,16 @@ export type Tables<
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Insert: infer I
     }
     ? I
@@ -2158,14 +2080,16 @@ export type TablesInsert<
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Update: infer U
     }
     ? U
@@ -2181,14 +2105,16 @@ export type TablesUpdate<
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   EnumName extends DefaultSchemaEnumNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
     : never = never,
-> = DefaultSchemaEnumNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+> = DefaultSchemaEnumNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
     ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
     : never
@@ -2196,14 +2122,16 @@ export type Enums<
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
     : never = never,
-> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+> = PublicCompositeTypeNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
     ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never

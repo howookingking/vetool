@@ -1,9 +1,9 @@
 import { Button } from '@/components/ui/button'
-import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils/utils'
 import type { SelectedChart } from '@/types/icu/chart'
-import { LoaderCircle } from 'lucide-react'
+import { LoaderCircleIcon } from 'lucide-react'
 import { Dispatch, SetStateAction, useState } from 'react'
+import { toast } from 'sonner'
 
 type ExportTextButtonProps = {
   chartData: SelectedChart
@@ -61,9 +61,7 @@ CC: ${chartData.icu_io.icu_io_cc}
 
     await navigator.clipboard.writeText(textContents.trim())
 
-    toast({
-      title: '클립보드에 복사되었습니다',
-    })
+    toast.success('클립보드에 복사하였습니다')
 
     setIsDialogOpen(false)
     setIsExportingText(false)
@@ -76,7 +74,7 @@ CC: ${chartData.icu_io.icu_io_cc}
       disabled={isExportingText}
     >
       텍스트로 복사
-      <LoaderCircle
+      <LoaderCircleIcon
         className={cn(isExportingText ? 'ml-2 animate-spin' : 'hidden')}
       />
     </Button>

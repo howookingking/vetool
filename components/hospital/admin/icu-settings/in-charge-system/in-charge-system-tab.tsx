@@ -1,6 +1,5 @@
 'use client'
 
-import VetsUpdateForm from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/vets/vets-update-form'
 import VetsUpdateFormDynamic from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/vets/vets-update-form-dynamic'
 import { Button } from '@/components/ui/button'
 import {
@@ -13,13 +12,13 @@ import {
 } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { toast } from '@/components/ui/use-toast'
 import { updateIsInChargeSystem } from '@/lib/services/admin/icu/is-incharge-system'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { LoaderCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 export default function InChargeSystemTab({ hosId }: { hosId: string }) {
   const {
@@ -39,9 +38,7 @@ export default function InChargeSystemTab({ hosId }: { hosId: string }) {
 
     await updateIsInChargeSystem(hosId, currentIsInChageSystem === 'true')
 
-    toast({
-      title: '담당자 시스템을 변경하였습니다',
-    })
+    toast.success('담당자 시스템을 변경하였습니다')
 
     setIsUpdating(false)
     refresh()

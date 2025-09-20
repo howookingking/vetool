@@ -6,10 +6,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { toast } from '@/components/ui/use-toast'
 import { updateRoute } from '@/lib/services/admin/icu/hos-drugs'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   route: string
@@ -30,9 +30,7 @@ export default function RouteColumn({ route, hosDrugId }: Props) {
     setIsUpdating(true)
     await updateRoute(value, hosDrugId)
 
-    toast({
-      title: '주사투여경로를 변경하였습니다',
-    })
+    toast.success('주사투여경로를 변경하였습니다')
 
     setIsUpdating(false)
     refresh()

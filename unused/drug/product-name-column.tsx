@@ -4,7 +4,6 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
-import { toast } from '@/components/ui/use-toast'
 // import { updateDrugIndication } from '@/lib/services/settings/drug-settings'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -33,9 +32,9 @@ export default function ProductNameColumn({
 
     // await updateDrugIndication(hosId, id, productNameInput)
 
-    toast({
-      title: '약물명을 변경하였습니다',
-    })
+    // toast({
+    //   title: '약물명을 변경하였습니다',
+    // })
 
     setIsUpdating(false)
     refresh()
