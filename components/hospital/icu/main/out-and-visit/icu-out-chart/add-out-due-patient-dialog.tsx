@@ -19,7 +19,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { toast } from '@/components/ui/use-toast'
 import {
   getNotOutDuePatients,
   updatePatientOutDueDate,
@@ -28,7 +27,8 @@ import { convertPascalCased } from '@/lib/utils/utils'
 import { type NotOutDuePatientsData } from '@/types/icu/movement'
 import { Plus } from 'lucide-react'
 import { useParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { toast } from 'sonner'
 
 export default function AddOutDuePatientDialog() {
   const { hos_id, target_date } = useParams()
@@ -49,9 +49,7 @@ export default function AddOutDuePatientDialog() {
       target_date as string,
     )
 
-    toast({
-      title: '퇴원예정 환자를 추가하였습니다',
-    })
+    toast.success('퇴원 예정 환자를 추가하였습니다')
 
     setIsDialogOpen(false)
   }

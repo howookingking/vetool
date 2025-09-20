@@ -13,7 +13,6 @@ import { LoaderCircle, Pin } from 'lucide-react'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { addEntireDietPin } from '@/lib/services/admin/diet'
-import { toast } from '@/components/ui/use-toast'
 
 export default function AddEntireDietDialog({
   isDialogOpen,
@@ -35,10 +34,10 @@ export default function AddEntireDietDialog({
     setIsLoading(false)
     setIsDialogOpen(false)
 
-    toast({
-      title: '사료 전체 등록 완료',
-      description: '벳툴 제공 사료를 모두 등록했습니다',
-    })
+    // toast({
+    //   title: '사료 전체 등록 완료',
+    //   description: '벳툴 제공 사료를 모두 등록했습니다',
+    // })
     refresh()
   }
 

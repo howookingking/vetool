@@ -1,8 +1,8 @@
-import { toast } from '@/components/ui/use-toast'
 import { fetchMessages } from '@/lib/services/message/message'
 import { createClient } from '@/lib/supabase/client'
 import type { Message as MessageType, VetoolUser } from '@/types'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 type UIMessage = MessageType & { ui_id: string }
 
@@ -34,10 +34,8 @@ export default function useMessage(
         )
       } catch (error) {
         console.error('Failed to fetch initial messages:', error)
-        toast({
-          title: '메시지를 불러오는데 실패했습니다',
-          variant: 'destructive',
-        })
+
+        toast.error('메시지를 불러오는데 실패했습니다')
       } finally {
         setIsFetching(false)
       }
@@ -80,27 +78,22 @@ export default function useMessage(
           console.log('Connected to chat channel!')
           setIsConnected(true)
         } else if (status === 'TIMED_OUT') {
-          toast({
-            title: '연결 시간이 초과되었습니다',
-            variant: 'destructive',
-          })
+          toast.error('연결 시간을 초과하었습니다')
+
           setIsConnected(false)
         } else if (status === 'CHANNEL_ERROR') {
-          toast({
-            title: '채널 연결에 실패했습니다',
-            variant: 'destructive',
-          })
+          toast.error('채널 연결에 실패했습니다')
+
           setIsConnected(false)
         } else if (status === 'CLOSED') {
           setIsConnected(false)
         }
 
         if (err) {
-          toast({
-            title: '에러가 발생했습니다',
+          toast.error('에러가 발생했습니다', {
             description: err.message,
-            variant: 'destructive',
           })
+
           setIsConnected(false)
         }
       })

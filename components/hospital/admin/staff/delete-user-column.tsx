@@ -11,12 +11,12 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { toast } from '@/components/ui/use-toast'
 import { deleteStaff } from '@/lib/services/admin/staff'
 import { cn } from '@/lib/utils/utils'
 import { LoaderCircle, UserRoundMinus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   name: string
@@ -34,9 +34,8 @@ export function DeleteUserColumn({ name, userId, masterUserId }: Props) {
 
     await deleteStaff(userId)
 
-    toast({
-      title: `${name}님을 스태프목록에서 삭제하였습니다`,
-    })
+    toast.success(`${name}님을 스태프목록에서 삭제하였습니다`)
+
     setIsUpdating(false)
     refresh()
   }

@@ -13,11 +13,11 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { toast } from '@/components/ui/use-toast'
 import { deleteTemplateChart } from '@/lib/services/icu/template/template'
 import { LoaderCircle, Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 type DeleteTemplateDialogProps = {
   templateName: string
@@ -37,9 +37,7 @@ export default function DeleteTemplateDialog({
     setIsDeleting(true)
     await deleteTemplateChart(chartId)
 
-    toast({
-      title: '템플릿이 삭제되었습니다',
-    })
+    toast.success('템플릿을 삭제하였습니다')
 
     setIsDeleting(false)
     setIsDialogOpen(false)

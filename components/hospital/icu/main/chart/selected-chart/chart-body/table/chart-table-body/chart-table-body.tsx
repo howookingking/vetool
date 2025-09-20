@@ -49,6 +49,7 @@ export default function ChartTableBody({
   } = chartData
 
   const isCommandPressed = useIsCommandPressed()
+
   const {
     basicHosData: {
       showOrderer,
@@ -59,6 +60,7 @@ export default function ChartTableBody({
       orderColorsData,
     },
   } = useBasicHosDataContext()
+
   const {
     setOrderStep,
     reset: resetOrderStore,
@@ -66,6 +68,7 @@ export default function ChartTableBody({
     selectedTxPendingQueue,
     selectedOrderPendingQueue,
   } = useIcuOrderStore()
+
   const { setTxStep } = useIcuTxStore()
 
   const handleUpsertOrderTimesWithoutOrderer = async () => {

@@ -5,7 +5,6 @@ import OrderFormField from '@/components/hospital/icu/main/chart/selected-chart/
 import { Button } from '@/components/ui/button'
 import { DialogClose, DialogFooter } from '@/components/ui/dialog'
 import { Form } from '@/components/ui/form'
-import { toast } from '@/components/ui/use-toast'
 import type { OrderType } from '@/constants/hospital/icu/chart/order'
 import { orderSchema } from '@/lib/schemas/icu/chart/order-schema'
 import { upsertDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
@@ -20,6 +19,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import OrderTimeSettings from '../../icu/main/chart/selected-chart/chart-body/table/order/order-time-settings'
 import DtDeleteOrderAlertDialog from './dt-delete-order-alert-dialog'
+import { toast } from 'sonner'
 
 type Props = {
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
@@ -91,9 +91,7 @@ export default function DtOrderForm({
           },
         )
 
-    toast({
-      title: '오더를 수정 하였습니다',
-    })
+    toast.success('오더을 수정하였습니다')
 
     reset()
     setOrderStep('closed')

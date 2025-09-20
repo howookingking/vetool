@@ -18,8 +18,8 @@ import {
 import { useState } from 'react'
 import { updateUserInfo } from '@/lib/services/my-page/update-user-info'
 import { useUpdateUserInfoStore } from '@/lib/store/hospital/update-user-info'
-import { toast } from '@/components/ui/use-toast'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 export default function UserInfoItem({
   label,
@@ -56,10 +56,7 @@ export default function UserInfoItem({
 
     await updateUserInfo(userId, name, avatarUrl)
 
-    toast({
-      title: '프로필 수정 완료',
-      description: '프로필 수정이 완료되었습니다',
-    })
+    toast.success('프로필을 수정하였습니다')
 
     refresh()
     setIsSubmitting(false)

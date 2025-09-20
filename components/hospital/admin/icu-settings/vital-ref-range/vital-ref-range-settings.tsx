@@ -7,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { toast } from '@/components/ui/use-toast'
 import { updateVitalRefRange } from '@/lib/services/admin/icu/vital-ref-range'
 import { cn } from '@/lib/utils/utils'
 import type { VitalRefRange } from '@/types/adimin'
@@ -15,6 +14,7 @@ import { ChevronDown, ChevronUp, LoaderCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import SingleVitalRefRange from './single-vital-ref-range'
+import { toast } from 'sonner'
 
 type Props = {
   hosId: string
@@ -38,10 +38,7 @@ export default function VitalRefRangeSettings({
     value: string,
   ) => {
     if (isNaN(Number(value))) {
-      toast({
-        title: '숫자만 입력 가능합니다',
-        variant: 'destructive',
-      })
+      toast.warning('숫자를 입력해주세요')
       return
     }
 
@@ -67,9 +64,7 @@ export default function VitalRefRangeSettings({
 
     await updateVitalRefRange(hosId, localVitalRefRangeState)
 
-    toast({
-      title: '바이탈 정상 범위가 수정되었습니다',
-    })
+    toast.success('바이탈 정상 범위를 수정하였습니다')
 
     setIsUpdating(false)
     refresh()

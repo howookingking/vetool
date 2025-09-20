@@ -1,13 +1,13 @@
 import { Button } from '@/components/ui/button'
 import { DialogClose } from '@/components/ui/dialog'
-import { toast } from '@/components/ui/use-toast'
 import {
   deleteChart,
   deleteOrders,
 } from '@/lib/services/icu/chart/delete-icu-chart'
 import { cn } from '@/lib/utils/utils'
-import { LoaderCircle } from 'lucide-react'
+import { LoaderCircleIcon } from 'lucide-react'
 import { type Dispatch, type SetStateAction, useState } from 'react'
+import { toast } from 'sonner'
 import DeleteAllChartDialog from './delete-all-chart-dialog'
 
 type Props = {
@@ -35,9 +35,7 @@ export default function DeleteChartButtons({
       ? await deleteOrders(icuChartId)
       : await deleteChart(icuChartId)
 
-    toast({
-      title: '차트가 삭제되었습니다',
-    })
+    toast.success('차트를 삭제하였습니다')
 
     setIsDeleting(false)
     setIsDialogOpen(false)
@@ -53,7 +51,7 @@ export default function DeleteChartButtons({
 
       <Button onClick={handleDeleteChart} disabled={isDeleting}>
         해당일 차트삭제
-        <LoaderCircle
+        <LoaderCircleIcon
           className={cn(isDeleting ? 'ml-2 animate-spin' : 'hidden')}
         />
       </Button>

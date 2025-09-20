@@ -4,7 +4,6 @@ import { type SelectedIcuOrder } from '@/types/icu/chart'
 import { type Dispatch, type SetStateAction } from 'react'
 import MultiSelectOrderDialog from '../order/multil-select-order/multi-select-order-dialog'
 import OrderDialog from '../order/order-dialog'
-import TxUpsertDialog from '../tx/tx-upsert-dialog'
 import TxUpsertDialogDynamc from '../tx/tx-upsert-dialog-dynamic'
 
 type Props = {

@@ -6,7 +6,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { toast } from '@/components/ui/use-toast'
 // import { updateDrugType } from '@/lib/services/settings/drug-settings'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -27,9 +26,9 @@ export default function TypeColumn({
     setIsUpdating(true)
     // await updateDrugType(drugProductId, hosId, value)
 
-    toast({
-      title: `약물 유형을 변경하였습니다`,
-    })
+    // toast({
+    //   title: `약물 유형을 변경하였습니다`,
+    // })
 
     setIsUpdating(false)
     refresh()

@@ -1,6 +1,5 @@
 import TimeTxTextCopy from '@/components/hospital/icu/main/tx-table/time-tx-text-copy'
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { toast } from '@/components/ui/use-toast'
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { useCurrentTime } from '@/hooks/use-current-time'
@@ -9,6 +8,7 @@ import type { IcuTxTableData } from '@/types/icu/tx-table'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import { CurrentTimeIndicator } from '../chart/selected-chart/chart-body/table/chart-table-header/current-time-indicator'
+import { toast } from 'sonner'
 
 type Props = {
   orderTypeFilters: string[]
@@ -40,10 +40,7 @@ export default function TxTableHeader({
       .filter((data) => data.orders.length > 0)
 
     if (filteredTimeTxData.length === 0) {
-      toast({
-        title: `${title}가 없습니다`,
-        variant: 'destructive',
-      })
+      toast.warning(`${title}가 없습니다`)
       return
     }
 
@@ -63,9 +60,8 @@ export default function TxTableHeader({
 
     navigator.clipboard.writeText(text.trim())
     setCopiedTxTime(time)
-    toast({
-      title: `${title}를 클립보드에 저장하였습니다`,
-    })
+
+    toast.success(`${title}를 클립보드에 저장하였습니다`)
   }
 
   return (

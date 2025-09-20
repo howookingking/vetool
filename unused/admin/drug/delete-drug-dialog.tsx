@@ -13,7 +13,6 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { toast } from '@/components/ui/use-toast'
 import { LoaderCircle, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 

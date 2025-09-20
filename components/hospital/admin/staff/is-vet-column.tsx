@@ -6,11 +6,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { toast } from '@/components/ui/use-toast'
 import { updateStaffIsVet } from '@/lib/services/admin/staff'
 import { Stethoscope, User } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   isVet: boolean
@@ -34,12 +34,12 @@ export default function IsVetColumn({ isVet, userId }: Props) {
 
     await updateStaffIsVet(userId, parsedIsVet)
 
-    toast({
-      title:
-        value === '수의사'
-          ? '수의사로 설정되었습니다'
-          : '일반직원으로 설정되었습니다',
-    })
+    toast.success(
+      value === '수의사'
+        ? '수의사로 설정되었습니다'
+        : '일반직원으로 설정되었습니다',
+    )
+
     setIsUpdating(false)
     refresh()
   }
