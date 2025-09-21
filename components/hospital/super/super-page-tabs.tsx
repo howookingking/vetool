@@ -5,12 +5,12 @@ import AnnouncementForm from '@/components/hospital/super/announcements/announce
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { getErrorFeedback } from '@/lib/services/error-feedback/error-feedback'
 import { getFeedback } from '@/lib/services/super/feedback/feedback'
-import type { HosListData } from '@/types/hospital'
+import type { HospitalList } from '@/lib/services/hospital-home/home'
 
 export default async function SuperPageTabs({
   hosList,
 }: {
-  hosList: HosListData[]
+  hosList: HospitalList[]
 }) {
   const errorLogData = await getErrorFeedback('all')
   const userFeedbackData = await getFeedback()

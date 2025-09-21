@@ -19,7 +19,7 @@ export const fetchHosName = async (hosId: string) => {
 
 export type HospitalList = Pick<
   Hospital,
-  'hos_id' | 'name' | 'city' | 'district'
+  'hos_id' | 'name' | 'city' | 'district' | 'plan'
 >
 
 export const fetchHospitalList = async () => {
@@ -32,7 +32,8 @@ export const fetchHospitalList = async () => {
         hos_id,
         name,
         city,
-        district
+        district,
+        plan
       `,
     )
     .order('created_at')

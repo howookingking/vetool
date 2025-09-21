@@ -1,8 +1,12 @@
 import { hosListColumns } from '@/components/hospital/super/hospitals/hos-list-columns'
 import DataTable from '@/components/ui/data-table'
-import { type HosListData } from '@/types/hospital'
+import { HospitalList } from '@/lib/services/hospital-home/home'
 
-export default function HospitalTable({ hosList }: { hosList: HosListData[] }) {
+export default function HospitalTable({
+  hosList,
+}: {
+  hosList: HospitalList[]
+}) {
   return (
     <div className="flex flex-col gap-4">
       <DataTable

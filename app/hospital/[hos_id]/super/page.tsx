@@ -7,6 +7,7 @@ export default async function SuperPage() {
   const hosList = await fetchHospitalList()
   const vetoolUser = await getVetoolUserData()
   const isSuper = vetoolUser.is_super
+
   if (!isSuper) {
     redirect('/')
   }
