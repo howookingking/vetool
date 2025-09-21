@@ -526,14 +526,14 @@ export default function PatientForm({
                               className="text-xs"
                             >
                               {`${breed.kor} (${breed.eng})`}
-                              <CheckIcon
+                              {/* <CheckIcon
                                 className={cn(
                                   'ml-auto h-4 w-4',
                                   breed.eng === field.value.split('#')[0]
                                     ? 'opacity-100'
                                     : 'opacity-0',
                                 )}
-                              />
+                              /> */}
                             </CommandItem>
                           ))}
                         </CommandGroup>
