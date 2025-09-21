@@ -3,7 +3,6 @@ import IcuSidebar from '@/components/hospital/icu/sidebar/icu-sidebar'
 import type { OrderFontSize } from '@/constants/admin/order-font-size'
 import type { Plan } from '@/constants/plans'
 import { getIcuData } from '@/lib/services/icu/get-icu-data'
-import { fetchAnnouncementTitles } from '@/lib/services/super/announcement/announcement'
 import {
   BasicHosDataProvider,
   OrderColorDisplay,

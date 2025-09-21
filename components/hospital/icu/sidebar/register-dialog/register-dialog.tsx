@@ -99,6 +99,7 @@ export default function RegisterDialog({
             <TabsTrigger value="search" className="w-full">
               환자 검색 및 선택
             </TabsTrigger>
+
             <TabsTrigger value="register" className="w-full">
               신규 환자 등록
             </TabsTrigger>

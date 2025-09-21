@@ -56,7 +56,7 @@ import { useRouter } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import { type DebouncedState, useDebouncedCallback } from 'use-debounce'
+import type { DebouncedState } from 'use-debounce'
 import * as z from 'zod'
 import type { RegisteringPatient } from '../../../hospital/icu/sidebar/register-dialog/register-dialog'
 
@@ -526,14 +526,14 @@ export default function PatientForm({
                               className="text-xs"
                             >
                               {`${breed.kor} (${breed.eng})`}
-                              <CheckIcon
+                              {/* <CheckIcon
                                 className={cn(
                                   'ml-auto h-4 w-4',
                                   breed.eng === field.value.split('#')[0]
                                     ? 'opacity-100'
                                     : 'opacity-0',
                                 )}
-                              />
+                              /> */}
                             </CommandItem>
                           ))}
                         </CommandGroup>
@@ -682,29 +682,6 @@ export default function PatientForm({
         </div>
 
         <div className="col-span-2 flex items-center justify-end gap-2">
-          {/* <FormField
-            control={form.control}
-            name="is_alive"
-            render={({ field }) => (
-              <FormItem>
-                <div
-                  className={cn(
-                    isEdit ? 'flex items-center gap-2 text-sm' : 'hidden',
-                  )}
-                >
-                  <span>사망</span>
-                  <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <span>생존</span>
-                </div>
-              </FormItem>
-            )}
-          /> */}
-
           <div className="space-x-2">
             <Button
               tabIndex={-1}
