@@ -30,7 +30,7 @@ export default function Vets({ mainVet, subVet, icuChartId, inCharge }: Props) {
   const { today } = (inCharge as IcuChartsInCharge) || {}
 
   const {
-    basicHosData: { vetsListData, isInChargeSystem },
+    basicHosData: { vetList, isInChargeSystem },
   } = useBasicHosDataContext()
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -80,7 +80,7 @@ export default function Vets({ mainVet, subVet, icuChartId, inCharge }: Props) {
           setIsDialogOpen={setIsDialogOpen}
           mainVet={mainVet}
           subVet={subVet}
-          vetsList={vetsListData}
+          vetsList={vetList}
           icuChartId={icuChartId}
           inCharge={inCharge}
           isInChargeSystem={isInChargeSystem}

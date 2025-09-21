@@ -1761,6 +1761,10 @@ export type Database = {
         Args: { checklist_id_input: string }
         Returns: Json
       }
+      fetch_icu_layout_data: {
+        Args: { hos_id_input: string; target_date_input: string }
+        Returns: Json
+      }
       get_chartable_vitals_data: {
         Args: { icu_io_id_input: string }
         Returns: Json

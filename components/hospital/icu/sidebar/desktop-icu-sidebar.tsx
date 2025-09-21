@@ -4,15 +4,17 @@ import Filters from '@/components/hospital/icu/sidebar/filters/filters'
 import PatientList from '@/components/hospital/icu/sidebar/patient-list/patient-list'
 import RegisterDialog from '@/components/hospital/icu/sidebar/register-dialog/register-dialog'
 import { Separator } from '@/components/ui/separator'
-import { type Filter, type IcuSidebarIoData, type Vet } from '@/types/icu/chart'
+import type { IcuSidebarPatient } from '@/lib/services/icu/icu-layout'
+import type { Vet } from '@/types'
+import type { Filter } from '@/types/icu/chart'
 
 type DesktopIcuSidebarProps = {
   hosId: string
-  vetsListData: Vet[]
+  vetList: Vet[]
   hosGroupList: string[]
   filteredData: {
-    filteredIcuIoData: IcuSidebarIoData[]
-    excludedIcuIoData: IcuSidebarIoData[]
+    filteredIcuIoData: IcuSidebarPatient[]
+    excludedIcuIoData: IcuSidebarPatient[]
     filteredIoPatientCount: number
   }
   isEmpty: boolean
@@ -24,7 +26,7 @@ type DesktopIcuSidebarProps = {
 
 export default function DesktopIcuSidebar({
   hosId,
-  vetsListData,
+  vetList,
   hosGroupList,
   filteredData,
   isEmpty,
@@ -39,7 +41,7 @@ export default function DesktopIcuSidebar({
 
       <RegisterDialog
         hosId={hosId}
-        defaultVetId={vetsListData[0].user_id}
+        defaultVetId={vetList[0].user_id}
         defaultGroup={hosGroupList[0]}
         currentChartNumber={currentChartNumber}
       />
@@ -54,7 +56,7 @@ export default function DesktopIcuSidebar({
         <>
           <Filters
             hosGroupList={hosGroupList}
-            vetsListData={vetsListData}
+            vetList={vetList}
             filters={filters}
             setFilters={setFilters}
           />
@@ -63,7 +65,7 @@ export default function DesktopIcuSidebar({
 
           <PatientList
             filteredData={filteredData}
-            vetsListData={vetsListData}
+            vetList={vetList}
             handleCloseMobileDrawer={handleCloseMobileDrawer}
           />
         </>

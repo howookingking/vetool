@@ -15,6 +15,7 @@ export default async function HospitalHomePage(props: {
   return (
     <>
       <HospitalHomeHeader isSuper={isSuper} hosId={params.hos_id} />
+
       <HospitalHomeBody hosId={params.hos_id} />
     </>
   )

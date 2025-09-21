@@ -13,9 +13,9 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
-import { hasPermissions, type Plan } from '@/constants/plans'
+import type { Plan } from '@/constants/plans'
 import type { VetoolUser } from '@/types'
-import { Menu } from 'lucide-react'
+import { MenuIcon } from 'lucide-react'
 import { useState } from 'react'
 
 type Props = {
@@ -26,14 +26,12 @@ type Props = {
 
 export default function MobileSidebar({ hosId, vetoolUser, plan }: Props) {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
-  // 요금제
-  // const isCalculatorEnabled = hasPermissions(plan, 'CALCULATOR')
 
   return (
     <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
       <SheetTrigger className="fixed right-0 top-0 z-40 2xl:hidden" asChild>
         <Button variant="ghost" size="icon" className="h-12 w-12 rounded-none">
-          <Menu size={24} />
+          <MenuIcon size={24} />
         </Button>
       </SheetTrigger>
       <SheetContent

@@ -8,17 +8,17 @@ import {
   MenubarTrigger,
 } from '@/components/ui/menubar'
 import { cn } from '@/lib/utils/utils'
-import type { Vet } from '@/types/icu/chart'
-import { Stethoscope } from 'lucide-react'
+import type { Vet } from '@/types'
+import { StethoscopeIcon } from 'lucide-react'
 
 type VetFilterProps = {
-  vetsListData: Vet[]
+  vetList: Vet[]
   selectedVet: string
   onVetSelect: (vet: string) => void
 }
 
 export default function VetFilter({
-  vetsListData,
+  vetList,
   selectedVet,
   onVetSelect,
 }: VetFilterProps) {
@@ -32,12 +32,12 @@ export default function VetFilter({
             'h-[30px] w-full rounded-none',
           )}
         >
-          <Stethoscope />
+          <StethoscopeIcon />
         </Button>
       </MenubarTrigger>
 
       <MenubarContent align="start" className="min-w-[120px]">
-        {vetsListData.map((vet) => (
+        {vetList.map((vet) => (
           <MenubarItem
             key={vet.user_id}
             onClick={() => onVetSelect(vet.user_id)}

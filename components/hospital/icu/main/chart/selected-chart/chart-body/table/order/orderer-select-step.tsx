@@ -47,7 +47,7 @@ export default function OrdererSelectStep({
   const { hos_id } = useParams()
 
   const {
-    basicHosData: { vetsListData },
+    basicHosData: { vetList },
   } = useBasicHosDataContext()
   const {
     reset,
@@ -212,7 +212,7 @@ export default function OrdererSelectStep({
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {vetsListData.map((vet) => (
+                  {vetList.map((vet) => (
                     <SelectItem
                       key={vet.user_id}
                       value={vet.name}

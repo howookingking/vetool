@@ -1,7 +1,7 @@
-import { IcuCharts, IcuIo, Patient } from '..'
+import { IcuChart, IcuIo, Patient } from '..'
 
 export type SearchedIcuCharts = Pick<
-  IcuCharts,
+  IcuChart,
   'target_date' | 'icu_chart_id' | 'patient_id'
 >
 

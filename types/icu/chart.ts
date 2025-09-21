@@ -1,24 +1,20 @@
 import { MEMO_COLORS } from '@/constants/hospital/icu/chart/colors'
-import { type OrderType } from '@/constants/hospital/icu/chart/order'
+import type { OrderType } from '@/constants/hospital/icu/chart/order'
 import type {
   Diet,
   DrugDoses,
   DrugProductsRows,
-  IcuCharts,
+  IcuChart,
   IcuIo,
   IcuNotification,
   IcuOrders,
   IcuTxs,
   Patient,
   User,
+  Vet,
 } from '@/types'
 
 export type MainAndSubVet = Pick<User, 'name' | 'avatar_url' | 'user_id'>
-
-export type Vet = Pick<
-  User,
-  'avatar_url' | 'name' | 'position' | 'user_id' | 'rank'
->
 
 export type TxLog = {
   result: string | null
@@ -50,7 +46,7 @@ export type SelectedChartIcuIo = Pick<
 export type SelectedChartPatient = Omit<Patient, 'owner_id'>
 
 export type SelectedChart = Pick<
-  IcuCharts,
+  IcuChart,
   | 'weight'
   | 'weight_measured_date'
   | 'target_date'

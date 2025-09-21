@@ -38,7 +38,7 @@ export default function OrderForm({
   const { setOrderStep, selectedChartOrder, setSelectedChartOrder, reset } =
     useIcuOrderStore()
   const {
-    basicHosData: { vetsListData },
+    basicHosData: { vetList },
   } = useBasicHosDataContext()
 
   const [isUpdating, setIsUpdating] = useState(false)
@@ -94,7 +94,7 @@ export default function OrderForm({
       hos_id as string,
       icuChartId,
       selectedChartOrder.order_id,
-      orderTime.map((time) => (time === '0' ? '0' : vetsListData[0].name)),
+      orderTime.map((time) => (time === '0' ? '0' : vetList[0].name)),
       {
         icu_chart_order_name: icu_chart_order_name.trim(),
         icu_chart_order_comment: icu_chart_order_comment

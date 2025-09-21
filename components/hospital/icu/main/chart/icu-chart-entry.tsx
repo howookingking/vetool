@@ -13,10 +13,12 @@ type Props = {
 
 export default function IcuChartEntry({ chartData, patientId }: Props) {
   const {
-    basicHosData: { sidebarData },
+    basicHosData: { icuSidebarPatients },
   } = useBasicHosDataContext()
 
-  const hasIcuIo = sidebarData.find((io) => io.patient.patient_id === patientId)
+  const hasIcuIo = icuSidebarPatients.find(
+    (p) => p.patient.patient_id === patientId,
+  )
 
   // 입원 전 or 퇴원 후
   if (!chartData && !hasIcuIo) {

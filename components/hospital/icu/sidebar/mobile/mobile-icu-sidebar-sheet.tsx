@@ -8,29 +8,33 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import type { Filter, IcuSidebarIoData, Vet } from '@/types/icu/chart'
+import type { IcuSidebarPatient } from '@/lib/services/icu/icu-layout'
+import type { Vet } from '@/types'
+import type { Filter } from '@/types/icu/chart'
 import { Menu } from 'lucide-react'
 import { useState } from 'react'
 
-export function MobileIcuSidebarSheet({
-  hosGroupList,
-  vetsListData,
-  filteredData,
-  isEmpty,
-  setFilters,
-  filters,
-}: {
+type Props = {
   hosGroupList: string[]
-  vetsListData: Vet[]
+  vetList: Vet[]
   filteredData: {
-    filteredIcuIoData: IcuSidebarIoData[]
-    excludedIcuIoData: IcuSidebarIoData[]
+    filteredIcuIoData: IcuSidebarPatient[]
+    excludedIcuIoData: IcuSidebarPatient[]
     filteredIoPatientCount: number
   }
   isEmpty: boolean
   setFilters: React.Dispatch<React.SetStateAction<Filter>>
   filters: Filter
-}) {
+}
+
+export function MobileIcuSidebarSheet({
+  hosGroupList,
+  vetList,
+  filteredData,
+  isEmpty,
+  setFilters,
+  filters,
+}: Props) {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
   const handleCloseMobileDrawer = () => setIsSheetOpen(false)
 
@@ -57,7 +61,7 @@ export function MobileIcuSidebarSheet({
             hosGroupList={hosGroupList}
             isEmpty={isEmpty}
             setFilters={setFilters}
-            vetsListData={vetsListData}
+            vetList={vetList}
             handleCloseMobileDrawer={handleCloseMobileDrawer}
           />
         </SheetContent>

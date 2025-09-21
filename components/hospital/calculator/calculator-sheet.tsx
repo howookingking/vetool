@@ -5,11 +5,10 @@ import { Sheet, SheetTrigger } from '@/components/ui/sheet'
 import { hasPermissions, type Plan } from '@/constants/plans'
 import { getPatientData } from '@/lib/services/patient/patient'
 import type { PatientWithWeight } from '@/types/patients'
-import { Calculator, LoaderCircle } from 'lucide-react'
+import { CalculatorIcon, LoaderCircleIcon } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import CalculatorSheetContentsDynamic from './calculator-sheet-contents-dynamic'
-import NewFeature from '@/components/common/new-feature'
 
 export default function CalculatorSheet({ plan }: { plan: Plan }) {
   const { patient_id } = useParams()
@@ -46,9 +45,9 @@ export default function CalculatorSheet({ plan }: { plan: Plan }) {
       <SheetTrigger asChild>
         <Button size="icon" className="mr-1 h-8 w-8 rounded-full 2xl:mr-0">
           {isFetching ? (
-            <LoaderCircle className="animate-spin" />
+            <LoaderCircleIcon className="animate-spin" />
           ) : (
-            <Calculator />
+            <CalculatorIcon />
           )}
         </Button>
       </SheetTrigger>

@@ -1,41 +1,45 @@
 import IcuSettingsTab from '@/components/hospital/admin/icu-settings/icu-settings-tab'
-import type { OrderFontSize } from '@/constants/admin/order-font-size'
-import type { Plan } from '@/constants/plans'
-import {
-  getBasicHosData,
-  getVetListData,
-} from '@/lib/services/icu/get-basic-hos-data'
-import {
-  BasicHosDataProvider,
-  OrderColorDisplay,
-} from '@/providers/basic-hos-data-context-provider'
-import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
+import { fetchIcuLayoutData } from '@/lib/services/icu/icu-layout'
+import { BasicHosDataProvider } from '@/providers/basic-hos-data-context-provider'
 
 export default async function AdminIcuSettingsPage(props: {
   params: Promise<{ hos_id: string }>
 }) {
   const { hos_id } = await props.params
 
-  const basicHosData = await getBasicHosData(hos_id)
-  const vetlistData = await getVetListData(hos_id)
+  const {
+    basicHosSettings: {
+      group_list,
+      icu_memo_names,
+      is_in_charge_system,
+      order_color,
+      order_color_display,
+      order_font_size,
+      show_orderer,
+      show_tx_user,
+      plan,
+      time_guidelines,
+      vital_ref_range,
+    },
+    vetList,
+  } = await fetchIcuLayoutData(hos_id, '')
 
   return (
     <BasicHosDataProvider
       basicHosData={{
-        vetsListData: vetlistData,
-        groupListData: basicHosData.group_list,
-        orderColorsData: basicHosData.order_color as IcuOrderColors,
-        memoNameListData: basicHosData.icu_memo_names,
-        showOrderer: basicHosData.show_orderer,
-        showTxUser: basicHosData.show_tx_user,
-        sidebarData: [],
-        vitalRefRange: basicHosData.vital_ref_range as VitalRefRange[],
-        orderFontSizeData: basicHosData.order_font_size as OrderFontSize,
-        timeGuidelineData: basicHosData.time_guidelines,
-        orderColorDisplay:
-          basicHosData.order_color_display as OrderColorDisplay,
-        plan: basicHosData.plan as Plan,
-        isInChargeSystem: basicHosData.is_in_charge_system,
+        vetList: vetList,
+        groupListData: group_list,
+        orderColorsData: order_color,
+        memoNameListData: icu_memo_names,
+        showOrderer: show_orderer,
+        showTxUser: show_tx_user,
+        icuSidebarPatients: [],
+        vitalRefRange: vital_ref_range,
+        orderFontSizeData: order_font_size,
+        timeGuidelineData: time_guidelines,
+        orderColorDisplay: order_color_display,
+        plan: plan,
+        isInChargeSystem: is_in_charge_system,
       }}
     >
       <IcuSettingsTab hosId={hos_id} />

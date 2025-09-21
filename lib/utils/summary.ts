@@ -1,5 +1,6 @@
-import { type Filter, type Vet } from '@/types/icu/chart'
-import { type SummaryData } from '@/types/icu/summary'
+import type { Vet } from '@/types'
+import type { Filter } from '@/types/icu/chart'
+import type { SummaryData } from '@/types/icu/summary'
 
 type FilteredSummaryData = {
   summaryData: SummaryData[]

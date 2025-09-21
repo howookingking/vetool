@@ -4,18 +4,19 @@ import SortFilter from '@/components/hospital/icu/sidebar/filters/sort-filter'
 import VetFilter from '@/components/hospital/icu/sidebar/filters/vet-filter'
 import { Menubar } from '@/components/ui/menubar'
 import { DEFAULT_FILTER_STATE } from '@/constants/hospital/icu/chart/filters'
-import { type Filter, type Vet } from '@/types/icu/chart'
+import type { Vet } from '@/types'
+import type { Filter } from '@/types/icu/chart'
 
 type Props = {
   hosGroupList: string[]
-  vetsListData: Vet[]
+  vetList: Vet[]
   filters: Filter
   setFilters: (filters: Filter) => void
 }
 
 export default function Filters({
   hosGroupList,
-  vetsListData,
+  vetList,
   filters,
   setFilters,
 }: Props) {
@@ -73,7 +74,7 @@ export default function Filters({
       />
 
       <VetFilter
-        vetsListData={vetsListData}
+        vetList={vetList}
         selectedVet={filters.selectedVet}
         onVetSelect={handleVetSelect}
       />

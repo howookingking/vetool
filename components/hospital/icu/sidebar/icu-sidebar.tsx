@@ -4,44 +4,45 @@ import DesktopIcuSidebar from '@/components/hospital/icu/sidebar/desktop-icu-sid
 import { MobileIcuSidebarSheet } from '@/components/hospital/icu/sidebar/mobile/mobile-icu-sidebar-sheet'
 import { DEFAULT_FILTER_STATE } from '@/constants/hospital/icu/chart/filters'
 import useLocalStorage from '@/hooks/use-local-storage'
+import type { IcuSidebarPatient } from '@/lib/services/icu/icu-layout'
 import { filterData } from '@/lib/utils/utils'
-import type { IcuSidebarIoData, Vet } from '@/types/icu/chart'
+import type { Vet } from '@/types'
 
 export default function IcuSidebar({
   hosId,
-  icuSidebarData,
-  vetsListData,
+  icuSidebarPatients,
+  vetList,
   hosGroupList,
 }: {
   hosId: string
-  icuSidebarData: IcuSidebarIoData[]
-  vetsListData: Vet[]
+  icuSidebarPatients: IcuSidebarPatient[]
+  vetList: Vet[]
   hosGroupList: string[]
 }) {
   const [filterState, setFilterState] = useLocalStorage(
     `patientFilter`,
     DEFAULT_FILTER_STATE,
   )
-  const filteredData = filterData(icuSidebarData, filterState, vetsListData)
+  const filteredData = filterData(icuSidebarPatients, filterState, vetList)
 
   return (
     <>
       <DesktopIcuSidebar
         hosId={hosId}
         hosGroupList={hosGroupList}
-        vetsListData={vetsListData}
+        vetList={vetList}
         filteredData={filteredData}
-        isEmpty={icuSidebarData.length === 0}
+        isEmpty={icuSidebarPatients.length === 0}
         filters={filterState}
         setFilters={setFilterState}
-        currentChartNumber={icuSidebarData.length}
+        currentChartNumber={icuSidebarPatients.length}
       />
 
       <MobileIcuSidebarSheet
         hosGroupList={hosGroupList}
-        vetsListData={vetsListData}
+        vetList={vetList}
         filteredData={filteredData}
-        isEmpty={icuSidebarData.length === 0}
+        isEmpty={icuSidebarPatients.length === 0}
         filters={filterState}
         setFilters={setFilterState}
       />

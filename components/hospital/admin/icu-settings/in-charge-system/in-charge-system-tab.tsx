@@ -22,7 +22,7 @@ import { toast } from 'sonner'
 
 export default function InChargeSystemTab({ hosId }: { hosId: string }) {
   const {
-    basicHosData: { isInChargeSystem, vetsListData },
+    basicHosData: { isInChargeSystem, vetList },
   } = useBasicHosDataContext()
 
   const [currentIsInChageSystem, setCurrentIsInChageSystem] = useState(
@@ -73,9 +73,9 @@ export default function InChargeSystemTab({ hosId }: { hosId: string }) {
             <VetsUpdateFormDynamic
               icuChartId="1"
               inCharge={null}
-              mainVet={vetsListData[0]}
-              subVet={vetsListData[1] ?? null}
-              vetsList={vetsListData}
+              mainVet={vetList[0]}
+              subVet={vetList[1] ?? null}
+              vetsList={vetList}
               setIsDialogOpen={() => {}}
               isInChargeSystem={false}
               isSetting
@@ -97,9 +97,9 @@ export default function InChargeSystemTab({ hosId }: { hosId: string }) {
             <VetsUpdateFormDynamic
               icuChartId="1"
               inCharge={null}
-              mainVet={vetsListData[0]}
-              subVet={vetsListData[1] ?? null}
-              vetsList={vetsListData}
+              mainVet={vetList[0]}
+              subVet={vetList[1] ?? null}
+              vetsList={vetList}
               setIsDialogOpen={() => {}}
               isInChargeSystem={true}
               isSetting

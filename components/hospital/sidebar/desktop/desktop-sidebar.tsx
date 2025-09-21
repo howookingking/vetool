@@ -18,10 +18,11 @@ export default async function DesktopSidebar({
   plan,
 }: Props) {
   return (
-    <aside className="item-center fixed left-0 top-0 z-50 hidden h-screen w-10 flex-col justify-between border-r bg-white 2xl:flex">
-      <ul className="mt-1 flex flex-col items-center gap-2">
+    <aside className="item-center fixed z-50 hidden h-screen w-10 flex-col justify-between border-r py-1 2xl:flex">
+      <ul className="flex flex-col items-center gap-1">
         {SIDEBAR_ITEMS.map((item) => (
           <DesktopSidebarItem
+            hosId={hosId}
             name={item.name}
             path={item.path}
             key={item.name}
@@ -32,7 +33,7 @@ export default async function DesktopSidebar({
         ))}
       </ul>
 
-      <div className="mb-2 flex flex-col items-center justify-end gap-2">
+      <div className="flex flex-col items-center justify-end gap-1">
         <CalculatorSheet plan={plan} />
         <Feedback />
         <SidebarUserInfo hosId={hosId} vetoolUser={vetoolUser} />

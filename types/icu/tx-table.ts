@@ -1,9 +1,9 @@
-import type { IcuCharts, IcuIo, IcuOrders, Patient } from '@/types'
+import type { IcuChart, IcuIo, IcuOrders, Patient } from '@/types'
 import type { Treatment } from '@/types/icu/chart'
 
 export type IcuTxTableData = {
   icu_charts: Pick<
-    IcuCharts,
+    IcuChart,
     'icu_chart_id' | 'weight' | 'main_vet' | 'sub_vet' | 'urgency'
   >
   patient_id: string

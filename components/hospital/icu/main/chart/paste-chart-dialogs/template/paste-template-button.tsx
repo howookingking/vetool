@@ -23,7 +23,7 @@ export default function PasteTemplateButton({
   const { target_date, patient_id } = useParams()
 
   const {
-    basicHosData: { vetsListData },
+    basicHosData: { vetList },
   } = useBasicHosDataContext()
 
   const [isLoading, setIsLoading] = useState(false)
@@ -39,7 +39,7 @@ export default function PasteTemplateButton({
           patient_id as string,
           templateChartId,
           target_date as string,
-          vetsListData[0].name,
+          vetList[0].name,
         )
 
     toast.success('템플릿 오더를 붙여넣었습니다')

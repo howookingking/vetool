@@ -1,16 +1,12 @@
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import type { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
-import type { VetoolUser } from '@/types'
-import type {
-  Filter,
-  IcuSidebarIoData,
-  SelectedIcuOrder,
-  Vet,
-} from '@/types/icu/chart'
+import type { Vet, VetoolUser } from '@/types'
+import type { Filter, SelectedIcuOrder } from '@/types/icu/chart'
 import { type ClassValue, clsx } from 'clsx'
 import { differenceInDays, isValid, parseISO } from 'date-fns'
 import { redirect } from 'next/navigation'
 import { twMerge } from 'tailwind-merge'
+import type { IcuSidebarPatient } from '../services/icu/icu-layout'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -345,7 +341,7 @@ export const redirectToOwnHospital = (
 }
 
 export const filterData = (
-  data: IcuSidebarIoData[],
+  data: IcuSidebarPatient[],
   filters: Filter,
   vetsListData: Vet[],
 ) => {

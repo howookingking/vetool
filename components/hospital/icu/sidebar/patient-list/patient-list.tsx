@@ -1,20 +1,21 @@
 import PatientButton from '@/components/hospital/icu/sidebar/patient-list/patient-button'
 import { Separator } from '@/components/ui/separator'
-import type { IcuSidebarIoData, Vet } from '@/types/icu/chart'
+import type { IcuSidebarPatient } from '@/lib/services/icu/icu-layout'
+import type { Vet } from '@/types'
 
 type IcuSidebarContentProps = {
   filteredData: {
-    filteredIcuIoData: IcuSidebarIoData[]
-    excludedIcuIoData: IcuSidebarIoData[]
+    filteredIcuIoData: IcuSidebarPatient[]
+    excludedIcuIoData: IcuSidebarPatient[]
     filteredIoPatientCount: number
   }
-  vetsListData: Vet[]
+  vetList: Vet[]
   handleCloseMobileDrawer?: () => void
 }
 
 export default function PatientList({
   filteredData,
-  vetsListData,
+  vetList,
   handleCloseMobileDrawer,
 }: IcuSidebarContentProps) {
   const { filteredIcuIoData, excludedIcuIoData, filteredIoPatientCount } =
@@ -39,10 +40,7 @@ export default function PatientList({
               className="w-full last:mb-2"
               onClick={handleCloseMobileDrawer}
             >
-              <PatientButton
-                icuIoData={icuIoData}
-                vetsListData={vetsListData}
-              />
+              <PatientButton icuIoData={icuIoData} vetList={vetList} />
             </li>
           ))}
         </ul>
@@ -66,10 +64,7 @@ export default function PatientList({
                 className="w-full last:mb-2"
                 onClick={handleCloseMobileDrawer}
               >
-                <PatientButton
-                  icuIoData={icuIoData}
-                  vetsListData={vetsListData}
-                />
+                <PatientButton icuIoData={icuIoData} vetList={vetList} />
               </li>
             ))}
           </ul>

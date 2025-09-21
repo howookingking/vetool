@@ -3,21 +3,23 @@ import IcuDateSelector from '@/components/hospital/icu/sidebar/date-selector/icu
 import Filters from '@/components/hospital/icu/sidebar/filters/filters'
 import PatientList from '@/components/hospital/icu/sidebar/patient-list/patient-list'
 import { Separator } from '@/components/ui/separator'
-import type { Filter, IcuSidebarIoData, Vet } from '@/types/icu/chart'
+import type { IcuSidebarPatient } from '@/lib/services/icu/icu-layout'
+import type { Vet } from '@/types'
+import type { Filter } from '@/types/icu/chart'
 import type { Dispatch, SetStateAction } from 'react'
 
-type MobileSidebarProps = {
+type Props = {
   isEmpty: boolean
   setFilters: Dispatch<SetStateAction<Filter>>
   filters: Filter
   hosGroupList: string[]
   handleCloseMobileDrawer?: () => void
   filteredData: {
-    filteredIcuIoData: IcuSidebarIoData[]
-    excludedIcuIoData: IcuSidebarIoData[]
+    filteredIcuIoData: IcuSidebarPatient[]
+    excludedIcuIoData: IcuSidebarPatient[]
     filteredIoPatientCount: number
   }
-  vetsListData: Vet[]
+  vetList: Vet[]
 }
 
 export default function MobileSidebar({
@@ -27,8 +29,8 @@ export default function MobileSidebar({
   hosGroupList,
   handleCloseMobileDrawer,
   filteredData,
-  vetsListData,
-}: MobileSidebarProps) {
+  vetList,
+}: Props) {
   return (
     <aside className="flex h-full flex-col">
       {isEmpty ? (
@@ -42,7 +44,7 @@ export default function MobileSidebar({
 
           <Filters
             hosGroupList={hosGroupList}
-            vetsListData={vetsListData}
+            vetList={vetList}
             filters={filters}
             setFilters={setFilters}
           />
@@ -51,7 +53,7 @@ export default function MobileSidebar({
 
           <PatientList
             filteredData={filteredData}
-            vetsListData={vetsListData}
+            vetList={vetList}
             handleCloseMobileDrawer={handleCloseMobileDrawer}
           />
         </div>
