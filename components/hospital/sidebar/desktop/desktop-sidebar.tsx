@@ -1,7 +1,7 @@
 import CalculatorSheet from '@/components/hospital/calculator/calculator-sheet'
 import Feedback from '@/components/hospital/feedback/feedback'
 import DesktopSidebarItem from '@/components/hospital/sidebar/desktop/desktop-sidebar-item'
-import SidebarUserInfo from '@/components/hospital/sidebar/sidebar-user-info'
+import SidebarUserDropdown from '@/components/hospital/sidebar/sidebar-user-dropdown'
 import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
 import type { Plan } from '@/constants/plans'
 import type { VetoolUser } from '@/types'
@@ -38,7 +38,7 @@ export default async function DesktopSidebar({
 
         <Feedback />
 
-        <SidebarUserInfo hosId={hosId} vetoolUser={vetoolUser} />
+        <SidebarUserDropdown hosId={hosId} vetoolUser={vetoolUser} />
       </div>
     </aside>
   )

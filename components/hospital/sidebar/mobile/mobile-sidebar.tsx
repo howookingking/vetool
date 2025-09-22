@@ -2,7 +2,7 @@
 
 import CalculatorSheet from '@/components/hospital/calculator/calculator-sheet'
 import MobileSidebarItem from '@/components/hospital/sidebar/mobile/mobile-sidebar-item'
-import SidebarUserInfo from '@/components/hospital/sidebar/sidebar-user-info'
+import SidebarUserDropdown from '@/components/hospital/sidebar/sidebar-user-dropdown'
 import { Button } from '@/components/ui/button'
 import {
   Sheet,
@@ -62,8 +62,8 @@ export default function MobileSidebar({ hosId, vetoolUser, plan }: Props) {
         <div className="flex flex-col items-end">
           <CalculatorSheet plan={plan} />
 
-          <SidebarUserInfo
-            mobile
+          <SidebarUserDropdown
+            isMobile
             hosId={hosId}
             vetoolUser={vetoolUser}
             setIsSheetOpen={setIsSheetOpen}

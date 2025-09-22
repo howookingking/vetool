@@ -14,28 +14,30 @@ import {
 import { logout } from '@/lib/services/auth/authentication'
 import { cn } from '@/lib/utils/utils'
 import userAvatarFallback from '@/public/user-avatar-fallback.svg'
-import { VetoolUser } from '@/types'
-import { Crown, User } from 'lucide-react'
+import type { VetoolUser } from '@/types'
+import { CrownIcon, PowerIcon, UserIcon } from 'lucide-react'
 import Link from 'next/link'
-import { Dispatch, SetStateAction } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 
-type SidebarUserInfoProps = {
+type Props = {
   hosId: string
   vetoolUser: VetoolUser
   setIsSheetOpen?: Dispatch<SetStateAction<boolean>>
-  mobile?: boolean
+  isMobile?: boolean
 }
 
-export default function SidebarUserInfo({
+export default function SidebarUserDropdown({
   hosId,
   vetoolUser,
   setIsSheetOpen,
-  mobile,
-}: SidebarUserInfoProps) {
+  isMobile,
+}: Props) {
+  const isAdmin = vetoolUser.is_admin
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <div className={cn('flex items-center justify-end', mobile && 'm-1')}>
+        <div className={cn(isMobile && 'm-1')}>
           <Avatar className="h-8 w-8">
             <AvatarImage
               className="h-8 w-8"
@@ -48,47 +50,43 @@ export default function SidebarUserInfo({
         </div>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="w-56" side="top">
-        <DropdownMenuLabel>
-          <div className="text-center">
-            {vetoolUser.name} - {vetoolUser.position}
-          </div>
+      <DropdownMenuContent className="w-48" side="top">
+        <DropdownMenuLabel className="text-center">
+          {vetoolUser.name} - {vetoolUser.position}
         </DropdownMenuLabel>
+
         <DropdownMenuSeparator />
+
         <DropdownMenuGroup>
-          {vetoolUser.is_admin && (
-            <DropdownMenuItem
-              asChild
-              onClick={() => setIsSheetOpen && setIsSheetOpen(false)}
-            >
+          {isAdmin && (
+            <DropdownMenuItem asChild onClick={() => setIsSheetOpen?.(false)}>
               <Link
                 href={`/hospital/${hosId}/admin/staff`}
-                className="flex items-center gap-2"
+                className="flex cursor-pointer items-center gap-2"
               >
-                <Crown size={18} />
-                관리자
+                <CrownIcon size={18} />
+                <span>관리자</span>
               </Link>
             </DropdownMenuItem>
           )}
-          <DropdownMenuItem
-            asChild
-            onClick={() => setIsSheetOpen && setIsSheetOpen(false)}
-          >
+
+          <DropdownMenuItem asChild onClick={() => setIsSheetOpen?.(false)}>
             <Link
               href={`/hospital/${hosId}/my-page`}
-              className="flex items-center gap-2"
+              className="flex cursor-pointer items-center gap-2"
             >
-              <User size={18} />
-              사용자 계정
+              <UserIcon size={18} />
+              <span>사용자 계정</span>
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
 
         <DropdownMenuSeparator />
+
         <DropdownMenuItem asChild className="p-0">
           <form action={logout}>
-            <Button type="submit" variant="destructive" className="w-full">
+            <Button type="submit" className="w-full" variant="secondary">
+              <PowerIcon size={18} />
               로그아웃
             </Button>
           </form>
