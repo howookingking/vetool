@@ -27,7 +27,7 @@ export default function NoResultSquirrel({
   return (
     <div
       className={cn(
-        'flex items-center justify-center gap-2 text-sm text-slate-800',
+        'flex items-center justify-center gap-2 text-sm font-bold text-slate-800',
         TEXT_SIZE_DIC[size],
         className,
       )}

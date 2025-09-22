@@ -54,13 +54,18 @@ export default async function IcuPageLayout(props: Props) {
     <>
       <BasicHosDataProvider
         basicHosData={{
+          // 수의사 정보
           vetList: vetList,
+
+          // 사이드바에 표시되는 환자 정보 => 차트 생성 단계에서 필요함
+          icuSidebarPatients: icuSidebarPatients,
+
+          // 병원 ICU 설정값들
           groupListData: group_list,
           orderColorsData: order_color,
           memoNameListData: icu_memo_names,
           showOrderer: show_orderer,
           showTxUser: show_tx_user,
-          icuSidebarPatients: icuSidebarPatients,
           vitalRefRange: vital_ref_range,
           orderFontSizeData: order_font_size,
           timeGuidelineData: time_guidelines,
@@ -72,6 +77,7 @@ export default async function IcuPageLayout(props: Props) {
         <div className="flex h-desktop">
           <IcuSidebar
             hosId={hos_id}
+            targetDate={target_date}
             hosGroupList={group_list}
             icuSidebarPatients={icuSidebarPatients}
             vetList={vetList}

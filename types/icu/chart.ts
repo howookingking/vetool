@@ -163,12 +163,6 @@ export type VitalData = {
   created_at: string
 }
 
-export type Filter = {
-  selectedGroup: string[]
-  selectedVet: string
-  selectedSort: string
-}
-
 export type MemoColor = (typeof MEMO_COLORS)[number]
 
 export type Memo = {
