@@ -35,7 +35,9 @@ export default async function DesktopSidebar({
 
       <div className="flex flex-col items-center justify-end gap-1">
         <CalculatorSheet plan={plan} />
+
         <Feedback />
+
         <SidebarUserInfo hosId={hosId} vetoolUser={vetoolUser} />
       </div>
     </aside>
