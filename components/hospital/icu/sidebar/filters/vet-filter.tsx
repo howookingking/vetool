@@ -1,64 +1,72 @@
 import UserAvatar from '@/components/hospital/common/user-avatar'
 import { Button } from '@/components/ui/button'
 import {
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarTrigger,
-} from '@/components/ui/menubar'
-import { cn } from '@/lib/utils/utils'
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import type { Vet } from '@/types'
-import { StethoscopeIcon } from 'lucide-react'
+import { CheckIcon, RotateCcwIcon, StethoscopeIcon } from 'lucide-react'
+import type { FilterState } from './filters'
 
-type VetFilterProps = {
+type Props = {
   vetList: Vet[]
-  selectedVet: string
-  onVetSelect: (vet: string) => void
+  filters: FilterState
+  setFilters: (value: FilterState | ((val: FilterState) => FilterState)) => void
 }
 
-export default function VetFilter({
-  vetList,
-  selectedVet,
-  onVetSelect,
-}: VetFilterProps) {
+export default function VetFilter({ filters, setFilters, vetList }: Props) {
+  const handleVetSelect = (vetId: string) => {
+    setFilters({
+      ...filters,
+      selectedVet: vetId,
+    })
+  }
+
   return (
-    <MenubarMenu>
-      <MenubarTrigger asChild>
-        <Button
-          variant="ghost"
-          className={cn(
-            selectedVet.length > 0 && 'bg-primary text-white',
-            'h-[30px] w-full rounded-none',
-          )}
-        >
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="icon">
           <StethoscopeIcon />
         </Button>
-      </MenubarTrigger>
+      </DropdownMenuTrigger>
 
-      <MenubarContent align="start" className="min-w-[120px]">
-        {vetList.map((vet) => (
-          <MenubarItem
-            key={vet.user_id}
-            onClick={() => onVetSelect(vet.user_id)}
-            className={cn(
-              'flex items-center justify-between',
-              selectedVet === vet.user_id && 'bg-muted',
-            )}
-          >
-            <div className="flex items-center gap-1">
-              <UserAvatar src={vet.avatar_url} alt={vet.name} />
-              {vet.name}
-            </div>
+      <DropdownMenuContent align="start">
+        <DropdownMenuLabel>수의사</DropdownMenuLabel>
 
-            {selectedVet === vet.user_id && <span>✓</span>}
-          </MenubarItem>
-        ))}
-        <MenubarSeparator />
-        <MenubarItem onClick={() => onVetSelect('reset')}>
-          <div className="text-center text-muted-foreground">선택 초기화</div>
-        </MenubarItem>
-      </MenubarContent>
-    </MenubarMenu>
+        <DropdownMenuSeparator />
+
+        <DropdownMenuGroup>
+          {vetList.map((vet) => (
+            <DropdownMenuItem
+              key={vet.user_id}
+              onClick={() => handleVetSelect(vet.user_id)}
+              className="flex cursor-pointer items-center justify-between gap-2"
+            >
+              <div className="flex items-center gap-1">
+                <UserAvatar src={vet.avatar_url} alt={vet.name} />
+                {vet.name}
+              </div>
+
+              {filters.selectedVet === vet.user_id && <CheckIcon size={12} />}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuGroup>
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuItem
+          onClick={() => setFilters({ ...filters, selectedVet: '' })}
+          className="flex items-center gap-1 text-muted-foreground"
+        >
+          <RotateCcwIcon size={14} />
+          초기화
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }

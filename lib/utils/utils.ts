@@ -1,3 +1,7 @@
+import type {
+  FilterState,
+  SortFilterValue,
+} from '@/components/hospital/icu/sidebar/filters/filters'
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import type { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
 import type { Vet, VetoolUser } from '@/types'
@@ -7,7 +11,6 @@ import { differenceInDays, isValid, parseISO } from 'date-fns'
 import { redirect } from 'next/navigation'
 import { twMerge } from 'tailwind-merge'
 import type { IcuSidebarPatient } from '../services/icu/icu-layout'
-import type { Filter } from '@/components/hospital/icu/sidebar/filters/filters'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -342,11 +345,17 @@ export const redirectToOwnHospital = (
   }
 }
 
+export type FilteredData = {
+  filteredIcuIoData: IcuSidebarPatient[]
+  excludedIcuIoData: IcuSidebarPatient[]
+  outIcuIoData: IcuSidebarPatient[]
+}
+
 export const filterPatients = (
   data: IcuSidebarPatient[],
-  filters: Filter,
+  filters: FilterState,
   vetsListData: Vet[],
-) => {
+): FilteredData => {
   const { selectedGroup, selectedVet, selectedSort } = filters
 
   // === 퇴원 / 미퇴원 먼저 분리 ===
@@ -355,9 +364,7 @@ export const filterPatients = (
 
   // === 필터링: 미퇴원 환자만 대상으로 ===
   let filtered = inPatients.filter((item) => {
-    const inGroup =
-      selectedGroup.length === 0 ||
-      selectedGroup.some((g: string) => item.group_list.includes(g))
+    const inGroup = !selectedGroup || item.group_list.includes(selectedGroup)
 
     const byVet =
       !selectedVet ||
@@ -373,7 +380,7 @@ export const filterPatients = (
   )
 
   const sorters: Record<
-    string,
+    SortFilterValue,
     (a: IcuSidebarPatient, b: IcuSidebarPatient) => number
   > = {
     vet: (a, b) =>
@@ -381,6 +388,7 @@ export const filterPatients = (
       (rankMap[b.vets?.main_vet ?? ''] ?? 99),
     name: (a, b) => a.patient.name.localeCompare(b.patient.name, 'ko'),
     urgency: (a, b) => (b.urgency ?? 0) - (a.urgency ?? 0),
+    date: () => 0, // 기본값 (정렬 없음)
   }
 
   // === 정렬 적용 ===

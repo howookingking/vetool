@@ -1,54 +1,73 @@
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarTrigger,
-} from '@/components/ui/menubar'
-import { cn } from '@/lib/utils/utils'
-import { Component } from 'lucide-react'
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { CheckIcon, ComponentIcon, RotateCcwIcon } from 'lucide-react'
+import type { FilterState } from './filters'
 
-type GroupFilterProps = {
+type Props = {
   hosGroupList: string[]
-  selectedGroup: string[]
-  onGroupChange: (group: string) => void
+  filters: FilterState
+  setFilters: (value: FilterState | ((val: FilterState) => FilterState)) => void
 }
 
 export default function GroupFilter({
   hosGroupList,
-  selectedGroup,
-  onGroupChange,
-}: GroupFilterProps) {
-  return (
-    <MenubarMenu>
-      <MenubarTrigger asChild>
-        <Button
-          variant="ghost"
-          className={cn(
-            selectedGroup.length > 0 && 'bg-primary text-white',
-            'h-[30px] w-full rounded-r-none',
-          )}
-        >
-          <Component />
-        </Button>
-      </MenubarTrigger>
+  filters,
+  setFilters,
+}: Props) {
+  console.log(filters)
 
-      <MenubarContent align="start" className="min-w-[120px]" hideWhenDetached>
-        {hosGroupList.map((group) => (
-          <MenubarItem
-            key={group}
-            className="flex items-center gap-1.5"
-            onClick={(e) => {
-              e.preventDefault()
-              onGroupChange(group)
-            }}
+  const handleGroupChange = (group: string) => {
+    setFilters({
+      ...filters,
+      selectedGroup: group,
+    })
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="icon">
+          <ComponentIcon />
+        </Button>
+      </DropdownMenuTrigger>
+
+      <DropdownMenuContent align="start">
+        <DropdownMenuLabel>그룹</DropdownMenuLabel>
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuGroup>
+          {hosGroupList.map((group) => (
+            <DropdownMenuItem
+              key={group}
+              className="flex cursor-pointer items-center justify-between gap-2"
+              onClick={() => handleGroupChange(group)}
+            >
+              <span>{group}</span>
+
+              {filters.selectedGroup === group && <CheckIcon size={12} />}
+            </DropdownMenuItem>
+          ))}
+
+          <DropdownMenuSeparator />
+
+          <DropdownMenuItem
+            onClick={() => setFilters({ ...filters, selectedGroup: '' })}
+            className="gap-1text-muted-foreground flex items-center"
           >
-            <Checkbox checked={selectedGroup.includes(group)} />
-            <span>{group}</span>
-          </MenubarItem>
-        ))}
-      </MenubarContent>
-    </MenubarMenu>
+            <RotateCcwIcon size={14} />
+            초기화
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }
