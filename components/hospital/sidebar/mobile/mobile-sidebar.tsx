@@ -12,11 +12,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
 import type { Plan } from '@/constants/plans'
 import type { VetoolUser } from '@/types'
 import { MenuIcon } from 'lucide-react'
 import { useState } from 'react'
+import { SIDEBAR_MENUS } from '../hospital-sidebar'
 
 type Props = {
   hosId: string
@@ -45,14 +45,14 @@ export default function MobileSidebar({ hosId, vetoolUser, plan }: Props) {
         </SheetHeader>
 
         <ul className="z-50">
-          {SIDEBAR_ITEMS.map((item) => (
+          {SIDEBAR_MENUS.map(({ icon, isReady, name, path }) => (
             <MobileSidebarItem
-              key={item.name}
-              isReady={item.isReady}
+              key={name}
+              isReady={isReady}
               hosId={hosId}
-              name={item.name}
-              path={item.path}
-              icon={item.icon}
+              name={name}
+              path={path}
+              icon={icon}
               setIsSheetOpen={setIsSheetOpen}
               isSuper={vetoolUser.is_super}
             />
