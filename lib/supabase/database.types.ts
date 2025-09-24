@@ -718,7 +718,7 @@ export type Database = {
           cage?: string | null
           cpcr?: string
           created_at?: string
-          group_list: string[]
+          group_list?: string[]
           hos_id?: string | null
           icu_io_cc: string
           icu_io_dx: string
