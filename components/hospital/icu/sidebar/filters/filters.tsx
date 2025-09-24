@@ -9,7 +9,7 @@ type Props = {
   hosGroupList: string[]
   vetList: Vet[]
   filters: FilterState
-  setFilters: (value: FilterState | ((val: FilterState) => FilterState)) => void
+  setFilters: (value: FilterState) => void
 }
 
 export default function Filters({
@@ -19,7 +19,7 @@ export default function Filters({
   setFilters,
 }: Props) {
   return (
-    <div className="flex">
+    <div className="flex w-full">
       <GroupFilter
         hosGroupList={hosGroupList}
         filters={filters}
@@ -31,9 +31,8 @@ export default function Filters({
       <SortFilter filters={filters} setFilters={setFilters} />
 
       <Button
-        size="icon"
         variant="outline"
-        className=""
+        className="flex-1 rounded-l-none border-l-0 px-2"
         onClick={() => setFilters(DEFAULT_FILTER_STATE)}
       >
         <RotateCcwIcon />

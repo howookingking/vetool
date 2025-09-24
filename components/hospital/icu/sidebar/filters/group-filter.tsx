@@ -8,13 +8,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { cn } from '@/lib/utils/utils'
 import { CheckIcon, ComponentIcon, RotateCcwIcon } from 'lucide-react'
 import type { FilterState } from './filters'
 
 type Props = {
   hosGroupList: string[]
   filters: FilterState
-  setFilters: (value: FilterState | ((val: FilterState) => FilterState)) => void
+  setFilters: (value: FilterState) => void
 }
 
 export default function GroupFilter({
@@ -22,8 +23,6 @@ export default function GroupFilter({
   filters,
   setFilters,
 }: Props) {
-  console.log(filters)
-
   const handleGroupChange = (group: string) => {
     setFilters({
       ...filters,
@@ -31,10 +30,18 @@ export default function GroupFilter({
     })
   }
 
+  const isFiltered = !!filters.selectedGroup
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button
+          variant="outline"
+          className={cn(
+            'flex-1 rounded-r-none border-r-0 px-2',
+            isFiltered && 'bg-muted shadow-inner',
+          )}
+        >
           <ComponentIcon />
         </Button>
       </DropdownMenuTrigger>
@@ -61,7 +68,7 @@ export default function GroupFilter({
 
           <DropdownMenuItem
             onClick={() => setFilters({ ...filters, selectedGroup: '' })}
-            className="gap-1text-muted-foreground flex items-center"
+            className="flex items-center gap-1"
           >
             <RotateCcwIcon size={14} />
             초기화

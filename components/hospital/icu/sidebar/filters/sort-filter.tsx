@@ -10,11 +10,15 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { ArrowDownNarrowWideIcon, CheckIcon, RotateCcwIcon } from 'lucide-react'
-import { FilterState, SORT_FILTER_ITEMS, type SortFilterValue } from './filters'
+import {
+  type FilterState,
+  SORT_FILTER_ITEMS,
+  type SortFilterValue,
+} from './filters'
 
 type Props = {
   filters: FilterState
-  setFilters: (value: FilterState | ((val: FilterState) => FilterState)) => void
+  setFilters: (value: FilterState) => void
 }
 
 export default function SortFilter({ filters, setFilters }: Props) {
@@ -28,7 +32,7 @@ export default function SortFilter({ filters, setFilters }: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button variant="outline" className="flex-1 rounded-none px-2">
           <ArrowDownNarrowWideIcon />
         </Button>
       </DropdownMenuTrigger>
@@ -55,7 +59,7 @@ export default function SortFilter({ filters, setFilters }: Props) {
 
           <DropdownMenuItem
             onClick={() => setFilters({ ...filters, selectedSort: 'date' })}
-            className="flex items-center gap-1 text-muted-foreground"
+            className="flex items-center gap-1"
           >
             <RotateCcwIcon size={14} />
             초기화

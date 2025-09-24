@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { cn } from '@/lib/utils/utils'
 import type { Vet } from '@/types'
 import { CheckIcon, RotateCcwIcon, StethoscopeIcon } from 'lucide-react'
 import type { FilterState } from './filters'
@@ -16,7 +17,7 @@ import type { FilterState } from './filters'
 type Props = {
   vetList: Vet[]
   filters: FilterState
-  setFilters: (value: FilterState | ((val: FilterState) => FilterState)) => void
+  setFilters: (value: FilterState) => void
 }
 
 export default function VetFilter({ filters, setFilters, vetList }: Props) {
@@ -27,10 +28,18 @@ export default function VetFilter({ filters, setFilters, vetList }: Props) {
     })
   }
 
+  const isFiltered = !!filters.selectedVet
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button
+          variant="outline"
+          className={cn(
+            'flex-1 rounded-none border-r-0 px-2',
+            isFiltered && 'bg-muted shadow-inner',
+          )}
+        >
           <StethoscopeIcon />
         </Button>
       </DropdownMenuTrigger>
@@ -44,8 +53,8 @@ export default function VetFilter({ filters, setFilters, vetList }: Props) {
           {vetList.map((vet) => (
             <DropdownMenuItem
               key={vet.user_id}
-              onClick={() => handleVetSelect(vet.user_id)}
               className="flex cursor-pointer items-center justify-between gap-2"
+              onClick={() => handleVetSelect(vet.user_id)}
             >
               <div className="flex items-center gap-1">
                 <UserAvatar src={vet.avatar_url} alt={vet.name} />
@@ -61,7 +70,7 @@ export default function VetFilter({ filters, setFilters, vetList }: Props) {
 
         <DropdownMenuItem
           onClick={() => setFilters({ ...filters, selectedVet: '' })}
-          className="flex items-center gap-1 text-muted-foreground"
+          className="flex items-center gap-1"
         >
           <RotateCcwIcon size={14} />
           초기화
