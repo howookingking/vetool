@@ -42,7 +42,8 @@ export function MobileIcuSidebarSheet({
             <MenuIcon size={24} />
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="p-4" noCloseButton>
+
+        <SheetContent side="left" className="px-0 py-2" noCloseButton>
           <VisuallyHidden>
             <SheetHeader>
               <SheetTitle />

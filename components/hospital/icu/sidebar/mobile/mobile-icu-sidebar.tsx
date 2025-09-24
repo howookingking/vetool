@@ -28,10 +28,10 @@ export default function MobileSidebar({
   )
 
   return (
-    <aside className="flex h-full flex-col">
+    <aside className="flex flex-col">
       <IcuDateSelector targetDate={targetDate} />
 
-      <Separator className="mb-1 mt-4" />
+      <Separator className="mt-2" />
 
       {icuSidebarPatients.length === 0 ? (
         <NoResultSquirrel
@@ -39,7 +39,7 @@ export default function MobileSidebar({
           className="mt-10 flex-col"
         />
       ) : (
-        <div className="flex h-full flex-col gap-4 p-2">
+        <div className="h-[calc(100vh-40px)] overflow-y-auto p-2">
           <PatientList
             filteredData={filteredData}
             handleCloseMobileDrawer={handleCloseMobileDrawer}
