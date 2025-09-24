@@ -38,7 +38,7 @@ export default function GroupFilter({
         <Button
           variant="outline"
           className={cn(
-            'flex-1 rounded-r-none border-r-0 px-2',
+            'flex-1 rounded-r-none border-r-0 px-2 focus-visible:ring-0',
             isFiltered && 'bg-muted shadow-inner',
           )}
         >

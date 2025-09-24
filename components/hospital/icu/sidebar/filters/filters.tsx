@@ -32,7 +32,7 @@ export default function Filters({
 
       <Button
         variant="outline"
-        className="flex-1 rounded-l-none border-l-0 px-2"
+        className="flex-1 rounded-l-none border-l-0 px-2 focus-visible:ring-0"
         onClick={() => setFilters(DEFAULT_FILTER_STATE)}
       >
         <RotateCcwIcon />
