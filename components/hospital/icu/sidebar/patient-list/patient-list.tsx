@@ -1,37 +1,31 @@
 import PatientButton from '@/components/hospital/icu/sidebar/patient-list/patient-button'
 import { Separator } from '@/components/ui/separator'
-import type { IcuSidebarPatient } from '@/lib/services/icu/icu-layout'
+import type { FilteredData } from '@/lib/utils/utils'
 import type { Vet } from '@/types'
 
-type IcuSidebarContentProps = {
-  filteredData: {
-    filteredIcuIoData: IcuSidebarPatient[]
-    excludedIcuIoData: IcuSidebarPatient[]
-    filteredIoPatientCount: number
-  }
-  vetList: Vet[]
+type Props = {
+  filteredData: FilteredData
   handleCloseMobileDrawer?: () => void
+  vetList: Vet[]
 }
 
 export default function PatientList({
   filteredData,
-  vetList,
   handleCloseMobileDrawer,
-}: IcuSidebarContentProps) {
-  const { filteredIcuIoData, excludedIcuIoData, filteredIoPatientCount } =
-    filteredData
+  vetList,
+}: Props) {
+  const { filteredIcuIoData, excludedIcuIoData, outIcuIoData } = filteredData
 
-  const fileteredPatientCount = filteredIcuIoData.length
-  const excludedPatientCount = excludedIcuIoData.length
+  const filteredCount = filteredIcuIoData.length
+  const excludedCount = excludedIcuIoData.length
+  const outCount = outIcuIoData.length
 
   return (
     <div className="flex-col gap-3 overflow-y-auto">
-      {fileteredPatientCount > 0 ? (
-        <ul className="flex flex-col gap-2 overflow-y-scroll">
+      {filteredCount > 0 ? (
+        <ul className="flex flex-col gap-2">
           <li className="flex items-center justify-between text-xs font-bold text-muted-foreground">
-            <span className="font-bold">
-              입원환자 ({filteredIoPatientCount})
-            </span>
+            <span className="font-bold">입원환자 ({filteredCount})</span>
           </li>
 
           {filteredIcuIoData.map((icuIoData) => (
@@ -50,15 +44,36 @@ export default function PatientList({
         </span>
       )}
 
-      {excludedPatientCount > 0 && (
+      {excludedCount > 0 && (
         <>
-          <Separator className="my-3" />
+          <Separator className="mb-3" />
 
-          <ul className="flex flex-col gap-2 overflow-y-scroll">
+          <ul className="flex flex-col gap-2">
             <li className="text-xs font-bold text-muted-foreground">
-              필터링 제외 ({excludedPatientCount})
+              필터링 제외 ({excludedCount})
             </li>
             {excludedIcuIoData.map((icuIoData) => (
+              <li
+                key={icuIoData.icu_io_id}
+                className="w-full last:mb-2"
+                onClick={handleCloseMobileDrawer}
+              >
+                <PatientButton icuIoData={icuIoData} vetList={vetList} />
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+
+      {outCount > 0 && (
+        <>
+          <Separator className="mb-3" />
+
+          <ul className="flex flex-col gap-2">
+            <li className="text-xs font-bold text-muted-foreground">
+              퇴원환자 ({outCount})
+            </li>
+            {outIcuIoData.map((icuIoData) => (
               <li
                 key={icuIoData.icu_io_id}
                 className="w-full last:mb-2"

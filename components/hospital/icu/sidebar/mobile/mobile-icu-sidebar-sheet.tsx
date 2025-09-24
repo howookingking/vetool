@@ -1,3 +1,5 @@
+'use client'
+
 import MobileSidebar from '@/components/hospital/icu/sidebar/mobile/mobile-icu-sidebar'
 import { Button } from '@/components/ui/button'
 import {
@@ -10,32 +12,23 @@ import {
 } from '@/components/ui/sheet'
 import type { IcuSidebarPatient } from '@/lib/services/icu/icu-layout'
 import type { Vet } from '@/types'
-import type { Filter } from '@/types/icu/chart'
-import { Menu } from 'lucide-react'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
+import { MenuIcon } from 'lucide-react'
 import { useState } from 'react'
 
 type Props = {
-  hosGroupList: string[]
+  icuSidebarPatients: IcuSidebarPatient[]
   vetList: Vet[]
-  filteredData: {
-    filteredIcuIoData: IcuSidebarPatient[]
-    excludedIcuIoData: IcuSidebarPatient[]
-    filteredIoPatientCount: number
-  }
-  isEmpty: boolean
-  setFilters: React.Dispatch<React.SetStateAction<Filter>>
-  filters: Filter
+  targetDate: string
 }
 
 export function MobileIcuSidebarSheet({
-  hosGroupList,
+  icuSidebarPatients,
   vetList,
-  filteredData,
-  isEmpty,
-  setFilters,
-  filters,
+  targetDate,
 }: Props) {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
+
   const handleCloseMobileDrawer = () => setIsSheetOpen(false)
 
   return (
@@ -46,23 +39,22 @@ export function MobileIcuSidebarSheet({
             className="fixed top-0 z-40 h-12 w-12 rounded-none"
             size="icon"
           >
-            <Menu size={24} />
+            <MenuIcon size={24} />
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="p-4">
-          <SheetHeader>
-            <SheetTitle />
-            <SheetDescription />
-          </SheetHeader>
+        <SheetContent side="left" className="p-4" noCloseButton>
+          <VisuallyHidden>
+            <SheetHeader>
+              <SheetTitle />
+              <SheetDescription />
+            </SheetHeader>
+          </VisuallyHidden>
 
           <MobileSidebar
-            filteredData={filteredData}
-            filters={filters}
-            hosGroupList={hosGroupList}
-            isEmpty={isEmpty}
-            setFilters={setFilters}
-            vetList={vetList}
+            targetDate={targetDate}
+            icuSidebarPatients={icuSidebarPatients}
             handleCloseMobileDrawer={handleCloseMobileDrawer}
+            vetList={vetList}
           />
         </SheetContent>
       </Sheet>
