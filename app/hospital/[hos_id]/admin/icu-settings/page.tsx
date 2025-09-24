@@ -22,7 +22,7 @@ export default async function AdminIcuSettingsPage(props: {
       vital_ref_range,
     },
     vetList,
-  } = await fetchIcuLayoutData(hos_id, '')
+  } = await fetchIcuLayoutData(hos_id, '2023-01-01')
 
   return (
     <BasicHosDataProvider
