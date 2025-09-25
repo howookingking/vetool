@@ -41,7 +41,7 @@ export default function PatientButton({ icuIoData, vetList }: Props) {
       <div
         className={cn(
           'flex w-full flex-col justify-between',
-          icuIoData.out_date && 'text-muted-foreground line-through',
+          icuIoData.out_date && 'text-muted-foreground',
         )}
       >
         <div className="mb-1 flex justify-between gap-2">
