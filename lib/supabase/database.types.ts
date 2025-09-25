@@ -720,8 +720,8 @@ export type Database = {
           created_at?: string
           group_list?: string[]
           hos_id?: string | null
-          icu_io_cc: string
-          icu_io_dx: string
+          icu_io_cc?: string
+          icu_io_dx?: string
           icu_io_id?: string
           icu_io_tags?: string | null
           in_date: string
@@ -1869,6 +1869,15 @@ export type Database = {
           out_due_date_input: string
           patient_id_input: string
           sub_vet_input: string
+        }
+        Returns: undefined
+      }
+      register_new_patient_in_icu: {
+        Args: {
+          age_in_days_input: number
+          hos_id_input: string
+          in_date_input: string
+          patient_id_input: string
         }
         Returns: undefined
       }

@@ -1,27 +1,26 @@
 import DeletePatientAlert from '@/components/common/patients/search/delete-patient-alert'
 import PatientUpdateDialog from '@/components/common/patients/upload/patient-update-dialog'
 import SpeciesToIcon from '@/components/common/species-to-icon'
+import RegisterIcuConfirmDialog from '@/components/hospital/icu/sidebar/register-dialog/register-icu-confirm-dialog'
 import { calculateAge } from '@/lib/utils/utils'
 import type { Patient } from '@/types'
 import type { Species } from '@/types/hospital/calculator'
 import type { ColumnDef } from '@tanstack/react-table'
 import type { Dispatch, SetStateAction } from 'react'
 import type { DebouncedState } from 'use-debounce'
-import type { RegisteringPatient } from '../../../hospital/icu/sidebar/register-dialog/register-dialog'
-import RegisterIcuButton from './register-icu-button'
 
 type Props = {
   isIcu: boolean
-  setIsConfirmDialogOpen?: Dispatch<SetStateAction<boolean>>
-  setRegisteringPatient?: Dispatch<SetStateAction<RegisteringPatient | null>>
+  hosId: string
   debouncedSearch: DebouncedState<() => Promise<void>>
+  setIsRegisterDialogOpen?: Dispatch<SetStateAction<boolean>>
 }
 
 export const searchedPatientsColumns = ({
   isIcu,
-  setIsConfirmDialogOpen,
-  setRegisteringPatient,
+  hosId,
   debouncedSearch,
+  setIsRegisterDialogOpen,
 }: Props): ColumnDef<Patient>[] => {
   const columns: ColumnDef<Patient>[] = [
     {
@@ -121,18 +120,18 @@ export const searchedPatientsColumns = ({
   if (isIcu) {
     columns.push({
       accessorKey: 'register_icu_action',
-      header: () => '환자선택',
+      header: () => '입원',
       cell: ({ row }) => {
         const birth = row.original.birth
         const patientId = row.original.patient_id
         const name = row.original.name
         return (
-          <RegisterIcuButton
+          <RegisterIcuConfirmDialog
+            hosId={hosId}
             birth={birth}
             patientId={patientId}
             patientName={name}
-            setIsConfirmDialogOpen={setIsConfirmDialogOpen!}
-            setRegisteringPatient={setRegisteringPatient!}
+            setIsRegisterDialogOpen={setIsRegisterDialogOpen!}
           />
         )
       },
