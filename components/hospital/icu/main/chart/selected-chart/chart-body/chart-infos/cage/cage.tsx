@@ -7,13 +7,12 @@ import { SquarePlusIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
-export default function Cage({
-  cage,
-  icuIoId,
-}: {
-  cage: string
+type Props = {
   icuIoId: string
-}) {
+  cage: string
+}
+
+export default function Cage({ cage, icuIoId }: Props) {
   const [cageInput, setCageInput] = useState(cage)
   const [isUpdating, setIsUpdating] = useState(false)
 
