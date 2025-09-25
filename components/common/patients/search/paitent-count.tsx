@@ -2,7 +2,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { getHosPatientCount } from '@/lib/services/patient/patient'
 import { useEffect, useState } from 'react'
 
-export default function PatientNumber({ hosId }: { hosId: string }) {
+export default function PatientCount({ hosId }: { hosId: string }) {
   const [isFetching, setIsFetching] = useState(false)
   const [totalPatientCount, setTotalPatientCount] = useState<number>()
 
@@ -14,12 +14,14 @@ export default function PatientNumber({ hosId }: { hosId: string }) {
   }, [hosId])
 
   return (
-    <div className="flex shrink-0 items-center gap-1 text-sm text-muted-foreground">
-      현재 등록된 환자 수 :
+    <div className="absolute bottom-0 left-2">
       {isFetching ? (
-        <Skeleton className="h-5 w-20" />
+        <Skeleton className="h-5 w-16" />
       ) : (
-        <span className="font-medium text-black">{totalPatientCount}마리</span>
+        <div className="text-sm text-muted-foreground">
+          <span className="mr-1 text-base">{totalPatientCount}</span>
+          마리 등록됨
+        </div>
       )}
     </div>
   )
