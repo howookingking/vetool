@@ -1,11 +1,9 @@
 'use client'
 
-import AnnouncementsCarousel from '@/components/hospital/home/header/announcements-carousel'
 import RealtimeStatus from '@/components/hospital/icu/footer/realtime-status'
 import { Button } from '@/components/ui/button'
 import { useIcuRealtime } from '@/hooks/use-icu-realtime'
 import { cn } from '@/lib/utils/utils'
-import type { AnnouncementTitles } from '@/types/vetool'
 import {
   BarChartHorizontalIcon,
   BookmarkIcon,
@@ -58,6 +56,7 @@ export default function IcuFooter({ hosId, targetDate }: IcuFooterProps) {
                 currentIcuPath === value ? 'bg-muted' : '',
                 'flex items-center gap-1',
               )}
+              disabled={value === 'out-and-visit'}
               onClick={() =>
                 push(`/hospital/${hosId}/icu/${targetDate}/${value}`)
               }

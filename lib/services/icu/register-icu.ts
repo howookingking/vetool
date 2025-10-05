@@ -14,6 +14,8 @@ export const registerIcu = async (
 ) => {
   const supabase = await createClient()
 
+  // register_icu 에는 icu_out 테이블 insert 로직 있음
+  // register_new_patient_in_icu에는 로직 없음
   const { error } = await supabase.rpc('register_new_patient_in_icu', {
     hos_id_input: hosId,
     in_date_input: in_date,
@@ -27,10 +29,7 @@ export const registerIcu = async (
   }
 }
 
-export const checkPatientInIcu = async (
-  patientId: string,
-  targetDate: string,
-) => {
+export const isPatientInIcu = async (patientId: string, targetDate: string) => {
   const supabase = await createClient()
 
   const { data, error } = await supabase
@@ -54,15 +53,17 @@ export const checkPatientInIcu = async (
   } else {
     // 입원 한적이 있음(가장 최근꺼만 가져옴)
     if (data.out_date) {
-      // 퇴원일이 있는데 targetDate과 같거나 크다면 입원중
+      // 퇴원일이 있는데 targetDate와 같거나 크다면 targetDate 기준 입원중
+      // targetDate 가 10월 10일 outDate가 10월 20일 이라면 10월 10일 기준으로는 입원중임
       if (data.out_date >= targetDate) {
         isPatientInIcu = true
       } else {
-        // 퇴원일이 있는데 targetDate보다 작다면 입원중이 아님
+        // 퇴원일이 있는데 targetDate보다 작다면 targetDate 기준 입원중이 아님
+        // targetDate 가 10월 10일 outDate가 10월 1일 이라면 10월 10일 기준으로는 퇴원함
         isPatientInIcu = false
       }
     } else {
-      // 입원은 했고 퇴원일이 없으면 입원중
+      // 퇴원일이 없으면 입원중
       isPatientInIcu = true
     }
   }
