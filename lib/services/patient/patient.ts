@@ -83,10 +83,9 @@ export const getPatientsData = async (hosId: string) => {
 export const getPatientData = async (patientId: string) => {
   const supabase = await createClient()
 
-  const { data, error } = await supabase
-    .rpc('get_patient_data_with_vitals', {
-      patient_id_input: patientId,
-    })
+  const { data, error } = await supabase.rpc('get_patient_data_with_vitals', {
+    patient_id_input: patientId,
+  })
 
   if (error) {
     console.error(error)
@@ -244,6 +243,7 @@ export const searchPatients = async (searchTerms: string[], hosId: string) => {
     console.error(error)
     redirect(`/error?message=${error.message}`)
   }
+
   return data
 }
 

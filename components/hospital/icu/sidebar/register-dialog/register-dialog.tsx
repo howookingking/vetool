@@ -2,106 +2,67 @@
 
 import PatientFormDynamic from '@/components/common/patients/form/patient-form-dynamic'
 import SearchPatientContainer from '@/components/common/patients/search/search-patient-containter'
-import UpgragePlanPromptModal from '@/components/hospital/common/upgrade-plan-prompt-modal'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { canAddChart } from '@/constants/plans'
 import { cn } from '@/lib/utils/utils'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
+import { PlusIcon } from 'lucide-react'
 import { useState } from 'react'
-import RegisterDialogHeader from './register-dialog-header'
-import RegisterIcuConfirmDialog from './register-icu-confirm-dialog'
-
-export type RegisteringPatient = {
-  patientId: string
-  birth: string
-  patientName: string
-  ageInDays?: number
-  species?: string
-  breed?: string
-  gender?: string
-  microchipNo?: string
-  memo?: string
-  weight?: string
-  ownerName?: string
-  ownerId?: string
-  hosPatientId?: string
-} | null
 
 type Props = {
   hosId: string
-  defaultVetId: string
-  defaultGroup: string
-  currentChartNumber: number
+  targetDate: string
+  // chartCount: number
 }
 
 export default function RegisterDialog({
   hosId,
-  defaultGroup,
-  defaultVetId,
-  currentChartNumber,
+  targetDate,
+  // chartCount,
 }: Props) {
-  const {
-    basicHosData: { plan },
-  } = useBasicHosDataContext()
+  const [isIcuRegisterDialogOpen, setIsIcuRegisterDialogOpen] = useState(false)
 
-  const [tab, setTab] = useState('search')
-  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
-  const [registeringPatient, setRegisteringPatient] =
-    useState<RegisteringPatient>(null)
-  const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false)
-
-  const isAvailableAddChart = canAddChart(plan, currentChartNumber)
-
-  const handleTabValueChange = (value: string) => {
-    if (value === 'search') {
-      setTab('search')
-      return
-    }
-
-    if (value === 'register') {
-      setTab('register')
-      return
-    }
-  }
-
-  const handleOpenChage = (open: boolean) => {
-    if (open) {
-      setTab('search')
-      setRegisteringPatient(null)
-    }
-    setIsRegisterDialogOpen(open)
-  }
+  // # 요금제 일단 비활성화
+  // const isAvailableAddChart = canAddChart(plan // basicHos에 있음, chartCount)
 
   return (
-    <Dialog open={isRegisterDialogOpen} onOpenChange={handleOpenChage}>
+    <Dialog
+      open={isIcuRegisterDialogOpen}
+      onOpenChange={setIsIcuRegisterDialogOpen}
+    >
       <DialogTrigger asChild className="hidden md:flex">
-        <Button size="sm" className="shrink-0 text-sm">
-          환자 입원
+        <Button size="sm" className="shrink-0 pr-4 text-sm">
+          <PlusIcon />
+          입원
         </Button>
       </DialogTrigger>
 
       <DialogContent
-        className={cn('flex h-[704px] flex-col sm:max-w-[1200px]')}
+        className={cn('flex flex-col sm:max-w-[1200px]')}
         onInteractOutside={(e) => {
           e.preventDefault()
         }}
       >
-        <RegisterDialogHeader tab={tab} />
+        <DialogHeader>
+          <DialogTitle>입원</DialogTitle>
+          <DialogDescription>{targetDate}에 입원합니다</DialogDescription>
+        </DialogHeader>
 
-        <Tabs
-          defaultValue="search"
-          onValueChange={handleTabValueChange}
-          value={tab}
-        >
+        <Tabs defaultValue="search">
           <TabsList className="mb-2 w-full">
             <TabsTrigger value="search" className="w-full">
-              환자 검색 및 선택
+              기존 환자
             </TabsTrigger>
 
             <TabsTrigger value="register" className="w-full">
-              신규 환자 등록
+              신규 환자
             </TabsTrigger>
           </TabsList>
 
@@ -109,8 +70,7 @@ export default function RegisterDialog({
             <SearchPatientContainer
               hosId={hosId}
               isIcu
-              setIsConfirmDialogOpen={setIsConfirmDialogOpen}
-              setRegisteringPatient={setRegisteringPatient}
+              setIsIcuRegisterDialogOpen={setIsIcuRegisterDialogOpen}
             />
           </TabsContent>
 
@@ -118,35 +78,12 @@ export default function RegisterDialog({
             <PatientFormDynamic
               mode="registerFromIcuRoute"
               hosId={hosId}
-              setIsPatientRegisterDialogOpen={setIsRegisterDialogOpen}
-              setIsConfirmDialogOpen={setIsConfirmDialogOpen}
-              registeringPatient={registeringPatient}
-              setRegisteringPatient={setRegisteringPatient}
+              setIsPatientRegisterDialogOpen={setIsIcuRegisterDialogOpen}
               debouncedSearch={null}
             />
           </TabsContent>
         </Tabs>
-
-        {isConfirmDialogOpen && !isAvailableAddChart && (
-          <UpgragePlanPromptModal
-            title="차트 생성 실패"
-            onExit={() => setIsConfirmDialogOpen(false)}
-          />
-        )}
       </DialogContent>
-
-      {isConfirmDialogOpen && isAvailableAddChart && (
-        <RegisterIcuConfirmDialog
-          isConfirmDialogOpen={isConfirmDialogOpen}
-          setIsConfirmDialogOpen={setIsConfirmDialogOpen}
-          hosId={hosId}
-          defaultVetId={defaultVetId}
-          defaultGroup={defaultGroup}
-          registeringPatient={registeringPatient}
-          setIsRegisterDialogOpen={setIsRegisterDialogOpen}
-          currentChartNumber={currentChartNumber}
-        />
-      )}
     </Dialog>
   )
 }

@@ -43,9 +43,13 @@ export default function DesktopIcuSidebar({
 
       <RegisterDialog
         hosId={hosId}
-        defaultVetId={vetList[0].user_id}
-        defaultGroup={hosGroupList[0]}
-        chartCount={icuSidebarPatients.length}
+        targetDate={targetDate}
+        // # 요금제 일단 비활성화
+        // 퇴원한 환자는 카운트 하면 안된다
+        // chartCount={
+        //   filteredData.filteredIcuIoData.length +
+        //   filteredData.excludedIcuIoData.length
+        // }
       />
 
       <Separator />
@@ -66,6 +70,7 @@ export default function DesktopIcuSidebar({
           />
 
           <PatientList
+            filters={filters}
             filteredData={filteredData}
             vetList={vetList}
             handleCloseMobileDrawer={handleCloseMobileDrawer}

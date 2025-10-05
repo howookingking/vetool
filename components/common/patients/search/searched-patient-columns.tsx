@@ -13,14 +13,14 @@ type Props = {
   isIcu: boolean
   hosId: string
   debouncedSearch: DebouncedState<() => Promise<void>>
-  setIsRegisterDialogOpen?: Dispatch<SetStateAction<boolean>>
+  setIsIcuRegisterDialogOpen?: Dispatch<SetStateAction<boolean>>
 }
 
 export const searchedPatientsColumns = ({
   isIcu,
   hosId,
   debouncedSearch,
-  setIsRegisterDialogOpen,
+  setIsIcuRegisterDialogOpen,
 }: Props): ColumnDef<Patient>[] => {
   const columns: ColumnDef<Patient>[] = [
     {
@@ -131,7 +131,7 @@ export const searchedPatientsColumns = ({
             birth={birth}
             patientId={patientId}
             patientName={name}
-            setIsRegisterDialogOpen={setIsRegisterDialogOpen!}
+            setIsIcuRegisterDialogOpen={setIsIcuRegisterDialogOpen!}
           />
         )
       },

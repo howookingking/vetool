@@ -1,57 +1,54 @@
 'use client'
 
-import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import DataTable from '@/components/ui/data-table'
 import { Input } from '@/components/ui/input'
 import { searchPatients } from '@/lib/services/patient/patient'
 import type { Patient } from '@/types'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-import PatientCount from './paitent-count'
 import RegisterPatientButton from './register-patient-buttons'
 import { searchedPatientsColumns } from './searched-patient-columns'
+import TotalPatientCount from './total-paitent-count'
 
 type Props =
   | {
       hosId: string
-      isIcu: true
-      setIsRegisterDialogOpen: Dispatch<SetStateAction<boolean>>
+      isIcu: true // ICU에서는 icu 환자 등록 다이얼로그가 있음
+      setIsIcuRegisterDialogOpen: Dispatch<SetStateAction<boolean>>
     }
   | {
       hosId: string
-      isIcu: false
-      setIsRegisterDialogOpen: undefined
+      isIcu: false // 다른곳(/patients route)에서는 icu 환자 등록 다이얼로그가 없음
+      setIsIcuRegisterDialogOpen: undefined
     }
 
 export default function SearchPatientContainer({
   isIcu = false,
   hosId,
-  setIsRegisterDialogOpen,
+  setIsIcuRegisterDialogOpen,
 }: Props) {
   const [searchTerm, setSearchTerm] = useState('')
   const [isSearching, setIsSearching] = useState(false)
-  const [searchedPatientsData, setSearchedPatientsData] = useState<Patient[]>(
-    [],
-  )
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value)
-    debouncedSearch()
-  }
+  const [searchedPatients, setSearchedPatients] = useState<Patient[]>([])
 
   const debouncedSearch = useDebouncedCallback(async () => {
     if (searchTerm.trim()) {
       setIsSearching(true)
 
-      const data = await searchPatients(
+      const result = await searchPatients(
         searchTerm.split(',').map((s) => s.trim()),
         hosId,
       )
-      setSearchedPatientsData(data)
+      setSearchedPatients(result)
 
       setIsSearching(false)
     }
   }, 500)
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value)
+    debouncedSearch()
+  }
 
   return (
     <div className="relative">
@@ -68,23 +65,20 @@ export default function SearchPatientContainer({
       </div>
 
       <div className="h-[408px]">
-        {isSearching ? (
-          <LargeLoaderCircle className="h-[408px]" />
-        ) : (
-          <DataTable
-            rowLength={6}
-            data={searchedPatientsData}
-            columns={searchedPatientsColumns({
-              isIcu,
-              hosId,
-              debouncedSearch,
-              setIsRegisterDialogOpen,
-            })}
-          />
-        )}
+        <DataTable
+          isLoading={isSearching}
+          rowLength={6}
+          data={searchedPatients}
+          columns={searchedPatientsColumns({
+            isIcu,
+            hosId,
+            debouncedSearch,
+            setIsIcuRegisterDialogOpen,
+          })}
+        />
       </div>
 
-      <PatientCount hosId={hosId} />
+      <TotalPatientCount hosId={hosId} />
     </div>
   )
 }
