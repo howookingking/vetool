@@ -1,4 +1,4 @@
-import ConfirmButton from '@/components/common/confirm-button'
+import SubmitButton from '@/components/common/submit-button'
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -46,7 +46,7 @@ export default function RegisterIcuConfirmDialog({
       const result = await isPatientInIcu(patientId, target_date as string)
 
       if (result) {
-        toast.warning(`${target_date}에 입원 중이거나 퇴원한 환자입니다`)
+        toast.warning('입원 중인 환자입니다')
 
         setIsLoading(false)
         return
@@ -97,7 +97,11 @@ export default function RegisterIcuConfirmDialog({
         <AlertDialogFooter className="pt-8">
           <AlertDialogCancel>닫기</AlertDialogCancel>
 
-          <ConfirmButton isLoading={isSubmitting} onClick={handleConfirm} />
+          <SubmitButton
+            isPending={isSubmitting}
+            onClick={handleConfirm}
+            buttonText="등록"
+          />
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
