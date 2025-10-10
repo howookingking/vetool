@@ -32,7 +32,7 @@ export default function BirthDatePicker({ form, birth }: Props) {
   const [monthInput, setMonthInput] = useState('')
   const [dateInput, setDateInput] = useState('')
 
-  // const isDatePick = useRef(true)
+  const isDatePick = useRef(true)
 
   const updateBirthDate = (date: Date) => {
     form.setValue('birth', date)
@@ -52,7 +52,7 @@ export default function BirthDatePicker({ form, birth }: Props) {
   }, [])
 
   useEffect(() => {
-    // if (isDatePick.current) return
+    if (isDatePick.current) return
 
     // 직접 N살 N개월을  입력하는 경우
     if (yearInput || monthInput) {
@@ -75,7 +75,7 @@ export default function BirthDatePicker({ form, birth }: Props) {
   const handleYearInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     if (value.length > 2) return
-    // isDatePick.current = false
+    isDatePick.current = false
 
     setYearInput(value)
   }
@@ -84,7 +84,7 @@ export default function BirthDatePicker({ form, birth }: Props) {
   const handleMonthInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     if (Number(value) > 12) return
-    // isDatePick.current = false
+    isDatePick.current = false
 
     setMonthInput(value)
   }
@@ -153,7 +153,7 @@ export default function BirthDatePicker({ form, birth }: Props) {
                     if (!date) return
                     updateBirthDate(date!)
                     setIsPopoverOpen(false)
-                    // isDatePick.current = true
+                    isDatePick.current = true
                   }}
                   disabled={(date) =>
                     date > new Date() || date < new Date('2000-01-01')
