@@ -1,7 +1,6 @@
 'use client'
 
 import ClSearchPatientContainer from '@/components/hospital/checklist/sidebar/checklist-register-dialog/cl-search-patient-container'
-import RegisterDialogHeader from '@/components/hospital/icu/sidebar/register-dialog/register-dialog-header'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -59,7 +58,8 @@ export default function ClRegisterDialog({
         className={cn('flex flex-col sm:max-w-[1200px]')}
         onInteractOutside={(e) => e.preventDefault()}
       >
-        <RegisterDialogHeader tab={tab} />
+        {/* <RegisterDialogHeader tab={tab} /> */}
+
         <Tabs
           defaultValue="search"
           onValueChange={handleTabValueChange}

@@ -6,7 +6,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Textarea } from '@/components/ui/textarea'
-import { toast } from '@/components/ui/use-toast'
 import { checkListSetArray } from '@/constants/checklist/checklist'
 import { calculateAge } from '@/lib/utils/utils'
 import {
@@ -215,9 +214,9 @@ export default function ChecklistReportTxtDialogButton({
   const copyclipboard = async () => {
     try {
       await navigator.clipboard.writeText(txt.trim())
-      toast({
-        title: '클립보드에 복사되었습니다',
-      })
+      // toast({
+      //   title: '클립보드에 복사되었습니다',
+      // })
       setIsPreviewDialogOpen(false)
       // 성공 처리 (토스트 등)
     } catch (err) {

@@ -12,7 +12,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { toast } from '@/components/ui/use-toast'
 import {
   checkListSetArray,
   defaultChecklistSet,
@@ -143,10 +142,10 @@ export default function ChecklistBodyTable({
           })
       }
     } else {
-      toast({
-        title: '오류',
-        description: '시간과 결과를 입력해주세요.',
-      })
+      // toast({
+      //   title: '오류',
+      //   description: '시간과 결과를 입력해주세요.',
+      // })
     }
   }
 
@@ -162,19 +161,19 @@ export default function ChecklistBodyTable({
           delete predata.checklist_set.result[time]
           updateEachChecklist(predata)
             .then(() => {
-              toast({
-                title: '성공',
-                description: '해당 행이 삭제되었습니다.',
-              })
+              // toast({
+              //   title: '성공',
+              //   description: '해당 행이 삭제되었습니다.',
+              // })
             })
             .catch((error) => {
               console.error('Error deleting row:', error)
             })
         } else {
-          toast({
-            title: '오류',
-            description: '해당 행이 존재하지 않습니다.',
-          })
+          // toast({
+          //   title: '오류',
+          //   description: '해당 행이 존재하지 않습니다.',
+          // })
         }
       }
     }

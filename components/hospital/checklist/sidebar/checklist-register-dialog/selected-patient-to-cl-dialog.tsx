@@ -9,7 +9,6 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { toast } from '@/components/ui/use-toast'
 import { registerChecklist } from '@/lib/services/checklist/register-checklist-patient'
 import { CheckIcon, LoaderCircleIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -47,9 +46,9 @@ export default function SelectedPatientToClDialog({
       birth,
     )
 
-    toast({
-      title: `${name} 체크리스트 등록 완료`,
-    })
+    // toast({
+    //   title: `${name} 체크리스트 등록 완료`,
+    // })
 
     setIsSubmitting(false)
     setIsConfirmDialogOpen(false)

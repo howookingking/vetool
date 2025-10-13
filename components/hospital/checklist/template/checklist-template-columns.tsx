@@ -1,13 +1,13 @@
 'use client'
 
+import ChecklistTemplatePreviewButton from '@/components/hospital/checklist/template/checklist-template-preview-button'
+import DeleteChecklistTemplateDialog from '@/components/hospital/checklist/template/delete-checklist-template-dialog'
+import EditChecklilstTemplateButton from '@/components/hospital/checklist/template/edit-checklist-template-button'
 import { Button } from '@/components/ui/button'
 import { TemplateChecklist } from '@/types/checklist/checklist-type'
 import { type ColumnDef } from '@tanstack/react-table'
-import { ArrowUpDown, Check } from 'lucide-react'
+import { ArrowUpDown } from 'lucide-react'
 import { type Dispatch, type SetStateAction } from 'react'
-import EditChecklilstTemplateButton from '@/components/hospital/checklist/template/edit-checklist-template-button'
-import ChecklistTemplatePreviewButton from '@/components/hospital/checklist/template/checklist-template-preview-button'
-import DeleteChecklistTemplateDialog from '@/components/hospital/checklist/template/delete-checklist-template-dialog'
 import RegistChecklistByTemplateDialog from './regist-checklist-by-template-dialog'
 // import EditTemplateButton from './edit-template-button'
 

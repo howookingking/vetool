@@ -8,7 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { toast } from '@/components/ui/use-toast'
 import { minToLocalTime } from '@/constants/checklist/checklist'
 import {
   type ChecklistWithPatientWithWeight,
@@ -77,10 +76,10 @@ export default function ChecklistEditTableRow({
           console.error('Error saving txChart:', error)
         })
     } else {
-      toast({
-        title: '오류',
-        description: '시간과 결과를 입력해주세요.',
-      })
+      // toast({
+      //   title: '오류',
+      //   description: '시간과 결과를 입력해주세요.',
+      // })
     }
     setIseditTableRowOpen(false)
   }

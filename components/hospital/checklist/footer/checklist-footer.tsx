@@ -1,7 +1,6 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { toast } from '@/components/ui/use-toast'
 import { useChecklistRealtime } from '@/hooks/use-checklist-realtime'
 import { cn } from '@/lib/utils/utils'
 import { BookmarkIcon, CheckIcon, SearchIcon } from 'lucide-react'
@@ -23,10 +22,10 @@ export default function ChecklistFooter({ hosId, targetDate }: Props) {
 
   useEffect(() => {
     if (isRealtimeReady) {
-      toast({
-        title: '차트의 실시간 변경을 감지하고 있습니다',
-        className: 'bg-green-600 text-white',
-      })
+      // toast({
+      //   title: '차트의 실시간 변경을 감지하고 있습니다',
+      //   className: 'bg-green-600 text-white',
+      // })
       refresh()
     }
   }, [isRealtimeReady, refresh])

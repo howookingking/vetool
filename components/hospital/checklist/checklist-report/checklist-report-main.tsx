@@ -2,7 +2,6 @@
 
 import ChecklistReport from '@/components/hospital/checklist/checklist-report/checklist-report'
 import { Button } from '@/components/ui/button'
-import { toast } from '@/components/ui/use-toast'
 import { getPatientById } from '@/lib/services/checklist/checklist-data'
 import { cn } from '@/lib/utils/utils'
 import type {
@@ -43,10 +42,7 @@ export default function ChecklistReportMain({ checklistData }: Props) {
   const reportRef = useRef<HTMLDivElement>(null)
 
   const handleExportPng = async () => {
-    if (!reportRef.current)
-      return toast({
-        title: '다운로드할 이미지(PNG)가 없습니다.',
-      })
+    if (!reportRef.current) return
 
     try {
       setIsExporting(true)
@@ -63,14 +59,14 @@ export default function ChecklistReportMain({ checklistData }: Props) {
       a.download = `report-${Date.now()}.png`
       a.click()
 
-      toast({
-        title: '이미지(PNG) 다운로드를 시작합니다.',
-      })
+      // toast({
+      //   title: '이미지(PNG) 다운로드를 시작합니다.',
+      // })
     } catch (e) {
       console.error(e)
-      toast({
-        title: '이미지(PNG) 다운로드 실패',
-      })
+      // toast({
+      //   title: '이미지(PNG) 다운로드 실패',
+      // })
     } finally {
       setIsExporting(false)
     }

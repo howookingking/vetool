@@ -17,7 +17,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { toast } from '@/components/ui/use-toast'
 import {
   checkListSetArray,
   defaultChecklistSet,
@@ -37,6 +36,7 @@ import { useEffect, useState } from 'react'
 import ChecklistBodyTableCell from './checklist-body-tablecell'
 import ChecklistEditTableRow from './checklist-edit-table-row'
 import ChecklistTimetableAdd from './checklist-timetable-add'
+import { toast } from 'sonner'
 
 type Props = {
   checklistData: ChecklistWithPatientWithWeight
@@ -119,7 +119,7 @@ export default function ChecklistBodyTable({ checklistData }: Props) {
     checklistData && setIsSaving(false)
     setTableTimes(pretimes)
     setCheckListNames([...prenames2])
-  }, []) //체크리스트 종류
+  }, [timeMin, interval, newresult, checklistData]) //체크리스트 종류
 
   const savenewChecklistChart = () => {
     setIsSaving(true)
@@ -152,10 +152,10 @@ export default function ChecklistBodyTable({ checklistData }: Props) {
           })
       }
     } else {
-      toast({
-        title: '오류',
-        description: '시간과 결과를 입력해주세요.',
-      })
+      // toast({
+      //   title: '오류',
+      //   description: '시간과 결과를 입력해주세요.',
+      // })
     }
   }
 
@@ -171,19 +171,19 @@ export default function ChecklistBodyTable({ checklistData }: Props) {
           delete predata.checklist_set.result[time]
           updateEachChecklist(predata)
             .then(() => {
-              toast({
-                title: '성공',
-                description: '해당 행이 삭제되었습니다.',
-              })
+              // toast({
+              //   title: '성공',
+              //   description: '해당 행이 삭제되었습니다.',
+              // })
             })
             .catch((error) => {
               console.error('Error deleting row:', error)
             })
         } else {
-          toast({
-            title: '오류',
-            description: '해당 행이 존재하지 않습니다.',
-          })
+          // toast({
+          //   title: '오류',
+          //   description: '해당 행이 존재하지 않습니다.',
+          // })
         }
       }
     }

@@ -34,7 +34,6 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { toast } from '@/components/ui/use-toast'
 import {
   CANINE_BREEDS,
   FELINE_BREEDS,
@@ -192,9 +191,9 @@ export default function ClPatientRegisterForm({
       format(birth, 'yyyy-MM-dd'),
     )
 
-    toast({
-      title: `${name} 생성 및 체크리스트가 등록되었습니다`,
-    })
+    // toast({
+    //   title: `${name} 생성 및 체크리스트가 등록되었습니다`,
+    // })
 
     setIsSubmitting(false)
     setIsDialogOpen(false)
@@ -243,9 +242,9 @@ export default function ClPatientRegisterForm({
       isWeightChanged!,
     )
 
-    toast({
-      title: `${name} 정보를 수정했습니다`,
-    })
+    // toast({
+    //   title: `${name} 정보를 수정했습니다`,
+    // })
 
     setIsSubmitting(false)
     setIsDialogOpen(false)

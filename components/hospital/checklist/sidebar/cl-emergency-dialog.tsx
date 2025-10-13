@@ -11,7 +11,6 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { toast } from '@/components/ui/use-toast'
 import { registerEmergencyChecklist } from '@/lib/services/checklist/register-checklist-patient'
 import { LoaderCircleIcon, SirenIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -36,9 +35,9 @@ export default function ClEmergencyDialog({ hosId, targetDate }: Props) {
       targetDate,
     )
 
-    toast({
-      title: '응급환자 등록 완료',
-    })
+    // toast({
+    //   title: '응급환자 등록 완료',
+    // })
 
     setIsSubmitting(false)
     setIsDialogOpen(false)

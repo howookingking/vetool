@@ -1,7 +1,7 @@
 'use client'
+
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { toast } from '@/components/ui/use-toast'
 import useIsMobile from '@/hooks/use-is-mobile'
 import {
   type ChecklistWithPatientWithWeight,
@@ -38,10 +38,10 @@ export default function ChecklistTimetableAdd({ checklistData }: Props) {
           })
           .catch((error) => {
             console.error('Error saving checklistChart:', error)
-            toast({
-              title: '오류',
-              description: '저장에 실패했습니다.',
-            })
+            // toast({
+            //   title: '오류',
+            //   description: '저장에 실패했습니다.',
+            // })
           })
       } else {
         predata.checklist_timetable = [...predata.checklist_timetable]
@@ -59,10 +59,10 @@ export default function ChecklistTimetableAdd({ checklistData }: Props) {
           })
           .catch((error) => {
             console.error('Error saving checklistChart:', error)
-            toast({
-              title: '오류',
-              description: '저장에 실패했습니다.',
-            })
+            // toast({
+            //   title: '오류',
+            //   description: '저장에 실패했습니다.',
+            // })
           })
       }
     }

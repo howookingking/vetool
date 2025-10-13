@@ -9,7 +9,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { toast } from '@/components/ui/use-toast'
 import { TemplateChecklist } from '@/types/checklist/checklist-type'
 import { Check } from 'lucide-react'
 import { cn } from '@/lib/utils/utils'
@@ -33,11 +32,11 @@ export default function RegistChecklistByTemplateDialog({
       target_date as string,
       hos_id as string,
     )
-    toast({
-      title: '체크리스트 등록 완료',
-      description:
-        '체크리스트 등록을 완료했습니다. 환자정보 및 추가정보를 입력해 주세요',
-    })
+    // toast({
+    //   title: '체크리스트 등록 완료',
+    //   description:
+    //     '체크리스트 등록을 완료했습니다. 환자정보 및 추가정보를 입력해 주세요',
+    // })
     setIsSubmitting(false)
     setOpen(false)
   }

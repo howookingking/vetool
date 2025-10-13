@@ -15,7 +15,6 @@ import { Input } from '@/components/ui/input'
 import { Menubar } from '@/components/ui/menubar'
 import { Separator } from '@/components/ui/separator'
 import { Textarea } from '@/components/ui/textarea'
-import { toast } from '@/components/ui/use-toast'
 import { defaultChecklistSet } from '@/constants/checklist/checklist'
 import { ORDER_COLORS } from '@/constants/hospital/icu/chart/colors'
 import {
@@ -190,12 +189,12 @@ export default function ChecklistEditBasic({
       : (preChecklistData.checklist_tag = pretag)
     updateEachChecklist(preChecklistData).then(() => {
       setChecklistEditDialogOpen(false)
-      toast({
-        title: isEditMode ? '체크리스트 수정 완료' : '체크리스트 저장 완료',
-        description: isEditMode
-          ? '체크리스트를 수정했습니다.'
-          : '체크리스트를 저장했습니다.',
-      })
+      // toast({
+      //   title: isEditMode ? '체크리스트 수정 완료' : '체크리스트 저장 완료',
+      //   description: isEditMode
+      //     ? '체크리스트를 수정했습니다.'
+      //     : '체크리스트를 저장했습니다.',
+      // })
     })
   }
   const delchecklistchart = () => {
@@ -207,10 +206,10 @@ export default function ChecklistEditBasic({
     ) {
       setChecklistEditDialogOpen(false)
       deleteChecklist(checklistdata.checklist_id).then(() => {
-        toast({
-          title: '체크리스트 삭제 완료',
-          description: '체크리스트를 삭제했습니다.',
-        })
+        // toast({
+        //   title: '체크리스트 삭제 완료',
+        //   description: '체크리스트를 삭제했습니다.',
+        // })
         push(`/hospital/${checklistdata.hos_id}/checklist/${targetDate}/chart`)
       })
     }

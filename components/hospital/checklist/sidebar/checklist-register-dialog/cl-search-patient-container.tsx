@@ -1,5 +1,4 @@
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
-import PatientCount from '@/components/common/patients/search/paitent-count'
 import { Button } from '@/components/ui/button'
 import DataTable from '@/components/ui/data-table'
 import { Input } from '@/components/ui/input'
@@ -9,6 +8,7 @@ import { XIcon } from 'lucide-react'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import { clSearchedPatientsColumns } from './cl-searched-patient-columns'
+import TotalPatientCount from '@/components/common/patients/search/total-paitent-count'
 
 type Props = {
   hosId: string
@@ -82,7 +82,7 @@ export default function ClSearchPatientContainer({
         )}
       </div>
 
-      <PatientCount hosId={hosId} />
+      <TotalPatientCount hosId={hosId} />
     </div>
   )
 }

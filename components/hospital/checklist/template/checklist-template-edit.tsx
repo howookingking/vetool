@@ -1,4 +1,3 @@
-'use client'
 import { Separator } from '@/components/ui/separator'
 import {
   ChecklistData,
@@ -23,7 +22,6 @@ import { Trash2 } from 'lucide-react'
 import ChecklistEditProtocolset from '@/components/hospital/checklist/checklist-edit/checklist-edit-protocolset'
 import ChecklistEditTxInfo from '@/components/hospital/checklist/checklist-edit/checklist-edit-txinfo'
 import ChecklistTagging from '@/components/hospital/checklist/common/checklist-tagging'
-import { toast } from '@/components/ui/use-toast'
 import {
   deleteChecklistTemplate,
   saveTemplate,
@@ -141,19 +139,19 @@ export default function ChecklistTemplateEdit({
       preChecklistData.hos_id = pathname.split('/')[2]
       preChecklistData.checklist_type = 'checklist'
       saveTemplate(preChecklistData).then(() => {
-        toast({
-          title: '템플릿 저장 완료',
-          description: '템플릿을 저장했습니다.',
-        })
+        // toast({
+        //   title: '템플릿 저장 완료',
+        //   description: '템플릿을 저장했습니다.',
+        // })
       })
       setChecklistEditDialogOpen(false)
     } else {
       const preChecklistData: TemplateChecklist = { ...checklistdata }
       updateTemplate(preChecklistData).then(() => {
-        toast({
-          title: '템플릿 수정 완료',
-          description: '템플릿을 수정했습니다.',
-        })
+        // toast({
+        //   title: '템플릿 수정 완료',
+        //   description: '템플릿을 수정했습니다.',
+        // })
       })
       setChecklistEditDialogOpen(false)
     }
@@ -178,10 +176,10 @@ export default function ChecklistTemplateEdit({
     ) {
       deleteChecklistTemplate(checklistdata.checklist_template_id).then(() => {
         setChecklistEditDialogOpen(false)
-        toast({
-          title: '체크리스트 삭제 완료',
-          description: '체크리스트를 삭제했습니다.',
-        })
+        // toast({
+        //   title: '체크리스트 삭제 완료',
+        //   description: '체크리스트를 삭제했습니다.',
+        // })
         push(
           `/hospital/${checklistdata.hos_id}/checklist/${targetDate}/template`,
         )
