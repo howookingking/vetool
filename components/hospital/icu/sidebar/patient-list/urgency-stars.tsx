@@ -4,7 +4,7 @@ export default function UrgencyStarts({ urgency }: { urgency: number | null }) {
   if (!urgency) return null
 
   return (
-    <div className="absolute right-[1px] top-0 flex">
+    <div className="absolute right-[1px] top-[1px] flex">
       {[...Array(urgency)].map((_, index) => (
         <Star
           key={index}

@@ -38,7 +38,7 @@ export default function PatientButton({
       variant="outline"
       size="sm"
       className={cn(
-        'relative w-full px-2 py-7 text-xs',
+        'relative w-full px-2 py-6 text-xs',
         selectedPatient && 'border border-black bg-muted shadow-md',
       )}
       onClick={handlePatientButtonClick}

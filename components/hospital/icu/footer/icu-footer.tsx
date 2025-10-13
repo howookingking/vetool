@@ -92,7 +92,7 @@ const FOOTER_MAIN_VIEW_MENUS = [
     hideInMobile: false,
   },
   {
-    label: '퇴원/면회(일시적 비활성화)',
+    label: '퇴원/면회(임시 비활성화)',
     route: 'out-and-visit',
     icon: <LogOutIcon />,
     hideInMobile: true,
