@@ -1,98 +1,84 @@
 'use client'
 
-import LargeLoaderCircle from '@/components/common/large-loader-circle'
-import type { RegisteringPatient } from '@/components/hospital/icu/sidebar/register-dialog/register-dialog'
-import { Button } from '@/components/ui/button'
 import DataTable from '@/components/ui/data-table'
 import { Input } from '@/components/ui/input'
 import { searchPatients } from '@/lib/services/patient/patient'
 import type { Patient } from '@/types'
-import { X } from 'lucide-react'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-import PatientNumber from './paitent-number'
 import RegisterPatientButton from './register-patient-buttons'
 import { searchedPatientsColumns } from './searched-patient-columns'
+import TotalPatientCount from './total-paitent-count'
 
-type Props = {
-  isIcu?: boolean
-  hosId: string
-  setIsConfirmDialogOpen?: Dispatch<SetStateAction<boolean>>
-  setRegisteringPatient?: Dispatch<SetStateAction<RegisteringPatient | null>>
-}
+type Props =
+  | {
+      hosId: string
+      isIcu: true // ICU에서는 icu 환자 등록 다이얼로그가 있음
+      setIsIcuRegisterDialogOpen: Dispatch<SetStateAction<boolean>>
+    }
+  | {
+      hosId: string
+      isIcu: false // 다른곳(/patients route)에서는 icu 환자 등록 다이얼로그가 없음
+      setIsIcuRegisterDialogOpen: undefined
+    }
 
 export default function SearchPatientContainer({
   isIcu = false,
   hosId,
-  setIsConfirmDialogOpen,
-  setRegisteringPatient,
+  setIsIcuRegisterDialogOpen,
 }: Props) {
   const [searchTerm, setSearchTerm] = useState('')
   const [isSearching, setIsSearching] = useState(false)
-  const [searchedPatientsData, setSearchedPatientsData] = useState(
-    [] as Patient[],
-  )
+  const [searchedPatients, setSearchedPatients] = useState<Patient[]>([])
+
+  const debouncedSearch = useDebouncedCallback(async () => {
+    if (searchTerm.trim()) {
+      setIsSearching(true)
+
+      const result = await searchPatients(
+        searchTerm.split(',').map((s) => s.trim()),
+        hosId,
+      )
+      setSearchedPatients(result)
+
+      setIsSearching(false)
+    }
+  }, 500)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value)
     debouncedSearch()
   }
 
-  const debouncedSearch = useDebouncedCallback(async () => {
-    if (searchTerm.trim()) {
-      setIsSearching(true)
-
-      const data = await searchPatients(
-        searchTerm.split(',').map((s) => s.trim()),
-        hosId,
-      )
-      setSearchedPatientsData(data)
-
-      setIsSearching(false)
-    }
-  }, 500)
-
   return (
-    <div className="flex h-[540px] flex-col gap-2">
-      <div className="flex justify-between gap-2">
-        <div className="relative w-full">
-          <Input
-            placeholder="환자 번호, 환자명, 보호자명으로 검색하세요. (예 : 김벳툴, 호우)"
-            value={searchTerm}
-            onChange={handleInputChange}
-            id="search-chart"
-          />
-          <Button
-            size="icon"
-            variant="ghost"
-            className="absolute right-2 top-2 h-5 w-5 text-muted-foreground"
-            onClick={() => setSearchTerm('')}
-          >
-            <X size={12} />
-          </Button>
-        </div>
+    <div className="relative">
+      <div className="mb-2 flex justify-between gap-2">
+        <Input
+          placeholder="환자번호, 환자명, 보호자명 등으로 검색"
+          value={searchTerm}
+          onChange={handleInputChange}
+          autoComplete="off"
+          autoFocus
+        />
 
         {!isIcu && <RegisterPatientButton hosId={hosId} />}
       </div>
 
-      <div className="h-full flex-1">
-        {isSearching ? (
-          <LargeLoaderCircle className="h-[400px]" />
-        ) : (
-          <DataTable
-            rowLength={6}
-            data={searchedPatientsData}
-            columns={searchedPatientsColumns({
-              isIcu,
-              setIsConfirmDialogOpen,
-              setRegisteringPatient,
-              debouncedSearch,
-            })}
-          />
-        )}
+      <div className="h-[408px]">
+        <DataTable
+          isLoading={isSearching}
+          rowLength={6}
+          data={searchedPatients}
+          columns={searchedPatientsColumns({
+            isIcu,
+            hosId,
+            debouncedSearch,
+            setIsIcuRegisterDialogOpen,
+          })}
+        />
       </div>
 
-      <PatientNumber hosId={hosId} />
+      <TotalPatientCount hosId={hosId} />
     </div>
   )
 }

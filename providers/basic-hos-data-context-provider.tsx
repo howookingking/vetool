@@ -2,8 +2,9 @@
 
 import type { OrderFontSize } from '@/constants/admin/order-font-size'
 import type { Plan } from '@/constants/plans'
+import type { IcuSidebarPatient } from '@/lib/services/icu/icu-layout'
+import type { Vet } from '@/types'
 import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
-import type { IcuSidebarIoData, Vet } from '@/types/icu/chart'
 import { createContext, useContext } from 'react'
 
 export type OrderColorDisplay = 'dot' | 'full'
@@ -13,13 +14,13 @@ type IcuContextType = {
 }
 
 type BasicHosData = {
-  vetsListData: Vet[]
+  vetList: Vet[]
   groupListData: string[]
   orderColorsData: IcuOrderColors
   memoNameListData: string[]
   showOrderer: boolean
   showTxUser: boolean
-  sidebarData: IcuSidebarIoData[]
+  icuSidebarPatients: IcuSidebarPatient[]
   vitalRefRange: VitalRefRange[]
   orderFontSizeData: OrderFontSize
   timeGuidelineData: number[]

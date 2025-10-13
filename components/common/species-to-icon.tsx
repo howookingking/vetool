@@ -1,13 +1,30 @@
-import { type Species } from '@/types/hospital/calculator'
-import { Cat, Dog } from 'lucide-react'
+import type { Species } from '@/types/hospital/calculator'
+import { CatIcon, DogIcon } from 'lucide-react'
 
-export default function SpeciesToIcon({ species }: { species: Species }) {
+type Props = {
+  species: Species
+  size?: number
+}
+
+export default function SpeciesToIcon({ species, size = 16 }: Props) {
   return (
     <>
       {species === 'canine' ? (
-        <Dog className="mx-auto" size={20} />
+        <DogIcon
+          className="mx-auto"
+          style={{
+            width: size,
+            height: size,
+          }}
+        />
       ) : (
-        <Cat className="mx-auto" size={20} />
+        <CatIcon
+          className="mx-auto"
+          style={{
+            width: size,
+            height: size,
+          }}
+        />
       )}
     </>
   )

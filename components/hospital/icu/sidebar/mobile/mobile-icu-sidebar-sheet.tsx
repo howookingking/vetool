@@ -1,3 +1,5 @@
+'use client'
+
 import MobileSidebar from '@/components/hospital/icu/sidebar/mobile/mobile-icu-sidebar'
 import { Button } from '@/components/ui/button'
 import {
@@ -8,30 +10,27 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import type { Filter, IcuSidebarIoData, Vet } from '@/types/icu/chart'
-import { Menu } from 'lucide-react'
+import type { IcuSidebarPatient } from '@/lib/services/icu/icu-layout'
+import type { Vet } from '@/types'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
+import { MenuIcon } from 'lucide-react'
 import { useState } from 'react'
 
+type Props = {
+  icuSidebarPatients: IcuSidebarPatient[]
+  vetList: Vet[]
+  targetDate: string
+  hosId: string
+}
+
 export function MobileIcuSidebarSheet({
-  hosGroupList,
-  vetsListData,
-  filteredData,
-  isEmpty,
-  setFilters,
-  filters,
-}: {
-  hosGroupList: string[]
-  vetsListData: Vet[]
-  filteredData: {
-    filteredIcuIoData: IcuSidebarIoData[]
-    excludedIcuIoData: IcuSidebarIoData[]
-    filteredIoPatientCount: number
-  }
-  isEmpty: boolean
-  setFilters: React.Dispatch<React.SetStateAction<Filter>>
-  filters: Filter
-}) {
+  icuSidebarPatients,
+  vetList,
+  targetDate,
+  hosId,
+}: Props) {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
+
   const handleCloseMobileDrawer = () => setIsSheetOpen(false)
 
   return (
@@ -42,23 +41,24 @@ export function MobileIcuSidebarSheet({
             className="fixed top-0 z-40 h-12 w-12 rounded-none"
             size="icon"
           >
-            <Menu size={24} />
+            <MenuIcon size={24} />
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="p-4">
-          <SheetHeader>
-            <SheetTitle />
-            <SheetDescription />
-          </SheetHeader>
+
+        <SheetContent side="left" className="px-0 py-2" noCloseButton>
+          <VisuallyHidden>
+            <SheetHeader>
+              <SheetTitle />
+              <SheetDescription />
+            </SheetHeader>
+          </VisuallyHidden>
 
           <MobileSidebar
-            filteredData={filteredData}
-            filters={filters}
-            hosGroupList={hosGroupList}
-            isEmpty={isEmpty}
-            setFilters={setFilters}
-            vetsListData={vetsListData}
+            targetDate={targetDate}
+            icuSidebarPatients={icuSidebarPatients}
             handleCloseMobileDrawer={handleCloseMobileDrawer}
+            vetList={vetList}
+            hosId={hosId}
           />
         </SheetContent>
       </Sheet>

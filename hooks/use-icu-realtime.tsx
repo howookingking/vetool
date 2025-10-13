@@ -5,22 +5,24 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 
 export function useIcuRealtime(hosId: string) {
-  const [isRealtimeReady, setIsRealtimeReady] = useState(false)
   const supabase = createClient()
-  const subscriptionRef = useRef<RealtimeChannel | null>(null)
+
   const { refresh } = useRouter()
 
-  const debouncedRefresh = useDebouncedCallback(() => {
-    console.log('Debouced refresh')
-    refresh()
-  }, 500)
+  const [isRealtimeReady, setIsRealtimeReady] = useState(false)
+  const subscriptionRef = useRef<RealtimeChannel | null>(null)
+
+  const debouncedRefresh = useDebouncedCallback(refresh, 500)
 
   const handleChange = useCallback(
     (payload: any) => {
-      if (payload.table === 'icu_io') {
-        refresh()
-      }
+      if (!payload?.table || !payload?.eventType) return
+
+      // legacy : 이걸 왜 했는지 기억이 안남. io변경시 왜 두번의 refesh를 했었지?
+      // if (payload.table === 'icu_io') {
       debouncedRefresh()
+      // }
+      // refresh()
 
       console.log(
         `%c${payload.table} ${payload.eventType}`,
@@ -71,23 +73,19 @@ export function useIcuRealtime(hosId: string) {
     subscriptionRef.current = channel.subscribe((status) => {
       if (status === 'SUBSCRIBED') {
         console.log('Subscribed to all tables')
-        setTimeout(() => {
-          setIsRealtimeReady(true)
-        }, 1000)
+        setIsRealtimeReady(true)
       } else {
         console.log('Subscription failed with status:', status)
-        // setIsSubscriptionReady(false)
         setIsRealtimeReady(false)
       }
     })
   }, [hosId, handleChange])
 
-  const unsubscribe = useCallback(() => {
+  const unsubscribe = useCallback(async () => {
     if (subscriptionRef.current) {
       console.log('Unsubscribing from channel...')
-      supabase.removeChannel(subscriptionRef.current)
+      await supabase.removeChannel(subscriptionRef.current)
       subscriptionRef.current = null
-      // setIsSubscriptionReady(false)
       setIsRealtimeReady(false)
     }
   }, [])
@@ -104,14 +102,13 @@ export function useIcuRealtime(hosId: string) {
 
   useEffect(() => {
     console.log('initial subscription')
-    subscribeToChannel()
-
     document.addEventListener('visibilitychange', handleVisibilityChange)
+    subscribeToChannel()
 
     return () => {
       console.log('Cleanup: unsubscribing and removing event listener...')
-      unsubscribe()
       document.removeEventListener('visibilitychange', handleVisibilityChange)
+      unsubscribe()
     }
   }, [handleVisibilityChange, subscribeToChannel, unsubscribe])
 

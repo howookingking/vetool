@@ -14,13 +14,13 @@ import type { Json } from '@/lib/supabase/database.types'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { IcuChartsInCharge } from '@/types/adimin'
 import type { MainAndSubVet } from '@/types/icu/chart'
-import { Stethoscope } from 'lucide-react'
+import { StethoscopeIcon } from 'lucide-react'
 import { useState } from 'react'
 import VetName from './vet-name'
 import VetsUpdateFormDynamic from './vets-update-form-dynamic'
 
 type Props = {
-  mainVet: MainAndSubVet
+  mainVet: MainAndSubVet | null
   subVet: MainAndSubVet | null
   icuChartId: string
   inCharge: Json | null
@@ -30,7 +30,7 @@ export default function Vets({ mainVet, subVet, icuChartId, inCharge }: Props) {
   const { today } = (inCharge as IcuChartsInCharge) || {}
 
   const {
-    basicHosData: { vetsListData, isInChargeSystem },
+    basicHosData: { vetList, isInChargeSystem },
   } = useBasicHosDataContext()
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -42,10 +42,10 @@ export default function Vets({ mainVet, subVet, icuChartId, inCharge }: Props) {
           variant="outline"
           className="flex w-full items-center justify-start gap-2 px-2"
         >
-          <Stethoscope size={16} className="text-muted-foreground" />
+          <StethoscopeIcon size={16} className="text-muted-foreground" />
 
           <div className="flex items-center gap-2 overflow-hidden">
-            <VetName label="주치의" name={mainVet.name} />
+            <VetName label="주치의" name={mainVet?.name ?? '미선택'} />
 
             <Separator orientation="vertical" className="h-4" />
 
@@ -80,7 +80,7 @@ export default function Vets({ mainVet, subVet, icuChartId, inCharge }: Props) {
           setIsDialogOpen={setIsDialogOpen}
           mainVet={mainVet}
           subVet={subVet}
-          vetsList={vetsListData}
+          vetsList={vetList}
           icuChartId={icuChartId}
           inCharge={inCharge}
           isInChargeSystem={isInChargeSystem}

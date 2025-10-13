@@ -1,5 +1,3 @@
-'use no memo'
-
 import CommonDialogFooter from '@/components/common/common-dialog-footer'
 import {
   Form,
@@ -21,7 +19,7 @@ import { cpcrEtTubeSchema } from '@/lib/schemas/icu/chart/chart-info-schema'
 import { updateCpcrEtTube } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { type Dispatch, type SetStateAction, useRef, useState } from 'react'
+import { type Dispatch, type SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
@@ -103,9 +101,9 @@ export default function CpcrEtTubeUpdateForm({
                 </FormControl>
                 <SelectContent>
                   <SelectGroup>
+                    <SelectItem value="미지정">미지정</SelectItem>
                     <SelectItem value="CPCR">CPCR</SelectItem>
                     <SelectItem value="DNR">DNR</SelectItem>
-                    <SelectItem value="미지정">미지정</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>

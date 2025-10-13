@@ -1,5 +1,5 @@
 import { getHosDiets, getPinnedDiets } from '@/lib/services/admin/diet'
-import { getHosName } from '@/lib/services/hospital-home/get-hos-name'
+import { fetchHosName } from '@/lib/services/hospital-home/home'
 import DietDataTables from '@/unused/diet/diet-data-tables'
 
 export default async function AdminFoodSettingsPage(props: {
@@ -8,7 +8,7 @@ export default async function AdminFoodSettingsPage(props: {
   const params = await props.params
   const dietsData = await getHosDiets(params.hos_id)
   const pinnedDiets = await getPinnedDiets(params.hos_id)
-  const hosName = await getHosName(params.hos_id)
+  const hosName = await fetchHosName(params.hos_id)
 
   return (
     <DietDataTables

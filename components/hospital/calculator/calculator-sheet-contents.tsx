@@ -38,10 +38,12 @@ export default function CalculatorSheetContent({
         <SheetTitle />
         <SheetDescription />
       </VisuallyHidden>
+
       <CalculatorSidebar
         selectedCalculator={selectedCalculator}
         setSelectedCalculator={setSelectedCalculator}
       />
+
       {isCalculatorEnabled ? (
         <div className="flex h-full w-full flex-col justify-between gap-2 p-3">
           <SelectedCalculators

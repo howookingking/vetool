@@ -2,7 +2,6 @@
 'use no memo'
 
 import HelperTooltip from '@/components/common/helper-tooltip'
-import BirthDatePicker from '@/components/common/patients/form/birth-date-picker'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -41,6 +40,7 @@ import {
   SEX,
 } from '@/constants/hospital/register/breed'
 import { registerPatientFormSchema } from '@/lib/schemas/patient/patient-schema'
+import { registerIcu } from '@/lib/services/icu/register-icu'
 import {
   insertPatient,
   isHosPatientIdDuplicated,
@@ -51,14 +51,18 @@ import { cn } from '@/lib/utils/utils'
 import type { Patient } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
-import { CheckIcon, ChevronDownIcon, LoaderCircleIcon } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { ChevronDownIcon, MessageCircleIcon } from 'lucide-react'
+import { useParams, useRouter } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import { type DebouncedState, useDebouncedCallback } from 'use-debounce'
+import type { DebouncedState } from 'use-debounce'
 import * as z from 'zod'
-import type { RegisteringPatient } from '../../../hospital/icu/sidebar/register-dialog/register-dialog'
+import NoResultSquirrel from '../../no-result-squirrel'
+import RequiredFieldDot from '../../requied-field-dot'
+import SubmitButton from '../../submit-button'
+import BirthDatePicker from './birth-date-picker'
+import InputSuffix from '../../input-suffix'
 
 type BaseProps = {
   hosId: string
@@ -104,8 +108,6 @@ type RegisterFromIcuRoute = BaseProps & {
   setIsPatientUpdateDialogOpen?: null
   icuChartId?: null
   setIsEdited?: Dispatch<SetStateAction<boolean>>
-  registeringPatient: RegisteringPatient
-  setRegisteringPatient: Dispatch<SetStateAction<RegisteringPatient | null>>
   debouncedSearch: null
 }
 
@@ -133,25 +135,21 @@ export default function PatientForm({
   hosId,
   mode,
   setIsPatientRegisterDialogOpen,
-  setIsConfirmDialogOpen,
   editingPatient,
   weight,
   weightMeasuredDate,
   setIsPatientUpdateDialogOpen,
   icuChartId,
-  registeringPatient,
-  setRegisteringPatient,
   debouncedSearch,
 }: Props) {
   const isEdit =
     mode === 'updateFromPatientRoute' || mode === 'updateFromIcuRoute'
-  const isRegisterFromIcuRoute = mode === 'registerFromIcuRoute'
 
-  const { refresh } = useRouter()
+  const { refresh, push } = useRouter()
+  const { target_date } = useParams()
 
   const [breedOpen, setBreedOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isDuplicatedId, setIsDuplicatedId] = useState(false)
 
   let defaultBreed: string
 
@@ -172,16 +170,13 @@ export default function PatientForm({
     resolver: zodResolver(
       registerPatientFormSchema.refine(
         async (data) => {
-          // 중복 확인을 비동기로 처리
+          // 수정인 경우 기존 환자 번호와 동일하면 통과
           if (
             isEdit &&
             data.hos_patient_id === editingPatient?.hos_patient_id
           ) {
-            // 편집 모드일 때, 기존 환자 번호와 동일하면 통과
             return true
           }
-
-          // 중복 여부 확인
           const isDuplicate = await isHosPatientIdDuplicated(
             data.hos_patient_id,
             hosId,
@@ -199,7 +194,7 @@ export default function PatientForm({
           name: editingPatient?.name,
           hos_patient_id: editingPatient?.hos_patient_id,
           species: editingPatient?.species,
-          breed: defaultBreed!,
+          breed: editingPatient?.breed!,
           gender: editingPatient?.gender,
           birth: new Date(editingPatient?.birth!),
           microchip_no: editingPatient?.microchip_no ?? '',
@@ -225,7 +220,6 @@ export default function PatientForm({
         },
   })
 
-  const watchHosPatientId = form.watch('hos_patient_id')
   const watchSpecies = form.watch('species')
   const watchBreed = form.watch('breed')
   const BREEDS = watchSpecies === 'canine' ? CANINE_BREEDS : FELINE_BREEDS
@@ -240,9 +234,6 @@ export default function PatientForm({
   const handleRegister = async (
     values: z.infer<typeof registerPatientFormSchema>,
   ) => {
-    // 0. 환자 번호 중복 확인
-    if (isDuplicatedId) return
-
     setIsSubmitting(true)
 
     const {
@@ -259,7 +250,6 @@ export default function PatientForm({
       weight,
     } = values
 
-    // 1. 환자 등록
     const patientId = await insertPatient(
       {
         birth: format(birth, 'yyyy-MM-dd'),
@@ -277,41 +267,37 @@ export default function PatientForm({
       hosId,
     )
 
-    toast.success('환자가 등록되었습니다')
-
-    // 2. 환자 등록 완료 및 다음 스텝
-    if (!isRegisterFromIcuRoute) {
-      setIsPatientRegisterDialogOpen!(false)
-
-      refresh()
-    } else {
-      setIsConfirmDialogOpen!(true)
-
-      setRegisteringPatient({
+    // icu에서 등록했다면 그냥 바로 입원시키고 route 등록환자로 전환
+    if (mode === 'registerFromIcuRoute') {
+      await registerIcu(
+        hosId,
         patientId,
-        birth: format(values.birth, 'yyyy-MM-dd'),
-        patientName: values.name,
-        hosPatientId: values.hos_patient_id,
-        species: values.species,
-        breed: values.breed,
-        gender: values.gender,
-        microchipNo: values.microchip_no,
-        memo: values.memo,
-        weight: values.weight,
-        ownerName: values.owner_name,
-        ownerId: values.hos_owner_id,
-      })
-    }
+        birth.toString(),
+        target_date as string,
+      )
 
+      push(`/hospital/${hosId}/icu/${target_date}/chart/${patientId}`)
+
+      setIsSubmitting(false)
+
+      setIsPatientRegisterDialogOpen(false)
+
+      toast.success('신규 환자 등록 및 입원 완료')
+
+      return
+    }
     setIsSubmitting(false)
+
+    setIsPatientRegisterDialogOpen!(false)
+
+    refresh()
+
+    toast.success('환자를 등록했습니다')
   }
 
   const handleUpdate = async (
     values: z.infer<typeof registerPatientFormSchema>,
   ) => {
-    if (isDuplicatedId) {
-      return
-    }
     const {
       birth,
       breed,
@@ -392,12 +378,12 @@ export default function PatientForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel htmlFor="name">
-                환자 이름 <span className="text-destructive">*</span>
+                환자 이름 <RequiredFieldDot />
               </FormLabel>
               <FormControl>
                 <Input
                   {...field}
-                  className="h-8 text-sm"
+                  className="h-8"
                   autoComplete="off"
                   id="name"
                 />
@@ -414,16 +400,16 @@ export default function PatientForm({
             <FormItem className="flex flex-col justify-end">
               <div className="flex items-center gap-2">
                 <FormLabel>
-                  환자 번호 <span className="text-destructive">*</span>
+                  환자 번호 <RequiredFieldDot />
                 </FormLabel>
-                <HelperTooltip>메인차트에 등록되어있는 환자번호</HelperTooltip>
+                <HelperTooltip side="right">메인차트 환자번호</HelperTooltip>
               </div>
               <FormControl>
                 <Input
                   {...field}
                   value={field.value || ''}
                   onChange={field.onChange}
-                  className="h-8 text-sm"
+                  className="h-8"
                 />
               </FormControl>
 
@@ -438,7 +424,7 @@ export default function PatientForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                종 <span className="text-destructive">*</span>
+                종 <RequiredFieldDot />
               </FormLabel>
               <Select
                 onValueChange={(value) => {
@@ -451,7 +437,7 @@ export default function PatientForm({
                 <FormControl>
                   <SelectTrigger
                     className={cn(
-                      'h-8 text-sm',
+                      'h-8',
                       !field.value && 'text-muted-foreground',
                     )}
                   >
@@ -477,9 +463,19 @@ export default function PatientForm({
           name="breed"
           render={({ field }) => (
             <FormItem className="flex flex-col justify-end">
-              <FormLabel>
-                품종 <span className="text-destructive">*</span>
-              </FormLabel>
+              <div className="flex items-center gap-2">
+                <FormLabel>
+                  품종
+                  <RequiredFieldDot />
+                </FormLabel>
+                <HelperTooltip side="right">
+                  <div className="flex items-center">
+                    품종이 없을 경우 &apos;기타종&apos;으로 등록 후 피드백
+                    <MessageCircleIcon size={12} className="mx-1" />
+                    부탁드립니다
+                  </div>
+                </HelperTooltip>
+              </div>
               <Popover open={breedOpen} onOpenChange={setBreedOpen} modal>
                 <PopoverTrigger asChild disabled={!watchSpecies}>
                   <FormControl>
@@ -487,18 +483,16 @@ export default function PatientForm({
                       variant="outline"
                       role="combobox"
                       className={cn(
-                        'relative h-8 w-full justify-start overflow-hidden border border-input bg-inherit px-3 text-sm font-normal',
+                        'relative h-8 w-full justify-start pl-3 font-normal',
                         !field.value && 'text-muted-foreground',
                       )}
                     >
-                      <span className="block overflow-hidden text-ellipsis whitespace-nowrap pr-6">
-                        {field.value
-                          ? `${field.value.split('#')[1]} (${field.value.split('#')[0]})`
-                          : watchSpecies
-                            ? '품종을 선택해주세요'
-                            : '종을 먼저 선택해주세요'}
-                      </span>
-                      <ChevronDownIcon className="absolute right-3 h-4 w-4 shrink-0 opacity-50" />
+                      {field.value
+                        ? `${field.value.split('#')[0]}`
+                        : watchSpecies
+                          ? '품종 선택'
+                          : '종 선택'}
+                      <ChevronDownIcon className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground" />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
@@ -508,7 +502,7 @@ export default function PatientForm({
                   align="start"
                   side="bottom"
                 >
-                  <Command className="w-full">
+                  <Command>
                     <CommandInput
                       placeholder="품종 검색"
                       className="h-8 text-xs"
@@ -516,7 +510,14 @@ export default function PatientForm({
                     />
                     <CommandList>
                       <ScrollArea className="h-64">
-                        <CommandEmpty>해당 품종 검색 결과 없음.</CommandEmpty>
+                        <CommandEmpty>
+                          <NoResultSquirrel
+                            text="품종 검색 결과 없음"
+                            size="sm"
+                            className="flex-col pt-16 text-muted-foreground"
+                          />
+                        </CommandEmpty>
+
                         <CommandGroup>
                           {BREEDS.map((breed) => (
                             <CommandItem
@@ -526,14 +527,6 @@ export default function PatientForm({
                               className="text-xs"
                             >
                               {`${breed.kor} (${breed.eng})`}
-                              {/* <CheckIcon
-                                className={cn(
-                                  'ml-auto h-4 w-4',
-                                  breed.eng === field.value.split('#')[0]
-                                    ? 'opacity-100'
-                                    : 'opacity-0',
-                                )}
-                              /> */}
                             </CommandItem>
                           ))}
                         </CommandGroup>
@@ -553,7 +546,7 @@ export default function PatientForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                성별 <span className="text-destructive">*</span>
+                성별 <RequiredFieldDot />
               </FormLabel>
               <Select
                 onValueChange={field.onChange}
@@ -563,13 +556,14 @@ export default function PatientForm({
                 <FormControl>
                   <SelectTrigger
                     className={cn(
-                      'h-8 text-sm',
+                      'h-8',
                       !field.value && 'text-muted-foreground',
                     )}
                   >
-                    <SelectValue placeholder="성별을 선택해주세요" />
+                    <SelectValue placeholder="성별 선택" />
                   </SelectTrigger>
                 </FormControl>
+
                 <SelectContent>
                   {SEX.map((sex) => (
                     <SelectItem
@@ -590,11 +584,7 @@ export default function PatientForm({
 
         <BirthDatePicker
           form={form}
-          birth={
-            isEdit
-              ? new Date(editingPatient?.birth!)
-              : new Date(registeringPatient?.birth ?? new Date())
-          }
+          birth={isEdit ? new Date(editingPatient?.birth) : new Date()}
         />
 
         <FormField
@@ -604,9 +594,8 @@ export default function PatientForm({
             <FormItem>
               <FormLabel>마이크로칩 번호</FormLabel>
               <FormControl>
-                <Input {...field} className="h-8 text-sm" />
+                <Input {...field} className="h-8" />
               </FormControl>
-
               <FormMessage />
             </FormItem>
           )}
@@ -618,16 +607,19 @@ export default function PatientForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                몸무게{' '}
-                <span className="text-xs text-muted-foreground">
-                  {weightMeasuredDate ? `(${weightMeasuredDate} 측정)` : ''}
-                </span>
+                몸무게
+                {weightMeasuredDate && (
+                  <span className="ml-0.5 text-xs text-muted-foreground">
+                    ({weightMeasuredDate} 측정)
+                  </span>
+                )}
               </FormLabel>
-              <div className="relative flex">
+
+              <div className="relative">
                 <FormControl>
                   <Input {...field} className="h-8 text-sm" />
                 </FormControl>
-                <span className="absolute right-2 top-2 text-xs">kg</span>
+                <InputSuffix text="kg" />
               </div>
 
               <FormMessage />
@@ -642,9 +634,8 @@ export default function PatientForm({
             <FormItem>
               <FormLabel>보호자 이름</FormLabel>
               <FormControl>
-                <Input {...field} className="h-8 text-sm" />
+                <Input {...field} className="h-8" />
               </FormControl>
-
               <FormMessage />
             </FormItem>
           )}
@@ -657,9 +648,8 @@ export default function PatientForm({
             <FormItem>
               <FormLabel>보호자 번호</FormLabel>
               <FormControl>
-                <Input {...field} className="h-8 text-sm" />
+                <Input {...field} className="h-8" />
               </FormControl>
-
               <FormMessage />
             </FormItem>
           )}
@@ -682,29 +672,6 @@ export default function PatientForm({
         </div>
 
         <div className="col-span-2 flex items-center justify-end gap-2">
-          {/* <FormField
-            control={form.control}
-            name="is_alive"
-            render={({ field }) => (
-              <FormItem>
-                <div
-                  className={cn(
-                    isEdit ? 'flex items-center gap-2 text-sm' : 'hidden',
-                  )}
-                >
-                  <span>사망</span>
-                  <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <span>생존</span>
-                </div>
-              </FormItem>
-            )}
-          /> */}
-
           <div className="space-x-2">
             <Button
               tabIndex={-1}
@@ -717,15 +684,13 @@ export default function PatientForm({
                   : setIsPatientRegisterDialogOpen!(false)
               }}
             >
-              {isEdit ? '취소' : '닫기'}
+              닫기
             </Button>
 
-            <Button type="submit" disabled={isSubmitting}>
-              {isEdit ? '수정' : '등록'}
-              <LoaderCircleIcon
-                className={cn(isSubmitting ? 'ml-2 animate-spin' : 'hidden')}
-              />
-            </Button>
+            <SubmitButton
+              buttonText={isEdit ? '수정' : '등록'}
+              isPending={isSubmitting}
+            />
           </div>
         </div>
       </form>

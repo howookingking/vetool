@@ -40,12 +40,12 @@ export default function PastePrevIoChartDialog({
   const { patient_id, target_date } = useParams()
 
   const {
-    basicHosData: { vetsListData, showOrderer },
+    basicHosData: { vetList, showOrderer },
   } = useBasicHosDataContext()
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [orderer, setOrderer] = useState(vetsListData[0].name)
+  const [orderer, setOrderer] = useState(vetList[0].name)
 
   const handleCopyPrevIoChart = async () => {
     setIsLoading(true)
@@ -99,7 +99,7 @@ export default function PastePrevIoChartDialog({
                   <SelectValue placeholder="수의사를 선택해주세요" />
                 </SelectTrigger>
                 <SelectContent>
-                  {vetsListData.map((vet) => (
+                  {vetList.map((vet) => (
                     <SelectItem
                       key={vet.user_id}
                       value={vet.name}

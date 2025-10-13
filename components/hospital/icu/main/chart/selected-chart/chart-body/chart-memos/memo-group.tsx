@@ -211,7 +211,11 @@ export default function MemoGroup({
           disabled={isUpdating || isMemoNameSetting}
         >
           {sortedMemos.length === 0 ? (
-            <NoResultSquirrel text="메모 없음" size="sm" className="h-52" />
+            <NoResultSquirrel
+              text="메모 없음"
+              size="sm"
+              className="h-52 flex-col font-normal text-muted-foreground"
+            />
           ) : (
             sortedMemos.map((memo, index) => (
               <SingleMemo

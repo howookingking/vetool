@@ -9,7 +9,7 @@ export default function OrdererSelecteStepSample({
   showOrdererInput: boolean
 }) {
   const {
-    basicHosData: { vetsListData },
+    basicHosData: { vetList },
   } = useBasicHosDataContext()
 
   return (
@@ -24,7 +24,7 @@ export default function OrdererSelecteStepSample({
         <OrdererSelectStep
           icuChartId=""
           orders={[]}
-          mainVetName={vetsListData[0].name}
+          mainVetName={vetList[0].name}
           isSetting
         />
       </Dialog>

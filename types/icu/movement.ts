@@ -1,5 +1,4 @@
-import { IcuOut, IcuVisit, Patient } from '@/types'
-import { Vet } from './chart'
+import type { IcuOut, IcuVisit, Patient, Vet } from '@/types'
 
 export type OutDuePatientsData = IcuOut & {
   hos_id: string

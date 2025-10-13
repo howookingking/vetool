@@ -2,9 +2,9 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils/utils'
 import { format } from 'date-fns'
 import { usePathname, useRouter } from 'next/navigation'
-import { Dispatch, SetStateAction } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 
-type MobileSidebarItemProps = {
+type Props = {
   name: string
   path: string
   icon: JSX.Element
@@ -22,7 +22,7 @@ export default function MobileSidebarItem({
   name,
   path,
   isReady,
-}: MobileSidebarItemProps) {
+}: Props) {
   const { push } = useRouter()
   const pathname = usePathname()
 
