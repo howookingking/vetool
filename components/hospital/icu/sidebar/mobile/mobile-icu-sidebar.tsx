@@ -12,6 +12,7 @@ type Props = {
   icuSidebarPatients: IcuSidebarPatient[]
   vetList: Vet[]
   targetDate: string
+  hosId: string
 }
 
 export default function MobileSidebar({
@@ -19,6 +20,7 @@ export default function MobileSidebar({
   icuSidebarPatients,
   vetList,
   targetDate,
+  hosId,
 }: Props) {
   // 모바일에서는 필터기능 필요없음
   const filteredData = filterPatients(
@@ -45,6 +47,8 @@ export default function MobileSidebar({
             filteredData={filteredData}
             handleCloseMobileDrawer={handleCloseMobileDrawer}
             vetList={vetList}
+            hosId={hosId}
+            targetDate={targetDate}
           />
         </div>
       )}

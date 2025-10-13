@@ -20,12 +20,14 @@ type Props = {
   icuSidebarPatients: IcuSidebarPatient[]
   vetList: Vet[]
   targetDate: string
+  hosId: string
 }
 
 export function MobileIcuSidebarSheet({
   icuSidebarPatients,
   vetList,
   targetDate,
+  hosId,
 }: Props) {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
 
@@ -56,6 +58,7 @@ export function MobileIcuSidebarSheet({
             icuSidebarPatients={icuSidebarPatients}
             handleCloseMobileDrawer={handleCloseMobileDrawer}
             vetList={vetList}
+            hosId={hosId}
           />
         </SheetContent>
       </Sheet>

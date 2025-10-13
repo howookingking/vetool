@@ -37,6 +37,7 @@ export default function IcuSidebar({
         // 2. 전역에 vetList가 있으니깐 여기에서 lookup하는 방법
         // 하루 입원환자가 50마리 이상, 수의사 수 20명 초과 할 경우 서버에서 1번이 효율적임 이하의 경우 2번이 효율적
         vetList={vetList}
+        hosId={hosId}
       />
     </>
   )
