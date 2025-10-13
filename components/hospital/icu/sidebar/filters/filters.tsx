@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
 import type { Vet } from '@/types'
 import { RotateCcwIcon } from 'lucide-react'
 import GroupFilter from './group-filter'
@@ -19,7 +20,7 @@ export default function Filters({
   setFilters,
 }: Props) {
   return (
-    <div className="flex w-full">
+    <ButtonGroup className="flex w-full">
       <GroupFilter
         hosGroupList={hosGroupList}
         filters={filters}
@@ -32,12 +33,12 @@ export default function Filters({
 
       <Button
         variant="outline"
-        className="flex-1 rounded-l-none border-l-0 px-2 focus-visible:ring-0"
+        className="flex-1 px-2 focus-visible:ring-0"
         onClick={() => setFilters(DEFAULT_FILTER_STATE)}
       >
         <RotateCcwIcon />
       </Button>
-    </div>
+    </ButtonGroup>
   )
 }
 
