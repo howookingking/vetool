@@ -1,37 +1,44 @@
+import SpeciesToIcon from '@/components/common/species-to-icon'
 import { Button } from '@/components/ui/button'
 import type { IcuSidebarPatient } from '@/lib/services/icu/icu-layout'
 import { cn, convertPascalCased } from '@/lib/utils/utils'
 import type { Vet } from '@/types'
-import { CatIcon, DogIcon, StethoscopeIcon, UserIcon } from 'lucide-react'
+import type { Species } from '@/types/hospital/calculator'
+import { StethoscopeIcon, UserIcon } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import UrgencyStarts from './urgency-stars'
 
 type Props = {
   icuIoData: IcuSidebarPatient
   vetList: Vet[]
+  hosId: string
+  targetDate: string
 }
 
-export default function PatientButton({ icuIoData, vetList }: Props) {
+export default function PatientButton({
+  icuIoData,
+  vetList,
+  hosId,
+  targetDate,
+}: Props) {
   const { vets, patient, urgency } = icuIoData
 
   const { push } = useRouter()
-  const { hos_id, target_date, patient_id } = useParams()
+  const { patient_id } = useParams()
 
-  const SpeciesIcon = patient.species === 'canine' ? DogIcon : CatIcon
   const vetName = vetList.find((vet) => vet.user_id === vets?.main_vet)?.name
 
-  const handlePatientButtonClick = () => {
-    push(`/hospital/${hos_id}/icu/${target_date}/chart/${patient.patient_id}`)
-  }
-
   const selectedPatient = patient.patient_id === patient_id
+
+  const handlePatientButtonClick = () =>
+    push(`/hospital/${hosId}/icu/${targetDate}/chart/${patient.patient_id}`)
 
   return (
     <Button
       variant="outline"
       size="sm"
       className={cn(
-        'relative w-full py-7',
+        'relative w-full px-2 py-7 text-xs',
         selectedPatient && 'border border-black bg-muted shadow-md',
       )}
       onClick={handlePatientButtonClick}
@@ -40,31 +47,29 @@ export default function PatientButton({ icuIoData, vetList }: Props) {
 
       <div
         className={cn(
-          'flex w-full flex-col justify-between',
+          'flex w-full flex-col justify-between gap-1',
           icuIoData.out_date && 'text-muted-foreground',
         )}
       >
-        <div className="mb-1 flex justify-between gap-2">
-          <span className="flex items-center gap-1 text-sm">
-            <SpeciesIcon />
+        <div className="flex items-end justify-between gap-2">
+          <div className="flex items-center gap-1 text-sm">
+            <SpeciesToIcon species={patient.species as Species} size={16} />
             {patient.name}
-          </span>
-
-          <span className="max-w-[96px] truncate text-xs leading-5">
+          </div>
+          <div className="max-w-[96px] truncate">
             {convertPascalCased(patient.breed)}
-          </span>
+          </div>
         </div>
 
         <div className="flex justify-between gap-2">
-          <span className="text- ml-[2px] flex items-center gap-1 text-xs">
+          <div className="ml-0.5 flex items-center gap-0.5">
             <StethoscopeIcon style={{ width: 12, height: 12 }} />
             {vetName ?? '미지정'}
-          </span>
-
-          <span className="flex items-center gap-1 truncate text-xs">
+          </div>
+          <div className="flex items-center gap-0.5 truncate">
             <UserIcon style={{ width: 12, height: 12 }} />
-            <span className="truncate">{patient.owner_name || '미지정'}</span>
-          </span>
+            <div className="truncate">{patient.owner_name || '미지정'}</div>
+          </div>
         </div>
       </div>
     </Button>
