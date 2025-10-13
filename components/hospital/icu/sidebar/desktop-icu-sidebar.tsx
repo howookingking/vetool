@@ -74,6 +74,8 @@ export default function DesktopIcuSidebar({
             filteredData={filteredData}
             vetList={vetList}
             handleCloseMobileDrawer={handleCloseMobileDrawer}
+            hosId={hosId}
+            targetDate={targetDate}
           />
         </>
       )}

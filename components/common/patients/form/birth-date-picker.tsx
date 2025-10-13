@@ -34,17 +34,20 @@ export default function BirthDatePicker({ form, birth }: Props) {
 
   const isDatePick = useRef(true)
 
-  const updateBirthDate = (date: Date) => {
-    form.setValue('birth', date)
-    setDateInput(format(date, 'yyyy-MM-dd'))
+  const updateBirthDate = useCallback(
+    (date: Date) => {
+      form.setValue('birth', date)
+      setDateInput(format(date, 'yyyy-MM-dd'))
 
-    const now = new Date()
-    const years = differenceInYears(now, date)
-    const months = differenceInMonths(now, date) % 12
+      const now = new Date()
+      const years = differenceInYears(now, date)
+      const months = differenceInMonths(now, date) % 12
 
-    setYearInput(years > 0 ? years.toString() : '')
-    setMonthInput(months > 0 ? months.toString() : '')
-  }
+      setYearInput(years > 0 ? years.toString() : '')
+      setMonthInput(months > 0 ? months.toString() : '')
+    },
+    [form],
+  )
 
   useEffect(() => {
     if (birth) updateBirthDate(birth)

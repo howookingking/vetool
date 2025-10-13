@@ -41,6 +41,7 @@ export default function MobileSidebar({
       ) : (
         <div className="h-[calc(100vh-40px)] overflow-y-auto p-2">
           <PatientList
+            filters={DEFAULT_FILTER_STATE}
             filteredData={filteredData}
             handleCloseMobileDrawer={handleCloseMobileDrawer}
             vetList={vetList}

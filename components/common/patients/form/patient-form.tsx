@@ -470,7 +470,7 @@ export default function PatientForm({
                 </FormLabel>
                 <HelperTooltip side="right">
                   <div className="flex items-center">
-                    품종이 없을 경우 '기타종'으로 등록 후 피드백
+                    품종이 없을 경우 &apos;기타종&apos;으로 등록 후 피드백
                     <MessageCircleIcon size={12} className="mx-1" />
                     부탁드립니다
                   </div>

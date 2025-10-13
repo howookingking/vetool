@@ -9,6 +9,8 @@ type Props = {
   filteredData: FilteredData
   handleCloseMobileDrawer?: () => void
   vetList: Vet[]
+  hosId: string
+  targetDate: string
 }
 
 export default function PatientList({
@@ -16,6 +18,8 @@ export default function PatientList({
   filteredData,
   handleCloseMobileDrawer,
   vetList,
+  hosId,
+  targetDate,
 }: Props) {
   const isFilterSelected = filters.selectedGroup || filters.selectedVet
   const { filteredIcuIoData, excludedIcuIoData, outIcuIoData } = filteredData
@@ -44,7 +48,12 @@ export default function PatientList({
               className="w-full last:mb-2"
               onClick={handleCloseMobileDrawer}
             >
-              <PatientButton icuIoData={icuIoData} vetList={vetList} />
+              <PatientButton
+                icuIoData={icuIoData}
+                vetList={vetList}
+                hosId={hosId}
+                targetDate={targetDate}
+              />
             </li>
           ))}
         </ul>
@@ -62,7 +71,12 @@ export default function PatientList({
                 className="w-full last:mb-2"
                 onClick={handleCloseMobileDrawer}
               >
-                <PatientButton icuIoData={icuIoData} vetList={vetList} />
+                <PatientButton
+                  icuIoData={icuIoData}
+                  vetList={vetList}
+                  hosId={hosId}
+                  targetDate={targetDate}
+                />
               </li>
             ))}
           </ul>
@@ -83,7 +97,12 @@ export default function PatientList({
                 className="w-full last:mb-2"
                 onClick={handleCloseMobileDrawer}
               >
-                <PatientButton icuIoData={icuIoData} vetList={vetList} />
+                <PatientButton
+                  icuIoData={icuIoData}
+                  vetList={vetList}
+                  hosId={hosId}
+                  targetDate={targetDate}
+                />
               </li>
             ))}
           </ul>

@@ -28,7 +28,7 @@ export const searchedPatientsColumns = ({
       header: () => '종',
       cell: ({ row }) => {
         const species = row.original.species as Species
-        return <SpeciesToIcon species={species} />
+        return <SpeciesToIcon species={species} size={20} />
       },
     },
     {
