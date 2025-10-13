@@ -54,7 +54,7 @@ export default function ChartTableBody({
     basicHosData: {
       showOrderer,
       showTxUser,
-      vetsListData,
+      vetList,
       vitalRefRange,
       timeGuidelineData,
       orderColorsData,
@@ -81,7 +81,7 @@ export default function ChartTableBody({
       const updatedOrderTimes = currentOrder.order_times.map((time, index) =>
         order.orderTimes.includes(index)
           ? time === '0'
-            ? vetsListData[0].name
+            ? vetList[0].name
             : '0'
           : time,
       )

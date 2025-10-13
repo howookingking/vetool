@@ -6,8 +6,9 @@ export const cpcrEtTubeSchema = z.object({
 })
 
 export const groupCheckFormSchema = z.object({
-  groupList: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: '적어도 하나의 그룹을 선택해주세요',
+  groupList: z.array(z.string()).refine((value) => {
+    if (value.length === 0) return true
+    return value.some((item) => item)
   }),
 })
 

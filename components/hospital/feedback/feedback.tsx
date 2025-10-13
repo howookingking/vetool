@@ -6,30 +6,27 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { MessageCircle } from 'lucide-react'
+import { MessageCircleIcon } from 'lucide-react'
 import { useState } from 'react'
 import FeedbackForm from './feedback-form'
 
 export default function Feedback() {
-  const [isFeedbackPopoverOpen, setIsPopoverFeedbackOpen] = useState(false)
+  const [isPopverOpen, setIsPopoverOpen] = useState(false)
 
   return (
-    <Popover
-      open={isFeedbackPopoverOpen}
-      onOpenChange={setIsPopoverFeedbackOpen}
-    >
+    <Popover open={isPopverOpen} onOpenChange={setIsPopoverOpen}>
       <PopoverTrigger asChild>
         <Button
           size="icon"
           className="h-8 w-8 rounded-full shadow-lg"
           variant="outline"
         >
-          <MessageCircle />
+          <MessageCircleIcon />
         </Button>
       </PopoverTrigger>
 
       <PopoverContent className="w-80">
-        <FeedbackForm setIsPopoverFeedbackOpen={setIsPopoverFeedbackOpen} />
+        <FeedbackForm setIsPopoverOpen={setIsPopoverOpen} />
       </PopoverContent>
     </Popover>
   )

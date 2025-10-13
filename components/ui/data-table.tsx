@@ -32,6 +32,7 @@ import {
 } from '@tanstack/react-table'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
+import LargeLoaderCircle from '../common/large-loader-circle'
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[]
@@ -43,6 +44,7 @@ type DataTableProps<TData, TValue> = {
   searchBarSpace?: boolean
   children?: ReactNode
   onRowClick?: (row: TData) => void
+  isLoading?: boolean
 }
 export default function DataTable<TData, TValue>({
   columns,
@@ -54,6 +56,7 @@ export default function DataTable<TData, TValue>({
   searchBarSpace,
   children,
   onRowClick,
+  isLoading,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [globalFilter, setGlobalFilter] = useState('')
@@ -167,40 +170,55 @@ export default function DataTable<TData, TValue>({
             ))}
           </TableHeader>
 
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                  className="text-center"
-                  onClick={() => onRowClick?.(row.original)}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
+          {isLoading && (
+            <TableBody>
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
                   className="h-[320px] text-center"
                 >
-                  <NoResult title="검색 결과가 없습니다" className="h-40" />
+                  <LargeLoaderCircle />
                 </TableCell>
               </TableRow>
-            )}
-          </TableBody>
+            </TableBody>
+          )}
+
+          {!isLoading && (
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && 'selected'}
+                    className="text-center"
+                    onClick={() => onRowClick?.(row.original)}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-[320px] text-center"
+                  >
+                    <NoResult title="검색 결과가 없습니다" className="h-40" />
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          )}
         </Table>
       </div>
 
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="flex items-center justify-end space-x-2 pt-4">
         <span className="text-sm text-gray-700">
           {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
           페이지

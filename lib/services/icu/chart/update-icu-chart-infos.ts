@@ -54,7 +54,7 @@ export const updateMainSubVet = async (
   const { error } = await supabase
     .from('icu_charts')
     .update({
-      main_vet: mainVetId,
+      main_vet: mainVetId === 'null' ? null : mainVetId,
       sub_vet: subVetId === 'null' ? null : subVetId,
       in_charge: inCharge,
     })

@@ -29,11 +29,14 @@ export default function ExportDialog({
           <Share size={18} />
         </Button>
       </DialogTrigger>
+
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="gap-2">
           <DialogTitle>{chartData.patient.name} 차트 내보내기</DialogTitle>
           <DialogDescription className="flex flex-col gap-1">
-            <span>입원 기간 동안의 차트를 저장합니다</span>
+            <span className="line-through">
+              입원 기간 동안의 차트를 저장합니다(임시 비활성화)
+            </span>
             <span>
               텍스트로 복사할 경우 {chartData.target_date} 차트만 복사합니다
             </span>

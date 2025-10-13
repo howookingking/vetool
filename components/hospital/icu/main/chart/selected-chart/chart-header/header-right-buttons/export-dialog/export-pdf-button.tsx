@@ -61,7 +61,11 @@ export default function ExportPdfButton({
   }
 
   return (
-    <Button onClick={handleExportPdf} disabled={isExporting}>
+    <Button
+      onClick={handleExportPdf}
+      // disabled={isExporting}
+      disabled
+    >
       PDF 저장
       <LoaderCircle
         className={cn(isExporting ? 'ml-2 animate-spin' : 'hidden')}

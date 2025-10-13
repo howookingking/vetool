@@ -1,7 +1,7 @@
-import { IcuCharts, type IcuIo } from '@/types'
+import { IcuChart, type IcuIo } from '@/types'
 
 export type SummaryData = Pick<
-  IcuCharts,
+  IcuChart,
   | 'patient_id'
   | 'target_date'
   | 'icu_chart_id'

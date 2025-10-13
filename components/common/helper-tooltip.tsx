@@ -43,7 +43,7 @@ export default function HelperTooltip({
               : 'bg-destructive',
           )}
         >
-          <div>{children}</div>
+          {children}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

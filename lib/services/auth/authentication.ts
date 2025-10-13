@@ -6,8 +6,6 @@ import { redirect } from 'next/navigation'
 export async function googleLogin(formData: FormData) {
   const path = formData.get('path') as string
 
-  console.log(path)
-
   const supabase = await createClient()
 
   const { data, error } = await supabase.auth.signInWithOAuth({

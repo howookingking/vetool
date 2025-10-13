@@ -4,9 +4,10 @@ import { Button } from '@/components/ui/button'
 import CustomTooltip from '@/components/ui/custom-tooltip'
 import { cn } from '@/lib/utils/utils'
 import { format } from 'date-fns'
-import { useParams, usePathname, useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 type Props = {
+  hosId: string
   name: string
   path: string
   isReady: boolean
@@ -15,6 +16,7 @@ type Props = {
 }
 
 export default function DesktopSidebarItem({
+  hosId,
   name,
   path,
   isReady,
@@ -22,7 +24,6 @@ export default function DesktopSidebarItem({
   icon,
 }: Props) {
   const pathname = usePathname()
-  const { hos_id } = useParams()
   const { push } = useRouter()
 
   const isActive =
@@ -41,7 +42,7 @@ export default function DesktopSidebarItem({
         delayDuration={300}
       >
         <Button
-          onClick={() => push(`/hospital/${hos_id}/${dynamicPath}`)}
+          onClick={() => push(`/hospital/${hosId}/${dynamicPath}`)}
           className={cn(
             'h-8 w-8 bg-white',
             isActive && 'bg-primary text-white',

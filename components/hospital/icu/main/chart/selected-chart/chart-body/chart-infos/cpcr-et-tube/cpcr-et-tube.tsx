@@ -1,3 +1,5 @@
+//  TODO: CPCR 선택후 ET Tube 선택하기 불가능하는 문제
+
 'use client'
 
 import { Button } from '@/components/ui/button'
@@ -11,7 +13,7 @@ import {
 } from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils/utils'
-import { Activity } from 'lucide-react'
+import { ActivityIcon } from 'lucide-react'
 import { useState } from 'react'
 import CpcrEtTubeUpdateForm from './cpcr-et-tube-update-form'
 
@@ -31,10 +33,12 @@ export default function CpcrEtTube({ cpcrEtTube, icuIoId }: Props) {
           variant="outline"
           className="flex w-full items-center justify-start gap-2 truncate px-2"
         >
-          <Activity className="text-muted-foreground" size={16} />
+          <ActivityIcon className="text-muted-foreground" size={16} />
 
           <div className="flex items-center gap-1.5 truncate text-xs 2xl:gap-2 2xl:text-sm">
-            <span>{cpcr}</span>
+            <span className={cn(cpcr === '미지정' && 'text-muted-foreground')}>
+              {cpcr === '미지정' ? 'CPCR 여부 | ET Tube' : cpcr}
+            </span>
 
             <Separator
               orientation="vertical"
@@ -48,7 +52,7 @@ export default function CpcrEtTube({ cpcrEtTube, icuIoId }: Props) {
 
       <DialogContent className="sm:max-w-[640px]">
         <DialogHeader>
-          <DialogTitle>CPCR 여부 / ET Tube 변경</DialogTitle>
+          <DialogTitle>CPCR 여부 | ET Tube</DialogTitle>
           <DialogDescription />
         </DialogHeader>
 

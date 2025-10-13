@@ -35,11 +35,11 @@ export default function PasteCopiedChartDialog() {
 
   const { copiedChartId, reset } = useCopiedChartStore()
   const {
-    basicHosData: { vetsListData, showOrderer },
+    basicHosData: { vetList, showOrderer },
   } = useBasicHosDataContext()
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [orderer, setOrderer] = useState(vetsListData[0].name)
+  const [orderer, setOrderer] = useState(vetList[0].name)
   const [isLoading, setIsLoading] = useState(false)
 
   const handlePasteCopiedChart = async () => {
@@ -103,7 +103,7 @@ export default function PasteCopiedChartDialog() {
                   <SelectValue placeholder="수의사를 선택해주세요" />
                 </SelectTrigger>
                 <SelectContent>
-                  {vetsListData.map((vet) => (
+                  {vetList.map((vet) => (
                     <SelectItem
                       key={vet.user_id}
                       value={vet.name}
