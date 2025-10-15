@@ -35,7 +35,7 @@ export default function IcuFooter({ hosId, targetDate }: IcuFooterProps) {
       // toast.success('차트에 실시간 변경을 감지하고 있습니다')
       refresh()
     }
-  }, [isRealtimeReady])
+  }, [isRealtimeReady, refresh])
 
   return (
     <footer className="fixed bottom-0 left-0 right-0 z-40 flex h-[calc(2.5rem+env(safe-area-inset-bottom))] justify-between border-t bg-white px-1 2xl:left-10">
