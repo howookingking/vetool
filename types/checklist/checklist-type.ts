@@ -1,8 +1,10 @@
+import type { ChecklistType } from '@/constants/checklist/checklist'
+
 export type ChecklistData = {
   checklist_id: string
   hos_id: string
   patient_id: string
-  checklist_type: null | string
+  checklist_type: ChecklistType
   checklist_vet: null | ChecklistVet
   checklist_title: null | string
   checklist_tag: null | string
@@ -20,12 +22,14 @@ export type ChecklistData = {
   istxing: boolean
   enddate: null | string
 }
+
 export type ChecklistVet = {
-  attending: string
-  primary: string
-  assistance: string
-  anesthesia: string
+  main_vet: string // 담당의 user_id
+  primary: string // 집도의 user_id
+  anesthesia: string // 마취의 user_id
+  assistance: string // "김아무개"
 }
+
 export type ChecklistProtocolItem = {
   txStart?: null | number
   txEnd?: null | number
@@ -74,8 +78,6 @@ export type ChecklistPatient = {
   breed?: string | null
   hos_patient_id?: string | null
 }
-
-export type TxTypes = string[]
 
 export type CheckItem = { displayName: string; name: string; type: string }
 export type CheckNameArray = CheckItem[]

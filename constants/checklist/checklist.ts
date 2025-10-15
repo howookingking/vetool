@@ -1,12 +1,8 @@
-import { CheckNameArray, TxTypes } from '@/types/checklist/checklist-type'
+import { CheckNameArray } from '@/types/checklist/checklist-type'
 
-export const ChecklistTypes: TxTypes = [
-  '일반',
-  '응급',
-  '처치',
-  '마취',
-  '사용자',
-]
+export const CHECKLIST_TYPES = ['일반', '응급', '처치', '마취', '기타'] as const
+
+export type ChecklistType = (typeof CHECKLIST_TYPES)[number]
 
 export const checkListSetArray: CheckNameArray = [
   { displayName: 'T', name: '체온(°C)', type: 'range' },
