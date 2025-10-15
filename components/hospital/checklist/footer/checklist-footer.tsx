@@ -22,10 +22,6 @@ export default function ChecklistFooter({ hosId, targetDate }: Props) {
 
   useEffect(() => {
     if (isRealtimeReady) {
-      // toast({
-      //   title: '차트의 실시간 변경을 감지하고 있습니다',
-      //   className: 'bg-green-600 text-white',
-      // })
       refresh()
     }
   }, [isRealtimeReady, refresh])

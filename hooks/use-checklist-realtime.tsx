@@ -10,19 +10,12 @@ export function useChecklistRealtime(hosId: string) {
   const subscriptionRef = useRef<RealtimeChannel | null>(null)
   const { refresh } = useRouter()
 
-  const debouncedRefresh = useDebouncedCallback(() => {
-    console.log('Debouced refresh')
-    refresh()
-  }, 500)
+  const debouncedRefresh = useDebouncedCallback(refresh, 500)
 
   const handleChange = useCallback(
     (payload: any) => {
-      if (payload.table === 'checklist') {
-        refresh()
-      }
+      if (!payload?.table || !payload?.eventType) return
       debouncedRefresh()
-
-      console.log(`%c${payload.table} ${payload.eventType}`)
     },
     [debouncedRefresh],
   )
@@ -72,9 +65,7 @@ export function useChecklistRealtime(hosId: string) {
     subscriptionRef.current = channel.subscribe((status) => {
       if (status === 'SUBSCRIBED') {
         console.log('Subscribed to all tables')
-        setTimeout(() => {
-          setIsRealtimeReady(true)
-        }, 1000)
+        setIsRealtimeReady(true)
       } else {
         console.log('Subscription failed with status:', status)
         setIsRealtimeReady(false)
@@ -82,10 +73,10 @@ export function useChecklistRealtime(hosId: string) {
     })
   }, [hosId, handleChange])
 
-  const unsubscribe = useCallback(() => {
+  const unsubscribe = useCallback(async () => {
     if (subscriptionRef.current) {
       console.log('Unsubscribing from channel...')
-      supabase.removeChannel(subscriptionRef.current)
+      await supabase.removeChannel(subscriptionRef.current)
       subscriptionRef.current = null
       setIsRealtimeReady(false)
     }
@@ -103,14 +94,13 @@ export function useChecklistRealtime(hosId: string) {
 
   useEffect(() => {
     console.log('initial subscription')
-    subscribeToChannel()
-
     document.addEventListener('visibilitychange', handleVisibilityChange)
+    subscribeToChannel()
 
     return () => {
       console.log('Cleanup: unsubscribing and removing event listener...')
-      unsubscribe()
       document.removeEventListener('visibilitychange', handleVisibilityChange)
+      unsubscribe()
     }
   }, [handleVisibilityChange, subscribeToChannel, unsubscribe])
 
