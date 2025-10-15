@@ -3,6 +3,7 @@
 import type { Checklist } from '@/types'
 import type { ChecklistWithPatientWithWeight } from './checklist-data'
 import { createClient } from '@/lib/supabase/server'
+import { ChecklistVet } from '@/types/checklist/checklist-type'
 
 export const updateEachChecklist = async (
   predata: ChecklistWithPatientWithWeight,
@@ -64,13 +65,32 @@ export const updateClTitle = async (
   }
 }
 
-export const updateClType = async (checklistId: string, type: string) => {
+export const updateClType = async (checklistId: string, typeInput: string) => {
   const supabase = await createClient()
 
   const { error } = await supabase
     .from('checklist')
     .update({
-      checklist_type: type,
+      checklist_type: typeInput,
+    })
+    .match({ checklist_id: checklistId })
+
+  if (error) {
+    console.error('Update failed:', error.message)
+    return
+  }
+}
+
+export const updateClVet = async (
+  checklistId: string,
+  vetInput: ChecklistVet,
+) => {
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from('checklist')
+    .update({
+      checklist_vet: vetInput,
     })
     .match({ checklist_id: checklistId })
 

@@ -1,7 +1,7 @@
 import type { ChecklistWithPatientWithWeight } from '@/lib/services/checklist/checklist-data'
 import ClTitle from './cl-title'
 import ClType from './cl-type'
-import ClVets from './cl-vets'
+import ClVet from './cl-vet'
 
 export default function ClInfos({
   checklistData,
@@ -41,7 +41,7 @@ export default function ClInfos({
       </div>
 
       <div className="col-span-12">
-        <ClVets checklistId={checklist_id} checklistVet={checklist_vet!} />
+        <ClVet checklistId={checklist_id} checklistVet={checklist_vet} />
       </div>
 
       {/* <div className="col-span-4">

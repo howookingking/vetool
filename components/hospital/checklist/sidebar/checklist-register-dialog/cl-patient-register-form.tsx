@@ -569,6 +569,7 @@ export default function ClPatientRegisterForm({
               type="button"
               disabled={isSubmitting}
               variant="outline"
+              size="sm"
               onClick={() => setIsDialogOpen(false)}
             >
               닫기

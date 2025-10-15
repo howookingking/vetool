@@ -5,7 +5,7 @@ export type ChecklistData = {
   hos_id: string
   patient_id: string
   checklist_type: ChecklistType
-  checklist_vet: null | ChecklistVet
+  checklist_vet: ChecklistVet
   checklist_title: null | string
   checklist_tag: null | string
   checklist_protocol: null | ChecklistProtocol

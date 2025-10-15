@@ -90,7 +90,7 @@ export type ChecklistWithPatientWithWeight = Omit<
 } & {
   checklist_protocol: ChecklistProtocol | null
 } & {
-  checklist_vet: ChecklistVet | null
+  checklist_vet: ChecklistVet
 }
 
 export const fetchChecklistWithPatientWithWeight = async (

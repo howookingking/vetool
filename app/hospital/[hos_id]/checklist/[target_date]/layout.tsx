@@ -23,6 +23,14 @@ export default async function ChecklistPageLayout(props: {
             position: '벳툴왕',
             rank: 1,
           },
+          {
+            user_id: '890bcf84-fa23-4ad3-a4cc-8599fb310d9e',
+            name: '이정우',
+            avatar_url:
+              'https://lh3.googleusercontent.com/a/ACg8ocLG_wvw9s2wG7bh6ckY3r55N1wKwXXJ7oQ4vlLaYxegFfQVAuYOvQ=s96-c',
+            position: '나다',
+            rank: 2,
+          },
         ],
       }}
     >
