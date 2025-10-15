@@ -9,13 +9,13 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { RadioGroup } from '@/components/ui/radio-group'
-import { toast } from '@/components/ui/use-toast'
 import { ORDER_FONT_SIZES } from '@/constants/admin/order-font-size'
 import { updateOrderFontSize } from '@/lib/services/admin/icu/order-font-size'
 import { cn } from '@/lib/utils/utils'
 import { LoaderCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   hosId: string
@@ -35,9 +35,7 @@ export default function OrderFontSetting({ hosId, orderFontSize }: Props) {
 
     await updateOrderFontSize(hosId, selectedFontSize)
 
-    toast({
-      title: '오더 글자 크기를 변경하였습니다.',
-    })
+    toast.success('오더 글자 크기를 변경하였습니다')
 
     setIsUpdating(false)
     refresh()

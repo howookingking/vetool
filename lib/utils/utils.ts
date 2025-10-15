@@ -1,3 +1,7 @@
+import type {
+  FilterState,
+  SortFilterValue,
+} from '@/components/hospital/icu/sidebar/filters/filters'
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import {
   CANINE_BREEDS,
@@ -5,17 +9,13 @@ import {
   type SpeciesTypeEnum,
 } from '@/constants/hospital/register/breed'
 import type { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
-import type { VetoolUser } from '@/types'
-import type {
-  Filter,
-  IcuSidebarIoData,
-  SelectedIcuOrder,
-  Vet,
-} from '@/types/icu/chart'
+import type { Vet, VetoolUser } from '@/types'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { type ClassValue, clsx } from 'clsx'
 import { differenceInDays, isValid, parseISO } from 'date-fns'
 import { redirect } from 'next/navigation'
 import { twMerge } from 'tailwind-merge'
+import type { IcuSidebarPatient } from '../services/icu/icu-layout'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -254,6 +254,7 @@ type FormattedOrder = {
   orderId: string
   orderTimes: number[]
 }
+
 export function formatOrders(
   originalArray: OrderTimePendingQueue[],
 ): FormattedOrder[] {
@@ -349,75 +350,73 @@ export const redirectToOwnHospital = (
   }
 }
 
-export const filterData = (
-  data: IcuSidebarIoData[],
-  filters: Filter,
+export type FilteredData = {
+  filteredIcuIoData: IcuSidebarPatient[]
+  excludedIcuIoData: IcuSidebarPatient[]
+  outIcuIoData: IcuSidebarPatient[]
+}
+
+export const filterPatients = (
+  data: IcuSidebarPatient[],
+  filters: FilterState,
   vetsListData: Vet[],
-) => {
-  let filtered = [...data]
+): FilteredData => {
+  const { selectedGroup, selectedVet, selectedSort } = filters
 
-  // 그룹 필터
-  if (filters.selectedGroup.length > 0) {
-    filtered = filtered.filter((item) =>
-      filters.selectedGroup.some((group) => item.group_list.includes(group)),
-    )
-  }
+  // === 퇴원 / 미퇴원 먼저 분리 ===
+  const inPatients = data.filter((p) => !p.out_date)
+  const outPatients = data.filter((p) => p.out_date)
 
-  // 수의사 필터
-  if (filters.selectedVet) {
-    filtered = filtered.filter(
-      (item) =>
-        item.vets?.main_vet === filters.selectedVet ||
-        item.vets?.sub_vet === filters.selectedVet,
-    )
-  }
+  // === 필터링: 미퇴원 환자만 대상으로 ===
+  let filtered = inPatients.filter((item) => {
+    const inGroup = !selectedGroup || item.group_list.includes(selectedGroup)
 
-  // 정렬 옵션 적용
-  // 1. 수의사별 정렬
-  if (filters.selectedSort === 'vet') {
-    const rankMap = Object.fromEntries(
-      vetsListData.map((vet) => [vet.user_id, vet.rank]),
-    )
+    const byVet =
+      !selectedVet ||
+      item.vets?.main_vet === selectedVet ||
+      item.vets?.sub_vet === selectedVet
 
-    filtered.sort((a, b) => {
-      const rankA = rankMap[a.vets?.main_vet ?? ''] ?? 99
-      const rankB = rankMap[b.vets?.main_vet ?? ''] ?? 99
-      return rankA - rankB
-    })
-  }
-
-  // 2. 환자명 정렬
-  if (filters.selectedSort === 'name') {
-    filtered.sort((a, b) => a.patient.name.localeCompare(b.patient.name, 'ko'))
-  }
-
-  // 3. 응급도순 정렬
-  if (filters.selectedSort === 'urgency') {
-    filtered.sort((a, b) => {
-      if (a.vets === null && b.vets === null) return 0
-      if (a.vets === null) return 1
-      if (b.vets === null) return -1
-
-      const urgencyA = a.urgency ?? 0
-      const urgencyB = b.urgency ?? 0
-      return urgencyB - urgencyA
-    })
-  }
-
-  // 최종으로 퇴원 환자 후미로 정렬
-  filtered.sort((a, b) => {
-    if (a.out_date === null && b.out_date === null) return 0
-    if (a.out_date === null) return -1
-    if (b.out_date === null) return 1
-    return 0
+    return inGroup && byVet
   })
 
-  const filteredIoPatients = filtered.filter((item) => item.out_date === null)
+  // === 정렬 준비 ===
+  const rankMap = Object.fromEntries(
+    vetsListData.map((vet) => [vet.user_id, vet.rank]),
+  )
+
+  const sorters: Record<
+    SortFilterValue,
+    (a: IcuSidebarPatient, b: IcuSidebarPatient) => number
+  > = {
+    vet: (a, b) =>
+      (rankMap[a.vets?.main_vet ?? ''] ?? 99) -
+      (rankMap[b.vets?.main_vet ?? ''] ?? 99),
+    name: (a, b) => a.patient.name.localeCompare(b.patient.name, 'ko'),
+    urgency: (a, b) => (b.urgency ?? 0) - (a.urgency ?? 0),
+    date: () => 0, // 기본값 (정렬 없음)
+  }
+
+  // === 정렬 적용 ===
+  if (selectedSort in sorters) {
+    filtered.sort(sorters[selectedSort])
+  }
+
+  // === 제외된 환자 (미퇴원 중에서만) ===
+  const filteredSet = new Set(filtered.map((p) => p.icu_io_id))
+  const excludedIcuIoData = inPatients.filter(
+    (p) => !filteredSet.has(p.icu_io_id),
+  )
+
+  // === 퇴원환자 (정렬도 동일하게 적용) ===
+  let outIcuIoData = [...outPatients]
+  if (selectedSort in sorters) {
+    outIcuIoData.sort(sorters[selectedSort])
+  }
 
   return {
-    filteredIcuIoData: filtered,
-    excludedIcuIoData: data.filter((item) => !filtered.includes(item)),
-    filteredIoPatientCount: filteredIoPatients.length,
+    filteredIcuIoData: filtered, // 조건 + 정렬 + 미퇴원
+    excludedIcuIoData, // 조건 불일치 + 미퇴원
+    outIcuIoData, // 조건과 무관하게 모든 퇴원환자
   }
 }
 

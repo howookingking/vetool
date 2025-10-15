@@ -6,10 +6,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { toast } from '@/components/ui/use-toast'
 import { updateUnit } from '@/lib/services/admin/icu/hos-drugs'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   unit: string
@@ -30,9 +30,7 @@ export default function UnitColumn({ unit, hosDrugId }: Props) {
     setIsUpdating(true)
     await updateUnit(value, hosDrugId)
 
-    toast({
-      title: '단위를 변경하였습니다',
-    })
+    toast.success('단위를 변경하였습니다')
 
     setIsUpdating(false)
     refresh()

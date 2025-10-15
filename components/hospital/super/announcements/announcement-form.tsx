@@ -14,7 +14,6 @@ import {
 } from '@/components/ui/select'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
-import { toast } from '@/components/ui/use-toast'
 import { createAnnouncement } from '@/lib/services/super/announcement/announcement'
 import type { UserFeedback } from '@/lib/services/super/feedback/feedback'
 import { cn } from '@/lib/utils/utils'
@@ -23,6 +22,7 @@ import { LoaderCircle } from 'lucide-react'
 import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import { toast } from 'sonner'
 
 const PATCH_CATEGORIES = [
   'icu',
@@ -76,10 +76,7 @@ export default function AnnouncementForm({
 
     await createAnnouncement(formData)
 
-    toast({
-      title: '공지사항이 등록되었습니다',
-      description: '성공적인 배포를 응원합니다',
-    })
+    toast.success('공지사항이 등록되었습니다')
 
     setIsSubmitting(false)
     setFormData({
@@ -95,9 +92,7 @@ export default function AnnouncementForm({
 
     await createAnnouncement(formData, true)
 
-    toast({
-      title: '공지사항이 임시저장되었습니다',
-    })
+    toast.success('공지사항이 임시저장되었습니다')
 
     setIsSubmitting(false)
   }

@@ -1,8 +1,8 @@
 import { Input } from '@/components/ui/input'
-import { toast } from '@/components/ui/use-toast'
 import { updateMlPerKg } from '@/lib/services/admin/icu/hos-drugs'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   mlPerKg: string
@@ -26,10 +26,8 @@ export default function MlPerKgColumn({ hosDrugId, mlPerKg }: Props) {
     }
 
     if (isNaN(Number(mlPerKgInput))) {
-      toast({
-        variant: 'destructive',
-        title: '숫자를 입력해주세요',
-      })
+      toast.warning('숫자를 입력해주세요')
+
       setMlPerKgInput(mlPerKg)
       return
     }
@@ -37,9 +35,8 @@ export default function MlPerKgColumn({ hosDrugId, mlPerKg }: Props) {
 
     await updateMlPerKg(mlPerKgInput, hosDrugId)
 
-    toast({
-      title: '체중당 투여량(ml/kg)이 변경되었습니다',
-    })
+    toast.success('체중당 투여량(ml/kg)이 변경되었습니다')
+
     setIsUpdating(false)
     refresh()
   }

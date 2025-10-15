@@ -6,15 +6,15 @@ import {
   CommandList,
 } from '@/components/ui/command'
 import { Skeleton } from '@/components/ui/skeleton'
-import { toast } from '@/components/ui/use-toast'
+import type { OrderType } from '@/constants/hospital/icu/chart/order'
 import { getHosDrugs } from '@/lib/services/admin/icu/hos-drugs'
 import { cn } from '@/lib/utils/utils'
 import { Command as CommandPrimitive } from 'cmdk'
-import { Plus } from 'lucide-react'
+import { PlusIcon } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
+import { toast } from 'sonner'
 import ArbitraryInjectionOrder from './arbitrary-injection-order'
-import type { OrderType } from '@/constants/hospital/icu/chart/order'
 
 type Props = {
   weight: string
@@ -95,10 +95,7 @@ export function InjectionOrderCreator({ weight, createOrder }: Props) {
 
   const handleSelectOption = (selectedOption: Option) => {
     if (!weight) {
-      toast({
-        title: '체중을 입력해주세요',
-        variant: 'destructive',
-      })
+      toast.warning('체중을 입력해주세요')
       return
     }
 
@@ -175,7 +172,7 @@ export function InjectionOrderCreator({ weight, createOrder }: Props) {
                     setIsArbitraryOrder(true)
                   }}
                 >
-                  <Plus className="h-4 w-4" />
+                  <PlusIcon className="h-4 w-4" />
                   직접 추가
                 </CommandItem>
               </CommandGroup>
@@ -190,7 +187,7 @@ export function InjectionOrderCreator({ weight, createOrder }: Props) {
                     setIsArbitraryOrder(true)
                   }}
                 >
-                  <Plus className="h-4 w-4" />
+                  <PlusIcon className="h-4 w-4" />
                   직접 추가
                 </CommandItem>
                 {hosDrugOptions.map((option) => {
@@ -224,7 +221,7 @@ export function InjectionOrderCreator({ weight, createOrder }: Props) {
                   variant="ghost"
                   onMouseDown={handleClickArbitraryOrder}
                 >
-                  <Plus className="h-4 w-4" /> {inputValue.split('$')[0]}{' '}
+                  <PlusIcon className="h-4 w-4" /> {inputValue.split('$')[0]}{' '}
                   <span className="text-xs text-muted-foreground">
                     {inputValue.split('$')[1]}
                   </span>

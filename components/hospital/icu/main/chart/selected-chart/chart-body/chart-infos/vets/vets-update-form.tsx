@@ -15,21 +15,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { toast } from '@/components/ui/use-toast'
 import { vetsFormSchema } from '@/lib/schemas/icu/chart/chart-info-schema'
 import { updateMainSubVet } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import type { Json } from '@/lib/supabase/database.types'
 import { cn } from '@/lib/utils/utils'
-import { IcuChartsInCharge } from '@/types/adimin'
-import type { MainAndSubVet, Vet } from '@/types/icu/chart'
+import type { Vet } from '@/types'
+import type { IcuChartsInCharge } from '@/types/adimin'
+import type { MainAndSubVet } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { LoaderCircle } from 'lucide-react'
+import { LoaderCircleIcon } from 'lucide-react'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import * as z from 'zod'
 
 type Props = {
-  mainVet: MainAndSubVet
+  mainVet: MainAndSubVet | null
   subVet: MainAndSubVet | null
   vetsList: Vet[]
   icuChartId: string
@@ -77,9 +78,7 @@ export default function VetsUpdateForm({
       values.sub_vet,
     )
 
-    toast({
-      title: '담당의를 변경하였습니다',
-    })
+    toast.success('담당의를 변경하였습니다')
 
     setIsUpdating(false)
     setIsDialogOpen(false)
@@ -88,7 +87,7 @@ export default function VetsUpdateForm({
   const form = useForm<z.infer<typeof vetsFormSchema>>({
     resolver: zodResolver(vetsFormSchema),
     defaultValues: {
-      main_vet: mainVet.user_id,
+      main_vet: mainVet?.user_id ?? 'null',
       sub_vet: subVet?.user_id ?? 'null',
       today_vet: today ? today.all : '미선택',
       today_am_vet: today ? today.am : '미선택',
@@ -125,12 +124,29 @@ export default function VetsUpdateForm({
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {vetsList.map((vet) => (
-                    <SelectItem key={vet.user_id} value={vet.user_id}>
+                  {[
+                    {
+                      user_id: 'null',
+                      name: '미선택',
+                      position: '',
+                      avatar_url: '',
+                    },
+                    ...vetsList,
+                  ].map((vet) => (
+                    <SelectItem
+                      key={vet.user_id}
+                      value={vet.user_id}
+                      className="w-full"
+                    >
                       <div className="flex items-center gap-2">
-                        <UserAvatar alt={vet.name} src={vet.avatar_url} />
+                        {vet.avatar_url && (
+                          <UserAvatar src={vet.avatar_url} alt={vet.name} />
+                        )}
+
                         <span>{vet.name}</span>
-                        <span className="text-xs">({vet.position})</span>
+                        {vet.position && (
+                          <span className="text-xs">({vet.position})</span>
+                        )}
                       </div>
                     </SelectItem>
                   ))}
@@ -539,7 +555,7 @@ export default function VetsUpdateForm({
 
           <Button type="submit" className="ml-2" disabled={isUpdating}>
             변경
-            <LoaderCircle
+            <LoaderCircleIcon
               className={cn(isUpdating ? 'ml-2 animate-spin' : 'hidden')}
             />
           </Button>

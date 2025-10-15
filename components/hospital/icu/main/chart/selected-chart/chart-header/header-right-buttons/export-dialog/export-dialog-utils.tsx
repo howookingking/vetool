@@ -1,17 +1,18 @@
 import ChartInfos from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/chart-infos'
 import ChartTable from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table'
 import { Badge } from '@/components/ui/badge'
-import { toast } from '@/components/ui/use-toast'
 import { getIcuChart } from '@/lib/services/icu/chart/get-icu-chart'
 import { getIoDateRange } from '@/lib/services/icu/chart/get-io-date-range'
-import { getIcuData } from '@/lib/services/icu/get-icu-data'
-import { Json } from '@/lib/supabase/database.types'
+import {
+  fetchIcuLayoutData,
+  type IcuLayoutData,
+} from '@/lib/services/icu/icu-layout'
 import { BasicHosDataProvider } from '@/providers/basic-hos-data-context-provider'
-import type { IcuOrderColors } from '@/types/adimin'
-import type { IcuSidebarIoData, SelectedChart, Vet } from '@/types/icu/chart'
+import type { SelectedChart } from '@/types/icu/chart'
 import html2canvas from 'html2canvas'
 import { useEffect, useRef } from 'react'
 import { createRoot } from 'react-dom/client'
+import { toast } from 'sonner'
 
 // 현재 화면 기준 ScrollWidth & ScrollHeight를 가진 HTMLCanvasElement를 생성
 export const captureContent = async (element: HTMLElement) => {
@@ -51,15 +52,7 @@ export const ExportChartBody: React.FC<{
 // ExportChartBody를 렌더링하고 캡처하는 함수
 export const renderAndCaptureExportChartBody = (
   chartData: SelectedChart,
-  initialIcuData: {
-    icuSidebarData: IcuSidebarIoData[]
-    vetsListData: Vet[]
-    basicHosData: {
-      order_color: Json
-      group_list: string[]
-      icu_memo_names: string[]
-    }
-  },
+  initialIcuData: IcuLayoutData,
 ): Promise<HTMLCanvasElement> => {
   return new Promise((resolve, reject) => {
     const container = document.createElement('div')
@@ -89,12 +82,11 @@ export const renderAndCaptureExportChartBody = (
         basicHosData={{
           showOrderer: true,
           showTxUser: true,
-          vetsListData: initialIcuData.vetsListData,
-          groupListData: initialIcuData.basicHosData.group_list,
-          sidebarData: initialIcuData.icuSidebarData ?? [],
-          orderColorsData: initialIcuData.basicHosData
-            .order_color as IcuOrderColors,
-          memoNameListData: initialIcuData.basicHosData.icu_memo_names,
+          vetList: initialIcuData.vetList,
+          groupListData: initialIcuData.basicHosSettings.group_list,
+          icuSidebarPatients: initialIcuData.icuSidebarPatients,
+          orderColorsData: initialIcuData.basicHosSettings.order_color,
+          memoNameListData: initialIcuData.basicHosSettings.icu_memo_names,
           vitalRefRange: [],
           orderFontSizeData: 14,
           timeGuidelineData: [2, 10, 18],
@@ -118,7 +110,7 @@ export const handleExport = async (
 ) => {
   try {
     const dateRange = await getIoDateRange(icuIoId)
-    const initialIcuData = await getIcuData(hosId, target_date)
+    const initialIcuData = await fetchIcuLayoutData(hosId, target_date)
 
     if (dateRange) {
       const canvases = await Promise.all(
@@ -140,16 +132,12 @@ export const handleExport = async (
       exportFn(canvases)
     }
 
-    toast({
-      title: '저장 성공',
-      description: '차트가 성공적으로 저장되었습니다.',
-    })
+    toast.success('차트을 저장하였습니다.')
   } catch (error) {
     console.error('Export error:', error)
-    toast({
-      variant: 'destructive',
-      title: '저장 실패',
-      description: '차트 저장에 실패하였습니다. 나중에 다시 시도해주세요.',
+
+    toast.error('저장 실패', {
+      description: '차트 저장에 실패하였습니다, 나중에 다시 시도해주세요',
     })
   }
 }

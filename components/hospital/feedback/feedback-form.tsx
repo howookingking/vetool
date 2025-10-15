@@ -17,23 +17,22 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { toast } from '@/components/ui/use-toast'
 import {
   FEEDBACK_CATEGORY_ENUM,
   feedbackFormSchema,
 } from '@/lib/schemas/feedback/feedback-schema'
 import { sendFeedback } from '@/lib/services/super/feedback/feedback'
-import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { LoaderCircle, X } from 'lucide-react'
+import { LoaderCircleIcon, XIcon } from 'lucide-react'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 export default function FeedbackForm({
-  setIsPopoverFeedbackOpen,
+  setIsPopoverOpen,
 }: {
-  setIsPopoverFeedbackOpen: Dispatch<SetStateAction<boolean>>
+  setIsPopoverOpen: Dispatch<SetStateAction<boolean>>
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -45,30 +44,32 @@ export default function FeedbackForm({
     },
   })
 
-  const handleSendFeedback = async (
+  const handleSubmitFeedback = async (
     data: z.infer<typeof feedbackFormSchema>,
   ) => {
+    const { feedback_category, feedback_description } = data
+
     setIsSubmitting(true)
 
-    await sendFeedback(data.feedback_category, data.feedback_description)
+    await sendFeedback(feedback_category, feedback_description)
+
+    toast.success('피드백 주셔서 감사합니다')
 
     setIsSubmitting(false)
-    toast({
-      title: '피드백 주셔서 감사합니다',
-    })
-    setIsPopoverFeedbackOpen(false)
+    setIsPopoverOpen(false)
   }
+
   return (
     <>
       <h3 className="mb-2 text-center text-lg font-semibold">사용자 피드백</h3>
-      <X
-        onClick={() => setIsPopoverFeedbackOpen(false)}
+      <XIcon
+        onClick={() => setIsPopoverOpen(false)}
         className="absolute right-3 top-3 cursor-pointer text-muted-foreground"
-        size={12}
+        size={14}
       />
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(handleSendFeedback)}
+          onSubmit={form.handleSubmit(handleSubmitFeedback)}
           className="space-y-2"
         >
           <FormField
@@ -112,16 +113,21 @@ export default function FeedbackForm({
                     rows={5}
                   />
                 </FormControl>
-                <FormDescription>검토 후 빠르게 반영하겠습니다</FormDescription>
+                <FormDescription>
+                  급한 경우 전화 or 카톡주세요!
+                  <br />
+                  010-5651-4187
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
           <Button type="submit" disabled={isSubmitting} className="w-full">
-            전송
-            <LoaderCircle
-              className={cn(isSubmitting ? 'ml-2 animate-spin' : 'hidden')}
-            />
+            {isSubmitting ? (
+              <LoaderCircleIcon className="animate-spin" />
+            ) : (
+              '전송'
+            )}
           </Button>
         </form>
       </Form>

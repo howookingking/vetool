@@ -53,7 +53,12 @@ export default function ExportPngButton({
   }
 
   return (
-    <Button variant="outline" onClick={handleExportPng} disabled={isExporting}>
+    <Button
+      variant="outline"
+      onClick={handleExportPng}
+      // disabled={isExporting}
+      disabled
+    >
       사진 저장
       <LoaderCircle
         className={cn(isExporting ? 'ml-2 animate-spin' : 'hidden')}

@@ -1,10 +1,10 @@
 import CalculatorSheet from '@/components/hospital/calculator/calculator-sheet'
 import Feedback from '@/components/hospital/feedback/feedback'
 import DesktopSidebarItem from '@/components/hospital/sidebar/desktop/desktop-sidebar-item'
-import SidebarUserInfo from '@/components/hospital/sidebar/sidebar-user-info'
-import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
+import SidebarUserDropdown from '@/components/hospital/sidebar/sidebar-user-dropdown'
 import type { Plan } from '@/constants/plans'
 import type { VetoolUser } from '@/types'
+import { SIDEBAR_MENUS } from '../hospital-sidebar'
 
 type Props = {
   hosId: string
@@ -18,24 +18,27 @@ export default async function DesktopSidebar({
   plan,
 }: Props) {
   return (
-    <aside className="item-center fixed left-0 top-0 z-50 hidden h-screen w-10 flex-col justify-between border-r bg-white 2xl:flex">
-      <ul className="mt-1 flex flex-col items-center gap-2">
-        {SIDEBAR_ITEMS.map((item) => (
+    <aside className="item-center fixed z-50 hidden h-screen w-10 flex-col justify-between border-r py-1 2xl:flex">
+      <ul className="flex flex-col items-center gap-1">
+        {SIDEBAR_MENUS.map(({ icon, isReady, name, path }) => (
           <DesktopSidebarItem
-            name={item.name}
-            path={item.path}
-            key={item.name}
-            isReady={item.isReady}
-            icon={item.icon}
+            hosId={hosId}
+            name={name}
+            path={path}
+            key={name}
+            isReady={isReady}
+            icon={icon}
             isSuper={vetoolUser.is_super}
           />
         ))}
       </ul>
 
-      <div className="mb-2 flex flex-col items-center justify-end gap-2">
+      <div className="flex flex-col items-center justify-end gap-1">
         <CalculatorSheet plan={plan} />
+
         <Feedback />
-        <SidebarUserInfo hosId={hosId} vetoolUser={vetoolUser} />
+
+        <SidebarUserDropdown hosId={hosId} vetoolUser={vetoolUser} />
       </div>
     </aside>
   )

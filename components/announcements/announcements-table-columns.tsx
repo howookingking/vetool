@@ -1,8 +1,8 @@
 import { Button } from '@/components/ui/button'
-import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
-import { type AnnouncementListProps } from '@/types/vetool'
+import type { AnnouncementListProps } from '@/types/vetool'
 import { ColumnDef } from '@tanstack/react-table'
-import { ArrowUpDown } from 'lucide-react'
+import { ArrowUpDownIcon } from 'lucide-react'
+import { SIDEBAR_MENUS } from '../hospital/sidebar/hospital-sidebar'
 
 export const announcementsTableColumns: ColumnDef<AnnouncementListProps>[] = [
   {
@@ -11,7 +11,7 @@ export const announcementsTableColumns: ColumnDef<AnnouncementListProps>[] = [
 
     cell: ({ row }) => {
       const category = row.original.announcement_category
-      const foundCategory = SIDEBAR_ITEMS.find((item) => item.path === category)
+      const foundCategory = SIDEBAR_MENUS.find(({ path }) => path === category)
       return (
         <span className="text-xs text-muted-foreground">
           {foundCategory?.name ?? '전체'}
@@ -44,7 +44,7 @@ export const announcementsTableColumns: ColumnDef<AnnouncementListProps>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           작성일
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
         </Button>
       )
     },

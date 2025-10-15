@@ -243,6 +243,7 @@ export const searchPatients = async (searchTerms: string[], hosId: string) => {
     console.error(error)
     redirect(`/error?message=${error.message}`)
   }
+
   return data
 }
 

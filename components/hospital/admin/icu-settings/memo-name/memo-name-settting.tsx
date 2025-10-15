@@ -20,47 +20,17 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { toast } from '@/components/ui/use-toast'
 import { memoNameFormSchema } from '@/lib/schemas/admin/admin-schema'
 import { updateMemoNames } from '@/lib/services/admin/icu/memo-name'
 import { cn } from '@/lib/utils/utils'
-import { type Memo } from '@/types/icu/chart'
+import type { Memo } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
-
-const DUMMY_MEMO_A: Memo[] = [
-  {
-    color: '#fef9c3',
-    id: '1',
-    memo: 'memo A',
-    create_timestamp: '2025-05-15T00:00:00.000Z',
-    edit_timestamp: '',
-  },
-] as const
-
-const DUMMY_MEMO_B: Memo[] = [
-  {
-    color: '#fce7f3',
-    id: '1',
-    memo: 'memo B',
-    create_timestamp: '2025-05-15T00:00:00.000Z',
-    edit_timestamp: '',
-  },
-] as const
-
-const DUMMY_MEMO_C: Memo[] = [
-  {
-    color: '#d1fae5',
-    id: '1',
-    memo: 'memo C',
-    create_timestamp: '2025-05-15T00:00:00.000Z',
-    edit_timestamp: '',
-  },
-] as const
 
 export default function MemoNameSetting({
   memoNames,
@@ -100,9 +70,7 @@ export default function MemoNameSetting({
 
     await updateMemoNames(updatedMemoNames, hos_id as string)
 
-    toast({
-      title: '메모이름 변경완료',
-    })
+    toast.success('메모이름을 변경하였습니다')
 
     setIsUpdating(false)
     refresh()
@@ -195,3 +163,33 @@ export default function MemoNameSetting({
     </Form>
   )
 }
+
+const DUMMY_MEMO_A: Memo[] = [
+  {
+    color: '#fef9c3',
+    id: '1',
+    memo: 'memo A',
+    create_timestamp: '2025-05-15T00:00:00.000Z',
+    edit_timestamp: '',
+  },
+] as const
+
+const DUMMY_MEMO_B: Memo[] = [
+  {
+    color: '#fce7f3',
+    id: '1',
+    memo: 'memo B',
+    create_timestamp: '2025-05-15T00:00:00.000Z',
+    edit_timestamp: '',
+  },
+] as const
+
+const DUMMY_MEMO_C: Memo[] = [
+  {
+    color: '#d1fae5',
+    id: '1',
+    memo: 'memo C',
+    create_timestamp: '2025-05-15T00:00:00.000Z',
+    edit_timestamp: '',
+  },
+] as const

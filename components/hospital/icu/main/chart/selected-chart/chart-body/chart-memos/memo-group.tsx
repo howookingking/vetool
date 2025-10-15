@@ -4,7 +4,6 @@ import SingleMemo from '@/components/hospital/icu/main/chart/selected-chart/char
 import { Label } from '@/components/ui/label'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Textarea } from '@/components/ui/textarea'
-import { toast } from '@/components/ui/use-toast'
 import { MEMO_COLORS } from '@/constants/hospital/icu/chart/colors'
 import { updateMemos } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import type { Memo, MemoColor, MemoGroup } from '@/types/icu/chart'
@@ -16,6 +15,7 @@ import {
   type SetStateAction,
 } from 'react'
 import { ReactSortable, type Sortable } from 'react-sortablejs'
+import { toast } from 'sonner'
 import type { NewMemoAddedTo } from './chart-memos'
 
 type Props = {
@@ -154,9 +154,7 @@ export default function MemoGroup({
     setShouldScrollToBottom(newMemoAddedTo === 'bottom')
     setShouldScrollToTop(newMemoAddedTo === 'top')
 
-    toast({
-      title: `${memoName}에 새 메모를 추가했습니다`,
-    })
+    toast.success(`${memoName}에 새 메모를 추가했습니다`)
   }
 
   // 2. 메모 수정
@@ -170,9 +168,8 @@ export default function MemoGroup({
     setSortedMemos(editedMemos)
 
     await handleUpdateDbMemo(editedMemos)
-    toast({
-      title: `메모가 수정되었습니다`,
-    })
+
+    toast.success('메모를 수정하였습니다')
   }
 
   // 3. 메모 삭제
@@ -183,15 +180,12 @@ export default function MemoGroup({
     setSortedMemos(updatedEntries)
 
     await handleUpdateDbMemo(updatedEntries)
-    toast({
-      title: `메모가 삭제되었습니다`,
-    })
+
+    toast.success('메모를 삭제하였습니다')
   }
 
   const handleToastGuideMessage = () => {
-    toast({
-      title: '메모 그룹간(좌우↔) 이동도 가능합니다.',
-    })
+    toast.info('메모 그룹간(좌우↔) 이동도 가능합니다')
   }
 
   return (
@@ -217,7 +211,11 @@ export default function MemoGroup({
           disabled={isUpdating || isMemoNameSetting}
         >
           {sortedMemos.length === 0 ? (
-            <NoResultSquirrel text="메모 없음" size="sm" className="h-52" />
+            <NoResultSquirrel
+              text="메모 없음"
+              size="sm"
+              className="h-52 flex-col font-normal text-muted-foreground"
+            />
           ) : (
             sortedMemos.map((memo, index) => (
               <SingleMemo

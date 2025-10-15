@@ -9,7 +9,6 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { TableCell, TableRow } from '@/components/ui/table'
-import { toast } from '@/components/ui/use-toast'
 import {
   BG_CANDIDATES,
   CHECKLIST_ORDERS,
@@ -19,7 +18,7 @@ import {
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import type { IcuOrderColors } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
-import { Plus } from 'lucide-react'
+import { PlusIcon } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import {
   type Dispatch,
@@ -28,6 +27,7 @@ import {
   useRef,
   useState,
 } from 'react'
+import { toast } from 'sonner'
 import { OrderTypeLabel } from '../../order/order-form-field'
 import ChecklistOrderCreator from './checklist-order-creator'
 import { InjectionOrderCreator } from './injection-order/injection-order-creator'
@@ -94,9 +94,7 @@ export default function OrderCreatorRow({
       },
     )
 
-    toast({
-      title: `${orderName} 오더를 생성하였습니다`,
-    })
+    toast.success(`${orderName} 오더를 생성하였습니다`)
 
     setNewOrderInput('')
     setIsInserting(false)
@@ -216,7 +214,7 @@ export default function OrderCreatorRow({
                 type="submit"
                 variant="ghost"
               >
-                <Plus />
+                <PlusIcon />
               </Button>
             </form>
           )}

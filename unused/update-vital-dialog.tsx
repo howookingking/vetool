@@ -16,7 +16,6 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { toast } from '@/components/ui/use-toast'
 import { vitalChartSchema } from '@/lib/schemas/icu/chart/vital-chart-schema'
 import { updateWeightData } from '@/lib/services/icu/chart/vitals'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -66,9 +65,9 @@ export default function UpdateVitalDialog({
     setIsSubmitting(false)
     form.reset()
 
-    toast({
-      title: '체중 정보가 수정되었습니다',
-    })
+    // toast({
+    //   title: '체중 정보가 수정되었습니다',
+    // })
   }
 
   return (

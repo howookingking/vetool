@@ -18,7 +18,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { toast } from '@/components/ui/use-toast'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { updateHosTimeGuidelines } from '@/lib/services/admin/icu/time-guidelines'
 import { cn } from '@/lib/utils/utils'
@@ -27,6 +26,7 @@ import { IcuOrderColors } from '@/types/adimin'
 import { LoaderCircle, RotateCcw } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   hosGuidelineData: number[]
@@ -48,9 +48,7 @@ export function TimeGuideLinSettings({ hosGuidelineData, hosId }: Props) {
 
     await updateHosTimeGuidelines(hosId, locaTimeGuideline)
 
-    toast({
-      title: '시간 가이드라인을 변경하였습니다',
-    })
+    toast.success('시간 가이드라인을 변경하였습니다')
 
     setIsUpdating(false)
     refresh()

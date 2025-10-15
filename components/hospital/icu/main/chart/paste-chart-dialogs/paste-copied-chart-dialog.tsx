@@ -19,15 +19,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { toast } from '@/components/ui/use-toast'
 import { pasteChart } from '@/lib/services/icu/chart/paste-chart'
 import { useCopiedChartStore } from '@/lib/store/icu/copied-chart'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { CopyCheck, LoaderCircle } from 'lucide-react'
+import { CopyCheckIcon, LoaderCircleIcon } from 'lucide-react'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 export default function PasteCopiedChartDialog() {
   const { refresh } = useRouter()
@@ -35,22 +35,21 @@ export default function PasteCopiedChartDialog() {
 
   const { copiedChartId, reset } = useCopiedChartStore()
   const {
-    basicHosData: { vetsListData, showOrderer },
+    basicHosData: { vetList, showOrderer },
   } = useBasicHosDataContext()
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [orderer, setOrderer] = useState(vetsListData[0].name)
+  const [orderer, setOrderer] = useState(vetList[0].name)
   const [isLoading, setIsLoading] = useState(false)
 
   const handlePasteCopiedChart = async () => {
     if (!copiedChartId) {
       setIsDialogOpen(false)
 
-      toast({
-        title: '차트 붙여넣기 실패',
+      toast.error('복사할 차트가 없습니다', {
         description: '차트를 먼저 복사해주세요',
-        variant: 'destructive',
       })
+
       return
     }
 
@@ -63,8 +62,7 @@ export default function PasteCopiedChartDialog() {
       orderer,
     )
 
-    toast({
-      title: '차트를 붙여넣었습니다',
+    toast.success('차트를 붙여넣었습니다', {
       description: '복사한 차트는 클립보드에서 제거됩니다',
     })
 
@@ -81,7 +79,7 @@ export default function PasteCopiedChartDialog() {
           variant="outline"
           className="hidden h-1/3 w-full items-center justify-center gap-2 md:flex md:h-1/3 md:w-2/3 lg:w-1/2"
         >
-          <CopyCheck size={20} />
+          <CopyCheckIcon size={20} />
           <span>복사한 차트 붙여넣기</span>
         </Button>
       </DialogTrigger>
@@ -105,7 +103,7 @@ export default function PasteCopiedChartDialog() {
                   <SelectValue placeholder="수의사를 선택해주세요" />
                 </SelectTrigger>
                 <SelectContent>
-                  {vetsListData.map((vet) => (
+                  {vetList.map((vet) => (
                     <SelectItem
                       key={vet.user_id}
                       value={vet.name}
@@ -143,7 +141,7 @@ export default function PasteCopiedChartDialog() {
           </DialogClose>
           <Button onClick={handlePasteCopiedChart} disabled={isLoading}>
             확인
-            <LoaderCircle
+            <LoaderCircleIcon
               className={cn(isLoading ? 'animate-spin' : 'hidden')}
             />
           </Button>

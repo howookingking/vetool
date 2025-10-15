@@ -8,7 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { toast } from '@/components/ui/use-toast'
 import {
   CHECKLIST_ORDERS,
   DEFAULT_ICU_ORDER_TYPE,
@@ -28,6 +27,7 @@ import {
 } from 'react'
 import ChecklistOrderCreator from '../../icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-creator/checklist-order-creator'
 import { OrderTypeLabel } from '../../icu/main/chart/selected-chart/chart-body/table/order/order-form-field'
+import { toast } from 'sonner'
 
 type Props = {
   sortedOrders: SelectedIcuOrder[]
@@ -82,11 +82,7 @@ export default function DtOrderCreator({
           default_chart_order_type: orderType,
         })
 
-    !isTemplate &&
-      (toast({
-        title: `${orderName} 오더를 생성하였습니다`,
-      }),
-      refresh()),
+    !isTemplate && (toast.success('오더을 생성하였습니다'), refresh()),
       setTimeout(() => {
         inputRef?.current?.focus()
       }, 100)

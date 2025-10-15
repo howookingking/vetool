@@ -8,8 +8,8 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet'
 import useIsMobile from '@/hooks/use-is-mobile'
-import { type SelectedCalculator } from '@/types/hospital/calculator'
-import { type PatientWithWeight } from '@/types/patients'
+import type { SelectedCalculator } from '@/types/hospital/calculator'
+import type { PatientWithWeight } from '@/types/patients'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { useState } from 'react'
 
@@ -38,10 +38,12 @@ export default function CalculatorSheetContent({
         <SheetTitle />
         <SheetDescription />
       </VisuallyHidden>
+
       <CalculatorSidebar
         selectedCalculator={selectedCalculator}
         setSelectedCalculator={setSelectedCalculator}
       />
+
       {isCalculatorEnabled ? (
         <div className="flex h-full w-full flex-col justify-between gap-2 p-3">
           <SelectedCalculators

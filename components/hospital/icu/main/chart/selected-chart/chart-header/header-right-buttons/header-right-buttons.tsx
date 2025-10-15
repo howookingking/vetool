@@ -3,7 +3,7 @@ import DeleteChartDialog from '@/components/hospital/icu/main/chart/selected-cha
 import ExportDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/export-dialog/export-dialog'
 import OutPatientDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/out-patient-dialog/out-patient-dialog'
 import ShareChartDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/share-chart-dialog'
-import { type SelectedChart } from '@/types/icu/chart'
+import type { SelectedChart } from '@/types/icu/chart'
 import AddTemplateDialog from './add-template-dialog'
 
 export default function HeaderRightButtons({

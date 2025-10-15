@@ -18,7 +18,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { toast } from '@/components/ui/use-toast'
 import { ADDRESS } from '@/constants/hospital/create/address'
 import { newHospitalFormSchema } from '@/lib/schemas/on-boarding/on-boarding-schema'
 import {
@@ -31,6 +30,7 @@ import { LoaderCircle } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import * as z from 'zod'
 
 export default function CreateHospitalForm() {
@@ -75,14 +75,9 @@ export default function CreateHospitalForm() {
     setIsBusinessNumberVerified(isAvailable)
 
     if (isAvailable) {
-      toast({
-        title: '사용 가능한 사업자등록번호입니다',
-      })
+      toast.info('사용 가능한 사업자등록번호입니다')
     } else {
-      toast({
-        variant: 'destructive',
-        title: '이미 등록된 사업자등록번호입니다',
-      })
+      toast.error('이미 등록된 사업자등록번호입니다')
     }
 
     setIsCheckingBusinessNumber(false)
@@ -107,8 +102,7 @@ export default function CreateHospitalForm() {
       businessNumber,
     )
 
-    toast({
-      title: `${name} 등록 성공`,
+    toast.success(`${name} 등록 성공`, {
       description: '잠시후 페이지가 이동됩니다',
     })
 

@@ -1,4 +1,3 @@
-import NewFeature from '@/components/common/new-feature'
 import { Button } from '@/components/ui/button'
 import {
   Select,
@@ -37,14 +36,14 @@ export default function CalculatorSidebar({
               variant="ghost"
               onClick={() => setSelectedCalculator(calculator.value)}
             >
-              <NewFeature
+              {/* <NewFeature
                 className={cn(
                   '-right-2 -top-0.5',
                   calculator.value !== 'cri' && 'hidden',
                 )}
-              >
-                {calculator.label}
-              </NewFeature>
+              > */}
+              {calculator.label}
+              {/* </NewFeature> */}
             </Button>
           </li>
         ))}
@@ -64,14 +63,14 @@ export default function CalculatorSidebar({
           <SelectGroup>
             {CALCULATORS.map((calculator) => (
               <SelectItem key={calculator.value} value={calculator.value}>
-                <NewFeature
+                {/* <NewFeature
                   className={cn(
                     '-right-2 -top-0.5',
                     calculator.value !== 'cri' && 'hidden',
                   )}
-                >
-                  {calculator.label}
-                </NewFeature>
+                > */}
+                {calculator.label}
+                {/* </NewFeature> */}
               </SelectItem>
             ))}
           </SelectGroup>

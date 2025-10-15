@@ -1,10 +1,10 @@
 import { Button } from '@/components/ui/button'
-import { toast } from '@/components/ui/use-toast'
 import { updateIsBordered } from '@/lib/services/icu/chart/order-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
-import { Square } from 'lucide-react'
+import { SquareIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
+import { toast } from 'sonner'
 
 export default function BorderSelectedOrdersButton({
   setIsMultiSelectOrderActionDialogOpen,
@@ -22,10 +22,7 @@ export default function BorderSelectedOrdersButton({
       await updateIsBordered(order.order_id!, order.is_bordered!)
     })
 
-    toast({
-      title: '오더 테두리 변경',
-      description: '오더 테두리 정보를 변경하였습니다',
-    })
+    toast.success('오더 테두리를 변경하였습니다')
 
     setIsMultiSelectOrderActionDialogOpen(false)
     orderReset()
@@ -38,7 +35,7 @@ export default function BorderSelectedOrdersButton({
       className="flex items-center justify-start gap-2 py-5 text-base"
       variant="outline"
     >
-      <Square />
+      <SquareIcon />
       테두리 변경
     </Button>
   )

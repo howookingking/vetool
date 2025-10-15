@@ -1,7 +1,6 @@
 import OrderCreatorRow from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-creator/order-creator-row'
 import OrderRows from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-rows'
 import { TableBody } from '@/components/ui/table'
-import { toast } from '@/components/ui/use-toast'
 import useIsCommandPressed from '@/hooks/use-is-command-pressed'
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
@@ -16,6 +15,7 @@ import {
   type SetStateAction,
 } from 'react'
 import ChartTableDialogs from './chart-table-dialogs'
+import { toast } from 'sonner'
 
 type Props = {
   sortedOrders: SelectedIcuOrder[]
@@ -49,16 +49,18 @@ export default function ChartTableBody({
   } = chartData
 
   const isCommandPressed = useIsCommandPressed()
+
   const {
     basicHosData: {
       showOrderer,
       showTxUser,
-      vetsListData,
+      vetList,
       vitalRefRange,
       timeGuidelineData,
       orderColorsData,
     },
   } = useBasicHosDataContext()
+
   const {
     setOrderStep,
     reset: resetOrderStore,
@@ -66,6 +68,7 @@ export default function ChartTableBody({
     selectedTxPendingQueue,
     selectedOrderPendingQueue,
   } = useIcuOrderStore()
+
   const { setTxStep } = useIcuTxStore()
 
   const handleUpsertOrderTimesWithoutOrderer = async () => {
@@ -78,7 +81,7 @@ export default function ChartTableBody({
       const updatedOrderTimes = currentOrder.order_times.map((time, index) =>
         order.orderTimes.includes(index)
           ? time === '0'
-            ? vetsListData[0].name
+            ? vetList[0].name
             : '0'
           : time,
       )
@@ -96,9 +99,9 @@ export default function ChartTableBody({
         },
       )
     }
-    toast({
-      title: '오더시간을 변경하였습니다',
-    })
+
+    toast.success('오더시간을 변경하였습니다')
+
     resetOrderStore()
   }
 

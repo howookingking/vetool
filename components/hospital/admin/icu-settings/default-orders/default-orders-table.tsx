@@ -7,7 +7,6 @@ import DtSortingOrderRows from '@/components/hospital/common/default-template-or
 import DtTableHeader from '@/components/hospital/common/default-template-order/dt-table-header'
 import UserKeyGuideMessage from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-creator/user-key-guide-message'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
-import { toast } from '@/components/ui/use-toast'
 import useIsCommandPressed from '@/hooks/use-is-command-pressed'
 import useLocalStorage from '@/hooks/use-local-storage'
 import { upsertDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
@@ -17,6 +16,7 @@ import type { OrderWidth } from '@/types/hospital/order'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 export default function DefaultOrdersTable({
   defaultChartOrders,
@@ -73,9 +73,7 @@ export default function DefaultOrdersTable({
       )
     }
 
-    toast({
-      title: '오더시간을 변경하였습니다',
-    })
+    toast.success('오더시간을 변경하였습니다')
 
     resetOrderStore()
     refresh()

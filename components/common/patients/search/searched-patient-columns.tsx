@@ -1,27 +1,26 @@
 import DeletePatientAlert from '@/components/common/patients/search/delete-patient-alert'
 import PatientUpdateDialog from '@/components/common/patients/upload/patient-update-dialog'
 import SpeciesToIcon from '@/components/common/species-to-icon'
+import RegisterIcuConfirmDialog from '@/components/hospital/icu/sidebar/register-dialog/register-icu-confirm-dialog'
 import { calculateAge } from '@/lib/utils/utils'
 import type { Patient } from '@/types'
 import type { Species } from '@/types/hospital/calculator'
 import type { ColumnDef } from '@tanstack/react-table'
 import type { Dispatch, SetStateAction } from 'react'
 import type { DebouncedState } from 'use-debounce'
-import type { RegisteringPatient } from '../../../hospital/icu/sidebar/register-dialog/register-dialog'
-import RegisterIcuButton from './register-icu-button'
 
 type Props = {
   isIcu: boolean
-  setIsConfirmDialogOpen?: Dispatch<SetStateAction<boolean>>
-  setRegisteringPatient?: Dispatch<SetStateAction<RegisteringPatient | null>>
+  hosId: string
   debouncedSearch: DebouncedState<() => Promise<void>>
+  setIsIcuRegisterDialogOpen?: Dispatch<SetStateAction<boolean>>
 }
 
 export const searchedPatientsColumns = ({
   isIcu,
-  setIsConfirmDialogOpen,
-  setRegisteringPatient,
+  hosId,
   debouncedSearch,
+  setIsIcuRegisterDialogOpen,
 }: Props): ColumnDef<Patient>[] => {
   const columns: ColumnDef<Patient>[] = [
     {
@@ -29,11 +28,7 @@ export const searchedPatientsColumns = ({
       header: () => '종',
       cell: ({ row }) => {
         const species = row.original.species as Species
-        return (
-          <div className="flex items-center justify-center gap-2">
-            <SpeciesToIcon species={species} />
-          </div>
-        )
+        return <SpeciesToIcon species={species} size={20} />
       },
     },
     {
@@ -41,11 +36,7 @@ export const searchedPatientsColumns = ({
       header: () => '환자번호',
       cell: ({ row }) => {
         const hosPatientId = row.original.hos_patient_id
-        return (
-          <div className="flex items-center justify-center gap-2">
-            {hosPatientId}
-          </div>
-        )
+        return <>{hosPatientId}</>
       },
     },
     {
@@ -53,9 +44,7 @@ export const searchedPatientsColumns = ({
       header: () => '환자명',
       cell: ({ row }) => {
         const name = row.original.name
-        return (
-          <div className="flex items-center justify-center gap-2">{name}</div>
-        )
+        return <>{name}</>
       },
     },
     {
@@ -63,9 +52,7 @@ export const searchedPatientsColumns = ({
       header: () => '품종',
       cell: ({ row }) => {
         const breed = row.original.breed
-        return (
-          <div className="flex items-center justify-center gap-2">{breed}</div>
-        )
+        return <>{breed}</>
       },
     },
     {
@@ -73,11 +60,7 @@ export const searchedPatientsColumns = ({
       header: () => '성별',
       cell: ({ row }) => {
         const gender = row.original.gender
-        return (
-          <div className="flex items-center justify-center gap-2">
-            {gender.toUpperCase()}
-          </div>
-        )
+        return <>{gender.toUpperCase()}</>
       },
     },
     {
@@ -86,8 +69,9 @@ export const searchedPatientsColumns = ({
       cell: ({ row }) => {
         const birth = row.original.birth
         return (
-          <div className="flex items-center justify-center gap-2">
-            {calculateAge(birth)} ({birth})
+          <div className="flex items-center justify-center gap-1">
+            {calculateAge(birth)}
+            <span className="text-xs text-muted-foreground">({birth})</span>
           </div>
         )
       },
@@ -97,11 +81,7 @@ export const searchedPatientsColumns = ({
       header: () => '보호자',
       cell: ({ row }) => {
         const ownerName = row.original.owner_name
-        return (
-          <div className="flex items-center justify-center gap-2">
-            {ownerName}
-          </div>
-        )
+        return <>{ownerName}</>
       },
     },
     {
@@ -109,11 +89,7 @@ export const searchedPatientsColumns = ({
       header: () => '등록일',
       cell: ({ row }) => {
         const createdAt = row.original.created_at
-        return (
-          <div className="flex items-center justify-center gap-2">
-            {createdAt.slice(0, 10)}
-          </div>
-        )
+        return <>{createdAt.slice(0, 10)}</>
       },
     },
   ]
@@ -121,22 +97,23 @@ export const searchedPatientsColumns = ({
   if (isIcu) {
     columns.push({
       accessorKey: 'register_icu_action',
-      header: () => '환자선택',
+      header: () => '입원',
       cell: ({ row }) => {
         const birth = row.original.birth
         const patientId = row.original.patient_id
         const name = row.original.name
         return (
-          <RegisterIcuButton
+          <RegisterIcuConfirmDialog
+            hosId={hosId}
             birth={birth}
             patientId={patientId}
             patientName={name}
-            setIsConfirmDialogOpen={setIsConfirmDialogOpen!}
-            setRegisteringPatient={setRegisteringPatient!}
+            setIsIcuRegisterDialogOpen={setIsIcuRegisterDialogOpen!}
           />
         )
       },
     })
+    // TODO: patient route refactor 할 때 봐야함
   } else {
     columns.push({
       accessorKey: 'update_patient_action',

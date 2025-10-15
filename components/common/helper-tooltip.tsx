@@ -4,24 +4,28 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import useIsMobile from '@/hooks/use-is-mobile'
 import { cn } from '@/lib/utils/utils'
 import { CircleAlert, CircleHelp } from 'lucide-react'
+
+type Props = {
+  children: React.ReactNode
+  className?: string
+  side?: 'top' | 'bottom' | 'left' | 'right'
+  variant?: 'help' | 'warning'
+}
 
 export default function HelperTooltip({
   children,
   className,
   side = 'top',
   variant = 'help',
-}: {
-  children: React.ReactNode
-  className?: string
-  side?: 'top' | 'bottom' | 'left' | 'right'
-  variant?: 'help' | 'warning'
-}) {
+}: Props) {
+  const isMobile = useIsMobile()
   return (
     <TooltipProvider delayDuration={70}>
       <Tooltip>
-        <TooltipTrigger asChild className={className}>
+        <TooltipTrigger asChild className={cn(className, isMobile && 'hidden')}>
           {variant === 'help' ? (
             <CircleHelp className="cursor-pointer text-primary" size={18} />
           ) : (
@@ -39,7 +43,7 @@ export default function HelperTooltip({
               : 'bg-destructive',
           )}
         >
-          <div>{children}</div>
+          {children}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

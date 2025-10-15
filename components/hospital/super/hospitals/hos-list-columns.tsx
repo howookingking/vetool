@@ -2,11 +2,11 @@
 
 import HosUserSheet from '@/components/hospital/super/hospitals/hos-user-sheet'
 import { Button } from '@/components/ui/button'
-import type { HosListData } from '@/types/hospital'
+import { HospitalList } from '@/lib/services/hospital-home/home'
 import { ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown } from 'lucide-react'
 
-export const hosListColumns: ColumnDef<HosListData>[] = [
+export const hosListColumns: ColumnDef<HospitalList>[] = [
   {
     accessorKey: 'name',
     header: ({ column }) => {
@@ -54,20 +54,6 @@ export const hosListColumns: ColumnDef<HosListData>[] = [
     },
   },
   {
-    accessorKey: 'business_number',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          사업자
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
-  },
-  {
     accessorKey: 'plan',
     header: ({ column }) => {
       return (
@@ -79,6 +65,10 @@ export const hosListColumns: ColumnDef<HosListData>[] = [
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
+    },
+    cell: ({ row }) => {
+      const plan = row.original.plan
+      return <span>{plan ?? '-'}</span>
     },
   },
   {

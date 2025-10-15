@@ -7,7 +7,11 @@ export default async function HospitalPatientsPage(props: {
 
   return (
     <div className="overflow-x-scroll p-2">
-      <SearchPatientContainer hosId={params.hos_id} />
+      <SearchPatientContainer
+        hosId={params.hos_id}
+        isIcu={false}
+        setIsIcuRegisterDialogOpen={undefined}
+      />
     </div>
   )
 }

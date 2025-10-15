@@ -1,19 +1,19 @@
 import OrderRowCells from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-row-cells'
 import OrderRowTitle from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-row-title'
 import { TableRow } from '@/components/ui/table'
-import { toast } from '@/components/ui/use-toast'
 import useShorcutKey from '@/hooks/use-shortcut-key'
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import {
-  type OrderStep,
   OrderTimePendingQueue,
   useIcuOrderStore,
+  type OrderStep,
 } from '@/lib/store/icu/icu-order'
 import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
 import { borderedOrderClassName } from '@/lib/utils/utils'
 import type { VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { useMemo, type RefObject } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   sortedOrders: SelectedIcuOrder[]
@@ -89,9 +89,9 @@ export default function OrderRows({
         is_bordered: order.is_bordered!,
       })
     }
-    toast({
-      title: '오더를 붙여넣었습니다',
-    })
+
+    toast.success('오더를 붙여넣었습니다')
+
     resetOrderStore()
   }
 

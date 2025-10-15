@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/card'
-import { SIDEBAR_ITEMS } from '@/constants/hospital/sidebar-items'
 import { type AnnouncementDetailData } from '@/types/vetool'
-import { MessageCircle } from 'lucide-react'
+import { MessageCircleIcon } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import { SIDEBAR_MENUS } from '../hospital/sidebar/hospital-sidebar'
 
 export default function AnnouncementsDetail({
   announcementDetailData,
@@ -26,7 +26,7 @@ export default function AnnouncementsDetail({
           <div className="flex flex-col gap-2 text-center">
             <span className="text-xl font-bold">{announcement_title}</span>
             <span className="text-xs leading-6 text-muted-foreground">
-              {`${SIDEBAR_ITEMS.find((item) => item.path === announcement_category)?.name ?? '전체'} | 
+              {`${SIDEBAR_MENUS.find(({ path }) => path === announcement_category)?.name ?? '전체'} | 
               ${created_at.slice(0, 10)}`}
             </span>
           </div>
@@ -46,7 +46,7 @@ export default function AnnouncementsDetail({
       {feedback_id?.feedback_description && (
         <div className="bg-muted/50 p-6">
           <div className="mb-4 flex items-center gap-2 text-muted-foreground">
-            <MessageCircle size={20} />
+            <MessageCircleIcon size={20} />
             <span className="text-lg font-semibold">반영된 피드백</span>
           </div>
 

@@ -14,7 +14,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import type { HosListData } from '@/types/hospital'
+import { HospitalList } from '@/lib/services/hospital-home/home'
 import { ChevronsUpDown } from 'lucide-react'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -22,7 +22,7 @@ import { useState } from 'react'
 export default function SuperHospitalSelector({
   hosList,
 }: {
-  hosList: HosListData[]
+  hosList: HospitalList[]
 }) {
   const { hos_id } = useParams()
   const pathname = usePathname()

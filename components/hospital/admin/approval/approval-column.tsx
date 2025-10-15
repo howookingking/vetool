@@ -8,10 +8,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { toast } from '@/components/ui/use-toast'
 import { approveStaff } from '@/lib/services/admin/approval'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   userId: string
@@ -31,10 +31,10 @@ export function ApprovalColumn({ userId, name, isApproved }: Props) {
 
     await approveStaff(hos_id as string, userId)
 
-    toast({
-      title: `${name}님을 스태프목록에 추가하였습니다`,
+    toast.success(`${name}님을 스태프목록에 추가하였습니다`, {
       description: '스태프관리에서 스테프설정을 변경할 수 있습니다',
     })
+
     setIsUpdating(false)
     setIsDialogOpen(false)
     refresh()

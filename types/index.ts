@@ -12,7 +12,7 @@ export type IcuNotification =
 export type Todo = Database['public']['Tables']['todos']['Row']
 export type IcuDefaultChart =
   Database['public']['Tables']['icu_default_chart']['Row']
-export type IcuCharts = Database['public']['Tables']['icu_charts']['Row']
+export type IcuChart = Database['public']['Tables']['icu_charts']['Row']
 export type IcuOrders = Database['public']['Tables']['icu_orders']['Row']
 export type IcuTxs = Database['public']['Tables']['icu_txs']['Row']
 export type IcuTemplate = Database['public']['Tables']['icu_templates']['Row']
@@ -94,4 +94,10 @@ export type VetoolUser = Pick<
   | 'user_id'
   | 'is_super'
   | 'hos_id'
+>
+
+// is_vet 이 true인 경우에만 사용하는 user
+export type Vet = Pick<
+  User,
+  'name' | 'position' | 'user_id' | 'avatar_url' | 'rank'
 >

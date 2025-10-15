@@ -6,11 +6,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { toast } from '@/components/ui/use-toast'
 import { updateStaffIsAdmin } from '@/lib/services/admin/staff'
 import { Crown, User } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   isAdmin: boolean
@@ -41,9 +41,7 @@ export default function IsAdminColumn({
 
     await updateStaffIsAdmin(userId, parsedIsAdmin)
 
-    toast({
-      title: '관리자여부를 변경하였습니다',
-    })
+    toast.success('관리자여부를 변경하였습니다')
 
     setIsUpdating(false)
     refresh()

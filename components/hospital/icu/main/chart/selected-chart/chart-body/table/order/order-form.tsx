@@ -7,7 +7,6 @@ import OrderTimeSettings from '@/components/hospital/icu/main/chart/selected-cha
 import { Button } from '@/components/ui/button'
 import { DialogClose, DialogFooter } from '@/components/ui/dialog'
 import { Form } from '@/components/ui/form'
-import { toast } from '@/components/ui/use-toast'
 import type { OrderType } from '@/constants/hospital/icu/chart/order'
 import { orderSchema } from '@/lib/schemas/icu/chart/order-schema'
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
@@ -16,10 +15,11 @@ import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { LoaderCircle } from 'lucide-react'
+import { LoaderCircleIcon } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 type Props = {
@@ -38,7 +38,7 @@ export default function OrderForm({
   const { setOrderStep, selectedChartOrder, setSelectedChartOrder, reset } =
     useIcuOrderStore()
   const {
-    basicHosData: { vetsListData },
+    basicHosData: { vetList },
   } = useBasicHosDataContext()
 
   const [isUpdating, setIsUpdating] = useState(false)
@@ -94,7 +94,7 @@ export default function OrderForm({
       hos_id as string,
       icuChartId,
       selectedChartOrder.order_id,
-      orderTime.map((time) => (time === '0' ? '0' : vetsListData[0].name)),
+      orderTime.map((time) => (time === '0' ? '0' : vetList[0].name)),
       {
         icu_chart_order_name: icu_chart_order_name.trim(),
         icu_chart_order_comment: icu_chart_order_comment
@@ -105,9 +105,7 @@ export default function OrderForm({
       },
     )
 
-    toast({
-      title: '오더를 수정 하였습니다',
-    })
+    toast.success('오더를 수정하였습니다')
 
     reset()
     setOrderStep('closed')
@@ -164,7 +162,7 @@ export default function OrderForm({
 
           <Button type="submit" disabled={isUpdating}>
             확인
-            <LoaderCircle
+            <LoaderCircleIcon
               className={cn(isUpdating ? 'animate-spin' : 'hidden')}
             />
           </Button>

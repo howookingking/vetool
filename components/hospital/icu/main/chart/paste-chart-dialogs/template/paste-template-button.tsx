@@ -1,11 +1,11 @@
 import { Button } from '@/components/ui/button'
-import { toast } from '@/components/ui/use-toast'
 import { pasteTemplateOrders } from '@/lib/services/icu/chart/order-mutation'
 import { pasteChart } from '@/lib/services/icu/chart/paste-chart'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { Check, LoaderCircle } from 'lucide-react'
+import { CheckIcon, LoaderCircleIcon } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useState } from 'react'
+import { toast } from 'sonner'
 
 type PasteTemplateButtonProps = {
   templateChartId: string
@@ -23,7 +23,7 @@ export default function PasteTemplateButton({
   const { target_date, patient_id } = useParams()
 
   const {
-    basicHosData: { vetsListData },
+    basicHosData: { vetList },
   } = useBasicHosDataContext()
 
   const [isLoading, setIsLoading] = useState(false)
@@ -39,12 +39,10 @@ export default function PasteTemplateButton({
           patient_id as string,
           templateChartId,
           target_date as string,
-          vetsListData[0].name,
+          vetList[0].name,
         )
 
-    toast({
-      title: '템플릿 오더를 붙여넣었습니다',
-    })
+    toast.success('템플릿 오더를 붙여넣었습니다')
 
     setIsLoading(false)
     setIsDialogOpen(false)
@@ -53,9 +51,9 @@ export default function PasteTemplateButton({
   return (
     <Button size="icon" onClick={handlePasteSelectedTemplate} variant="ghost">
       {isLoading ? (
-        <LoaderCircle className="animate-spin" />
+        <LoaderCircleIcon className="animate-spin" />
       ) : (
-        <Check size={16} />
+        <CheckIcon size={16} />
       )}
     </Button>
   )

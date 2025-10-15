@@ -19,7 +19,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { toast } from '@/components/ui/use-toast'
 import { getVisitablePatients } from '@/lib/services/icu/out-and-visit/icu-out-chart'
 import { insertVisitPatient } from '@/lib/services/icu/out-and-visit/visit-chart'
 import { convertPascalCased } from '@/lib/utils/utils'
@@ -27,6 +26,7 @@ import { VisitablePatientsData } from '@/types/icu/movement'
 import { Plus } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 export default function AddVisitPatientDialog() {
   const { hos_id, target_date } = useParams()
@@ -60,9 +60,7 @@ export default function AddVisitPatientDialog() {
       patient_id,
     )
 
-    toast({
-      title: '면회 환자를 추가하였습니다',
-    })
+    toast.success('면회 환자를 추가하였습니다')
 
     refresh()
     setIsDialogOpen(false)

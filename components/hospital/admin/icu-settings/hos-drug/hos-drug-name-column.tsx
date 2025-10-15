@@ -1,8 +1,8 @@
 import { Input } from '@/components/ui/input'
-import { toast } from '@/components/ui/use-toast'
 import { updateHosDrugName } from '@/lib/services/admin/icu/hos-drugs'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   hosDrugName: string
@@ -32,9 +32,8 @@ export default function HosDrugNameColumn({ hosDrugId, hosDrugName }: Props) {
 
     await updateHosDrugName(hosDrugNameInput.trim(), hosDrugId)
 
-    toast({
-      title: '약물명이 변경되었습니다',
-    })
+    toast.success('약물명을 변경하엿습니다')
+
     setIsUpdating(false)
     refresh()
   }

@@ -2,18 +2,17 @@
 
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { toast } from '@/components/ui/use-toast'
 import { updateCage } from '@/lib/services/icu/chart/update-icu-chart-infos'
-import { SquarePlus } from 'lucide-react'
+import { SquarePlusIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
-export default function Cage({
-  cage,
-  icuIoId,
-}: {
-  cage: string
+type Props = {
   icuIoId: string
-}) {
+  cage: string
+}
+
+export default function Cage({ cage, icuIoId }: Props) {
   const [cageInput, setCageInput] = useState(cage)
   const [isUpdating, setIsUpdating] = useState(false)
 
@@ -26,9 +25,7 @@ export default function Cage({
     setIsUpdating(true)
     await updateCage(icuIoId, cageInput.trim())
 
-    toast({
-      title: '입원장을 변경하였습니다',
-    })
+    toast.success('입원장을 변경하였습니다')
 
     setIsUpdating(false)
   }
@@ -43,7 +40,7 @@ export default function Cage({
         className="absolute left-2 text-xs text-muted-foreground"
         htmlFor="cage"
       >
-        <SquarePlus size={16} className="text-muted-foreground" />
+        <SquarePlusIcon size={16} className="text-muted-foreground" />
       </Label>
 
       <Input

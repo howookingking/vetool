@@ -1,8 +1,8 @@
 import { Input } from '@/components/ui/input'
-import { toast } from '@/components/ui/use-toast'
 import { updateStaffPosition } from '@/lib/services/admin/staff'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   position: string
@@ -25,10 +25,8 @@ export default function PositionColumn({ position, userId }: Props) {
     }
 
     if (positionInput && positionInput.length > 10) {
-      toast({
-        variant: 'destructive',
-        title: '10자 내로 입력해주세요',
-      })
+      toast.warning('10자 내로 입력해주세요')
+
       setPositionInput(position)
       return
     }
@@ -37,9 +35,8 @@ export default function PositionColumn({ position, userId }: Props) {
 
     await updateStaffPosition(userId, positionInput)
 
-    toast({
-      title: '직책을을 변경하였습니다',
-    })
+    toast.success('직책을 변경하였습니다')
+
     setIsUpdating(false)
     refresh()
   }

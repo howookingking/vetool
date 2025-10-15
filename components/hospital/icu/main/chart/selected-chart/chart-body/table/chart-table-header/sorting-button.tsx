@@ -1,12 +1,12 @@
 import { Button } from '@/components/ui/button'
-import { toast } from '@/components/ui/use-toast'
 import useShortcutKey from '@/hooks/use-shortcut-key'
 import { reorderDefaultOrders } from '@/lib/services/admin/icu/default-orders'
 import { reorderOrders } from '@/lib/services/icu/chart/order-mutation'
 import { cn, hasOrderSortingChanged } from '@/lib/utils/utils'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
-import { ArrowUpDown } from 'lucide-react'
+import { ArrowUpDownIcon } from 'lucide-react'
 import type { Dispatch, SetStateAction } from 'react'
+import { toast } from 'sonner'
 
 type SortingButtonProps = {
   isSorting: boolean
@@ -25,10 +25,10 @@ export default function SortingButton({
 }: SortingButtonProps) {
   const handleSortButtonClick = async () => {
     if (!isSorting) {
-      toast({
-        title: '오더를 Drag & Drop 하여 순서를 변경해주세요',
+      toast.info('오더를 Drag & Drop 하여 순서를 변경해주세요', {
         description: '"CTRL + S" 또는 "ESC"를 눌러 순서 변경을 완료해주세요',
       })
+
       setIsSorting(true)
     }
 
@@ -46,7 +46,8 @@ export default function SortingButton({
         : await reorderOrders(orderIds)
 
       setIsSorting(false)
-      toast({ title: '오더 순서를 변경하였습니다' })
+
+      toast.success('오더 순서를 변경하였습니다')
     }
   }
 
@@ -74,7 +75,7 @@ export default function SortingButton({
       )}
       onClick={handleSortButtonClick}
     >
-      <ArrowUpDown size={18} />
+      <ArrowUpDownIcon size={18} />
     </Button>
   )
 }

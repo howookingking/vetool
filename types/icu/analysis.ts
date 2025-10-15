@@ -1,5 +1,4 @@
-import { IcuIo, Patient } from '@/types'
-import { Vet } from '@/types/icu/chart'
+import type { IcuIo, Patient, Vet } from '@/types'
 
 export type IcuAnalysisData = {
   icu_io: Pick<IcuIo, 'icu_io_id' | 'in_date' | 'out_date' | 'group_list'>

@@ -26,17 +26,17 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { toast } from '@/components/ui/use-toast'
 import { NOTICE_COLORS } from '@/constants/hospital/icu/chart/colors'
 import { noticeSchema } from '@/lib/schemas/hospital-home/hospital-home-schemas'
 import { createNotice, updateNotice } from '@/lib/services/hospital-home/notice'
 import { cn } from '@/lib/utils/utils'
-import { type NoticeColorType } from '@/types/hospital/notice'
+import type { NoticeColorType } from '@/types/hospital/notice'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Edit, LoaderCircle, Plus } from 'lucide-react'
+import { EditIcon, LoaderCircleIcon, PlusIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 type UpsertNoticeDialogProps = {
@@ -75,9 +75,10 @@ export default function UpsertNoticeDialog({
       ? await updateNotice(oldNoticeId!, notice, color)
       : await createNotice(notice, color, hosId)
 
-    toast({
-      title: isEdit ? '공지사항을 수정하였습니다' : '공지사항을 추가하였습니다',
-    })
+    toast.success(
+      isEdit ? '공지사항을 수정하였습니다' : '공지사항을 추가하였습니다',
+    )
+
     refresh()
     setIsDialogOpen(false)
     setIsSubmitting(false)
@@ -98,7 +99,7 @@ export default function UpsertNoticeDialog({
       <DialogTrigger asChild>
         {isEdit ? (
           <Button size="icon" className="h-6 w-6" variant="ghost">
-            <Edit
+            <EditIcon
               style={{
                 width: '14px',
                 height: '14px',
@@ -111,7 +112,7 @@ export default function UpsertNoticeDialog({
             size="icon"
             className="h-6 w-6 rounded-full"
           >
-            <Plus size={14} />
+            <PlusIcon size={14} />
           </Button>
         )}
       </DialogTrigger>
@@ -210,7 +211,7 @@ export default function UpsertNoticeDialog({
 
                 <Button type="submit" className="ml-2" disabled={isSubmitting}>
                   {isEdit ? '수정' : '등록'}
-                  <LoaderCircle
+                  <LoaderCircleIcon
                     className={cn(
                       isSubmitting ? 'ml-2 animate-spin' : 'hidden',
                     )}

@@ -1,35 +1,44 @@
 import PatientButton from '@/components/hospital/icu/sidebar/patient-list/patient-button'
 import { Separator } from '@/components/ui/separator'
-import type { IcuSidebarIoData, Vet } from '@/types/icu/chart'
+import { cn, type FilteredData } from '@/lib/utils/utils'
+import type { Vet } from '@/types'
+import type { FilterState } from '../filters/filters'
 
-type IcuSidebarContentProps = {
-  filteredData: {
-    filteredIcuIoData: IcuSidebarIoData[]
-    excludedIcuIoData: IcuSidebarIoData[]
-    filteredIoPatientCount: number
-  }
-  vetsListData: Vet[]
+type Props = {
+  filters: FilterState
+  filteredData: FilteredData
   handleCloseMobileDrawer?: () => void
+  vetList: Vet[]
+  hosId: string
+  targetDate: string
 }
 
 export default function PatientList({
+  filters,
   filteredData,
-  vetsListData,
   handleCloseMobileDrawer,
-}: IcuSidebarContentProps) {
-  const { filteredIcuIoData, excludedIcuIoData, filteredIoPatientCount } =
-    filteredData
+  vetList,
+  hosId,
+  targetDate,
+}: Props) {
+  const isFilterSelected = filters.selectedGroup || filters.selectedVet
+  const { filteredIcuIoData, excludedIcuIoData, outIcuIoData } = filteredData
 
-  const fileteredPatientCount = filteredIcuIoData.length
-  const excludedPatientCount = excludedIcuIoData.length
+  const filteredCount = filteredIcuIoData.length
+  const excludedCount = excludedIcuIoData.length
+  const outCount = outIcuIoData.length
 
   return (
     <div className="flex-col gap-3 overflow-y-auto">
-      {fileteredPatientCount > 0 ? (
-        <ul className="flex flex-col gap-2 overflow-y-scroll">
-          <li className="flex items-center justify-between text-xs font-bold text-muted-foreground">
-            <span className="font-bold">
-              입원환자 ({filteredIoPatientCount})
+      {/* 입원 중인 환자가 0명인 경우 */}
+      {filteredCount + excludedCount === 0 ? (
+        <div className="mb-2 text-xs font-bold">입원환자 (0)</div>
+      ) : (
+        <ul className="flex flex-col gap-2">
+          <li className="flex items-center justify-between text-xs font-bold">
+            <span className={cn('font-bold', filteredCount === 0 && 'mb-2')}>
+              {isFilterSelected ? '필터링된 ' : ''}
+              입원환자 ({filteredCount})
             </span>
           </li>
 
@@ -41,25 +50,21 @@ export default function PatientList({
             >
               <PatientButton
                 icuIoData={icuIoData}
-                vetsListData={vetsListData}
+                vetList={vetList}
+                hosId={hosId}
+                targetDate={targetDate}
               />
             </li>
           ))}
         </ul>
-      ) : (
-        <span className="py-2 text-xs font-bold text-muted-foreground">
-          필터링된 입원환자 없음
-        </span>
       )}
 
-      {excludedPatientCount > 0 && (
+      {excludedCount > 0 && (
         <>
-          <Separator className="my-3" />
+          <Separator className="mb-2" />
 
-          <ul className="flex flex-col gap-2 overflow-y-scroll">
-            <li className="text-xs font-bold text-muted-foreground">
-              필터링 제외 ({excludedPatientCount})
-            </li>
+          <ul className="flex flex-col gap-2">
+            <li className="text-xs font-bold">필터링 제외 ({excludedCount})</li>
             {excludedIcuIoData.map((icuIoData) => (
               <li
                 key={icuIoData.icu_io_id}
@@ -68,7 +73,35 @@ export default function PatientList({
               >
                 <PatientButton
                   icuIoData={icuIoData}
-                  vetsListData={vetsListData}
+                  vetList={vetList}
+                  hosId={hosId}
+                  targetDate={targetDate}
+                />
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+
+      {outCount > 0 && (
+        <>
+          <Separator className="mb-2" />
+
+          <ul className="flex flex-col gap-2">
+            <li className="text-xs font-bold text-muted-foreground">
+              퇴원환자 ({outCount})
+            </li>
+            {outIcuIoData.map((icuIoData) => (
+              <li
+                key={icuIoData.icu_io_id}
+                className="w-full last:mb-2"
+                onClick={handleCloseMobileDrawer}
+              >
+                <PatientButton
+                  icuIoData={icuIoData}
+                  vetList={vetList}
+                  hosId={hosId}
+                  targetDate={targetDate}
                 />
               </li>
             ))}

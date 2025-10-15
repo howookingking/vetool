@@ -10,11 +10,11 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { toast } from '@/components/ui/use-toast'
 import { deleteVisitPatient } from '@/lib/services/icu/out-and-visit/icu-out-chart'
 import { X } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useCallback } from 'react'
+import { toast } from 'sonner'
 
 export function CancelVisit({
   visitId,
@@ -27,9 +27,8 @@ export function CancelVisit({
   const handleUpdateOutDueDate = useCallback(async () => {
     await deleteVisitPatient(visitId)
 
-    toast({
-      title: '퇴원예정일을 취소하였습니다',
-    })
+    toast.success('퇴원 예정을 취소하였습니다')
+
     refresh()
   }, [refresh, visitId])
 

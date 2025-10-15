@@ -9,32 +9,34 @@ import { changeTargetDateInUrl } from '@/lib/utils/utils'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
 
 export default function IcuDatePicker({ targetDate }: { targetDate: string }) {
-  const { push } = useRouter()
-  const [open, setOpen] = useState(false)
   const searchParams = useSearchParams()
-  const params = new URLSearchParams(searchParams)
   const path = usePathname()
+  const { push } = useRouter()
 
   const handleSelectDate = (date: Date | undefined) => {
     if (date) {
       const formattedDate = format(date, 'yyyy-MM-dd')
-      const newPath = changeTargetDateInUrl(path, formattedDate, params)
+
+      const newPath = changeTargetDateInUrl(
+        path,
+        formattedDate,
+        new URLSearchParams(searchParams),
+      )
+
       push(newPath)
-      setOpen(false)
     }
   }
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover>
       <PopoverTrigger asChild>
         <Button
-          className="h-8 px-2 py-0 text-base font-semibold"
+          className="h-8 px-2 py-0 font-mono text-base font-semibold"
           variant="ghost"
         >
-          {format(targetDate, 'yyyy-MM-dd')}
+          {format(targetDate, 'yy.MM.dd')}
         </Button>
       </PopoverTrigger>
 

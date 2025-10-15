@@ -1,5 +1,3 @@
-'use no memo'
-
 import CommonDialogFooter from '@/components/common/common-dialog-footer'
 import {
   Form,
@@ -17,13 +15,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { toast } from '@/components/ui/use-toast'
 import { cpcrEtTubeSchema } from '@/lib/schemas/icu/chart/chart-info-schema'
 import { updateCpcrEtTube } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { type Dispatch, type SetStateAction, useRef, useState } from 'react'
+import { type Dispatch, type SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import * as z from 'zod'
 
 type Props = {
@@ -50,9 +48,7 @@ export default function CpcrEtTubeUpdateForm({
     const etTube = values.cpcr === 'CPCR' ? values.etTube : null
     await updateCpcrEtTube(icuIoId, values.cpcr, etTube)
 
-    toast({
-      title: 'CPCR / ET Tube를 변경하였습니다',
-    })
+    toast.success('CPCR / ET Tube를 변경하였습니다')
 
     setIsUpdating(false)
     setIsDialogOpen(false)
@@ -67,8 +63,6 @@ export default function CpcrEtTubeUpdateForm({
   })
 
   const cpcrValue = form.watch('cpcr')
-
-  const etTubeRef = useRef<HTMLSelectElement>(null)
 
   return (
     <Form {...form}>
@@ -107,9 +101,9 @@ export default function CpcrEtTubeUpdateForm({
                 </FormControl>
                 <SelectContent>
                   <SelectGroup>
+                    <SelectItem value="미지정">미지정</SelectItem>
                     <SelectItem value="CPCR">CPCR</SelectItem>
                     <SelectItem value="DNR">DNR</SelectItem>
-                    <SelectItem value="미지정">미지정</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
