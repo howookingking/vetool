@@ -50,7 +50,7 @@ export default function ClEmergencyDialog({ hosId, targetDate }: Props) {
   return (
     <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="secondary" className="w-1/2" size="sm">
+        <Button variant="secondary" className="pr-4 text-sm" size="sm">
           <SirenIcon />
           EMERGENCY
         </Button>

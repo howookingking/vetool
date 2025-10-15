@@ -1,7 +1,11 @@
 'use no memo'
 
 import HelperTooltip from '@/components/common/helper-tooltip'
+import InputSuffix from '@/components/common/input-suffix'
+import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import BirthDatePicker from '@/components/common/patients/form/birth-date-picker'
+import RequiredFieldDot from '@/components/common/requied-field-dot'
+import SubmitButton from '@/components/common/submit-button'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -50,11 +54,13 @@ import {
 } from '@/lib/services/patient/patient'
 import { cn, formatEditingBreed } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { CaretSortIcon } from '@radix-ui/react-icons'
 import { format } from 'date-fns'
-import { CheckIcon, ChevronDownIcon, LoaderCircleIcon } from 'lucide-react'
+import { MessageCircleIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import * as z from 'zod'
 
 type Props =
@@ -146,7 +152,8 @@ export default function ClPatientRegisterForm({
     if (watchBreed) {
       setBreedOpen(false)
     }
-  }, [watchBreed])
+    form.setValue('weight', patient?.body_weight ?? '')
+  }, [watchBreed, form, patient?.body_weight])
 
   const handleRegister = async (
     values: z.infer<typeof registerPatientFormSchema>,
@@ -191,16 +198,15 @@ export default function ClPatientRegisterForm({
       format(birth, 'yyyy-MM-dd'),
     )
 
-    // toast({
-    //   title: `${name} 생성 및 체크리스트가 등록되었습니다`,
-    // })
-
-    setIsSubmitting(false)
-    setIsDialogOpen(false)
-
     push(
       `/hospital/${hosId}/checklist/${targetDate}/chart/${returningChecklistId}/checklist`,
     )
+
+    setIsSubmitting(false)
+
+    setIsDialogOpen(false)
+
+    toast.success('신규 환자 등록 및 체크리스트 등록 완료')
   }
 
   const handleUpdate = async (
@@ -242,12 +248,12 @@ export default function ClPatientRegisterForm({
       isWeightChanged!,
     )
 
-    // toast({
-    //   title: `${name} 정보를 수정했습니다`,
-    // })
+    toast.success('환자 정보를 수정하였습니다')
 
     setIsSubmitting(false)
+
     setIsDialogOpen(false)
+
     refresh()
   }
 
@@ -263,12 +269,12 @@ export default function ClPatientRegisterForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel htmlFor="name">
-                환자 이름 <span className="text-destructive">*</span>
+                환자 이름 <RequiredFieldDot />
               </FormLabel>
               <FormControl>
                 <Input
                   {...field}
-                  className="h-8 text-sm"
+                  className="h-8"
                   autoComplete="off"
                   id="name"
                 />
@@ -285,16 +291,18 @@ export default function ClPatientRegisterForm({
             <FormItem className="flex flex-col justify-end">
               <div className="flex items-center gap-2">
                 <FormLabel>
-                  환자 번호 <span className="text-destructive">*</span>
+                  환자 번호 <RequiredFieldDot />
                 </FormLabel>
-                <HelperTooltip>메인차트에 등록되어있는 환자번호</HelperTooltip>
+                <HelperTooltip side="right">
+                  메인차트에 등록되어있는 환자번호
+                </HelperTooltip>
               </div>
               <FormControl>
                 <Input
                   {...field}
                   value={field.value || ''}
                   onChange={field.onChange}
-                  className="h-8 text-sm"
+                  className="h-8"
                 />
               </FormControl>
 
@@ -309,7 +317,7 @@ export default function ClPatientRegisterForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                종 <span className="text-destructive">*</span>
+                종 <RequiredFieldDot />
               </FormLabel>
               <Select
                 onValueChange={(value) => {
@@ -322,7 +330,7 @@ export default function ClPatientRegisterForm({
                 <FormControl>
                   <SelectTrigger
                     className={cn(
-                      'h-8 text-sm',
+                      'h-8',
                       !field.value && 'text-muted-foreground',
                     )}
                   >
@@ -348,9 +356,19 @@ export default function ClPatientRegisterForm({
           name="breed"
           render={({ field }) => (
             <FormItem className="flex flex-col justify-end">
-              <FormLabel>
-                품종 <span className="text-destructive">*</span>
-              </FormLabel>
+              <div className="flex items-center gap-2">
+                <FormLabel>
+                  품종
+                  <RequiredFieldDot />
+                </FormLabel>
+                <HelperTooltip side="right">
+                  <div className="flex items-center">
+                    품종이 없을 경우 &apos;기타종&apos;으로 등록 후 피드백
+                    <MessageCircleIcon size={12} className="mx-1" />
+                    부탁드립니다
+                  </div>
+                </HelperTooltip>
+              </div>
               <Popover open={breedOpen} onOpenChange={setBreedOpen} modal>
                 <PopoverTrigger asChild disabled={!watchSpecies}>
                   <FormControl>
@@ -358,18 +376,16 @@ export default function ClPatientRegisterForm({
                       variant="outline"
                       role="combobox"
                       className={cn(
-                        'relative h-8 w-full justify-start overflow-hidden border border-input bg-inherit px-3 text-sm font-normal',
+                        'relative h-8 w-full justify-start pl-3 font-normal',
                         !field.value && 'text-muted-foreground',
                       )}
                     >
-                      <span className="block overflow-hidden text-ellipsis whitespace-nowrap pr-6">
-                        {field.value
-                          ? `${field.value.split('#')[1]} (${field.value.split('#')[0]})`
-                          : watchSpecies
-                            ? '품종을 선택해주세요'
-                            : '종을 먼저 선택해주세요'}
-                      </span>
-                      <ChevronDownIcon className="absolute right-3 h-4 w-4 shrink-0 opacity-50" />
+                      {field.value
+                        ? `${field.value.split('#')[0]}`
+                        : watchSpecies
+                          ? '품종 선택'
+                          : '종 선택'}
+                      <CaretSortIcon className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground" />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
@@ -379,7 +395,7 @@ export default function ClPatientRegisterForm({
                   align="start"
                   side="bottom"
                 >
-                  <Command className="w-full">
+                  <Command>
                     <CommandInput
                       placeholder="품종 검색"
                       className="h-8 text-xs"
@@ -387,7 +403,14 @@ export default function ClPatientRegisterForm({
                     />
                     <CommandList>
                       <ScrollArea className="h-64">
-                        <CommandEmpty>해당 품종 검색 결과 없음.</CommandEmpty>
+                        <CommandEmpty>
+                          <NoResultSquirrel
+                            text="품종 검색 결과 없음"
+                            size="sm"
+                            className="flex-col pt-16 text-muted-foreground"
+                          />
+                        </CommandEmpty>
+
                         <CommandGroup>
                           {BREEDS.map((breed) => (
                             <CommandItem
@@ -397,14 +420,6 @@ export default function ClPatientRegisterForm({
                               className="text-xs"
                             >
                               {`${breed.kor} (${breed.eng})`}
-                              <CheckIcon
-                                className={cn(
-                                  'ml-auto h-4 w-4',
-                                  breed.eng === field.value.split('#')[0]
-                                    ? 'opacity-100'
-                                    : 'opacity-0',
-                                )}
-                              />
                             </CommandItem>
                           ))}
                         </CommandGroup>
@@ -424,7 +439,7 @@ export default function ClPatientRegisterForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                성별 <span className="text-destructive">*</span>
+                성별 <RequiredFieldDot />
               </FormLabel>
               <Select
                 onValueChange={field.onChange}
@@ -434,11 +449,11 @@ export default function ClPatientRegisterForm({
                 <FormControl>
                   <SelectTrigger
                     className={cn(
-                      'h-8 text-sm',
+                      'h-8',
                       !field.value && 'text-muted-foreground',
                     )}
                   >
-                    <SelectValue placeholder="성별을 선택해주세요" />
+                    <SelectValue placeholder="성별 선택" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -471,7 +486,7 @@ export default function ClPatientRegisterForm({
             <FormItem>
               <FormLabel>마이크로칩 번호</FormLabel>
               <FormControl>
-                <Input {...field} className="h-8 text-sm" />
+                <Input {...field} className="h-8" />
               </FormControl>
 
               <FormMessage />
@@ -484,12 +499,20 @@ export default function ClPatientRegisterForm({
           name="weight"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>몸무게</FormLabel>
-              <div className="relative flex">
+              <FormLabel>
+                몸무게
+                {patient?.weight_measured_date && (
+                  <span className="ml-0.5 text-xs text-muted-foreground">
+                    ({patient?.weight_measured_date} 측정)
+                  </span>
+                )}
+              </FormLabel>
+
+              <div className="relative">
                 <FormControl>
-                  <Input {...field} className="h-8 text-sm" />
+                  <Input {...field} className="h-8" />
                 </FormControl>
-                <span className="absolute right-2 top-2 text-xs">kg</span>
+                <InputSuffix text="kg" />
               </div>
 
               <FormMessage />
@@ -504,7 +527,7 @@ export default function ClPatientRegisterForm({
             <FormItem>
               <FormLabel>보호자 이름</FormLabel>
               <FormControl>
-                <Input {...field} className="h-8 text-sm" />
+                <Input {...field} className="h-8" />
               </FormControl>
 
               <FormMessage />
@@ -519,7 +542,7 @@ export default function ClPatientRegisterForm({
             <FormItem>
               <FormLabel>보호자 번호</FormLabel>
               <FormControl>
-                <Input {...field} className="h-8 text-sm" />
+                <Input {...field} className="h-8" />
               </FormControl>
 
               <FormMessage />
@@ -555,13 +578,10 @@ export default function ClPatientRegisterForm({
               닫기
             </Button>
 
-            <Button disabled={isSubmitting} className="w-14">
-              {isSubmitting ? (
-                <LoaderCircleIcon className="animate-spin" />
-              ) : (
-                '확인'
-              )}
-            </Button>
+            <SubmitButton
+              buttonText={isEdit ? '수정' : '등록'}
+              isPending={isSubmitting}
+            />
           </div>
         </div>
       </form>

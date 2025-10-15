@@ -53,7 +53,7 @@ export default function IcuDatePicker({ targetDate }: { targetDate: string }) {
           mode="single"
           initialFocus
           selected={new Date(targetDate)}
-          onSelect={(date) => handleSelectDate(date)}
+          onSelect={handleSelectDate}
         />
       </PopoverContent>
     </Popover>

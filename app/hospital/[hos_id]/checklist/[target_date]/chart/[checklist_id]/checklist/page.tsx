@@ -1,10 +1,9 @@
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
-import ChecklistBodyContainer from '@/components/hospital/checklist/checklist-body/checklist-body-container'
-import ClTimeIndicatorTable from '@/components/hospital/checklist/checklist-body/cl-time-indicator-table'
+import ChecklistBody from '@/components/hospital/checklist/checklist-body/checklist-body'
 import ChecklistHeader from '@/components/hospital/checklist/checklist-header/checklist-header'
 import { fetchChecklistWithPatientWithWeight } from '@/lib/services/checklist/checklist-data'
 
-export default async function ChecklistBody(props: {
+export default async function PatientChecklistPage(props: {
   params: Promise<{
     hos_id: string
     target_date: string
@@ -12,6 +11,7 @@ export default async function ChecklistBody(props: {
   }>
 }) {
   const { checklist_id, target_date, hos_id } = await props.params
+
   const checklistData = await fetchChecklistWithPatientWithWeight(checklist_id)
 
   if (!checklistData) {
@@ -32,11 +32,7 @@ export default async function ChecklistBody(props: {
         checklistData={checklistData}
       />
 
-      <h3 className="m-3 text-xl font-bold">{checklistData.checklist_title}</h3>
-
-      <ClTimeIndicatorTable checklistData={checklistData} />
-
-      <ChecklistBodyContainer checklistData={checklistData} />
+      <ChecklistBody checklistData={checklistData} />
     </div>
   )
 }

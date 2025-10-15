@@ -19,10 +19,10 @@ export default function ClDesktopSidebar({
   handleCloseMobileDrawer,
 }: Props) {
   return (
-    <aside className="fixed z-40 hidden h-desktop w-80 shrink-0 flex-col gap-2 border-r bg-white px-2 pb-0 pt-2 2xl:flex">
+    <aside className="fixed z-40 hidden h-desktop w-48 shrink-0 flex-col gap-2 border-r bg-white px-2 pb-0 pt-2 2xl:flex">
       <ClDateSelector hosId={hosId} targetDate={targetDate} />
 
-      <div className="flex justify-between gap-2">
+      <div className="flex flex-col gap-2">
         <ClRegisterDialog hosId={hosId} targetDate={targetDate} />
 
         <ClEmergencyDialog hosId={hosId} targetDate={targetDate} />
@@ -40,6 +40,8 @@ export default function ClDesktopSidebar({
         <ClPatientList
           checklistSidebarData={checklistSidebarData}
           handleCloseMobileDrawer={handleCloseMobileDrawer}
+          hosId={hosId}
+          targetDate={targetDate}
         />
       )}
     </aside>

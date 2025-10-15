@@ -34,10 +34,10 @@ export default function ClDatePicker({ targetDate, hosId }: Props) {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          className="h-8 px-2 py-0 text-base font-semibold"
+          className="h-8 px-2 py-0 font-mono text-base font-semibold"
           variant="ghost"
         >
-          {format(targetDate, 'yyyy-MM-dd')}
+          {format(targetDate, 'yy.MM.dd')}
         </Button>
       </PopoverTrigger>
 

@@ -4,6 +4,7 @@ import { getVetoolUserData } from '@/lib/services/auth/authorization'
 import {
   BarChart4Icon,
   BuildingIcon,
+  CheckSquareIcon,
   HeartPulseIcon,
   HomeIcon,
   ListChecksIcon,
@@ -47,6 +48,12 @@ export const SIDEBAR_MENUS = [
     path: 'icu',
     isReady: true,
     icon: <SyringeIcon />,
+  },
+  {
+    name: '체크리스트',
+    path: 'checklist',
+    isReady: true,
+    icon: <CheckSquareIcon />,
   },
   {
     name: '외과차트',

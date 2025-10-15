@@ -20,11 +20,11 @@ export default async function ChecklistSidebar({ hosId, targetDate }: Props) {
         checklistSidebarData={checklistSidebarData}
       />
 
-      <ClMobileSidebarSheet
+      {/* <ClMobileSidebarSheet
         hosId={hosId}
         targetDate={targetDate}
         checklistSidebarData={checklistSidebarData}
-      />
+      /> */}
     </>
   )
 }

@@ -2,7 +2,13 @@
 
 import ClSearchPatientContainer from '@/components/hospital/checklist/sidebar/checklist-register-dialog/cl-search-patient-container'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils/utils'
 import { PlusIcon } from 'lucide-react'
@@ -45,10 +51,7 @@ export default function ClRegisterDialog({
   return (
     <Dialog open={isRegisterDialogOpen} onOpenChange={handleOpenChage}>
       <DialogTrigger asChild>
-        <Button
-          size="sm"
-          className={cn(isEmergency ? 'w-32' : 'w-1/2', 'text-sm')}
-        >
+        <Button size="sm" className={cn(isEmergency ? 'w-32' : 'pr-4 text-sm')}>
           <PlusIcon />
           {isEmergency ? '환자 등록' : '체크리스트 등록'}
         </Button>
@@ -58,7 +61,8 @@ export default function ClRegisterDialog({
         className={cn('flex flex-col sm:max-w-[1200px]')}
         onInteractOutside={(e) => e.preventDefault()}
       >
-        {/* <RegisterDialogHeader tab={tab} /> */}
+        <DialogTitle>체크리스트 등록</DialogTitle>
+        <DialogDescription />
 
         <Tabs
           defaultValue="search"
@@ -67,11 +71,11 @@ export default function ClRegisterDialog({
         >
           <TabsList className="mb-2 w-full">
             <TabsTrigger value="search" className="w-full">
-              환자 검색 및 선택
+              기존 환자
             </TabsTrigger>
 
             <TabsTrigger value="register" className="w-full">
-              신규 환자 등록
+              신규 환자
             </TabsTrigger>
           </TabsList>
 
