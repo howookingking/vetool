@@ -10,20 +10,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import type { ChecklistWithPatientWithWeight } from '@/lib/services/checklist/checklist-data'
+import type { ChecklistPatient } from '@/lib/services/checklist/checklist-data'
 import { useState } from 'react'
 import ClPatientRegisterForm from '../sidebar/checklist-register-dialog/cl-patient-register-form'
 
 type Props = {
   hosId: string
   targetDate: string
-  checklistData: ChecklistWithPatientWithWeight
+  patient: ChecklistPatient
 }
 
 export default function ClPatientUpdateDialog({
   hosId,
   targetDate,
-  checklistData,
+  patient,
 }: Props) {
   const {
     species,
@@ -34,7 +34,7 @@ export default function ClPatientUpdateDialog({
     body_weight,
     is_alive,
     weight_measured_date,
-  } = checklistData.patient
+  } = patient
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
@@ -51,7 +51,7 @@ export default function ClPatientUpdateDialog({
             breed={breed}
             gender={gender}
             birth={birth}
-            weight={body_weight}
+            weight={body_weight ?? ''}
             weightMeasuredDate={weight_measured_date}
             isAlive={is_alive}
           />
@@ -61,11 +61,11 @@ export default function ClPatientUpdateDialog({
       <DialogContent className="flex flex-col sm:max-w-[1000px]">
         <DialogHeader>
           <DialogTitle>{name} 정보 수정</DialogTitle>
-          <DialogDescription>환자의 정보를 수정합니다</DialogDescription>
+          <DialogDescription />
         </DialogHeader>
 
         <ClPatientRegisterForm
-          patient={checklistData.patient}
+          patient={patient}
           hosId={hosId}
           targetDate={targetDate}
           setIsDialogOpen={setIsDialogOpen}

@@ -42,7 +42,6 @@ import {
   CANINE_BREEDS,
   FELINE_BREEDS,
   SEX,
-  SpeciesTypeEnum,
 } from '@/constants/hospital/register/breed'
 import { registerPatientFormSchema } from '@/lib/schemas/patient/patient-schema'
 import { ChecklistPatient } from '@/lib/services/checklist/checklist-data'
@@ -52,7 +51,7 @@ import {
   isHosPatientIdDuplicated,
   updatePatientFromChecklist,
 } from '@/lib/services/patient/patient'
-import { cn, formatEditingBreed } from '@/lib/utils/utils'
+import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CaretSortIcon } from '@radix-ui/react-icons'
 import { format } from 'date-fns'
@@ -117,10 +116,7 @@ export default function ClPatientRegisterForm({
           name: patient.name,
           hos_patient_id: patient.hos_patient_id,
           species: patient.species,
-          breed: formatEditingBreed(
-            patient.species as SpeciesTypeEnum,
-            patient.breed!,
-          ),
+          breed: patient.breed ?? '',
           gender: patient.gender,
           birth: new Date(patient.birth),
           microchip_no: patient.microchip_no ?? '',

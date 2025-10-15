@@ -59,7 +59,7 @@ export default function IcuPatientUpdateDialog({
       <DialogContent className="flex flex-col sm:max-w-[1000px]">
         <DialogHeader>
           <DialogTitle>{name} 정보 수정</DialogTitle>
-          <DialogDescription>환자의 정보를 수정합니다</DialogDescription>
+          <DialogDescription />
         </DialogHeader>
 
         <PatientFormDynamic

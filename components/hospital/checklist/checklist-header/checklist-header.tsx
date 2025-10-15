@@ -20,7 +20,7 @@ export default function ChecklistHeader({
       <ClPatientUpdateDialog
         hosId={hosId}
         targetDate={targetDate}
-        checklistData={checklistData}
+        patient={checklistData.patient}
       />
 
       <ClHeaderActions checklistData={checklistData} />
