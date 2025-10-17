@@ -99,3 +99,22 @@ export const updateClVet = async (
     return
   }
 }
+
+export const updateClGroup = async (
+  checklistId: string,
+  groupList: string[],
+) => {
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from('checklist')
+    .update({
+      checklist_group: groupList,
+    })
+    .match({ checklist_id: checklistId })
+
+  if (error) {
+    console.error('Update failed:', error.message)
+    return
+  }
+}
