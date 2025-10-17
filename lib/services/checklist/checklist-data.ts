@@ -6,8 +6,8 @@ import type {
   ChecklistProtocol,
   Checklistset,
   ChecklistVet,
-  PreInfo,
   TimeTable,
+  TxMemo,
 } from '@/types/checklist/checklist-type'
 import { redirect } from 'next/navigation'
 
@@ -79,17 +79,15 @@ export type ChecklistWithPatientWithWeight = Omit<
   | 'checklist_timetable'
   | 'checklist_protocol'
   | 'checklist_vet'
+  | 'tx_memo_a'
+  | 'tx_memo_b'
 > & {
   patient: ChecklistPatient
-} & {
   checklist_set: Checklistset
-} & {
-  pre_info: PreInfo
-} & {
+  tx_memo_a: TxMemo[] | null
+  tx_memo_b: TxMemo[] | null
   checklist_timetable: TimeTable | null
-} & {
   checklist_protocol: ChecklistProtocol | null
-} & {
   checklist_vet: ChecklistVet
 }
 
@@ -159,7 +157,8 @@ export const updateEachChecklist = async (
     hos_id: predata.hos_id,
     is_txing: predata.is_txing,
     patient_id: predata.patient.patient_id,
-    pre_info: predata.pre_info,
+    tx_memo_a: predata.tx_memo_a,
+    tx_memo_b: predata.tx_memo_b,
     start_time: predata.start_time,
   }
 

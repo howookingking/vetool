@@ -26,8 +26,9 @@ export const updateEachChecklist = async (
     end_time: predata.end_time,
     hos_id: predata.hos_id,
     is_txing: predata.is_txing,
+    tx_memo_a: predata.tx_memo_a,
+    tx_memo_b: predata.tx_memo_b,
     patient_id: predata.patient.patient_id,
-    pre_info: predata.pre_info,
     start_time: predata.start_time,
   }
 
@@ -111,6 +112,42 @@ export const updateClGroup = async (
     .update({
       checklist_group: groupList,
     })
+    .match({ checklist_id: checklistId })
+
+  if (error) {
+    console.error('Update failed:', error.message)
+    return
+  }
+}
+
+export const updateClTag = async (
+  checklistId: string,
+  checklistTagInput: string,
+) => {
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from('checklist')
+    .update({
+      checklist_tag: checklistTagInput,
+    })
+    .match({ checklist_id: checklistId })
+
+  if (error) {
+    console.error('Update failed:', error.message)
+    return
+  }
+}
+
+export const updateTxMemos = async (
+  query: { [key: string]: TxMemo[] },
+  checklistId: string,
+) => {
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from('checklist')
+    .update(query)
     .match({ checklist_id: checklistId })
 
   if (error) {
