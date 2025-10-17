@@ -3,6 +3,7 @@
 import Suggestions from '@/components/common/auto-complete/suggestions'
 import HelperTooltip from '@/components/common/helper-tooltip'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { useOutsideClick } from '@/hooks/use-outside-click'
 import { useKeywordTrieStore } from '@/lib/store/hospital/keyword-trie'
 import { cn } from '@/lib/utils/utils'
@@ -17,6 +18,17 @@ import {
 } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 
+type Props = {
+  className?: string
+  label?: string
+  handleUpdate?: (value: string) => void
+  defaultValue?: string
+  isUpdating?: boolean
+  placeholder?: string
+  showTooltip?: boolean
+  toolTipMessage?: string
+}
+
 export default function Autocomplete({
   className,
   label,
@@ -24,16 +36,9 @@ export default function Autocomplete({
   defaultValue,
   isUpdating,
   placeholder,
-  isShare,
-}: {
-  className?: string
-  label?: string
-  handleUpdate?: (value: string) => void
-  defaultValue?: string
-  isUpdating?: boolean
-  placeholder?: string
-  isShare?: boolean
-}) {
+  showTooltip = true,
+  toolTipMessage = '키워드는 콤마로 구분됩니다',
+}: Props) {
   const { trie } = useKeywordTrieStore()
 
   const [input, setInput] = useState(defaultValue ?? '')
@@ -160,9 +165,12 @@ export default function Autocomplete({
       ref={autocompleteComponentRef}
     >
       {label && (
-        <p className="absolute left-2 top-2.5 text-xs text-muted-foreground">
+        <Label
+          className="absolute left-2 top-2.5 text-xs text-muted-foreground"
+          htmlFor={label}
+        >
           {label}
-        </p>
+        </Label>
       )}
 
       <Input
@@ -188,9 +196,9 @@ export default function Autocomplete({
         />
       )}
 
-      {!isShare && (
+      {showTooltip && (
         <HelperTooltip className="absolute right-2 top-2">
-          키워드는 콤마로 구분됩니다
+          {toolTipMessage}
         </HelperTooltip>
       )}
     </div>
