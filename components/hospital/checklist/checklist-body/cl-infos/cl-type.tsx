@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { CHECKLIST_TYPES } from '@/constants/checklist/checklist'
-import { updateClType } from '@/lib/services/checklist/update_checklist'
+import { updateClType } from '@/lib/services/checklist/update-checklist'
 import { TestTubeDiagonalIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'

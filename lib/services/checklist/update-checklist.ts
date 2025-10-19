@@ -1,9 +1,9 @@
 'use server'
 
-import type { Checklist } from '@/types'
-import type { ChecklistWithPatientWithWeight } from './checklist-data'
 import { createClient } from '@/lib/supabase/server'
-import { ChecklistVet } from '@/types/checklist/checklist-type'
+import type { Checklist } from '@/types'
+import type { ChecklistVet, TxMemo } from '@/types/checklist/checklist-type'
+import type { ChecklistWithPatientWithWeight } from './checklist-data'
 
 export const updateEachChecklist = async (
   predata: ChecklistWithPatientWithWeight,
@@ -148,6 +148,69 @@ export const updateTxMemos = async (
   const { error } = await supabase
     .from('checklist')
     .update(query)
+    .match({ checklist_id: checklistId })
+
+  if (error) {
+    console.error('Update failed:', error.message)
+    return
+  }
+}
+
+export const startChecklistTime = async (checklistId: string) => {
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from('checklist')
+    .update({ start_time: new Date().toISOString() })
+    .match({ checklist_id: checklistId })
+
+  if (error) {
+    console.error('Update failed:', error.message)
+    return
+  }
+}
+
+export const stopChecklistTime = async (checklistId: string) => {
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from('checklist')
+    .update({ end_time: new Date().toISOString() })
+    .match({ checklist_id: checklistId })
+
+  if (error) {
+    console.error('Update failed:', error.message)
+    return
+  }
+}
+
+export const resetChecklistTime = async (checklistId: string) => {
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from('checklist')
+    .update({ end_time: null, start_time: null })
+    .match({ checklist_id: checklistId })
+
+  if (error) {
+    console.error('Update failed:', error.message)
+    return
+  }
+}
+
+export const updateChecklistTime = async (
+  checklistId: string,
+  startTimeInput: string,
+  endTimeInput: string,
+) => {
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from('checklist')
+    .update({
+      start_time: startTimeInput,
+      end_time: endTimeInput,
+    })
     .match({ checklist_id: checklistId })
 
   if (error) {

@@ -2,7 +2,7 @@
 
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { updateClTitle } from '@/lib/services/checklist/update_checklist'
+import { updateClTitle } from '@/lib/services/checklist/update-checklist'
 import { ClipboardListIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'

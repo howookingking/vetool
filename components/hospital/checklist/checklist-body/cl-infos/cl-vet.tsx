@@ -29,7 +29,7 @@ import {
 } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
 import { vetsFormSchema } from '@/lib/schemas/icu/chart/chart-info-schema'
-import { updateClVet } from '@/lib/services/checklist/update_checklist'
+import { updateClVet } from '@/lib/services/checklist/update-checklist'
 import { updateMainSubVet } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { cn } from '@/lib/utils/utils'
 import { useClContextData } from '@/providers/cl-context-provider'

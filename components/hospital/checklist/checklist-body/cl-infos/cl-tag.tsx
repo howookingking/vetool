@@ -1,7 +1,7 @@
 'use client'
 
 import Autocomplete from '@/components/common/auto-complete/auto-complete'
-import { updateClTag } from '@/lib/services/checklist/update_checklist'
+import { updateClTag } from '@/lib/services/checklist/update-checklist'
 import { useState } from 'react'
 import { toast } from 'sonner'
 

@@ -4,7 +4,7 @@ import { Label } from '@/components/ui/label'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Textarea } from '@/components/ui/textarea'
 import { MEMO_COLORS } from '@/constants/hospital/icu/chart/colors'
-import { updateTxMemos } from '@/lib/services/checklist/update_checklist'
+import { updateTxMemos } from '@/lib/services/checklist/update-checklist'
 import { TxMemo } from '@/types/checklist/checklist-type'
 import type { MemoColor } from '@/types/icu/chart'
 import {

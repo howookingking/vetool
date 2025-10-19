@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { groupCheckFormSchema } from '@/lib/schemas/icu/chart/chart-info-schema'
-import { updateClGroup } from '@/lib/services/checklist/update_checklist'
+import { updateClGroup } from '@/lib/services/checklist/update-checklist'
 import { cn } from '@/lib/utils/utils'
 import { useClContextData } from '@/providers/cl-context-provider'
 import { type Dispatch, type SetStateAction, useState } from 'react'
