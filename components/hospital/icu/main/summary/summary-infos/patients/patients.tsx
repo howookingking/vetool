@@ -84,11 +84,19 @@ export default function Patients({
                 className={cn('pointer-events-none fill-background')}
                 stroke="none"
                 fontSize={14}
-                formatter={(value: keyof typeof chartConfig) =>
-                  `${chartConfig[value]?.label}(${
+                formatter={(value: keyof typeof chartConfig) => {
+                  // 퇴원 환자가 0마리인경우 표시 x
+                  if (
+                    value === 'out' &&
+                    chartData.find((item) => item.patient === value)?.count ===
+                      0
+                  ) {
+                    return
+                  }
+                  return `${chartConfig[value]?.label}(${
                     chartData.find((item) => item.patient === value)?.count
                   })`
-                }
+                }}
               />
 
               <Label
