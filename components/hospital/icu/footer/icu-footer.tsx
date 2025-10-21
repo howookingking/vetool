@@ -4,6 +4,7 @@ import RealtimeStatus from '@/components/hospital/icu/footer/realtime-status'
 import { Button } from '@/components/ui/button'
 import useIcuRealtime from '@/hooks/use-icu-realtime'
 import { cn } from '@/lib/utils/utils'
+import { DashboardIcon } from '@radix-ui/react-icons'
 import {
   BarChartHorizontalIcon,
   BookmarkIcon,
@@ -73,7 +74,7 @@ const FOOTER_MAIN_VIEW_MENUS = [
   {
     label: '종합현황',
     route: 'summary',
-    icon: <Table2Icon />,
+    icon: <DashboardIcon />,
     hideInMobile: false,
   },
   {

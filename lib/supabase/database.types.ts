@@ -55,7 +55,7 @@ export type Database = {
       checklist: {
         Row: {
           age_in_days: number | null
-          checklist_group: Json | null
+          checklist_group: string[] | null
           checklist_id: string
           checklist_protocol: Json | null
           checklist_set: Json
@@ -72,12 +72,13 @@ export type Database = {
           hos_id: string
           is_txing: boolean | null
           patient_id: string | null
-          pre_info: Json | null
           start_time: string | null
+          tx_memo_a: Json | null
+          tx_memo_b: Json | null
         }
         Insert: {
           age_in_days?: number | null
-          checklist_group?: Json | null
+          checklist_group?: string[] | null
           checklist_id?: string
           checklist_protocol?: Json | null
           checklist_set?: Json
@@ -94,12 +95,13 @@ export type Database = {
           hos_id: string
           is_txing?: boolean | null
           patient_id?: string | null
-          pre_info?: Json | null
           start_time?: string | null
+          tx_memo_a?: Json | null
+          tx_memo_b?: Json | null
         }
         Update: {
           age_in_days?: number | null
-          checklist_group?: Json | null
+          checklist_group?: string[] | null
           checklist_id?: string
           checklist_protocol?: Json | null
           checklist_set?: Json
@@ -116,8 +118,9 @@ export type Database = {
           hos_id?: string
           is_txing?: boolean | null
           patient_id?: string | null
-          pre_info?: Json | null
           start_time?: string | null
+          tx_memo_a?: Json | null
+          tx_memo_b?: Json | null
         }
         Relationships: [
           {
@@ -1762,6 +1765,10 @@ export type Database = {
         Returns: Json
       }
       fetch_icu_layout_data: {
+        Args: { hos_id_input: string; target_date_input: string }
+        Returns: Json
+      }
+      fetch_icu_summary_data: {
         Args: { hos_id_input: string; target_date_input: string }
         Returns: Json
       }
