@@ -17,13 +17,6 @@ import type { SummaryData } from '@/types/icu/summary'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from 'recharts'
 
-const chartConfig = {
-  count: {
-    label: '환자수',
-    color: 'hsl(var(--chart-1)',
-  },
-} satisfies ChartConfig
-
 export default function Urgency({
   summaryData,
 }: {
@@ -87,7 +80,7 @@ export default function Urgency({
                 position="left"
                 offset={10}
                 className="fill-foreground font-mono"
-                fontSize={14}
+                fontSize={12}
               />
 
               {/* 카운트 */}
@@ -96,7 +89,7 @@ export default function Urgency({
                 position="right"
                 offset={10}
                 className="fill-muted-foreground"
-                fontSize={15}
+                fontSize={12}
               />
             </Bar>
           </BarChart>
@@ -105,3 +98,10 @@ export default function Urgency({
     </Card>
   )
 }
+
+const chartConfig = {
+  count: {
+    label: '환자수',
+    color: 'hsl(var(--chart-1)',
+  },
+} satisfies ChartConfig
