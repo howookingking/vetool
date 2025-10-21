@@ -1378,7 +1378,7 @@ export type Database = {
       patients: {
         Row: {
           birth: string
-          breed: string | null
+          breed: string
           created_at: string
           gender: string
           hos_id: string
@@ -1395,7 +1395,7 @@ export type Database = {
         }
         Insert: {
           birth: string
-          breed?: string | null
+          breed?: string
           created_at?: string
           gender: string
           hos_id: string
@@ -1412,7 +1412,7 @@ export type Database = {
         }
         Update: {
           birth?: string
-          breed?: string | null
+          breed?: string
           created_at?: string
           gender?: string
           hos_id?: string

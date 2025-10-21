@@ -17,16 +17,14 @@ export default function SummaryTableCell({
     <TableCell
       className="relative text-center"
       style={{
-        backgroundColor:
-          pendingCount > 0
-            ? isPatientOut
-              ? CELL_COLORS.OUT
-              : CELL_COLORS.NOT_DONE
+        backgroundColor: isPatientOut
+          ? CELL_COLORS.OUT
+          : pendingCount > 0
+            ? CELL_COLORS.NOT_DONE
             : CELL_COLORS.DONE,
       }}
     >
       {pendingCount}
-
       {hasCrucialTx && (
         <span className="absolute bottom-0 left-0 text-[10px]">❗️</span>
       )}

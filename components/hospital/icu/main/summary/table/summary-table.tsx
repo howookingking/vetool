@@ -1,6 +1,5 @@
 'use client'
 
-import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import SummaryTableRow from '@/components/hospital/icu/main/summary/table/summary-table-row'
 import {
   Table,
@@ -13,14 +12,14 @@ import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { useCurrentTime } from '@/hooks/use-current-time'
 import { formatDate } from '@/lib/utils/utils'
 import type { SummaryData } from '@/types/icu/summary'
-import { useParams } from 'next/navigation'
 import { CurrentTimeIndicator } from '../../chart/selected-chart/chart-body/table/chart-table-header/current-time-indicator'
 
-export default function SummaryTable({
-  summaryData,
-}: {
+type Props = {
   summaryData: SummaryData[]
-}) {
+  targetDate: string
+}
+
+export default function SummaryTable({ summaryData, targetDate }: Props) {
   // 필터 적용 일단 비활성화
   // const [patientFilter, setPatientFilter] = useState(DEFAULT_FILTER_STATE)
 
@@ -51,24 +50,13 @@ export default function SummaryTable({
   // })
 
   const { hours, minutes } = useCurrentTime()
-  const { target_date } = useParams()
-  const isToday = formatDate(new Date()) === target_date
-
-  if (summaryData.length === 0) {
-    return (
-      <NoResultSquirrel
-        text="입원 환자가 존재하지 않습니다"
-        className="h-screen"
-        size="lg"
-      />
-    )
-  }
+  const isToday = formatDate(new Date()) === targetDate
 
   return (
-    <Table className="border border-l-0">
+    <Table className="bo overflow-hidden rounded-xl border bg-white shadow">
       <TableHeader className="sticky top-0 z-30 bg-white shadow-sm">
         <TableRow>
-          <TableHead className="w-[160px] text-center">환자목록</TableHead>
+          <TableHead className="w-[160px] text-center">환자 \ 시간</TableHead>
 
           {TIMES.map((time) => {
             const shouldShowIndicator = time === hours && isToday

@@ -5,6 +5,7 @@ import ChecklistInput from '@/components/hospital/icu/main/out-and-visit/checkli
 import ChecklistTime from '@/components/hospital/icu/main/out-and-visit/checklist-time'
 import { CancelOutDue } from '@/components/hospital/icu/main/out-and-visit/icu-out-chart/cancel-out-due'
 import GoToButton from '@/components/hospital/icu/main/out-and-visit/icu-out-chart/go-to-button'
+import type { Species } from '@/types/hospital/calculator'
 import type { OutDuePatientsData } from '@/types/icu/movement'
 import { ColumnDef } from '@tanstack/react-table'
 
@@ -21,10 +22,8 @@ export const outDueColumns: ColumnDef<OutDuePatientsData>[] = [
       return (
         <PatientBriefInfo
           name={name}
-          species={species}
+          species={species as Species}
           breed={breed}
-          isDone={isDischarged}
-          className="justify-center"
         />
       )
     },
