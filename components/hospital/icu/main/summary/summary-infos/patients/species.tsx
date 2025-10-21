@@ -11,14 +11,14 @@ export default function Species({
   ).length
   return (
     <div className="absolute right-12 top-8">
-      <div className="flex items-center gap-4">
-        <DogIcon size={20} />
-        <span className="text-xl">{canineCount}</span>
+      <div className="flex items-center gap-2">
+        <DogIcon size={16} />
+        <span className="text-lg">{canineCount}</span>
       </div>
 
-      <div className="flex items-center gap-4">
-        <CatIcon size={20} />
-        <span className="text-xl">{summaryData.length - canineCount}</span>
+      <div className="flex items-center gap-2">
+        <CatIcon size={16} />
+        <span className="text-lg">{summaryData.length - canineCount}</span>
       </div>
     </div>
   )
