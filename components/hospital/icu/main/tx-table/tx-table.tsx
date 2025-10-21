@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
 import type { IcuOrderColors } from '@/types/adimin'
+import type { Species } from '@/types/hospital/calculator'
 import type { TxLog } from '@/types/icu/chart'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
 import { SquarePlus } from 'lucide-react'
@@ -129,9 +130,8 @@ export default function TxTable({
                     <PatientBriefInfo
                       name={txData.patient.name}
                       breed={txData.patient.breed}
-                      species={txData.patient.species}
+                      species={txData.patient.species as Species}
                       iconSize={18}
-                      col
                     />
 
                     <div className="flex flex-col justify-center gap-1">
