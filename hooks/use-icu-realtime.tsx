@@ -4,15 +4,16 @@ import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 
-export function useIcuRealtime(hosId: string) {
+export default function useIcuRealtime(hosId: string) {
+  const [isRealtimeReady, setIsRealtimeReady] = useState(false)
   const supabase = createClient()
-
+  const subscriptionRef = useRef<RealtimeChannel | null>(null)
   const { refresh } = useRouter()
 
-  const [isRealtimeReady, setIsRealtimeReady] = useState(false)
-  const subscriptionRef = useRef<RealtimeChannel | null>(null)
-
-  const debouncedRefresh = useDebouncedCallback(refresh, 500)
+  const debouncedRefresh = useDebouncedCallback(() => {
+    console.log('Debouced refresh')
+    refresh()
+  }, 500)
 
   const handleChange = useCallback(
     (payload: any) => {
@@ -81,11 +82,14 @@ export function useIcuRealtime(hosId: string) {
     })
   }, [hosId, handleChange])
 
-  const unsubscribe = useCallback(async () => {
+  const unsubscribe = useCallback(() => {
     if (subscriptionRef.current) {
       console.log('Unsubscribing from channel...')
-      await supabase.removeChannel(subscriptionRef.current)
+
+      supabase.removeChannel(subscriptionRef.current)
+
       subscriptionRef.current = null
+
       setIsRealtimeReady(false)
     }
   }, [])
@@ -102,13 +106,17 @@ export function useIcuRealtime(hosId: string) {
 
   useEffect(() => {
     console.log('initial subscription')
-    document.addEventListener('visibilitychange', handleVisibilityChange)
+
     subscribeToChannel()
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
 
     return () => {
       console.log('Cleanup: unsubscribing and removing event listener...')
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
+
       unsubscribe()
+
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
   }, [handleVisibilityChange, subscribeToChannel, unsubscribe])
 

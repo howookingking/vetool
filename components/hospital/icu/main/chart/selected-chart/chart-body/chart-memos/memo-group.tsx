@@ -214,7 +214,7 @@ export default function MemoGroup({
             <NoResultSquirrel
               text="메모 없음"
               size="sm"
-              className="h-52 flex-col font-normal text-muted-foreground"
+              className="h-52 flex-col"
             />
           ) : (
             sortedMemos.map((memo, index) => (

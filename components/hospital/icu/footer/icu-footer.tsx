@@ -2,16 +2,17 @@
 
 import RealtimeStatus from '@/components/hospital/icu/footer/realtime-status'
 import { Button } from '@/components/ui/button'
-import { useIcuRealtime } from '@/hooks/use-icu-realtime'
+import useIcuRealtime from '@/hooks/use-icu-realtime'
 import { cn } from '@/lib/utils/utils'
+import { DashboardIcon } from '@radix-ui/react-icons'
 import {
   BarChartHorizontalIcon,
   BookmarkIcon,
   ClipboardListIcon,
-  LayoutDashboardIcon,
   ListChecksIcon,
   LogOutIcon,
   SearchIcon,
+  Table2Icon,
 } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
@@ -31,10 +32,7 @@ export default function IcuFooter({ hosId, targetDate }: IcuFooterProps) {
   const currentIcuPath = path.split('/').at(5)
 
   useEffect(() => {
-    if (isRealtimeReady) {
-      toast.success('차트에 실시간 변경을 감지하고 있습니다')
-      refresh()
-    }
+    if (isRealtimeReady) refresh()
   }, [isRealtimeReady, refresh])
 
   return (
@@ -76,7 +74,7 @@ const FOOTER_MAIN_VIEW_MENUS = [
   {
     label: '종합현황',
     route: 'summary',
-    icon: <LayoutDashboardIcon />,
+    icon: <DashboardIcon />,
     hideInMobile: false,
   },
   {

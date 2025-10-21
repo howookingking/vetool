@@ -5,8 +5,9 @@ import SummaryTableCell from '@/components/hospital/icu/main/summary/table/summa
 import { TableCell, TableRow } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { cn, getDaysDifference } from '@/lib/utils/utils'
+import type { Species } from '@/types/hospital/calculator'
 import type { SummaryData } from '@/types/icu/summary'
-import { SquarePlus } from 'lucide-react'
+import { SquarePlusIcon } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 
 export default function SummaryTableRow({ summary }: { summary: SummaryData }) {
@@ -46,7 +47,7 @@ export default function SummaryTableRow({ summary }: { summary: SummaryData }) {
     <TableRow
       className={cn(
         'cursor-pointer divide-x',
-        isPatientOut && 'text-muted-foreground line-through',
+        isPatientOut && 'text-muted-foreground',
       )}
       onClick={() =>
         push(
@@ -58,15 +59,13 @@ export default function SummaryTableRow({ summary }: { summary: SummaryData }) {
         <div className="flex flex-1 flex-col items-center gap-1">
           <PatientBriefInfo
             name={patient.name}
-            species={patient.species}
+            species={patient.species as Species}
             breed={patient.breed}
-            iconSize={18}
-            col
           />
 
           {icu_io.cage && (
             <div className="flex items-center justify-center gap-1 text-muted-foreground">
-              <SquarePlus size={12} />
+              <SquarePlusIcon size={12} />
               <span className="max-w-[88px] truncate text-xs">
                 {icu_io.cage}
               </span>

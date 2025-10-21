@@ -1,6 +1,18 @@
 import PatientBriefInfo from '@/components/hospital/common/patient/patient-brief-info'
 import { AccordionTrigger } from '@/components/ui/accordion'
 import { getAgeFromAgeInDays } from '@/lib/utils/utils'
+import type { Species } from '@/types/hospital/calculator'
+
+type Props = {
+  species: string
+  name: string
+  breed: string
+  owner_name: string
+  inAndOutDate: string
+  age_in_days: number
+  icu_io_dx: string
+  icu_io_cc: string
+}
 
 export default function GroupedAccordionTrigger({
   species,
@@ -11,24 +23,14 @@ export default function GroupedAccordionTrigger({
   age_in_days,
   icu_io_dx,
   icu_io_cc,
-}: {
-  species: string
-  name: string
-  breed: string | null
-  owner_name: string
-  inAndOutDate: string
-  age_in_days: number
-  icu_io_dx: string
-  icu_io_cc: string
-}) {
+}: Props) {
   return (
     <AccordionTrigger className="h-10 w-full hover:bg-muted/50 [&[data-state=open]]:bg-muted">
       <div className="flex w-1/6 justify-center">
         <PatientBriefInfo
           name={name}
-          species={species}
+          species={species as Species}
           breed={breed}
-          className="justify-center"
         />
       </div>
       <div className="w-1/6 text-center">{owner_name || '미등록'}</div>

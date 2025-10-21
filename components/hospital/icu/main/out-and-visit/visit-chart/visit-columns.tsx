@@ -1,6 +1,7 @@
 'use client'
 
 import PatientBriefInfo from '@/components/hospital/common/patient/patient-brief-info'
+import type { Species } from '@/types/hospital/calculator'
 import type { VisitPatientData } from '@/types/icu/movement'
 import { ColumnDef } from '@tanstack/react-table'
 import ChecklistInput from '../checklist-input'
@@ -21,10 +22,8 @@ export const visitColumns: ColumnDef<VisitPatientData>[] = [
       return (
         <PatientBriefInfo
           name={name}
-          species={species}
+          species={species as Species}
           breed={breed}
-          isDone={isDone}
-          className="justify-center"
         />
       )
     },
