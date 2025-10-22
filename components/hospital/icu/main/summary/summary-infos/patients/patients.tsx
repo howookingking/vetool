@@ -52,7 +52,7 @@ export default function Patients({
   ]
 
   return (
-    <Card className="relative col-span-3 flex flex-col md:col-span-1">
+    <Card className="relative col-span-3 flex flex-col rounded-none md:col-span-1">
       <CardHeader className="pb-0">
         <CardTitle>환자수</CardTitle>
         <VisuallyHidden>

@@ -58,11 +58,10 @@ export default function SummaryTable({
   const isToday = formatDate(new Date()) === targetDate
 
   return (
-    <Table className="bo overflow-hidden rounded-xl border bg-white shadow">
-      <TableHeader className="sticky top-0 z-30 shadow-sm">
+    <Table className="border bg-white shadow">
+      <TableHeader className="sticky -top-2 z-30 overflow-hidden bg-white shadow-sm">
         <TableRow>
           <TableHead className="w-[160px] text-center">환자 \ 시간</TableHead>
-
           {TIMES.map((time) => {
             const shouldShowIndicator = time === hours && isToday
             return (

@@ -39,7 +39,7 @@ export default function Urgency({
   ]
 
   return (
-    <Card className="col-span-3 md:col-span-1">
+    <Card className="col-span-3 rounded-none md:col-span-1">
       <CardHeader>
         <CardTitle>응급도</CardTitle>
         <VisuallyHidden>
