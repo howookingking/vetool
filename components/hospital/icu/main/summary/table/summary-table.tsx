@@ -61,7 +61,7 @@ export default function SummaryTable({
     <Table className="bo overflow-hidden rounded-xl border bg-white shadow">
       <TableHeader className="sticky top-0 z-30 shadow-sm">
         <TableRow>
-          <TableHead className="w-[160px] text-center">환자 \⑊ 시간</TableHead>
+          <TableHead className="w-[160px] text-center">환자 \ 시간</TableHead>
 
           {TIMES.map((time) => {
             const shouldShowIndicator = time === hours && isToday
