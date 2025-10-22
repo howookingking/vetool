@@ -14,7 +14,12 @@ export default async function TxTablePage(props: {
   if (!txTableData) {
     return (
       <NoResultSquirrel
-        text={`${target_date} 실행할 처치가 없습니다`}
+        text={
+          <div className="flex flex-col items-center leading-5">
+            <div>{target_date}</div>
+            <span>실행할 처치가 없습니다</span>
+          </div>
+        }
         className="h-desktop flex-col"
         size="lg"
       />

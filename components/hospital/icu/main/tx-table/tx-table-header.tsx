@@ -1,22 +1,25 @@
 import TimeTxTextCopy from '@/components/hospital/icu/main/tx-table/time-tx-text-copy'
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
+import {
+  DEFAULT_ICU_ORDER_TYPE,
+  type OrderType,
+} from '@/constants/hospital/icu/chart/order'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { useCurrentTime } from '@/hooks/use-current-time'
 import { formatDate } from '@/lib/utils/utils'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
-import { CurrentTimeIndicator } from '../chart/selected-chart/chart-body/table/chart-table-header/current-time-indicator'
 import { toast } from 'sonner'
+import { CurrentTimeIndicator } from '../chart/selected-chart/chart-body/table/chart-table-header/current-time-indicator'
 
 type Props = {
-  orderTypeFilters: string[]
+  orderTypeFilter: OrderType | null
   filteredTxData: IcuTxTableData[]
 }
 
 export default function TxTableHeader({
-  orderTypeFilters,
+  orderTypeFilter,
   filteredTxData,
 }: Props) {
   const { hours, minutes } = useCurrentTime()
@@ -26,7 +29,7 @@ export default function TxTableHeader({
   const [copiedTxTime, setCopiedTxTime] = useState<number | null>()
 
   const handleCopyToClipboard = (time: number) => {
-    const title = `${time}시 ${orderTypeFilters.map((order) => DEFAULT_ICU_ORDER_TYPE.find((type) => type.value === order)?.label ?? '전체').join(', ')} 처치`
+    const title = `${time}시 ${DEFAULT_ICU_ORDER_TYPE.find((type) => type.value === orderTypeFilter)?.label ?? '전체'}오더`
 
     const filteredTimeTxData = filteredTxData
       .map((data) => ({
@@ -67,7 +70,7 @@ export default function TxTableHeader({
   return (
     <TableHeader className="sticky top-0 z-30 bg-white shadow-sm">
       <TableRow>
-        <TableHead className="w-[120px] text-center">환자목록</TableHead>
+        <TableHead className="w-[120px] text-center">환자 \ 시간</TableHead>
 
         {TIMES.map((time) => {
           const shouldShowIndicator = time === hours && isToday

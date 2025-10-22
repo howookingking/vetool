@@ -5,6 +5,7 @@ import TxTableCell from '@/components/hospital/icu/main/tx-table/tx-table-cell'
 import TxTableHeader from '@/components/hospital/icu/main/tx-table/tx-table-header'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
+import type { OrderType } from '@/constants/hospital/icu/chart/order'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
 import type { IcuOrderColors } from '@/types/adimin'
@@ -17,14 +18,14 @@ import { useEffect, useRef, useState } from 'react'
 import TxUpsertDialogDynamc from '../chart/selected-chart/chart-body/table/tx/tx-upsert-dialog-dynamic'
 
 type Props = {
-  orderTypeFilters: string[]
+  orderTypeFilter: OrderType | null
   filteredTxData: IcuTxTableData[]
   showTxUser: boolean
   orderColorsData: IcuOrderColors
 }
 
 export default function TxTable({
-  orderTypeFilters,
+  orderTypeFilter,
   filteredTxData,
   showTxUser,
   orderColorsData,
@@ -105,12 +106,12 @@ export default function TxTable({
     <>
       <ScrollArea
         ref={scrollAreaRef}
-        className="h-mobile overflow-scroll whitespace-nowrap 2xl:w-[calc(100vw-250px)]"
+        className="h-desktop overflow-scroll whitespace-nowrap 2xl:w-[calc(100vw-232px)]"
       >
         <Table className="border border-l-0" ref={tableRef}>
           <TxTableHeader
             filteredTxData={filteredTxData}
-            orderTypeFilters={orderTypeFilters}
+            orderTypeFilter={orderTypeFilter}
           />
 
           <TableBody>
@@ -213,7 +214,7 @@ const TX_TABLE_BACKGROUD_COLORS = [
 ] as const
 
 // 사이드바 필터 적용 비활성화
-// const orderType = orderTypeFilters.map(
+// const orderType = orderTypeFilter.map(
 //   (orderType) =>
 //     DEFAULT_ICU_ORDER_TYPE.find((type) => type.value === orderType)?.label,
 // )
