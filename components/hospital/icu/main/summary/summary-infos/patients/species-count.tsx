@@ -1,7 +1,7 @@
 import type { SummaryData } from '@/types/icu/summary'
 import { CatIcon, DogIcon } from 'lucide-react'
 
-export default function Species({
+export default function SpeciesCount({
   summaryData,
 }: {
   summaryData: SummaryData[]
@@ -10,7 +10,7 @@ export default function Species({
     (item) => item.patient.species === 'canine',
   ).length
   return (
-    <div className="absolute right-12 top-8">
+    <div className="absolute right-8 top-6">
       <div className="flex items-center gap-2">
         <DogIcon size={16} />
         <span className="text-lg">{canineCount}</span>

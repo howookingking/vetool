@@ -1,7 +1,5 @@
 'use client'
 
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from 'recharts'
-
 import {
   Card,
   CardContent,
@@ -18,6 +16,7 @@ import {
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SummaryData } from '@/types/icu/summary'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
+import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from 'recharts'
 
 export default function MainVet({
   summaryData,

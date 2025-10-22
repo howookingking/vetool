@@ -37,6 +37,7 @@ export default function Urgency({
     { urgency: '★1', count: oneStar, fill: 'hsl(var(--chart-4))' },
     { urgency: '★0', count: noStar, fill: 'hsl(var(--chart-4))' },
   ]
+
   return (
     <Card className="col-span-3 md:col-span-1">
       <CardHeader>

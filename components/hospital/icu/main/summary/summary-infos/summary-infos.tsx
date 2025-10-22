@@ -1,8 +1,7 @@
 import { SummaryData } from '@/types/icu/summary'
-import React from 'react'
-import Urgency from './urgency'
 import MainVet from './main-vet'
 import Patients from './patients/patients'
+import Urgency from './urgency'
 
 type Props = {
   summaryData: SummaryData[]

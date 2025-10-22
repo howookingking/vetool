@@ -34,6 +34,7 @@ export default async function SummaryPage(props: {
       <SummaryTable
         summaryData={target_date_summary_data}
         targetDate={target_date}
+        hosId={hos_id}
       />
     </div>
   )
