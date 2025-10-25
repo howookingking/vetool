@@ -1,12 +1,10 @@
 import { cn } from '@/lib/utils/utils'
-import { LoaderCircle } from 'lucide-react'
+import { Spinner } from '../ui/spinner'
 
 export default function LargeLoaderCircle({
   className,
-  size = 80,
 }: {
   className?: string
-  size?: number
 }) {
   return (
     <div
@@ -15,7 +13,7 @@ export default function LargeLoaderCircle({
         className,
       )}
     >
-      <LoaderCircle className="animate-spin" size={size} />
+      <Spinner className="h-20 w-20" />
     </div>
   )
 }
