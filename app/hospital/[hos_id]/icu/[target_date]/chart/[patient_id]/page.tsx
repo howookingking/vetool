@@ -10,19 +10,15 @@ export default async function PatientChartPage(props: {
     patient_id: string
   }>
 }) {
-  const params = await props.params
+  const { hos_id, patient_id, target_date } = await props.params
 
-  const chartData = await getIcuChart(
-    params.hos_id,
-    params.target_date,
-    params.patient_id,
-  )
+  const chartData = await getIcuChart(hos_id, target_date, patient_id)
 
   return (
     <>
       <MobileTitle icon={ClipboardListIcon} title="입원차트" />
 
-      <IcuChartEntry chartData={chartData} patientId={params.patient_id} />
+      <IcuChartEntry chartData={chartData} patientId={patient_id} />
     </>
   )
 }
