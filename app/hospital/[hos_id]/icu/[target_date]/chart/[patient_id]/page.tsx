@@ -1,5 +1,7 @@
+import MobileTitle from '@/components/common/mobile-title'
 import IcuChartEntry from '@/components/hospital/icu/main/chart/icu-chart-entry'
 import { getIcuChart } from '@/lib/services/icu/chart/get-icu-chart'
+import { ClipboardListIcon } from 'lucide-react'
 
 export default async function PatientChartPage(props: {
   params: Promise<{
@@ -16,5 +18,11 @@ export default async function PatientChartPage(props: {
     params.patient_id,
   )
 
-  return <IcuChartEntry chartData={chartData} patientId={params.patient_id} />
+  return (
+    <>
+      <MobileTitle icon={ClipboardListIcon} title="입원차트" />
+
+      <IcuChartEntry chartData={chartData} patientId={params.patient_id} />
+    </>
+  )
 }

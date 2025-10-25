@@ -5,8 +5,6 @@ import {
 import DataTable from '@/components/ui/data-table'
 import { getStaffs } from '@/lib/services/admin/staff'
 import { getVetoolUserData } from '@/lib/services/auth/authorization'
-import MobileTitle from './mobile-title'
-import { Users } from 'lucide-react'
 
 export default async function AdminStaffPage(props: {
   params: Promise<{ hos_id: string }>
@@ -37,11 +35,7 @@ export default async function AdminStaffPage(props: {
   }))
 
   return (
-    <>
-      <MobileTitle title="스태프 관리" icon={Users} />
-
-      <DataTable columns={staffColumns} data={staffTableData} rowLength={15} />
-    </>
+    <DataTable columns={staffColumns} data={staffTableData} rowLength={15} />
 
     // ***요금제 기능
     // <div>

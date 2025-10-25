@@ -36,7 +36,7 @@ export default function NoResultSquirrel({
         className="transition-transform hover:scale-x-[-1]"
         size={ICON_SIZE_DIC[size]}
       />
-      <span>{text}</span>
+      <div>{text}</div>
     </div>
   )
 }

@@ -1,15 +1,17 @@
-'use client'
-
+import MobileTitle from '@/components/common/mobile-title'
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
-import useIsMobile from '@/hooks/use-is-mobile'
+import { ClipboardListIcon } from 'lucide-react'
 
-export default function ChartDefaultPage() {
-  const isMobile = useIsMobile()
+export default async function ChartDefaultPage() {
   return (
-    <NoResultSquirrel
-      text={isMobile ? '👆 환자를 선택해주세요' : '👈 환자를 선택해주세요'}
-      className="h-screen flex-col"
-      size="lg"
-    />
+    <>
+      <MobileTitle icon={ClipboardListIcon} title="입원차트" />
+
+      <NoResultSquirrel
+        text={'환자를 선택해주세요'}
+        className="h-mobile flex-col 2xl:h-desktop"
+        size="lg"
+      />
+    </>
   )
 }

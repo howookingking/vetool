@@ -62,7 +62,7 @@ export default function SidebarUserDropdown({
             <DropdownMenuItem asChild onClick={() => setIsSheetOpen?.(false)}>
               <Link
                 href={`/hospital/${hosId}/admin/staff`}
-                className="flex cursor-pointer items-center gap-2"
+                className="hidden cursor-pointer items-center gap-2 2xl:flex"
               >
                 <CrownIcon size={18} />
                 <span>관리자</span>

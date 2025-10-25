@@ -9,7 +9,7 @@ export const fetchIcuTxTableData = async (
 ) => {
   const supabase = await createClient()
 
-  const { data, error } = await supabase.rpc('get_icu_tx_table_data', {
+  const { data, error } = await supabase.rpc('fetch_icu_tx_table_data', {
     hos_id_input: hosId,
     target_date_input: targetDate,
   })
