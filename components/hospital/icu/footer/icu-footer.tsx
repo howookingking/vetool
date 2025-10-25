@@ -12,11 +12,9 @@ import {
   ListChecksIcon,
   LogOutIcon,
   SearchIcon,
-  Table2Icon,
 } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
-import { toast } from 'sonner'
 
 type IcuFooterProps = {
   hosId: string
@@ -90,7 +88,7 @@ const FOOTER_MAIN_VIEW_MENUS = [
     hideInMobile: false,
   },
   {
-    label: '퇴원/면회(임시 비활성화)',
+    label: '퇴원/면회',
     route: 'out-and-visit',
     icon: <LogOutIcon />,
     hideInMobile: true,
