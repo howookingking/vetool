@@ -17,6 +17,7 @@ import type { VetoolUser } from '@/types'
 import { MenuIcon } from 'lucide-react'
 import { useState } from 'react'
 import { SIDEBAR_MENUS } from '../hospital-sidebar'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 
 type Props = {
   hosId: string
@@ -30,7 +31,11 @@ export default function MobileSidebar({ hosId, vetoolUser, plan }: Props) {
   return (
     <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
       <SheetTrigger className="fixed right-0 top-0 z-40 2xl:hidden" asChild>
-        <Button variant="ghost" size="icon" className="h-12 w-12 rounded-none">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-12 w-12 rounded-none border-l"
+        >
           <MenuIcon size={24} />
         </Button>
       </SheetTrigger>
@@ -39,10 +44,12 @@ export default function MobileSidebar({ hosId, vetoolUser, plan }: Props) {
         className="flex h-screen max-w-[240px] flex-col justify-between p-0"
         noCloseButton
       >
-        <SheetHeader className="hidden">
-          <SheetTitle />
-          <SheetDescription />
-        </SheetHeader>
+        <VisuallyHidden>
+          <SheetHeader>
+            <SheetTitle />
+            <SheetDescription />
+          </SheetHeader>
+        </VisuallyHidden>
 
         <ul className="z-50">
           {SIDEBAR_MENUS.map(({ icon, isReady, name, path }) => (
