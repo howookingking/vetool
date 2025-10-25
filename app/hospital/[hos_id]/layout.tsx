@@ -1,5 +1,6 @@
-import MobileHeader from '@/components/common/mobile-header'
-import HospitalSidebar from '@/components/hospital/sidebar/hospital-sidebar'
+import DesktopSidebar from '@/components/hospital/common/sidebar/desktop-sidebar/desktop-sidebar'
+import MobileLayout from '@/components/hospital/common/sidebar/mobile-layout/mobile-layout'
+import { getVetoolUserData } from '@/lib/services/auth/authorization'
 import { fetchHosName } from '@/lib/services/hospital-home/home'
 
 export async function generateMetadata(props: {
@@ -19,17 +20,19 @@ type Props = {
 }
 
 export default async function HospitalLayout(props: Props) {
-  const params = await props.params
+  const { hos_id } = await props.params
+  const vetoolUser = await getVetoolUserData()
+
+  const plan = 'severe'
 
   return (
     <div className="flex">
-      <HospitalSidebar hosId={params.hos_id} />
+      <DesktopSidebar hosId={hos_id} vetoolUser={vetoolUser} plan={plan} />
 
-      <MobileHeader />
-
-      <main className="ml-0 mt-12 flex-1 2xl:ml-10 2xl:mt-0">
-        {props.children}
-      </main>
+      <div className="ml-0 flex-1 2xl:ml-10">
+        <MobileLayout hosId={hos_id} vetoolUser={vetoolUser} plan={plan} />
+        <main className="mt-12 2xl:mt-0">{props.children}</main>
+      </div>
     </div>
   )
 }
