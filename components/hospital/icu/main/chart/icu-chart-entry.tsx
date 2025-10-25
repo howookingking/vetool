@@ -3,7 +3,7 @@
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import Chart from '@/components/hospital/icu/main/chart/chart'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { type SelectedChart } from '@/types/icu/chart'
+import type { SelectedChart } from '@/types/icu/chart'
 import PasteChartDialogs from './paste-chart-dialogs/paste-chart-dialogs'
 
 type Props = {
@@ -24,7 +24,7 @@ export default function IcuChartEntry({ chartData, patientId }: Props) {
   if (!chartData && !hasIcuIo) {
     return (
       <NoResultSquirrel
-        className="h-full flex-col"
+        className="h-mobile flex-col 2xl:h-desktop"
         size="lg"
         text={
           <div className="text-center">
