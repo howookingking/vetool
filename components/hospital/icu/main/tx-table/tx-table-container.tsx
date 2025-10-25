@@ -56,16 +56,16 @@ export default function TxTableContainer({
 
   const hasOrder = filteredTxData.some((data) => data.orders.length > 0)
 
-  const orderTypeFiltersToKrString = DEFAULT_ICU_ORDER_TYPE.find(
-    (type) => type.value === orderTypeFilter,
-  )?.label
+  const orderTypeFiltersToKrString =
+    DEFAULT_ICU_ORDER_TYPE.find((type) => type.value === orderTypeFilter)
+      ?.label ?? '모든'
 
   return (
     <>
       {!hasOrder ? (
         <NoResultSquirrel
           text={`${orderTypeFiltersToKrString} 처치를 완료했습니다`}
-          className="h-desktop flex-col"
+          className="h-mobile flex-col 2xl:h-desktop"
           size="lg"
         />
       ) : (

@@ -106,9 +106,9 @@ export default function TxTable({
     <>
       <ScrollArea
         ref={scrollAreaRef}
-        className="h-desktop overflow-scroll whitespace-nowrap 2xl:w-[calc(100vw-232px)]"
+        className="h-full overflow-scroll whitespace-nowrap 2xl:w-[calc(100vw-232px)]"
       >
-        <Table className="border border-l-0" ref={tableRef}>
+        <Table className="border border-l-0 border-t-0" ref={tableRef}>
           <TxTableHeader
             filteredTxData={filteredTxData}
             orderTypeFilter={orderTypeFilter}

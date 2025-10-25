@@ -75,7 +75,10 @@ export default function TxTableHeader({
         {TIMES.map((time) => {
           const shouldShowIndicator = time === hours && isToday
           return (
-            <TableHead className="relative border text-center" key={time}>
+            <TableHead
+              className="relative border-l border-t-0 text-center"
+              key={time}
+            >
               <div className="flex items-center justify-center">
                 <span>{time.toString().padStart(2, '0')}</span>
                 <TimeTxTextCopy
