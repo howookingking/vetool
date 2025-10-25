@@ -52,7 +52,7 @@ export default function Patients({
   ]
 
   return (
-    <Card className="relative col-span-3 flex flex-col rounded-none md:col-span-1">
+    <Card className="relative col-span-1 flex flex-col rounded-none">
       <CardHeader className="pb-0">
         <CardTitle>환자수</CardTitle>
         <VisuallyHidden>
@@ -65,7 +65,7 @@ export default function Patients({
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
+          className="mx-auto aspect-square w-1/2"
         >
           <PieChart>
             <ChartTooltip
@@ -76,8 +76,7 @@ export default function Patients({
               data={chartData}
               dataKey="count"
               nameKey="patient"
-              innerRadius={40}
-              strokeWidth={5}
+              innerRadius="40%"
             >
               <LabelList
                 dataKey="patient"

@@ -59,7 +59,7 @@ export default function SummaryTable({
 
   return (
     <Table className="border bg-white shadow">
-      <TableHeader className="sticky -top-2 z-30 overflow-hidden bg-white shadow-sm">
+      <TableHeader className="sticky -top-[2px] z-30 overflow-hidden bg-white shadow-sm">
         <TableRow>
           <TableHead className="w-[160px] text-center">환자 \ 시간</TableHead>
           {TIMES.map((time) => {

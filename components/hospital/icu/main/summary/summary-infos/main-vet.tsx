@@ -48,7 +48,7 @@ export default function MainVet({
   }))
 
   return (
-    <Card className="col-span-3 rounded-none md:col-span-1">
+    <Card className="col-span1 rounded-none">
       <CardHeader>
         <CardTitle>주치의</CardTitle>
         <VisuallyHidden>

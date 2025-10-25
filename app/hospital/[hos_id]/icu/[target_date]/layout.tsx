@@ -83,7 +83,7 @@ export default async function IcuPageLayout(props: Props) {
             vetList={vetList}
           />
 
-          <div className="ml-0 h-mobile w-screen flex-1 2xl:ml-48 2xl:h-desktop 2xl:w-auto">
+          <div className="ml-0 h-mobile w-screen flex-1 overflow-auto 2xl:ml-48 2xl:h-desktop 2xl:w-auto">
             {props.children}
           </div>
         </div>

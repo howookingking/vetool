@@ -15,7 +15,7 @@ export default function SummaryInfos({
   prevSummaryCount,
 }: Props) {
   return (
-    <div className="mb-2 grid grid-cols-3 gap-2">
+    <div className="hidden grid-cols-3 gap-2 xl:grid">
       <Patients
         summaryData={summaryData}
         targetDate={targetDate}
