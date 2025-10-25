@@ -55,7 +55,7 @@ export default function SuperHospitalSelector({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger
         asChild
-        className="absolute left-[6px] top-1.5 z-30 rounded-none 2xl:left-[46px]"
+        className="fixed left-[6px] top-1.5 z-30 rounded-none 2xl:absolute 2xl:left-[46px]"
       >
         <Button
           role="combobox"
