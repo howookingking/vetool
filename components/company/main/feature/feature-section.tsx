@@ -3,13 +3,13 @@
 import FeatureContent from '@/components/company/main/feature/feature-content'
 import FeatureTitle from '@/components/company/main/feature/feature-title'
 import SlideTabs from '@/components/company/main/feature/ui/slide-tabs'
-import { SIDEBAR_MENUS } from '@/components/hospital/sidebar/hospital-sidebar'
 import {
   CHECKUP_FEATURES,
   ECHOCARDIO_FEATURES,
   ICU_FEATURES,
   SURGERY_FEATURES,
 } from '@/constants/company/main'
+import { HOS_SIDEBAR_MENUS } from '@/constants/hospital/hos-sidebar-menus'
 import { AnimatePresence, motion } from 'motion/react'
 import { useState } from 'react'
 
@@ -19,7 +19,7 @@ export default function Feature() {
     ICU_FEATURES[0].id.toString(),
   )
 
-  const FEATURE_LIST = SIDEBAR_MENUS.slice(2, 6)
+  const FEATURE_LIST = HOS_SIDEBAR_MENUS.slice(2, 6)
   const activeItem = FEATURE_LIST.find((item) => item.path === activeTab)
 
   const targetFeatures = {
