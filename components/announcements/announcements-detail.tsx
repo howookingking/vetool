@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/card'
-import { type AnnouncementDetailData } from '@/types/vetool'
+import { HOS_SIDEBAR_MENUS } from '@/constants/hospital/hos-sidebar-menus'
+import type { AnnouncementDetailData } from '@/types/vetool'
 import { MessageCircleIcon } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { SIDEBAR_MENUS } from '../hospital/sidebar/hospital-sidebar'
 
 export default function AnnouncementsDetail({
   announcementDetailData,
@@ -26,7 +26,7 @@ export default function AnnouncementsDetail({
           <div className="flex flex-col gap-2 text-center">
             <span className="text-xl font-bold">{announcement_title}</span>
             <span className="text-xs leading-6 text-muted-foreground">
-              {`${SIDEBAR_MENUS.find(({ path }) => path === announcement_category)?.name ?? '전체'} | 
+              {`${HOS_SIDEBAR_MENUS.find(({ path }) => path === announcement_category)?.name ?? '전체'} | 
               ${created_at.slice(0, 10)}`}
             </span>
           </div>

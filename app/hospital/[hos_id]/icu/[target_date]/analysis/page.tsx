@@ -1,9 +1,13 @@
+import MobileTitle from '@/components/common/mobile-title'
 import IcuAnalysisEntry from '@/components/hospital/icu/main/analysis/icu-analysis-entry'
+import { BarChartHorizontalIcon } from 'lucide-react'
 
 export default async function AnalysisPage() {
   return (
-    <div className="mt-12 flex h-mobile flex-col border-t p-2 2xl:mt-0 2xl:h-desktop 2xl:border-0">
+    <>
+      <MobileTitle icon={BarChartHorizontalIcon} title="통계" />
+
       <IcuAnalysisEntry />
-    </div>
+    </>
   )
 }

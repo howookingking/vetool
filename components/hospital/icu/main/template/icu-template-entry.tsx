@@ -21,7 +21,7 @@ export default function IcuTemplateEntry({
     useState<IcuTemplate | null>(null)
 
   return (
-    <div className="relative">
+    <div className="relative p-2">
       <DataTable
         searchBarSpace
         columns={templateColumns(

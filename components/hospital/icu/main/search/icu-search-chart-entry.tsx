@@ -89,7 +89,7 @@ export default function IcuSearchChartEntry() {
   }, [searchOptions, inputValue, getSearchValue, performSearch])
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 p-2">
       <div className="relative flex items-center gap-4 pr-2">
         <Button
           type="button"

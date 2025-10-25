@@ -17,9 +17,14 @@ import { CurrentTimeIndicator } from '../../chart/selected-chart/chart-body/tabl
 type Props = {
   summaryData: SummaryData[]
   targetDate: string
+  hosId: string
 }
 
-export default function SummaryTable({ summaryData, targetDate }: Props) {
+export default function SummaryTable({
+  summaryData,
+  targetDate,
+  hosId,
+}: Props) {
   // 필터 적용 일단 비활성화
   // const [patientFilter, setPatientFilter] = useState(DEFAULT_FILTER_STATE)
 
@@ -53,11 +58,10 @@ export default function SummaryTable({ summaryData, targetDate }: Props) {
   const isToday = formatDate(new Date()) === targetDate
 
   return (
-    <Table className="bo overflow-hidden rounded-xl border bg-white shadow">
-      <TableHeader className="sticky top-0 z-30 bg-white shadow-sm">
+    <Table className="border bg-white shadow">
+      <TableHeader className="sticky -top-[2px] z-30 overflow-hidden bg-white shadow-sm">
         <TableRow>
           <TableHead className="w-[160px] text-center">환자 \ 시간</TableHead>
-
           {TIMES.map((time) => {
             const shouldShowIndicator = time === hours && isToday
             return (
@@ -77,7 +81,12 @@ export default function SummaryTable({ summaryData, targetDate }: Props) {
 
       <TableBody>
         {summaryData.map((summary) => (
-          <SummaryTableRow key={summary.icu_chart_id} summary={summary} />
+          <SummaryTableRow
+            key={summary.icu_chart_id}
+            summary={summary}
+            targetDate={targetDate}
+            hosId={hosId}
+          />
         ))}
       </TableBody>
     </Table>

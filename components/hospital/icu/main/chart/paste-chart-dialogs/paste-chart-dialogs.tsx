@@ -39,7 +39,7 @@ export default function PasteChartDialogs({
   }, [patientId, firstChart])
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center gap-5 px-5 py-5 md:flex-row md:gap-10 lg:px-32">
+    <div className="flex h-mobile w-full flex-col items-center justify-center gap-5 px-5 py-5 md:flex-row md:gap-10 lg:px-32 2xl:h-desktop">
       {firstChart ? (
         <PasteDefaultChartDialog chartData={chartData} />
       ) : (

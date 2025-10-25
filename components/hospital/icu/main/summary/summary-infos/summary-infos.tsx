@@ -1,8 +1,7 @@
 import { SummaryData } from '@/types/icu/summary'
-import React from 'react'
-import Urgency from './urgency'
 import MainVet from './main-vet'
 import Patients from './patients/patients'
+import Urgency from './urgency'
 
 type Props = {
   summaryData: SummaryData[]
@@ -16,7 +15,7 @@ export default function SummaryInfos({
   prevSummaryCount,
 }: Props) {
   return (
-    <div className="mb-2 grid grid-cols-3 gap-2">
+    <div className="hidden grid-cols-3 gap-2 xl:grid">
       <Patients
         summaryData={summaryData}
         targetDate={targetDate}

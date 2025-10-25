@@ -33,6 +33,8 @@ export default function PatientButton({
   const handlePatientButtonClick = () =>
     push(`/hospital/${hosId}/icu/${targetDate}/chart/${patient.patient_id}`)
 
+  const isPatientNew = icuIoData.in_date === targetDate
+
   return (
     <Button
       variant="outline"
@@ -43,6 +45,11 @@ export default function PatientButton({
       )}
       onClick={handlePatientButtonClick}
     >
+      {isPatientNew && (
+        <span className="pointer-events-none absolute -top-1.5 left-0 -rotate-12 select-none text-[10px] font-semibold tracking-tight text-primary">
+          new
+        </span>
+      )}
       <UrgencyStarts urgency={urgency} />
 
       <div

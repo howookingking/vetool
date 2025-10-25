@@ -1,8 +1,8 @@
 import { Button } from '@/components/ui/button'
+import { HOS_SIDEBAR_MENUS } from '@/constants/hospital/hos-sidebar-menus'
 import type { AnnouncementListProps } from '@/types/vetool'
 import { ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDownIcon } from 'lucide-react'
-import { SIDEBAR_MENUS } from '../hospital/sidebar/hospital-sidebar'
 
 export const announcementsTableColumns: ColumnDef<AnnouncementListProps>[] = [
   {
@@ -11,7 +11,9 @@ export const announcementsTableColumns: ColumnDef<AnnouncementListProps>[] = [
 
     cell: ({ row }) => {
       const category = row.original.announcement_category
-      const foundCategory = SIDEBAR_MENUS.find(({ path }) => path === category)
+      const foundCategory = HOS_SIDEBAR_MENUS.find(
+        ({ path }) => path === category,
+      )
       return (
         <span className="text-xs text-muted-foreground">
           {foundCategory?.name ?? '전체'}

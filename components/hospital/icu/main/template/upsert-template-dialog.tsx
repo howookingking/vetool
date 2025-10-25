@@ -58,7 +58,7 @@ export default function UpsertTemplateDialog({
 
   return (
     <Dialog open={isUpsertTemplateDialogOpen} onOpenChange={handleOpenChange}>
-      <DialogTrigger asChild className="absolute right-0 top-0">
+      <DialogTrigger asChild className="absolute right-2 top-2">
         <Button className="h-[34px]">템풀릿 만들기</Button>
       </DialogTrigger>
 

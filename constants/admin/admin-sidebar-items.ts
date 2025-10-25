@@ -5,22 +5,16 @@ export const ADMIN_SIDEBAR_ITEMS = [
     name: '스태프관리',
     path: 'staff',
     icon: Users,
-    isReady: true,
-    isResponsive: true,
   },
   {
     name: '사용승인',
     path: 'approval',
     icon: UserCheck,
-    isReady: true,
-    isResponsive: true,
   },
   {
     name: '입원차트 설정',
     path: 'icu-settings',
     icon: Syringe,
-    isReady: true,
-    isResponsive: false,
   },
   // {
   //   name: '약물설정',

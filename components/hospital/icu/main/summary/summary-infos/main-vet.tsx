@@ -1,7 +1,5 @@
 'use client'
 
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from 'recharts'
-
 import {
   Card,
   CardContent,
@@ -18,6 +16,7 @@ import {
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SummaryData } from '@/types/icu/summary'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
+import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from 'recharts'
 
 export default function MainVet({
   summaryData,
@@ -49,7 +48,7 @@ export default function MainVet({
   }))
 
   return (
-    <Card className="col-span-3 md:col-span-1">
+    <Card className="col-span1 rounded-none">
       <CardHeader>
         <CardTitle>주치의</CardTitle>
         <VisuallyHidden>

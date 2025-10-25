@@ -1,7 +1,9 @@
+import MobileTitle from '@/components/common/mobile-title'
 import HospitalHomeBody from '@/components/hospital/home/body/hospital-home-body'
 import HospitalHomeHeader from '@/components/hospital/home/header/hospital-home-header'
 import { getVetoolUserData } from '@/lib/services/auth/authorization'
 import { redirectToOwnHospital } from '@/lib/utils/utils'
+import { HomeIcon } from 'lucide-react'
 
 export default async function HospitalHomePage(props: {
   params: Promise<{ hos_id: string }>
@@ -14,7 +16,9 @@ export default async function HospitalHomePage(props: {
 
   return (
     <>
-      <HospitalHomeHeader isSuper={isSuper} hosId={params.hos_id} />
+      <MobileTitle icon={HomeIcon} title="병원 홈" />
+
+      <HospitalHomeHeader isSuper={isSuper} />
 
       <HospitalHomeBody hosId={params.hos_id} />
     </>
