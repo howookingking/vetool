@@ -63,11 +63,11 @@ export default function IcuAnalysisEntry() {
       {analysisData.length === 0 ? (
         <NoResultSquirrel
           text="분석할 차트 데이터가 없습니다"
-          className="h-screen flex-col"
+          className="h-mobile flex-col 2xl:h-desktop"
           size="lg"
         />
       ) : (
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-2 p-2">
           <IoPatientsStatistics
             analysisData={analysisData}
             setStartDate={setStartDate}
@@ -76,7 +76,7 @@ export default function IcuAnalysisEntry() {
             vets={vets}
           />
 
-          <div className="col-span-2 grid grid-cols-2 gap-2 pb-12">
+          <div className="col-span-2 grid grid-cols-2 gap-2">
             <VetAssignmentStatistics analysisData={analysisData} />
             <GroupByStatistics analysisData={analysisData} />
           </div>
