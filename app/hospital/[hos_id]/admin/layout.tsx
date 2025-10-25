@@ -1,4 +1,4 @@
-import DesktopAdminSidebar from '@/components/hospital/admin/desktop-admin-sidebar'
+import AdminSidebar from '@/components/hospital/admin/admin-sidebar'
 import { getVetoolUserData } from '@/lib/services/auth/authorization'
 import { redirectToOwnHospital } from '@/lib/utils/utils'
 import { redirect } from 'next/navigation'
@@ -20,7 +20,7 @@ export default async function AdminLayout(props: Props) {
 
   return (
     <div className="flex flex-col md:flex-row">
-      <DesktopAdminSidebar />
+      <AdminSidebar />
 
       <div className="h-screen w-full overflow-auto p-2 pt-14 md:pt-2">
         {props.children}

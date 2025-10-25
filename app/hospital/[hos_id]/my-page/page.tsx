@@ -1,6 +1,8 @@
+import MobileTitle from '@/components/common/mobile-title'
 import ProfileImage from '@/components/hospital/my-page/profile-image'
 import UserInfoItem from '@/components/hospital/my-page/user-info-item'
 import { getVetoolUserData } from '@/lib/services/auth/authorization'
+import { UserIcon } from 'lucide-react'
 
 export default async function MyPage() {
   const userData = await getVetoolUserData()
@@ -11,20 +13,24 @@ export default async function MyPage() {
   ]
 
   return (
-    <div className="m-2 flex h-full max-w-[960px] flex-col items-center justify-center rounded-md border p-4">
-      <ProfileImage src={userData.avatar_url} />
+    <>
+      <MobileTitle icon={UserIcon} title="사용자 계정" />
 
-      <div className="mt-8 flex w-full flex-col items-center justify-center rounded-md border">
-        {userInfoItems.map((item, index) => (
-          <UserInfoItem
-            key={index}
-            label={item.label}
-            value={item.value!}
-            userId={userData.user_id}
-            canEdit={item.canEdit}
-          />
-        ))}
+      <div className="flex h-full max-w-[960px] flex-col items-center justify-center rounded-md p-4">
+        <ProfileImage src={userData.avatar_url} />
+
+        <div className="mt-8 flex w-full flex-col items-center justify-center rounded-md border">
+          {userInfoItems.map((item, index) => (
+            <UserInfoItem
+              key={index}
+              label={item.label}
+              value={item.value!}
+              userId={userData.user_id}
+              canEdit={item.canEdit}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   )
 }

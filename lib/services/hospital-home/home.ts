@@ -22,7 +22,9 @@ export type HospitalList = Pick<
   'hos_id' | 'name' | 'city' | 'district' | 'plan'
 >
 
-export const fetchHospitalList = async () => {
+export const fetchHospitalList = async (isSuper = false) => {
+  if (!isSuper) return
+
   const supabase = await createClient()
 
   const { data, error } = await supabase
