@@ -74,7 +74,7 @@ export default async function IcuPageLayout(props: Props) {
           isInChargeSystem: is_in_charge_system,
         }}
       >
-        <div className="flex h-desktop">
+        <div className="flex">
           <IcuSidebar
             hosId={hos_id}
             targetDate={target_date}
@@ -83,7 +83,7 @@ export default async function IcuPageLayout(props: Props) {
             vetList={vetList}
           />
 
-          <div className="ml-0 w-screen flex-1 2xl:ml-48 2xl:w-auto">
+          <div className="ml-0 h-mobile w-screen flex-1 2xl:ml-48 2xl:h-desktop 2xl:w-auto">
             {props.children}
           </div>
         </div>
