@@ -6,6 +6,7 @@ import {
 } from '@/constants/hospital/icu/chart/order'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { useCurrentTime } from '@/hooks/use-current-time'
+import { cn } from '@/lib/utils/utils'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -14,13 +15,13 @@ import { CurrentTimeIndicator } from '../chart/selected-chart/chart-body/table/c
 type Props = {
   orderTypeFilter: OrderType | null
   filteredTxData: IcuTxTableData[]
-  isToday: boolean
+  isTargetDateToday: boolean
 }
 
 export default function TxTableHeader({
   orderTypeFilter,
   filteredTxData,
-  isToday,
+  isTargetDateToday,
 }: Props) {
   const { hours, minutes } = useCurrentTime()
 
@@ -71,7 +72,16 @@ export default function TxTableHeader({
         <TableHead className="w-[120px] text-center">환자 \ 시간</TableHead>
 
         {TIMES.map((time) => {
-          const shouldShowIndicator = time === hours && isToday
+          const shouldShowIndicator = time === hours && isTargetDateToday
+          const leftOrderCountsAtTime = filteredTxData
+            .map((data) =>
+              data.orders.filter(
+                (order) =>
+                  order.icu_chart_order_time[time] !== '0' &&
+                  !order.treatments.find((tx) => tx.time === time),
+              ),
+            )
+            .flat().length
           return (
             <TableHead
               className="relative border-l border-t-0 text-center"
@@ -79,10 +89,14 @@ export default function TxTableHeader({
             >
               <div className="flex items-center justify-center">
                 <span>{time.toString().padStart(2, '0')}</span>
-                <TimeTxTextCopy
-                  handleClick={() => handleCopyToClipboard(time)}
-                  isCopied={copiedTxTime === time}
-                />
+
+                {leftOrderCountsAtTime > 0 && (
+                  <TimeTxTextCopy
+                    handleClick={() => handleCopyToClipboard(time)}
+                    isCopied={copiedTxTime === time}
+                    leftOrderCountsAtTime={leftOrderCountsAtTime}
+                  />
+                )}
               </div>
               {shouldShowIndicator && (
                 <CurrentTimeIndicator minutes={minutes} />
