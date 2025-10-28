@@ -4,19 +4,16 @@ import { TableCell } from '@/components/ui/table'
 import type { IcuOrderColors } from '@/types/adimin'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
 import { ArrowRight, Edit } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 type Props = {
+  hosId: string
+  targetDate: string
   time: number
   order: IcuTxTableData['orders'][number]
   treatment?: IcuTxTableData['orders'][number]['treatments'][number]
   patientId: string
-  patientName: string
   orderColorsData: IcuOrderColors
-  handleClickMove: (
-    patientId: string,
-    time: number,
-    order: IcuTxTableData['orders'][number],
-  ) => void
   handleOpenTxDetail: (
     order: IcuTxTableData['orders'][number],
     time: number,
@@ -25,14 +22,22 @@ type Props = {
 }
 
 export default function TxTableCell({
+  hosId,
+  targetDate,
   time,
   order,
   treatment,
   patientId,
   orderColorsData,
-  handleClickMove,
   handleOpenTxDetail,
 }: Props) {
+  const { push } = useRouter()
+
+  const handleMoveToChart = () =>
+    push(
+      `/hospital/${hosId}/icu/${targetDate}/chart/${patientId}?order-id=${order.icu_chart_order_id}&time=${time}`,
+    )
+
   return (
     <TableCell className="relative px-3 py-2 text-center ring-inset ring-primary transition-all">
       <>
@@ -70,7 +75,7 @@ export default function TxTableCell({
               className="h-6 w-6 p-4"
               size="icon"
               title="이동"
-              onClick={() => handleClickMove(patientId, time, order)}
+              onClick={handleMoveToChart}
             >
               <ArrowRight />
             </Button>

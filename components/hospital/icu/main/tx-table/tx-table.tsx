@@ -22,6 +22,8 @@ type Props = {
   filteredTxData: IcuTxTableData[]
   showTxUser: boolean
   orderColorsData: IcuOrderColors
+  hosId: string
+  targetDate: string
 }
 
 export default function TxTable({
@@ -29,6 +31,8 @@ export default function TxTable({
   filteredTxData,
   showTxUser,
   orderColorsData,
+  hosId,
+  targetDate,
 }: Props) {
   const { hos_id, target_date } = useParams()
   const { push } = useRouter()
