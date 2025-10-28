@@ -1,5 +1,3 @@
-'use client'
-
 import PatientBriefInfo from '@/components/hospital/common/patient/patient-brief-info'
 import TxTableCell from '@/components/hospital/icu/main/tx-table/tx-table-cell'
 import TxTableHeader from '@/components/hospital/icu/main/tx-table/tx-table-header'
@@ -8,20 +6,18 @@ import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import type { OrderType } from '@/constants/hospital/icu/chart/order'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
-import type { IcuOrderColors } from '@/types/adimin'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { Species } from '@/types/hospital/calculator'
-import type { TxLog } from '@/types/icu/chart'
+import type { Treatment, TxLog } from '@/types/icu/chart'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
-import { SquarePlus } from 'lucide-react'
-import { useParams, useRouter } from 'next/navigation'
+import { SquarePlusIcon } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-import TxUpsertDialogDynamc from '../chart/selected-chart/chart-body/table/tx/tx-upsert-dialog-dynamic'
+import TxUpsertDialog from '../chart/selected-chart/chart-body/table/tx/tx-upsert-dialog'
+import { formatDate } from 'date-fns'
 
 type Props = {
   orderTypeFilter: OrderType | null
   filteredTxData: IcuTxTableData[]
-  showTxUser: boolean
-  orderColorsData: IcuOrderColors
   hosId: string
   targetDate: string
 }
@@ -29,14 +25,14 @@ type Props = {
 export default function TxTable({
   orderTypeFilter,
   filteredTxData,
-  showTxUser,
-  orderColorsData,
   hosId,
   targetDate,
 }: Props) {
-  const { hos_id, target_date } = useParams()
-  const { push } = useRouter()
+  const isToday = formatDate(new Date(), 'yyyy-MM-dd') === targetDate
 
+  const {
+    basicHosData: { showTxUser, orderColorsData },
+  } = useBasicHosDataContext()
   const { setTxStep, setTxLocalState } = useIcuTxStore()
 
   const scrollAreaRef = useRef<HTMLDivElement>(null)
@@ -49,9 +45,9 @@ export default function TxTable({
     if (!tableRef.current) return 0
     if (currentHour <= 5) return 0
     const headerCells = Array.from(tableRef.current.querySelectorAll('th'))
-    return headerCells.slice(1, currentHour + 1).reduce((total, cell) => {
-      return total + cell.offsetWidth
-    }, 0)
+    return headerCells
+      .slice(1, currentHour + 1)
+      .reduce((total, cell) => total + cell.offsetWidth, 0)
   }
 
   useEffect(() => {
@@ -60,7 +56,7 @@ export default function TxTable({
         '[data-radix-scroll-area-viewport]',
       ) as HTMLDivElement | null
 
-      if (scrollContainer) {
+      if (scrollContainer && isToday) {
         const scrollPosition = getCurrentScrollPosition()
         scrollContainer.style.scrollBehavior = 'smooth'
         scrollContainer.scrollLeft = scrollPosition
@@ -75,22 +71,12 @@ export default function TxTable({
     }, 100)
 
     return () => clearTimeout(timeoutId)
-  }, [isScrolled])
-
-  const handleMoveToChart = (
-    patientId: string,
-    time: number,
-    order: IcuTxTableData['orders'][number],
-  ) => {
-    push(
-      `/hospital/${hos_id}/icu/${target_date}/chart/${patientId}?order-id=${order.icu_chart_order_id}&time=${time}`,
-    )
-  }
+  }, [isScrolled, isToday])
 
   const handleOpenTxDetail = (
     order: IcuTxTableData['orders'][number],
     time: number,
-    treatment?: IcuTxTableData['orders'][number]['treatments'][number],
+    treatment?: Treatment,
   ) => {
     setTxLocalState({
       icuChartOrderId: order.icu_chart_order_id,
@@ -103,6 +89,7 @@ export default function TxTable({
       txLog: treatment?.tx_log as TxLog[] | null,
       isCrucialChecked: treatment?.is_crucial,
     })
+
     setTxStep('detailInsert')
   }
 
@@ -116,6 +103,7 @@ export default function TxTable({
           <TxTableHeader
             filteredTxData={filteredTxData}
             orderTypeFilter={orderTypeFilter}
+            isToday={isToday}
           />
 
           <TableBody>
@@ -141,12 +129,14 @@ export default function TxTable({
 
                     <div className="flex flex-col justify-center gap-1">
                       <span className="text-xs">
-                        {txData.icu_charts.weight}kg
+                        {txData.icu_charts.weight
+                          ? `${txData.icu_charts.weight}kg`
+                          : '체중 미입력'}
                       </span>
 
                       {txData.icu_io.cage && (
                         <div className="flex items-center justify-center gap-1 text-muted-foreground">
-                          <SquarePlus size={12} />
+                          <SquarePlusIcon size={12} />
                           <span className="text-xs">{txData.icu_io.cage}</span>
                         </div>
                       )}
@@ -171,14 +161,14 @@ export default function TxTable({
 
                     return (
                       <TxTableCell
-                        patientName={txData.patient.name}
+                        hosId={hosId}
+                        targetDate={targetDate}
                         key={time}
                         time={time}
                         order={order}
                         treatment={treatment}
                         patientId={txData.patient_id}
                         orderColorsData={orderColorsData}
-                        handleClickMove={handleMoveToChart}
                         handleOpenTxDetail={handleOpenTxDetail}
                       />
                     )
@@ -191,7 +181,7 @@ export default function TxTable({
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
 
-      <TxUpsertDialogDynamc showTxUser={showTxUser} />
+      <TxUpsertDialog showTxUser={showTxUser} />
     </>
   )
 }
