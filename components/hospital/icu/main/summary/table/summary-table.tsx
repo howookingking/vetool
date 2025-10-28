@@ -10,9 +10,9 @@ import {
 } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { useCurrentTime } from '@/hooks/use-current-time'
-import { formatDate } from '@/lib/utils/utils'
 import type { SummaryData } from '@/types/icu/summary'
 import { CurrentTimeIndicator } from '../../chart/selected-chart/chart-body/table/chart-table-header/current-time-indicator'
+import { formatDate } from 'date-fns'
 
 type Props = {
   summaryData: SummaryData[]
@@ -55,7 +55,7 @@ export default function SummaryTable({
   // })
 
   const { hours, minutes } = useCurrentTime()
-  const isToday = formatDate(new Date()) === targetDate
+  const isToday = formatDate(new Date(), 'yyyy-MM-dd') === targetDate
 
   return (
     <Table className="border bg-white shadow">

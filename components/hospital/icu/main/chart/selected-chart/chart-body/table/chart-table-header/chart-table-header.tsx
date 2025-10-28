@@ -4,11 +4,12 @@ import SortingButton from '@/components/hospital/icu/main/chart/selected-chart/c
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { useCurrentTime } from '@/hooks/use-current-time'
-import { cn, formatDate } from '@/lib/utils/utils'
+import { cn } from '@/lib/utils/utils'
 import type { OrderWidth } from '@/types/hospital/order'
 import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
 import type { Dispatch, SetStateAction } from 'react'
 import { CurrentTimeIndicator } from './current-time-indicator'
+import { formatDate } from 'date-fns'
 
 type Props = {
   preview?: boolean
@@ -36,7 +37,7 @@ export default function ChartTableHeader({
   hosId,
 }: Props) {
   const { hours, minutes } = useCurrentTime()
-  const isToday = formatDate(new Date()) === chartData.target_date
+  const isToday = formatDate(new Date(), 'yyyy-MM-dd') === chartData.target_date
 
   return (
     <TableHeader

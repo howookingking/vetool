@@ -5,7 +5,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { formatDate } from '@/lib/utils/utils'
+import { formatDate } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { CalendarDays } from 'lucide-react'
 import { type Dispatch, type SetStateAction, useState } from 'react'
@@ -26,7 +26,7 @@ export default function TodoDatePicker({
     setIsPopoverOpen(false)
   }
 
-  const formattedSelectedDate = formatDate(selectedDate)
+  const formattedSelectedDate = formatDate(selectedDate, 'yyyy-MM-dd')
 
   return (
     <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
