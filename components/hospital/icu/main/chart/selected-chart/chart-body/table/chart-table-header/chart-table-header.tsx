@@ -7,9 +7,9 @@ import { useCurrentTime } from '@/hooks/use-current-time'
 import { cn } from '@/lib/utils/utils'
 import type { OrderWidth } from '@/types/hospital/order'
 import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
+import { isToday } from 'date-fns'
 import type { Dispatch, SetStateAction } from 'react'
 import { CurrentTimeIndicator } from './current-time-indicator'
-import { formatDate } from 'date-fns'
 
 type Props = {
   preview?: boolean
@@ -37,7 +37,7 @@ export default function ChartTableHeader({
   hosId,
 }: Props) {
   const { hours, minutes } = useCurrentTime()
-  const isToday = formatDate(new Date(), 'yyyy-MM-dd') === chartData.target_date
+  const isTargetDateToday = isToday(chartData.target_date!)
 
   return (
     <TableHeader
@@ -84,7 +84,7 @@ export default function ChartTableHeader({
 
         {TIMES.map((time) => {
           const shouldShowIndicator =
-            time === hours && !isSorting && !preview && isToday
+            time === hours && !isSorting && !preview && isTargetDateToday
           return (
             <TableHead className="relative border text-center" key={time}>
               {time.toString().padStart(2, '0')}

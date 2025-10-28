@@ -11,8 +11,8 @@ import {
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { useCurrentTime } from '@/hooks/use-current-time'
 import type { SummaryData } from '@/types/icu/summary'
+import { isToday } from 'date-fns'
 import { CurrentTimeIndicator } from '../../chart/selected-chart/chart-body/table/chart-table-header/current-time-indicator'
-import { formatDate } from 'date-fns'
 
 type Props = {
   summaryData: SummaryData[]
@@ -55,7 +55,7 @@ export default function SummaryTable({
   // })
 
   const { hours, minutes } = useCurrentTime()
-  const isToday = formatDate(new Date(), 'yyyy-MM-dd') === targetDate
+  const isTargetDateToday = isToday(targetDate)
 
   return (
     <Table className="border bg-white shadow">
@@ -63,7 +63,7 @@ export default function SummaryTable({
         <TableRow>
           <TableHead className="w-[160px] text-center">환자 \ 시간</TableHead>
           {TIMES.map((time) => {
-            const shouldShowIndicator = time === hours && isToday
+            const shouldShowIndicator = time === hours && isTargetDateToday
             return (
               <TableHead
                 className="relative border border-t-0 text-center"

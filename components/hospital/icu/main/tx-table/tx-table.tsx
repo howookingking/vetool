@@ -10,10 +10,10 @@ import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provi
 import type { Species } from '@/types/hospital/calculator'
 import type { Treatment, TxLog } from '@/types/icu/chart'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
+import { isToday } from 'date-fns'
 import { SquarePlusIcon } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import TxUpsertDialog from '../chart/selected-chart/chart-body/table/tx/tx-upsert-dialog'
-import { formatDate } from 'date-fns'
 
 type Props = {
   orderTypeFilter: OrderType | null
@@ -28,7 +28,7 @@ export default function TxTable({
   hosId,
   targetDate,
 }: Props) {
-  const isToday = formatDate(new Date(), 'yyyy-MM-dd') === targetDate
+  const isTargetDateToday = isToday(targetDate)
 
   const {
     basicHosData: { showTxUser, orderColorsData },
@@ -38,10 +38,8 @@ export default function TxTable({
   const scrollAreaRef = useRef<HTMLDivElement>(null)
   const tableRef = useRef<HTMLTableElement>(null)
 
-  const [isScrolled, setIsScrolled] = useState(false)
-
   const getCurrentScrollPosition = () => {
-    const currentHour = new Date().getHours() - 5
+    const currentHour = new Date().getHours() - 5 // 5칸은 앞에 두는게 좋음
     if (!tableRef.current) return 0
     if (currentHour <= 5) return 0
     const headerCells = Array.from(tableRef.current.querySelectorAll('th'))
@@ -54,24 +52,18 @@ export default function TxTable({
     const scrollToCurrentTime = () => {
       const scrollContainer = scrollAreaRef.current?.querySelector(
         '[data-radix-scroll-area-viewport]',
-      ) as HTMLDivElement | null
+      )
 
-      if (scrollContainer && isToday) {
+      if (scrollContainer && isTargetDateToday) {
         const scrollPosition = getCurrentScrollPosition()
-        scrollContainer.style.scrollBehavior = 'smooth'
         scrollContainer.scrollLeft = scrollPosition
       }
     }
 
-    const timeoutId = setTimeout(() => {
-      if (!isScrolled) {
-        setIsScrolled(true)
-        scrollToCurrentTime()
-      }
-    }, 100)
+    const timeoutId = setTimeout(() => scrollToCurrentTime(), 100)
 
     return () => clearTimeout(timeoutId)
-  }, [isScrolled, isToday])
+  }, [isTargetDateToday])
 
   const handleOpenTxDetail = (
     order: IcuTxTableData['orders'][number],
@@ -103,7 +95,7 @@ export default function TxTable({
           <TxTableHeader
             filteredTxData={filteredTxData}
             orderTypeFilter={orderTypeFilter}
-            isToday={isToday}
+            isTargetDateToday={isTargetDateToday}
           />
 
           <TableBody>
