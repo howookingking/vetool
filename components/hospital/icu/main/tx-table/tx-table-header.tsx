@@ -6,9 +6,7 @@ import {
 } from '@/constants/hospital/icu/chart/order'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { useCurrentTime } from '@/hooks/use-current-time'
-import { formatDate } from '@/lib/utils/utils'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
-import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { CurrentTimeIndicator } from '../chart/selected-chart/chart-body/table/chart-table-header/current-time-indicator'
@@ -16,15 +14,15 @@ import { CurrentTimeIndicator } from '../chart/selected-chart/chart-body/table/c
 type Props = {
   orderTypeFilter: OrderType | null
   filteredTxData: IcuTxTableData[]
+  isToday: boolean
 }
 
 export default function TxTableHeader({
   orderTypeFilter,
   filteredTxData,
+  isToday,
 }: Props) {
   const { hours, minutes } = useCurrentTime()
-  const { target_date } = useParams()
-  const isToday = formatDate(new Date()) === target_date
 
   const [copiedTxTime, setCopiedTxTime] = useState<number | null>()
 
@@ -56,7 +54,7 @@ export default function TxTableHeader({
 
       data.orders.forEach(
         (order) =>
-          (text += `✅ ${order.icu_chart_order_name}, ${order.icu_chart_order_comment ?? ''} \n`),
+          (text += `✅ ${order.icu_chart_order_name}${order.icu_chart_order_comment ? `  |  ${order.icu_chart_order_comment}` : ''}\n`),
       )
       text += '\n'
     })
