@@ -23,7 +23,7 @@ import { pasteChart } from '@/lib/services/icu/chart/paste-chart'
 import { useCopiedChartStore } from '@/lib/store/icu/copied-chart'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { CopyCheckIcon, LoaderCircleIcon } from 'lucide-react'
+import { ClipboardCheckIcon, LoaderCircleIcon } from 'lucide-react'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -79,7 +79,7 @@ export default function PasteCopiedChartDialog() {
           variant="outline"
           className="hidden h-1/3 w-full items-center justify-center gap-2 md:flex md:h-1/3 md:w-2/3 lg:w-1/2"
         >
-          <CopyCheckIcon size={20} />
+          <ClipboardCheckIcon />
           <span>복사한 차트 붙여넣기</span>
         </Button>
       </DialogTrigger>

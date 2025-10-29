@@ -29,7 +29,11 @@ export default async function TxTablePage(props: {
           size="lg"
         />
       ) : (
-        <TxTableContainer txTableData={txTableData} />
+        <TxTableContainer
+          txTableData={txTableData}
+          hosId={hos_id}
+          targetDate={target_date}
+        />
       )}
     </>
   )

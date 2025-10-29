@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { CopyCheckIcon, CopyIcon } from 'lucide-react'
+import { ClipboardCheckIcon, ClipboardIcon } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -24,9 +24,9 @@ export default function CopyButton({ copyResult }: { copyResult: string }) {
       size="icon"
     >
       {isCopied ? (
-        <CopyCheckIcon className="h-4 w-4" />
+        <ClipboardCheckIcon className="h-4 w-4" />
       ) : (
-        <CopyIcon className="h-4 w-4" />
+        <ClipboardIcon className="h-4 w-4" />
       )}
     </Button>
   )

@@ -1,5 +1,5 @@
-import { formatDate } from '@/lib/utils/utils'
 import type { PatientWithWeight } from '@/types/patients'
+import { formatDate } from 'date-fns'
 import PatientDetailInfo from '../common/patient/patient-detail-info'
 
 export default function SelectedPatient({
@@ -14,7 +14,7 @@ export default function SelectedPatient({
         weight={patientData.vital?.body_weight ?? ''}
         weightMeasuredDate={
           patientData.vital?.created_at &&
-          formatDate(new Date(patientData.vital.created_at))
+          formatDate(new Date(patientData.vital.created_at), 'yyyy-MM-dd')
         }
       />
     </div>

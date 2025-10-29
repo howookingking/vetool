@@ -75,7 +75,7 @@ export default function PatientButton({
           </div>
           <div className="flex items-center gap-0.5 truncate">
             <UserIcon style={{ width: 12, height: 12 }} />
-            <div className="truncate">{patient.owner_name || '미지정'}</div>
+            <div className="truncate">{patient.owner_name || '미등록'}</div>
           </div>
         </div>
       </div>

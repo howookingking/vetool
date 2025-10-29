@@ -6,10 +6,10 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { Button } from '@/components/ui/button'
-import { formatDate } from '@/lib/utils/utils'
 import { CalendarDays } from 'lucide-react'
 import { Label } from '@/components/ui/label'
 import { DateRange } from 'react-day-picker'
+import { formatDate } from 'date-fns'
 
 export default function IoPatientsCalendar({
   dateRange,
@@ -30,7 +30,7 @@ export default function IoPatientsCalendar({
           >
             <CalendarDays className="h-3 w-3" />
             <span className="ml-2 text-sm">
-              {`${formatDate(dateRange?.from || new Date())} - ${formatDate(dateRange?.to || new Date())}`}
+              {`${formatDate(dateRange?.from || new Date(), 'yyyy-MM-dd')} - ${formatDate(dateRange?.to || new Date(), 'yyyy-MM-dd')}`}
             </span>
           </Button>
         </PopoverTrigger>

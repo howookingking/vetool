@@ -1,20 +1,35 @@
 import { Button } from '@/components/ui/button'
-import { Clipboard, ClipboardCheck } from 'lucide-react'
+import { ClipboardCheckIcon, ClipboardIcon } from 'lucide-react'
 
 type Props = {
   handleClick: () => void
   isCopied: boolean
+  leftOrderCountsAtTime: number
 }
 
-export default function TimeTxTextCopy({ handleClick, isCopied }: Props) {
+export default function TimeTxTextCopy({
+  handleClick,
+  isCopied,
+  leftOrderCountsAtTime,
+}: Props) {
   return (
-    <Button
-      variant="ghost"
-      size="icon"
-      className="ml-1 h-7 w-7"
-      onClick={handleClick}
-    >
-      {isCopied ? <ClipboardCheck /> : <Clipboard />}
-    </Button>
+    <>
+      <div className="flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[8px] text-white">
+        {leftOrderCountsAtTime}
+      </div>
+
+      <Button
+        variant="ghost"
+        className="h-7 w-7 text-muted-foreground shadow-none"
+        size="sm"
+        onClick={handleClick}
+      >
+        {isCopied ? (
+          <ClipboardCheckIcon style={{ width: 14 }} />
+        ) : (
+          <ClipboardIcon style={{ width: 14 }} />
+        )}
+      </Button>
+    </>
   )
 }

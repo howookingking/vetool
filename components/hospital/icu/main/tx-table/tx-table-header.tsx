@@ -6,9 +6,7 @@ import {
 } from '@/constants/hospital/icu/chart/order'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { useCurrentTime } from '@/hooks/use-current-time'
-import { formatDate } from '@/lib/utils/utils'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
-import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { CurrentTimeIndicator } from '../chart/selected-chart/chart-body/table/chart-table-header/current-time-indicator'
@@ -16,15 +14,15 @@ import { CurrentTimeIndicator } from '../chart/selected-chart/chart-body/table/c
 type Props = {
   orderTypeFilter: OrderType | null
   filteredTxData: IcuTxTableData[]
+  isTargetDateToday: boolean
 }
 
 export default function TxTableHeader({
   orderTypeFilter,
   filteredTxData,
+  isTargetDateToday,
 }: Props) {
   const { hours, minutes } = useCurrentTime()
-  const { target_date } = useParams()
-  const isToday = formatDate(new Date()) === target_date
 
   const [copiedTxTime, setCopiedTxTime] = useState<number | null>()
 
@@ -56,7 +54,7 @@ export default function TxTableHeader({
 
       data.orders.forEach(
         (order) =>
-          (text += `✅ ${order.icu_chart_order_name}, ${order.icu_chart_order_comment ?? ''} \n`),
+          (text += `✅ ${order.icu_chart_order_name}${order.icu_chart_order_comment ? `  |  ${order.icu_chart_order_comment}` : ''}\n`),
       )
       text += '\n'
     })
@@ -64,7 +62,7 @@ export default function TxTableHeader({
     navigator.clipboard.writeText(text.trim())
     setCopiedTxTime(time)
 
-    toast.success(`${title}를 클립보드에 저장하였습니다`)
+    toast.success(`${title}를 클립보드에 복사하였습니다`)
   }
 
   return (
@@ -73,19 +71,33 @@ export default function TxTableHeader({
         <TableHead className="w-[120px] text-center">환자 \ 시간</TableHead>
 
         {TIMES.map((time) => {
-          const shouldShowIndicator = time === hours && isToday
+          const shouldShowIndicator = time === hours && isTargetDateToday
+          const leftOrderCountsAtTime = filteredTxData
+            .map((data) =>
+              data.orders.filter(
+                (order) =>
+                  order.icu_chart_order_time[time] !== '0' &&
+                  !order.treatments.find((tx) => tx.time === time),
+              ),
+            )
+            .flat().length
           return (
             <TableHead
               className="relative border-l border-t-0 text-center"
               key={time}
             >
-              <div className="flex items-center justify-center">
+              <div className="flex items-center justify-center gap-1">
                 <span>{time.toString().padStart(2, '0')}</span>
-                <TimeTxTextCopy
-                  handleClick={() => handleCopyToClipboard(time)}
-                  isCopied={copiedTxTime === time}
-                />
+
+                {leftOrderCountsAtTime > 0 && (
+                  <TimeTxTextCopy
+                    handleClick={() => handleCopyToClipboard(time)}
+                    isCopied={copiedTxTime === time}
+                    leftOrderCountsAtTime={leftOrderCountsAtTime}
+                  />
+                )}
               </div>
+
               {shouldShowIndicator && (
                 <CurrentTimeIndicator minutes={minutes} />
               )}
