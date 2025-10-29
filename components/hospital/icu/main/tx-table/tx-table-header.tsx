@@ -6,7 +6,6 @@ import {
 } from '@/constants/hospital/icu/chart/order'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { useCurrentTime } from '@/hooks/use-current-time'
-import { cn } from '@/lib/utils/utils'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -63,7 +62,7 @@ export default function TxTableHeader({
     navigator.clipboard.writeText(text.trim())
     setCopiedTxTime(time)
 
-    toast.success(`${title}를 클립보드에 저장하였습니다`)
+    toast.success(`${title}를 클립보드에 복사하였습니다`)
   }
 
   return (
@@ -87,7 +86,7 @@ export default function TxTableHeader({
               className="relative border-l border-t-0 text-center"
               key={time}
             >
-              <div className="flex items-center justify-center">
+              <div className="flex items-center justify-center gap-1">
                 <span>{time.toString().padStart(2, '0')}</span>
 
                 {leftOrderCountsAtTime > 0 && (
@@ -98,6 +97,7 @@ export default function TxTableHeader({
                   />
                 )}
               </div>
+
               {shouldShowIndicator && (
                 <CurrentTimeIndicator minutes={minutes} />
               )}

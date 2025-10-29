@@ -3,7 +3,7 @@ export const CurrentTimeIndicator = ({ minutes }: { minutes: number }) => {
 
   return (
     <div
-      className="absolute bottom-0 top-0"
+      className="pointer-events-none absolute bottom-0 top-0"
       style={{ left: `${minutesPerHour}%` }}
     >
       <div className="relative z-50 h-full w-0.5">
