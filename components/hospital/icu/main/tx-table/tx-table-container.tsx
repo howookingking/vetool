@@ -7,19 +7,20 @@ import {
   DEFAULT_ICU_ORDER_TYPE,
   type OrderType,
 } from '@/constants/hospital/icu/chart/order'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
 import { useState } from 'react'
 
+type Props = {
+  txTableData: IcuTxTableData[]
+  hosId: string
+  targetDate: string
+}
+
 export default function TxTableContainer({
   txTableData,
-}: {
-  txTableData: IcuTxTableData[]
-}) {
-  const {
-    basicHosData: { showTxUser, orderColorsData },
-  } = useBasicHosDataContext()
-
+  hosId,
+  targetDate,
+}: Props) {
   const [orderTypeFilter, setOrderTypeFilter] = useState<OrderType | null>(null)
 
   const filteredTxData = txTableData.map((data) => ({
@@ -43,15 +44,16 @@ export default function TxTableContainer({
         )
 
         // orderTimes에 있는 시간 중 doneTreatmentTimeSet에 없는 시간일 경우 true
-        // 6시 오더만 남게 된다.
+        // orderTimes중 doneTreatmentTimeSet에 없는게 하나라도 있다면(아직 해야할 처치가 남은경우) 남게 된다.
         return orderTimes.some((time) => !doneTreatmentTimeSet.has(time))
       })
+
       // 오더 타입 필터링
-      // orderTypeFilters가 비어있으면 모든 오더 타입을 보여줌
-      .filter((order) => {
-        if (orderTypeFilter === null) return true
-        return orderTypeFilter === order.icu_chart_order_type
-      }),
+      .filter((order) =>
+        orderTypeFilter === null
+          ? true
+          : orderTypeFilter === order.icu_chart_order_type,
+      ),
   }))
 
   const hasOrder = filteredTxData.some((data) => data.orders.length > 0)
@@ -72,8 +74,8 @@ export default function TxTableContainer({
         <TxTable
           orderTypeFilter={orderTypeFilter}
           filteredTxData={filteredTxData}
-          showTxUser={showTxUser}
-          orderColorsData={orderColorsData}
+          hosId={hosId}
+          targetDate={targetDate}
         />
       )}
 
