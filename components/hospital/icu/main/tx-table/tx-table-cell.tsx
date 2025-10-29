@@ -2,8 +2,9 @@ import OrderTypeColorDot from '@/components/hospital/common/order/order-type-col
 import { Button } from '@/components/ui/button'
 import { TableCell } from '@/components/ui/table'
 import type { IcuOrderColors } from '@/types/adimin'
+import type { Treatment } from '@/types/icu/chart'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
-import { ArrowRight, Edit } from 'lucide-react'
+import { ArrowRightIcon, EditIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 type Props = {
@@ -11,13 +12,13 @@ type Props = {
   targetDate: string
   time: number
   order: IcuTxTableData['orders'][number]
-  treatment?: IcuTxTableData['orders'][number]['treatments'][number]
+  treatment?: Treatment
   patientId: string
   orderColorsData: IcuOrderColors
   handleOpenTxDetail: (
     order: IcuTxTableData['orders'][number],
     time: number,
-    treatment?: IcuTxTableData['orders'][number]['treatments'][number],
+    treatment?: Treatment,
   ) => void
 }
 
@@ -50,6 +51,7 @@ export default function TxTableCell({
               />
               <span>{order.icu_chart_order_name}</span>
             </div>
+
             <span className="text-xs text-muted-foreground">
               {order.icu_chart_order_comment}
             </span>
@@ -60,24 +62,25 @@ export default function TxTableCell({
             <div>{treatment?.tx_comment}</div>
           </div>
 
-          <div className="flex justify-center gap-1.5">
+          <div className="flex justify-center gap-1">
             <Button
               variant="outline"
-              className="h-6 w-6 p-4"
+              className="h-7 w-7"
               size="icon"
               title="처치입력"
               onClick={() => handleOpenTxDetail(order, time, treatment)}
             >
-              <Edit />
+              <EditIcon style={{ width: 14 }} />
             </Button>
+
             <Button
               variant="outline"
-              className="h-6 w-6 p-4"
+              className="h-7 w-7"
               size="icon"
               title="이동"
               onClick={handleMoveToChart}
             >
-              <ArrowRight />
+              <ArrowRightIcon style={{ width: 14 }} />
             </Button>
           </div>
         </div>

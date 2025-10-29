@@ -1,19 +1,15 @@
-import PatientBriefInfo from '@/components/hospital/common/patient/patient-brief-info'
-import TxTableCell from '@/components/hospital/icu/main/tx-table/tx-table-cell'
 import TxTableHeader from '@/components/hospital/icu/main/tx-table/tx-table-header'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
-import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
+import { Table, TableBody } from '@/components/ui/table'
 import type { OrderType } from '@/constants/hospital/icu/chart/order'
-import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import type { Species } from '@/types/hospital/calculator'
 import type { Treatment, TxLog } from '@/types/icu/chart'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
 import { isToday } from 'date-fns'
-import { SquarePlusIcon } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 import TxUpsertDialog from '../chart/selected-chart/chart-body/table/tx/tx-upsert-dialog'
+import TxTableRow from './tx-table-row'
 
 type Props = {
   orderTypeFilter: OrderType | null
@@ -39,7 +35,7 @@ export default function TxTable({
   const tableRef = useRef<HTMLTableElement>(null)
 
   const getCurrentScrollPosition = () => {
-    const currentHour = new Date().getHours() - 5 // 5칸은 앞에 두는게 좋음
+    const currentHour = new Date().getHours() - 3 // 3칸은 앞에 두는게 좋음
     if (!tableRef.current) return 0
     if (currentHour <= 5) return 0
     const headerCells = Array.from(tableRef.current.querySelectorAll('th'))
@@ -99,74 +95,30 @@ export default function TxTable({
           />
 
           <TableBody>
-            {filteredTxData.flatMap((txData, index) =>
-              txData.orders.map((order) => (
-                <TableRow
-                  key={order.icu_chart_order_id}
-                  style={{
-                    background:
+            {filteredTxData.map((txData, i) =>
+              txData.orders.map((order, j) => {
+                const orderLength = txData.orders.length
+                const isLastOrder = j === orderLength - 1
+                return (
+                  <TxTableRow
+                    key={order.icu_chart_order_id}
+                    txData={txData}
+                    order={order}
+                    hosId={hosId}
+                    targetDate={targetDate}
+                    bgColor={
                       TX_TABLE_BACKGROUD_COLORS[
-                        index % TX_TABLE_BACKGROUD_COLORS.length
-                      ],
-                  }}
-                  className="divide-x"
-                >
-                  <TableCell className="sticky left-0 z-20 bg-white text-center shadow-md">
-                    <PatientBriefInfo
-                      name={txData.patient.name}
-                      breed={txData.patient.breed}
-                      species={txData.patient.species as Species}
-                      iconSize={18}
-                    />
-
-                    <div className="flex flex-col justify-center gap-1">
-                      <span className="text-xs">
-                        {txData.icu_charts.weight
-                          ? `${txData.icu_charts.weight}kg`
-                          : '체중 미입력'}
-                      </span>
-
-                      {txData.icu_io.cage && (
-                        <div className="flex items-center justify-center gap-1 text-muted-foreground">
-                          <SquarePlusIcon size={12} />
-                          <span className="text-xs">{txData.icu_io.cage}</span>
-                        </div>
-                      )}
-                    </div>
-                  </TableCell>
-
-                  {TIMES.map((time) => {
-                    // 해당시간에 스케쥴된 오더가 아닌경우 빈 셀로 처리
-                    const isOrderScheduled =
-                      order.icu_chart_order_time[time] !== '0'
-                    if (!isOrderScheduled) return <TableCell key={time} />
-
-                    // 해당시간에 스케쥴된 오더가 있고, 처치가 완료된 경우 빈 셀로 처리
-                    const isTxCompleted = order.treatments.some(
-                      (tx) => tx.time === time && tx.tx_result,
-                    )
-                    if (isTxCompleted) return <TableCell key={time} />
-
-                    const treatment = order.treatments.find(
-                      (tx) => tx.time === time,
-                    )
-
-                    return (
-                      <TxTableCell
-                        hosId={hosId}
-                        targetDate={targetDate}
-                        key={time}
-                        time={time}
-                        order={order}
-                        treatment={treatment}
-                        patientId={txData.patient_id}
-                        orderColorsData={orderColorsData}
-                        handleOpenTxDetail={handleOpenTxDetail}
-                      />
-                    )
-                  })}
-                </TableRow>
-              )),
+                        i % TX_TABLE_BACKGROUD_COLORS.length
+                      ]
+                    }
+                    orderLength={orderLength}
+                    j={j}
+                    isLastOrder={isLastOrder}
+                    orderColorsData={orderColorsData}
+                    handleOpenTxDetail={handleOpenTxDetail}
+                  />
+                )
+              }),
             )}
           </TableBody>
         </Table>

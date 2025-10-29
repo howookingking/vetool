@@ -6,19 +6,13 @@ type Props = {
   name: string
   species: Species
   breed: string
-  iconSize?: number
 }
 
-export default function PatientBriefInfo({
-  name,
-  species,
-  breed,
-  iconSize = 16,
-}: Props) {
+export default function PatientBriefInfo({ name, species, breed }: Props) {
   return (
     <div className="flex flex-col items-center gap-0.5">
       <div className="flex items-center gap-1">
-        <SpeciesToIcon species={species} size={iconSize} />
+        <SpeciesToIcon species={species} />
         <span>{name}</span>
       </div>
 
