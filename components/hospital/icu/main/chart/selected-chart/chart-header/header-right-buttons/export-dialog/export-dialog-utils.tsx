@@ -1,14 +1,14 @@
 import ChartInfos from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/chart-infos'
 import ChartTable from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table'
 import { Badge } from '@/components/ui/badge'
-import { getIcuChart } from '@/lib/services/icu/chart/get-icu-chart'
+import { getSelectedIcuChart } from '@/lib/services/icu/chart/get-icu-chart'
 import { getIoDateRange } from '@/lib/services/icu/chart/get-io-date-range'
 import {
   fetchIcuLayoutData,
   type IcuLayoutData,
 } from '@/lib/services/icu/icu-layout'
 import { BasicHosDataProvider } from '@/providers/basic-hos-data-context-provider'
-import type { SelectedChart } from '@/types/icu/chart'
+import type { SelectedIcuChart } from '@/types/icu/chart'
 import html2canvas from 'html2canvas'
 import { useEffect, useRef } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -27,7 +27,7 @@ export const captureContent = async (element: HTMLElement) => {
 }
 
 export const ExportChartBody: React.FC<{
-  chartData: SelectedChart
+  chartData: SelectedIcuChart
   onRender: (element: HTMLDivElement) => void
 }> = ({ chartData, onRender }) => {
   const ref = useRef<HTMLDivElement>(null)
@@ -51,7 +51,7 @@ export const ExportChartBody: React.FC<{
 
 // ExportChartBody를 렌더링하고 캡처하는 함수
 export const renderAndCaptureExportChartBody = (
-  chartData: SelectedChart,
+  chartData: SelectedIcuChart,
   initialIcuData: IcuLayoutData,
 ): Promise<HTMLCanvasElement> => {
   return new Promise((resolve, reject) => {
@@ -115,7 +115,7 @@ export const handleExport = async (
     if (dateRange) {
       const canvases = await Promise.all(
         dateRange.map(async ({ target_date }) => {
-          const chartData = await getIcuChart(
+          const chartData = await getSelectedIcuChart(
             hosId,
             target_date as string,
             patientId,

@@ -11,16 +11,16 @@ import {
 } from '@/components/ui/dialog'
 import { pasteDefaultOrders } from '@/lib/services/icu/chart/add-icu-chart'
 import { cn } from '@/lib/utils/utils'
-import type { SelectedChart } from '@/types/icu/chart'
+import type { SelectedIcuChart } from '@/types/icu/chart'
 import { FileIcon, LoaderCircleIcon } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
 export default function PasteDefaultChartDialog({
-  chartData,
+  selectedIcuChart,
 }: {
-  chartData: SelectedChart
+  selectedIcuChart: SelectedIcuChart
 }) {
   const { hos_id } = useParams()
   const { refresh } = useRouter()
@@ -31,7 +31,7 @@ export default function PasteDefaultChartDialog({
   const handleAddDefaultChart = async () => {
     setIsLoading(true)
 
-    await pasteDefaultOrders(hos_id as string, chartData.icu_chart_id as string)
+    await pasteDefaultOrders(hos_id as string, selectedIcuChart.icu_chart_id)
 
     toast.success('기본형식의 차트를 생성했습니다')
 

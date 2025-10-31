@@ -2,14 +2,14 @@ import { Button } from '@/components/ui/button'
 import { DialogClose } from '@/components/ui/dialog'
 import { toggleOutPatient } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { cn, hashtagKeyword } from '@/lib/utils/utils'
-import type { SelectedChart } from '@/types/icu/chart'
+import type { SelectedIcuChart } from '@/types/icu/chart'
 import { LoaderCircleIcon } from 'lucide-react'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { toast } from 'sonner'
 
 type Props = {
   isPatientOut: boolean
-  chartData: SelectedChart
+  chartData: SelectedIcuChart
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 

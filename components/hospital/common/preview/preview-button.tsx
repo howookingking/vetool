@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { getIcuChart } from '@/lib/services/icu/chart/get-icu-chart'
+import { getSelectedIcuChart } from '@/lib/services/icu/chart/get-icu-chart'
 import { getTemplateChart } from '@/lib/services/icu/template/template'
 import { useCopiedChartStore } from '@/lib/store/icu/copied-chart'
 import { usePreviewDialogStore } from '@/lib/store/icu/preview-dialog'
@@ -31,7 +31,7 @@ async function fetchChartData(props: PreviewButtonProps, hosId: string) {
   if (props.isTemplate) {
     return await getTemplateChart(props.chartId)
   }
-  return await getIcuChart(hosId, props.targetDate, props.patientId)
+  return await getSelectedIcuChart(hosId, props.targetDate, props.patientId)
 }
 
 export default function PreviewButton(props: PreviewButtonProps) {

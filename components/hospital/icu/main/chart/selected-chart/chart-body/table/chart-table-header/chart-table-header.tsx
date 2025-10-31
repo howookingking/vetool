@@ -6,14 +6,14 @@ import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { useCurrentTime } from '@/hooks/use-current-time'
 import { cn } from '@/lib/utils/utils'
 import type { OrderWidth } from '@/types/hospital/order'
-import type { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
+import type { SelectedIcuChart, SelectedIcuOrder } from '@/types/icu/chart'
 import { isToday } from 'date-fns'
 import type { Dispatch, SetStateAction } from 'react'
 import { CurrentTimeIndicator } from './current-time-indicator'
 
 type Props = {
   preview?: boolean
-  chartData: SelectedChart
+  chartData: SelectedIcuChart
   sortedOrders: SelectedIcuOrder[]
   isSorting: boolean
   setIsSorting: Dispatch<SetStateAction<boolean>>

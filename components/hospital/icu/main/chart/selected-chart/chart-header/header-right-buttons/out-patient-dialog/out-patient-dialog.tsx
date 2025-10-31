@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import type { SelectedChart } from '@/types/icu/chart'
+import type { SelectedIcuChart } from '@/types/icu/chart'
 import { LogOut, Undo2 } from 'lucide-react'
 import { useState } from 'react'
 import OutPatientButtons from './out-patient-buttons'
@@ -18,7 +18,7 @@ import OutPatientButtons from './out-patient-buttons'
 export default function OutPatientDialog({
   chartData,
 }: {
-  chartData: SelectedChart
+  chartData: SelectedIcuChart
 }) {
   const { icu_io, patient } = chartData
 

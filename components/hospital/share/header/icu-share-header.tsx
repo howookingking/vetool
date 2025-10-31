@@ -5,12 +5,12 @@ import VitalChartDialog from '@/components/hospital/icu/main/chart/selected-char
 import IcuShareDateSelector from '@/components/hospital/share/header/icu-share-date-selector'
 import IcuSharePatientInfo from '@/components/hospital/share/header/icu-share-patient-info'
 import { checkIfUserIsVisitor } from '@/lib/services/icu/share'
-import { type SelectedChart } from '@/types/icu/chart'
+import { type SelectedIcuChart } from '@/types/icu/chart'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 type Props = {
   targetDate: string
-  chartData: SelectedChart | null
+  chartData: SelectedIcuChart | null
 }
 
 export default function IcuShareHeader({ targetDate, chartData }: Props) {
