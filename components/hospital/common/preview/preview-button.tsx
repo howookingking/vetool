@@ -46,7 +46,7 @@ export default function PreviewButton(props: PreviewButtonProps) {
     setIsPreviewing(true)
 
     const chartData = await fetchChartData(props, hos_id as string)
-    setCopiedChart(chartData)
+    setCopiedChart(chartData!)
 
     setPreviewDialogOpen(true)
     setIsPreviewing(false)

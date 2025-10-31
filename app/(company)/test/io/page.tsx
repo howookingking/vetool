@@ -43,7 +43,7 @@ export default async function TestPage(props: {
           }}
         >
           <ShareContainer
-            sharedChartData={sharedChartData}
+            sharedChartData={sharedChartData!}
             targetDate={targetDate as string}
           />
         </BasicHosDataProvider>
