@@ -1,12 +1,12 @@
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils/utils'
-import type { SelectedChart } from '@/types/icu/chart'
+import type { SelectedIcuChart } from '@/types/icu/chart'
 import { LoaderCircleIcon } from 'lucide-react'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { toast } from 'sonner'
 
 type ExportTextButtonProps = {
-  chartData: SelectedChart
+  chartData: SelectedIcuChart
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 

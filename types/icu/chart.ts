@@ -45,24 +45,20 @@ export type SelectedChartIcuIo = Pick<
 >
 export type SelectedChartPatient = Omit<Patient, 'owner_id'>
 
-export type SelectedChart = Pick<
+export type SelectedIcuChart = Pick<
   IcuChart,
-  | 'weight'
-  | 'weight_measured_date'
-  | 'target_date'
+  | 'hos_id'
   | 'icu_chart_id'
   | 'in_charge'
+  | 'target_date'
   | 'urgency'
-  | 'hos_id'
+  | 'weight'
+  | 'weight_measured_date'
 > & {
   icu_io: SelectedChartIcuIo
-} & {
   orders: SelectedIcuOrder[]
-} & {
   patient: Patient
-} & {
   main_vet: Pick<Vet, 'avatar_url' | 'name' | 'user_id'>
-} & {
   sub_vet: Pick<Vet, 'avatar_url' | 'name' | 'user_id'>
 }
 
@@ -180,6 +176,6 @@ export type MemoGroup = {
   c: Memo[]
 }
 
-export type IcuShareData = Omit<SelectedChart, 'orders'> & {
+export type IcuShareData = Omit<SelectedIcuChart, 'orders'> & {
   orders: IcuReadOnlyOrderData[]
 }

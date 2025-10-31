@@ -1,4 +1,4 @@
-import TimeTxTextCopy from '@/components/hospital/icu/main/tx-table/time-tx-text-copy'
+import LettOrderCountsAndCopyTxButton from '@/components/hospital/icu/main/tx-table/left-order-counts-and-copy-tx-button'
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import {
   DEFAULT_ICU_ORDER_TYPE,
@@ -68,7 +68,9 @@ export default function TxTableHeader({
   return (
     <TableHeader className="sticky top-0 z-30 bg-white shadow-sm">
       <TableRow>
-        <TableHead className="w-[120px] text-center">환자 \ 시간</TableHead>
+        <TableHead className="z-max sticky left-0 w-[120px] bg-white text-center shadow-2xl">
+          환자 \ 시간
+        </TableHead>
 
         {TIMES.map((time) => {
           const shouldShowIndicator = time === hours && isTargetDateToday
@@ -90,7 +92,7 @@ export default function TxTableHeader({
                 <span>{time.toString().padStart(2, '0')}</span>
 
                 {leftOrderCountsAtTime > 0 && (
-                  <TimeTxTextCopy
+                  <LettOrderCountsAndCopyTxButton
                     handleClick={() => handleCopyToClipboard(time)}
                     isCopied={copiedTxTime === time}
                     leftOrderCountsAtTime={leftOrderCountsAtTime}

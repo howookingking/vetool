@@ -1764,6 +1764,14 @@ export type Database = {
         Args: { checklist_id_input: string }
         Returns: Json
       }
+      fetch_icu_chart_data: {
+        Args: {
+          hos_id_input: string
+          patient_id_input: string
+          target_date_input: string
+        }
+        Returns: Json
+      }
       fetch_icu_layout_data: {
         Args: { hos_id_input: string; target_date_input: string }
         Returns: Json
@@ -1780,14 +1788,8 @@ export type Database = {
         Args: { icu_io_id_input: string }
         Returns: Json
       }
-      get_default_chart_data: {
-        Args: { hos_id_input: string }
-        Returns: Json
-      }
-      get_hos_list_data: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
+      get_default_chart_data: { Args: { hos_id_input: string }; Returns: Json }
+      get_hos_list_data: { Args: never; Returns: Json }
       get_icu_analysis_data: {
         Args: {
           end_date_input: string
@@ -1797,10 +1799,7 @@ export type Database = {
         }
         Returns: Json
       }
-      get_icu_bookmarked_data: {
-        Args: { hos_id_input: string }
-        Returns: Json
-      }
+      get_icu_bookmarked_data: { Args: { hos_id_input: string }; Returns: Json }
       get_icu_chart_data: {
         Args: {
           hos_id_input: string
@@ -1843,6 +1842,14 @@ export type Database = {
       }
       get_pinned_diet_data: {
         Args: { hos_id_input: string; species_input: string }
+        Returns: Json
+      }
+      get_selected_icu_chart: {
+        Args: {
+          hos_id_input: string
+          patient_id_input: string
+          target_date_input: string
+        }
         Returns: Json
       }
       get_template_chart_data: {

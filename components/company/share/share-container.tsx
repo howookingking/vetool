@@ -4,11 +4,11 @@ import ChartTable from '@/components/hospital/icu/main/chart/selected-chart/char
 import IcuShareHeader from '@/components/hospital/share/header/icu-share-header'
 import IcuShareChartInfos from '@/components/hospital/share/icu-share-chart-infos'
 import IcuShareNoResult from '@/components/hospital/share/icu-share-no-result'
-import { type SelectedChart } from '@/types/icu/chart'
+import { type SelectedIcuChart } from '@/types/icu/chart'
 import { motion } from 'motion/react'
 
 type Props = {
-  sharedChartData: SelectedChart
+  sharedChartData: SelectedIcuChart
   targetDate: string
 }
 
