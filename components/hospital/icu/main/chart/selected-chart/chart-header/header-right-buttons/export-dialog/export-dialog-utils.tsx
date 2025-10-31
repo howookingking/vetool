@@ -125,7 +125,10 @@ export const handleExport = async (
             target_date,
           }
 
-          return renderAndCaptureExportChartBody(dateChartData, initialIcuData)
+          return renderAndCaptureExportChartBody(
+            dateChartData as SelectedIcuChart,
+            initialIcuData,
+          )
         }),
       )
 
