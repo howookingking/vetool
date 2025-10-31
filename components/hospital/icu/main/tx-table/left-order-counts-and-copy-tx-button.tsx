@@ -1,3 +1,4 @@
+import UnReadCounts from '@/components/hospital/common/unread-counts'
 import { Button } from '@/components/ui/button'
 import { ClipboardCheckIcon, ClipboardIcon } from 'lucide-react'
 
@@ -7,16 +8,14 @@ type Props = {
   leftOrderCountsAtTime: number
 }
 
-export default function TimeTxTextCopy({
+export default function LettOrderCountsAndCopyTxButton({
   handleClick,
   isCopied,
   leftOrderCountsAtTime,
 }: Props) {
   return (
     <>
-      <div className="flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[8px] text-white">
-        {leftOrderCountsAtTime}
-      </div>
+      <UnReadCounts counts={leftOrderCountsAtTime} />
 
       <Button
         variant="ghost"

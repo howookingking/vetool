@@ -1,7 +1,7 @@
 'use client'
 
 import { getPrevIoChartData } from '@/lib/services/icu/chart/get-icu-chart'
-import { type PrevIoChartData, type SelectedChart } from '@/types/icu/chart'
+import { type PrevIoChartData, type SelectedIcuChart } from '@/types/icu/chart'
 import { useEffect, useState } from 'react'
 import PasteCopiedChartDialog from './paste-copied-chart-dialog'
 import PasteDefaultChartDialog from './paste-default-chart-dialog'
@@ -11,7 +11,7 @@ import PasteTemplateOrderDialog from './template/paste-template-order-dialog'
 import { useParams } from 'next/navigation'
 
 type PasteChartDialogsProps = {
-  chartData: SelectedChart
+  selectedIcuChart: SelectedIcuChart | null
 } & (
   | {
       firstChart: true
@@ -24,7 +24,7 @@ type PasteChartDialogsProps = {
 )
 
 export default function PasteChartDialogs({
-  chartData,
+  selectedIcuChart,
   patientId,
   firstChart,
 }: PasteChartDialogsProps) {
@@ -41,7 +41,7 @@ export default function PasteChartDialogs({
   return (
     <div className="flex h-mobile w-full flex-col items-center justify-center gap-5 px-5 py-5 md:flex-row md:gap-10 lg:px-32 2xl:h-desktop">
       {firstChart ? (
-        <PasteDefaultChartDialog chartData={chartData} />
+        <PasteDefaultChartDialog selectedIcuChart={selectedIcuChart!} />
       ) : (
         <PastePrevChartDialog />
       )}

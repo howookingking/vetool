@@ -7,12 +7,12 @@ import InAndOutDate from '@/components/hospital/icu/main/chart/selected-chart/ch
 import OwnerName from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/owner-name'
 import Urgency from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/urgency/urgency'
 import Vets from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/vets/vets'
-import type { SelectedChart } from '@/types/icu/chart'
+import type { SelectedIcuChart } from '@/types/icu/chart'
 
 export default function ChartInfos({
   chartData,
 }: {
-  chartData: SelectedChart
+  chartData: SelectedIcuChart
 }) {
   const {
     icu_io,

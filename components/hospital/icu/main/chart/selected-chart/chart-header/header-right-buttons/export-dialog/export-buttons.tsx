@@ -1,11 +1,11 @@
 import ExportPdfButton from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/export-dialog/export-pdf-button'
 import ExportPngButton from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/export-dialog/export-png-button'
 import ExportTextButton from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/export-dialog/export-text-button'
-import { type SelectedChart } from '@/types/icu/chart'
+import { type SelectedIcuChart } from '@/types/icu/chart'
 import { Dispatch, SetStateAction } from 'react'
 
 type ExportButtonsProps = {
-  chartData: SelectedChart
+  chartData: SelectedIcuChart
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 

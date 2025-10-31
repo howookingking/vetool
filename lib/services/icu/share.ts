@@ -2,7 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { getIcuChart } from './chart/get-icu-chart'
+import { getSelectedIcuChart } from './chart/get-icu-chart'
 
 export const fetchSharedIcuData = async (
   icuIoId: string,
@@ -21,7 +21,7 @@ export const fetchSharedIcuData = async (
     redirect(`/error?message=${icuIoDataError.message}`)
   }
 
-  const sharedChartData = await getIcuChart(
+  const sharedChartData = await getSelectedIcuChart(
     icuIoData?.hos_id as string,
     targetDate,
     icuIoData?.patient_id as string,
