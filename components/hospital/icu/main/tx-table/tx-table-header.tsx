@@ -68,11 +68,12 @@ export default function TxTableHeader({
   return (
     <TableHeader className="sticky top-0 z-30 bg-white shadow-sm">
       <TableRow>
-        <TableHead className="w-[120px] text-center">환자 \ 시간</TableHead>
+        <TableHead className="z-max sticky left-0 w-[120px] bg-white text-center shadow-2xl">
+          환자 \ 시간
+        </TableHead>
 
         {TIMES.map((time) => {
           const shouldShowIndicator = time === hours && isTargetDateToday
-
           const leftOrderCountsAtTime = filteredTxData
             .map((data) =>
               data.orders.filter(
