@@ -16,7 +16,7 @@ export default function SubmitButton({
   onClick,
 }: Props) {
   return (
-    <Button type={type} disabled={isPending} onClick={onClick}>
+    <Button type={type} disabled={isPending} onClick={onClick} size="sm">
       {buttonText}
       {isPending && <Spinner />}
     </Button>

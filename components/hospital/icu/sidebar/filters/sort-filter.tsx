@@ -32,7 +32,11 @@ export default function SortFilter({ filters, setFilters }: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="flex-1 px-2 focus-visible:ring-0">
+        <Button
+          size="sm"
+          variant="outline"
+          className="flex-1 px-2 focus-visible:ring-0"
+        >
           <ArrowDownNarrowWideIcon />
         </Button>
       </DropdownMenuTrigger>

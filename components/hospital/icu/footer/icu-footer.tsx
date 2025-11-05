@@ -61,9 +61,6 @@ export default function IcuFooter({ hosId, targetDate }: IcuFooterProps) {
       </ul>
 
       <RealtimeStatus isSubscriptionReady={isRealtimeReady} />
-
-      {/* 보지도 않음, 홈에서만 유지 */}
-      {/* <AnnouncementsCarousel announcementTitlesData={announcementTitlesData} /> */}
     </footer>
   )
 }

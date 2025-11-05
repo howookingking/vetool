@@ -32,6 +32,7 @@ export default function Filters({
       <SortFilter filters={filters} setFilters={setFilters} />
 
       <Button
+        size="sm"
         variant="outline"
         className="flex-1 px-2 focus-visible:ring-0"
         onClick={() => setFilters(DEFAULT_FILTER_STATE)}

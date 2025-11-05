@@ -676,6 +676,7 @@ export default function PatientForm({
             <Button
               tabIndex={-1}
               type="button"
+              size="sm"
               disabled={isSubmitting}
               variant="outline"
               onClick={() => {
