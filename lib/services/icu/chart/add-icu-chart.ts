@@ -1,7 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { IcuChartsInCharge } from '@/types/adimin'
+import type { IcuChartsInCharge } from '@/types/adimin'
 import { format } from 'date-fns'
 import { redirect } from 'next/navigation'
 import { reorderOrders } from './order-mutation'
@@ -36,6 +36,7 @@ export const copyPrevChart = async (targetDate: string, patientId: string) => {
     console.error(prevChartDataError)
     redirect(`/error?message=${prevChartDataError.message}`)
   }
+
   //  전일 차트 데이터가 없으면 클라이언트에서 토스트 띄우기 위해
   if (prevChartData === null) {
     return { error: 'prev chart not found' }
@@ -117,7 +118,7 @@ export const copyPrevChart = async (targetDate: string, patientId: string) => {
   return { error: null }
 }
 
-export const pasteDefaultOrders = async (hosId: string, chartId: string) => {
+export const pasteDefaultIcuChart = async (hosId: string, chartId: string) => {
   const supabase = await createClient()
 
   const { error } = await supabase.rpc('paste_default_icu_chart', {

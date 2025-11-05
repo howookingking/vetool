@@ -24,6 +24,7 @@ export default async function PatientChartPage(props: {
 
       <IcuChartEntry
         targetDate={target_date}
+        hosId={hos_id}
         selectedIcuChart={selectedIcuChart}
         patientId={patient_id}
       />
