@@ -1,6 +1,5 @@
 'use client'
 
-import PreviewButton from '@/components/hospital/common/preview/preview-button'
 import DeleteTemplateDialog from '@/components/hospital/icu/main/template/delete-template-dialog'
 import { Button } from '@/components/ui/button'
 import type { IcuTemplate } from '@/types'
@@ -9,6 +8,7 @@ import type { ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown } from 'lucide-react'
 import type { Dispatch, SetStateAction } from 'react'
 import EditTemplateButton from './edit-template-button'
+import PreviewDialog from '@/components/hospital/common/preview/preview-dialog'
 
 export const templateColumns = (
   setTemplateDialogOpen: Dispatch<SetStateAction<boolean>>,
@@ -71,9 +71,12 @@ export const templateColumns = (
       const chartId = row.original.icu_chart_id
 
       return (
-        <div className="flex justify-center">
-          <PreviewButton chartId={chartId} isTemplate />
-        </div>
+        <PreviewDialog
+          chartId={chartId}
+          isTemplate
+          patientId={null}
+          targetDate={null}
+        />
       )
     },
   },
@@ -85,16 +88,14 @@ export const templateColumns = (
       const template = row.original
 
       return (
-        <div className="flex justify-center">
-          <EditTemplateButton
-            setUseUpsertTemplateDialogOpen={setTemplateDialogOpen}
-            chartId={chartId}
-            template={template}
-            setSortedOrders={setSortedOrders}
-            setIsEdtit={setIsEdtit}
-            setSelectedTemplateChart={setSelectedTemplateChart}
-          />
-        </div>
+        <EditTemplateButton
+          setUseUpsertTemplateDialogOpen={setTemplateDialogOpen}
+          chartId={chartId}
+          template={template}
+          setSortedOrders={setSortedOrders}
+          setIsEdtit={setIsEdtit}
+          setSelectedTemplateChart={setSelectedTemplateChart}
+        />
       )
     },
   },
