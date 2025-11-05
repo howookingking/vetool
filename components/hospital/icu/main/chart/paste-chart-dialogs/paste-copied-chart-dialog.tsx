@@ -1,5 +1,5 @@
-'use client'
-
+import SubmitButton from '@/components/common/submit-button'
+import UserSelectItem from '@/components/hospital/common/user-select-item'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -9,7 +9,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
 import {
@@ -19,20 +18,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 import { pasteChart } from '@/lib/services/icu/chart/paste-chart'
 import { useCopiedChartStore } from '@/lib/store/icu/copied-chart'
-import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { ClipboardCheckIcon, LoaderCircleIcon } from 'lucide-react'
-import Image from 'next/image'
-import { useParams, useRouter } from 'next/navigation'
+import { ClipboardCheckIcon } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import DialogTriggerButton from './dialog-trigger-button'
 
-export default function PasteCopiedChartDialog() {
-  const { refresh } = useRouter()
-  const { target_date, patient_id } = useParams()
+type Props = {
+  targetDate: string
+  patientId: string
+}
 
+export default function PasteCopiedChartDialog({
+  targetDate,
+  patientId,
+}: Props) {
+  const safeRefresh = useSafeRefresh()
   const { copiedChartId, reset } = useCopiedChartStore()
   const {
     basicHosData: { vetList, showOrderer },
@@ -55,96 +59,74 @@ export default function PasteCopiedChartDialog() {
 
     setIsLoading(true)
 
-    await pasteChart(
-      patient_id as string,
-      copiedChartId,
-      target_date as string,
-      orderer,
-    )
+    await pasteChart(patientId, copiedChartId, targetDate, orderer)
 
-    toast.success('차트를 붙여넣었습니다', {
+    toast.success('복사한 차트를 생성했습니다', {
       description: '복사한 차트는 클립보드에서 제거됩니다',
     })
 
     setIsLoading(false)
     setIsDialogOpen(false)
     reset()
-    refresh()
+
+    safeRefresh()
   }
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          className="hidden h-1/3 w-full items-center justify-center gap-2 md:flex md:h-1/3 md:w-2/3 lg:w-1/2"
-        >
-          <ClipboardCheckIcon />
-          <span>복사한 차트 붙여넣기</span>
-        </Button>
-      </DialogTrigger>
+      <DialogTriggerButton
+        icon={ClipboardCheckIcon}
+        title="복사한 차트 붙여넣기"
+        hiddenOnMobile
+      />
+
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>복사한 차트 생성</DialogTitle>
+          <DialogTitle>복사한 차트 붙여넣기</DialogTitle>
           <DialogDescription>
-            클립보드에 복사한 차트를 붙여넣어 차트가 생성됩니다
+            클립보드에 복사한 차트를 붙여넣습니다
           </DialogDescription>
-
-          {showOrderer && (
-            <div>
-              <Label className="pt-4">오더결정 수의사</Label>
-              <Select onValueChange={setOrderer} defaultValue={orderer}>
-                <SelectTrigger
-                  className={cn(
-                    'h-8 text-sm',
-                    !orderer && 'text-muted-foreground',
-                  )}
-                >
-                  <SelectValue placeholder="수의사를 선택해주세요" />
-                </SelectTrigger>
-                <SelectContent>
-                  {vetList.map((vet) => (
-                    <SelectItem
-                      key={vet.user_id}
-                      value={vet.name}
-                      className="w-full"
-                    >
-                      <div className="flex items-center gap-2">
-                        {vet.avatar_url && (
-                          <Image
-                            unoptimized
-                            src={vet.avatar_url ?? ''}
-                            alt={vet.name}
-                            width={20}
-                            height={20}
-                            className="rounded-full"
-                          />
-                        )}
-                        <span>{vet.name}</span>
-                        {vet.position && (
-                          <span className="text-xs">({vet.position})</span>
-                        )}
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          )}
         </DialogHeader>
+
+        {showOrderer && (
+          <div>
+            <Label className="pt-4">오더결정 수의사</Label>
+            <Select onValueChange={setOrderer} defaultValue={orderer}>
+              <SelectTrigger className="h-8 text-sm">
+                <SelectValue placeholder="수의사를 선택해주세요" />
+              </SelectTrigger>
+
+              <SelectContent>
+                {vetList.map((vet) => (
+                  <SelectItem
+                    key={vet.user_id}
+                    value={vet.name}
+                    className="w-full"
+                  >
+                    <UserSelectItem
+                      avatarUrl={vet.avatar_url}
+                      name={vet.name}
+                      position={vet.position}
+                    />
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
 
         <DialogFooter className="gap-2 md:gap-0">
           <DialogClose asChild>
-            <Button type="button" variant="outline" tabIndex={-1}>
+            <Button size="sm" type="button" variant="outline" tabIndex={-1}>
               취소
             </Button>
           </DialogClose>
-          <Button onClick={handlePasteCopiedChart} disabled={isLoading}>
-            확인
-            <LoaderCircleIcon
-              className={cn(isLoading ? 'animate-spin' : 'hidden')}
-            />
-          </Button>
+
+          <SubmitButton
+            buttonText="확인"
+            onClick={handlePasteCopiedChart}
+            isPending={isLoading}
+          />
         </DialogFooter>
       </DialogContent>
     </Dialog>
