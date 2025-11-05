@@ -1,5 +1,6 @@
 'use client'
 
+import SubmitButton from '@/components/common/submit-button'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -9,18 +10,21 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog'
+import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 import { copyPrevChart } from '@/lib/services/icu/chart/add-icu-chart'
-import { cn } from '@/lib/utils/utils'
-import { ClipboardPasteIcon, LoaderCircleIcon } from 'lucide-react'
-import { useParams, useRouter } from 'next/navigation'
+import { ClipboardPasteIcon } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import DialogTriggerButton from './dialog-trigger-button'
 
-export default function PastePrevChartDialog() {
-  const { refresh } = useRouter()
-  const { patient_id, target_date } = useParams()
+type Props = {
+  targetDate: string
+  patientId: string
+}
+
+export default function PastePrevChartDialog({ targetDate, patientId }: Props) {
+  const safeRefresh = useSafeRefresh()
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -28,14 +32,12 @@ export default function PastePrevChartDialog() {
   const handleCopyPrevSelectedChart = async () => {
     setIsLoading(true)
 
-    const { error } = await copyPrevChart(
-      target_date as string,
-      patient_id as string,
-    )
+    const { error } = await copyPrevChart(targetDate, patientId)
 
     if (error) {
-      toast.error('전일 차트를 복사할 수 없습니다', {
-        description: '전일 차트가 있는지 확인해주세요',
+      console.log(error)
+      toast.error('전날 차트를 복사할 수 없습니다', {
+        description: '전날 차트가 있는지 확인해주세요',
       })
 
       setIsLoading(false)
@@ -43,43 +45,41 @@ export default function PastePrevChartDialog() {
       return
     }
 
-    toast.success('전일 차트를 복사하였습니다')
+    toast.success('전날 차트를 복사하였습니다')
+
     setIsLoading(false)
     setIsDialogOpen(false)
-    refresh()
+
+    safeRefresh()
   }
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          className="flex h-1/3 w-full items-center justify-center gap-2 md:h-1/3 md:w-2/3 lg:w-1/2"
-        >
-          <ClipboardPasteIcon size={20} />
-          <span>전일 차트 붙여넣기</span>
-        </Button>
-      </DialogTrigger>
+      <DialogTriggerButton
+        icon={ClipboardPasteIcon}
+        title="전날 차트 붙여넣기"
+      />
+
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>전일 차트 붙여넣기</DialogTitle>
+          <DialogTitle>전날 차트 붙여넣기</DialogTitle>
           <DialogDescription>
-            전일 차트를 복사하여 {target_date} 차트가 생성됩니다
+            전날 차트를 복사하여 {targetDate} 차트가 생성됩니다
           </DialogDescription>
         </DialogHeader>
 
         <DialogFooter className="gap-2 md:gap-0">
           <DialogClose asChild>
-            <Button type="button" variant="outline" tabIndex={-1}>
+            <Button size="sm" type="button" variant="outline" tabIndex={-1}>
               취소
             </Button>
           </DialogClose>
-          <Button onClick={handleCopyPrevSelectedChart} disabled={isLoading}>
-            확인
-            <LoaderCircleIcon
-              className={cn(isLoading ? 'animate-spin' : 'hidden')}
-            />
-          </Button>
+
+          <SubmitButton
+            buttonText="확인"
+            onClick={handleCopyPrevSelectedChart}
+            isPending={isLoading}
+          />
         </DialogFooter>
       </DialogContent>
     </Dialog>
