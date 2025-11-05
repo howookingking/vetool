@@ -1,6 +1,6 @@
-'use client'
-
-import UserAvatar from '@/components/hospital/common/user-avatar'
+import SubmitButton from '@/components/common/submit-button'
+import PreviewDialog from '@/components/hospital/common/preview/preview-dialog'
+import UserSelectItem from '@/components/hospital/common/user-select-item'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -10,7 +10,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
 import {
@@ -20,25 +19,29 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 import { pasteChart } from '@/lib/services/icu/chart/paste-chart'
-import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { PrevIoChartData } from '@/types/icu/chart'
-import { CalendarPlusIcon, LoaderCircleIcon } from 'lucide-react'
-import { useParams, useRouter } from 'next/navigation'
+import { CalendarPlusIcon } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import DialogTriggerButton from './dialog-trigger-button'
+
+type Props = {
+  prevIoChartData: PrevIoChartData
+  patientId: string
+  targetDate: string
+}
 
 export default function PastePrevIoChartDialog({
   prevIoChartData,
-}: {
-  prevIoChartData: PrevIoChartData
-}) {
+  patientId,
+  targetDate,
+}: Props) {
   const { icu_chart_id: prevChartId, target_date: prevDate } = prevIoChartData
 
-  const { refresh } = useRouter()
-  const { patient_id, target_date } = useParams()
-
+  const safeRefresh = useSafeRefresh()
   const {
     basicHosData: { vetList, showOrderer },
   } = useBasicHosDataContext()
@@ -50,90 +53,84 @@ export default function PastePrevIoChartDialog({
   const handleCopyPrevIoChart = async () => {
     setIsLoading(true)
 
-    await pasteChart(
-      patient_id as string,
-      prevChartId,
-      target_date as string,
-      orderer,
-    )
+    await pasteChart(patientId, prevChartId, targetDate, orderer)
 
     toast.success('최근 입원 차트를 복사하였습니다')
 
     setIsLoading(false)
     setIsDialogOpen(false)
-    refresh()
+
+    safeRefresh()
   }
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          className="hidden h-1/3 w-full items-center justify-center gap-2 md:flex md:h-1/3 md:w-2/3 lg:w-1/2"
-        >
-          <CalendarPlusIcon size={20} />
-          <div className="flex flex-wrap justify-center">
-            <span>최근 차트 붙여넣기</span>
-            <span>{`(${prevDate})`}</span>
+      <div className="relative">
+        <DialogTriggerButton
+          icon={CalendarPlusIcon}
+          title={`${prevDate} 차트 붙여넣기`}
+          hiddenOnMobile
+        />
+        <div className="absolute bottom-10 left-1/2 hidden -translate-x-1/2 md:block">
+          <div className="flex items-center gap-1">
+            <span className="pointer-events-none text-xs">미리보기</span>
+            <PreviewDialog
+              targetDate={prevDate!}
+              isTemplate={false}
+              patientId={patientId}
+              chartId={prevChartId}
+            />
           </div>
-        </Button>
-      </DialogTrigger>
+        </div>
+      </div>
+
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>최근 차트 붙여넣기</DialogTitle>
           <DialogDescription>
-            최근 입원 차트{`(${prevDate})`}를 복사하여 {target_date} 차트가
-            생성됩니다
+            {prevDate} 차트를 복사하여 {targetDate} 차트를 생성합니다
           </DialogDescription>
-
-          {showOrderer && (
-            <div>
-              <Label className="pt-4">오더결정 수의사</Label>
-              <Select onValueChange={setOrderer} defaultValue={orderer}>
-                <SelectTrigger
-                  className={cn(
-                    'h-8 text-sm',
-                    !orderer && 'text-muted-foreground',
-                  )}
-                >
-                  <SelectValue placeholder="수의사를 선택해주세요" />
-                </SelectTrigger>
-                <SelectContent>
-                  {vetList.map((vet) => (
-                    <SelectItem
-                      key={vet.user_id}
-                      value={vet.name}
-                      className="w-full"
-                    >
-                      <div className="flex items-center gap-2">
-                        {vet.avatar_url && (
-                          <UserAvatar alt={vet.name} src={vet.avatar_url} />
-                        )}
-                        <span>{vet.name}</span>
-                        {vet.position && (
-                          <span className="text-xs">({vet.position})</span>
-                        )}
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          )}
         </DialogHeader>
+
+        {showOrderer && (
+          <div>
+            <Label className="pt-4">오더결정 수의사</Label>
+            <Select onValueChange={setOrderer} defaultValue={orderer}>
+              <SelectTrigger className="h-8 text-sm">
+                <SelectValue placeholder="수의사를 선택해주세요" />
+              </SelectTrigger>
+
+              <SelectContent>
+                {vetList.map((vet) => (
+                  <SelectItem
+                    key={vet.user_id}
+                    value={vet.name}
+                    className="w-full"
+                  >
+                    <UserSelectItem
+                      avatarUrl={vet.avatar_url}
+                      name={vet.name}
+                      position={vet.position}
+                    />
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
 
         <DialogFooter className="gap-2 md:gap-0">
           <DialogClose asChild>
-            <Button type="button" variant="outline" tabIndex={-1}>
+            <Button size="sm" type="button" variant="outline" tabIndex={-1}>
               취소
             </Button>
           </DialogClose>
-          <Button onClick={handleCopyPrevIoChart} disabled={isLoading}>
-            확인
-            <LoaderCircleIcon
-              className={cn(isLoading ? 'animate-spin' : 'hidden')}
-            />
-          </Button>
+
+          <SubmitButton
+            buttonText="확인"
+            isPending={isLoading}
+            onClick={handleCopyPrevIoChart}
+          />
         </DialogFooter>
       </DialogContent>
     </Dialog>

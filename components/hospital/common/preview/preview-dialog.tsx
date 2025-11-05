@@ -1,30 +1,71 @@
-import ChartTable from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Dialog, DialogTrigger } from '@/components/ui/dialog'
+import { Spinner } from '@/components/ui/spinner'
+import { getIcuChartByPatientIdAndTargetDate } from '@/lib/services/icu/chart/get-icu-chart'
+import { getTemplateChart } from '@/lib/services/icu/template/template'
 import { useCopiedChartStore } from '@/lib/store/icu/copied-chart'
-import { usePreviewDialogStore } from '@/lib/store/icu/preview-dialog'
+import { EyeIcon } from 'lucide-react'
+import { useState } from 'react'
+import PreviewDialogContentDynamic from './preview-dialog-content-dynamic'
 
-export default function PreviewDialog() {
-  const { copiedChart } = useCopiedChartStore()
-  const { setPreviewDialogOpen, isPreviewDialogOpen } = usePreviewDialogStore()
+type Props =
+  | {
+      targetDate: string
+      isTemplate: true // template의 경우는 chartId는 있지만 patientId는 없다
+      patientId: null
+      chartId: string
+    }
+  | {
+      targetDate: string
+      isTemplate: false
+      patientId: string
+      chartId: string
+    }
+
+export default function PreviewDialog({
+  targetDate,
+  isTemplate,
+  patientId,
+  chartId,
+}: Props) {
+  const { copiedChart, setCopiedChart } = useCopiedChartStore()
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleOpenChange = async (open: boolean) => {
+    if (open) {
+      setIsLoading(true)
+
+      const chartData = isTemplate
+        ? await getTemplateChart(chartId)
+        : await getIcuChartByPatientIdAndTargetDate(targetDate, patientId)
+
+      setCopiedChart(chartData!)
+
+      setIsDialogOpen(true)
+      setIsLoading(false)
+    } else {
+      setIsDialogOpen(false)
+    }
+  }
 
   return (
-    <Dialog open={isPreviewDialogOpen} onOpenChange={setPreviewDialogOpen}>
-      <DialogContent className="sm:min-w-[1600px]">
-        <DialogHeader>
-          <DialogTitle>차트 미리보기</DialogTitle>
-          <DialogDescription />
-        </DialogHeader>
+    <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
+      <DialogTrigger asChild>
+        <Button
+          size="icon"
+          variant="ghost"
+          disabled={isLoading}
+          className="mx-auto flex items-center justify-center"
+        >
+          {isLoading ? <Spinner /> : <EyeIcon />}
+        </Button>
+      </DialogTrigger>
 
-        <div className="max-h-[800px] overflow-y-auto">
-          <ChartTable preview chartData={copiedChart!} />
-        </div>
-      </DialogContent>
+      {isDialogOpen && (
+        <PreviewDialogContentDynamic copiedChart={copiedChart!} />
+      )}
     </Dialog>
   )
 }

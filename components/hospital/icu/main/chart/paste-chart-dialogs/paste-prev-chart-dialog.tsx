@@ -1,5 +1,3 @@
-'use client'
-
 import SubmitButton from '@/components/common/submit-button'
 import { Button } from '@/components/ui/button'
 import {
