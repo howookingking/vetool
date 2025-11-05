@@ -1,15 +1,17 @@
-import PreviewButton from '@/components/hospital/common/preview/preview-button'
+import PreviewDialog from '@/components/hospital/common/preview/preview-dialog'
 import { Button } from '@/components/ui/button'
 import type { IcuTemplate } from '@/types'
 import type { ColumnDef } from '@tanstack/react-table'
-import { ArrowUpDown } from 'lucide-react'
+import { ArrowUpDownIcon } from 'lucide-react'
 import type { Dispatch, SetStateAction } from 'react'
-import PasteTemplateButton from './paste-template-button'
+import ConfirmPasteTemplateDialog from './confirm-paste-template-dialog'
 
 export const templateColumns = (
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>,
   tableHeader?: boolean,
   chartId?: string,
+  targetDate?: string,
+  patientId?: string,
 ): ColumnDef<IcuTemplate>[] => [
   {
     accessorKey: 'template_name',
@@ -20,7 +22,7 @@ export const templateColumns = (
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           템플릿 이름
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
         </Button>
       )
     },
@@ -34,7 +36,7 @@ export const templateColumns = (
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           설명
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
         </Button>
       )
     },
@@ -52,7 +54,7 @@ export const templateColumns = (
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           생성일
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
         </Button>
       )
     },
@@ -68,7 +70,14 @@ export const templateColumns = (
     cell: ({ row }) => {
       const chartId = row.original.icu_chart_id
 
-      return <PreviewButton chartId={chartId} isTemplate />
+      return (
+        <PreviewDialog
+          isTemplate
+          chartId={chartId}
+          patientId={null}
+          targetDate={null}
+        />
+      )
     },
   },
   {
@@ -77,11 +86,13 @@ export const templateColumns = (
     cell: ({ row }) => {
       const templateChartId = row.original.icu_chart_id
       return (
-        <PasteTemplateButton
+        <ConfirmPasteTemplateDialog
           templateChartId={templateChartId}
           setIsDialogOpen={setIsDialogOpen}
           tableHeader={tableHeader}
           chartId={chartId}
+          targetDate={targetDate}
+          patientId={patientId}
         />
       )
     },

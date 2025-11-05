@@ -10,16 +10,16 @@ import PreviewDialogContentDynamic from './preview-dialog-content-dynamic'
 
 type Props =
   | {
-      targetDate: string
       isTemplate: true // template의 경우는 chartId는 있지만 patientId는 없다
-      patientId: null
       chartId: string
+      targetDate: null
+      patientId: null
     }
   | {
-      targetDate: string
       isTemplate: false
-      patientId: string
       chartId: string
+      targetDate: string
+      patientId: string
     }
 
 export default function PreviewDialog({

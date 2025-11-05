@@ -30,8 +30,9 @@ export default function DialogTriggerButton({
           hiddenOnMobile && 'hidden md:flex',
         )}
       >
-        {isLoading ? <Spinner /> : <Icon />}
+        <Icon />
         {title}
+        {isLoading && <Spinner />}
       </Button>
     </DialogTrigger>
   )
