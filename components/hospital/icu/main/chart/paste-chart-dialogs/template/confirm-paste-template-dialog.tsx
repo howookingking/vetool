@@ -9,6 +9,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
 import {
@@ -19,73 +20,69 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
+import { pasteTemplateOrders } from '@/lib/services/icu/chart/order-mutation'
 import { pasteChart } from '@/lib/services/icu/chart/paste-chart'
-import { useCopiedChartStore } from '@/lib/store/icu/copied-chart'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { ClipboardCheckIcon } from 'lucide-react'
-import { useState } from 'react'
+import { CheckIcon } from 'lucide-react'
+import { type Dispatch, type SetStateAction, useState } from 'react'
 import { toast } from 'sonner'
-import DialogTriggerButton from './dialog-trigger-button'
 
 type Props = {
-  targetDate: string
-  patientId: string
+  templateChartId: string
+  setIsDialogOpen: Dispatch<SetStateAction<boolean>>
+  tableHeader?: boolean // 이미 차트가 생성된 후 템플릿 오더를 추가하는 경우
+  chartId?: string
+  targetDate?: string
+  patientId?: string
 }
 
-export default function PasteCopiedChartDialog({
+export default function ConfirmPasteTemplateDialog({
+  templateChartId,
+  setIsDialogOpen,
+  tableHeader,
+  chartId,
   targetDate,
   patientId,
 }: Props) {
   const safeRefresh = useSafeRefresh()
-  const { copiedChartId, reset } = useCopiedChartStore()
   const {
     basicHosData: { vetList, showOrderer },
   } = useBasicHosDataContext()
 
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
+
   const [orderer, setOrderer] = useState(vetList[0].name)
   const [isLoading, setIsLoading] = useState(false)
 
-  const handlePasteCopiedChart = async () => {
-    if (!copiedChartId) {
-      setIsDialogOpen(false)
-
-      toast.error('복사할 차트가 없습니다', {
-        description: '차트를 먼저 복사해주세요',
-      })
-
-      return
-    }
-
+  const handlePasteSelectedTemplate = async () => {
     setIsLoading(true)
 
-    await pasteChart(patientId, copiedChartId, targetDate, orderer)
+    // tableHeader : 이미 생성된 차트에서 템플릿오더를 추가
+    // !tableHeader : 익일차트 혹은 첫차트에서 템플릿 오더를 추가하는 경우
+    tableHeader
+      ? await pasteTemplateOrders(templateChartId, chartId!)
+      : await pasteChart(patientId!, templateChartId, targetDate!, orderer)
 
-    toast.success('복사한 차트를 생성했습니다', {
-      description: '복사한 차트는 클립보드에서 제거됩니다',
-    })
+    toast.success('템플릿을 붙여넣었습니다')
 
     setIsLoading(false)
     setIsDialogOpen(false)
-    reset()
 
     safeRefresh()
   }
 
   return (
-    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      <DialogTriggerButton
-        icon={ClipboardCheckIcon}
-        title="복사한 차트 붙여넣기"
-        hiddenOnMobile
-      />
+    <Dialog open={isConfirmDialogOpen} onOpenChange={setIsConfirmDialogOpen}>
+      <DialogTrigger asChild>
+        <Button variant="ghost" size="icon" disabled={isLoading}>
+          <CheckIcon />
+        </Button>
+      </DialogTrigger>
 
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>복사한 차트 붙여넣기</DialogTitle>
-          <DialogDescription>
-            클립보드에 복사한 차트를 붙여넣습니다
-          </DialogDescription>
+          <DialogTitle>템플릿 붙여넣기</DialogTitle>
+          <DialogDescription>선택한 템플릿을 붙여넣습니다</DialogDescription>
         </DialogHeader>
 
         {showOrderer && (
@@ -124,7 +121,7 @@ export default function PasteCopiedChartDialog({
 
           <SubmitButton
             buttonText="확인"
-            onClick={handlePasteCopiedChart}
+            onClick={handlePasteSelectedTemplate}
             isPending={isLoading}
           />
         </DialogFooter>

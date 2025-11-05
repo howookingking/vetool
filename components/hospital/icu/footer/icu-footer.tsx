@@ -14,7 +14,6 @@ import {
   SearchIcon,
 } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
-import { useEffect } from 'react'
 
 type IcuFooterProps = {
   hosId: string
@@ -22,16 +21,12 @@ type IcuFooterProps = {
 }
 
 export default function IcuFooter({ hosId, targetDate }: IcuFooterProps) {
-  const { push, refresh } = useRouter()
+  const { push } = useRouter()
   const path = usePathname()
 
-  const isRealtimeReady = useIcuRealtime(hosId)
+  useIcuRealtime(hosId)
 
   const currentIcuPath = path.split('/').at(5)
-
-  useEffect(() => {
-    if (isRealtimeReady) refresh()
-  }, [isRealtimeReady, refresh])
 
   return (
     <footer className="fixed bottom-0 left-0 right-0 z-40 flex h-[calc(2.5rem+env(safe-area-inset-bottom))] justify-between border-t bg-white px-1 2xl:left-10">
@@ -60,10 +55,7 @@ export default function IcuFooter({ hosId, targetDate }: IcuFooterProps) {
         ))}
       </ul>
 
-      <RealtimeStatus isSubscriptionReady={isRealtimeReady} />
-
-      {/* 보지도 않음, 홈에서만 유지 */}
-      {/* <AnnouncementsCarousel announcementTitlesData={announcementTitlesData} /> */}
+      <RealtimeStatus />
     </footer>
   )
 }

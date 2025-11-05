@@ -1,11 +1,13 @@
+import { useZustandIcuRealtimeStore } from '@/lib/store/icu/realtime-state'
 import { createClient } from '@/lib/supabase/client'
 import type { RealtimeChannel } from '@supabase/supabase-js'
 import { useRouter } from 'next/navigation'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 
 export default function useIcuRealtime(hosId: string) {
-  const [isRealtimeReady, setIsRealtimeReady] = useState(false)
+  const { setIsRealtimeReadyZustand } = useZustandIcuRealtimeStore()
+
   const supabase = createClient()
   const subscriptionRef = useRef<RealtimeChannel | null>(null)
   const { refresh } = useRouter()
@@ -74,10 +76,10 @@ export default function useIcuRealtime(hosId: string) {
     subscriptionRef.current = channel.subscribe((status) => {
       if (status === 'SUBSCRIBED') {
         console.log('Subscribed to all tables')
-        setIsRealtimeReady(true)
+        setIsRealtimeReadyZustand(true)
       } else {
         console.log('Subscription failed with status:', status)
-        setIsRealtimeReady(false)
+        setIsRealtimeReadyZustand(false)
       }
     })
   }, [hosId, handleChange])
@@ -90,7 +92,7 @@ export default function useIcuRealtime(hosId: string) {
 
       subscriptionRef.current = null
 
-      setIsRealtimeReady(false)
+      setIsRealtimeReadyZustand(false)
     }
   }, [])
 
@@ -101,6 +103,7 @@ export default function useIcuRealtime(hosId: string) {
     } else {
       console.log('Page is visible, resubscribing...')
       subscribeToChannel()
+      refresh()
     }
   }, [subscribeToChannel, unsubscribe])
 
@@ -119,8 +122,6 @@ export default function useIcuRealtime(hosId: string) {
       document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
   }, [handleVisibilityChange, subscribeToChannel, unsubscribe])
-
-  return isRealtimeReady
 }
 
 function getLogColor(table: string): string {
