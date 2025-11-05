@@ -58,6 +58,7 @@ export type Database = {
           checklist_group: string[] | null
           checklist_id: string
           checklist_protocol: Json | null
+          checklist_results: Json
           checklist_set: Json
           checklist_tag: string | null
           checklist_timetable: Json | null
@@ -81,6 +82,7 @@ export type Database = {
           checklist_group?: string[] | null
           checklist_id?: string
           checklist_protocol?: Json | null
+          checklist_results?: Json
           checklist_set?: Json
           checklist_tag?: string | null
           checklist_timetable?: Json | null
@@ -104,6 +106,7 @@ export type Database = {
           checklist_group?: string[] | null
           checklist_id?: string
           checklist_protocol?: Json | null
+          checklist_results?: Json
           checklist_set?: Json
           checklist_tag?: string | null
           checklist_timetable?: Json | null
@@ -1760,10 +1763,6 @@ export type Database = {
         Args: { due_date_input: string; hos_id_input: string }
         Returns: Json
       }
-      fetch_checklist_with_patient_with_weight: {
-        Args: { checklist_id_input: string }
-        Returns: Json
-      }
       fetch_icu_chart_data: {
         Args: {
           hos_id_input: string
@@ -1788,6 +1787,10 @@ export type Database = {
         Args: { icu_io_id_input: string }
         Returns: Json
       }
+      get_checklist_data: {
+        Args: { checklist_id_input: string }
+        Returns: Json
+      }
       get_default_chart_data: { Args: { hos_id_input: string }; Returns: Json }
       get_hos_list_data: { Args: never; Returns: Json }
       get_icu_analysis_data: {
@@ -1800,6 +1803,10 @@ export type Database = {
         Returns: Json
       }
       get_icu_bookmarked_data: { Args: { hos_id_input: string }; Returns: Json }
+      get_icu_chart_by_patient_id_and_target_date: {
+        Args: { patient_id_input: string; target_date_input: string }
+        Returns: Json
+      }
       get_icu_chart_data: {
         Args: {
           hos_id_input: string

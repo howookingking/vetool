@@ -1,6 +1,6 @@
 import MobileTitle from '@/components/common/mobile-title'
 import IcuChartEntry from '@/components/hospital/icu/main/chart/icu-chart-entry'
-import { getSelectedIcuChart } from '@/lib/services/icu/chart/get-icu-chart'
+import { getIcuChartByPatientIdAndTargetDate } from '@/lib/services/icu/chart/get-icu-chart'
 import { ClipboardListIcon } from 'lucide-react'
 
 export default async function PatientChartPage(props: {
@@ -12,8 +12,7 @@ export default async function PatientChartPage(props: {
 }) {
   const { hos_id, patient_id, target_date } = await props.params
 
-  const selectedIcuChart = await getSelectedIcuChart(
-    hos_id,
+  const selectedIcuChart = await getIcuChartByPatientIdAndTargetDate(
     target_date,
     patient_id,
   )

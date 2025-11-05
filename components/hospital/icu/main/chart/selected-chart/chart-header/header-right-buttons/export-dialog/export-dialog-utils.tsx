@@ -1,7 +1,7 @@
 import ChartInfos from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/chart-infos'
 import ChartTable from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table'
 import { Badge } from '@/components/ui/badge'
-import { getSelectedIcuChart } from '@/lib/services/icu/chart/get-icu-chart'
+import { getIcuChartByPatientIdAndTargetDate } from '@/lib/services/icu/chart/get-icu-chart'
 import { getIoDateRange } from '@/lib/services/icu/chart/get-io-date-range'
 import {
   fetchIcuLayoutData,
@@ -115,8 +115,7 @@ export const handleExport = async (
     if (dateRange) {
       const canvases = await Promise.all(
         dateRange.map(async ({ target_date }) => {
-          const chartData = await getSelectedIcuChart(
-            hosId,
+          const chartData = await getIcuChartByPatientIdAndTargetDate(
             target_date as string,
             patientId,
           )
