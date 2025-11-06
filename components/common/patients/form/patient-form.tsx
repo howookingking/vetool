@@ -58,11 +58,11 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import type { DebouncedState } from 'use-debounce'
 import * as z from 'zod'
+import InputSuffix from '../../input-suffix'
 import NoResultSquirrel from '../../no-result-squirrel'
 import RequiredFieldDot from '../../requied-field-dot'
 import SubmitButton from '../../submit-button'
 import BirthDatePicker from './birth-date-picker'
-import InputSuffix from '../../input-suffix'
 
 type BaseProps = {
   hosId: string
@@ -276,6 +276,7 @@ export default function PatientForm({
         target_date as string,
       )
 
+      // 해당 라우트로 이동하면서 refresh효과가 나타남 => saveRefresh불필요
       push(`/hospital/${hosId}/icu/${target_date}/chart/${patientId}`)
 
       setIsSubmitting(false)
