@@ -10,6 +10,7 @@ import type { SelectedIcuChart, SelectedIcuOrder } from '@/types/icu/chart'
 import { isToday } from 'date-fns'
 import type { Dispatch, SetStateAction } from 'react'
 import { CurrentTimeIndicator } from './current-time-indicator'
+import { useParams } from 'next/navigation'
 
 type Props = {
   preview?: boolean
@@ -36,6 +37,7 @@ export default function ChartTableHeader({
   chartId,
   hosId,
 }: Props) {
+  const { target_date } = useParams()
   const { hours, minutes } = useCurrentTime()
   const isTargetDateToday = isToday(chartData.target_date!)
 
@@ -71,6 +73,8 @@ export default function ChartTableHeader({
               tableHeader
               chartId={chartId}
               hosId={hosId}
+              patientId={chartData.patient.patient_id}
+              targetDate={target_date as string}
             />
           )}
 

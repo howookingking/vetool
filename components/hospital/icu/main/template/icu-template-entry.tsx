@@ -1,6 +1,5 @@
 'use client'
 
-import PreviewDialog from '@/components/hospital/common/preview/preview-dialog'
 import { templateColumns } from '@/components/hospital/icu/main/template/template-columns'
 import DataTable from '@/components/ui/data-table'
 import type { IcuTemplate } from '@/types'
@@ -33,8 +32,6 @@ export default function IcuTemplateEntry({
         data={icuTemplates}
         searchPlaceHolder="템플릿 이름, 설명으로 검색"
       />
-
-      <PreviewDialog />
 
       <UpsertTemplateDialog
         isUpsertTemplateDialogOpen={isUpsertTemplateDialogOpen}

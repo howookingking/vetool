@@ -1,13 +1,12 @@
 import userAvatarFallback from '@/public/user-avatar-fallback.svg'
 import Image from 'next/image'
 
-export default function UserAvatar({
-  src,
-  alt,
-}: {
+type Props = {
   src: string | null
   alt: string
-}) {
+}
+
+export default function UserAvatar({ src, alt }: Props) {
   return (
     <Image
       unoptimized

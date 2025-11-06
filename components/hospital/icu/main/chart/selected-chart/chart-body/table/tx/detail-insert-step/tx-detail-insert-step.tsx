@@ -190,7 +190,12 @@ export default function TxDetailInsertStep({
   return (
     <>
       <DialogHeader>
-        <DialogTitle>처치 상세 입력</DialogTitle>
+        <DialogTitle>
+          {selectedTxPendingQueue.length !== 0
+            ? `${selectedTxPendingQueue.length}개 다중`
+            : ''}
+          처치 상세 입력
+        </DialogTitle>
         <DialogDescription>
           {selectedTxPendingQueue.length === 0 && (
             <span>{txLocalState?.icuChartOrderName}</span>

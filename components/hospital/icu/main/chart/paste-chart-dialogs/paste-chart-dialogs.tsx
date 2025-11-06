@@ -1,59 +1,69 @@
-'use client'
-
 import { getPrevIoChartData } from '@/lib/services/icu/chart/get-icu-chart'
-import { type PrevIoChartData, type SelectedIcuChart } from '@/types/icu/chart'
+import type { PrevIoChartData, SelectedIcuChart } from '@/types/icu/chart'
 import { useEffect, useState } from 'react'
 import PasteCopiedChartDialog from './paste-copied-chart-dialog'
 import PasteDefaultChartDialog from './paste-default-chart-dialog'
 import PastePrevChartDialog from './paste-prev-chart-dialog'
 import PastePrevIoChartDialog from './paste-prev-io-chart-dialog'
 import PasteTemplateOrderDialog from './template/paste-template-order-dialog'
-import { useParams } from 'next/navigation'
 
-type PasteChartDialogsProps = {
-  selectedIcuChart: SelectedIcuChart | null
-} & (
+type Props =
   | {
       firstChart: true
+      selectedIcuChart: SelectedIcuChart
       patientId: string
+      hosId: string
+      targetDate: string
     }
   | {
-      firstChart?: false
-      patientId?: never
+      firstChart: false
+      selectedIcuChart: null
+      patientId: string
+      hosId: string
+      targetDate: string
     }
-)
 
 export default function PasteChartDialogs({
   selectedIcuChart,
   patientId,
   firstChart,
-}: PasteChartDialogsProps) {
-  const { hos_id } = useParams()
-
+  hosId,
+  targetDate,
+}: Props) {
   const [prevIoChartData, setPrevIoChartData] =
     useState<PrevIoChartData | null>(null)
 
   useEffect(() => {
     if (!firstChart) return
-    getPrevIoChartData(patientId!).then(setPrevIoChartData)
+    getPrevIoChartData(patientId).then(setPrevIoChartData)
   }, [patientId, firstChart])
 
   return (
-    <div className="flex h-mobile w-full flex-col items-center justify-center gap-5 px-5 py-5 md:flex-row md:gap-10 lg:px-32 2xl:h-desktop">
+    <div className="flex h-mobile flex-col items-center justify-center gap-6 px-5 md:flex-row md:px-2 2xl:h-desktop">
       {firstChart ? (
-        <PasteDefaultChartDialog selectedIcuChart={selectedIcuChart!} />
+        <PasteDefaultChartDialog
+          selectedIcuChart={selectedIcuChart!}
+          hosId={hosId}
+        />
       ) : (
-        <PastePrevChartDialog />
+        <PastePrevChartDialog targetDate={targetDate} patientId={patientId} />
       )}
 
-      {/* 이전 입원기록(io)이 있는 경우 */}
       {prevIoChartData && (
-        <PastePrevIoChartDialog prevIoChartData={prevIoChartData} />
+        <PastePrevIoChartDialog
+          prevIoChartData={prevIoChartData}
+          patientId={patientId}
+          targetDate={targetDate}
+        />
       )}
 
-      <PasteCopiedChartDialog />
+      <PasteCopiedChartDialog patientId={patientId} targetDate={targetDate} />
 
-      <PasteTemplateOrderDialog hosId={hos_id as string} />
+      <PasteTemplateOrderDialog
+        hosId={hosId}
+        patientId={patientId}
+        targetDate={targetDate}
+      />
     </div>
   )
 }

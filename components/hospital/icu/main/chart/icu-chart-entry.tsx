@@ -14,12 +14,14 @@ type Props = {
   selectedIcuChart: SelectedIcuChart | null
   patientId: string
   targetDate: string
+  hosId: string
 }
 
 export default function IcuChartEntry({
   selectedIcuChart,
   patientId,
   targetDate,
+  hosId,
 }: Props) {
   const {
     basicHosData: { icuSidebarPatients },
@@ -47,7 +49,15 @@ export default function IcuChartEntry({
 
   // io가 있고 chart가 없음 => 이미 입원을 하고 입원을 연장하려는 경우
   if (hasIcuIo && !selectedIcuChart) {
-    return <PasteChartDialogs selectedIcuChart={selectedIcuChart} />
+    return (
+      <PasteChartDialogs
+        selectedIcuChart={selectedIcuChart}
+        firstChart={false}
+        patientId={patientId}
+        hosId={hosId}
+        targetDate={targetDate}
+      />
+    )
   }
 
   // io가 있고 chart가 있고 order가 없는 경우 => 첫날차트
@@ -56,7 +66,9 @@ export default function IcuChartEntry({
       <PasteChartDialogs
         selectedIcuChart={selectedIcuChart}
         patientId={patientId}
-        firstChart
+        firstChart={true}
+        hosId={hosId}
+        targetDate={targetDate}
       />
     )
   }

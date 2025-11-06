@@ -34,6 +34,7 @@ export default function VetFilter({ filters, setFilters, vetList }: Props) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
+          size="sm"
           variant="outline"
           className={cn(
             'flex-1 px-2 focus-visible:ring-0',

@@ -35,6 +35,7 @@ export default function HelperTooltip({
             />
           )}
         </TooltipTrigger>
+
         <TooltipContent
           side={side}
           className={cn(

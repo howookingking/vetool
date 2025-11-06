@@ -66,7 +66,7 @@ export const deleteTemplateChart = async (chartId: string) => {
   }
 }
 
-export const fetchIcuTemplates = async (hosId: string) => {
+export const getIcuTemplates = async (hosId: string) => {
   const supabase = await createClient()
 
   const { data, error } = await supabase

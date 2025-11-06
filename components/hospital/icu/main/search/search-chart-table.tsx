@@ -1,6 +1,5 @@
 import LargeLoaderCircle from '@/components/common/large-loader-circle'
 import NoResult from '@/components/common/no-result'
-import PreviewDialog from '@/components/hospital/common/preview/preview-dialog'
 import GroupedByIcuIo from '@/components/hospital/icu/main/search/grouped-by-icu-io/grouped-by-icu-io'
 import {
   Table,
@@ -10,7 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { usePreviewDialogStore } from '@/lib/store/icu/preview-dialog'
 import type { SearchedIcuIos } from '@/types/icu/search'
 
 export default function SearchChartTable({
@@ -20,7 +18,6 @@ export default function SearchChartTable({
   searchedIcuIos: SearchedIcuIos[]
   isSearching: boolean
 }) {
-  const { isPreviewDialogOpen } = usePreviewDialogStore()
   return (
     <>
       <Table className="border">
@@ -60,8 +57,6 @@ export default function SearchChartTable({
             ))}
         </TableBody>
       </Table>
-
-      {isPreviewDialogOpen && <PreviewDialog />}
     </>
   )
 }
