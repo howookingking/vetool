@@ -45,7 +45,11 @@ export default function Group({ currentGroups, icuIoId }: Props) {
   return (
     <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="flex w-full justify-start px-2">
+        <Button
+          size="default"
+          variant="outline"
+          className="flex w-full justify-start px-2"
+        >
           <ComponentIcon size={16} className="text-muted-foreground" />
           {currentGroups.length === 0 && (
             <span className="text-muted-foreground">그룹</span>
