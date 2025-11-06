@@ -50,7 +50,8 @@ export default function OutDueDate({
     <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
       <PopoverTrigger asChild>
         <Button
-          variant={'outline'}
+          size="default"
+          variant="outline"
           className={cn(
             'flex w-full items-center justify-start gap-2 whitespace-pre-wrap px-2',
             !outDueDateInput && 'text-muted-foreground',

@@ -30,6 +30,7 @@ export default function CpcrEtTube({ cpcrEtTube, icuIoId }: Props) {
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button
+          size="default"
           variant="outline"
           className="flex w-full items-center justify-start gap-2 truncate px-2"
         >
