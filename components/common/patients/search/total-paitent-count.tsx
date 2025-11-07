@@ -7,10 +7,15 @@ export default function TotalPatientCount({ hosId }: { hosId: string }) {
   const [totalPatientCount, setTotalPatientCount] = useState<number>()
 
   useEffect(() => {
-    setIsFetching(true)
-    getHosPatientCount(hosId)
-      .then(setTotalPatientCount)
-      .then(() => setIsFetching(false))
+    const fetchData = async () => {
+      setIsFetching(true)
+
+      const count = await getHosPatientCount(hosId)
+      setTotalPatientCount(count)
+
+      setIsFetching(false)
+    }
+    fetchData()
   }, [hosId])
 
   return (
