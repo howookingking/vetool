@@ -24,6 +24,7 @@ export default function DialogTriggerButton({
     <DialogTrigger asChild className="relative">
       <Button
         disabled={isLoading}
+        size="default"
         variant="outline"
         className={cn(
           'flex h-60 w-60 items-center justify-center gap-2',

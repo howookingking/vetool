@@ -1,12 +1,12 @@
 import {
-  HomeIcon,
-  PawPrintIcon,
-  SyringeIcon,
-  SliceIcon,
-  HeartPulseIcon,
-  ListChecksIcon,
   BarChart4Icon,
   BuildingIcon,
+  HeartPulseIcon,
+  HomeIcon,
+  ListChecksIcon,
+  PawPrintIcon,
+  SliceIcon,
+  SyringeIcon,
 } from 'lucide-react'
 
 export const HOS_SIDEBAR_MENUS = [

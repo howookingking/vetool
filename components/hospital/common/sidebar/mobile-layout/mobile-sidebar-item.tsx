@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils/utils'
 import { format } from 'date-fns'
 import { usePathname, useRouter } from 'next/navigation'
-import type { Dispatch, SetStateAction } from 'react'
+import type { Dispatch, JSX, SetStateAction } from 'react'
 
 type Props = {
   name: string

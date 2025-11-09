@@ -1,9 +1,7 @@
-'use client'
-
 import Suggestions from '@/components/common/auto-complete/suggestions'
 import HelperTooltip from '@/components/common/helper-tooltip'
 import { Input } from '@/components/ui/input'
-import { useOutsideClick } from '@/hooks/use-outside-click'
+import useOutsideClick from '@/hooks/use-outside-click'
 import { useKeywordTrieStore } from '@/lib/store/hospital/keyword-trie'
 import { cn } from '@/lib/utils/utils'
 import { Keyword } from '@/types/hospital/keywords'
@@ -17,6 +15,16 @@ import {
 } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 
+type Props = {
+  className?: string
+  label?: string
+  handleUpdate?: (value: string) => void
+  defaultValue?: string
+  isUpdating?: boolean
+  placeholder?: string
+  isShare?: boolean
+}
+
 export default function Autocomplete({
   className,
   label,
@@ -25,15 +33,7 @@ export default function Autocomplete({
   isUpdating,
   placeholder,
   isShare,
-}: {
-  className?: string
-  label?: string
-  handleUpdate?: (value: string) => void
-  defaultValue?: string
-  isUpdating?: boolean
-  placeholder?: string
-  isShare?: boolean
-}) {
+}: Props) {
   const { trie } = useKeywordTrieStore()
 
   const [input, setInput] = useState(defaultValue ?? '')
@@ -49,7 +49,7 @@ export default function Autocomplete({
   })
 
   useEffect(() => {
-    setInput(defaultValue ?? '')
+    setTimeout(() => setInput(defaultValue ?? ''))
   }, [defaultValue])
 
   const getWordAtCursor = (keywords: string, position: number) => {

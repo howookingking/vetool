@@ -6,14 +6,6 @@ import type { Patient } from '@/types'
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: '10mb',
-    },
-  },
-}
-
 export async function POST(req: NextRequest) {
   try {
     const { data, hos_id } = await req.json()

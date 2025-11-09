@@ -93,7 +93,8 @@ export default function Cell({
 
   useEffect(() => {
     if (treatment || isMutationCanceled) {
-      setBriefTxResultInput('')
+      setTimeout(() => setBriefTxResultInput(''), 0)
+
       if (isMutationCanceled) {
         setIsMutationCanceled(false)
       }

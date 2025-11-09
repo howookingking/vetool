@@ -10,9 +10,9 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Indicator } from '@/components/ui/indicator'
+import { HIGHLIGHT_CLASS_NAMES } from '@/constants/hospital/icu/guide/guide'
 import useLocalStorage from '@/hooks/use-local-storage'
 import { useEffect, useState } from 'react'
-import { HIGHLIGHT_CLASS_NAMES } from '@/constants/hospital/icu/guide/guide'
 
 export type GuideStep = {
   target: string
@@ -37,7 +37,8 @@ export default function HighlightGuide({ steps, localStorageKey }: Props) {
         `[data-guide="${steps[currentStep].target}"]`,
       )
       firstTarget?.classList.add(...HIGHLIGHT_CLASS_NAMES)
-      setIsDialogOpen(true)
+
+      setTimeout(() => setIsDialogOpen(true), 0)
     }
   }, [localStorageKey, steps, currentStep])
 

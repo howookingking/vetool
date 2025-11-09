@@ -7,6 +7,7 @@ type Props = {
   isPending: boolean
   buttonText: string
   onClick?: () => void
+  className?: string
 }
 
 export default function SubmitButton({
@@ -14,9 +15,16 @@ export default function SubmitButton({
   type = 'submit',
   buttonText,
   onClick,
+  className,
 }: Props) {
   return (
-    <Button type={type} disabled={isPending} onClick={onClick} size="sm">
+    <Button
+      type={type}
+      disabled={isPending}
+      onClick={onClick}
+      size="sm"
+      className={className}
+    >
       {buttonText}
       {isPending && <Spinner />}
     </Button>

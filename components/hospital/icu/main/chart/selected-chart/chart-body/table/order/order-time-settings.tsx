@@ -5,6 +5,7 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
@@ -13,34 +14,29 @@ import {
   TIMES,
   TX_ORDER_TIME_INTERVALS,
 } from '@/constants/hospital/icu/chart/time'
-import type { Dispatch, SetStateAction } from 'react'
+import { useState, type Dispatch, type SetStateAction } from 'react'
 
 type OrderTimeSettingsProps = {
-  startTime: string
-  timeTerm: string
   orderTime: string[]
-  setStartTime: Dispatch<SetStateAction<string>>
-  setTimeTerm: Dispatch<SetStateAction<string>>
   setOrderTime: Dispatch<SetStateAction<string[]>>
 }
 
 export default function OrderTimeSettings({
-  startTime,
-  timeTerm,
   orderTime,
-  setStartTime,
-  setTimeTerm,
   setOrderTime,
 }: OrderTimeSettingsProps) {
+  const [startTime, setStartTime] = useState('')
+  const [timeTerm, setTimeTerm] = useState('')
+
   const handleSelectAllClick = () => {
-    setStartTime('undefined')
-    setTimeTerm('undefined')
+    setStartTime('')
+    setTimeTerm('')
     setOrderTime(Array(24).fill('1'))
   }
 
   const handleCancelAllClick = () => {
-    setStartTime('undefined')
-    setTimeTerm('undefined')
+    setStartTime('')
+    setTimeTerm('')
     setOrderTime(Array(24).fill('0'))
   }
 
@@ -50,9 +46,30 @@ export default function OrderTimeSettings({
       newOrderTime[index] = newOrderTime[index] !== '0' ? '0' : '1'
       return newOrderTime
     })
+    setStartTime('')
+    setTimeTerm('')
+  }
 
-    setStartTime('undefined')
-    setTimeTerm('undefined')
+  const handleSelectStartTime = (value: string) => {
+    const newOrderTime = Array(24).fill('0')
+    newOrderTime[Number(value)] = '1'
+    setOrderTime(newOrderTime)
+    setStartTime(value)
+    setTimeTerm('')
+  }
+
+  const handleSelectTimeTerm = (value: string) => {
+    setTimeTerm(value)
+
+    const start = Number(startTime)
+    const term = Number(value)
+    const newOrderTime = Array(24).fill('0')
+
+    for (let i = start; i < 24; i += term) {
+      newOrderTime[i] = '1'
+    }
+
+    setOrderTime(newOrderTime)
   }
 
   return (
@@ -65,19 +82,20 @@ export default function OrderTimeSettings({
       </div>
       <div className="flex flex-col justify-between gap-2 md:flex-row">
         <div className="grid w-full grid-cols-2 gap-2 md:flex">
-          <Select onValueChange={setStartTime} value={startTime}>
+          <Select onValueChange={handleSelectStartTime} value={startTime}>
             <SelectTrigger className="grid-col-1 h-9 text-xs md:w-36">
               <SelectValue placeholder="시작 시간" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                {['undefined', ...TIMES].map((time) => (
+                <SelectLabel>시작 시간</SelectLabel>
+                {TIMES.map((time) => (
                   <SelectItem
                     value={time.toString()}
                     key={time}
                     className="text-xs"
                   >
-                    {time === 'undefined' ? '시작 시간' : `${time}시 시작`}
+                    {time}시 시작
                   </SelectItem>
                 ))}
               </SelectGroup>
@@ -85,24 +103,23 @@ export default function OrderTimeSettings({
           </Select>
 
           <Select
-            onValueChange={setTimeTerm}
+            onValueChange={handleSelectTimeTerm}
             value={timeTerm}
-            disabled={startTime === 'undefined'}
+            disabled={!startTime}
           >
             <SelectTrigger className="grid-col-1 h-9 text-xs md:w-36">
               <SelectValue placeholder="시간 간격" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                {['undefined', ...TX_ORDER_TIME_INTERVALS].map((interval) => (
+                <SelectLabel>시간 간격</SelectLabel>
+                {TX_ORDER_TIME_INTERVALS.map((interval) => (
                   <SelectItem
                     value={interval}
                     key={interval}
                     className="text-xs"
                   >
-                    {interval === 'undefined'
-                      ? '시간 간격'
-                      : `${interval}시간 간격`}
+                    {interval}시간 간격
                   </SelectItem>
                 ))}
               </SelectGroup>
@@ -127,6 +144,7 @@ export default function OrderTimeSettings({
           </Button>
         </div>
       </div>
+
       <div className="mt-2 flex w-full flex-wrap md:justify-between">
         {TIMES.map((time) => (
           <Button
@@ -137,7 +155,9 @@ export default function OrderTimeSettings({
             className="h-6 w-7 px-3 py-2 text-xs"
             style={{
               background:
-                orderTime[time] !== '0' ? CELL_COLORS.NOT_DONE : 'transparent',
+                orderTime.at(time) !== '0'
+                  ? CELL_COLORS.NOT_DONE
+                  : 'transparent',
             }}
             onClick={handleTimeToggle(time)}
           >

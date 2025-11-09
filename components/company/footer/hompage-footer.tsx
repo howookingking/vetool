@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 export default function HomepageFooter() {
   return (
-    <footer className="border-t bg-gray-50 py-16">
+    <footer className="border-t bg-gray-50 py-6">
       <MaxWidthContainer>
         <div className="flex gap-4">
           <Link href="/terms-of-service" className="text-xs md:text-base">
@@ -13,9 +13,6 @@ export default function HomepageFooter() {
           </Link>
           <Link href="/privacy-policy" className="text-xs md:text-base">
             개인정보처리방침
-          </Link>
-          <Link href="/announcement" className="text-xs md:text-base">
-            공지사항
           </Link>
         </div>
 
@@ -28,7 +25,7 @@ export default function HomepageFooter() {
               대표: 이정우 | 사업자등록번호: 658-86-02970
             </p>
             <p className="text-xs leading-relaxed text-muted-foreground md:text-sm">
-              주소: 송파구 송파대로 260 5-20
+              주소: 서울 용산구 한강로3가 98, 공공시설동 4층 2호
             </p>
           </div>
 
@@ -36,12 +33,9 @@ export default function HomepageFooter() {
             <p className="text-xs font-semibold md:text-sm">이용문의</p>
 
             <div className="flex flex-col">
-              <Link
-                href="mailto:vetool.co@gmail.com"
-                className="text-xs text-muted-foreground underline md:text-sm"
-              >
-                vetool.co@gmail.com
-              </Link>
+              <span className="text-xs text-muted-foreground md:text-sm">
+                EMAIL : vetool.co@gmail.com
+              </span>
 
               <Link
                 href={OPEN_KAKAO_URL}

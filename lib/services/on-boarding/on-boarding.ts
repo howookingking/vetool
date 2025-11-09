@@ -1,13 +1,28 @@
 'use server'
 
-import { getSupabaseUser } from '@/lib/services/auth/authorization'
 import { createClient } from '@/lib/supabase/server'
-import type { UserApprovalHosJoined } from '@/types/on-boarding'
+import type { Hospital, UserApproval } from '@/types'
 import { redirect } from 'next/navigation'
 
-export const fetchUserApproval = async () => {
+export type UserApprovalData = Pick<UserApproval, 'user_approval_id'> & {
+  hos_id: Pick<Hospital, 'name'>
+}
+export const getUserApproval = async () => {
   const supabase = await createClient()
-  const supabaseUser = await getSupabaseUser()
+
+  const {
+    data: { user: supabaseUser },
+    error: supabaseUserError,
+  } = await supabase.auth.getUser()
+
+  if (supabaseUserError) {
+    console.error(supabaseUserError)
+    redirect('/login')
+  }
+
+  if (!supabaseUser) {
+    redirect('/login')
+  }
 
   const { data, error } = await supabase
     .from('user_approvals')
@@ -26,7 +41,7 @@ export const fetchUserApproval = async () => {
     throw new Error(error.message)
   }
 
-  return data as UserApprovalHosJoined
+  return data as UserApprovalData
 }
 
 export const cancelApproval = async (userApprovalId: string) => {
@@ -42,11 +57,12 @@ export const cancelApproval = async (userApprovalId: string) => {
   }
 }
 
+export type SelectHosDataTable = Pick<Hospital, 'hos_id' | 'name' | 'district'>
 export const getHospitals = async () => {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from('hospitals')
-    .select('hos_id, name, city, district')
+    .select('hos_id, name, district')
     .order('name', { ascending: true })
 
   if (error) {

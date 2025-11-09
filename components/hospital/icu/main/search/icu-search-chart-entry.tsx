@@ -6,7 +6,7 @@ import SearchChartSheet from '@/components/hospital/icu/main/search/sheet/search
 import { Button } from '@/components/ui/button'
 import { searchIos } from '@/lib/services/icu/search/search-charts'
 import { useKeywordTrieStore } from '@/lib/store/hospital/keyword-trie'
-import { type SearchedIcuIos } from '@/types/icu/search'
+import type { SearchedIcuIos } from '@/types/icu/search'
 import { Search } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'

@@ -49,17 +49,17 @@ export default function MemoGroup({
   const firstMemoRef = useRef<HTMLLIElement>(null)
 
   useEffect(() => {
-    setSortedMemos(memo ?? [])
+    setTimeout(() => setSortedMemos(memo ?? []), 0)
   }, [memo])
 
   useEffect(() => {
     if (shouldScrollToBottom && lastMemoRef.current) {
       lastMemoRef.current.scrollIntoView({ behavior: 'smooth' })
-      setShouldScrollToBottom(false)
+      setTimeout(() => setShouldScrollToBottom(false), 0)
     }
     if (shouldScrollToTop && firstMemoRef.current) {
       firstMemoRef.current.scrollIntoView({ behavior: 'smooth' })
-      setShouldScrollToTop(false)
+      setTimeout(() => setShouldScrollToTop(false), 0)
     }
   }, [sortedMemos, shouldScrollToBottom, shouldScrollToTop])
 

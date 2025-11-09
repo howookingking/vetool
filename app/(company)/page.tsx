@@ -76,10 +76,15 @@ export default async function CompanyHomePage() {
   return (
     <div className="flex flex-col">
       <HeroSection />
+
       <StatsSection />
+
       <TestinomialSection />
+
       <FeatureSection />
+
       <FaqsSection />
+
       {/* <PricingSection /> */}
     </div>
   )

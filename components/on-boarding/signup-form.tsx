@@ -18,7 +18,7 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-export function SignupForm() {
+export default function SignupForm() {
   const { push } = useRouter()
 
   const form = useForm<z.infer<typeof signupFormSchema>>({
@@ -30,21 +30,20 @@ export function SignupForm() {
     },
   })
 
-  const handleSubmit = (values: z.infer<typeof signupFormSchema>) => {
+  const handleNext = (values: z.infer<typeof signupFormSchema>) => {
     const { name, isVet, option } = values
 
-    if (option === 'select') {
-      push(`/on-boarding/select-hospital?name=${name}&is_vet=${isVet}`)
-    }
-    if (option === 'create') {
-      push(`/on-boarding/create-hospital?name=${name}&is_vet=${isVet}`)
+    {
+      option === 'create'
+        ? push(`/on-boarding/create-hospital?name=${name}&is_vet=${isVet}`)
+        : push(`/on-boarding/select-hospital?name=${name}&is_vet=${isVet}`)
     }
   }
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(handleSubmit)}
+        onSubmit={form.handleSubmit(handleNext)}
         className="flex w-full flex-col gap-10"
       >
         <FormField
@@ -136,11 +135,8 @@ export function SignupForm() {
             </FormItem>
           )}
         />
-        <div className="ml-auto">
-          <Button className="" type="submit">
-            다음
-          </Button>
-        </div>
+
+        <Button className="ml-auto">다음</Button>
       </form>
     </Form>
   )
