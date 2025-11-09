@@ -24,7 +24,7 @@ export default function IsVetColumn({ isVet, userId }: Props) {
   const [isUpdating, setIsUpdating] = useState(false)
 
   useEffect(() => {
-    setIsVetIput(isVet ? '수의사' : '일반직원')
+    setTimeout(() => setIsVetIput(isVet ? '수의사' : '일반직원'), 0)
   }, [isVet])
 
   const handleUpdateIsVet = async (value: string) => {
