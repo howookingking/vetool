@@ -5,6 +5,7 @@ import CustomTooltip from '@/components/ui/custom-tooltip'
 import { cn } from '@/lib/utils/utils'
 import { format } from 'date-fns'
 import { usePathname, useRouter } from 'next/navigation'
+import type { JSX } from 'react'
 
 type Props = {
   hosId: string
