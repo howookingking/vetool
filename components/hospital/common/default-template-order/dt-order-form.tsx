@@ -14,12 +14,12 @@ import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
-import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
+import { type Dispatch, type SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 import OrderTimeSettings from '../../icu/main/chart/selected-chart/chart-body/table/order/order-time-settings'
 import DtDeleteOrderAlertDialog from './dt-delete-order-alert-dialog'
-import { toast } from 'sonner'
 
 type Props = {
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
@@ -37,8 +37,6 @@ export default function DtOrderForm({
 
   const { setOrderStep, selectedChartOrder, reset } = useIcuOrderStore()
 
-  const [startTime, setStartTime] = useState<string>('0')
-  const [timeTerm, setTimeTerm] = useState<string>('undefined')
   const [orderTime, setOrderTime] = useState<string[]>(
     selectedChartOrder.order_times || new Array(24).fill('0'),
   )
@@ -99,21 +97,6 @@ export default function DtOrderForm({
     refresh()
   }
 
-  useEffect(() => {
-    if (startTime !== 'undefined' && timeTerm !== 'undefined') {
-      const start = Number(startTime)
-
-      const term = Number(timeTerm)
-      const newOrderTime = Array(24).fill('0')
-
-      for (let i = start; i < 24; i += term) {
-        newOrderTime[i] = '기본'
-      }
-
-      setOrderTime(newOrderTime)
-    }
-  }, [form, startTime, timeTerm])
-
   return (
     <Form {...form}>
       <form
@@ -124,11 +107,7 @@ export default function DtOrderForm({
 
         {!isTemplate && (
           <OrderTimeSettings
-            startTime={startTime}
-            timeTerm={timeTerm}
             orderTime={orderTime}
-            setStartTime={setStartTime}
-            setTimeTerm={setTimeTerm}
             setOrderTime={setOrderTime}
           />
         )}

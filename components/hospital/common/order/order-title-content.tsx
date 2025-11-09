@@ -44,6 +44,7 @@ export default function OrderTitleContent({
         )}
       </div>
 
+      {/* ??? div 왜? */}
       <div className="flex items-center gap-2">
         <span
           className="min-w-16 truncate text-right text-xs font-semibold text-muted-foreground"
