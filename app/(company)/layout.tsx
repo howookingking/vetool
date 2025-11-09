@@ -11,8 +11,11 @@ export default function HompageLayout({
   return (
     <div className="relative">
       <HomepageHeader />
+
       <main>{children}</main>
+
       <HomepageFooter />
+
       <ScrollToTopButton />
       <OpenKakao />
     </div>
