@@ -6,6 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 import { updateUrgency } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { SirenIcon, StarIcon } from 'lucide-react'
 import { useState } from 'react'
@@ -17,6 +18,8 @@ type Props = {
 }
 
 export default function Urgency({ urgency, icuChartId }: Props) {
+  const safeRefresh = useSafeRefresh()
+
   const [isUpdating, setIsUpdating] = useState(false)
 
   const handleUpdateUrgency = async (value: string) => {
@@ -27,6 +30,8 @@ export default function Urgency({ urgency, icuChartId }: Props) {
     toast.success('응급도를 변경하였습니다')
 
     setIsUpdating(false)
+
+    safeRefresh()
   }
 
   return (
