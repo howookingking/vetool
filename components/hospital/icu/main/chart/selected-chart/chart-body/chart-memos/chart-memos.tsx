@@ -42,11 +42,15 @@ export default function ChartMemos({
 
   // realtime update memos when memoA, memoB, or memoC changes
   useEffect(() => {
-    setMemos({
-      a: memoA ?? [],
-      b: memoB ?? [],
-      c: memoC ?? [],
-    })
+    setTimeout(
+      () =>
+        setMemos({
+          a: memoA ?? [],
+          b: memoB ?? [],
+          c: memoC ?? [],
+        }),
+      0,
+    )
   }, [memoA, memoB, memoC])
 
   return (

@@ -1,7 +1,7 @@
 'use client'
 
-import { ArrowUpRight } from 'lucide-react'
 import TranslateWrapper from '@/components/company/main/hero/ui/translate-wrapper'
+import { ArrowUpRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -24,12 +24,12 @@ const HOSPITAL_LIST = [
     width: 48,
     link: 'https://royalamcgd.com/',
   },
-  {
-    name: '메이 동물 메디컬센터',
-    image: '/company/logos/may.png',
-    width: 32,
-    link: 'http://www.mayanimal.com/',
-  },
+  // {
+  //   name: '메이 동물 메디컬센터',
+  //   image: '/company/logos/may.png',
+  //   width: 32,
+  //   link: 'http://www.mayanimal.com/',
+  // },
   {
     name: '24시 코끼리 동물 의료센터',
     image: '/company/logos/kokkiri.png',
@@ -40,8 +40,8 @@ const HOSPITAL_LIST = [
 
 export default function HeroLogos() {
   return (
-    <div className="relative mt-auto scale-[1.01] border-y-2 border-zinc-900 bg-white">
-      <ul className="w- relative z-0 flex overflow-hidden">
+    <div className="relative border-y-2 border-zinc-900 bg-white">
+      <ul className="relative z-0 flex">
         {Array.from({ length: 3 }).map((_, index) => (
           <TranslateWrapper key={index} reverse>
             {HOSPITAL_LIST.map((item) => (

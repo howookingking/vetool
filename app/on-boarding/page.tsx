@@ -1,4 +1,5 @@
-import { SignupForm } from '@/components/on-boarding/signup-form'
+import OnboardingTitle from '@/components/on-boarding/onboarding-title'
+import SignupForm from '@/components/on-boarding/signup-form'
 import { Button } from '@/components/ui/button'
 import { logout } from '@/lib/services/auth/authentication'
 import { ChevronLeft } from 'lucide-react'
@@ -12,7 +13,9 @@ export default function SelectHospitalPage() {
           뒤로가기
         </Button>
       </form>
-      <h2 className="text-2xl font-bold tracking-wider">회원가입</h2>
+
+      <OnboardingTitle title="회원가입" />
+
       <SignupForm />
     </>
   )

@@ -82,7 +82,7 @@ export default function useIcuRealtime(hosId: string) {
         setIsRealtimeReadyZustand(false)
       }
     })
-  }, [hosId, handleChange])
+  }, [handleChange, hosId, setIsRealtimeReadyZustand, supabase])
 
   const unsubscribe = useCallback(() => {
     if (subscriptionRef.current) {
@@ -94,7 +94,7 @@ export default function useIcuRealtime(hosId: string) {
 
       setIsRealtimeReadyZustand(false)
     }
-  }, [])
+  }, [setIsRealtimeReadyZustand, supabase])
 
   const handleVisibilityChange = useCallback(() => {
     if (document.hidden) {
@@ -105,7 +105,7 @@ export default function useIcuRealtime(hosId: string) {
       subscribeToChannel()
       refresh()
     }
-  }, [subscribeToChannel, unsubscribe])
+  }, [refresh, subscribeToChannel, unsubscribe])
 
   useEffect(() => {
     console.log('initial subscription')

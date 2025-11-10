@@ -68,7 +68,10 @@ export default function VitalCounter() {
         (beatsCount * MILLISECONDS_PER_MINUTE) / totalTime,
       )
 
-      setVitalCountState((prev) => ({ ...prev, averageBpm: avgBpm }))
+      setTimeout(
+        () => setVitalCountState((prev) => ({ ...prev, averageBpm: avgBpm })),
+        0,
+      )
     }
   }, [vitalCountState.beats])
 

@@ -1,4 +1,3 @@
-import kokkiri from '@/public/company/logos/kokkiri.jpg'
 import kwangjin from '@/public/company/logos/kwangjin.png'
 import royalGangdong from '@/public/company/logos/royal-gangdong.png'
 import snc from '@/public/company/logos/snc.png'
@@ -8,11 +7,14 @@ export const TESTIMONIALS = [
     image: snc,
     description: (
       <>
-        SNC 추천사 <br />
+        벳툴은 환자 상태 및 처치 유무 등 언제 어디서든 확인하고 조치할 수
+        있습니다. <br />
+        스탭이 많은 곳일수록 업무 효율이 증가합니다. <br />
+        프로그램에 대한 피드백도 빨라 병원에 맞게 운영할 수 있습니다.
       </>
     ),
-    name: 'ㅇㅇㅇ',
-    title: 'SNC동물메디컬센터 원장',
+    name: '고준호',
+    title: 'SNC동물메디컬센터 부원장',
   },
   {
     image: kwangjin,

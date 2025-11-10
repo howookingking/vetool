@@ -2,22 +2,24 @@
 
 import { Button } from '@/components/ui/button'
 import { logout } from '@/lib/services/auth/authentication'
-import { cancelApproval } from '@/lib/services/on-boarding/on-boarding'
-import { UserApprovalHosJoined } from '@/types/on-boarding'
-import { LoaderCircle } from 'lucide-react'
+import {
+  cancelApproval,
+  type UserApprovalData,
+} from '@/lib/services/on-boarding/on-boarding'
 import { useState } from 'react'
+import { Spinner } from '../ui/spinner'
 
 export default function ApprovalWaitingContents({
   userApprovalData,
 }: {
-  userApprovalData: UserApprovalHosJoined
+  userApprovalData: UserApprovalData
 }) {
-  const [isCanceling, setCanceling] = useState(false)
+  const [isCanceling, setIsCanceling] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleCancelApproval = async (e: React.FormEvent) => {
     e.preventDefault()
-    setCanceling(true)
+    setIsCanceling(true)
     await cancelApproval(userApprovalData.user_approval_id)
     await logout()
   }
@@ -50,9 +52,7 @@ export default function ApprovalWaitingContents({
             variant="outline"
           >
             승인요청 취소
-            <LoaderCircle
-              className={isCanceling ? 'ml-2 animate-spin' : 'hidden'}
-            />
+            {isCanceling && <Spinner className="animate-spin" />}
           </Button>
         </form>
 
@@ -63,9 +63,7 @@ export default function ApprovalWaitingContents({
             className="w-full"
           >
             홈으로 이동
-            <LoaderCircle
-              className={isSubmitting ? 'ml-2 animate-spin' : 'hidden'}
-            />
+            {isSubmitting && <Spinner className="animate-spin" />}
           </Button>
         </form>
       </div>

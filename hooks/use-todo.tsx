@@ -1,6 +1,6 @@
 import { fetchTodos } from '@/lib/services/hospital-home/todo'
 import type { ClientTodo } from '@/types/hospital/todo'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export const useTodos = (
   hosId: string,
@@ -18,18 +18,20 @@ export const useTodos = (
     dayAfterTodos: [],
   })
 
-  const getTodos = async () => {
+  const getTodos = useCallback(async () => {
     setIsFetching(true)
 
     const todosData = await fetchTodos(hosId, selectedDate, activeFilter)
 
     setTodos(todosData)
     setIsFetching(false)
-  }
+  }, [activeFilter, hosId, selectedDate])
 
   useEffect(() => {
-    getTodos()
-  }, [selectedDate, hosId, activeFilter])
+    setTimeout(() => {
+      getTodos()
+    }, 0)
+  }, [getTodos])
 
   return { todos, isFetching, refetch: getTodos }
 }

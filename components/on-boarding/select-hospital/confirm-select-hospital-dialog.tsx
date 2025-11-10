@@ -1,3 +1,4 @@
+import SubmitButton from '@/components/common/submit-button'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -10,19 +11,17 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { sendApprovalToHospital } from '@/lib/services/on-boarding/on-boarding'
-import { cn } from '@/lib/utils/utils'
-import { Check, LoaderCircle } from 'lucide-react'
+import { CheckIcon } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-export default function ConfirmSelectHospitalDialog({
-  hosId,
-  name,
-}: {
+type Props = {
   hosId: string
   name: string
-}) {
+}
+
+export default function ConfirmSelectHospitalDialog({ hosId, name }: Props) {
   const { push } = useRouter()
   const searchParams = useSearchParams()
   const isVet = searchParams.get('is_vet')
@@ -49,7 +48,7 @@ export default function ConfirmSelectHospitalDialog({
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button size="icon" variant="ghost">
-          <Check />
+          <CheckIcon />
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-[300px] rounded-md sm:max-w-md">
@@ -58,18 +57,18 @@ export default function ConfirmSelectHospitalDialog({
           <DialogDescription>{name}에 승인요청을 보냅니다</DialogDescription>
         </DialogHeader>
 
-        <DialogFooter className="flex gap-2 sm:justify-end">
+        <DialogFooter className="flex gap-2 sm:gap-0">
           <DialogClose asChild>
             <Button type="button" variant="secondary">
               취소
             </Button>
           </DialogClose>
-          <Button onClick={handleSubmit} disabled={isSubmitting}>
-            확인
-            <LoaderCircle
-              className={cn(isSubmitting ? 'animate-spin' : 'hidden')}
-            />
-          </Button>
+
+          <SubmitButton
+            buttonText="확인"
+            isPending={isSubmitting}
+            onClick={handleSubmit}
+          />
         </DialogFooter>
       </DialogContent>
     </Dialog>

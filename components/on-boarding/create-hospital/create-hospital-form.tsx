@@ -1,6 +1,7 @@
 'use client'
 'use no memo'
 
+import SubmitButton from '@/components/common/submit-button'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -18,15 +19,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Spinner } from '@/components/ui/spinner'
 import { ADDRESS } from '@/constants/hospital/create/address'
 import { newHospitalFormSchema } from '@/lib/schemas/on-boarding/on-boarding-schema'
 import {
   checkBusinessNumber,
   createHospital,
 } from '@/lib/services/on-boarding/on-boarding'
-import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { LoaderCircle } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -35,7 +35,10 @@ import * as z from 'zod'
 
 export default function CreateHospitalForm() {
   const { push } = useRouter()
+
   const searchParams = useSearchParams()
+  const isVet = searchParams.get('is_vet')
+  const username = searchParams.get('name')
 
   const [districts, setDistricts] = useState<string[]>()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -54,12 +57,8 @@ export default function CreateHospitalForm() {
     },
   })
 
-  const isVet = searchParams.get('is_vet')
-  const username = searchParams.get('name')
-
   const city = form.watch('city')
   const businessNumber = form.watch('businessNumber')
-  const isFormValid = form.formState.isValid
 
   useEffect(() => {
     if (city) {
@@ -69,30 +68,35 @@ export default function CreateHospitalForm() {
   }, [city])
 
   const handleBusinessNumberCheck = async () => {
+    if (isBusinessNumberVerified) {
+      setIsBusinessNumberVerified(false)
+      return
+    }
+
     setIsCheckingBusinessNumber(true)
 
     const isAvailable = await checkBusinessNumber(businessNumber)
     setIsBusinessNumberVerified(isAvailable)
 
-    if (isAvailable) {
-      toast.info('사용 가능한 사업자등록번호입니다')
-    } else {
-      toast.error('이미 등록된 사업자등록번호입니다')
-    }
+    isAvailable
+      ? toast.info('등록이 가능한 사업자등록번호입니다')
+      : toast.error('이미 등록된 사업자등록번호입니다')
 
     setIsCheckingBusinessNumber(false)
   }
 
-  useEffect(() => {
-    setIsBusinessNumberVerified(false)
-  }, [businessNumber])
-
   const handleSubmit = async (
     values: z.infer<typeof newHospitalFormSchema>,
   ) => {
+    if (!isBusinessNumberVerified) {
+      toast.info('사업자등록번호 확인을 해주세요')
+      return
+    }
+
     const { city, district, name, businessNumber } = values
 
     setIsSubmitting(true)
+
     const returningHosId = await createHospital(
       name,
       username!,
@@ -102,12 +106,15 @@ export default function CreateHospitalForm() {
       businessNumber,
     )
 
-    toast.success(`${name} 등록 성공`, {
+    toast.success(`${name} 생성 완료`, {
       description: '잠시후 페이지가 이동됩니다',
     })
 
     setIsSubmitting(false)
-    push(`/hospital/${returningHosId}`)
+
+    setTimeout(() => {
+      push(`/hospital/${returningHosId}`)
+    }, 2000)
   }
 
   return (
@@ -140,7 +147,7 @@ export default function CreateHospitalForm() {
             name="city"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel className="text-base">동물병원 주소</FormLabel>
+                <FormLabel className="text-base">동물병원 소재지</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -199,24 +206,37 @@ export default function CreateHospitalForm() {
           name="businessNumber"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-base">사업자 등록번호</FormLabel>
+              <FormLabel className="text-base">
+                사업자등록번호{' '}
+                {isBusinessNumberVerified && (
+                  <span className="text-sm text-green-600">(확인 완료)</span>
+                )}
+              </FormLabel>
               <div className="flex gap-2">
                 <FormControl>
                   <Input
-                    placeholder="사업자 등록번호 10자리 / 예) 1234567890"
+                    disabled={isBusinessNumberVerified}
+                    placeholder="사업자 등록번호 10자리 / 예) 6588602970"
                     {...field}
                   />
                 </FormControl>
+
                 <Button
                   type="button"
+                  size="default"
+                  variant="outline"
+                  className="w-20"
                   onClick={handleBusinessNumberCheck}
                   disabled={
                     isCheckingBusinessNumber || businessNumber.length !== 10
                   }
                 >
-                  중복확인
-                  {isCheckingBusinessNumber && (
-                    <LoaderCircle className="ml-2 animate-spin" />
+                  {isCheckingBusinessNumber ? (
+                    <Spinner />
+                  ) : isBusinessNumberVerified ? (
+                    '취소'
+                  ) : (
+                    '확인'
                   )}
                 </Button>
               </div>
@@ -225,16 +245,11 @@ export default function CreateHospitalForm() {
           )}
         />
 
-        <Button
-          type="submit"
-          disabled={isSubmitting || !isBusinessNumberVerified || !isFormValid}
+        <SubmitButton
+          buttonText="생성"
+          isPending={isSubmitting}
           className="ml-auto"
-        >
-          생성
-          <LoaderCircle
-            className={cn(isSubmitting ? 'ml-2 animate-spin' : 'hidden')}
-          />
-        </Button>
+        />
       </form>
     </Form>
   )

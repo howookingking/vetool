@@ -1,3 +1,8 @@
+1. icu_io.memo[number].chosen & selected ?
+2. CPCR여부 미지정..
+3. 수의사 셀렉트
+4. shadcn field
+
 - 도메인 호스팅 : hostingkr, 구글오어스 포우, 2년 21450원
 - vercel 월 20달러
 - 수퍼베이스 : 월 25달러
@@ -51,7 +56,7 @@ export default function DefaultOrdersTable({
 ### CRUD 함수 명명법
 
 - create : createTodo / isCreating
-- read : fetchTodo / isFetching
+- read : getTodo / isFetching
 - update : updateTodo / isUpdating
 - delete : deleteTodo / isDeleting
 

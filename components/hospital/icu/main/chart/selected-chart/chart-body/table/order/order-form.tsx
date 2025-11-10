@@ -17,7 +17,7 @@ import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircleIcon } from 'lucide-react'
 import { useParams } from 'next/navigation'
-import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
+import { type Dispatch, type SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -42,8 +42,6 @@ export default function OrderForm({
   } = useBasicHosDataContext()
 
   const [isUpdating, setIsUpdating] = useState(false)
-  const [startTime, setStartTime] = useState<string>('0')
-  const [timeTerm, setTimeTerm] = useState<string>('undefined')
   const [orderTime, setOrderTime] = useState<string[]>(
     selectedChartOrder.order_times || new Array(24).fill('0'),
   )
@@ -114,20 +112,6 @@ export default function OrderForm({
 
   const handleSubmit = showOrderer ? handleNextStep : handleSubmitWithoutOrderer
 
-  useEffect(() => {
-    if (startTime !== 'undefined' && timeTerm !== 'undefined') {
-      const start = Number(startTime)
-      const term = Number(timeTerm)
-      const newOrderTime = Array(24).fill('0')
-
-      for (let i = start; i < 24; i += term) {
-        newOrderTime[i] = '1'
-      }
-
-      setOrderTime(newOrderTime)
-    }
-  }, [form, startTime, timeTerm])
-
   return (
     <Form {...form}>
       <form
@@ -136,14 +120,7 @@ export default function OrderForm({
       >
         <OrderFormField form={form} />
 
-        <OrderTimeSettings
-          startTime={startTime}
-          timeTerm={timeTerm}
-          orderTime={orderTime}
-          setStartTime={setStartTime}
-          setTimeTerm={setTimeTerm}
-          setOrderTime={setOrderTime}
-        />
+        <OrderTimeSettings orderTime={orderTime} setOrderTime={setOrderTime} />
 
         <OrderBorderCheckbox form={form} />
 

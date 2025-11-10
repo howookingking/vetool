@@ -287,6 +287,7 @@ export default function TxDetailInsertStep({
                   닫기
                 </Button>
               </DialogClose>
+
               <Button type="submit" disabled={isSubmitting}>
                 {showTxUser ? '다음' : '확인'}
                 {isSubmitting && (
