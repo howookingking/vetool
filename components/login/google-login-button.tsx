@@ -32,8 +32,8 @@ export default function GoogleLoginButton() {
         disabled={pending}
         formAction={googleLogin}
       >
-        <Image unoptimized src={googleLogo} alt="google logo" className="w-5" />
-        <div className="flex items-center">
+        <Image unoptimized src={googleLogo} alt="google logo" className="w-4" />
+        <div className="flex items-center gap-2">
           <span>구글계정으로 로그인하기</span>
           {pending && <Spinner />}
         </div>

@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { DialogClose } from '@/components/ui/dialog'
+import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 import { toggleOutPatient } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { cn, hashtagKeyword } from '@/lib/utils/utils'
 import type { SelectedIcuChart } from '@/types/icu/chart'
@@ -19,6 +20,8 @@ export default function OutPatientButtons({
   setIsDialogOpen,
 }: Props) {
   const { icu_io, patient } = chartData
+
+  const safeRefresh = useSafeRefresh()
 
   const [isOutSubmitting, setIsOutSubmitting] = useState(false)
   const [isAliveSubmitting, setIsAliveSubmitting] = useState(false)
@@ -51,6 +54,7 @@ export default function OutPatientButtons({
 
     isAlive ? setIsOutSubmitting(false) : setIsAliveSubmitting(false)
     setIsDialogOpen(false)
+    safeRefresh()
   }
 
   return (

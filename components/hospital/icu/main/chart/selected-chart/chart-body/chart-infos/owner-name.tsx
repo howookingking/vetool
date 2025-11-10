@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { updateOwnerName } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { UserIcon } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -13,6 +14,8 @@ type Props = {
 }
 
 export default function OwnerName({ ownerName, patientId }: Props) {
+  const { refresh } = useRouter()
+
   const [ownerNameInput, setOwnerNameInput] = useState(ownerName)
   const [isUpdating, setIsUpdating] = useState(false)
 
@@ -28,6 +31,10 @@ export default function OwnerName({ ownerName, patientId }: Props) {
     toast.success('보호자명을 변경하였습니다')
 
     setIsUpdating(false)
+    refresh()
+    // 보호자명의 경우 실시간 table(patients) 구독이 되어있지 않아서 refresh가 필요
+    // 또한 다른 컴퓨터에서 실시간 반영되지 않음
+    // 이런게 몇개 있음 (환자 정보) 다만 체중은 icu_chart 테이블에 있어서 실시간임
   }
 
   useEffect(() => {
