@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { DialogClose } from '@/components/ui/dialog'
+import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 import {
   deleteChart,
   deleteOrders,
@@ -25,6 +26,8 @@ export default function DeleteChartButtons({
   icuIoId,
   patientName,
 }: Props) {
+  const safeRefresh = useSafeRefresh()
+
   const [isDeleting, setIsDeleting] = useState(false)
 
   const handleDeleteChart = async () => {
@@ -39,6 +42,7 @@ export default function DeleteChartButtons({
 
     setIsDeleting(false)
     setIsDialogOpen(false)
+    safeRefresh()
   }
 
   return (

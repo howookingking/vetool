@@ -8,12 +8,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 import { updateOutDueDate } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { cn } from '@/lib/utils/utils'
 import { format, parseISO } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { LogOutIcon } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 type Props = {
@@ -29,12 +30,24 @@ export default function OutDueDate({
   icuIoId,
   noIcon,
 }: Props) {
-  const transformedOutDueDate = outDueDate ? new Date(outDueDate) : undefined
+  const disabledDates = (date: Date) => date < parseISO(inDate)
+
+  const safeRefresh = useSafeRefresh()
 
   const [outDueDateInput, setOutDueDateInput] = useState<Date | undefined>(
-    transformedOutDueDate,
+    outDueDate ? new Date(outDueDate) : undefined,
   )
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
+
+  useEffect(() => {
+    setTimeout(
+      () =>
+        setOutDueDateInput(() =>
+          outDueDate ? new Date(outDueDate) : undefined,
+        ),
+      0,
+    )
+  }, [outDueDate])
 
   const handleUpdateOutDueDate = async (date?: Date) => {
     setIsPopoverOpen(false)
@@ -43,8 +56,8 @@ export default function OutDueDate({
     await updateOutDueDate(icuIoId, date ? format(date!, 'yyyy-MM-dd') : null)
 
     toast.success('퇴원예정일을 변경하였습니다')
+    safeRefresh()
   }
-  const disabledDates = (date: Date) => date < parseISO(inDate)
 
   return (
     <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>

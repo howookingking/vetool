@@ -2,6 +2,7 @@
 
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 import { updateCage } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { SquarePlusIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -13,6 +14,8 @@ type Props = {
 }
 
 export default function Cage({ cage, icuIoId }: Props) {
+  const safeRefresh = useSafeRefresh()
+
   const [cageInput, setCageInput] = useState(cage)
   const [isUpdating, setIsUpdating] = useState(false)
 
@@ -28,6 +31,7 @@ export default function Cage({ cage, icuIoId }: Props) {
     toast.success('입원장을 변경하였습니다')
 
     setIsUpdating(false)
+    safeRefresh()
   }
 
   useEffect(() => {
