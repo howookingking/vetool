@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 import useShortcutKey from '@/hooks/use-shortcut-key'
 import { reorderDefaultOrders } from '@/lib/services/admin/icu/default-orders'
 import { reorderOrders } from '@/lib/services/icu/chart/order-mutation'
@@ -23,6 +24,8 @@ export default function SortingButton({
   setIsSorting,
   isDt,
 }: SortingButtonProps) {
+  const safeRefresh = useSafeRefresh()
+
   const handleSortButtonClick = async () => {
     if (!isSorting) {
       toast.info('오더를 Drag & Drop 하여 순서를 변경해주세요', {
@@ -48,6 +51,8 @@ export default function SortingButton({
       setIsSorting(false)
 
       toast.success('오더 순서를 변경하였습니다')
+
+      !isDt && safeRefresh()
     }
   }
 

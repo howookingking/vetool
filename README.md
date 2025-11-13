@@ -53,13 +53,6 @@ export default function DefaultOrdersTable({
 }) {}
 ```
 
-### CRUD 함수 명명법
-
-- create : createTodo / isCreating
-- read : getTodo / isFetching
-- update : updateTodo / isUpdating
-- delete : deleteTodo / isDeleting
-
 ### boolean 변수는 isEdit, isIcu 등 is 붙이기
 
 ### Visually hidden
