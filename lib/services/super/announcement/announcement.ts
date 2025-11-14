@@ -89,7 +89,7 @@ export const fetchAnnouncementTitles = async () => {
     .select('announcement_id, announcement_title')
     .match({ is_draft: false })
     .order('created_at', { ascending: false })
-    .limit(1)
+    .limit(3)
 
   if (error) {
     console.error(error)

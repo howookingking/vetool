@@ -18,6 +18,10 @@ export default function CompleteVisitButton({ icuChartId, visitChart }: Props) {
   const [isDoneState, setIsDoneState] = useState(isDone)
   const [isUpdating, setIsUpdating] = useState(false)
 
+  useEffect(() => {
+    setIsDoneState(isDone)
+  }, [isDone])
+
   const handleToggleIsDone = async () => {
     setIsUpdating(true)
 

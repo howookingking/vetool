@@ -51,7 +51,6 @@ export default function IcuFooter({ hosId, targetDate }: IcuFooterProps) {
                 currentIcuPath === route && 'bg-muted',
                 'flex items-center gap-1',
               )}
-              disabled={route === 'out-and-visit'}
               onClick={() => handleMoveToPath(route)}
             >
               {icon}
