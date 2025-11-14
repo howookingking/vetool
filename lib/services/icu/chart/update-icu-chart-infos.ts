@@ -1,5 +1,6 @@
 'use server'
 
+import { DEFAULT_OUT_CHART } from '@/constants/hospital/icu/chart/out-and-visit'
 import { createClient } from '@/lib/supabase/server'
 import { IcuChartsInCharge } from '@/types/adimin'
 import type { Memo } from '@/types/icu/chart'
@@ -88,7 +89,10 @@ export const updateOutDueDate = async (
 
   const { error } = await supabase
     .from('icu_io')
-    .update({ out_due_date: outDueDate })
+    .update({
+      out_due_date: outDueDate,
+      out_chart: outDueDate ? DEFAULT_OUT_CHART : null,
+    })
     .match({ icu_io_id: icuIoId })
 
   if (error) {

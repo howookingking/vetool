@@ -21,7 +21,7 @@ export default function HeaderRightButtons({
 
       <CopyChartButton icuChartId={icu_chart_id} />
 
-      <OutPatientDialog chartData={chartData} />
+      <OutPatientDialog icuIo={chartData.icu_io} patient={chartData.patient} />
 
       <ExportDialog chartData={chartData} />
 

@@ -10,17 +10,17 @@ import { toast } from 'sonner'
 
 type Props = {
   isPatientOut: boolean
-  chartData: SelectedIcuChart
+  icuIo: SelectedIcuChart['icu_io']
+  patient: SelectedIcuChart['patient']
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export default function OutPatientButtons({
   isPatientOut,
-  chartData,
+  icuIo,
+  patient,
   setIsDialogOpen,
 }: Props) {
-  const { icu_io, patient } = chartData
-
   const safeRefresh = useSafeRefresh()
 
   const [isOutSubmitting, setIsOutSubmitting] = useState(false)
@@ -29,11 +29,11 @@ export default function OutPatientButtons({
   const handleOutPatient = async (isAlive: boolean) => {
     isAlive ? setIsOutSubmitting(true) : setIsAliveSubmitting(true)
     const hashtaggedDxCc = hashtagKeyword(
-      `${icu_io.icu_io_dx}, ${icu_io.icu_io_cc}`,
+      `${icuIo.icu_io_dx}, ${icuIo.icu_io_cc}`,
     )
 
     await toggleOutPatient(
-      icu_io.icu_io_id,
+      icuIo.icu_io_id,
       patient.patient_id,
       isPatientOut,
       hashtaggedDxCc,
@@ -42,7 +42,7 @@ export default function OutPatientButtons({
       patient.species,
       patient.owner_name ?? '',
       patient.gender,
-      icu_io.age_in_days,
+      icuIo.age_in_days,
       isAlive,
     )
 

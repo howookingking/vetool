@@ -1,30 +1,36 @@
 'use client'
 
 import { Input } from '@/components/ui/input'
-import { updatePatientMovement } from '@/lib/services/icu/out-and-visit/update-checklist'
-import { useRouter } from 'next/navigation'
+import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
+import {
+  OutChart,
+  updateOutChart,
+} from '@/lib/services/icu/out-and-visit/icu-out-chart'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
+type Props = {
+  type: 'out' | 'visit'
+  icuIoId: string
+  outChart: OutChart
+  isDischarged: boolean
+}
+
 export default function ChecklistTime({
   icuIoId,
-  time,
-  checkType,
+  outChart,
+  type,
   isDischarged,
-  visitId,
-}: {
-  icuIoId: string
-  time: string
-  checkType: string
-  isDischarged: boolean
-  visitId?: string
-}) {
-  const [timeInput, setTimeInput] = useState(time)
-  const { refresh } = useRouter()
+}: Props) {
+  const outTime = outChart.out_time
+
+  const safeRefresh = useSafeRefresh()
+
+  const [timeInput, setTimeInput] = useState<string>(outTime ?? '')
 
   useEffect(() => {
-    setTimeInput(time)
-  }, [time])
+    setTimeout(() => setTimeInput(outTime ?? ''), 0)
+  }, [outTime])
 
   const handlePressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -33,26 +39,29 @@ export default function ChecklistTime({
   }
 
   const handleUpdateChecklist = async () => {
-    if (time === timeInput) return
+    if (outTime === timeInput) return
 
-    await updatePatientMovement(icuIoId, timeInput, checkType, visitId)
+    const newOutChart: OutChart = {
+      ...outChart,
+      out_time: timeInput,
+    }
 
-    toast.success('관리 사항을 변경하였습니다')
+    await updateOutChart(icuIoId, newOutChart)
 
-    refresh()
+    toast.success('퇴원차트 세부사항을 변경하였습니다')
+
+    safeRefresh()
   }
 
   return (
-    <div className="flex justify-center">
-      <Input
-        type="time"
-        disabled={isDischarged}
-        value={timeInput}
-        onChange={(e) => setTimeInput(e.target.value)}
-        onBlur={handleUpdateChecklist}
-        onKeyDown={handlePressEnter}
-        className="w-[120px]"
-      />
-    </div>
+    <Input
+      type="time"
+      disabled={isDischarged}
+      value={timeInput}
+      onChange={(e) => setTimeInput(e.target.value)}
+      onBlur={handleUpdateChecklist}
+      onKeyDown={handlePressEnter}
+      className="mx-auto w-[120px]"
+    />
   )
 }
