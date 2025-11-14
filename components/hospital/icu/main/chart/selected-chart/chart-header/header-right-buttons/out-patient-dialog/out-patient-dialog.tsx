@@ -15,16 +15,15 @@ import { LogOut, Undo2 } from 'lucide-react'
 import { useState } from 'react'
 import OutPatientButtons from './out-patient-buttons'
 
-export default function OutPatientDialog({
-  chartData,
-}: {
-  chartData: SelectedIcuChart
-}) {
-  const { icu_io, patient } = chartData
+type Props = {
+  icuIo: SelectedIcuChart['icu_io']
+  patient: SelectedIcuChart['patient']
+}
 
+export default function OutPatientDialog({ icuIo, patient }: Props) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
-  const isPatientOut = icu_io.out_date !== null
+  const isPatientOut = icuIo.out_date !== null
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -46,7 +45,8 @@ export default function OutPatientDialog({
         <DialogFooter>
           <OutPatientButtons
             isPatientOut={isPatientOut}
-            chartData={chartData}
+            icuIo={icuIo}
+            patient={patient}
             setIsDialogOpen={setIsDialogOpen}
           />
         </DialogFooter>

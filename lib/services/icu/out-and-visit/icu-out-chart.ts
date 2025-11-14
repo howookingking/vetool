@@ -1,111 +1,120 @@
 'use server'
 
+import type { OutChart } from '@/constants/hospital/icu/chart/out-and-visit'
 import { createClient } from '@/lib/supabase/server'
-import type {
-  NotOutDuePatientsData,
-  OutDuePatientsData,
-  VisitablePatientsData,
-  VisitPatientData,
-} from '@/types/icu/movement'
+import type { IcuIo, Patient } from '@/types'
 import { redirect } from 'next/navigation'
 
-export const getNotOutDuePatients = async (
-  hosId: string,
+export const addPatientToOutChart = async (
+  icuIoId: string,
   targetDate: string,
 ) => {
   const supabase = await createClient()
 
-  const { data, error } = await supabase
-    .rpc('get_not_out_due_patients', {
-      hos_id_input: hosId,
-      target_date_input: targetDate,
+  // icu_io 테이블에서 퇴원예정일을 추가함
+  const { error: icuIoError } = await supabase
+    .from('icu_io')
+    .update({
+      out_due_date: targetDate,
     })
+    .match({ icu_io_id: icuIoId })
 
-  if (error) {
-    throw new Error(error.message)
+  if (icuIoError) {
+    console.error(icuIoError)
+    redirect(`/error?message=${icuIoError?.message}`)
   }
-
-  return data as NotOutDuePatientsData[] | null
 }
 
-export const getVisitablePatients = async (
-  hosId: string,
-  targetDate: string,
-) => {
+export const cancelOutDue = async (icuIoId: string) => {
+  const supabase = await createClient()
+  // icu_io 테이블에서 퇴원예정일 및 out_chart를 NULL처리
+  const { error: icuIoError } = await supabase
+    .from('icu_io')
+    .update({ out_due_date: null, out_chart: null })
+    .match({ icu_io_id: icuIoId })
+
+  if (icuIoError) {
+    console.error(icuIoError)
+    redirect(`/error?message=${icuIoError?.message}`)
+  }
+}
+
+export type OutDuePatientsData = IcuIo & {
+  patients: Patient
+  out_chart: OutChart
+}
+export const getOutDuePatients = async (hosId: string, targetDate: string) => {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .rpc('get_icu_visitable_patients', {
-      hos_id_input: hosId,
-      target_date_input: targetDate,
-    })
-
-  if (error) {
-    throw new Error(error.message)
-  }
-
-  return data as VisitablePatientsData[] ?? []
-}
-
-export const deleteVisitPatient = async (visitId: string) => {
-  const supabase = await createClient()
-
-  const { error } = await supabase.from('icu_visit').delete().match({
-    icu_visit_id: visitId,
-  })
+    .from('icu_io')
+    .select(
+      `
+        *,
+        patients(*)
+      `,
+    )
+    .match({ hos_id: hosId, out_due_date: targetDate })
+    .order('created_at')
 
   if (error) {
     console.error(error)
-    redirect(`/error?message=${error?.message}`)
+    redirect(`/error/?message=${error.message}`)
   }
+
+  return data as unknown as OutDuePatientsData[]
 }
 
-export const getVisitPatients = async (hosId: string, targetDate: string) => {
+export const getOutCandidates = async (hosId: string, targetDate: string) => {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .rpc('get_icu_visit_patients', {
-      hos_id_input: hosId,
-      target_date_input: targetDate,
-    })
+    .from('icu_io')
+    .select(
+      `
+        icu_io_id,
+        patients (
+          name,
+          breed,
+          owner_name,
+          species
+        )
+      `,
+    )
+    .eq('hos_id', hosId)
+    .is('out_date', null) // 퇴원하지 않은 환자
+    .or(`out_due_date.is.null,out_due_date.neq.${targetDate}`) // 퇴원예정일이 없는 환자 or 퇴원예정일이 있는데 타겟데이트가 아닌 환자(퇴원예정일을 지정했으나 퇴원예정이 바뀔수도 있으므로)
+    .order('created_at')
 
   if (error) {
-    throw new Error(error.message)
+    console.error(error)
+    redirect(`/error/?message=${error.message}`)
   }
 
-  return data as VisitPatientData[] || []
+  return data
 }
 
-export const getIcuOutDuePatients = async (
-  hosId: string,
-  targetDate: string,
-) => {
+export const deleteIcuOut = async (icuOutId: string) => {
   const supabase = await createClient()
 
-  const { data, error } = await supabase
-    .rpc('get_icu_out_due_patients', {
-      hos_id_input: hosId,
-      target_date_input: targetDate,
-    })
+  const { error } = await supabase
+    .from('icu_out')
+    .delete()
+    .match({ icu_out_id: icuOutId })
 
   if (error) {
-    throw new Error(error.message)
+    console.error(error)
+    redirect(`/error/?message=${error.message}`)
   }
-
-  return data as OutDuePatientsData[] || []
 }
 
-export const updatePatientOutDueDate = async (
-  icuIoId: string,
-  hosId: string,
-  targetDate: string,
-) => {
+export const updateOutChart = async (icuIoId: string, input: OutChart) => {
   const supabase = await createClient()
 
   const { error } = await supabase
     .from('icu_io')
-    .update({ out_due_date: targetDate })
-    .match({ hos_id: hosId, icu_io_id: icuIoId })
+    .update({ out_chart: input })
+    .match({ icu_io_id: icuIoId })
 
   if (error) {
     console.error(error)

@@ -1,7 +1,6 @@
 'use client'
 'use no memo'
 
-import NoResult from '@/components/common/no-result'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -20,19 +19,20 @@ import {
 } from '@/components/ui/table'
 import { cn } from '@/lib/utils/utils'
 import {
-  type ColumnDef,
-  type SortingState,
-  type VisibilityState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  type ColumnDef,
+  type SortingState,
+  type VisibilityState,
 } from '@tanstack/react-table'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
 import LargeLoaderCircle from '../common/large-loader-circle'
+import NoResultSquirrel from '../common/no-result-squirrel'
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[]
@@ -40,11 +40,11 @@ type DataTableProps<TData, TValue> = {
   visibility?: boolean
   searchPlaceHolder?: string
   rowLength?: number
-  customColumnVisibility?: VisibilityState
   searchBarSpace?: boolean
   children?: ReactNode
   onRowClick?: (row: TData) => void
   isLoading?: boolean
+  noResultText?: string
 }
 export default function DataTable<TData, TValue>({
   columns,
@@ -52,11 +52,11 @@ export default function DataTable<TData, TValue>({
   visibility,
   searchPlaceHolder,
   rowLength = 10,
-  customColumnVisibility,
   searchBarSpace,
   children,
   onRowClick,
   isLoading,
+  noResultText = '검색 결과가 없습니다',
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [globalFilter, setGlobalFilter] = useState('')
@@ -76,7 +76,7 @@ export default function DataTable<TData, TValue>({
     state: {
       globalFilter,
       sorting,
-      columnVisibility: customColumnVisibility ?? columnVisibility,
+      columnVisibility: columnVisibility,
       rowSelection,
     },
     initialState: {
@@ -86,6 +86,7 @@ export default function DataTable<TData, TValue>({
     },
     onGlobalFilterChange: setGlobalFilter,
     autoResetPageIndex: false,
+    columnResizeMode: 'onChange',
   })
 
   return (
@@ -156,6 +157,11 @@ export default function DataTable<TData, TValue>({
                     <TableHead
                       key={header.id}
                       className="text-center text-xs md:text-sm"
+                      style={{
+                        width: header.getSize(),
+                        minWidth: header.column.columnDef.minSize,
+                        maxWidth: header.column.columnDef.maxSize,
+                      }}
                     >
                       {header.isPlaceholder
                         ? null
@@ -209,7 +215,11 @@ export default function DataTable<TData, TValue>({
                     colSpan={columns.length}
                     className="h-[320px] text-center"
                   >
-                    <NoResult title="검색 결과가 없습니다" className="h-40" />
+                    <NoResultSquirrel
+                      text={noResultText}
+                      className="flex-col"
+                      size="lg"
+                    />
                   </TableCell>
                 </TableRow>
               )}

@@ -6,7 +6,7 @@ import { motion } from 'motion/react'
 
 export default function HeroContent() {
   return (
-    <div className="mx-auto max-w-4xl space-y-8 py-8 sm:space-y-12 sm:py-24 xl:py-48">
+    <div className="mx-auto max-w-4xl space-y-8 py-8 sm:space-y-12 sm:py-24 xl:py-24 2xl:py-32">
       <div className="space-y-4 sm:space-y-6">
         <motion.p
           initial={{ opacity: 0, y: 20 }}

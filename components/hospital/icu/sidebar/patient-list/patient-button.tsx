@@ -7,6 +7,7 @@ import type { Species } from '@/types/hospital/calculator'
 import { StethoscopeIcon, UserIcon } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import UrgencyStarts from './urgency-stars'
+import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 
 type Props = {
   icuIoData: IcuSidebarPatient
@@ -23,6 +24,8 @@ export default function PatientButton({
 }: Props) {
   const { vets, patient, urgency } = icuIoData
 
+  const safeRefresh = useSafeRefresh()
+
   const { push } = useRouter()
   const { patient_id } = useParams()
 
@@ -30,8 +33,10 @@ export default function PatientButton({
 
   const selectedPatient = patient.patient_id === patient_id
 
-  const handlePatientButtonClick = () =>
+  const handlePatientButtonClick = () => {
     push(`/hospital/${hosId}/icu/${targetDate}/chart/${patient.patient_id}`)
+    safeRefresh()
+  }
 
   const isPatientNew = icuIoData.in_date === targetDate
 

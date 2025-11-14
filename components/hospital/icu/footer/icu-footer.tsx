@@ -3,6 +3,7 @@
 import RealtimeStatus from '@/components/hospital/icu/footer/realtime-status'
 import { Button } from '@/components/ui/button'
 import useIcuRealtime from '@/hooks/use-icu-realtime'
+import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 import { cn } from '@/lib/utils/utils'
 import { DashboardIcon } from '@radix-ui/react-icons'
 import {
@@ -21,12 +22,19 @@ type IcuFooterProps = {
 }
 
 export default function IcuFooter({ hosId, targetDate }: IcuFooterProps) {
+  const safeRefresh = useSafeRefresh()
+
   const { push } = useRouter()
   const path = usePathname()
 
   useIcuRealtime(hosId)
 
   const currentIcuPath = path.split('/').at(5)
+
+  const handleMoveToPath = (route: string) => {
+    push(`/hospital/${hosId}/icu/${targetDate}/${route}`)
+    safeRefresh()
+  }
 
   return (
     <footer className="fixed bottom-0 left-0 right-0 z-40 flex h-[calc(2.5rem+env(safe-area-inset-bottom))] justify-between border-t bg-white px-1 2xl:left-10">
@@ -43,10 +51,7 @@ export default function IcuFooter({ hosId, targetDate }: IcuFooterProps) {
                 currentIcuPath === route && 'bg-muted',
                 'flex items-center gap-1',
               )}
-              disabled={route === 'out-and-visit'}
-              onClick={() =>
-                push(`/hospital/${hosId}/icu/${targetDate}/${route}`)
-              }
+              onClick={() => handleMoveToPath(route)}
             >
               {icon}
               {label}
