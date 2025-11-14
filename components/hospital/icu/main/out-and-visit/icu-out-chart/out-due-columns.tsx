@@ -51,7 +51,7 @@ export const outDueColumns: ColumnDef<OutDuePatientsData>[] = [
       return (
         <OutTimeInput
           icuIoId={icuIoId}
-          outChart={outChart ?? DEFAULT_OUT_CHART} // 기능 추가된거라서 혹시 과거 시간드로 갔을 때 에러발생할 수 있어서 FALLBACK있었야함
+          outChart={outChart ?? DEFAULT_OUT_CHART} // 기능 추가된거라서 혹시 과거 시간으로 갔을 때 에러발생할 수 있어서 FALLBACK있었야함
           isDischarged={isDischarged}
         />
       )

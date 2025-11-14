@@ -20,11 +20,17 @@ export default async function OutAndVisitPage(props: {
     <div className="relative h-desktop">
       <Tabs defaultValue="out" className="p-2">
         <TabsList className="h-auto w-full">
-          <TabsTrigger value="out" className="text-md w-full">
+          <TabsTrigger
+            value="out"
+            className="text-md w-full data-[state=active]:font-bold data-[state=active]:text-primary"
+          >
             퇴원
           </TabsTrigger>
 
-          <TabsTrigger value="visit" className="text-md w-full">
+          <TabsTrigger
+            value="visit"
+            className="text-md w-full data-[state=active]:font-bold data-[state=active]:text-primary"
+          >
             면회
           </TabsTrigger>
         </TabsList>
