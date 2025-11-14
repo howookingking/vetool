@@ -1,10 +1,11 @@
 'use client'
 
 import PatientBriefInfo from '@/components/hospital/common/patient/patient-brief-info'
-import ChecklistTime from '@/components/hospital/icu/main/out-and-visit/checklist-time'
 import { CancelOutDue } from '@/components/hospital/icu/main/out-and-visit/icu-out-chart/cancel-out-due'
 import GoToButton from '@/components/hospital/icu/main/out-and-visit/icu-out-chart/go-to-button'
-import OutAndVisitRowTextarea from '@/components/hospital/icu/main/out-and-visit/out-and-visit-row-textarea'
+import OutTextarea from '@/components/hospital/icu/main/out-and-visit/icu-out-chart/out-textarea'
+import OutTimeInput from '@/components/hospital/icu/main/out-and-visit/icu-out-chart/out-time-input'
+import { DEFAULT_OUT_CHART } from '@/constants/hospital/icu/chart/out-and-visit'
 import type { OutDuePatientsData } from '@/lib/services/icu/out-and-visit/icu-out-chart'
 import type { Species } from '@/types/hospital/calculator'
 import { ColumnDef } from '@tanstack/react-table'
@@ -41,17 +42,16 @@ export const outDueColumns: ColumnDef<OutDuePatientsData>[] = [
   },
   {
     accessorKey: 'outTime',
-    header: '퇴원예정시각',
+    header: '퇴원시간',
     cell: ({ row }) => {
       const isDischarged = row.original.out_date !== null
       const icuIoId = row.original.icu_io_id
       const outChart = row.original.out_chart
 
       return (
-        <ChecklistTime
-          type="out"
+        <OutTimeInput
           icuIoId={icuIoId}
-          outChart={outChart}
+          outChart={outChart ?? DEFAULT_OUT_CHART} // 기능 추가된거라서 혹시 과거 시간드로 갔을 때 에러발생할 수 있어서 FALLBACK있었야함
           isDischarged={isDischarged}
         />
       )
@@ -67,11 +67,11 @@ export const outDueColumns: ColumnDef<OutDuePatientsData>[] = [
       const icuIoId = row.original.icu_io_id
 
       return (
-        <OutAndVisitRowTextarea
+        <OutTextarea
           icuIoId={icuIoId}
           isDischarged={isDischarged}
           filedName="basic_care"
-          outChart={outChart}
+          outChart={outChart ?? DEFAULT_OUT_CHART}
         />
       )
     },
@@ -86,11 +86,11 @@ export const outDueColumns: ColumnDef<OutDuePatientsData>[] = [
       const icuIoId = row.original.icu_io_id
 
       return (
-        <OutAndVisitRowTextarea
+        <OutTextarea
           icuIoId={icuIoId}
           isDischarged={isDischarged}
           filedName="belongings"
-          outChart={outChart}
+          outChart={outChart ?? DEFAULT_OUT_CHART}
         />
       )
     },
@@ -105,10 +105,10 @@ export const outDueColumns: ColumnDef<OutDuePatientsData>[] = [
       const icuIoId = row.original.icu_io_id
 
       return (
-        <OutAndVisitRowTextarea
+        <OutTextarea
           icuIoId={icuIoId}
           isDischarged={isDischarged}
-          outChart={outChart}
+          outChart={outChart ?? DEFAULT_OUT_CHART}
           filedName="prescription"
         />
       )
@@ -124,11 +124,11 @@ export const outDueColumns: ColumnDef<OutDuePatientsData>[] = [
       const icuIoId = row.original.icu_io_id
 
       return (
-        <OutAndVisitRowTextarea
+        <OutTextarea
           icuIoId={icuIoId}
           isDischarged={isDischarged}
           filedName="etc"
-          outChart={outChart}
+          outChart={outChart ?? DEFAULT_OUT_CHART}
         />
       )
     },

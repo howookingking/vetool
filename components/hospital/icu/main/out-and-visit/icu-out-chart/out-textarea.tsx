@@ -14,7 +14,7 @@ type Props = {
   outChart: OutChart
 }
 
-export default function OutAndVisitRowTextarea({
+export default function OutTextarea({
   icuIoId,
   isDischarged,
   filedName,

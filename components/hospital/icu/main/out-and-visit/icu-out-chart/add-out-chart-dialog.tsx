@@ -27,52 +27,43 @@ import {
   addPatientToOutChart,
   getOutCandidates,
 } from '@/lib/services/icu/out-and-visit/icu-out-chart'
-import { getVisitablePatients } from '@/lib/services/icu/out-and-visit/visit-chart'
 import { convertPascalCased } from '@/lib/utils/utils'
-import type { Patient } from '@/types'
+import type { IcuIo, Patient } from '@/types'
 import type { Species } from '@/types/hospital/calculator'
 import { PlusIcon } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-export type OutOrVisitPatientCandidates = {
-  icu_io_id: string
+export type OutPatientCandidate = {
+  icu_io_id: IcuIo['icu_io_id']
   patients: Pick<Patient, 'name' | 'breed' | 'owner_name' | 'species'>
 }
 
 type Props = {
   targetDate: string
   hosId: string
-  type: 'out' | 'visit'
 }
 
-export default function AddOutOrVisitChartDialog({
-  targetDate,
-  hosId,
-  type,
-}: Props) {
-  const isOut = type === 'out'
-
+export default function AddOutChartDialog({ targetDate, hosId }: Props) {
   const safeRefresh = useSafeRefresh()
 
   const [selectedIoId, setSelectedIoId] = useState('')
-  const [outOrVisitPatientCandidates, outOrVisitPatientCadidates] = useState<
-    OutOrVisitPatientCandidates[]
+  const [outPatientCandidates, outPatientCadidates] = useState<
+    OutPatientCandidate[]
   >([])
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isFetching, setIsFetching] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const noPatientToAdd = outOrVisitPatientCandidates.length === 0
+  const noPatientToAdd = outPatientCandidates.length === 0
 
   const handleOpenChange = async (open: boolean) => {
     if (open) {
       setIsFetching(true)
 
-      const patients = isOut
-        ? await getOutCandidates(hosId, targetDate)
-        : await getVisitablePatients(hosId, targetDate)
-      outOrVisitPatientCadidates(patients)
+      const patients = await getOutCandidates(hosId, targetDate)
+
+      outPatientCadidates(patients)
 
       setIsFetching(false)
       setIsDialogOpen(true)
@@ -84,11 +75,9 @@ export default function AddOutOrVisitChartDialog({
   const handleAddToChart = async () => {
     setIsSubmitting(true)
 
-    isOut
-      ? await addPatientToOutChart(selectedIoId, targetDate)
-      : await addPatientToOutChart(selectedIoId, targetDate)
+    await addPatientToOutChart(selectedIoId, targetDate)
 
-    toast.success(`${isOut ? '퇴원' : '면회'}예정 환자를 추가하였습니다`)
+    toast.success('퇴원 예정 환자를 추가하였습니다')
 
     setIsSubmitting(false)
     setIsDialogOpen(false)
@@ -109,10 +98,9 @@ export default function AddOutOrVisitChartDialog({
 
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{isOut ? '퇴원' : '면회'}예정 환자추가</DialogTitle>
+          <DialogTitle>퇴원예정 환자추가</DialogTitle>
           <DialogDescription>
-            입원 환자 중 {targetDate}에 {isOut ? '퇴원' : '면회'}할 환자를
-            추가합니다
+            {targetDate} 퇴원차트에 추가합니다
           </DialogDescription>
         </DialogHeader>
 
@@ -127,7 +115,7 @@ export default function AddOutOrVisitChartDialog({
 
           <SelectContent>
             <SelectGroup>
-              {outOrVisitPatientCandidates.map(({ icu_io_id, patients }) => (
+              {outPatientCandidates.map(({ patients, icu_io_id }) => (
                 <SelectItem key={icu_io_id} value={icu_io_id}>
                   <div className="flex w-full items-center gap-1">
                     <SpeciesToIcon species={patients.species as Species} />

@@ -1,25 +1,21 @@
 'use client'
 
 import { Input } from '@/components/ui/input'
+import type { OutChart } from '@/constants/hospital/icu/chart/out-and-visit'
 import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
-import {
-  OutChart,
-  updateOutChart,
-} from '@/lib/services/icu/out-and-visit/icu-out-chart'
+import { updateOutChart } from '@/lib/services/icu/out-and-visit/icu-out-chart'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 type Props = {
-  type: 'out' | 'visit'
   icuIoId: string
   outChart: OutChart
   isDischarged: boolean
 }
 
-export default function ChecklistTime({
+export default function OutTimeInput({
   icuIoId,
   outChart,
-  type,
   isDischarged,
 }: Props) {
   const outTime = outChart.out_time
