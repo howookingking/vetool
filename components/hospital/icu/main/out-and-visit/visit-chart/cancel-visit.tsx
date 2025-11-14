@@ -10,37 +10,29 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { deleteVisitPatient } from '@/lib/services/icu/out-and-visit/icu-out-chart'
+import type { VisitChart } from '@/constants/hospital/icu/chart/out-and-visit'
+import { updateVisitChart } from '@/lib/services/icu/out-and-visit/icu-visit-chart'
 import { X } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import { useCallback } from 'react'
 import { toast } from 'sonner'
 
-export function CancelVisit({
-  visitId,
-  isDone,
-}: {
-  visitId: string
-  isDone: boolean
-}) {
-  const { refresh } = useRouter()
-  const handleUpdateOutDueDate = useCallback(async () => {
-    await deleteVisitPatient(visitId)
+type Props = {
+  icuChartId: string
+  visitChart: VisitChart
+}
+
+export function CancelVisit({ icuChartId, visitChart }: Props) {
+  const isDone = visitChart.is_done
+
+  const handleUpdateOutDueDate = async () => {
+    await updateVisitChart(icuChartId, null)
 
     toast.success('퇴원 예정을 취소하였습니다')
-
-    refresh()
-  }, [refresh, visitId])
+  }
 
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-red-500"
-          disabled={isDone}
-        >
+        <Button variant="ghost" size="icon" disabled={isDone}>
           <X size={18} />
         </Button>
       </AlertDialogTrigger>

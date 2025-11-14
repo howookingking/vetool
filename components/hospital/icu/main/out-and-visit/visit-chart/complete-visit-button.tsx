@@ -1,42 +1,52 @@
 import { Checkbox } from '@/components/ui/checkbox'
-import { updateIsVisitDone } from '@/lib/services/icu/out-and-visit/visit-chart'
-import { useRouter } from 'next/navigation'
+import type { VisitChart } from '@/constants/hospital/icu/chart/out-and-visit'
+import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
+import { updateVisitChart } from '@/lib/services/icu/out-and-visit/icu-visit-chart'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
-export default function CompleteVisitButton({
-  visitId,
-  isDone,
-}: {
-  visitId: string
-  isDone: boolean
-}) {
+type Props = {
+  icuChartId: string
+  visitChart: VisitChart
+}
+
+export default function CompleteVisitButton({ icuChartId, visitChart }: Props) {
+  const isDone = visitChart.is_done
+
+  const safeRefresh = useSafeRefresh()
+
   const [isDoneState, setIsDoneState] = useState(isDone)
   const [isUpdating, setIsUpdating] = useState(false)
-  const { refresh } = useRouter()
 
-  const handleCompleteVisitButton = async () => {
+  useEffect(() => {
+    setIsDoneState(isDone)
+  }, [isDone])
+
+  const handleToggleIsDone = async () => {
     setIsUpdating(true)
 
-    await updateIsVisitDone(visitId, !isDone)
+    setIsDoneState((prev) => !prev)
+
+    const newVisitChart: VisitChart = {
+      ...visitChart,
+      is_done: !isDoneState,
+    }
+
+    await updateVisitChart(icuChartId, newVisitChart)
 
     toast.success(
       `${isDone ? '면회완료를 취소하였습니다' : '면회를 완료하였습니다'}`,
     )
 
     setIsUpdating(false)
-    setIsDoneState((prev) => !prev)
-    refresh()
-  }
 
-  useEffect(() => {
-    setIsDoneState(isDone)
-  }, [isDone])
+    safeRefresh()
+  }
 
   return (
     <Checkbox
       checked={isDoneState}
-      onClick={handleCompleteVisitButton}
+      onClick={handleToggleIsDone}
       disabled={isUpdating}
       className="mr-2"
     />
