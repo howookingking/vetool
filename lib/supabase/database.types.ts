@@ -586,6 +586,7 @@ export type Database = {
           sub_vet: string | null
           target_date: string | null
           urgency: number | null
+          visit_chart: Json | null
           weight: string
           weight_measured_date: string | null
         }
@@ -600,6 +601,7 @@ export type Database = {
           sub_vet?: string | null
           target_date?: string | null
           urgency?: number | null
+          visit_chart?: Json | null
           weight?: string
           weight_measured_date?: string | null
         }
@@ -614,6 +616,7 @@ export type Database = {
           sub_vet?: string | null
           target_date?: string | null
           urgency?: number | null
+          visit_chart?: Json | null
           weight?: string
           weight_measured_date?: string | null
         }
@@ -719,7 +722,6 @@ export type Database = {
           out_date: string | null
           out_due_date: string | null
           patient_id: string
-          visit_chart: Json | null
         }
         Insert: {
           age_in_days: number
@@ -740,7 +742,6 @@ export type Database = {
           out_date?: string | null
           out_due_date?: string | null
           patient_id: string
-          visit_chart?: Json | null
         }
         Update: {
           age_in_days?: number
@@ -761,7 +762,6 @@ export type Database = {
           out_date?: string | null
           out_due_date?: string | null
           patient_id?: string
-          visit_chart?: Json | null
         }
         Relationships: [
           {
