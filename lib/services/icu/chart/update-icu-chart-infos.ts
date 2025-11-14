@@ -91,7 +91,9 @@ export const updateOutDueDate = async (
     .from('icu_io')
     .update({
       out_due_date: outDueDate,
-      out_chart: outDueDate ? DEFAULT_OUT_CHART : null,
+      out_chart: outDueDate
+        ? { ...DEFAULT_OUT_CHART, created_at: new Date().toISOString() }
+        : null,
     })
     .match({ icu_io_id: icuIoId })
 

@@ -1,26 +1,27 @@
 'use client'
 
 import { Textarea } from '@/components/ui/textarea'
-import { OutChart } from '@/constants/hospital/icu/chart/out-and-visit'
+import { VisitChart } from '@/constants/hospital/icu/chart/out-and-visit'
+
 import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 import { updateOutChart } from '@/lib/services/icu/out-and-visit/icu-out-chart'
+import { updateVisitChart } from '@/lib/services/icu/out-and-visit/icu-visit-chart'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 type Props = {
-  icuIoId: string
-  isDischarged: boolean
-  filedName: keyof OutChart
-  outChart: OutChart
+  icuChartId: string
+  filedName: keyof VisitChart
+  visitChart: VisitChart
 }
 
-export default function OutAndVisitRowTextarea({
-  icuIoId,
-  isDischarged,
+export default function VisitTextarea({
+  icuChartId,
   filedName,
-  outChart,
+  visitChart,
 }: Props) {
-  const filedValue = outChart?.[filedName] ?? ''
+  const filedValue = visitChart?.[filedName] ?? ''
+  const isDone = visitChart.is_done
 
   const safeRefresh = useSafeRefresh()
 
@@ -46,22 +47,22 @@ export default function OutAndVisitRowTextarea({
   const handleUpdateChecklist = async () => {
     if (filedValue === inputValue) return
 
-    const newOutChart: OutChart = {
-      ...outChart,
+    const newVisitChart: VisitChart = {
+      ...visitChart,
       [filedName]: inputValue,
     }
 
-    await updateOutChart(icuIoId, newOutChart)
+    await updateVisitChart(icuChartId, newVisitChart)
 
-    toast.success('퇴원차트 세부사항을 변경하였습니다')
+    toast.success('면회차트 세부사항을 변경하였습니다')
 
     safeRefresh()
   }
 
   return (
     <Textarea
-      disabled={isDischarged}
-      value={inputValue}
+      disabled={isDone}
+      value={inputValue as string}
       onChange={handleValueChange}
       onBlur={handleUpdateChecklist}
       onKeyDown={handlePressEnter}

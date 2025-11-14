@@ -1,6 +1,9 @@
 'use server'
 
-import type { OutChart } from '@/constants/hospital/icu/chart/out-and-visit'
+import {
+  DEFAULT_OUT_CHART,
+  type OutChart,
+} from '@/constants/hospital/icu/chart/out-and-visit'
 import { createClient } from '@/lib/supabase/server'
 import type { IcuIo, Patient } from '@/types'
 import { redirect } from 'next/navigation'
@@ -16,6 +19,7 @@ export const addPatientToOutChart = async (
     .from('icu_io')
     .update({
       out_due_date: targetDate,
+      out_chart: { ...DEFAULT_OUT_CHART, created_at: new Date().toISOString() },
     })
     .match({ icu_io_id: icuIoId })
 
@@ -41,7 +45,7 @@ export const cancelOutDue = async (icuIoId: string) => {
 
 export type OutDuePatientsData = IcuIo & {
   patients: Patient
-  out_chart: OutChart
+  out_chart: OutChart | null
 }
 export const getOutDuePatients = async (hosId: string, targetDate: string) => {
   const supabase = await createClient()
@@ -84,6 +88,7 @@ export const getOutCandidates = async (hosId: string, targetDate: string) => {
     .eq('hos_id', hosId)
     .is('out_date', null) // 퇴원하지 않은 환자
     .or(`out_due_date.is.null,out_due_date.neq.${targetDate}`) // 퇴원예정일이 없는 환자 or 퇴원예정일이 있는데 타겟데이트가 아닌 환자(퇴원예정일을 지정했으나 퇴원예정이 바뀔수도 있으므로)
+    // .order('name', { referencedTable: 'patients', ascending: false })
     .order('created_at')
 
   if (error) {
