@@ -31,7 +31,7 @@ export default function IsAdminColumn({
   const [isUpdating, setIsUpdating] = useState(false)
 
   useEffect(() => {
-    setIsAdminInput(isAdmin ? '관리자' : '사용자')
+    setTimeout(() => setIsAdminInput(isAdmin ? '관리자' : '사용자'), 0)
   }, [isAdmin])
 
   const handleUpdateIsAdmin = async (value: string) => {

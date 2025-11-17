@@ -51,7 +51,7 @@ export default function SearchPatientContainer({
   }
 
   return (
-    <div className="relative">
+    <div className="relative p-2">
       <div className="mb-2 flex justify-between gap-2">
         <Input
           placeholder="환자번호, 환자명, 보호자명 등으로 검색"

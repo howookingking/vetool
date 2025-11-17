@@ -32,6 +32,7 @@ import { OrderTypeLabel } from '../../order/order-form-field'
 import ChecklistOrderCreator from './checklist-order-creator'
 import { InjectionOrderCreator } from './injection-order/injection-order-creator'
 import UserKeyGuideMessage from './user-key-guide-message'
+import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 
 type Props = {
   icuChartId: string
@@ -49,6 +50,8 @@ export default function OrderCreatorRow({
   weight,
 }: Props) {
   const { hos_id } = useParams()
+
+  const saveRefresh = useSafeRefresh()
 
   const inputRef = useRef<HTMLInputElement | null>(null)
 
@@ -98,6 +101,7 @@ export default function OrderCreatorRow({
 
     setNewOrderInput('')
     setIsInserting(false)
+    saveRefresh()
 
     setTimeout(() => {
       inputRef?.current?.focus()

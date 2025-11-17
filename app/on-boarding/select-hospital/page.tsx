@@ -1,3 +1,4 @@
+import OnboardingTitle from '@/components/on-boarding/onboarding-title'
 import PrevButton from '@/components/on-boarding/prev-button'
 import HospitalsTable from '@/components/on-boarding/select-hospital/hospitals-table'
 import { getHospitals } from '@/lib/services/on-boarding/on-boarding'
@@ -8,7 +9,9 @@ export default async function SelectHospitalPage() {
   return (
     <>
       <PrevButton />
-      <h2 className="text-2xl font-bold tracking-wider">병원선택</h2>
+
+      <OnboardingTitle title="병원선택" />
+
       <HospitalsTable hospitalsData={hospitalsData} />
     </>
   )

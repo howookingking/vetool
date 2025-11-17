@@ -4,8 +4,6 @@ import {
 } from '@/components/hospital/admin/approval/approval-columns'
 import DataTable from '@/components/ui/data-table'
 import { getStaffApprovals } from '@/lib/services/admin/approval'
-import { UserCheck } from 'lucide-react'
-import MobileTitle from '../staff/mobile-title'
 
 export default async function AdminApprovalPage(props: {
   params: Promise<{ hos_id: string }>
@@ -26,14 +24,10 @@ export default async function AdminApprovalPage(props: {
   )
 
   return (
-    <>
-      <MobileTitle icon={UserCheck} title="사용승인" />
-
-      <DataTable
-        columns={approvlaColumns}
-        data={approvalDataTableData}
-        rowLength={15}
-      />
-    </>
+    <DataTable
+      columns={approvlaColumns}
+      data={approvalDataTableData}
+      rowLength={15}
+    />
   )
 }

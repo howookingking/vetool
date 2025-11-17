@@ -1,19 +1,16 @@
 import HeroContent from '@/components/company/main/hero/hero-content'
 import HeroLogos from '@/components/company/main/hero/hero-logos'
-import DesktopMockupScreen from '@/components/company/main/hero/mockup/desktop/desktop-mockup-screen'
-import MobileMockupScreen from '@/components/company/main/hero/mockup/mobile/mobile-mockup-screen'
+import DesktopMockupScreen from './mockup/desktop-mockup-screen'
 
 export default function HeroSection() {
   return (
-    <section id="hero" className="flex h-company flex-col justify-between pt-8">
-      <div className="flex h-[calc(100%-80px)] flex-col items-center gap-16">
-        <HeroContent />
+    <section id="hero" className="relative flex flex-col justify-between">
+      <HeroContent />
 
+      <div className="flex flex-col items-center">
         <DesktopMockupScreen />
-        <MobileMockupScreen />
+        <HeroLogos />
       </div>
-
-      <HeroLogos />
     </section>
   )
 }

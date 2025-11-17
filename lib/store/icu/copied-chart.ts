@@ -1,12 +1,12 @@
-import type { SelectedChart } from '@/types/icu/chart'
+import type { SelectedIcuChart } from '@/types/icu/chart'
 import { create } from 'zustand'
 
 type CopiedChartState = {
   copiedChartId?: string
   setCopiedChartId: (icuChartId?: string) => void
 
-  copiedChart?: SelectedChart
-  setCopiedChart: (copiedChart: SelectedChart) => void
+  copiedChart?: SelectedIcuChart
+  setCopiedChart: (copiedChart: SelectedIcuChart) => void
 
   reset: () => void
 }

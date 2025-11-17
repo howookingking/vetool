@@ -15,7 +15,6 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { HospitalList } from '@/lib/services/hospital-home/home'
-import { ChevronsUpDown } from 'lucide-react'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -27,6 +26,7 @@ export default function SuperHospitalSelector({
   const { hos_id } = useParams()
   const pathname = usePathname()
   const { push } = useRouter()
+
   const currentHosName = hosList.find(
     (hospital) => hospital.hos_id === hos_id,
   )?.name
@@ -53,9 +53,11 @@ export default function SuperHospitalSelector({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+      <PopoverTrigger
+        asChild
+        className="fixed left-[6px] top-1.5 z-30 rounded-none 2xl:absolute 2xl:left-[46px]"
+      >
         <Button
-          variant="ghost"
           role="combobox"
           aria-expanded={open}
           className="justify-between"
@@ -63,9 +65,9 @@ export default function SuperHospitalSelector({
           {value
             ? hosList.find((hospital) => hospital.name === value)?.name
             : '병원을 선택해주세요'}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
+
       <PopoverContent className="w-[18rem] p-0">
         <Command>
           <CommandInput placeholder="병원 검색" />

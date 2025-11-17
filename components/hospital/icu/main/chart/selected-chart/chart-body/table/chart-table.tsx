@@ -6,11 +6,11 @@ import ChartTableHeader from '@/components/hospital/icu/main/chart/selected-char
 import { Table } from '@/components/ui/table'
 import useLocalStorage from '@/hooks/use-local-storage'
 import { type OrderWidth } from '@/types/hospital/order'
-import { type SelectedChart, type SelectedIcuOrder } from '@/types/icu/chart'
+import { type SelectedIcuChart, type SelectedIcuOrder } from '@/types/icu/chart'
 import { type RefObject, useEffect, useState } from 'react'
 
 type Props = {
-  chartData: SelectedChart
+  chartData: SelectedIcuChart
   preview?: boolean
   isExport?: boolean
   cellRef?: RefObject<HTMLTableRowElement>

@@ -39,6 +39,7 @@ export default function Vets({ mainVet, subVet, icuChartId, inCharge }: Props) {
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button
+          size="default"
           variant="outline"
           className="flex w-full items-center justify-start gap-2 px-2"
         >

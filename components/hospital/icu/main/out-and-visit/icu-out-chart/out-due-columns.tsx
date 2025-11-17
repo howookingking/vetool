@@ -1,133 +1,161 @@
 'use client'
 
 import PatientBriefInfo from '@/components/hospital/common/patient/patient-brief-info'
-import ChecklistInput from '@/components/hospital/icu/main/out-and-visit/checklist-input'
-import ChecklistTime from '@/components/hospital/icu/main/out-and-visit/checklist-time'
 import { CancelOutDue } from '@/components/hospital/icu/main/out-and-visit/icu-out-chart/cancel-out-due'
 import GoToButton from '@/components/hospital/icu/main/out-and-visit/icu-out-chart/go-to-button'
-import type { OutDuePatientsData } from '@/types/icu/movement'
+import OutTextarea from '@/components/hospital/icu/main/out-and-visit/icu-out-chart/out-textarea'
+import OutTimeInput from '@/components/hospital/icu/main/out-and-visit/icu-out-chart/out-time-input'
+import { DEFAULT_OUT_CHART } from '@/constants/hospital/icu/chart/out-and-visit'
+import type { OutDuePatientsData } from '@/lib/services/icu/out-and-visit/icu-out-chart'
+import type { Species } from '@/types/hospital/calculator'
 import { ColumnDef } from '@tanstack/react-table'
+import OutPatientDialog from '../../chart/selected-chart/chart-header/header-right-buttons/out-patient-dialog/out-patient-dialog'
 
 export const outDueColumns: ColumnDef<OutDuePatientsData>[] = [
   {
     accessorKey: 'patientName',
-    header: '환자 이름',
+    header: ({ table }) => (
+      <div>
+        환자
+        {table.getRowModel().rows.length > 0
+          ? `(${table.getRowModel().rows.length})`
+          : ''}
+      </div>
+    ),
     cell: ({ row }) => {
-      const name = row.original.patient.name
-      const breed = row.original.patient.breed
-      const species = row.original.patient.species
+      const name = row.original.patients.name
+      const breed = row.original.patients.breed
+      const species = row.original.patients.species
       const isDischarged = row.original.out_date !== null
 
       return (
         <PatientBriefInfo
           name={name}
-          species={species}
+          species={species as Species}
           breed={breed}
-          isDone={isDischarged}
-          className="justify-center"
+          width={100}
+          className={isDischarged ? 'text-muted-foreground' : ''}
         />
       )
     },
+    size: 100,
   },
   {
     accessorKey: 'outTime',
-    header: '퇴원 시각',
+    header: '퇴원시간',
     cell: ({ row }) => {
-      const outTime = row.original.out_time
       const isDischarged = row.original.out_date !== null
       const icuIoId = row.original.icu_io_id
+      const outChart = row.original.out_chart
 
       return (
-        <ChecklistTime
-          checkType="out_time"
+        <OutTimeInput
           icuIoId={icuIoId}
-          time={outTime}
+          outChart={outChart ?? DEFAULT_OUT_CHART} // 기능 추가된거라서 혹시 과거 시간으로 갔을 때 에러발생할 수 있어서 FALLBACK있었야함
           isDischarged={isDischarged}
         />
       )
     },
+    size: 120,
   },
   {
     accessorKey: 'basicCare',
     header: '기본 관리',
     cell: ({ row }) => {
-      const basicCare = row.original.basic_care
+      const outChart = row.original.out_chart
       const isDischarged = row.original.out_date !== null
       const icuIoId = row.original.icu_io_id
 
       return (
-        <ChecklistInput
+        <OutTextarea
           icuIoId={icuIoId}
           isDischarged={isDischarged}
-          checkType="basic_care"
-          value={basicCare}
+          filedName="basic_care"
+          outChart={outChart ?? DEFAULT_OUT_CHART}
         />
       )
     },
+    minSize: 200,
   },
   {
     accessorKey: 'belongings',
     header: '소지품',
     cell: ({ row }) => {
-      const belongings = row.original.belongings
+      const outChart = row.original.out_chart
       const isDischarged = row.original.out_date !== null
       const icuIoId = row.original.icu_io_id
 
       return (
-        <ChecklistInput
+        <OutTextarea
           icuIoId={icuIoId}
           isDischarged={isDischarged}
-          checkType="belongings"
-          value={belongings}
+          filedName="belongings"
+          outChart={outChart ?? DEFAULT_OUT_CHART}
         />
       )
     },
+    minSize: 200,
   },
   {
     accessorKey: 'prescription',
     header: '처방식',
     cell: ({ row }) => {
-      const prescription = row.original.prescription
+      const outChart = row.original.out_chart
       const isDischarged = row.original.out_date !== null
-
       const icuIoId = row.original.icu_io_id
 
       return (
-        <ChecklistInput
+        <OutTextarea
           icuIoId={icuIoId}
           isDischarged={isDischarged}
-          value={prescription}
-          checkType="prescription"
+          outChart={outChart ?? DEFAULT_OUT_CHART}
+          filedName="prescription"
         />
       )
     },
+    minSize: 200,
   },
   {
     accessorKey: 'etc',
     header: '기타',
     cell: ({ row }) => {
-      const etc = row.original.etc
+      const outChart = row.original.out_chart
       const isDischarged = row.original.out_date !== null
       const icuIoId = row.original.icu_io_id
 
       return (
-        <ChecklistInput
+        <OutTextarea
           icuIoId={icuIoId}
           isDischarged={isDischarged}
-          checkType="etc"
-          value={etc}
+          filedName="etc"
+          outChart={outChart ?? DEFAULT_OUT_CHART}
         />
       )
     },
+    minSize: 200,
   },
   {
-    accessorKey: 'active',
+    accessorKey: 'out',
+    header: '퇴원',
+    cell: ({ row }) => {
+      const patient = row.original.patients
+      const icuIo = row.original
+
+      return <OutPatientDialog icuIo={icuIo} patient={patient} />
+    },
+
+    size: 60,
+  },
+  {
+    accessorKey: 'move',
     header: '이동',
     cell: ({ row }) => {
-      const patientId = row.original.patient.patient_id
+      const patientId = row.original.patients.patient_id
 
       return <GoToButton patientId={patientId} />
     },
+
+    size: 60,
   },
   {
     accessorKey: 'cancel',
@@ -138,5 +166,7 @@ export const outDueColumns: ColumnDef<OutDuePatientsData>[] = [
 
       return <CancelOutDue icuIoId={icuIoId} isDischarged={isDischarged} />
     },
+
+    size: 60,
   },
 ]

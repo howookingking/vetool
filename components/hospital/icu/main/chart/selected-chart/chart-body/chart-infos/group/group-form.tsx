@@ -10,6 +10,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
+import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 import { groupCheckFormSchema } from '@/lib/schemas/icu/chart/chart-info-schema'
 import { updateGroup } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
@@ -25,6 +26,7 @@ type Props = {
 }
 
 export default function GroupForm({ icuIoId, setIsDialogOpen, form }: Props) {
+  const safeRefresh = useSafeRefresh()
   const {
     basicHosData: { groupListData },
   } = useBasicHosDataContext()
@@ -40,6 +42,8 @@ export default function GroupForm({ icuIoId, setIsDialogOpen, form }: Props) {
 
     setIsSubmitting(false)
     setIsDialogOpen(false)
+
+    safeRefresh()
   }
 
   return (

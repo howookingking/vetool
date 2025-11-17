@@ -1,7 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { SelectedChart, SelectedIcuOrder } from '@/types/icu/chart'
+import { SelectedIcuChart, SelectedIcuOrder } from '@/types/icu/chart'
 import { redirect } from 'next/navigation'
 
 export const createTemplateChart = async (
@@ -66,7 +66,7 @@ export const deleteTemplateChart = async (chartId: string) => {
   }
 }
 
-export const fetchIcuTemplates = async (hosId: string) => {
+export const getIcuTemplates = async (hosId: string) => {
   const supabase = await createClient()
 
   const { data, error } = await supabase
@@ -96,5 +96,5 @@ export const getTemplateChart = async (chartId: string) => {
     redirect(`/error/?message=${error.message}`)
   }
 
-  return data as SelectedChart
+  return data as SelectedIcuChart
 }

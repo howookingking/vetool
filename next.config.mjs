@@ -1,18 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    reactCompiler: true,
-    serverActions: {
-      bodySizeLimit: '500mb',
-    },
-  },
+  // experimental: {
+  //   serverActions: {
+  //     bodySizeLimit: '500mb',
+  //   },
+  // },
   logging: {
     fetches: {
       fullUrl: true,
     },
   },
   images: {
-    domains: ['localhost'],
+    // `images.domains` is deprecated in favor of `images.remotePatterns`. Please update next.config.mjs to protect your application from malicious users.
+    // domains: ['localhost'],
+
     remotePatterns: [
       {
         protocol: 'https',

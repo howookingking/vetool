@@ -1,4 +1,4 @@
-export type Plan = 'free' | 'mild' | 'moderate' | 'severe'
+export type Plan = keyof typeof PLANS
 
 export type Features =
   | 'CALCULATOR'

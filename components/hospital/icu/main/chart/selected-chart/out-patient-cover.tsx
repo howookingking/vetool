@@ -8,27 +8,27 @@ export default function OutPatientCover() {
   const [opacity, setOpacity] = useState(1)
 
   useEffect(() => {
-    setOpacity(1)
     const fadeOutTimer = setTimeout(() => {
       setOpacity(0)
     }, 2000)
+
     return () => {
       clearTimeout(fadeOutTimer)
     }
   }, [])
 
   return (
-    <div className="absolute inset-0 z-20 flex h-full justify-center">
+    <div className="absolute inset-0 z-20 flex h-full cursor-not-allowed justify-center">
       <div
         className="fixed top-1/2 flex translate-y-[-50%] flex-col gap-1 rounded-sm bg-black/30 px-10 py-5 text-center text-white transition-opacity duration-500"
-        style={{ opacity }}
+        style={{ opacity: opacity }}
       >
         <span className="text-xl font-bold">퇴원한 환자입니다</span>
         <div className="flex items-center gap-1">
           수정하려면 우측 상단 버튼
           <Button
             variant="outline"
-            className="h-8 w-8 cursor-default select-none bg-transparent hover:bg-transparent hover:text-inherit"
+            className="cursor-not-allowed bg-transparent hover:bg-transparent hover:text-inherit"
             size="icon"
           >
             <Undo2Icon />

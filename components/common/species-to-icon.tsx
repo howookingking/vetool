@@ -11,7 +11,6 @@ export default function SpeciesToIcon({ species, size = 16 }: Props) {
     <>
       {species === 'canine' ? (
         <DogIcon
-          className="mx-auto"
           style={{
             width: size,
             height: size,
@@ -19,7 +18,6 @@ export default function SpeciesToIcon({ species, size = 16 }: Props) {
         />
       ) : (
         <CatIcon
-          className="mx-auto"
           style={{
             width: size,
             height: size,

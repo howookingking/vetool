@@ -1,6 +1,7 @@
 'use client'
 
 import Autocomplete from '@/components/common/auto-complete/auto-complete'
+import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 import { updateChiefComplaint } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -16,6 +17,8 @@ export default function ChiefComplaint({
   icuIoId,
   isShare,
 }: Props) {
+  const safeRefresh = useSafeRefresh()
+
   const [isUpdating, setIsUpdating] = useState(false)
 
   const handleUpdateChiefComplaint = async (value: string) => {
@@ -32,6 +35,8 @@ export default function ChiefComplaint({
     toast.success('주증상을 변경하였습니다')
 
     setIsUpdating(false)
+
+    safeRefresh()
   }
 
   return (

@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Textarea } from '@/components/ui/textarea'
 import { MEMO_COLORS } from '@/constants/hospital/icu/chart/colors'
+import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 import { updateMemos } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import type { Memo, MemoColor, MemoGroup } from '@/types/icu/chart'
 import {
@@ -39,6 +40,8 @@ export default function MemoGroup({
   newMemoAddedTo,
   isMemoNameSetting,
 }: Props) {
+  const safeRefresh = useSafeRefresh()
+
   const [isUpdating, setIsUpdating] = useState(false)
   const [sortedMemos, setSortedMemos] = useState<Memo[]>(memo ?? [])
   const [memoInput, setMemoInput] = useState('')
@@ -49,17 +52,17 @@ export default function MemoGroup({
   const firstMemoRef = useRef<HTMLLIElement>(null)
 
   useEffect(() => {
-    setSortedMemos(memo ?? [])
+    setTimeout(() => setSortedMemos(memo ?? []), 0)
   }, [memo])
 
   useEffect(() => {
     if (shouldScrollToBottom && lastMemoRef.current) {
       lastMemoRef.current.scrollIntoView({ behavior: 'smooth' })
-      setShouldScrollToBottom(false)
+      setTimeout(() => setShouldScrollToBottom(false), 0)
     }
     if (shouldScrollToTop && firstMemoRef.current) {
       firstMemoRef.current.scrollIntoView({ behavior: 'smooth' })
-      setShouldScrollToTop(false)
+      setTimeout(() => setShouldScrollToTop(false), 0)
     }
   }, [sortedMemos, shouldScrollToBottom, shouldScrollToTop])
 
@@ -81,6 +84,8 @@ export default function MemoGroup({
     )
 
     setIsUpdating(false)
+
+    safeRefresh()
   }
 
   const handleReorderMemo = async (event: Sortable.SortableEvent) => {
@@ -214,7 +219,7 @@ export default function MemoGroup({
             <NoResultSquirrel
               text="메모 없음"
               size="sm"
-              className="h-52 flex-col font-normal text-muted-foreground"
+              className="h-52 flex-col"
             />
           ) : (
             sortedMemos.map((memo, index) => (
@@ -247,7 +252,11 @@ export default function MemoGroup({
           value={memoInput}
           onChange={(e) => setMemoInput(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
+            if (
+              e.key === 'Enter' &&
+              !e.shiftKey &&
+              !e.nativeEvent.isComposing
+            ) {
               e.preventDefault()
               handleAddMemo()
             }

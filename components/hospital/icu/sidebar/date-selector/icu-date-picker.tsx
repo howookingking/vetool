@@ -1,3 +1,4 @@
+import PulsingDot from '@/components/hospital/common/pulsing-dot'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
@@ -6,9 +7,10 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { changeTargetDateInUrl } from '@/lib/utils/utils'
-import { format } from 'date-fns'
+import { format, isToday } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { DayContentProps } from 'react-day-picker'
 
 export default function IcuDatePicker({ targetDate }: { targetDate: string }) {
   const searchParams = useSearchParams()
@@ -18,34 +20,45 @@ export default function IcuDatePicker({ targetDate }: { targetDate: string }) {
   const handleSelectDate = (date: Date | undefined) => {
     if (date) {
       const formattedDate = format(date, 'yyyy-MM-dd')
-
       const newPath = changeTargetDateInUrl(
         path,
         formattedDate,
         new URLSearchParams(searchParams),
       )
-
       push(newPath)
     }
+  }
+
+  const DayWithDot = (props: DayContentProps) => {
+    const { date } = props
+    const today = isToday(date)
+
+    return (
+      <div className="relative flex items-center justify-center">
+        {props.date.getDate()}
+        {today && <PulsingDot className="-right-3 -top-2" />}
+      </div>
+    )
   }
 
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          className="h-8 px-2 py-0 font-mono text-base font-semibold"
+          className="relative h-8 px-2 py-0 font-mono text-base font-semibold"
           variant="ghost"
         >
           {format(targetDate, 'yy.MM.dd')}
+          {isToday(new Date(targetDate)) && (
+            <PulsingDot className="right-0 top-0" />
+          )}
         </Button>
       </PopoverTrigger>
 
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar
           className="text-sm"
-          styles={{
-            button: { fontSize: 12 },
-          }}
+          styles={{ button: { fontSize: 12 } }}
           captionLayout="dropdown-buttons"
           showOutsideDays
           fixedWeeks
@@ -54,6 +67,9 @@ export default function IcuDatePicker({ targetDate }: { targetDate: string }) {
           initialFocus
           selected={new Date(targetDate)}
           onSelect={handleSelectDate}
+          components={{
+            DayContent: DayWithDot,
+          }}
         />
       </PopoverContent>
     </Popover>

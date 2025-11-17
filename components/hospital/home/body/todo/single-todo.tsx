@@ -16,7 +16,7 @@ export default function SingleTodo({ todo, hosId, date, refetch }: Props) {
   const [isChecked, setIsChecked] = useState(todo.is_done)
 
   useEffect(() => {
-    setIsChecked(todo.is_done)
+    setTimeout(() => setIsChecked(todo.is_done), 0)
   }, [todo.is_done])
 
   const handleIsDone = async () => {

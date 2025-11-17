@@ -1,3 +1,6 @@
+import HelperTooltip from '@/components/common/helper-tooltip'
+import StepBadge from '@/components/common/step-badge'
+import SubmitButton from '@/components/common/submit-button'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -7,23 +10,25 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog'
-import { pasteDefaultOrders } from '@/lib/services/icu/chart/add-icu-chart'
-import { cn } from '@/lib/utils/utils'
-import type { SelectedChart } from '@/types/icu/chart'
-import { FileIcon, LoaderCircleIcon } from 'lucide-react'
-import { useParams, useRouter } from 'next/navigation'
+import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
+import { pasteDefaultIcuChart } from '@/lib/services/icu/chart/add-icu-chart'
+import type { SelectedIcuChart } from '@/types/icu/chart'
+import { CrownIcon, FileIcon, SyringeIcon } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import DialogTriggerButton from './dialog-trigger-button'
+
+type Props = {
+  selectedIcuChart: SelectedIcuChart
+  hosId: string
+}
 
 export default function PasteDefaultChartDialog({
-  chartData,
-}: {
-  chartData: SelectedChart
-}) {
-  const { hos_id } = useParams()
-  const { refresh } = useRouter()
+  selectedIcuChart,
+  hosId,
+}: Props) {
+  const safeRefresh = useSafeRefresh()
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -31,44 +36,49 @@ export default function PasteDefaultChartDialog({
   const handleAddDefaultChart = async () => {
     setIsLoading(true)
 
-    await pasteDefaultOrders(hos_id as string, chartData.icu_chart_id as string)
+    await pasteDefaultIcuChart(hosId, selectedIcuChart.icu_chart_id)
 
     toast.success('기본형식의 차트를 생성했습니다')
 
     setIsLoading(false)
     setIsDialogOpen(false)
-    refresh()
+
+    safeRefresh()
   }
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          className="flex h-1/3 w-full items-center justify-center gap-2 md:w-2/3 lg:w-1/2"
-        >
-          <FileIcon size={20} />
-          <span>기본형식 차트생성</span>
-        </Button>
-      </DialogTrigger>
+      <DialogTriggerButton icon={FileIcon} title="기본차트 붙여넣기" />
+
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>기본형식 차트 생성</DialogTitle>
-          <DialogDescription>기본 형식의 차트가 생성됩니다</DialogDescription>
+          <DialogTitle className="flex items-center gap-2">
+            기본차트 붙여넣기
+            <HelperTooltip>
+              <div className="flex items-center gap-1">
+                기본차트는 <StepBadge icon={CrownIcon} label="관리자" />→
+                <StepBadge icon={SyringeIcon} label="입원차트 설정" />→
+                <StepBadge label="기본 차트" />
+                에서 설정할 수 있습니다
+              </div>
+            </HelperTooltip>
+          </DialogTitle>
+
+          <DialogDescription>기본차트를 생성합니다</DialogDescription>
         </DialogHeader>
 
         <DialogFooter className="gap-2 md:gap-0">
           <DialogClose asChild>
-            <Button type="button" variant="outline" tabIndex={-1}>
+            <Button type="button" variant="outline" tabIndex={-1} size="sm">
               취소
             </Button>
           </DialogClose>
-          <Button onClick={handleAddDefaultChart} disabled={isLoading}>
-            확인
-            <LoaderCircleIcon
-              className={cn(isLoading ? 'animate-spin' : 'hidden')}
-            />
-          </Button>
+
+          <SubmitButton
+            buttonText="확인"
+            onClick={handleAddDefaultChart}
+            isPending={isLoading}
+          />
         </DialogFooter>
       </DialogContent>
     </Dialog>

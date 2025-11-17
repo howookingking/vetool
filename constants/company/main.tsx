@@ -1,13 +1,12 @@
-import { type Features } from '@/types/company/company'
-import surgeryImage from '@/public/company/features/surgery/surgery-1.jpg'
-import echocardioImage from '@/public/company/features/echocardio/echocardio-1.png'
-import checkupImage from '@/public/company/features/checkup/checkup-1.png'
-
 import icuChartIamge from '@/public/company/chart.png'
-import icuTemplateImage from '@/public/company/features/icu/template.png'
+import checkupImage from '@/public/company/features/checkup/checkup-1.png'
+import echocardioImage from '@/public/company/features/echocardio/echocardio-1.png'
 import icuCalculator from '@/public/company/features/icu/calculator.png'
 import icuSearch from '@/public/company/features/icu/search.png'
 import icuStatistics from '@/public/company/features/icu/statistics.png'
+import icuTemplateImage from '@/public/company/features/icu/template.png'
+import surgeryImage from '@/public/company/features/surgery/surgery-1.jpg'
+import type { Features } from '@/types/company/company'
 
 export const OPEN_KAKAO_URL = 'https://open.kakao.com/o/si1PkVhh'
 

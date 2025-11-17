@@ -10,32 +10,40 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { updateOutDueDate } from '@/lib/services/icu/chart/update-icu-chart-infos'
+import { Spinner } from '@/components/ui/spinner'
+import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
+import { cancelOutDue } from '@/lib/services/icu/out-and-visit/icu-out-chart'
 import { X } from 'lucide-react'
+import { useState } from 'react'
 import { toast } from 'sonner'
 
-export function CancelOutDue({
-  icuIoId,
-  isDischarged,
-}: {
+type Props = {
   icuIoId: string
   isDischarged: boolean
-}) {
-  const handleUpdateOutDueDate = async () => {
-    await updateOutDueDate(icuIoId, null)
+}
 
-    toast.success('퇴원예정일을 취소하였습니다')
+export function CancelOutDue({ icuIoId, isDischarged }: Props) {
+  const safeRefresh = useSafeRefresh()
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
+
+  const handleUpdateOutDueDate = async () => {
+    setIsDeleting(true)
+
+    await cancelOutDue(icuIoId)
+
+    toast.success('퇴원예정을 취소하였습니다')
+
+    setIsDeleting(false)
+    setIsDialogOpen(false)
+    safeRefresh()
   }
 
   return (
-    <AlertDialog>
+    <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <AlertDialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-red-500"
-          disabled={isDischarged}
-        >
+        <Button variant="ghost" size="icon" disabled={isDischarged}>
           <X size={18} />
         </Button>
       </AlertDialogTrigger>
@@ -46,10 +54,15 @@ export function CancelOutDue({
             퇴원예정일이 미정으로 변경됩니다
           </AlertDialogDescription>
         </AlertDialogHeader>
+
         <AlertDialogFooter>
           <AlertDialogCancel>아니오</AlertDialogCancel>
-          <AlertDialogAction onClick={handleUpdateOutDueDate}>
-            예정취소
+
+          <AlertDialogAction
+            onClick={handleUpdateOutDueDate}
+            disabled={isDeleting}
+          >
+            예정취소 {isDeleting && <Spinner />}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

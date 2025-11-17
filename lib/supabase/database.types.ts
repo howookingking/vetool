@@ -58,6 +58,7 @@ export type Database = {
           checklist_group: string[] | null
           checklist_id: string
           checklist_protocol: Json | null
+          checklist_results: Json
           checklist_set: Json
           checklist_tag: string | null
           checklist_timetable: Json | null
@@ -81,6 +82,7 @@ export type Database = {
           checklist_group?: string[] | null
           checklist_id?: string
           checklist_protocol?: Json | null
+          checklist_results?: Json
           checklist_set?: Json
           checklist_tag?: string | null
           checklist_timetable?: Json | null
@@ -104,6 +106,7 @@ export type Database = {
           checklist_group?: string[] | null
           checklist_id?: string
           checklist_protocol?: Json | null
+          checklist_results?: Json
           checklist_set?: Json
           checklist_tag?: string | null
           checklist_timetable?: Json | null
@@ -141,7 +144,6 @@ export type Database = {
       }
       checklist_template: {
         Row: {
-          checklist_protocol: Json | null
           checklist_set: Json | null
           checklist_tag: string | null
           checklist_template_id: string
@@ -149,10 +151,10 @@ export type Database = {
           checklist_type: string | null
           created_at: string
           hos_id: string | null
-          preinfo: Json | null
+          tx_memo_a: Json | null
+          tx_memo_b: Json | null
         }
         Insert: {
-          checklist_protocol?: Json | null
           checklist_set?: Json | null
           checklist_tag?: string | null
           checklist_template_id?: string
@@ -160,10 +162,10 @@ export type Database = {
           checklist_type?: string | null
           created_at?: string
           hos_id?: string | null
-          preinfo?: Json | null
+          tx_memo_a?: Json | null
+          tx_memo_b?: Json | null
         }
         Update: {
-          checklist_protocol?: Json | null
           checklist_set?: Json | null
           checklist_tag?: string | null
           checklist_template_id?: string
@@ -171,7 +173,8 @@ export type Database = {
           checklist_type?: string | null
           created_at?: string
           hos_id?: string | null
-          preinfo?: Json | null
+          tx_memo_a?: Json | null
+          tx_memo_b?: Json | null
         }
         Relationships: [
           {
@@ -583,6 +586,7 @@ export type Database = {
           sub_vet: string | null
           target_date: string | null
           urgency: number | null
+          visit_chart: Json | null
           weight: string
           weight_measured_date: string | null
         }
@@ -597,6 +601,7 @@ export type Database = {
           sub_vet?: string | null
           target_date?: string | null
           urgency?: number | null
+          visit_chart?: Json | null
           weight?: string
           weight_measured_date?: string | null
         }
@@ -611,6 +616,7 @@ export type Database = {
           sub_vet?: string | null
           target_date?: string | null
           urgency?: number | null
+          visit_chart?: Json | null
           weight?: string
           weight_measured_date?: string | null
         }
@@ -712,6 +718,7 @@ export type Database = {
           memo_a: Json | null
           memo_b: Json | null
           memo_c: Json | null
+          out_chart: Json | null
           out_date: string | null
           out_due_date: string | null
           patient_id: string
@@ -731,6 +738,7 @@ export type Database = {
           memo_a?: Json | null
           memo_b?: Json | null
           memo_c?: Json | null
+          out_chart?: Json | null
           out_date?: string | null
           out_due_date?: string | null
           patient_id: string
@@ -750,6 +758,7 @@ export type Database = {
           memo_a?: Json | null
           memo_b?: Json | null
           memo_c?: Json | null
+          out_chart?: Json | null
           out_date?: string | null
           out_due_date?: string | null
           patient_id?: string
@@ -885,10 +894,12 @@ export type Database = {
           belongings: string
           created_at: string
           etc: string
-          icu_io_id: string | null
+          hos_id: string
+          icu_io_id: string
           icu_out_id: string
-          out_time: string
-          patient_id: string | null
+          out_due_date: string
+          out_time: string | null
+          patient_id: string
           prescription: string
         }
         Insert: {
@@ -896,10 +907,12 @@ export type Database = {
           belongings?: string
           created_at?: string
           etc?: string
-          icu_io_id?: string | null
+          hos_id: string
+          icu_io_id: string
           icu_out_id?: string
-          out_time?: string
-          patient_id?: string | null
+          out_due_date: string
+          out_time?: string | null
+          patient_id: string
           prescription?: string
         }
         Update: {
@@ -907,10 +920,12 @@ export type Database = {
           belongings?: string
           created_at?: string
           etc?: string
-          icu_io_id?: string | null
+          hos_id?: string
+          icu_io_id?: string
           icu_out_id?: string
-          out_time?: string
-          patient_id?: string | null
+          out_due_date?: string
+          out_time?: string | null
+          patient_id?: string
           prescription?: string
         }
         Relationships: [
@@ -1378,7 +1393,7 @@ export type Database = {
       patients: {
         Row: {
           birth: string
-          breed: string | null
+          breed: string
           created_at: string
           gender: string
           hos_id: string
@@ -1395,7 +1410,7 @@ export type Database = {
         }
         Insert: {
           birth: string
-          breed?: string | null
+          breed?: string
           created_at?: string
           gender: string
           hos_id: string
@@ -1412,7 +1427,7 @@ export type Database = {
         }
         Update: {
           birth?: string
-          breed?: string | null
+          breed?: string
           created_at?: string
           gender?: string
           hos_id?: string
@@ -1760,11 +1775,23 @@ export type Database = {
         Args: { due_date_input: string; hos_id_input: string }
         Returns: Json
       }
-      fetch_checklist_with_patient_with_weight: {
-        Args: { checklist_id_input: string }
+      fetch_icu_chart_data: {
+        Args: {
+          hos_id_input: string
+          patient_id_input: string
+          target_date_input: string
+        }
         Returns: Json
       }
       fetch_icu_layout_data: {
+        Args: { hos_id_input: string; target_date_input: string }
+        Returns: Json
+      }
+      fetch_icu_summary_data: {
+        Args: { hos_id_input: string; target_date_input: string }
+        Returns: Json
+      }
+      fetch_icu_tx_table_data: {
         Args: { hos_id_input: string; target_date_input: string }
         Returns: Json
       }
@@ -1772,14 +1799,12 @@ export type Database = {
         Args: { icu_io_id_input: string }
         Returns: Json
       }
-      get_default_chart_data: {
-        Args: { hos_id_input: string }
+      get_checklist_data: {
+        Args: { checklist_id_input: string }
         Returns: Json
       }
-      get_hos_list_data: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
+      get_default_chart_data: { Args: { hos_id_input: string }; Returns: Json }
+      get_hos_list_data: { Args: never; Returns: Json }
       get_icu_analysis_data: {
         Args: {
           end_date_input: string
@@ -1789,8 +1814,9 @@ export type Database = {
         }
         Returns: Json
       }
-      get_icu_bookmarked_data: {
-        Args: { hos_id_input: string }
+      get_icu_bookmarked_data: { Args: { hos_id_input: string }; Returns: Json }
+      get_icu_chart_by_patient_id_and_target_date: {
+        Args: { patient_id_input: string; target_date_input: string }
         Returns: Json
       }
       get_icu_chart_data: {
@@ -1835,6 +1861,14 @@ export type Database = {
       }
       get_pinned_diet_data: {
         Args: { hos_id_input: string; species_input: string }
+        Returns: Json
+      }
+      get_selected_icu_chart: {
+        Args: {
+          hos_id_input: string
+          patient_id_input: string
+          target_date_input: string
+        }
         Returns: Json
       }
       get_template_chart_data: {

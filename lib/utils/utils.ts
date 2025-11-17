@@ -12,7 +12,7 @@ import type { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
 import type { Vet, VetoolUser } from '@/types'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { type ClassValue, clsx } from 'clsx'
-import { differenceInDays, isValid, parseISO } from 'date-fns'
+import { differenceInDays, formatDate, isValid, parseISO } from 'date-fns'
 import { redirect } from 'next/navigation'
 import { twMerge } from 'tailwind-merge'
 import type { IcuSidebarPatient } from '../services/icu/icu-layout'
@@ -139,18 +139,12 @@ export const getConsecutiveDays = (selectedDate: Date) => {
   )
 
   return {
-    dayBefore: formatDate(dayBefore),
-    seletctedDay: formatDate(normalizedSelectedDate),
-    dayAfter: formatDate(dayAfter),
+    dayBefore: formatDate(dayBefore, 'yyyy-MM-dd'),
+    seletctedDay: formatDate(normalizedSelectedDate, 'yyyy-MM-dd'),
+    dayAfter: formatDate(dayAfter, 'yyyy-MM-dd'),
   }
 }
 
-export const formatDate = (date: Date) => {
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-  return `${year}-${month}-${day}`
-}
 export const formatDateToISOString = (date: Date) => {
   const year = date.getFullYear()
   const month = date.getMonth()

@@ -3,21 +3,25 @@
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import TxTable from '@/components/hospital/icu/main/tx-table/tx-table'
 import TxTableOrderTypeFilter from '@/components/hospital/icu/main/tx-table/tx-table-order-type-filter'
-import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
+import {
+  DEFAULT_ICU_ORDER_TYPE,
+  type OrderType,
+} from '@/constants/hospital/icu/chart/order'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
 import { useState } from 'react'
 
+type Props = {
+  txTableData: IcuTxTableData[]
+  hosId: string
+  targetDate: string
+}
+
 export default function TxTableContainer({
   txTableData,
-}: {
-  txTableData: IcuTxTableData[]
-}) {
-  const {
-    basicHosData: { showTxUser, orderColorsData },
-  } = useBasicHosDataContext()
-
-  const [orderTypeFilters, setOrderTypeFilters] = useState<string[]>([])
+  hosId,
+  targetDate,
+}: Props) {
+  const [orderTypeFilter, setOrderTypeFilter] = useState<OrderType | null>(null)
 
   const filteredTxData = txTableData.map((data) => ({
     ...data,
@@ -40,47 +44,45 @@ export default function TxTableContainer({
         )
 
         // orderTimes에 있는 시간 중 doneTreatmentTimeSet에 없는 시간일 경우 true
-        // 6시 오더만 남게 된다.
+        // orderTimes중 doneTreatmentTimeSet에 없는게 하나라도 있다면(아직 해야할 처치가 남은경우) 남게 된다.
         return orderTimes.some((time) => !doneTreatmentTimeSet.has(time))
       })
+
       // 오더 타입 필터링
-      // orderTypeFilters가 비어있으면 모든 오더 타입을 보여줌
-      .filter((order) => {
-        if (orderTypeFilters.length === 0) return true
-        return orderTypeFilters.includes(order.icu_chart_order_type)
-      }),
+      .filter((order) =>
+        orderTypeFilter === null
+          ? true
+          : orderTypeFilter === order.icu_chart_order_type,
+      ),
   }))
 
   const hasOrder = filteredTxData.some((data) => data.orders.length > 0)
 
-  const orderTypeFiltersToKrString = orderTypeFilters
-    .map(
-      (filter) =>
-        DEFAULT_ICU_ORDER_TYPE.find((type) => type.value === filter)?.label,
-    )
-    .join(', ')
+  const orderTypeFiltersToKrString =
+    DEFAULT_ICU_ORDER_TYPE.find((type) => type.value === orderTypeFilter)
+      ?.label ?? '모든'
 
   return (
     <>
-      <TxTableOrderTypeFilter
-        orderTypeFilters={orderTypeFilters}
-        setOrderTypeFilters={setOrderTypeFilters}
-      />
-
       {!hasOrder ? (
         <NoResultSquirrel
           text={`${orderTypeFiltersToKrString} 처치를 완료했습니다`}
-          className="h-exclude-header flex-col"
+          className="h-mobile flex-col 2xl:h-desktop"
           size="lg"
         />
       ) : (
         <TxTable
-          orderTypeFilters={orderTypeFilters}
+          orderTypeFilter={orderTypeFilter}
           filteredTxData={filteredTxData}
-          showTxUser={showTxUser}
-          orderColorsData={orderColorsData}
+          hosId={hosId}
+          targetDate={targetDate}
         />
       )}
+
+      <TxTableOrderTypeFilter
+        orderTypeFilter={orderTypeFilter}
+        setOrderTypeFilters={setOrderTypeFilter}
+      />
     </>
   )
 }

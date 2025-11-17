@@ -1,18 +1,21 @@
+import { useZustandIcuRealtimeStore } from '@/lib/store/icu/realtime-state'
 import { createClient } from '@/lib/supabase/client'
 import type { RealtimeChannel } from '@supabase/supabase-js'
 import { useRouter } from 'next/navigation'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 
-export function useIcuRealtime(hosId: string) {
-  const supabase = createClient()
+export default function useIcuRealtime(hosId: string) {
+  const { setIsRealtimeReadyZustand } = useZustandIcuRealtimeStore()
 
+  const supabase = createClient()
+  const subscriptionRef = useRef<RealtimeChannel | null>(null)
   const { refresh } = useRouter()
 
-  const [isRealtimeReady, setIsRealtimeReady] = useState(false)
-  const subscriptionRef = useRef<RealtimeChannel | null>(null)
-
-  const debouncedRefresh = useDebouncedCallback(refresh, 500)
+  const debouncedRefresh = useDebouncedCallback(() => {
+    console.log('Debouced refresh')
+    refresh()
+  }, 500)
 
   const handleChange = useCallback(
     (payload: any) => {
@@ -73,22 +76,25 @@ export function useIcuRealtime(hosId: string) {
     subscriptionRef.current = channel.subscribe((status) => {
       if (status === 'SUBSCRIBED') {
         console.log('Subscribed to all tables')
-        setIsRealtimeReady(true)
+        setIsRealtimeReadyZustand(true)
       } else {
         console.log('Subscription failed with status:', status)
-        setIsRealtimeReady(false)
+        setIsRealtimeReadyZustand(false)
       }
     })
-  }, [hosId, handleChange])
+  }, [handleChange, hosId, setIsRealtimeReadyZustand, supabase])
 
-  const unsubscribe = useCallback(async () => {
+  const unsubscribe = useCallback(() => {
     if (subscriptionRef.current) {
       console.log('Unsubscribing from channel...')
-      await supabase.removeChannel(subscriptionRef.current)
+
+      supabase.removeChannel(subscriptionRef.current)
+
       subscriptionRef.current = null
-      setIsRealtimeReady(false)
+
+      setIsRealtimeReadyZustand(false)
     }
-  }, [])
+  }, [setIsRealtimeReadyZustand, supabase])
 
   const handleVisibilityChange = useCallback(() => {
     if (document.hidden) {
@@ -97,22 +103,25 @@ export function useIcuRealtime(hosId: string) {
     } else {
       console.log('Page is visible, resubscribing...')
       subscribeToChannel()
+      refresh()
     }
-  }, [subscribeToChannel, unsubscribe])
+  }, [refresh, subscribeToChannel, unsubscribe])
 
   useEffect(() => {
     console.log('initial subscription')
-    document.addEventListener('visibilitychange', handleVisibilityChange)
+
     subscribeToChannel()
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
 
     return () => {
       console.log('Cleanup: unsubscribing and removing event listener...')
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
+
       unsubscribe()
+
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
   }, [handleVisibilityChange, subscribeToChannel, unsubscribe])
-
-  return isRealtimeReady
 }
 
 function getLogColor(table: string): string {

@@ -1,11 +1,11 @@
 import HeaderCenter from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-center/header-center'
 import HeaderRightButtons from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/header-right-buttons'
-import type { SelectedChart } from '@/types/icu/chart'
+import type { SelectedIcuChart } from '@/types/icu/chart'
 
 export default function ChartHeader({
   chartData,
 }: {
-  chartData: SelectedChart
+  chartData: SelectedIcuChart
 }) {
   return (
     <div className="fixed z-30 w-full border-b bg-white 2xl:w-exclude-sidebar">

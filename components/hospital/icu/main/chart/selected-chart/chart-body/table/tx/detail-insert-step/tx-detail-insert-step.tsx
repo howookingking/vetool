@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 import useUpsertTx from '@/hooks/use-upsert-tx'
 import { txDetailRegisterFormSchema } from '@/lib/schemas/icu/chart/tx-schema'
 import { deleteIcuChartTx } from '@/lib/services/icu/chart/tx-mutation'
@@ -41,6 +42,7 @@ export default function TxDetailInsertStep({
 }) {
   const { hos_id } = useParams()
 
+  const safeRefrsh = useSafeRefresh()
   const { selectedTxPendingQueue, reset: resetOrderStore } = useIcuOrderStore()
   const {
     setTxStep,
@@ -134,6 +136,8 @@ export default function TxDetailInsertStep({
           // txImages: txLocalState?.txImages,
           bucketImagesLength: txLocalState?.bucketImagesLength,
         })
+
+        safeRefrsh()
         return
       }
 
@@ -147,6 +151,8 @@ export default function TxDetailInsertStep({
         },
         updatedLogs,
       )
+
+      safeRefrsh()
     }
   }
 
@@ -190,7 +196,12 @@ export default function TxDetailInsertStep({
   return (
     <>
       <DialogHeader>
-        <DialogTitle>처치 상세 입력</DialogTitle>
+        <DialogTitle>
+          {selectedTxPendingQueue.length !== 0
+            ? `${selectedTxPendingQueue.length}개 다중`
+            : ''}
+          처치 상세 입력
+        </DialogTitle>
         <DialogDescription>
           {selectedTxPendingQueue.length === 0 && (
             <span>{txLocalState?.icuChartOrderName}</span>
@@ -282,6 +293,7 @@ export default function TxDetailInsertStep({
                   닫기
                 </Button>
               </DialogClose>
+
               <Button type="submit" disabled={isSubmitting}>
                 {showTxUser ? '다음' : '확인'}
                 {isSubmitting && (

@@ -1,6 +1,5 @@
 'use client'
 
-import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import SummaryTableRow from '@/components/hospital/icu/main/summary/table/summary-table-row'
 import {
   Table,
@@ -11,16 +10,21 @@ import {
 } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { useCurrentTime } from '@/hooks/use-current-time'
-import { formatDate } from '@/lib/utils/utils'
 import type { SummaryData } from '@/types/icu/summary'
-import { useParams } from 'next/navigation'
+import { isToday } from 'date-fns'
 import { CurrentTimeIndicator } from '../../chart/selected-chart/chart-body/table/chart-table-header/current-time-indicator'
+
+type Props = {
+  summaryData: SummaryData[]
+  targetDate: string
+  hosId: string
+}
 
 export default function SummaryTable({
   summaryData,
-}: {
-  summaryData: SummaryData[]
-}) {
+  targetDate,
+  hosId,
+}: Props) {
   // 필터 적용 일단 비활성화
   // const [patientFilter, setPatientFilter] = useState(DEFAULT_FILTER_STATE)
 
@@ -51,27 +55,15 @@ export default function SummaryTable({
   // })
 
   const { hours, minutes } = useCurrentTime()
-  const { target_date } = useParams()
-  const isToday = formatDate(new Date()) === target_date
-
-  if (summaryData.length === 0) {
-    return (
-      <NoResultSquirrel
-        text="입원 환자가 존재하지 않습니다"
-        className="h-screen"
-        size="lg"
-      />
-    )
-  }
+  const isTargetDateToday = isToday(targetDate)
 
   return (
-    <Table className="border border-l-0">
-      <TableHeader className="sticky top-0 z-30 bg-white shadow-sm">
+    <Table className="border bg-white shadow">
+      <TableHeader className="sticky -top-[2px] z-30 overflow-hidden bg-white shadow-sm">
         <TableRow>
-          <TableHead className="w-[160px] text-center">환자목록</TableHead>
-
+          <TableHead className="w-[160px] text-center">환자 \ 시간</TableHead>
           {TIMES.map((time) => {
-            const shouldShowIndicator = time === hours && isToday
+            const shouldShowIndicator = time === hours && isTargetDateToday
             return (
               <TableHead
                 className="relative border border-t-0 text-center"
@@ -89,7 +81,12 @@ export default function SummaryTable({
 
       <TableBody>
         {summaryData.map((summary) => (
-          <SummaryTableRow key={summary.icu_chart_id} summary={summary} />
+          <SummaryTableRow
+            key={summary.icu_chart_id}
+            summary={summary}
+            targetDate={targetDate}
+            hosId={hosId}
+          />
         ))}
       </TableBody>
     </Table>

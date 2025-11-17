@@ -6,7 +6,7 @@ import SearchChartSheet from '@/components/hospital/icu/main/search/sheet/search
 import { Button } from '@/components/ui/button'
 import { searchIos } from '@/lib/services/icu/search/search-charts'
 import { useKeywordTrieStore } from '@/lib/store/hospital/keyword-trie'
-import { type SearchedIcuIos } from '@/types/icu/search'
+import type { SearchedIcuIos } from '@/types/icu/search'
 import { Search } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
@@ -89,7 +89,7 @@ export default function IcuSearchChartEntry() {
   }, [searchOptions, inputValue, getSearchValue, performSearch])
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 p-2">
       <div className="relative flex items-center gap-4 pr-2">
         <Button
           type="button"

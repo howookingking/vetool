@@ -10,6 +10,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 import useUpsertTx from '@/hooks/use-upsert-tx'
 import { userLogFormSchema } from '@/lib/schemas/icu/chart/tx-schema'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
@@ -33,6 +34,8 @@ type Props = {
 
 export default function TxSelectUserStep({ handleClose, isSetting }: Props) {
   const { hos_id } = useParams()
+
+  const safeRefrsh = useSafeRefresh()
 
   const { txLocalState } = useIcuTxStore()
   const { selectedTxPendingQueue } = useIcuOrderStore()
@@ -85,11 +88,14 @@ export default function TxSelectUserStep({ handleClose, isSetting }: Props) {
         bucketImagesLength: txLocalState?.bucketImagesLength,
       }).then(() => toast.success('다중 처치 결과를 입력했습니다'))
 
+      safeRefrsh()
       return
     }
 
     // 단일 Tx 입력
     await upsertTx(txLocalState, updatedLogs)
+
+    safeRefrsh()
   }
 
   return (

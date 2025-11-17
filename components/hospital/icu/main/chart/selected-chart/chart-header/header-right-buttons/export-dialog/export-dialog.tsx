@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { type SelectedChart } from '@/types/icu/chart'
+import { type SelectedIcuChart } from '@/types/icu/chart'
 import { Share } from 'lucide-react'
 import { useState } from 'react'
 import ExportButtons from './export-buttons'
@@ -18,7 +18,7 @@ import ExportButtons from './export-buttons'
 export default function ExportDialog({
   chartData,
 }: {
-  chartData: SelectedChart
+  chartData: SelectedIcuChart
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
@@ -34,9 +34,7 @@ export default function ExportDialog({
         <DialogHeader className="gap-2">
           <DialogTitle>{chartData.patient.name} 차트 내보내기</DialogTitle>
           <DialogDescription className="flex flex-col gap-1">
-            <span className="line-through">
-              입원 기간 동안의 차트를 저장합니다(임시 비활성화)
-            </span>
+            <span>입원 기간 동안의 차트를 저장합니다(임시 비활성화)</span>
             <span>
               텍스트로 복사할 경우 {chartData.target_date} 차트만 복사합니다
             </span>

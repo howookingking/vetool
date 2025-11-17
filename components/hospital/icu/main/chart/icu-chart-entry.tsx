@@ -1,17 +1,28 @@
+// 첫날 차트를 생성하면 icu_io와 icu_chart는 무조건 생성됨
+// 단, icu_chart의 order의 개수가 0임
+// 위 조건을 바탕으로 차트 진입로직 작성
+
 'use client'
 
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import Chart from '@/components/hospital/icu/main/chart/chart'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { type SelectedChart } from '@/types/icu/chart'
+import { SelectedIcuChart } from '@/types/icu/chart'
 import PasteChartDialogs from './paste-chart-dialogs/paste-chart-dialogs'
 
 type Props = {
-  chartData: SelectedChart
+  selectedIcuChart: SelectedIcuChart | null
   patientId: string
+  targetDate: string
+  hosId: string
 }
 
-export default function IcuChartEntry({ chartData, patientId }: Props) {
+export default function IcuChartEntry({
+  selectedIcuChart,
+  patientId,
+  targetDate,
+  hosId,
+}: Props) {
   const {
     basicHosData: { icuSidebarPatients },
   } = useBasicHosDataContext()
@@ -20,38 +31,50 @@ export default function IcuChartEntry({ chartData, patientId }: Props) {
     (p) => p.patient.patient_id === patientId,
   )
 
-  // 입원 전 or 퇴원 후
-  if (!chartData && !hasIcuIo) {
+  // 차트도 없고 io도 없음 => 입원 전 or 퇴원 후
+  if (!selectedIcuChart && !hasIcuIo) {
     return (
       <NoResultSquirrel
-        className="h-full flex-col"
+        className="h-mobile flex-col 2xl:h-desktop"
         size="lg"
         text={
           <div className="text-center">
-            해당환자는 선택한 날짜에 차트가 없습니다 <br /> 선택한 날짜에 아직
-            입원을 하지 않았거나 이미 퇴원을 하였습니다
+            해당환자는 {targetDate} 차트가 없습니다 <br /> 입원 전 또는 퇴원
+            후입니다
           </div>
         }
       />
     )
   }
 
-  // io가 있고 chart가 없음 => 첫날 차트가 아님
-  if (hasIcuIo && !chartData) {
-    return <PasteChartDialogs chartData={chartData} />
+  // io가 있고 chart가 없음 => 이미 입원을 하고 입원을 연장하려는 경우
+  if (hasIcuIo && !selectedIcuChart) {
+    return (
+      <PasteChartDialogs
+        selectedIcuChart={selectedIcuChart}
+        firstChart={false}
+        patientId={patientId}
+        hosId={hosId}
+        targetDate={targetDate}
+      />
+    )
   }
 
   // io가 있고 chart가 있고 order가 없는 경우 => 첫날차트
-  if (hasIcuIo && chartData && chartData.orders.length === 0) {
+  if (hasIcuIo && selectedIcuChart && selectedIcuChart.orders.length === 0) {
     return (
       <PasteChartDialogs
-        chartData={chartData}
+        selectedIcuChart={selectedIcuChart}
         patientId={patientId}
-        firstChart
+        firstChart={true}
+        hosId={hosId}
+        targetDate={targetDate}
       />
     )
   }
 
   // io가 있고 chart가 있고 order가 있음 => 정상차트
-  return <Chart chartData={chartData} />
+  if (hasIcuIo && selectedIcuChart && selectedIcuChart.orders.length > 0) {
+    return <Chart selectedIcuChart={selectedIcuChart} />
+  }
 }

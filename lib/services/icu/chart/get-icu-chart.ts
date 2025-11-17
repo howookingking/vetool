@@ -1,28 +1,27 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { type SelectedChart } from '@/types/icu/chart'
+import type { SelectedIcuChart } from '@/types/icu/chart'
 
-export const getIcuChart = async (
-  hosId: string,
+export const getIcuChartByPatientIdAndTargetDate = async (
   targetDate: string,
   patient_id: string,
 ) => {
   const supabase = await createClient()
 
-  const { data, error } = await supabase
-    .rpc('get_icu_chart_data', {
-      hos_id_input: hosId,
+  const { data, error } = await supabase.rpc(
+    'get_icu_chart_by_patient_id_and_target_date',
+    {
       target_date_input: targetDate,
       patient_id_input: patient_id,
-    })
-    .overrideTypes<SelectedChart>()
+    },
+  )
 
   if (error) {
     throw new Error(error.message)
   }
 
-  return data as SelectedChart
+  return data as SelectedIcuChart | null
 }
 
 export const getPrevIoChartData = async (patientId: string) => {

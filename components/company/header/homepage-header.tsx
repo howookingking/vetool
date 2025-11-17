@@ -6,11 +6,14 @@ import Link from 'next/link'
 
 export default function HomepageHeader() {
   return (
-    <header className="sticky top-0 z-50 border-b bg-white/95">
+    <header className="sticky top-0 z-50 bg-white/15 shadow-sm backdrop-blur">
       <MaxWidthContainer>
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-12">
-            <Link href="/#hero">
+            <Link
+              href="/#hero"
+              className="transition duration-300 hover:scale-105"
+            >
               <VetoolLogo />
             </Link>
 

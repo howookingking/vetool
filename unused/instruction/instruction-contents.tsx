@@ -8,7 +8,6 @@ import {
 } from '@/components/ui/carousel'
 import { INSTRUCTIONS } from '@/constants/hospital/icu/chart/instruction'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import ReactPlayer from 'react-player'
 
 export default function InstructionContents({
   currentVideo,
@@ -74,7 +73,7 @@ export default function InstructionContents({
               </div>
               <div className="flex flex-col items-center justify-center">
                 <div className="relative w-full">
-                  <ReactPlayer
+                  {/* <ReactPlayer
                     url={slide.video}
                     width="100%"
                     height="auto"
@@ -84,7 +83,7 @@ export default function InstructionContents({
                       currentVideo.slideId === slide.id
                     }
                     stopOnUnmount
-                  />
+                  /> */}
                 </div>
               </div>
             </CarouselItem>

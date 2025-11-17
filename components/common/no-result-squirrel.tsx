@@ -2,15 +2,15 @@ import { cn } from '@/lib/utils/utils'
 import { Squirrel } from 'lucide-react'
 
 const ICON_SIZE_DIC = {
-  sm: 20,
-  md: 28,
-  lg: 50,
+  sm: 18,
+  md: 24,
+  lg: 30,
 } as const
 
 const TEXT_SIZE_DIC = {
-  sm: 'text-sm',
-  md: 'text-base',
-  lg: 'text-xl ',
+  sm: 'text-xs',
+  md: 'text-sm',
+  lg: 'text-base',
 } as const
 
 type Props = {
@@ -27,7 +27,7 @@ export default function NoResultSquirrel({
   return (
     <div
       className={cn(
-        'flex items-center justify-center gap-2 text-sm font-bold text-slate-800',
+        'flex items-center justify-center gap-2 text-sm',
         TEXT_SIZE_DIC[size],
         className,
       )}

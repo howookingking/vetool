@@ -1,5 +1,7 @@
+import MobileTitle from '@/components/common/mobile-title'
 import IcuTemplateEntry from '@/components/hospital/icu/main/template/icu-template-entry'
-import { fetchIcuTemplates } from '@/lib/services/icu/template/template'
+import { getIcuTemplates } from '@/lib/services/icu/template/template'
+import { BookmarkIcon } from 'lucide-react'
 
 type TemplatePageProps = {
   params: Promise<{
@@ -9,11 +11,13 @@ type TemplatePageProps = {
 }
 export default async function TemplatePage(props: TemplatePageProps) {
   const params = await props.params
-  const icuTemplates = await fetchIcuTemplates(params.hos_id as string)
+  const icuTemplates = await getIcuTemplates(params.hos_id as string)
 
   return (
-    <div className="mt-12 flex h-mobile flex-col border-t p-2 2xl:mt-0 2xl:h-desktop 2xl:border-0">
+    <>
+      <MobileTitle icon={BookmarkIcon} title="템플릿" />
+
       <IcuTemplateEntry icuTemplates={icuTemplates} />
-    </div>
+    </>
   )
 }

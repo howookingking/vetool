@@ -44,18 +44,20 @@ export function InjectionOrderCreator({ weight, createOrder }: Props) {
   const autocompleteInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    setIsFetching(true)
+    const fetchData = async () => {
+      setIsFetching(true)
 
-    getHosDrugs(hos_id as string).then((data) => {
-      const drugOptions = data.map((drug) => ({
+      const hosDrugs = await getHosDrugs(hos_id as string)
+      const drugOptions = hosDrugs.map((drug) => ({
         value: `${drug.ml_per_kg}`,
         label:
           `${drug.hos_drug_name} ${drug.unit_per_kg}${drug.unit}/kg ${drug.hos_drug_route} ${drug.caution}`.trim(),
       }))
       setHosDrugOptions(drugOptions)
-    })
 
-    setIsFetching(false)
+      setIsFetching(false)
+    }
+    fetchData()
   }, [hos_id])
 
   const handleInsertArbitraryOrder = async () => {

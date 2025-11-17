@@ -7,6 +7,7 @@ import type { Species } from '@/types/hospital/calculator'
 import { StethoscopeIcon, UserIcon } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import UrgencyStarts from './urgency-stars'
+import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 
 type Props = {
   icuIoData: IcuSidebarPatient
@@ -23,6 +24,8 @@ export default function PatientButton({
 }: Props) {
   const { vets, patient, urgency } = icuIoData
 
+  const safeRefresh = useSafeRefresh()
+
   const { push } = useRouter()
   const { patient_id } = useParams()
 
@@ -30,8 +33,12 @@ export default function PatientButton({
 
   const selectedPatient = patient.patient_id === patient_id
 
-  const handlePatientButtonClick = () =>
+  const handlePatientButtonClick = () => {
     push(`/hospital/${hosId}/icu/${targetDate}/chart/${patient.patient_id}`)
+    safeRefresh()
+  }
+
+  const isPatientNew = icuIoData.in_date === targetDate
 
   return (
     <Button
@@ -43,6 +50,11 @@ export default function PatientButton({
       )}
       onClick={handlePatientButtonClick}
     >
+      {isPatientNew && (
+        <span className="pointer-events-none absolute -top-1.5 left-0 -rotate-12 select-none text-[10px] font-semibold tracking-tight text-primary">
+          new
+        </span>
+      )}
       <UrgencyStarts urgency={urgency} />
 
       <div
@@ -68,7 +80,7 @@ export default function PatientButton({
           </div>
           <div className="flex items-center gap-0.5 truncate">
             <UserIcon style={{ width: 12, height: 12 }} />
-            <div className="truncate">{patient.owner_name || '미지정'}</div>
+            <div className="truncate">{patient.owner_name || '미등록'}</div>
           </div>
         </div>
       </div>

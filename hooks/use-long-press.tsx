@@ -11,7 +11,7 @@ export const useLongPress = ({
   onLongPress,
   threshold = 500,
 }: UseLongPressOptions) => {
-  const timerRef = useRef<NodeJS.Timeout>()
+  const timerRef = useRef<NodeJS.Timeout>(null)
   const isLongPress = useRef(false)
   const touchPoint = useRef<{ x: number; y: number } | null>(null)
   const isTouchMoved = useRef(false)

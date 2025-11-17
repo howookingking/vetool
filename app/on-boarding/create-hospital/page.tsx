@@ -1,16 +1,15 @@
 import CreateHospitalForm from '@/components/on-boarding/create-hospital/create-hospital-form'
+import OnboardingTitle from '@/components/on-boarding/onboarding-title'
 import PrevButton from '@/components/on-boarding/prev-button'
-import { Suspense } from 'react'
 
 export default function CreateHospitalPage() {
   return (
     <>
       <PrevButton />
-      <h2 className="text-2xl font-bold tracking-wider">병원 생성</h2>
 
-      <Suspense fallback={null}>
-        <CreateHospitalForm />
-      </Suspense>
+      <OnboardingTitle title="동물병원 생성" />
+
+      <CreateHospitalForm />
     </>
   )
 }

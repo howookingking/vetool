@@ -4,13 +4,13 @@ import { fetchHospitalList } from '@/lib/services/hospital-home/home'
 import { redirect } from 'next/navigation'
 
 export default async function SuperPage() {
-  const hosList = await fetchHospitalList()
   const vetoolUser = await getVetoolUserData()
   const isSuper = vetoolUser.is_super
+  const hosList = await fetchHospitalList(isSuper)
 
   if (!isSuper) {
     redirect('/')
   }
 
-  return <SuperPageTabs hosList={hosList} />
+  return <SuperPageTabs hosList={hosList!} />
 }

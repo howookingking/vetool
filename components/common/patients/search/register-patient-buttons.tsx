@@ -3,7 +3,7 @@ import UploadPatientArea from '@/components/common/patients/upload/upload-patien
 
 export default function RegisterPatientButton({ hosId }: { hosId: string }) {
   return (
-    <div className="mr-10 flex items-center gap-1 2xl:mr-0">
+    <div className="hidden items-center gap-1 2xl:mr-0 2xl:flex">
       <PatientRegisterDialog hosId={hosId} />
       <UploadPatientArea />
     </div>

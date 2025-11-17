@@ -3,13 +3,13 @@ import DeleteChartDialog from '@/components/hospital/icu/main/chart/selected-cha
 import ExportDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/export-dialog/export-dialog'
 import OutPatientDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/out-patient-dialog/out-patient-dialog'
 import ShareChartDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/share-chart-dialog'
-import type { SelectedChart } from '@/types/icu/chart'
+import type { SelectedIcuChart } from '@/types/icu/chart'
 import AddTemplateDialog from './add-template-dialog'
 
 export default function HeaderRightButtons({
   chartData,
 }: {
-  chartData: SelectedChart
+  chartData: SelectedIcuChart
 }) {
   const { icu_chart_id, icu_io, patient, orders } = chartData
 
@@ -21,7 +21,7 @@ export default function HeaderRightButtons({
 
       <CopyChartButton icuChartId={icu_chart_id} />
 
-      <OutPatientDialog chartData={chartData} />
+      <OutPatientDialog icuIo={chartData.icu_io} patient={chartData.patient} />
 
       <ExportDialog chartData={chartData} />
 
