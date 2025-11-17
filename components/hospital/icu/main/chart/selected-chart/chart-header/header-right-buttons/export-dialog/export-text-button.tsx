@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils/utils'
+import { calculateAge, cn } from '@/lib/utils/utils'
 import type { SelectedIcuChart } from '@/types/icu/chart'
 import { LoaderCircleIcon } from 'lucide-react'
 import { Dispatch, SetStateAction, useState } from 'react'
@@ -18,7 +18,8 @@ export default function ExportTextButton({
 
   const handleExportText = async () => {
     let textContents = `
-환자명: ${chartData.patient.name}
+이름: ${chartData.patient.name}
+signalment: ${chartData.patient.species} / ${chartData.patient.breed} / ${calculateAge(chartData.patient.birth)} / ${chartData.patient.gender.toUpperCase()} / ${chartData.weight}kg  
 입원일: ${chartData.target_date}
 DX: ${chartData.icu_io.icu_io_dx}
 CC: ${chartData.icu_io.icu_io_cc}
@@ -44,7 +45,7 @@ CC: ${chartData.icu_io.icu_io_cc}
 
       const txTable = Array.from({ length: 24 }, (_, index) => index)
         .filter((time) => order_times[time] && order_times[time] !== '0')
-        .map((time) => `${time + 1}시`)
+        .map((time) => `${time}시`)
 
       if (txTable.length) {
         hash[order_name] = (hash[order_name] || []).concat(txTable)
