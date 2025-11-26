@@ -3,13 +3,12 @@
 import { cn } from '@/lib/utils/utils'
 import { motion } from 'motion/react'
 
-export default function BrandHighlight({
-  value,
-  className,
-}: {
+type Props = {
   value: string
   className?: string
-}) {
+}
+
+export default function BrandHighlight({ value, className }: Props) {
   return (
     <span className={cn('relative', className)}>
       {value}

@@ -11,7 +11,7 @@ export default function FaqsSection() {
   return (
     <section
       id="faqs"
-      className="flex h-company flex-col justify-center px-8 py-12 sm:justify-start"
+      className="flex h-company flex-col justify-center px-8 py-24 sm:justify-start"
     >
       <div className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-8 lg:gap-16">
         <div className="space-y-2 sm:space-y-4">
@@ -20,7 +20,7 @@ export default function FaqsSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="text-3xl font-bold tracking-tighter text-zinc-800 sm:text-6xl"
+            className="text-3xl font-bold tracking-tighter text-zinc-800 sm:text-4xl md:text-5xl"
           >
             FAQ
           </motion.h3>
@@ -29,7 +29,7 @@ export default function FaqsSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-sm text-muted-foreground sm:text-xl"
+            className="text-base text-muted-foreground sm:text-xl"
           >
             자주 묻는 질문과 답변을 모았습니다
           </motion.p>

@@ -37,7 +37,7 @@ export default function Feature() {
   return (
     <section
       id="feature"
-      className="flex h-full flex-col items-center justify-center gap-4 px-8 py-16 xl:h-company"
+      className="flex h-full flex-col items-center justify-center gap-4 bg-slate-50 px-8 py-24 xl:h-company"
     >
       <div>
         <FeatureTitle />

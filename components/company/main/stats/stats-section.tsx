@@ -5,7 +5,10 @@ import StatsMockupImage from '@/components/company/main/stats/ui/stats-mockup-im
 
 export default function StatsSection() {
   return (
-    <section id="stats" className="flex h-company flex-col px-8 py-16">
+    <section
+      id="stats"
+      className="flex h-company flex-col bg-slate-50 px-8 py-24"
+    >
       <StatsTitle />
       <StatsCounts />
 

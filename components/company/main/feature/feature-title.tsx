@@ -9,7 +9,7 @@ export default function FeatureTitle() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center text-3xl font-bold tracking-tighter sm:text-5xl xl:text-7xl"
+          className="text-center text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl"
         >
           전문 분과 차트
         </motion.h3>
@@ -19,7 +19,7 @@ export default function FeatureTitle() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-center text-xs text-muted-foreground sm:text-base xl:text-xl"
+          className="text-center text-base text-muted-foreground sm:text-xl"
         >
           아날로그 차트의 디지털 전환
           <br />
