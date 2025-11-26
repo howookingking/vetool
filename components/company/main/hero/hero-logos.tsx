@@ -40,7 +40,7 @@ const HOSPITAL_LIST = [
 
 export default function HeroLogos() {
   return (
-    <div className="relative border-y-2 border-zinc-900 bg-white">
+    <div className="relative w-screen overflow-hidden border-y-2 border-zinc-900 bg-white">
       <ul className="relative z-0 flex">
         {Array.from({ length: 3 }).map((_, index) => (
           <TranslateWrapper key={index} reverse>

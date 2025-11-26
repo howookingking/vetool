@@ -7,6 +7,7 @@ import icuStatistics from '@/public/company/features/icu/statistics.png'
 import icuTemplateImage from '@/public/company/features/icu/template.png'
 import surgeryImage from '@/public/company/features/surgery/surgery-1.jpg'
 import type { Features } from '@/types/company/company'
+import { EyeIcon, FileIcon, LockIcon, SaveIcon } from 'lucide-react'
 
 export const OPEN_KAKAO_URL = 'https://open.kakao.com/o/si1PkVhh'
 
@@ -125,39 +126,34 @@ export const PLANS = [
 export const SOLUTIONS = [
   {
     id: 1,
-    icon: '🔒',
+    icon: <LockIcon />,
     title: '병원의 데이터는 안전하게 보관되나요?',
     description: (
       <>
         벳툴은 세밀한 접근 제어, 자동 백업 시스템, AES-256 암호화 표준을
-        적용하여 모든 데이터를 안전하게 보관합니다. <br /> <br /> 또한 HIPAA
-        규정을 준수하여 의료 정보의 기밀성을 보장합니다.
+        적용하여 모든 데이터를 안전하게 보관합니다.
       </>
     ),
-    imgSrc: '/company/security-hero.webp',
   },
   {
     id: 2,
-    icon: '👁️‍🗨️',
+    icon: <EyeIcon />,
     title: '병원의 민감한 정보를 모두가 볼 수 있나요?',
     description:
       ' 관리자 페이지 진입, 신규 유저 사용 승인, 차트 설정 등 민감한 정보는 경영진만 접근할 수 있도록 권한을 직접 설정할 수 있습니다.',
-    imgSrc: '/company/security-hero.webp',
   },
   {
     id: 3,
-    icon: '💾',
+    icon: <SaveIcon />,
     title: '메인차트의 환자 데이터를 옮길 수 있나요?',
     description:
       '네, 인투벳(IntoVet) 또는 이프렌즈(e-friends)에 등록된 전체 환자 정보를 CSV파일로 내보낸 후 벳툴에 업로드 할 수 있습니다',
-    imgSrc: '/company/csv.png',
   },
   {
     id: 4,
-    icon: '📑',
+    icon: <FileIcon />,
     title: '작성한 차트를 따로 저장할 수 있나요?',
     description:
       'PDF 형식 또는 이미지 파일 형식으로 입원 단위별 차트를 파일로 저장할 수 있습니다.',
-    imgSrc: '/company/pdf.png',
   },
 ] as const
