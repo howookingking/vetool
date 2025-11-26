@@ -41,13 +41,17 @@ export default function StatsCounts() {
       transition={{ duration: 0.5 }}
       className="flex flex-col items-center"
     >
-      <div className="flex items-center justify-center gap-4 py-8 sm:mx-auto sm:gap-0 sm:py-12">
+      <div className="flex items-center justify-center gap-4 pt-8 sm:mx-auto sm:gap-0 sm:pt-12">
         {stats.map((item, index) => (
           <div
             key={item.value}
             className="flex items-center justify-center sm:w-auto"
           >
             <div className="w-full text-center">
+              <span className="text-sm text-muted-foreground sm:px-8 sm:text-base md:text-lg">
+                {item.label}
+              </span>
+
               <div className="flex items-center justify-center sm:py-0">
                 <motion.span
                   initial={{ opacity: 0 }}
@@ -61,10 +65,6 @@ export default function StatsCounts() {
                   {item.suffix}
                 </motion.span>
               </div>
-
-              <span className="text-sm text-muted-foreground sm:px-8 sm:text-base md:text-lg">
-                {item.label}
-              </span>
             </div>
 
             {index !== stats.length - 1 && (
@@ -77,7 +77,7 @@ export default function StatsCounts() {
         ))}
       </div>
 
-      <p className="mb-12 text-center text-xs text-muted-foreground sm:text-sm">
+      <p className="my-3 text-center text-xs text-muted-foreground sm:text-sm">
         {COUNTS.countedAt} 기준
       </p>
     </motion.div>
