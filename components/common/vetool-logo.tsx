@@ -8,7 +8,7 @@ export default function VetoolLogo({ className }: { className?: string }) {
       src={logo}
       alt="vetool logo"
       unoptimized
-      className={cn(className, 'h-8 w-auto')}
+      className={cn(className, 'h-6 w-auto')}
     />
   )
 }

@@ -9,7 +9,7 @@ export default function StatsTitle() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 1 }}
-      className="text-center text-2xl font-bold tracking-tighter sm:text-6xl md:text-4xl"
+      className="text-center text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl"
     >
       벳툴을 통해 <br /> 동물 병원은 변화 중
     </motion.h2>
