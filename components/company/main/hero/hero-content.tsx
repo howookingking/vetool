@@ -6,13 +6,13 @@ import { motion } from 'motion/react'
 
 export default function HeroContent() {
   return (
-    <div className="mx-auto max-w-4xl space-y-8 py-8 sm:space-y-12 sm:py-24 xl:py-24 2xl:py-32">
+    <div className="mx-auto max-w-5xl space-y-8 py-12 sm:space-y-12 sm:py-24 xl:py-32">
       <div className="space-y-4 sm:space-y-6">
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="text-center text-base font-semibold tracking-tighter text-primary sm:text-left sm:text-xl"
+          className="text-center text-lg font-semibold tracking-tighter text-primary sm:text-left sm:text-xl"
         >
           수의사가 만든 동물병원 업무효율화 도구{' '}
           <BrandHighlight value="VETOOL" className="ml-2" />{' '}
@@ -22,9 +22,9 @@ export default function HeroContent() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.5 }}
-          className="text-center text-3xl font-bold tracking-tight sm:text-left sm:text-5xl md:text-7xl"
+          className="text-center text-4xl font-bold tracking-tight sm:text-left sm:text-6xl md:text-7xl"
         >
-          <div className="mb-2 sm:mb-6">
+          <div className="mb-2 sm:mb-4">
             시간을 <UnderlineHighlight>절약</UnderlineHighlight>
             하고
           </div>
@@ -38,7 +38,7 @@ export default function HeroContent() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 1 }}
-          className="text-center text-sm text-muted-foreground sm:text-left sm:text-xl"
+          className="text-center text-lg text-muted-foreground sm:text-left sm:text-xl"
         >
           #전문분과차트 #업무자동화 #데이터분석{' '}
           <br className="block lg:hidden" />
