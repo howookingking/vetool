@@ -10,7 +10,7 @@ export default function StatsContent() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 1 }}
-        className="text-2xl font-bold tracking-tighter sm:text-5xl"
+        className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl"
       >
         시공간의 제약에서 벗어나 <br /> 다양한 기기에서 사용해보세요
       </motion.p>
@@ -22,7 +22,7 @@ export default function StatsContent() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 1 }}
-        className="text-xs text-muted-foreground sm:text-xl"
+        className="text-base text-muted-foreground sm:text-lg md:text-xl"
       >
         언제 어디서나 PC, 테블릿, 스마트폰을 통해
         <br /> 환자의 실시간 정보를 확인할 수 있습니다

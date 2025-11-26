@@ -3,7 +3,7 @@ import StatsCounts from '@/components/company/main/stats/stats-counts'
 import StatsTitle from '@/components/company/main/stats/stats-title'
 import StatsMockupImage from '@/components/company/main/stats/ui/stats-mockup-image'
 
-export default function StatsSection() {
+export default async function StatsSection() {
   return (
     <section
       id="stats"
