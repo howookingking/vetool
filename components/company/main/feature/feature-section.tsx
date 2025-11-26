@@ -37,42 +37,40 @@ export default function Feature() {
     ) ?? targetFeatures![0]
 
   return (
-    <Section isEven id="feature">
-      <MaxWidthContainer>
-        <div className="flex h-full flex-col items-center justify-center gap-4">
-          <FeatureTitle />
+    <Section id="feature" className="mx-auto max-w-7xl">
+      <div className="flex h-full flex-col items-center justify-center gap-4">
+        <FeatureTitle />
 
-          <div className="grid w-full xl:max-w-[1400px]">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-            >
-              <SlideTabs
-                tabs={FEATURE_LIST}
-                activeTab={activeTab}
-                setActiveTab={setActiveTab}
-              />
-            </motion.div>
+        <div className="grid w-full">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <SlideTabs
+              tabs={FEATURE_LIST}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+            />
+          </motion.div>
 
-            <div className="mt-8">
-              <AnimatePresence mode="wait">
-                {activeItem && (
-                  <FeatureContent
-                    key={activeItem.path}
-                    item={activeItem}
-                    accordionItemIndex={accordionItemIndex}
-                    setAccordionItemIndex={setAccordionItemIndex}
-                    targetFeatures={targetFeatures!}
-                    targetFeature={targetFeature}
-                  />
-                )}
-              </AnimatePresence>
-            </div>
+          <div className="mt-8">
+            <AnimatePresence mode="wait">
+              {activeItem && (
+                <FeatureContent
+                  key={activeItem.path}
+                  item={activeItem}
+                  accordionItemIndex={accordionItemIndex}
+                  setAccordionItemIndex={setAccordionItemIndex}
+                  targetFeatures={targetFeatures!}
+                  targetFeature={targetFeature}
+                />
+              )}
+            </AnimatePresence>
           </div>
         </div>
-      </MaxWidthContainer>
+      </div>
     </Section>
   )
 }

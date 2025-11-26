@@ -6,7 +6,7 @@ import Section from '../section'
 
 export default async function StatsSection() {
   return (
-    <Section id="stats" className="flex flex-col" isEven>
+    <Section id="stats" className="flex flex-col">
       <StatsTitle />
       <StatsCounts />
 

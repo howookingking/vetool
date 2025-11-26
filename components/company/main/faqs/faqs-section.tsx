@@ -6,7 +6,7 @@ import { motion } from 'motion/react'
 import Section from '../section'
 export default function FaqsSection() {
   return (
-    <Section id="faqs">
+    <Section id="faqs" isEven>
       <div className="mx-auto w-full max-w-5xl space-y-16">
         <motion.h3
           initial={{ opacity: 0, y: 20 }}
