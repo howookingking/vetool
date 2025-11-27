@@ -17,6 +17,7 @@ export default function TestinomialSection() {
     >
       <div>
         <TestimonialContent />
+
         <TestimonialButtons
           numTracks={TESTIMONIALS.length}
           setSelectedCard={setSelectedCard}
