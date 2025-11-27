@@ -45,7 +45,7 @@ const Tab = ({
       }}
       onClick={() => onClick(value)}
       className={cn(
-        'relative z-10 block cursor-pointer px-3 py-1.5 text-[10px] font-bold uppercase text-white hover:text-primary md:px-5 md:py-3 md:text-base',
+        'relative z-10 cursor-pointer px-2 py-1.5 text-sm font-bold uppercase text-white hover:text-primary md:px-5 md:py-3 md:text-base',
         activeTab === value && 'rounded-full bg-white text-primary',
       )}
     >

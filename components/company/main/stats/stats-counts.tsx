@@ -5,7 +5,7 @@ import { Separator } from '@/components/ui/separator'
 import { motion } from 'motion/react'
 
 const COUNTS = {
-  countedAt: '2025년 11월 26일',
+  countedAt: '2025년 11월',
   icuChartCount: 15525,
   icuOrderCount: 293687,
   icuTxCount: 427744,
@@ -58,7 +58,7 @@ export default function StatsCounts() {
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 1.5 }}
-                  className="text-3xl font-bold text-zinc-800 sm:text-5xl md:text-6xl"
+                  className="text-2xl font-bold text-zinc-800 sm:text-3xl md:text-5xl"
                 >
                   <StatsCounter value={item.value} decimals={item.decimals} />
 

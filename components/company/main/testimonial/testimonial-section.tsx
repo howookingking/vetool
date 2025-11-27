@@ -5,17 +5,19 @@ import TestimonialCards from '@/components/company/main/testimonial/testimonial-
 import TestimonialContent from '@/components/company/main/testimonial/testimonial-content'
 import { TESTIMONIALS } from '@/constants/company/testimonials'
 import { useState } from 'react'
+import Section from '../section'
 
 export default function TestinomialSection() {
   const [selectedCard, setSelectedCard] = useState(0)
 
   return (
-    <section
+    <Section
       id="testimonial"
-      className="grid w-screen grid-cols-1 items-center overflow-hidden bg-slate-50 p-8 xl:grid-cols-2 xl:gap-8 xl:px-24 xl:py-24"
+      className="grid min-h-[calc(100lvh-100px)] w-screen grid-cols-1 items-center overflow-hidden bg-slate-50 p-8 xl:grid-cols-2 xl:gap-8 xl:px-24 xl:py-24"
     >
       <div>
         <TestimonialContent />
+
         <TestimonialButtons
           numTracks={TESTIMONIALS.length}
           setSelectedCard={setSelectedCard}
@@ -27,6 +29,6 @@ export default function TestinomialSection() {
         selectedCard={selectedCard}
         setSelectedCard={setSelectedCard}
       />
-    </section>
+    </Section>
   )
 }

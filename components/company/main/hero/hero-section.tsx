@@ -6,11 +6,11 @@ export default function HeroSection() {
   return (
     <section
       id="hero"
-      className="relative flex flex-col justify-between bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-50 via-white to-white"
+      className="relative flex h-[calc(100svh-64px)] flex-col justify-between bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-50 via-white to-white"
     >
       <HeroContent />
 
-      <div className="flex flex-col items-center">
+      <div className="absolute bottom-0 z-20 w-screen">
         <DesktopMockupScreen />
         <HeroLogos />
       </div>
