@@ -9,14 +9,11 @@ type Props = {
 
 export default function FeatureImages({ feature, isReady }: Props) {
   return (
-    <>
+    <div className="relative aspect-video">
       <Image
         src={feature.imgSrc}
         alt={feature.title}
-        className={cn(
-          isReady ? '' : 'blur-[1px]',
-          'aspect-video object-contain',
-        )}
+        className={cn(isReady ? '' : 'blur-[1px]', 'object-contain')}
         priority
         quality={60}
       />
@@ -28,6 +25,6 @@ export default function FeatureImages({ feature, isReady }: Props) {
           </div>
         </div>
       )}
-    </>
+    </div>
   )
 }
