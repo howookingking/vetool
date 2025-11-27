@@ -11,11 +11,10 @@ import {
 } from '@/constants/company/main'
 import { HOS_SIDEBAR_MENUS } from '@/constants/hospital/hos-sidebar-menus'
 import { AnimatePresence, motion } from 'motion/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Section from '../section'
-import MaxWidthContainer from '@/components/common/max-width-container'
 
-export default function Feature() {
+export default function FeatureSection() {
   const [activeTab, setActiveTab] = useState('icu')
   const [accordionItemIndex, setAccordionItemIndex] = useState(
     ICU_FEATURES[0].id.toString(),
@@ -31,6 +30,13 @@ export default function Feature() {
     surgery: SURGERY_FEATURES,
   }[activeTab]
 
+  // Reset accordion to first item when tab changes
+  useEffect(() => {
+    if (targetFeatures && targetFeatures.length > 0) {
+      setAccordionItemIndex(targetFeatures[0].id.toString())
+    }
+  }, [activeTab, targetFeatures])
+
   const targetFeature =
     targetFeatures?.find(
       (feature) => feature.id.toString() === accordionItemIndex,
@@ -41,35 +47,31 @@ export default function Feature() {
       <div className="flex h-full flex-col items-center justify-center gap-4">
         <FeatureTitle />
 
-        <div className="grid w-full">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <SlideTabs
-              tabs={FEATURE_LIST}
-              activeTab={activeTab}
-              setActiveTab={setActiveTab}
-            />
-          </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+        >
+          <SlideTabs
+            tabs={FEATURE_LIST}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+          />
+        </motion.div>
 
-          <div className="mt-8">
-            <AnimatePresence mode="wait">
-              {activeItem && (
-                <FeatureContent
-                  key={activeItem.path}
-                  item={activeItem}
-                  accordionItemIndex={accordionItemIndex}
-                  setAccordionItemIndex={setAccordionItemIndex}
-                  targetFeatures={targetFeatures!}
-                  targetFeature={targetFeature}
-                />
-              )}
-            </AnimatePresence>
-          </div>
-        </div>
+        <AnimatePresence mode="wait">
+          {activeItem && (
+            <FeatureContent
+              key={activeItem.path}
+              item={activeItem}
+              accordionItemIndex={accordionItemIndex}
+              setAccordionItemIndex={setAccordionItemIndex}
+              targetFeatures={targetFeatures!}
+              targetFeature={targetFeature}
+            />
+          )}
+        </AnimatePresence>
       </div>
     </Section>
   )

@@ -35,7 +35,7 @@ export const CHECKUP_FEATURES = [
     id: 1,
     title: '건강검진차트 개요',
     description:
-      '건강검진 결과값을 입력하면 자동으로 보호자 친화적인 문장으로 건겅검진 결과지를 출력해줍니다.',
+      '건강검진 결과값을 입력하면 자동으로 보호자 친화적인 문장으로 결과지를 출력해줍니다.',
     imgSrc: checkupImage,
   },
 ] as Features[]
@@ -44,29 +44,38 @@ export const ICU_FEATURES = [
   {
     id: 1,
     title: '입원차트 개요',
-    description:
-      '종이 입원차트를 디지털로 전환한 차트입니다. 더이상 입원환자 차트를 손으로 작성하느라 시간을 허비하지 마세요.',
+    description: (
+      <>
+        종이 입원차트를 디지털로 전환한 차트입니다.
+        <br />
+        더이상 입원환자 차트를 손으로 작성하느라 시간을 낭비하지 마세요.
+      </>
+    ),
     imgSrc: icuChartIamge,
   },
   {
     id: 2,
     title: '차트 복사 / 붙여넣기',
-    description:
-      '매번 같은 오더를 반복해서 작성할 필요가 없습니다. 전날의 차트를 붙여넣거나 자주 사용하는 오더를 템플릿으로 저장하여 재사용할 수 있습니다.',
+    description: (
+      <>
+        전날의 차트를 복사하여 붙여넣거나
+        <br /> 자주 사용하는 오더를 템플릿으로 재사용할 수 있습니다.
+      </>
+    ),
     imgSrc: icuTemplateImage,
   },
   {
     id: 3,
     title: '수의학 계산기',
     description:
-      '사료량, 칼로리, CRI 약물 등 다양한 수의학 계산기를 제공하고 있으며 지속적으로 업데이트하고 있습니다.',
+      '사료량, CRI 약물계산 등 다양한 수의학 계산기를 제공하고 있으며 지속적으로 업데이트하고 있습니다.',
     imgSrc: icuCalculator,
   },
   {
     id: 4,
     title: '키워드 검색',
     description:
-      '강력한 키워드 검색 기능을 통해 DX, CC, 사용약물, 상위키워드, 동의어, 유의어 검색이 가능합니다.',
+      '키워드 검색 기능을 통해 DX, CC, 상위키워드, 동의어, 유의어 검색이 가능합니다.',
     imgSrc: icuSearch,
   },
 
@@ -74,7 +83,7 @@ export const ICU_FEATURES = [
     id: 5,
     title: '데이터 분석',
     description:
-      '입원 목적, DX, CC, 종, 품종, 처방 약물 등의 데이터 분석이 가능하며 데이터 분석을 위한 도구를 제공합니다.',
+      'DX, CC, 종, 품종, 약물 등의 데이터 분석이 가능하며 데이터 분석을 위한 도구를 제공합니다.',
     imgSrc: icuStatistics,
   },
 ] as Features[]

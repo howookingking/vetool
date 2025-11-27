@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 export default function HomepageFooter() {
   return (
-    <footer className="border-t bg-stone-900 py-6 text-white">
+    <footer className="border-t bg-zinc-900 py-6 text-white">
       <MaxWidthContainer>
         <div className="flex gap-4">
           <Link href="/terms-of-service" className="text-xs md:text-base">
@@ -16,16 +16,19 @@ export default function HomepageFooter() {
           </Link>
         </div>
 
-        <div className="my-8 flex flex-col justify-between gap-8 md:flex-row md:gap-0">
+        <div className="mt-8 flex flex-col justify-between gap-8 md:flex-row md:gap-0">
           <div>
-            <p className="text-sm font-semibold leading-relaxed tracking-tighter md:text-lg">
+            <p className="text-sm font-semibold leading-relaxed md:text-lg">
               (주) 벳툴
             </p>
             <p className="text-xs leading-relaxed text-muted md:text-sm">
-              대표: 이정우 | 사업자등록번호: 658-86-02970
+              대표 : 이정우
             </p>
             <p className="text-xs leading-relaxed text-muted md:text-sm">
-              주소: 서울 용산구 한강로3가 98, 공공시설동 4층 2호
+              사업자등록번호 : 658-86-02970
+            </p>
+            <p className="text-xs leading-relaxed text-muted md:text-sm">
+              주소 : 서울 용산구 한강로3가 98, 공공시설동 4층 2호
             </p>
           </div>
 
@@ -51,7 +54,7 @@ export default function HomepageFooter() {
         <br />
 
         <Separator className="mb-4" />
-        <p className="text-sm tracking-tighter text-muted">
+        <p className="text-sm text-muted">
           &copy; Vetool Co, Ltd. All rights reserved.
         </p>
       </MaxWidthContainer>

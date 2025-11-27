@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
 import Image from 'next/image'
-import { type Dispatch, type SetStateAction } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 
 type Props = {
   testimonial: any
@@ -34,9 +34,6 @@ export default function TestimonialCard({
       animate={{
         x: `${offset}%`,
         scale,
-      }}
-      whileHover={{
-        translateX: position === selectedCard ? 0 : -3,
       }}
       transition={{
         duration: 0.25,

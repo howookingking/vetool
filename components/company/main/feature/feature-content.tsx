@@ -1,6 +1,6 @@
 import FeatureAccordion from '@/components/company/main/feature/feature-accordion'
 import FeatureImages from '@/components/company/main/feature/feature-images'
-import { type Features } from '@/types/company/company'
+import type { Features } from '@/types/company/company'
 import { motion } from 'motion/react'
 
 type Props = {
@@ -25,7 +25,7 @@ export default function FeatureContent({
   return (
     <motion.div
       key={item.path}
-      className="grid gap-4 lg:grid-cols-3"
+      className="grid grid-cols-1 gap-4 lg:grid-cols-3"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
@@ -36,7 +36,10 @@ export default function FeatureContent({
         setAccordionItemIndex={setAccordionItemIndex}
         targetFeatures={targetFeatures}
       />
-      <FeatureImages feature={targetFeature} isReady={item.isReady} />
+
+      <div className="order-2 col-span-2 lg:order-1">
+        <FeatureImages feature={targetFeature} isReady={item.isReady} />
+      </div>
     </motion.div>
   )
 }
