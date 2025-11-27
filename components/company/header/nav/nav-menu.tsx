@@ -1,24 +1,22 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import { HOMEPAGE_NAVBAR_ITEMS } from '@/constants/company/nav'
 import Link from 'next/link'
 
 export default function NavMenu() {
   return (
-    <ul className="hidden items-center gap-8 whitespace-nowrap md:flex">
+    <ul className="hidden items-center gap-2 md:flex">
       {HOMEPAGE_NAVBAR_ITEMS.map((item) => (
         <li key={item.href}>
-          <Link
-            href={`/${item.href}`}
-            className="group relative flex flex-col items-center"
+          <Button
+            asChild
+            variant="link"
+            size="lg"
+            className="cursor-pointer px-4 text-base font-semibold text-slate-700"
           >
-            <span className="invisible font-bold" aria-hidden="true">
-              {item.label}
-            </span>
-            <span className="absolute inset-0 flex items-center justify-center group-hover:font-bold">
-              {item.label}
-            </span>
-          </Link>
+            <Link href={`/${item.href}`}>{item.label}</Link>
+          </Button>
         </li>
       ))}
     </ul>
