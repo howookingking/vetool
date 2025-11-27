@@ -9,10 +9,10 @@ export default function HomepageHeader() {
     <header className="sticky top-0 z-50 bg-white/15 shadow-sm backdrop-blur">
       <MaxWidthContainer>
         <div className="flex h-16 items-center justify-between">
-          <div className="flex items-center gap-12">
+          <div className="flex items-center gap-10">
             <Link
               href="/#hero"
-              className="transition duration-300 hover:scale-105"
+              className="shrink-0 transition duration-300 hover:scale-105"
             >
               <VetoolLogo />
             </Link>
@@ -20,13 +20,11 @@ export default function HomepageHeader() {
             <NavMenu />
           </div>
 
-          <div className="flex items-center gap-2">
-            <SlideButton variant="outline" asChild>
-              <Link href="/login" className="font-bold">
-                로그인
-              </Link>
-            </SlideButton>
-          </div>
+          <SlideButton variant="outline" asChild>
+            <Link href="/login" className="font-bold">
+              로그인
+            </Link>
+          </SlideButton>
         </div>
       </MaxWidthContainer>
     </header>
