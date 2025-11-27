@@ -1,3 +1,5 @@
+'use client'
+
 import OrderTypeColorDot from '@/components/hospital/common/order/order-type-color-dot'
 import { CurrentTimeIndicator } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/current-time-indicator'
 import { VitalResultIndication } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/vital-result-indication'
@@ -11,9 +13,13 @@ import {
 } from '@/components/ui/table'
 import type { OrderType } from '@/constants/hospital/icu/chart/order'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
+import useIsMobile from '@/hooks/use-is-mobile'
 import { cn } from '@/lib/utils/utils'
 
 export default function DesktopMockupTable() {
+  const isMobile = useIsMobile()
+  const responsiveOrders = isMobile ? MOCKUP_ORDERS.slice(0, 5) : MOCKUP_ORDERS
+
   return (
     <Table className="rounded-lg border">
       <TableHeader>
@@ -36,7 +42,7 @@ export default function DesktopMockupTable() {
       </TableHeader>
 
       <TableBody>
-        {MOCKUP_ORDERS.map((order) => (
+        {responsiveOrders.map((order) => (
           <TableRow key={order.orderName}>
             <TableCell className="flex items-center justify-between gap-2 border-input font-semibold">
               <div className="flex items-center gap-2">
@@ -158,13 +164,13 @@ const MOCKUP_ORDERS: {
     orderTime: [6, 18],
     value: ['✓'],
   },
-  {
-    orderName: 'Esomeprazole 1mg/kg SC',
-    orderType: 'injection',
-    orderComment: '0.5ml',
-    orderTime: [6, 18],
-    value: ['✓'],
-  },
+  // {
+  //   orderName: 'Esomeprazole 1mg/kg SC',
+  //   orderType: 'injection',
+  //   orderComment: '0.5ml',
+  //   orderTime: [6, 18],
+  //   value: ['✓'],
+  // },
   {
     orderName: 'Maropitant 1mg/kg SC',
     orderType: 'injection',
@@ -172,12 +178,12 @@ const MOCKUP_ORDERS: {
     orderTime: [6],
     value: ['✓'],
   },
-  {
-    orderName: 'mPCV',
-    orderType: 'test',
-    orderTime: [10],
-    value: ['✓'],
-  },
+  // {
+  //   orderName: 'mPCV',
+  //   orderType: 'test',
+  //   orderTime: [10],
+  //   value: ['✓'],
+  // },
   {
     orderName: '복부초음파',
     orderType: 'test',

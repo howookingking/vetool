@@ -5,7 +5,7 @@ import DesktopMockupTable from './desktop-mockup-table'
 
 export default function DesktopMockupScreen() {
   return (
-    <div className="relative mx-10 scale-[0.3] select-none rounded-t-xl bg-primary px-1 pt-1 sm:scale-50 lg:scale-75 xl:scale-100">
+    <div className="relative mx-auto max-w-[1600px] select-none rounded-t-xl bg-primary px-1 pt-1 sm:block">
       <div className="flex items-center justify-between px-2 pb-2 pt-1">
         <div className="flex items-center gap-1.5">
           <span className="size-2 rounded-full bg-red-400" />
@@ -26,9 +26,8 @@ export default function DesktopMockupScreen() {
 
           <DesktopMockupTable />
         </div>
-
-        <div className="pointer-events-none absolute inset-0 top-20 z-10 bg-gradient-to-b from-white/0 to-white" />
       </div>
+      <div className="absolute inset-0 z-10 bg-gradient-to-b from-white/20 to-white/80" />
     </div>
   )
 }
