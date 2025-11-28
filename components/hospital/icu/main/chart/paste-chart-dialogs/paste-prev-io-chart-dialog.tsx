@@ -73,7 +73,6 @@ export default function PastePrevIoChartDialog({
         />
         <div className="absolute bottom-10 left-1/2 hidden -translate-x-1/2 md:block">
           <div className="flex items-center gap-1">
-            <span className="pointer-events-none text-xs">미리보기</span>
             <PreviewDialog
               targetDate={prevDate!}
               isTemplate={false}
