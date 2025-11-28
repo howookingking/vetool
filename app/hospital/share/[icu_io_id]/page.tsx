@@ -1,3 +1,4 @@
+import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import ChartTable from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table'
 import IcuShareHeader from '@/components/hospital/share/header/icu-share-header'
 import IcuShareChartInfos from '@/components/hospital/share/icu-share-chart-infos'
@@ -47,7 +48,13 @@ export default async function IcuSharePage(props: IcuSharePageProps) {
         isInChargeSystem: false,
       }}
     >
-      <div className="flex flex-col gap-4 p-4">
+      <NoResultSquirrel
+        size="lg"
+        text="PC 환경에서 이용해주세요"
+        className="h-screen flex-col sm:hidden"
+      />
+
+      <div className="hidden flex-col gap-4 p-4 sm:flex">
         <IcuShareHeader
           chartData={sharedChartData}
           targetDate={targetDate as string}

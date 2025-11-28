@@ -6,18 +6,28 @@ import ShareChartDialog from '@/components/hospital/icu/main/chart/selected-char
 import type { SelectedIcuChart } from '@/types/icu/chart'
 import AddTemplateDialog from './add-template-dialog'
 
+type Props = {
+  chartData: SelectedIcuChart
+  hosId: string
+  targetDate: string
+}
+
 export default function HeaderRightButtons({
   chartData,
-}: {
-  chartData: SelectedIcuChart
-}) {
+  hosId,
+  targetDate,
+}: Props) {
   const { icu_chart_id, icu_io, patient, orders } = chartData
 
   return (
     <div className="absolute right-2 top-2 hidden gap-1 2xl:flex">
-      <AddTemplateDialog orders={orders} patientName={patient.name} />
+      <AddTemplateDialog
+        orders={orders}
+        patientName={patient.name}
+        hosId={hosId}
+      />
 
-      <ShareChartDialog icuIoId={icu_io.icu_io_id} />
+      <ShareChartDialog icuIoId={icu_io.icu_io_id} targetDate={targetDate} />
 
       <CopyChartButton icuChartId={icu_chart_id} />
 

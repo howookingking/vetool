@@ -9,11 +9,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { Spinner } from '@/components/ui/spinner'
 import type { ChartableVital } from '@/constants/hospital/icu/chart/vital-chart'
 import { fetchChartableVitalsData } from '@/lib/services/icu/chart/vitals'
 import type { VitalData } from '@/types/icu/chart'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
-import { LineChart, LoaderCircle } from 'lucide-react'
+import { LineChart } from 'lucide-react'
 import { useState } from 'react'
 import VitalChart from './vital-chart'
 
@@ -52,12 +53,9 @@ export default function VitalChartDialog({ icuIoId, inDate }: Props) {
           size="icon"
           className="hidden shrink-0 md:flex"
           data-guide="vital-chart"
+          disabled={isFetching}
         >
-          {isFetching ? (
-            <LoaderCircle className="animate-spin" />
-          ) : (
-            <LineChart size={18} />
-          )}
+          {isFetching ? <Spinner /> : <LineChart />}
         </Button>
       </DialogTrigger>
 

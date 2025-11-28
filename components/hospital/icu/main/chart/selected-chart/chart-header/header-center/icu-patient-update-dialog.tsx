@@ -14,7 +14,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import type { Patient } from '@/types'
-import { useParams } from 'next/navigation'
 import { useState } from 'react'
 
 type Props = {
@@ -22,6 +21,7 @@ type Props = {
   weight: string
   weightMeasuredDate: string | null
   icuChartId: string
+  hosId: string
 }
 
 export default function IcuPatientUpdateDialog({
@@ -29,10 +29,9 @@ export default function IcuPatientUpdateDialog({
   weight,
   weightMeasuredDate,
   icuChartId,
+  hosId,
 }: Props) {
   const { name, breed, gender, species, birth, is_alive } = patient
-
-  const { hos_id } = useParams()
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
@@ -40,6 +39,7 @@ export default function IcuPatientUpdateDialog({
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button
+          size="default"
           variant="ghost"
           className="text-xs font-semibold md:text-sm 2xl:text-base"
         >
@@ -65,7 +65,7 @@ export default function IcuPatientUpdateDialog({
         <PatientFormDynamic
           debouncedSearch={null}
           mode="updateFromIcuRoute"
-          hosId={hos_id as string}
+          hosId={hosId}
           editingPatient={patient}
           setIsPatientUpdateDialogOpen={setIsDialogOpen}
           weight={weight}
