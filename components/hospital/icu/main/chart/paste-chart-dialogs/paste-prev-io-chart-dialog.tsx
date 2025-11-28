@@ -71,15 +71,13 @@ export default function PastePrevIoChartDialog({
           title={`${prevDate} 차트 붙여넣기`}
           hiddenOnMobile
         />
-        <div className="absolute bottom-10 left-1/2 hidden -translate-x-1/2 md:block">
-          <div className="flex items-center gap-1">
-            <PreviewDialog
-              targetDate={prevDate!}
-              isTemplate={false}
-              patientId={patientId}
-              chartId={prevChartId}
-            />
-          </div>
+        <div className="absolute bottom-14 left-1/2 hidden -translate-x-1/2 md:block">
+          <PreviewDialog
+            targetDate={prevDate!}
+            isTemplate={false}
+            patientId={patientId}
+            chartId={prevChartId}
+          />
         </div>
       </div>
 
