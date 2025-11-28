@@ -75,6 +75,12 @@ export default function IcuChartEntry({
 
   // io가 있고 chart가 있고 order가 있음 => 정상차트
   if (hasIcuIo && selectedIcuChart && selectedIcuChart.orders.length > 0) {
-    return <Chart selectedIcuChart={selectedIcuChart} />
+    return (
+      <Chart
+        selectedIcuChart={selectedIcuChart}
+        hosId={hosId}
+        targetDate={targetDate}
+      />
+    )
   }
 }

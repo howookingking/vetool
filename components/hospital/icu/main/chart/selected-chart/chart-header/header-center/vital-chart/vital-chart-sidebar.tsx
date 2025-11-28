@@ -39,6 +39,7 @@ export default function VitalChartSidebar({
           <li key={vital}>
             <Button
               variant="ghost"
+              size="default"
               onClick={() => handleVitalClick(vital)}
               className={cn(
                 'h-10 w-full rounded-none',

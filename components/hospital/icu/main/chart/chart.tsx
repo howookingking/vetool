@@ -3,20 +3,26 @@ import ChartHeader from '@/components/hospital/icu/main/chart/selected-chart/cha
 import OutPatientCover from '@/components/hospital/icu/main/chart/selected-chart/out-patient-cover'
 import type { SelectedIcuChart } from '@/types/icu/chart'
 
-export default function Chart({
-  selectedIcuChart,
-}: {
+type Props = {
   selectedIcuChart: SelectedIcuChart
-}) {
+  hosId: string
+  targetDate: string
+}
+
+export default function Chart({ selectedIcuChart, hosId, targetDate }: Props) {
   const isPatientOut = selectedIcuChart?.icu_io?.out_date !== null
 
   return (
     <div className="relative flex flex-col">
-      <ChartHeader chartData={selectedIcuChart} />
+      <ChartHeader
+        chartData={selectedIcuChart}
+        hosId={hosId}
+        targetDate={targetDate}
+      />
 
       <ChartBody chartData={selectedIcuChart} />
 
-      {isPatientOut && <OutPatientCover />}
+      {isPatientOut ? <OutPatientCover /> : null}
     </div>
   )
 }

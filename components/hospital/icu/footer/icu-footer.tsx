@@ -11,7 +11,6 @@ import {
   BookmarkIcon,
   ClipboardListIcon,
   ListChecksIcon,
-  LogOutIcon,
   SearchIcon,
 } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
@@ -84,12 +83,12 @@ const FOOTER_MAIN_VIEW_MENUS = [
     icon: <ClipboardListIcon />,
     hideInMobile: false,
   },
-  {
-    label: '퇴원/면회',
-    route: 'out-and-visit',
-    icon: <LogOutIcon />,
-    hideInMobile: true,
-  },
+  // {
+  //   label: '퇴원/면회',
+  //   route: 'out-and-visit',
+  //   icon: <LogOutIcon />,
+  //   hideInMobile: true,
+  // },
   {
     label: '검색',
     route: 'search',

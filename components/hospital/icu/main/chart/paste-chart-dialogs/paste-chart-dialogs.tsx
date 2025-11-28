@@ -6,6 +6,7 @@ import PasteDefaultChartDialog from './paste-default-chart-dialog'
 import PastePrevChartDialog from './paste-prev-chart-dialog'
 import PastePrevIoChartDialog from './paste-prev-io-chart-dialog'
 import PasteTemplateOrderDialog from './template/paste-template-order-dialog'
+import UndoIoDialog from './undo-Io-dialogi'
 
 type Props =
   | {
@@ -41,10 +42,13 @@ export default function PasteChartDialogs({
   return (
     <div className="flex h-mobile flex-col items-center justify-center gap-6 px-5 md:flex-row md:px-2 2xl:h-desktop">
       {firstChart ? (
-        <PasteDefaultChartDialog
-          selectedIcuChart={selectedIcuChart!}
-          hosId={hosId}
-        />
+        <>
+          <PasteDefaultChartDialog
+            selectedIcuChart={selectedIcuChart!}
+            hosId={hosId}
+          />
+          <UndoIoDialog selectedIcuChart={selectedIcuChart!} />
+        </>
       ) : (
         <PastePrevChartDialog targetDate={targetDate} patientId={patientId} />
       )}
