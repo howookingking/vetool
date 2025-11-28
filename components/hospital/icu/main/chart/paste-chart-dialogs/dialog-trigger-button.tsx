@@ -12,6 +12,7 @@ type Props = {
   title: ReactNode
   hiddenOnMobile?: boolean
   isLoading?: boolean
+  className?: string
 }
 
 export default function DialogTriggerButton({
@@ -19,6 +20,7 @@ export default function DialogTriggerButton({
   title,
   hiddenOnMobile,
   isLoading = false,
+  className,
 }: Props) {
   return (
     <DialogTrigger asChild className="relative">
@@ -29,6 +31,7 @@ export default function DialogTriggerButton({
         className={cn(
           'flex h-60 w-60 items-center justify-center gap-2',
           hiddenOnMobile && 'hidden md:flex',
+          className,
         )}
       >
         <Icon />

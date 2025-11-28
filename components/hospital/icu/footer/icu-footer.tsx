@@ -11,7 +11,6 @@ import {
   BookmarkIcon,
   ClipboardListIcon,
   ListChecksIcon,
-  LogOutIcon,
   SearchIcon,
 } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
