@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { useCopiedChartStore } from '@/lib/store/icu/copied-chart'
-import { ClipboardCheckIcon, ClipboardIcon } from 'lucide-react'
+import { ClipboardCheckIcon, ClipboardCopyIcon } from 'lucide-react'
 import { toast } from 'sonner'
 
 export default function CopyChartButton({
@@ -25,7 +25,7 @@ export default function CopyChartButton({
       {copiedChartId === icuChartId ? (
         <ClipboardCheckIcon />
       ) : (
-        <ClipboardIcon />
+        <ClipboardCopyIcon />
       )}
     </Button>
   )

@@ -26,7 +26,6 @@ import { cn } from '@/lib/utils/utils'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { BookmarkPlusIcon, LoaderCircleIcon } from 'lucide-react'
-import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -35,6 +34,7 @@ import { z } from 'zod'
 type Props = {
   orders: SelectedIcuOrder[]
   patientName: string
+  hosId: string
 }
 
 const DEFAULT_FORM_VALUES = {
@@ -43,9 +43,11 @@ const DEFAULT_FORM_VALUES = {
   is_time_included: false,
 } as const
 
-export default function AddTemplateDialog({ orders, patientName }: Props) {
-  const { hos_id } = useParams()
-
+export default function AddTemplateDialog({
+  orders,
+  patientName,
+  hosId,
+}: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
@@ -67,7 +69,7 @@ export default function AddTemplateDialog({ orders, patientName }: Props) {
     }))
 
     await createTemplateChart(
-      hos_id as string,
+      hosId,
       ordererDefaulted,
       template_name,
       is_time_included,

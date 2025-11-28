@@ -11,23 +11,23 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Share2Icon } from 'lucide-react'
-import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
-export default function ShareChartDialog({ icuIoId }: { icuIoId: string }) {
-  const { target_date } = useParams()
+type Props = {
+  icuIoId: string
+  targetDate: string
+}
 
+export default function ShareChartDialog({ icuIoId, targetDate }: Props) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [sharedChartUrl, setSharedChartUrl] = useState('')
 
-  // const sharedChartUrl = `${window.location.origin}/hospital/share/${icuIoId}?target-date=${target_date}`
-  // 할 경우 서버에서 window 못 읽음
   useEffect(() => {
     setSharedChartUrl(
-      `${window.location.origin}/hospital/share/${icuIoId}?target-date=${target_date}`,
+      `${window.location.origin}/hospital/share/${icuIoId}?target-date=${targetDate}`,
     )
-  }, [icuIoId, target_date])
+  }, [icuIoId, targetDate])
 
   const handleCopy = () => {
     navigator.clipboard.writeText(sharedChartUrl)
@@ -46,15 +46,16 @@ export default function ShareChartDialog({ icuIoId }: { icuIoId: string }) {
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon">
-          <Share2Icon size={18} />
+          <Share2Icon />
         </Button>
       </DialogTrigger>
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>입원 환자 차트 공유</DialogTitle>
+          <DialogTitle>입원환자 차트 공유</DialogTitle>
           <DialogDescription>
-            외부인에게 입원기간 동안의 차트를 링크로 공유할 수 있습니다
+            리퍼 병원, 보호자 등에게 입원기간 동안의 차트를 링크로 공유할 수
+            있습니다
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>

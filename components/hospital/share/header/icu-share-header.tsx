@@ -46,7 +46,11 @@ export default function IcuShareHeader({ targetDate, chartData }: Props) {
         )}
       </div>
       {isVistor ? (
-        <Link href="/">
+        <Link
+          href="/"
+          className="transition duration-300 hover:scale-105"
+          target="_blank"
+        >
           <VetoolLogo />
         </Link>
       ) : (
