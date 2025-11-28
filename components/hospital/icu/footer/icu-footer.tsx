@@ -84,12 +84,12 @@ const FOOTER_MAIN_VIEW_MENUS = [
     icon: <ClipboardListIcon />,
     hideInMobile: false,
   },
-  {
-    label: '퇴원/면회',
-    route: 'out-and-visit',
-    icon: <LogOutIcon />,
-    hideInMobile: true,
-  },
+  // {
+  //   label: '퇴원/면회',
+  //   route: 'out-and-visit',
+  //   icon: <LogOutIcon />,
+  //   hideInMobile: true,
+  // },
   {
     label: '검색',
     route: 'search',
