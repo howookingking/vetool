@@ -67,8 +67,7 @@ export default function PasteTemplateOrderDialog({
       ) : (
         <DialogTriggerButton
           icon={BookmarkIcon}
-          title="템플릿 붙여넣기"
-          hiddenOnMobile
+          title="템플릿 차트 붙여넣기"
           isLoading={isFetching}
         />
       )}
@@ -76,7 +75,7 @@ export default function PasteTemplateOrderDialog({
       <DialogContent className="md:max-w-[1200px]">
         <DialogHeader>
           <DialogTitle>
-            {tableHeader ? '템플릿 오더 추가' : '템플릿 붙여넣기'}
+            {tableHeader ? '템플릿 오더 추가' : '템플릿 차트 붙여넣기'}
           </DialogTitle>
           <DialogDescription>템플릿을 선택해주세요</DialogDescription>
         </DialogHeader>

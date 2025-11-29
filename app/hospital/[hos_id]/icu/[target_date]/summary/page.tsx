@@ -21,9 +21,9 @@ export default async function SummaryPage(props: {
 
       {target_date_summary_data.length === 0 ? (
         <NoResultSquirrel
-          text="입원환자 없음"
           className="h-mobile flex-col 2xl:h-desktop"
           size="lg"
+          text="입원환자가 없습니다"
         />
       ) : (
         <div className="space-y-2 p-2">

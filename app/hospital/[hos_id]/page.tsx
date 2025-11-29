@@ -5,14 +5,14 @@ import { getVetoolUserData } from '@/lib/services/auth/authorization'
 import { redirectToOwnHospital } from '@/lib/utils/utils'
 import { HomeIcon } from 'lucide-react'
 
-export default async function HospitalHomePage(props: {
-  params: Promise<{ hos_id: string }>
-}) {
-  const params = await props.params
+export default async function HospitalHomePage(
+  props: PageProps<'/hospital/[hos_id]'>,
+) {
+  const { hos_id } = await props.params
   const vetoolUser = await getVetoolUserData()
   const isSuper = vetoolUser.is_super
 
-  redirectToOwnHospital(vetoolUser, params.hos_id, isSuper)
+  redirectToOwnHospital(vetoolUser, hos_id, isSuper)
 
   return (
     <>
@@ -20,7 +20,7 @@ export default async function HospitalHomePage(props: {
 
       <HospitalHomeHeader isSuper={isSuper} />
 
-      <HospitalHomeBody hosId={params.hos_id} />
+      <HospitalHomeBody hosId={hos_id} />
     </>
   )
 }

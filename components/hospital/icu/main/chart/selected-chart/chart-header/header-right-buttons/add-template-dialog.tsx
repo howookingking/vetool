@@ -31,17 +31,17 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-type Props = {
-  orders: SelectedIcuOrder[]
-  patientName: string
-  hosId: string
-}
-
 const DEFAULT_FORM_VALUES = {
   template_name: undefined,
   template_comment: undefined,
   is_time_included: false,
 } as const
+
+type Props = {
+  orders: SelectedIcuOrder[]
+  patientName: string
+  hosId: string
+}
 
 export default function AddTemplateDialog({
   orders,
