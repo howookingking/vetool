@@ -43,7 +43,7 @@ export default function DesktopSidebarItem({
         delayDuration={300}
       >
         <Button
-          onClick={() => push(`/hospital/${hosId}/${dynamicPath}`)}
+          onClick={() => push(`/hospital/${hosId}/${dynamicPath}` as any)}
           className={cn(
             'h-8 w-8 bg-white',
             isActive && 'bg-primary text-white',

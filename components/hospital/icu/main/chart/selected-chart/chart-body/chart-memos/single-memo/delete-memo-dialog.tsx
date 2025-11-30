@@ -33,7 +33,7 @@ export default function DeleteMemoDialog({
         </AlertDialogHeader>
 
         <AlertDialogFooter>
-          <AlertDialogCancel>취소</AlertDialogCancel>
+          <AlertDialogCancel>닫기</AlertDialogCancel>
           <AlertDialogAction
             onClick={onDelete}
             className="bg-destructive hover:bg-destructive/90"

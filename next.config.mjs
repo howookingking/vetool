@@ -1,19 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // experimental: {
-  //   serverActions: {
-  //     bodySizeLimit: '500mb',
-  //   },
-  // },
+  experimental: {
+    typedEnv: true,
+  },
+  typedRoutes: true,
   logging: {
     fetches: {
       fullUrl: true,
     },
   },
   images: {
-    // `images.domains` is deprecated in favor of `images.remotePatterns`. Please update next.config.mjs to protect your application from malicious users.
-    // domains: ['localhost'],
-
     remotePatterns: [
       {
         protocol: 'https',

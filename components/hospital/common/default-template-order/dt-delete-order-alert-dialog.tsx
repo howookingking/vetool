@@ -83,7 +83,7 @@ export default function DtDeleteOrderAlertDialog({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel tabIndex={-1}>취소</AlertDialogCancel>
+          <AlertDialogCancel tabIndex={-1}>닫기</AlertDialogCancel>
           <AlertDialogAction
             className="bg-destructive hover:bg-destructive/80"
             onClick={handleDeleteOrderClick}

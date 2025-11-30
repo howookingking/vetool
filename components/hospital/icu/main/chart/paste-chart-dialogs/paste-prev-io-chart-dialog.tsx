@@ -68,25 +68,28 @@ export default function PastePrevIoChartDialog({
       <div className="relative">
         <DialogTriggerButton
           icon={CalendarPlusIcon}
-          title={`${prevDate} 차트 붙여넣기`}
-          hiddenOnMobile
+          title="최근 차트 붙여넣기"
         />
-        <div className="absolute bottom-14 left-1/2 hidden -translate-x-1/2 md:block">
-          <PreviewDialog
-            targetDate={prevDate!}
-            isTemplate={false}
-            patientId={patientId}
-            chartId={prevChartId}
-          />
-        </div>
       </div>
 
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>최근 차트 붙여넣기</DialogTitle>
-          <DialogDescription>
+
+          <DialogDescription className="flex flex-col gap-2">
             {prevDate} 차트를 복사하여 {targetDate} 차트를 생성합니다
           </DialogDescription>
+
+          <div className="flex items-center">
+            <span className="text-sm text-muted-foreground">미리보기</span>
+            <PreviewDialog
+              targetDate={prevDate!}
+              isTemplate={false}
+              patientId={patientId}
+              chartId={prevChartId}
+              className="mx-1 flex border"
+            />
+          </div>
         </DialogHeader>
 
         {showOrderer && (
@@ -119,7 +122,7 @@ export default function PastePrevIoChartDialog({
         <DialogFooter className="gap-2 md:gap-0">
           <DialogClose asChild>
             <Button size="sm" type="button" variant="outline" tabIndex={-1}>
-              취소
+              닫기
             </Button>
           </DialogClose>
 

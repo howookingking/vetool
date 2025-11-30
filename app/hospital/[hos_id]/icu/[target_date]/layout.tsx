@@ -3,12 +3,9 @@ import IcuSidebar from '@/components/hospital/icu/sidebar/icu-sidebar'
 import { fetchIcuLayoutData } from '@/lib/services/icu/icu-layout'
 import { BasicHosDataProvider } from '@/providers/basic-hos-data-context-provider'
 
-type Props = {
-  children: React.ReactNode
-  params: Promise<{ target_date: string; hos_id: string }>
-}
-
-export default async function IcuPageLayout(props: Props) {
+export default async function IcuPageLayout(
+  props: LayoutProps<'/hospital/[hos_id]/icu/[target_date]'>,
+) {
   // 자신의 병원에만 접근가능
   // RLS 사용할 경우
   // TO authenticated

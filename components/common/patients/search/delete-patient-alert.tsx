@@ -63,7 +63,7 @@ export default function DeletePatientAlert({
         </AlertDialogHeader>
 
         <AlertDialogFooter>
-          <AlertDialogCancel>취소</AlertDialogCancel>
+          <AlertDialogCancel>닫기</AlertDialogCancel>
           <AlertDialogAction
             onClick={() => handleDeletePatient(patientId)}
             className="bg-destructive hover:bg-destructive/90"

@@ -206,7 +206,7 @@ export default function UpsertNoticeDialog({
                   tabIndex={-1}
                   onClick={() => setIsDialogOpen(false)}
                 >
-                  취소
+                  닫기
                 </Button>
 
                 <Button type="submit" className="ml-2" disabled={isSubmitting}>

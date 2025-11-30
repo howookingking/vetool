@@ -1,8 +1,10 @@
 'use client'
 
+import NewFeature from '@/components/common/new-feature'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -10,7 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { type SelectedIcuChart } from '@/types/icu/chart'
+import type { SelectedIcuChart } from '@/types/icu/chart'
 import { Share } from 'lucide-react'
 import { useState } from 'react'
 import ExportButtons from './export-buttons'
@@ -20,31 +22,38 @@ export default function ExportDialog({
 }: {
   chartData: SelectedIcuChart
 }) {
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isParentsDialogOpen, setIsParentsDialogOpen] = useState(false)
 
   return (
-    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      <DialogTrigger asChild>
-        <Button variant="ghost" size="icon">
-          <Share size={18} />
-        </Button>
-      </DialogTrigger>
+    <Dialog open={isParentsDialogOpen} onOpenChange={setIsParentsDialogOpen}>
+      <NewFeature>
+        <DialogTrigger asChild>
+          <Button variant="ghost" size="icon">
+            <Share size={18} />
+          </Button>
+        </DialogTrigger>
+      </NewFeature>
 
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="gap-2">
           <DialogTitle>{chartData.patient.name} 차트 내보내기</DialogTitle>
           <DialogDescription className="flex flex-col gap-1">
-            <span>입원 기간 동안의 차트를 저장합니다(임시 비활성화)</span>
             <span>
-              텍스트로 복사할 경우 {chartData.target_date} 차트만 복사합니다
+              텍스트 : {chartData.target_date} 차트를 텍스트 형식으로 복사합니다
             </span>
+            <span>PNG : 입원기간 동안의 차트를 PNG 형식으로 저장합니다</span>
+            <span>PDF : 입원기간 동안의 차트를 PDF 형식으로 저장합니다</span>
           </DialogDescription>
         </DialogHeader>
 
         <DialogFooter>
+          <DialogClose asChild>
+            <Button variant="outline">닫기</Button>
+          </DialogClose>
+
           <ExportButtons
             chartData={chartData}
-            setIsDialogOpen={setIsDialogOpen}
+            setIsParentsDialogOpen={setIsParentsDialogOpen}
           />
         </DialogFooter>
       </DialogContent>

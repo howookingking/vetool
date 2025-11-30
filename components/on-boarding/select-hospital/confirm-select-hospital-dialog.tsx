@@ -60,7 +60,7 @@ export default function ConfirmSelectHospitalDialog({ hosId, name }: Props) {
         <DialogFooter className="flex gap-2 sm:gap-0">
           <DialogClose asChild>
             <Button type="button" variant="secondary">
-              취소
+              닫기
             </Button>
           </DialogClose>
 

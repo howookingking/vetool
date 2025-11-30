@@ -10,33 +10,29 @@ type Props = {
     Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>
   >
   title: ReactNode
-  hiddenOnMobile?: boolean
   isLoading?: boolean
   className?: string
+  disabled?: boolean
 }
 
 export default function DialogTriggerButton({
   icon: Icon,
   title,
-  hiddenOnMobile,
   isLoading = false,
   className,
+  disabled,
 }: Props) {
   return (
     <DialogTrigger asChild className="relative">
       <Button
-        disabled={isLoading}
-        size="default"
+        disabled={isLoading || disabled}
+        size="lg"
         variant="outline"
-        className={cn(
-          'flex h-60 w-60 items-center justify-center gap-2',
-          hiddenOnMobile && 'hidden md:flex',
-          className,
-        )}
+        className={cn('flex w-60', className)}
       >
-        <Icon />
-        {title}
-        {isLoading && <Spinner />}
+        <Icon className="absolute left-6 top-1/2 -translate-y-1/2" />
+
+        {isLoading ? <Spinner /> : title}
       </Button>
     </DialogTrigger>
   )

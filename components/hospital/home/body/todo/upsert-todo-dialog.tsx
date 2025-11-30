@@ -240,7 +240,7 @@ export default function UpsertTodoDialog({
               <div className="ml-auto">
                 <DialogClose asChild>
                   <Button variant="outline" tabIndex={-1}>
-                    취소
+                    닫기
                   </Button>
                 </DialogClose>
                 <Button type="submit" className="ml-2" disabled={isSubmitting}>

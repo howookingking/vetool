@@ -47,7 +47,7 @@ export default function SuperHospitalSelector({
         /\/hospital\/[^\/]+/,
         `/hospital/${selectedHospital.hos_id}`,
       )
-      push(newPath)
+      push(newPath as any)
     }
   }
 

@@ -41,6 +41,7 @@ export default function IcuShareChartInfos({
       <div className="col-span-4 md:order-none md:col-span-3">
         <Button
           variant="outline"
+          size="default"
           className="flex w-full justify-start gap-2 px-2"
         >
           <VetName label="주치의" name={main_vet.name ?? '미선택'} />
@@ -50,6 +51,7 @@ export default function IcuShareChartInfos({
       <div className="col-span-4 md:col-span-3">
         <Button
           variant="outline"
+          size="default"
           className="relative flex w-full justify-start gap-2 overflow-hidden px-2"
         >
           <Label className="text-xs text-muted-foreground" htmlFor="ownerName">

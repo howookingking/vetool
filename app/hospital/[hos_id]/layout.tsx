@@ -2,10 +2,11 @@ import DesktopSidebar from '@/components/hospital/common/sidebar/desktop-sidebar
 import MobileLayout from '@/components/hospital/common/sidebar/mobile-layout/mobile-layout'
 import { getVetoolUserData } from '@/lib/services/auth/authorization'
 import { fetchHosName } from '@/lib/services/hospital-home/home'
+import { Metadata } from 'next'
 
-export async function generateMetadata(props: {
-  params: Promise<{ hos_id: string }>
-}) {
+export async function generateMetadata(
+  props: LayoutProps<'/hospital/[hos_id]'>,
+): Promise<Metadata> {
   const { hos_id } = await props.params
   const hosName = await fetchHosName(hos_id)
 
@@ -14,15 +15,11 @@ export async function generateMetadata(props: {
   }
 }
 
-type Props = {
-  children: React.ReactNode
-  params: Promise<{ hos_id: string }>
-}
-
-export default async function HospitalLayout(props: Props) {
+export default async function HospitalLayout(
+  props: LayoutProps<'/hospital/[hos_id]'>,
+) {
   const { hos_id } = await props.params
   const vetoolUser = await getVetoolUserData()
-
   const plan = 'severe'
 
   return (

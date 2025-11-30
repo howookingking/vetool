@@ -29,6 +29,6 @@ export const updateMemoNames = async (memoNames: string[], hosId: string) => {
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }

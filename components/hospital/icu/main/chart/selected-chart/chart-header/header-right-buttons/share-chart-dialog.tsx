@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -52,16 +53,22 @@ export default function ShareChartDialog({ icuIoId, targetDate }: Props) {
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>입원환자 차트 공유</DialogTitle>
+          <DialogTitle>차트 공유</DialogTitle>
           <DialogDescription>
-            리퍼 병원, 보호자 등에게 입원기간 동안의 차트를 링크로 공유할 수
-            있습니다
+            입원기간 동안의 차트를 링크로 공유할 수 있습니다
           </DialogDescription>
         </DialogHeader>
+
         <DialogFooter>
-          <Button variant="outline" onClick={handleCopy}>
-            클립보드 복사
+          <DialogClose asChild>
+            <Button type="button" variant="outline" tabIndex={-1} size="sm">
+              닫기
+            </Button>
+          </DialogClose>
+          <Button variant="secondary" onClick={handleCopy}>
+            링크 복사
           </Button>
+
           <Button onClick={handleMove}>이동</Button>
         </DialogFooter>
       </DialogContent>

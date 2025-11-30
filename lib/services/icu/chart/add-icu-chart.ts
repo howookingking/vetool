@@ -128,6 +128,6 @@ export const pasteDefaultIcuChart = async (hosId: string, chartId: string) => {
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }

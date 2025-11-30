@@ -33,7 +33,7 @@ export const updateHosDrugName = async (
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -49,7 +49,7 @@ export const updateUnitPerKg = async (
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -62,7 +62,7 @@ export const updateMlPerKg = async (mlPerKg: string, hosDrugId: string) => {
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -75,7 +75,7 @@ export const updateUnit = async (selectedUnit: string, hosDrugId: string) => {
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -88,7 +88,7 @@ export const updateRoute = async (route: string, hosDrugId: string) => {
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -104,7 +104,7 @@ export const updateCaution = async (
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -117,7 +117,7 @@ export const deleteHosDrug = async (hosDrugId: string) => {
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -144,7 +144,7 @@ export const insertHosDrug = async (
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -206,7 +206,7 @@ export const insertHosDrug = async (
 
 //   if (error) {
 //     console.error(error)
-//     redirect(`/error/?message=${error.message}`)
+//     redirect(`/error/?message=${error.message}` as any)
 //   }
 // }
 
@@ -223,7 +223,7 @@ export const insertHosDrug = async (
 
 //   if (error) {
 //     console.error(error)
-//     redirect(`/error/?message=${error.message}`)
+//     redirect(`/error/?message=${error.message}` as any)
 //   }
 // }
 
@@ -237,7 +237,7 @@ export const insertHosDrug = async (
 
 //   if (error) {
 //     console.error(error)
-//     redirect(`/error/?message=${error.message}`)
+//     redirect(`/error/?message=${error.message}` as any)
 //   }
 // }
 
@@ -254,7 +254,7 @@ export const insertHosDrug = async (
 
 //   if (error) {
 //     console.error(error)
-//     redirect(`/error/?message=${error.message}`)
+//     redirect(`/error/?message=${error.message}` as any)
 //   }
 // }
 
@@ -297,6 +297,6 @@ export const insertHosDrug = async (
 
 //   if (error) {
 //     console.error(error)
-//     redirect(`/error/?message=${error.message}`)
+//     redirect(`/error/?message=${error.message}` as any)
 //   }
 // }
