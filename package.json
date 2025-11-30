@@ -89,6 +89,7 @@
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
     "@types/react-resizable": "^3.0.8",
+    "baseline-browser-mapping": "^2.8.32",
     "eslint": "^9.23.0",
     "eslint-config-next": "16.0.1",
     "eslint-plugin-react-compiler": "19.0.0-beta-37ed2a7-20241206",
