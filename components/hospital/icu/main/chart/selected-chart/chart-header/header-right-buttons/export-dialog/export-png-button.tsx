@@ -1,7 +1,7 @@
 import { handleExport } from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/export-dialog/export-dialog-utils'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils/utils'
-import { type SelectedIcuChart } from '@/types/icu/chart'
+import type { SelectedIcuChart } from '@/types/icu/chart'
 import { addDays, format } from 'date-fns'
 import { LoaderCircle } from 'lucide-react'
 import { useParams } from 'next/navigation'
@@ -9,12 +9,12 @@ import { type Dispatch, type SetStateAction, useState } from 'react'
 
 type ExportPngButtonProps = {
   chartData: SelectedIcuChart
-  setIsDialogOpen: Dispatch<SetStateAction<boolean>>
+  setIsParentsDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export default function ExportPngButton({
   chartData,
-  setIsDialogOpen,
+  setIsParentsDialogOpen,
 }: ExportPngButtonProps) {
   const { icu_io_id } = chartData.icu_io
   const { patient_id } = chartData.patient
@@ -49,7 +49,7 @@ export default function ExportPngButton({
     )
 
     setIsExporting(false)
-    setIsDialogOpen(false)
+    setIsParentsDialogOpen(false)
   }
 
   return (
@@ -59,7 +59,7 @@ export default function ExportPngButton({
       // disabled={isExporting}
       disabled
     >
-      사진 저장
+      PNG
       <LoaderCircle
         className={cn(isExporting ? 'ml-2 animate-spin' : 'hidden')}
       />

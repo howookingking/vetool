@@ -9,12 +9,12 @@ import { type Dispatch, type SetStateAction, useState } from 'react'
 
 type ExportPdfButtonProps = {
   chartData: SelectedIcuChart
-  setIsDialogOpen: Dispatch<SetStateAction<boolean>>
+  setIsParentsDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export default function ExportPdfButton({
   chartData,
-  setIsDialogOpen,
+  setIsParentsDialogOpen,
 }: ExportPdfButtonProps) {
   const { in_date, icu_io_id } = chartData.icu_io
   const { name, patient_id } = chartData.patient
@@ -57,16 +57,17 @@ export default function ExportPdfButton({
     )
 
     setIsExporting(false)
-    setIsDialogOpen(false)
+    setIsParentsDialogOpen(false)
   }
 
   return (
     <Button
       onClick={handleExportPdf}
       // disabled={isExporting}
+      variant="outline"
       disabled
     >
-      PDF 저장
+      PDF
       <LoaderCircle
         className={cn(isExporting ? 'ml-2 animate-spin' : 'hidden')}
       />

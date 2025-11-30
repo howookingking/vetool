@@ -1,33 +1,33 @@
+import NewFeature from '@/components/common/new-feature'
 import ExportPdfButton from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/export-dialog/export-pdf-button'
 import ExportPngButton from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/export-dialog/export-png-button'
-import ExportTextButton from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/export-dialog/export-text-button'
-import { type SelectedIcuChart } from '@/types/icu/chart'
+import type { SelectedIcuChart } from '@/types/icu/chart'
 import { Dispatch, SetStateAction } from 'react'
+import ExportTextDialog from './export-text-dialog'
 
 type ExportButtonsProps = {
   chartData: SelectedIcuChart
-  setIsDialogOpen: Dispatch<SetStateAction<boolean>>
+  setIsParentsDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export default function ExportButtons({
   chartData,
-  setIsDialogOpen,
+  setIsParentsDialogOpen,
 }: ExportButtonsProps) {
   return (
     <>
-      <ExportTextButton
-        chartData={chartData}
-        setIsDialogOpen={setIsDialogOpen}
-      />
+      <NewFeature>
+        <ExportTextDialog chartData={chartData} />
+      </NewFeature>
 
       <ExportPngButton
         chartData={chartData}
-        setIsDialogOpen={setIsDialogOpen}
+        setIsParentsDialogOpen={setIsParentsDialogOpen}
       />
 
       <ExportPdfButton
         chartData={chartData}
-        setIsDialogOpen={setIsDialogOpen}
+        setIsParentsDialogOpen={setIsParentsDialogOpen}
       />
     </>
   )
