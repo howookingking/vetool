@@ -23,7 +23,7 @@ export default function IcuDateSelector({
       new URLSearchParams(searchParams),
     )
 
-    push(newPath)
+    push(newPath as any)
   }
 
   const handleUpdateDate = (days: number) => {

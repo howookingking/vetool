@@ -12,7 +12,7 @@ export const deleteOrders = async (icuChartId: string) => {
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -25,7 +25,7 @@ export const deleteChart = async (icuChartId: string) => {
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -39,6 +39,6 @@ export const deleteAllCharts = async (icuIoId: string) => {
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }

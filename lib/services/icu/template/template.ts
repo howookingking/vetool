@@ -23,7 +23,7 @@ export const createTemplateChart = async (
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -48,7 +48,7 @@ export const updateTemplateChart = async (
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -62,7 +62,7 @@ export const deleteTemplateChart = async (chartId: string) => {
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -77,7 +77,7 @@ export const getIcuTemplates = async (hosId: string) => {
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 
   return data
@@ -93,7 +93,7 @@ export const getTemplateChart = async (chartId: string) => {
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 
   return data as SelectedIcuChart

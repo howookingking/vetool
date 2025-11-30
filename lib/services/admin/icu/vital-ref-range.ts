@@ -33,6 +33,6 @@ export const updateVitalRefRange = async (
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }

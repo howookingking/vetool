@@ -47,7 +47,7 @@ export default function HeroLogos() {
             {HOSPITAL_LIST.map((item) => (
               <Link
                 key={item.name}
-                href={item.link}
+                href={item.link as any}
                 target="_blank"
                 className="flex items-center justify-center px-4 py-2 md:py-4"
               >

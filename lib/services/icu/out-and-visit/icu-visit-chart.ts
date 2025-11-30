@@ -61,7 +61,7 @@ export const getVisitDuePatients = async (
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
   console.log(data)
 
@@ -93,7 +93,7 @@ export const getVisitCandidates = async (hosId: string, targetDate: string) => {
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 
   return data

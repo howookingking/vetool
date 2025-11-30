@@ -31,7 +31,7 @@ export default function IcuFooter({ hosId, targetDate }: IcuFooterProps) {
   const currentIcuPath = path.split('/').at(5)
 
   const handleMoveToPath = (route: string) => {
-    push(`/hospital/${hosId}/icu/${targetDate}/${route}`)
+    push(`/hospital/${hosId}/icu/${targetDate}/${route}` as any)
     safeRefresh()
   }
 

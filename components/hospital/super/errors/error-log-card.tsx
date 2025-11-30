@@ -95,7 +95,7 @@ export default function ErrorLogCard({
                   <Label>에러 발생 URL</Label>
                   <Link
                     className="mt-1 text-blue-600"
-                    href={parsedError.errorUrl}
+                    href={parsedError.errorUrl as any}
                   >
                     {parsedError.errorUrl}
                   </Link>
