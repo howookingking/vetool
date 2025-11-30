@@ -29,7 +29,7 @@ export default function OutPatientDialog({ icuIo, patient }: Props) {
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon">
-          {isPatientOut ? <Undo2 size={18} /> : <LogOut size={18} />}
+          {isPatientOut ? <Undo2 /> : <LogOut />}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[480px]">

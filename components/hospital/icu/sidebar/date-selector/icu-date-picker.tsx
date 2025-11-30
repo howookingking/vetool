@@ -25,7 +25,7 @@ export default function IcuDatePicker({ targetDate }: { targetDate: string }) {
         formattedDate,
         new URLSearchParams(searchParams),
       )
-      push(newPath)
+      push(newPath as any)
     }
   }
 
@@ -36,7 +36,7 @@ export default function IcuDatePicker({ targetDate }: { targetDate: string }) {
     return (
       <div className="relative flex items-center justify-center">
         {props.date.getDate()}
-        {today && <PulsingDot className="-right-3 -top-2" />}
+        {today && <PulsingDot className="-right-2 -top-2" />}
       </div>
     )
   }

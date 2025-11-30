@@ -4,6 +4,7 @@ import { Spinner } from '@/components/ui/spinner'
 import { getIcuChartByPatientIdAndTargetDate } from '@/lib/services/icu/chart/get-icu-chart'
 import { getTemplateChart } from '@/lib/services/icu/template/template'
 import { useCopiedChartStore } from '@/lib/store/icu/copied-chart'
+import { cn } from '@/lib/utils/utils'
 import { EyeIcon } from 'lucide-react'
 import { useState } from 'react'
 import PreviewDialogContentDynamic from './preview-dialog-content-dynamic'
@@ -14,12 +15,14 @@ type Props =
       chartId: string
       targetDate: null
       patientId: null
+      className?: string
     }
   | {
       isTemplate: false
       chartId: string
       targetDate: string
       patientId: string
+      className?: string
     }
 
 export default function PreviewDialog({
@@ -27,6 +30,7 @@ export default function PreviewDialog({
   isTemplate,
   patientId,
   chartId,
+  className,
 }: Props) {
   const { copiedChart, setCopiedChart } = useCopiedChartStore()
 
@@ -57,7 +61,7 @@ export default function PreviewDialog({
           size="icon"
           variant="ghost"
           disabled={isLoading}
-          className="mx-auto flex items-center justify-center"
+          className={cn('mx-auto flex items-center justify-center', className)}
         >
           {isLoading ? <Spinner /> : <EyeIcon />}
         </Button>

@@ -178,7 +178,7 @@ export default function ConfirmAddTemplateDialog({
               <div className="ml-auto">
                 <DialogClose asChild>
                   <Button type="button" variant="outline" tabIndex={-1}>
-                    취소
+                    닫기
                   </Button>
                 </DialogClose>
 

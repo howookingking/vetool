@@ -63,7 +63,7 @@ export const getOutDuePatients = async (hosId: string, targetDate: string) => {
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 
   return data as unknown as OutDuePatientsData[]
@@ -93,7 +93,7 @@ export const getOutCandidates = async (hosId: string, targetDate: string) => {
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 
   return data
@@ -109,7 +109,7 @@ export const deleteIcuOut = async (icuOutId: string) => {
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 

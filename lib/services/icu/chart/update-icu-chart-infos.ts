@@ -21,7 +21,7 @@ export const updateDiagnosis = async (
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -40,7 +40,7 @@ export const updateChiefComplaint = async (
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -62,7 +62,7 @@ export const updateMainSubVet = async (
     .match({ icu_chart_id: icuChartId })
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -77,7 +77,7 @@ export const updateGroup = async (icuIoId: string, groupList: string[]) => {
     .match({ icu_io_id: icuIoId })
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -99,7 +99,7 @@ export const updateOutDueDate = async (
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -116,7 +116,7 @@ export const updateMemos = async (
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -151,7 +151,7 @@ export const toggleOutPatient = async (
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -168,7 +168,7 @@ export const updateOwnerName = async (
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -186,7 +186,7 @@ export const updateCpcrEtTube = async (
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -200,7 +200,7 @@ export const updateCage = async (icuIoId: string, cage: string) => {
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -214,6 +214,6 @@ export const updateUrgency = async (icuChartId: string, urgency: number) => {
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }

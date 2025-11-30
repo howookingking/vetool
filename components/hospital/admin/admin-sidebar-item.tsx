@@ -21,7 +21,10 @@ export default function AdminSidebarItem({ name, path, icon: Icon }: Props) {
         variant="ghost"
         asChild
       >
-        <Link href={path} className={cn('w-full', isActive && 'bg-muted')}>
+        <Link
+          href={path as any}
+          className={cn('w-full', isActive && 'bg-muted')}
+        >
           <Icon size={18} />
           <span>{name}</span>
         </Link>

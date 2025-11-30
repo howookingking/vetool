@@ -13,21 +13,17 @@ import {
 } from '@/components/ui/dialog'
 import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 import { pasteDefaultIcuChart } from '@/lib/services/icu/chart/add-icu-chart'
-import type { SelectedIcuChart } from '@/types/icu/chart'
-import { CrownIcon, FileIcon, SyringeIcon } from 'lucide-react'
+import { ClipboardListIcon, CrownIcon, SyringeIcon } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import DialogTriggerButton from './dialog-trigger-button'
 
 type Props = {
-  selectedIcuChart: SelectedIcuChart
+  icuChartId: string
   hosId: string
 }
 
-export default function PasteDefaultChartDialog({
-  selectedIcuChart,
-  hosId,
-}: Props) {
+export default function PasteDefaultChartDialog({ icuChartId, hosId }: Props) {
   const safeRefresh = useSafeRefresh()
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -36,7 +32,7 @@ export default function PasteDefaultChartDialog({
   const handleAddDefaultChart = async () => {
     setIsLoading(true)
 
-    await pasteDefaultIcuChart(hosId, selectedIcuChart.icu_chart_id)
+    await pasteDefaultIcuChart(hosId, icuChartId)
 
     toast.success('기본형식의 차트를 생성했습니다')
 
@@ -48,29 +44,24 @@ export default function PasteDefaultChartDialog({
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      <DialogTriggerButton icon={FileIcon} title="기본차트 붙여넣기" />
+      <DialogTriggerButton
+        icon={ClipboardListIcon}
+        title="기본 차트 붙여넣기"
+      />
 
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             기본차트 붙여넣기
-            <HelperTooltip>
-              <div className="flex items-center gap-1">
-                기본차트는 <StepBadge icon={CrownIcon} label="관리자" />→
-                <StepBadge icon={SyringeIcon} label="입원차트 설정" />→
-                <StepBadge label="기본 차트" />
-                에서 설정할 수 있습니다
-              </div>
-            </HelperTooltip>
           </DialogTitle>
 
-          <DialogDescription>기본차트를 생성합니다</DialogDescription>
+          <DialogDescription>기본형식의 차트를 생성합니다</DialogDescription>
         </DialogHeader>
 
         <DialogFooter className="gap-2 md:gap-0">
           <DialogClose asChild>
             <Button type="button" variant="outline" tabIndex={-1} size="sm">
-              취소
+              닫기
             </Button>
           </DialogClose>
 

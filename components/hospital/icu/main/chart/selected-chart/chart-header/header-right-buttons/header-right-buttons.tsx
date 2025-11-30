@@ -40,6 +40,8 @@ export default function HeaderRightButtons({
         patientName={patient.name}
         icuIoId={icu_io.icu_io_id}
         inDate={icu_io.in_date}
+        hosId={hosId}
+        targetDate={targetDate}
       />
     </div>
   )

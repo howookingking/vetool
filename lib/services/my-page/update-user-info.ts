@@ -19,7 +19,7 @@ export const updateUserInfo = async (
 
     if (error) {
       console.error(error)
-      redirect(`/error/?message=${error.message}`)
+      redirect(`/error/?message=${error.message}` as any)
     }
   } else {
     const { error } = await supabase
@@ -31,7 +31,7 @@ export const updateUserInfo = async (
 
     if (error) {
       console.error(error)
-      redirect(`/error/?message=${error.message}`)
+      redirect(`/error/?message=${error.message}` as any)
     }
   }
 }

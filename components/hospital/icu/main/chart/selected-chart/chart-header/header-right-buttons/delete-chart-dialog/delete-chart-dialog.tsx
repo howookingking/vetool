@@ -1,6 +1,5 @@
 'use client'
 
-import WarningMessage from '@/components/common/warning-message'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -21,6 +20,8 @@ type Props = {
   patientName: string
   icuIoId: string
   inDate: string
+  hosId: string
+  targetDate: string
 }
 
 export default function DeleteChartDialog({
@@ -28,6 +29,8 @@ export default function DeleteChartDialog({
   patientName,
   icuIoId,
   inDate,
+  hosId,
+  targetDate,
 }: Props) {
   const { target_date } = useParams()
 
@@ -49,20 +52,9 @@ export default function DeleteChartDialog({
             {patientName}의 차트를 삭제하시겠습니까?
           </DialogTitle>
 
-          <DialogDescription className="flex flex-col gap-2">
-            <span>
-              <span className="mr-2 rounded-sm bg-primary px-2 py-1 text-white">
-                해당일 차트삭제
-              </span>
-              {target_date} 차트만 삭제합니다
-            </span>
-            <span>
-              <span className="mr-2 rounded-sm bg-destructive px-2 py-1 text-white">
-                모든 차트삭제
-              </span>
-              입원기간동안의 모든 차트를 삭제합니다
-            </span>
-            <WarningMessage text="해당작업은 실행 후 되될릴 수 없습니다." />
+          <DialogDescription className="flex flex-col gap-1">
+            <span>해당일 차트 삭제 : {target_date} 차트만 삭제합니다</span>
+            <span>모든 차트 삭제 : 입원기간동안의 모든 차트를 삭제합니다</span>
           </DialogDescription>
         </DialogHeader>
 
@@ -73,6 +65,8 @@ export default function DeleteChartDialog({
             icuChartId={icuChartId}
             icuIoId={icuIoId}
             patientName={patientName}
+            hosId={hosId}
+            targetDate={targetDate}
           />
         </DialogFooter>
       </DialogContent>

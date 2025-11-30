@@ -27,7 +27,7 @@ export async function googleLogin(formData: FormData) {
     throw new Error(`구글 로그인 중 에러 발생 : ${error.message}`)
   }
 
-  redirect(data.url)
+  redirect(data.url as any)
 }
 
 export async function logout() {

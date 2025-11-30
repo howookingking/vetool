@@ -89,7 +89,7 @@ export const getPatientData = async (patientId: string) => {
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 
   return data as PatientWithWeight
@@ -105,7 +105,7 @@ export const deletePatient = async (patientId: string) => {
 
   if (error) {
     console.error(error.message)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 

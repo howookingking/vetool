@@ -1,6 +1,9 @@
 import SubmitButton from '@/components/common/submit-button'
+import WarningMessage from '@/components/common/warning-message'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -8,7 +11,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { deleteAllCharts } from '@/lib/services/icu/chart/delete-icu-chart'
-import type { SelectedIcuChart } from '@/types/icu/chart'
 import { Undo2Icon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -16,10 +18,12 @@ import { toast } from 'sonner'
 import DialogTriggerButton from './dialog-trigger-button'
 
 type Props = {
-  selectedIcuChart: SelectedIcuChart
+  hosId: string
+  targetDate: string
+  icuIoId: string
 }
 
-export default function UndoIoDialog({ selectedIcuChart }: Props) {
+export default function UndoIoDialog({ hosId, targetDate, icuIoId }: Props) {
   const { push } = useRouter()
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -28,16 +32,14 @@ export default function UndoIoDialog({ selectedIcuChart }: Props) {
   const handleDeleteFirstChart = async () => {
     setIsLoading(true)
 
-    await deleteAllCharts(selectedIcuChart.icu_io.icu_io_id)
+    await deleteAllCharts(icuIoId)
 
     toast.success('입원을 취소했습니다')
 
     setIsLoading(false)
     setIsDialogOpen(false)
 
-    push(
-      `/hospital/${selectedIcuChart.hos_id}/icu/${selectedIcuChart.target_date}/chart`,
-    )
+    push(`/hospital/${hosId}/icu/${targetDate}/summary`)
   }
 
   return (
@@ -58,6 +60,12 @@ export default function UndoIoDialog({ selectedIcuChart }: Props) {
         </DialogHeader>
 
         <DialogFooter>
+          <DialogClose asChild>
+            <Button type="button" variant="outline" tabIndex={-1} size="sm">
+              닫기
+            </Button>
+          </DialogClose>
+
           <SubmitButton
             buttonText="확인"
             onClick={handleDeleteFirstChart}

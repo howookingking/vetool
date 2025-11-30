@@ -37,7 +37,7 @@ export default function MobileSidebarItem({
     <li key={name}>
       <Button
         onClick={() => {
-          push(`/hospital/${hosId}/${dynamicPath}`)
+          push(`/hospital/${hosId}/${dynamicPath}` as any)
           setIsSheetOpen(false)
         }}
         className={cn(

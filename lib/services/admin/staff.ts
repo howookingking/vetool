@@ -44,7 +44,7 @@ export const getStaffs = async (hosId: string) => {
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 
   return staffs as StaffsData[]
@@ -60,7 +60,7 @@ export const updateStaffRank = async (userId: string, rankInput: string) => {
 
   if (rankUpdateError) {
     console.error(rankUpdateError)
-    redirect(`/error/?message=${rankUpdateError.message}`)
+    redirect(`/error/?message=${rankUpdateError.message}` as any)
   }
 }
 
@@ -74,7 +74,7 @@ export const updateStaffName = async (userId: string, nameInput: string) => {
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -91,7 +91,7 @@ export const updateStaffPosition = async (
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -107,7 +107,7 @@ export const updateHosGroupList = async (
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -138,7 +138,7 @@ export const updateStaffGroup = async (
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -152,7 +152,7 @@ export const updateStaffIsVet = async (userId: string, isVetInput: boolean) => {
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -169,7 +169,7 @@ export const updateStaffIsAdmin = async (
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }
 
@@ -188,7 +188,7 @@ export const deleteStaff = async (userId: string) => {
 
   if (deleteStaffError) {
     console.error(deleteStaffError)
-    redirect(`/error/?message=${deleteStaffError.message}`)
+    redirect(`/error/?message=${deleteStaffError.message}` as any)
   }
 
   const { error: deleteUserInApproval } = await supabase
@@ -198,6 +198,6 @@ export const deleteStaff = async (userId: string) => {
 
   if (deleteUserInApproval) {
     console.error(deleteUserInApproval)
-    redirect(`/error/?message=${deleteUserInApproval.message}`)
+    redirect(`/error/?message=${deleteUserInApproval.message}` as any)
   }
 }

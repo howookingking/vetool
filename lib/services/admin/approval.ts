@@ -53,6 +53,6 @@ export const approveStaff = async (hosId: string, userId: string) => {
 
   if (error) {
     console.error(error)
-    redirect(`/error/?message=${error.message}`)
+    redirect(`/error/?message=${error.message}` as any)
   }
 }

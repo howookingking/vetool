@@ -47,22 +47,12 @@ export default function PasteCopiedChartDialog({
   const [isLoading, setIsLoading] = useState(false)
 
   const handlePasteCopiedChart = async () => {
-    if (!copiedChartId) {
-      setIsDialogOpen(false)
-
-      toast.error('복사할 차트가 없습니다', {
-        description: '차트를 먼저 복사해주세요',
-      })
-
-      return
-    }
-
     setIsLoading(true)
 
-    await pasteChart(patientId, copiedChartId, targetDate, orderer)
+    await pasteChart(patientId, copiedChartId!, targetDate, orderer)
 
     toast.success('복사한 차트를 생성했습니다', {
-      description: '복사한 차트는 클립보드에서 제거됩니다',
+      description: '복사한 차트는 클립보드에서 삭제됩니다',
     })
 
     setIsLoading(false)
@@ -77,7 +67,7 @@ export default function PasteCopiedChartDialog({
       <DialogTriggerButton
         icon={ClipboardCheckIcon}
         title="복사한 차트 붙여넣기"
-        hiddenOnMobile
+        disabled={isLoading || !copiedChartId}
       />
 
       <DialogContent className="sm:max-w-[500px]">
@@ -118,7 +108,7 @@ export default function PasteCopiedChartDialog({
         <DialogFooter className="gap-2 md:gap-0">
           <DialogClose asChild>
             <Button size="sm" type="button" variant="outline" tabIndex={-1}>
-              취소
+              닫기
             </Button>
           </DialogClose>
 

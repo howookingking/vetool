@@ -147,7 +147,7 @@ export default function AddVisitChartDialog({ targetDate, hosId }: Props) {
         <DialogFooter className="gap-2 md:gap-0">
           <DialogClose asChild>
             <Button type="button" variant="outline" tabIndex={-1}>
-              취소
+              닫기
             </Button>
           </DialogClose>
 
