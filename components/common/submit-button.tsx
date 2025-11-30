@@ -1,5 +1,7 @@
+import { cn } from '@/lib/utils/utils'
+import { VariantProps } from 'class-variance-authority'
 import { ButtonHTMLAttributes } from 'react'
-import { Button } from '../ui/button'
+import { Button, buttonVariants } from '../ui/button'
 import { Spinner } from '../ui/spinner'
 
 type Props = {
@@ -8,6 +10,7 @@ type Props = {
   buttonText: string
   onClick?: () => void
   className?: string
+  variant?: VariantProps<typeof buttonVariants>['variant']
 }
 
 export default function SubmitButton({
@@ -15,6 +18,7 @@ export default function SubmitButton({
   type = 'submit',
   buttonText,
   onClick,
+  variant,
   className,
 }: Props) {
   return (
@@ -23,10 +27,10 @@ export default function SubmitButton({
       disabled={isPending}
       onClick={onClick}
       size="sm"
-      className={className}
+      className={cn(buttonVariants({ variant }), className)}
     >
       {buttonText}
-      {isPending && <Spinner />}
+      {isPending ? <Spinner /> : null}
     </Button>
   )
 }

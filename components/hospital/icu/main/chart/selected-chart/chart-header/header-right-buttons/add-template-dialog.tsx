@@ -1,12 +1,14 @@
 'use no memo'
 
 import StyledCheckbox from '@/components/common/styled-checkbox'
+import SubmitButton from '@/components/common/submit-button'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogClose,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -99,7 +101,7 @@ export default function AddTemplateDialog({
         <DialogHeader>
           <DialogTitle>{patientName} 차트를 템플릿으로 저장</DialogTitle>
           <DialogDescription>{`
-               ${orders.length}개의 오더를 저장합니다`}</DialogDescription>
+               ${orders.length}개의 오더를 템플릿으로 저장합니다`}</DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
@@ -137,7 +139,7 @@ export default function AddTemplateDialog({
                     <Input
                       {...field}
                       value={field.value || ''}
-                      placeholder="설명을 입력해주세요"
+                      placeholder="템플릿 설명을 입력해주세요"
                     />
                   </FormControl>
                   <FormMessage />
@@ -154,7 +156,7 @@ export default function AddTemplateDialog({
                     <StyledCheckbox
                       title={
                         <>
-                          <span className="bg-rose-400/10 p-1">시간정보</span>를
+                          <span className="bg-rose-400/10 p-1">형광팬</span>을
                           같이 저장합니다
                         </>
                       }
@@ -166,23 +168,15 @@ export default function AddTemplateDialog({
               )}
             />
 
-            <div className="flex">
-              <div className="ml-auto">
-                <DialogClose asChild>
-                  <Button type="button" variant="outline" tabIndex={-1}>
-                    닫기
-                  </Button>
-                </DialogClose>
-                <Button type="submit" disabled={isSubmitting} className="ml-2">
-                  저장
-                  <LoaderCircleIcon
-                    className={cn(
-                      isSubmitting ? 'ml-2 animate-spin' : 'hidden',
-                    )}
-                  />
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button type="button" variant="outline" tabIndex={-1}>
+                  닫기
                 </Button>
-              </div>
-            </div>
+              </DialogClose>
+
+              <SubmitButton isPending={isSubmitting} buttonText={'저장'} />
+            </DialogFooter>
           </form>
         </Form>
       </DialogContent>

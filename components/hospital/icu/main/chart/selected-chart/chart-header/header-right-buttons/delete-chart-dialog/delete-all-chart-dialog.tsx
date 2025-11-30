@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/input'
 import { deleteAllCharts } from '@/lib/services/icu/chart/delete-icu-chart'
 import { cn } from '@/lib/utils/utils'
 import { LoaderCircleIcon } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -21,9 +22,18 @@ type Props = {
   icuIoId: string
   patientName: string
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>
+  hosId: string
+  targetDate: string
 }
 
-export default function DeleteAllChartDialog({ icuIoId, patientName }: Props) {
+export default function DeleteAllChartDialog({
+  icuIoId,
+  patientName,
+  hosId,
+  targetDate,
+}: Props) {
+  const { push } = useRouter()
+
   const [isDeletingAllCharts, setIsDeletingAllCharts] = useState(false)
   const [isDeleteAllChartsAvailable, setIsDeleteAllChartsAvailable] =
     useState(false)
@@ -40,6 +50,8 @@ export default function DeleteAllChartDialog({ icuIoId, patientName }: Props) {
 
     setIsDeletingAllCharts(false)
     setIsDeleteAllChartsAvailable(false)
+
+    push(`/hospital/${hosId}/icu/${targetDate}/summary`)
   }
 
   const changeinputpatientName = (
@@ -53,9 +65,7 @@ export default function DeleteAllChartDialog({ icuIoId, patientName }: Props) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="destructive" disabled={isDeletingAllCharts}>
-          모든 차트삭제
-        </Button>
+        <Button disabled={isDeletingAllCharts}>모든 차트삭제</Button>
       </DialogTrigger>
 
       <DialogContent>
@@ -88,9 +98,10 @@ export default function DeleteAllChartDialog({ icuIoId, patientName }: Props) {
             <div className="space-x-2">
               <DialogClose asChild>
                 <Button type="button" variant="outline">
-                  취소
+                  닫기
                 </Button>
               </DialogClose>
+
               <Button
                 variant="destructive"
                 disabled={isDeletingAllCharts || !isDeleteAllChartsAvailable}

@@ -95,7 +95,7 @@ export default function PasteTemplateOrderDialog({
         <DialogFooter>
           <DialogClose asChild>
             <Button size="sm" type="button" variant="outline">
-              취소
+              닫기
             </Button>
           </DialogClose>
         </DialogFooter>

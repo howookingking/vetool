@@ -1,10 +1,11 @@
+import SubmitButton from '@/components/common/submit-button'
 import { Button } from '@/components/ui/button'
 import { DialogClose } from '@/components/ui/dialog'
+import { Spinner } from '@/components/ui/spinner'
 import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 import { toggleOutPatient } from '@/lib/services/icu/chart/update-icu-chart-infos'
-import { cn, hashtagKeyword } from '@/lib/utils/utils'
+import { hashtagKeyword } from '@/lib/utils/utils'
 import type { SelectedIcuChart } from '@/types/icu/chart'
-import { LoaderCircleIcon } from 'lucide-react'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -59,7 +60,7 @@ export default function OutPatientButtons({
 
   return (
     <>
-      {!isPatientOut && (
+      {!isPatientOut ? (
         <Button
           variant="outline"
           className="mr-auto"
@@ -67,23 +68,21 @@ export default function OutPatientButtons({
           disabled={isAliveSubmitting}
         >
           🌈 사망
-          <LoaderCircleIcon
-            className={cn(isAliveSubmitting ? 'ml-2 animate-spin' : 'hidden')}
-          />
+          {isAliveSubmitting ? <Spinner /> : null}
         </Button>
-      )}
+      ) : null}
 
       <DialogClose asChild>
         <Button type="button" variant="outline">
-          취소
+          닫기
         </Button>
       </DialogClose>
-      <Button onClick={() => handleOutPatient(true)} disabled={isOutSubmitting}>
-        {isPatientOut ? '퇴원취소' : '퇴원'}
-        <LoaderCircleIcon
-          className={cn(isOutSubmitting ? 'ml-2 animate-spin' : 'hidden')}
-        />
-      </Button>
+
+      <SubmitButton
+        isPending={isOutSubmitting}
+        buttonText={isPatientOut ? '퇴원취소' : '퇴원'}
+        onClick={() => handleOutPatient(true)}
+      />
     </>
   )
 }

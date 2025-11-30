@@ -52,7 +52,7 @@ export default function PasteCopiedChartDialog({
     await pasteChart(patientId, copiedChartId!, targetDate, orderer)
 
     toast.success('복사한 차트를 생성했습니다', {
-      description: '복사한 차트는 클립보드에서 제거됩니다',
+      description: '복사한 차트는 클립보드에서 삭제됩니다',
     })
 
     setIsLoading(false)
@@ -108,7 +108,7 @@ export default function PasteCopiedChartDialog({
         <DialogFooter className="gap-2 md:gap-0">
           <DialogClose asChild>
             <Button size="sm" type="button" variant="outline" tabIndex={-1}>
-              취소
+              닫기
             </Button>
           </DialogClose>
 

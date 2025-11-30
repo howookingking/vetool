@@ -1,4 +1,5 @@
 import SubmitButton from '@/components/common/submit-button'
+import WarningMessage from '@/components/common/warning-message'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -61,7 +62,7 @@ export default function UndoIoDialog({ hosId, targetDate, icuIoId }: Props) {
         <DialogFooter>
           <DialogClose asChild>
             <Button type="button" variant="outline" tabIndex={-1} size="sm">
-              취소
+              닫기
             </Button>
           </DialogClose>
 

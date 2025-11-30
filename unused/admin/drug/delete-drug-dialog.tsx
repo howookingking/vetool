@@ -44,7 +44,7 @@ export default function DeleteDrugDialog({
         </AlertDialogHeader>
 
         <AlertDialogFooter>
-          <AlertDialogCancel>취소</AlertDialogCancel>
+          <AlertDialogCancel>닫기</AlertDialogCancel>
           <AlertDialogAction
             onClick={() => {}}
             className="bg-destructive hover:bg-destructive/90"

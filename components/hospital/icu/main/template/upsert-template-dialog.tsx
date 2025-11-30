@@ -86,7 +86,7 @@ export default function UpsertTemplateDialog({
 
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline">취소</Button>
+            <Button variant="outline">닫기</Button>
           </DialogClose>
 
           <ConfirmAddTemplateDialog

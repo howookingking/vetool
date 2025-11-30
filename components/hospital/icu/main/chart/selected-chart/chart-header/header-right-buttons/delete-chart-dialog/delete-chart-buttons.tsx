@@ -10,6 +10,7 @@ import { LoaderCircleIcon } from 'lucide-react'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { toast } from 'sonner'
 import DeleteAllChartDialog from './delete-all-chart-dialog'
+import SubmitButton from '@/components/common/submit-button'
 
 type Props = {
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>
@@ -17,6 +18,8 @@ type Props = {
   icuChartId: string
   icuIoId: string
   patientName: string
+  hosId: string
+  targetDate: string
 }
 
 export default function DeleteChartButtons({
@@ -25,6 +28,8 @@ export default function DeleteChartButtons({
   icuChartId,
   icuIoId,
   patientName,
+  hosId,
+  targetDate,
 }: Props) {
   const safeRefresh = useSafeRefresh()
 
@@ -49,21 +54,23 @@ export default function DeleteChartButtons({
     <>
       <DialogClose asChild>
         <Button type="button" variant="outline">
-          취소
+          닫기
         </Button>
       </DialogClose>
 
-      <Button onClick={handleDeleteChart} disabled={isDeleting}>
-        해당일 차트삭제
-        <LoaderCircleIcon
-          className={cn(isDeleting ? 'ml-2 animate-spin' : 'hidden')}
-        />
-      </Button>
+      <SubmitButton
+        onClick={handleDeleteChart}
+        buttonText="해당일 차트삭제"
+        isPending={isDeleting}
+        variant="secondary"
+      />
 
       <DeleteAllChartDialog
         icuIoId={icuIoId}
         patientName={patientName}
         setIsDialogOpen={setIsDialogOpen}
+        hosId={hosId}
+        targetDate={targetDate}
       />
     </>
   )
