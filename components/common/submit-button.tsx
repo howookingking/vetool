@@ -11,6 +11,7 @@ type Props = {
   onClick?: () => void
   className?: string
   variant?: VariantProps<typeof buttonVariants>['variant']
+  disabled?: boolean
 }
 
 export default function SubmitButton({
@@ -20,11 +21,12 @@ export default function SubmitButton({
   onClick,
   variant,
   className,
+  disabled,
 }: Props) {
   return (
     <Button
       type={type}
-      disabled={isPending}
+      disabled={isPending || disabled}
       onClick={onClick}
       size="sm"
       className={cn(buttonVariants({ variant }), className)}

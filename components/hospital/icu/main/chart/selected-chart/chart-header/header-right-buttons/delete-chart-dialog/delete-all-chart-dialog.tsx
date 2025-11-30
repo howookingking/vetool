@@ -1,3 +1,4 @@
+import SubmitButton from '@/components/common/submit-button'
 import WarningMessage from '@/components/common/warning-message'
 import { Button } from '@/components/ui/button'
 import {
@@ -12,8 +13,6 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { deleteAllCharts } from '@/lib/services/icu/chart/delete-icu-chart'
-import { cn } from '@/lib/utils/utils'
-import { LoaderCircleIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { toast } from 'sonner'
@@ -48,9 +47,6 @@ export default function DeleteAllChartDialog({
 
     toast.success(`${patientName}의 모든차트가 삭제되었습니다`)
 
-    setIsDeletingAllCharts(false)
-    setIsDeleteAllChartsAvailable(false)
-
     push(`/hospital/${hosId}/icu/${targetDate}/summary`)
   }
 
@@ -65,16 +61,16 @@ export default function DeleteAllChartDialog({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button disabled={isDeletingAllCharts}>모든 차트삭제</Button>
+        <Button disabled={isDeletingAllCharts}>모든 차트 삭제</Button>
       </DialogTrigger>
 
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            정말로 {patientName}의 입원기간동안의 모든 차트를 삭제하시겠습니까?
+            {patientName}의 입원기간동안의 모든 차트를 삭제하시겠습니까?
           </DialogTitle>
 
-          <DialogDescription>
+          <DialogDescription className="flex flex-col gap-1">
             아래 입력칸을 정확하게 채워 주세요
             <WarningMessage text="해당작업은 실행 후 되될릴 수 없습니다." />
           </DialogDescription>
@@ -85,11 +81,12 @@ export default function DeleteAllChartDialog({
             className="flex flex-col items-end"
             onSubmit={handleDeleteAllCharts}
           >
-            <div className="flex items-center gap-2">
-              <span>네</span>
+            <div className="flex items-center gap-2 text-sm">
+              <span>네,</span>
               <Input
                 onChange={changeinputpatientName}
                 type="text"
+                className="w-28"
                 placeholder={patientName}
               />
               <span className="shrink-0">의 모든 차트를 삭제하겠습니다.</span>
@@ -102,17 +99,12 @@ export default function DeleteAllChartDialog({
                 </Button>
               </DialogClose>
 
-              <Button
+              <SubmitButton
+                isPending={isDeletingAllCharts}
+                disabled={!isDeleteAllChartsAvailable}
+                buttonText="삭제"
                 variant="destructive"
-                disabled={isDeletingAllCharts || !isDeleteAllChartsAvailable}
-              >
-                삭제
-                <LoaderCircleIcon
-                  className={cn(
-                    isDeletingAllCharts ? 'ml-2 animate-spin' : 'hidden',
-                  )}
-                />
-              </Button>
+              />
             </div>
           </form>
         </DialogFooter>

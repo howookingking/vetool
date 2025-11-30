@@ -1,16 +1,8 @@
 import { Button } from '@/components/ui/button'
 import { DialogClose } from '@/components/ui/dialog'
-import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
-import {
-  deleteChart,
-  deleteOrders,
-} from '@/lib/services/icu/chart/delete-icu-chart'
-import { cn } from '@/lib/utils/utils'
-import { LoaderCircleIcon } from 'lucide-react'
-import { type Dispatch, type SetStateAction, useState } from 'react'
-import { toast } from 'sonner'
+import { type Dispatch, type SetStateAction } from 'react'
 import DeleteAllChartDialog from './delete-all-chart-dialog'
-import SubmitButton from '@/components/common/submit-button'
+import DeleteSingleChartDialog from './delete-single-chart-dialog'
 
 type Props = {
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>
@@ -31,25 +23,6 @@ export default function DeleteChartButtons({
   hosId,
   targetDate,
 }: Props) {
-  const safeRefresh = useSafeRefresh()
-
-  const [isDeleting, setIsDeleting] = useState(false)
-
-  const handleDeleteChart = async () => {
-    setIsDeleting(true)
-
-    // 첫 차트인 경우 오더만 삭제, 2일차이상의 경우 차트 전체 삭제
-    isFirstChart
-      ? await deleteOrders(icuChartId)
-      : await deleteChart(icuChartId)
-
-    toast.success('차트를 삭제하였습니다')
-
-    setIsDeleting(false)
-    setIsDialogOpen(false)
-    safeRefresh()
-  }
-
   return (
     <>
       <DialogClose asChild>
@@ -58,11 +31,12 @@ export default function DeleteChartButtons({
         </Button>
       </DialogClose>
 
-      <SubmitButton
-        onClick={handleDeleteChart}
-        buttonText="해당일 차트삭제"
-        isPending={isDeleting}
-        variant="secondary"
+      <DeleteSingleChartDialog
+        isFirstChart={isFirstChart}
+        icuChartId={icuChartId}
+        patientName={patientName}
+        setIsDialogOpen={setIsDialogOpen}
+        targetDate={targetDate}
       />
 
       <DeleteAllChartDialog
