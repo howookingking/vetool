@@ -30,9 +30,13 @@ export default function DialogTriggerButton({
         variant="outline"
         className={cn('flex w-60', className)}
       >
-        <Icon className="absolute left-6 top-1/2 -translate-y-1/2" />
+        {isLoading ? (
+          <Spinner className="absolute left-6 top-3" />
+        ) : (
+          <Icon className="absolute left-6 top-1/2 -translate-y-1/2" />
+        )}
 
-        {isLoading ? <Spinner /> : title}
+        {title}
       </Button>
     </DialogTrigger>
   )
