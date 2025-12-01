@@ -28,31 +28,33 @@ export default function OrderTitleContent({
   return (
     <div className="flex w-full items-center justify-between gap-2 truncate">
       <div className="flex items-center gap-2">
-        {orderColorDisplay === 'dot' && (
+        {orderColorDisplay === 'dot' ? (
           <OrderTypeColorDot
             orderColorsData={orderColorsData}
             orderType={orderType}
           />
-        )}
+        ) : null}
 
-        <span style={{ fontSize: `${orderFontSizeData}px` }}>{orderName}</span>
+        <span
+          style={{ fontSize: `${orderFontSizeData}px` }}
+          className="leading-tight"
+        >
+          {orderName}
+        </span>
 
-        {vitalRefRange && (
+        {vitalRefRange ? (
           <span className="text-xs text-muted-foreground">
             ({vitalRefRange.min}~{vitalRefRange.max})
           </span>
-        )}
+        ) : null}
       </div>
 
-      {/* ??? div 왜? */}
-      <div className="flex items-center gap-2">
-        <span
-          className="min-w-16 truncate text-right text-xs font-semibold text-muted-foreground"
-          style={{ fontSize: `${orderFontSizeData - 2}px` }}
-        >
-          {orderComment}
-        </span>
-      </div>
+      <span
+        className="min-w-16 truncate text-right text-xs font-semibold text-muted-foreground"
+        style={{ fontSize: `${orderFontSizeData - 2}px` }}
+      >
+        {orderComment}
+      </span>
     </div>
   )
 }
