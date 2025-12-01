@@ -26,7 +26,7 @@ export default function ShareChartDialog({ icuIoId, targetDate }: Props) {
 
   useEffect(() => {
     setSharedChartUrl(
-      `${window.location.origin}/hospital/share/${icuIoId}?target-date=${targetDate}`,
+      `${window.location.origin}/share/${icuIoId}?target-date=${targetDate}`,
     )
   }, [icuIoId, targetDate])
 
