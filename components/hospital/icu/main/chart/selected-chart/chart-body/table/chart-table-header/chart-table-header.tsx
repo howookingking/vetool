@@ -66,7 +66,9 @@ export default function ChartTableHeader({
             />
           )}
 
-          <span className="w-full text-center">오더 목록</span>
+          <span className="w-full text-center">
+            오더 목록 ({sortedOrders.length})
+          </span>
 
           {!preview && !isSorting && (
             <PasteTemplateOrderDialog
