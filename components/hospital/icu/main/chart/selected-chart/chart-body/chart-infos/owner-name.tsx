@@ -3,6 +3,7 @@
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { updateOwnerName } from '@/lib/services/icu/chart/update-icu-chart-infos'
+import { handleSafeEnterBlur } from '@/lib/utils/utils'
 import { UserIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -20,10 +21,7 @@ export default function OwnerName({ ownerName, patientId }: Props) {
   const [isUpdating, setIsUpdating] = useState(false)
 
   const handleUpdateOwnerName = async () => {
-    if (ownerName === ownerNameInput.trim()) {
-      setOwnerNameInput(ownerNameInput.trim())
-      return
-    }
+    if (ownerName === ownerNameInput.trim()) return
 
     setIsUpdating(true)
     await updateOwnerName(patientId, ownerNameInput.trim())
@@ -42,9 +40,9 @@ export default function OwnerName({ ownerName, patientId }: Props) {
   }, [ownerName])
 
   return (
-    <div className="relative flex items-center">
+    <div className="relative">
       <Label
-        className="absolute left-2 text-xs text-muted-foreground"
+        className="absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground"
         htmlFor="ownerName"
       >
         <UserIcon size={16} className="text-muted-foreground" />
@@ -56,9 +54,8 @@ export default function OwnerName({ ownerName, patientId }: Props) {
         value={ownerNameInput}
         onChange={(e) => setOwnerNameInput(e.target.value)}
         onBlur={handleUpdateOwnerName}
-        onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
+        onKeyDown={handleSafeEnterBlur}
         className="w-full pl-8"
-        title={ownerName ?? '미등록'}
       />
     </div>
   )
