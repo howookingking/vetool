@@ -12,7 +12,7 @@ import VitalRefRangeTab from './vital-ref-range/vital-ref-range-tab'
 const ADMIN_SETTING_ITEMS = [
   { label: '기본 차트', value: 'defaultOrder', Component: DefaultOrdersTab },
   {
-    label: '오더색상 & 표시방법',
+    label: '오더색상',
     value: 'orderColor',
     Component: OrderColorTab,
   },

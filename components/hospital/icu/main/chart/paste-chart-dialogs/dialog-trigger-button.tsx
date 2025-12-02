@@ -28,15 +28,18 @@ export default function DialogTriggerButton({
         disabled={isLoading || disabled}
         size="lg"
         variant="outline"
-        className={cn('flex w-60', className)}
+        className={cn('flex w-60 py-6', className)}
       >
         {isLoading ? (
           <Spinner className="absolute left-6 top-3" />
         ) : (
-          <Icon className="absolute left-6 top-1/2 -translate-y-1/2" />
+          <Icon
+            className="absolute left-4 top-1/2 -translate-y-1/2"
+            style={{ width: 20, height: 20 }}
+          />
         )}
 
-        {title}
+        <span className="ml-6 text-base">{title}</span>
       </Button>
     </DialogTrigger>
   )

@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/dialog'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { Share2Icon } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 type Props = {
@@ -33,21 +33,33 @@ export default function ShareChartDialog({ icuIoId, targetDate }: Props) {
   } = useBasicHosDataContext()
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [shareChartUrl, setShareChartUrl] = useState('')
 
-  const shareChartUrl =
-    `${window.location.origin}/share/${icuIoId}?` +
-    `targetDate=${encodeURIComponent(targetDate)}` +
-    `&orderColors=${encodeURIComponent(JSON.stringify(orderColorsData))}` +
-    `&showOrderer=${encodeURIComponent(showOrderer)}` +
-    `&timeGuideline=${encodeURIComponent(JSON.stringify(timeGuidelineData))}` +
-    `&vitalRefRange=${encodeURIComponent(JSON.stringify(vitalRefRange))}` +
-    `&isInChargeSystem=${encodeURIComponent(isInChargeSystem)}`
+  // window undefined hydration error
+  useEffect(() => {
+    const url =
+      `${window.location.origin}/share/${icuIoId}?` +
+      `targetDate=${encodeURIComponent(targetDate)}` +
+      `&orderColors=${encodeURIComponent(JSON.stringify(orderColorsData))}` +
+      `&showOrderer=${encodeURIComponent(showOrderer)}` +
+      `&timeGuideline=${encodeURIComponent(JSON.stringify(timeGuidelineData))}` +
+      `&vitalRefRange=${encodeURIComponent(JSON.stringify(vitalRefRange))}` +
+      `&isInChargeSystem=${encodeURIComponent(isInChargeSystem)}`
+
+    setShareChartUrl(url)
+  }, [
+    icuIoId,
+    targetDate,
+    orderColorsData,
+    showOrderer,
+    timeGuidelineData,
+    vitalRefRange,
+    isInChargeSystem,
+  ])
 
   const handleCopy = () => {
     navigator.clipboard.writeText(shareChartUrl)
-
     setIsDialogOpen(false)
-
     toast.success('링크가 클립보드에 복사되었습니다.')
   }
 
