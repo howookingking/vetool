@@ -11,7 +11,6 @@ type Props = {
   orderwidth: number
   // 오더 색상 설정에서 바로 화면에 반영되도록 local state임, 다른 컴포넌트(기본오더, 템플릿)에서는 undefined
   localColorState?: IcuOrderColors
-  localColorDisplayMethod?: 'dot' | 'full'
 }
 
 export default function DtOrderRows({
@@ -19,7 +18,6 @@ export default function DtOrderRows({
   isSorting,
   orderwidth,
   localColorState,
-  localColorDisplayMethod,
 }: Props) {
   return (
     <>
@@ -36,7 +34,6 @@ export default function DtOrderRows({
               isSorting={isSorting}
               orderWidth={orderwidth}
               localColorState={localColorState}
-              localColorDisplayMethod={localColorDisplayMethod}
             />
 
             <DtOrderRowCells order={order} />

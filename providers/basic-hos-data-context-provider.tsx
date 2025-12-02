@@ -7,8 +7,6 @@ import type { Vet } from '@/types'
 import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
 import { createContext, useContext } from 'react'
 
-export type OrderColorDisplay = 'dot' | 'full'
-
 type IcuContextType = {
   basicHosData: BasicHosData
 }
@@ -24,7 +22,6 @@ export type BasicHosData = {
   vitalRefRange: VitalRefRange[]
   orderFontSizeData: OrderFontSize
   timeGuidelineData: number[]
-  orderColorDisplay: OrderColorDisplay
   plan: Plan
   isInChargeSystem: boolean
 }

@@ -295,7 +295,6 @@ async function handleExportAllCharts(
               vitalRefRange: basicHosData.vitalRefRange,
               orderFontSizeData: basicHosData.orderFontSizeData,
               timeGuidelineData: basicHosData.timeGuidelineData,
-              orderColorDisplay: basicHosData.orderColorDisplay,
               plan: basicHosData.plan,
               isInChargeSystem: basicHosData.isInChargeSystem,
             }}

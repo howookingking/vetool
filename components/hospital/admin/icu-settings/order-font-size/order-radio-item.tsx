@@ -3,7 +3,6 @@ import { Label } from '@/components/ui/label'
 import { RadioGroupItem } from '@/components/ui/radio-group'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { IcuOrderColors } from '@/types/adimin'
 
 type Props = {
   title: string
@@ -13,7 +12,7 @@ type Props = {
 
 export default function OrderRadioItem({ title, desc, value }: Props) {
   const {
-    basicHosData: { orderColorDisplay, orderColorsData },
+    basicHosData: { orderColorsData },
   } = useBasicHosDataContext()
 
   return (
@@ -23,21 +22,13 @@ export default function OrderRadioItem({ title, desc, value }: Props) {
       <Label
         htmlFor={title}
         className={cn('w-[480px] cursor-pointer border bg-primary/20')}
-        style={{
-          background:
-            orderColorDisplay === 'full'
-              ? orderColorsData['injection' as keyof IcuOrderColors]
-              : 'transparent',
-        }}
       >
         <div className="flex h-11 items-center justify-between px-2">
           <div className="flex items-center gap-2">
-            {orderColorDisplay === 'dot' && (
-              <OrderTypeColorDot
-                orderColorsData={orderColorsData}
-                orderType={'injection'}
-              />
-            )}
+            <OrderTypeColorDot
+              orderColorsData={orderColorsData}
+              orderType={'injection'}
+            />
             <span
               className="truncate font-semibold"
               style={{ fontSize: title }}

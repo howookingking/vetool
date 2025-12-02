@@ -1827,6 +1827,10 @@ export type Database = {
         }
         Returns: Json
       }
+      get_icu_layout_data: {
+        Args: { hos_id_input: string; target_date_input: string }
+        Returns: Json
+      }
       get_icu_out_due_patients: {
         Args: { hos_id_input: string; target_date_input: string }
         Returns: Json
