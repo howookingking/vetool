@@ -21,7 +21,7 @@ import {
 } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedIcuChart } from '@/types/icu/chart'
 import html2canvas from 'html2canvas'
-import JSZip from 'jszip'
+import jsPDF from 'jspdf'
 import {
   type Dispatch,
   type RefObject,
@@ -36,7 +36,7 @@ type Props = {
   onDialogOpenChange?: (open: boolean) => void
 }
 
-export default function ExportPngDialog({
+export default function ExportPdfDialog({
   chartData,
   setIsParentsDialogOpen,
   onDialogOpenChange,
@@ -56,7 +56,7 @@ export default function ExportPngDialog({
     onDialogOpenChange?.(open)
   }
 
-  const handleExportPng = async () => {
+  const handleExportPdf = async () => {
     setIsExporting(true)
 
     try {
@@ -66,14 +66,14 @@ export default function ExportPngDialog({
 
         await handleExportSingle(
           hiddenRef,
-          `${chartData.patient.name}/${chartData.target_date}`,
+          `${chartData.patient.name}-${chartData.target_date}`,
         )
       } else if (exportType === 'all-charts') {
         await handleExportAllCharts(chartData, basicHosData)
       }
     } catch (error) {
       console.error('Export failed:', error)
-      alert('PNG 내보내기 중 오류가 발생했습니다.')
+      alert('PDF 내보내기 중 오류가 발생했습니다.')
     } finally {
       setIsExporting(false)
       setIsParentsDialogOpen(false)
@@ -84,12 +84,12 @@ export default function ExportPngDialog({
     <>
       <Dialog open={isDialogOpen} onOpenChange={handleDialogOpenChange}>
         <DialogTrigger asChild>
-          <Button variant="secondary">PNG</Button>
+          <Button variant="secondary">PDF</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>
-              {chartData.patient.name}의 차트를 PNG형식으로 저장합니다
+              {chartData.patient.name}의 차트를 PDF형식으로 저장합니다
             </DialogTitle>
             <DialogDescription></DialogDescription>
           </DialogHeader>
@@ -126,7 +126,7 @@ export default function ExportPngDialog({
 
             <Button
               type="button"
-              onClick={handleExportPng}
+              onClick={handleExportPdf}
               disabled={isExporting}
             >
               저장
@@ -163,19 +163,49 @@ async function handleExportSingle(
 
   const canvas = await html2canvas(node, {
     backgroundColor: '#ffffff',
-    scale: 2,
-    logging: true,
+    scale: 1.5, // 2에서 1.5로 줄여서 용량 감소
+    logging: false,
     useCORS: true,
     allowTaint: true,
     foreignObjectRendering: false,
   })
 
-  const dataUrl = canvas.toDataURL('image/png')
+  // Canvas를 JPEG로 변환 (PNG보다 용량이 작음)
+  const imgData = canvas.toDataURL('image/jpeg', 0.85) // 85% 품질
 
-  const link = document.createElement('a')
-  link.href = dataUrl
-  link.download = `${fileName}.png`
-  link.click()
+  // PDF 생성 (A4 가로 방향, 압축 활성화)
+  const pdf = new jsPDF({
+    orientation: 'landscape',
+    unit: 'mm',
+    format: 'a4',
+    compress: true, // PDF 압축 활성화
+  })
+
+  // A4 가로 크기 (mm)
+  const pdfWidth = pdf.internal.pageSize.getWidth()
+  const pdfHeight = pdf.internal.pageSize.getHeight()
+
+  // Canvas 비율 계산
+  const canvasWidth = canvas.width
+  const canvasHeight = canvas.height
+  const ratio = canvasWidth / canvasHeight
+
+  // PDF에 맞게 이미지 크기 조정
+  let imgWidth = pdfWidth
+  let imgHeight = pdfWidth / ratio
+
+  // 높이가 PDF 높이를 초과하면 높이 기준으로 조정
+  if (imgHeight > pdfHeight) {
+    imgHeight = pdfHeight
+    imgWidth = pdfHeight * ratio
+  }
+
+  // 중앙 정렬을 위한 위치 계산
+  const x = (pdfWidth - imgWidth) / 2
+  const y = (pdfHeight - imgHeight) / 2
+
+  pdf.addImage(imgData, 'JPEG', x, y, imgWidth, imgHeight)
+  pdf.save(`${fileName}.pdf`)
 }
 
 async function handleExportAllCharts(
@@ -189,7 +219,16 @@ async function handleExportAllCharts(
   // 날짜 범위 생성
   const dateRange = getDateRange(inDate, outDate)
 
-  const zip = new JSZip()
+  // PDF 생성 (A4 가로 방향, 압축 활성화)
+  const pdf = new jsPDF({
+    orientation: 'landscape',
+    unit: 'mm',
+    format: 'a4',
+    compress: true, // PDF 압축 활성화
+  })
+
+  const pdfWidth = pdf.internal.pageSize.getWidth()
+  const pdfHeight = pdf.internal.pageSize.getHeight()
 
   // 임시 컨테이너 생성
   const tempContainer = document.createElement('div')
@@ -201,6 +240,8 @@ async function handleExportAllCharts(
   document.body.appendChild(tempContainer)
 
   try {
+    let isFirstPage = true
+
     for (let i = 0; i < dateRange.length; i++) {
       const targetDate = dateRange[i]
 
@@ -260,28 +301,48 @@ async function handleExportAllCharts(
       // capture-mode 클래스 추가
       const chartElement = chartContainer.firstChild as HTMLElement
       if (chartElement) {
-        chartElement.classList.add('capture-mode')
         await new Promise((resolve) => setTimeout(resolve, 100))
 
-        // PNG로 변환
+        // Canvas로 변환
         const canvas = await html2canvas(chartElement, {
           backgroundColor: '#ffffff',
-          scale: 2,
+          scale: 1.5, // 2에서 1.5로 줄여서 용량 감소
           logging: false,
           useCORS: true,
           allowTaint: true,
           foreignObjectRendering: false,
         })
 
-        // Canvas를 Blob으로 변환
-        const blob = await new Promise<Blob>((resolve) => {
-          canvas.toBlob((blob) => {
-            resolve(blob!)
-          }, 'image/png')
-        })
+        // Canvas를 JPEG로 변환 (PNG보다 용량이 작음)
+        const imgData = canvas.toDataURL('image/jpeg', 0.85) // 85% 품질
 
-        // ZIP에 추가
-        zip.file(`${chartData.patient.name}-${targetDate}.png`, blob)
+        // Canvas 비율 계산
+        const canvasWidth = canvas.width
+        const canvasHeight = canvas.height
+        const ratio = canvasWidth / canvasHeight
+
+        // PDF에 맞게 이미지 크기 조정
+        let imgWidth = pdfWidth
+        let imgHeight = pdfWidth / ratio
+
+        // 높이가 PDF 높이를 초과하면 높이 기준으로 조정
+        if (imgHeight > pdfHeight) {
+          imgHeight = pdfHeight
+          imgWidth = pdfHeight * ratio
+        }
+
+        // 중앙 정렬을 위한 위치 계산
+        const x = (pdfWidth - imgWidth) / 2
+        const y = (pdfHeight - imgHeight) / 2
+
+        // 첫 페이지가 아니면 새 페이지 추가
+        if (!isFirstPage) {
+          pdf.addPage()
+        }
+        isFirstPage = false
+
+        // PDF에 이미지 추가
+        pdf.addImage(imgData, 'JPEG', x, y, imgWidth, imgHeight)
       }
 
       // 정리
@@ -289,13 +350,8 @@ async function handleExportAllCharts(
       tempContainer.removeChild(chartContainer)
     }
 
-    // ZIP 파일 생성 및 다운로드
-    const zipBlob = await zip.generateAsync({ type: 'blob' })
-    const link = document.createElement('a')
-    link.href = URL.createObjectURL(zipBlob)
-    link.download = `${chartData.patient.name}-${inDate}_${outDate}-charts.zip`
-    link.click()
-    URL.revokeObjectURL(link.href)
+    // PDF 파일 다운로드
+    pdf.save(`${chartData.patient.name}-${inDate}_${outDate}-charts.pdf`)
   } finally {
     // 임시 컨테이너 제거
     document.body.removeChild(tempContainer)

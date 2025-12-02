@@ -15,7 +15,9 @@ import {
 import type { SelectedIcuChart } from '@/types/icu/chart'
 import { Share } from 'lucide-react'
 import { useState } from 'react'
-import ExportButtons from './export-buttons'
+import ExportPdfDialog from './export-pdf-dialog'
+import ExportPngDialog from './export-png-dialog'
+import ExportTextDialog from './export-text-dialog'
 
 type Props = {
   chartData: SelectedIcuChart
@@ -51,10 +53,23 @@ export default function ExportDialog({ chartData }: Props) {
             <Button variant="outline">닫기</Button>
           </DialogClose>
 
-          <ExportButtons
-            chartData={chartData}
-            setIsParentsDialogOpen={setIsParentsDialogOpen}
-          />
+          <NewFeature>
+            <ExportTextDialog chartData={chartData} />
+          </NewFeature>
+
+          <NewFeature>
+            <ExportPngDialog
+              chartData={chartData}
+              setIsParentsDialogOpen={setIsParentsDialogOpen}
+            />
+          </NewFeature>
+
+          <NewFeature>
+            <ExportPdfDialog
+              chartData={chartData}
+              setIsParentsDialogOpen={setIsParentsDialogOpen}
+            />
+          </NewFeature>
         </DialogFooter>
       </DialogContent>
     </Dialog>

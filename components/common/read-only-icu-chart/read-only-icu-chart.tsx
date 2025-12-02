@@ -21,7 +21,10 @@ export default function ReadOnlyIcuChart({ chartData, ref }: Props) {
 
   return (
     <div ref={ref} className="flex w-[1400px] flex-col gap-2 p-2 ring">
-      <div className="mx-auto my-1 font-bold">
+      <span className="absolute left-2 font-mono text-sm">
+        {chartData.target_date}
+      </span>
+      <div className="mx-auto">
         <PatientDetailInfo
           species={patient.species}
           name={patient.name}
