@@ -45,7 +45,7 @@ export default function IcuShareDateSelector({
   }
 
   return (
-    <div data-guide="date-picker" className="flex items-center gap-1 font-mono">
+    <div data-guide="date-picker" className="flex items-center gap-1">
       <Button
         onClick={() => handleUpdateDate(-1)}
         size="icon"
@@ -54,13 +54,13 @@ export default function IcuShareDateSelector({
         aria-label="이전 날짜로 이동"
         disabled={targetDate === inDate}
       >
-        <ArrowLeftIcon className="stroke-black" />
+        <ArrowLeftIcon />
       </Button>
 
       <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
         <PopoverTrigger asChild>
           <Button
-            className="h-8 px-2 py-0 text-base font-semibold"
+            className="h-8 font-mono text-base font-semibold"
             variant="ghost"
           >
             {format(targetDate, 'yy.MM.dd')}
@@ -93,7 +93,7 @@ export default function IcuShareDateSelector({
         className="h-8 w-8 rounded-full"
         aria-label="다음 날짜로 이동"
       >
-        <ArrowRightIcon className="stroke-black" />
+        <ArrowRightIcon />
       </Button>
     </div>
   )

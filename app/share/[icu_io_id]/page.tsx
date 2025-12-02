@@ -11,7 +11,6 @@ type IcuSharePageProps = {
   params: Promise<{ icu_io_id: string }>
   searchParams: Promise<{
     targetDate?: string
-    orderColorDisplay?: string
     orderColors?: string
     showOrderer?: string
     timeGuideline?: string
@@ -24,7 +23,6 @@ export default async function IcuSharePage(props: IcuSharePageProps) {
   const params = await props.params
   const {
     targetDate,
-    orderColorDisplay,
     orderColors,
     showOrderer,
     timeGuideline,
@@ -32,17 +30,13 @@ export default async function IcuSharePage(props: IcuSharePageProps) {
     isInChargeSystem,
   } = await props.searchParams
 
-  const orderColorsData = JSON.parse(decodeURIComponent(orderColors as string))
-  const timeGuidelineData = JSON.parse(
-    decodeURIComponent(timeGuideline as string),
-  )
-  const vitalRefRangeData = JSON.parse(
-    decodeURIComponent(vitalRefRange as string),
-  )
+  const orderColorsData = JSON.parse(decodeURIComponent(orderColors!))
+  const timeGuidelineData = JSON.parse(decodeURIComponent(timeGuideline!))
+  const vitalRefRangeData = JSON.parse(decodeURIComponent(vitalRefRange!))
 
   const sharedChartData = await fetchSharedIcuData(
     params.icu_io_id,
-    targetDate as string,
+    targetDate!,
   )
 
   if (!sharedChartData) {
@@ -73,10 +67,7 @@ export default async function IcuSharePage(props: IcuSharePageProps) {
       />
 
       <div className="hidden flex-col lg:flex">
-        <IcuShareHeader
-          chartData={sharedChartData}
-          targetDate={targetDate as string}
-        />
+        <IcuShareHeader chartData={sharedChartData} targetDate={targetDate!} />
         <ReadOnlyIcuChart chartData={sharedChartData} isShare />
       </div>
 
