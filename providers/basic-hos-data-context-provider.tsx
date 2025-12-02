@@ -13,7 +13,7 @@ type IcuContextType = {
   basicHosData: BasicHosData
 }
 
-type BasicHosData = {
+export type BasicHosData = {
   vetList: Vet[]
   groupListData: string[]
   orderColorsData: IcuOrderColors

@@ -73,6 +73,7 @@ export default function ReadOnlyOrderRowCells({
         const isGuidelineTime = timeGuidelineSet.has(time)
         return (
           <ReadOnlyCell
+            key={time}
             time={time}
             icuChartOrderId={order_id}
             isDone={cellData.isDone}

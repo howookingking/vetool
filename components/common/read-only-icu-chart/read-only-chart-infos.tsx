@@ -106,7 +106,7 @@ export default function ReadOnlyChartInfos({
           {urgency === 0 || urgency === null ? (
             <span className="text-sm text-muted-foreground">응급도</span>
           ) : (
-            <div>
+            <div className="flex items-center gap-1">
               {Array(urgency)
                 .fill(0)
                 .map((_, index) => (
