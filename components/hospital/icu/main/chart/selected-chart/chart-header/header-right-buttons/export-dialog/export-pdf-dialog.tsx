@@ -64,9 +64,6 @@ export default function ExportPdfDialog({
 
     try {
       if (exportType === 'single-chart') {
-        hiddenRef.current?.classList.add('capture-mode')
-        await new Promise((resolve) => setTimeout(resolve, 100))
-
         await handleExportSingle(
           hiddenRef,
           `${chartData.patient.name}-${chartData.target_date}`,

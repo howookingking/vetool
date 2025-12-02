@@ -64,8 +64,6 @@ export default function ExportPngDialog({
 
     try {
       if (exportType === 'single-chart') {
-        await new Promise((resolve) => setTimeout(resolve, 100))
-
         await handleExportSingle(
           hiddenRef,
           `${chartData.patient.name}/${chartData.target_date}`,
