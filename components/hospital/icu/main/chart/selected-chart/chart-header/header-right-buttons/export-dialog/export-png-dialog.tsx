@@ -42,6 +42,8 @@ export default function ExportPngDialog({
   setIsParentsDialogOpen,
   onDialogOpenChange,
 }: Props) {
+  const isSingleChart = chartData.icu_io.in_date === chartData.target_date
+
   const [isExporting, setIsExporting] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [exportType, setExportType] = useState<'single-chart' | 'all-charts'>(
@@ -108,13 +110,15 @@ export default function ExportPngDialog({
               </Label>
             </div>
 
-            <div className="flex items-center gap-2">
-              <RadioGroupItem value="all-charts" id="all-charts" />
-              <Label htmlFor="all-charts" className="cursor-pointer">
-                {chartData.icu_io.in_date} ~{' '}
-                {chartData.icu_io.out_date ?? chartData.target_date}
-              </Label>
-            </div>
+            {!isSingleChart ? (
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="all-charts" id="all-charts" />
+                <Label htmlFor="all-charts" className="cursor-pointer">
+                  {chartData.icu_io.in_date} ~{' '}
+                  {chartData.icu_io.out_date ?? chartData.target_date}
+                </Label>
+              </div>
+            ) : null}
           </RadioGroup>
 
           <DialogFooter>
@@ -245,7 +249,6 @@ async function handleExportAllCharts(
               vitalRefRange: basicHosData.vitalRefRange,
               orderFontSizeData: basicHosData.orderFontSizeData,
               timeGuidelineData: basicHosData.timeGuidelineData,
-              orderColorDisplay: basicHosData.orderColorDisplay,
               plan: basicHosData.plan,
               isInChargeSystem: basicHosData.isInChargeSystem,
             }}

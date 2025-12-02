@@ -13,7 +13,6 @@ export default async function AdminIcuSettingsPage(props: {
       icu_memo_names,
       is_in_charge_system,
       order_color,
-      order_color_display,
       order_font_size,
       show_orderer,
       show_tx_user,
@@ -37,7 +36,6 @@ export default async function AdminIcuSettingsPage(props: {
         vitalRefRange: vital_ref_range,
         orderFontSizeData: order_font_size,
         timeGuidelineData: time_guidelines,
-        orderColorDisplay: order_color_display,
         plan: plan,
         isInChargeSystem: is_in_charge_system,
       }}

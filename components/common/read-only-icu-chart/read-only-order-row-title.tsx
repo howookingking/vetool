@@ -1,7 +1,7 @@
 import OrderTitleContent from '@/components/hospital/common/order/order-title-content'
 import { TableCell } from '@/components/ui/table'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
+import type { VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 
 type Props = {
@@ -20,7 +20,7 @@ export default function ReadOnlyOrderRowTitle({
   const { order_comment, order_type, order_name } = order
 
   const {
-    basicHosData: { orderColorsData, orderColorDisplay, orderFontSizeData },
+    basicHosData: { orderColorsData, orderFontSizeData },
   } = useBasicHosDataContext()
 
   // -------- 바이탈 참조범위 --------
@@ -37,10 +37,6 @@ export default function ReadOnlyOrderRowTitle({
       className="p-0"
       style={{
         width: orderWidth,
-        background:
-          orderColorDisplay === 'full'
-            ? orderColorsData[order_type as keyof IcuOrderColors]
-            : 'transparent',
       }}
     >
       <div
@@ -53,7 +49,6 @@ export default function ReadOnlyOrderRowTitle({
           orderType={order_type}
           orderName={order_name}
           orderComment={order_comment}
-          orderColorDisplay={orderColorDisplay}
           orderColorsData={orderColorsData}
           orderFontSizeData={orderFontSizeData}
           vitalRefRange={rowVitalRefRange}

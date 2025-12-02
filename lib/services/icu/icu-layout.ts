@@ -3,7 +3,6 @@
 import type { OrderFontSize } from '@/constants/admin/order-font-size'
 import type { Plan } from '@/constants/plans'
 import { createClient } from '@/lib/supabase/server'
-import type { OrderColorDisplay } from '@/providers/basic-hos-data-context-provider'
 import type { Hospital, IcuChart, IcuIo, Patient, Vet } from '@/types'
 import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
 import { redirect } from 'next/navigation'
@@ -42,7 +41,6 @@ export type IcuLayoutData = {
     order_color: IcuOrderColors
     vital_ref_range: VitalRefRange[]
     order_font_size: OrderFontSize
-    order_color_display: OrderColorDisplay
     plan: Plan
   }
 }
@@ -50,7 +48,7 @@ export type IcuLayoutData = {
 export const fetchIcuLayoutData = async (hosId: string, targetDate: string) => {
   const supabase = await createClient()
 
-  const { data, error } = await supabase.rpc('fetch_icu_layout_data', {
+  const { data, error } = await supabase.rpc('get_icu_layout_data', {
     hos_id_input: hosId,
     target_date_input: targetDate,
   })

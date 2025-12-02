@@ -5,15 +5,8 @@ import OrderColorSettings from './order-color-settings'
 
 export default function OrderColorTab() {
   const {
-    basicHosData: { orderColorsData, orderColorDisplay },
+    basicHosData: { orderColorsData },
   } = useBasicHosDataContext()
 
-  return (
-    <OrderColorSettings
-      orderColorSettings={{
-        order_color: orderColorsData,
-        order_color_display: orderColorDisplay,
-      }}
-    />
-  )
+  return <OrderColorSettings order_color={orderColorsData} />
 }

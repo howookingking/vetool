@@ -39,7 +39,6 @@ export const getHosOrderColorSettings = async (hosId: string) => {
 export const updateOrderColorSettings = async (
   hosId: string,
   orderTypeColorsInput: IcuOrderColors,
-  orderColorDisplayMethodInput: string,
 ) => {
   const supabase = await createClient()
 
@@ -47,7 +46,6 @@ export const updateOrderColorSettings = async (
     .from('hospitals')
     .update({
       order_color: orderTypeColorsInput,
-      order_color_display: orderColorDisplayMethodInput,
     })
     .match({ hos_id: hosId })
 

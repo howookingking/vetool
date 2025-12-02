@@ -13,7 +13,6 @@ type Props = {
   isSorting: boolean
   orderWidth: number
   localColorState?: IcuOrderColors
-  localColorDisplayMethod?: 'dot' | 'full'
 }
 
 export default function DtOrderRowTitle({
@@ -21,18 +20,16 @@ export default function DtOrderRowTitle({
   isSorting,
   index,
   orderWidth,
-  localColorDisplayMethod,
   localColorState,
 }: Props) {
   const { order_comment, order_type, order_name } = order
 
   const {
-    basicHosData: { orderColorsData, orderColorDisplay, orderFontSizeData },
+    basicHosData: { orderColorsData, orderFontSizeData },
   } = useBasicHosDataContext()
 
   // local state가 있다는 것은 오더 색상 설정이라는 것임
   const orderColor = localColorState ?? orderColorsData
-  const orderColorMethod = localColorDisplayMethod ?? orderColorDisplay
 
   const { reset, setOrderStep, setSelectedChartOrder } = useIcuOrderStore()
 
@@ -52,12 +49,6 @@ export default function DtOrderRowTitle({
       style={{
         width: orderWidth,
         transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
-
-        // 오더 색 표시 방법이 full 인경우
-        background:
-          orderColorMethod === 'full'
-            ? orderColor![order_type as keyof IcuOrderColors]
-            : 'transparent',
       }}
     >
       <Button
@@ -75,7 +66,6 @@ export default function DtOrderRowTitle({
           orderType={order_type}
           orderName={order_name}
           orderComment={order_comment}
-          orderColorDisplay={orderColorMethod}
           orderColorsData={orderColor}
           orderFontSizeData={orderFontSizeData}
         />
