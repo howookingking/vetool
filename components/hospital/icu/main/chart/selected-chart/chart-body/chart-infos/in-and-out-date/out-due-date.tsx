@@ -21,15 +21,9 @@ type Props = {
   inDate: string
   outDueDate: string | null
   icuIoId: string
-  noIcon?: boolean
 }
 
-export default function OutDueDate({
-  inDate,
-  outDueDate,
-  icuIoId,
-  noIcon,
-}: Props) {
+export default function OutDueDate({ inDate, outDueDate, icuIoId }: Props) {
   const disabledDates = (date: Date) => date < parseISO(inDate)
 
   const safeRefresh = useSafeRefresh()
@@ -70,28 +64,18 @@ export default function OutDueDate({
             !outDueDateInput && 'text-muted-foreground',
           )}
         >
-          {noIcon ? (
-            <Label
-              className="text-xs text-muted-foreground"
-              htmlFor="outDueDate"
-            >
-              퇴원 예정일
-            </Label>
-          ) : (
-            <LogOutIcon className="text-muted-foreground" size={16} />
-          )}
+          <LogOutIcon className="text-muted-foreground" size={16} />
 
           {outDueDateInput ? (
             <span className="truncate text-sm">
               <span>{format(outDueDateInput, 'yyyy-MM-dd')}</span>
             </span>
           ) : (
-            <span className="truncate text-sm">
-              {noIcon ? '미정' : '퇴원 예정일'}
-            </span>
+            <span className="truncate text-sm">퇴원 예정일</span>
           )}
         </Button>
       </PopoverTrigger>
+
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar
           locale={ko}

@@ -17,11 +17,11 @@ import { Share } from 'lucide-react'
 import { useState } from 'react'
 import ExportButtons from './export-buttons'
 
-export default function ExportDialog({
-  chartData,
-}: {
+type Props = {
   chartData: SelectedIcuChart
-}) {
+}
+
+export default function ExportDialog({ chartData }: Props) {
   const [isParentsDialogOpen, setIsParentsDialogOpen] = useState(false)
 
   return (
@@ -41,8 +41,8 @@ export default function ExportDialog({
             <span>
               텍스트 : {chartData.target_date} 차트를 텍스트 형식으로 복사합니다
             </span>
-            <span>PNG : 입원기간 동안의 차트를 PNG 형식으로 저장합니다</span>
-            <span>PDF : 입원기간 동안의 차트를 PDF 형식으로 저장합니다</span>
+            <span>PNG : PNG 형식으로 저장합니다</span>
+            <span>PDF : PDF 형식으로 저장합니다</span>
           </DialogDescription>
         </DialogHeader>
 

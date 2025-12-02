@@ -7,23 +7,27 @@ import {
   fetchIcuLayoutData,
   type IcuLayoutData,
 } from '@/lib/services/icu/icu-layout'
-import { BasicHosDataProvider } from '@/providers/basic-hos-data-context-provider'
+import {
+  BasicHosDataProvider,
+  useBasicHosDataContext,
+} from '@/providers/basic-hos-data-context-provider'
 import type { SelectedIcuChart } from '@/types/icu/chart'
-import html2canvas from 'html2canvas'
 import { useEffect, useRef } from 'react'
 import { createRoot } from 'react-dom/client'
 import { toast } from 'sonner'
+import ChartHeader from '../../chart-header'
+import ChartBody from '../../../chart-body/chart-body'
 
 // 현재 화면 기준 ScrollWidth & ScrollHeight를 가진 HTMLCanvasElement를 생성
 export const captureContent = async (element: HTMLElement) => {
-  return await html2canvas(element, {
-    width: element.scrollWidth,
-    height: element.scrollHeight + 300,
-    scale: 1.2,
-    useCORS: true,
-    allowTaint: true,
-    logging: false,
-  })
+  // return await html2canvas(element, {
+  //   width: element.scrollWidth,
+  //   height: element.scrollHeight + 300,
+  //   scale: 1.2,
+  //   useCORS: true,
+  //   allowTaint: true,
+  //   logging: false,
+  // })
 }
 
 export const ExportChartBody: React.FC<{
@@ -54,6 +58,24 @@ export const renderAndCaptureExportChartBody = (
   chartData: SelectedIcuChart,
   initialIcuData: IcuLayoutData,
 ): Promise<HTMLCanvasElement> => {
+  const {
+    basicHosData: {
+      showOrderer,
+      showTxUser,
+      vetList,
+      groupListData,
+      icuSidebarPatients,
+      orderColorsData,
+      memoNameListData,
+      vitalRefRange,
+      orderFontSizeData,
+      timeGuidelineData,
+      orderColorDisplay,
+      plan,
+      isInChargeSystem,
+    },
+  } = useBasicHosDataContext()
+
   return new Promise((resolve, reject) => {
     const container = document.createElement('div')
     container.style.position = 'absolute'
@@ -68,11 +90,33 @@ export const renderAndCaptureExportChartBody = (
         try {
           const canvas = await captureContent(element)
           document.body.removeChild(container)
-          resolve(canvas)
+          // resolve(canvas)
         } catch (error) {
           reject(error)
         }
-      }, 100)
+      }, 500) // Wait for images/fonts to load
+    }
+
+    const CaptureWrapper = ({
+      children,
+      onRender,
+    }: {
+      children: React.ReactNode
+      onRender: (el: HTMLDivElement) => void
+    }) => {
+      const ref = useRef<HTMLDivElement>(null)
+
+      useEffect(() => {
+        if (ref.current) {
+          onRender(ref.current)
+        }
+      }, [onRender])
+
+      return (
+        <div ref={ref} className="inline-block">
+          {children}
+        </div>
+      )
     }
 
     const root = createRoot(container)
@@ -80,22 +124,24 @@ export const renderAndCaptureExportChartBody = (
     root.render(
       <BasicHosDataProvider
         basicHosData={{
-          showOrderer: true,
-          showTxUser: true,
-          vetList: initialIcuData.vetList,
-          groupListData: initialIcuData.basicHosSettings.group_list,
-          icuSidebarPatients: initialIcuData.icuSidebarPatients,
-          orderColorsData: initialIcuData.basicHosSettings.order_color,
-          memoNameListData: initialIcuData.basicHosSettings.icu_memo_names,
-          vitalRefRange: [],
-          orderFontSizeData: 14,
-          timeGuidelineData: [2, 10, 18],
-          orderColorDisplay: 'full',
-          plan: 'severe',
-          isInChargeSystem: false,
+          showOrderer,
+          showTxUser,
+          vetList,
+          groupListData,
+          icuSidebarPatients,
+          orderColorsData,
+          memoNameListData,
+          vitalRefRange,
+          orderFontSizeData,
+          timeGuidelineData,
+          orderColorDisplay,
+          plan,
+          isInChargeSystem,
         }}
       >
-        <ExportChartBody chartData={chartData} onRender={handleRender} />,
+        <CaptureWrapper onRender={handleRender}>
+          <ChartBody chartData={chartData} />
+        </CaptureWrapper>
       </BasicHosDataProvider>,
     )
   })
@@ -133,6 +179,34 @@ export const handleExport = async (
 
       exportFn(canvases)
     }
+
+    toast.success('차트을 저장하였습니다.')
+  } catch (error) {
+    console.error('Export error:', error)
+
+    toast.error('저장 실패', {
+      description: '차트 저장에 실패하였습니다, 나중에 다시 시도해주세요',
+    })
+  }
+}
+
+export const handleExportSingle = async (
+  chartData: SelectedIcuChart,
+  hosId: string,
+  exportFn: (canvas: HTMLCanvasElement) => void,
+) => {
+  try {
+    const initialIcuData = await fetchIcuLayoutData(
+      hosId,
+      chartData.target_date!,
+    )
+
+    const canvas = await renderAndCaptureExportChartBody(
+      chartData,
+      initialIcuData,
+    )
+
+    exportFn(canvas)
 
     toast.success('차트을 저장하였습니다.')
   } catch (error) {

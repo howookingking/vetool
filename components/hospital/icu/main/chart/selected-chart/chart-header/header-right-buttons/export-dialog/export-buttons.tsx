@@ -1,11 +1,11 @@
 import NewFeature from '@/components/common/new-feature'
 import ExportPdfButton from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/export-dialog/export-pdf-button'
-import ExportPngButton from '@/components/hospital/icu/main/chart/selected-chart/chart-header/header-right-buttons/export-dialog/export-png-button'
 import type { SelectedIcuChart } from '@/types/icu/chart'
-import { Dispatch, SetStateAction } from 'react'
+import type { Dispatch, RefObject, SetStateAction } from 'react'
+import ExportPngDialog from './export-png-dialog'
 import ExportTextDialog from './export-text-dialog'
 
-type ExportButtonsProps = {
+type Props = {
   chartData: SelectedIcuChart
   setIsParentsDialogOpen: Dispatch<SetStateAction<boolean>>
 }
@@ -13,17 +13,19 @@ type ExportButtonsProps = {
 export default function ExportButtons({
   chartData,
   setIsParentsDialogOpen,
-}: ExportButtonsProps) {
+}: Props) {
   return (
     <>
       <NewFeature>
         <ExportTextDialog chartData={chartData} />
       </NewFeature>
 
-      <ExportPngButton
-        chartData={chartData}
-        setIsParentsDialogOpen={setIsParentsDialogOpen}
-      />
+      <NewFeature>
+        <ExportPngDialog
+          chartData={chartData}
+          setIsParentsDialogOpen={setIsParentsDialogOpen}
+        />
+      </NewFeature>
 
       <ExportPdfButton
         chartData={chartData}

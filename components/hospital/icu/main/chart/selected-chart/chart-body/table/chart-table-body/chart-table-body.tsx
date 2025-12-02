@@ -34,7 +34,6 @@ export default function ChartTableBody({
   isSorting,
   preview,
   orderWidth,
-  isExport,
   icuChartId,
   setSortedOrders,
   cellRef,
@@ -144,7 +143,7 @@ export default function ChartTableBody({
         resetOrderStore={resetOrderStore}
       />
 
-      {!isExport && !preview && (
+      {!preview && (
         <>
           <OrderCreatorRow
             icuChartId={icuChartId}
