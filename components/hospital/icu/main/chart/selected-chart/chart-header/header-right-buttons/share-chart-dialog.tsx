@@ -24,7 +24,6 @@ type Props = {
 export default function ShareChartDialog({ icuIoId, targetDate }: Props) {
   const {
     basicHosData: {
-      orderColorDisplay,
       orderColorsData,
       showOrderer,
       timeGuidelineData,
@@ -38,7 +37,6 @@ export default function ShareChartDialog({ icuIoId, targetDate }: Props) {
   const shareChartUrl =
     `${window.location.origin}/share/${icuIoId}?` +
     `targetDate=${encodeURIComponent(targetDate)}` +
-    `&orderColorDisplay=${encodeURIComponent(orderColorDisplay)}` +
     `&orderColors=${encodeURIComponent(JSON.stringify(orderColorsData))}` +
     `&showOrderer=${encodeURIComponent(showOrderer)}` +
     `&timeGuideline=${encodeURIComponent(JSON.stringify(timeGuidelineData))}` +

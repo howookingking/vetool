@@ -6,15 +6,11 @@ import type { IcuOrderColors } from '@/types/adimin'
 import type { OrderWidth } from '@/types/hospital/order'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 
-type Props = {
-  localColorState: IcuOrderColors
-  localColorDisplayMethod: 'dot' | 'full'
-}
-
 export default function DisplayExampleTable({
   localColorState,
-  localColorDisplayMethod,
-}: Props) {
+}: {
+  localColorState: IcuOrderColors
+}) {
   const [orderWidth] = useLocalStorage<OrderWidth>('orderWidth', 400)
 
   return (
@@ -35,7 +31,6 @@ export default function DisplayExampleTable({
             isSorting={false}
             orderwidth={orderWidth}
             localColorState={localColorState}
-            localColorDisplayMethod={localColorDisplayMethod}
           />
         </TableBody>
       </Table>

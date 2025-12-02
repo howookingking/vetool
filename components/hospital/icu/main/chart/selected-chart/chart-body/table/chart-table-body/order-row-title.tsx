@@ -4,7 +4,7 @@ import { TableCell } from '@/components/ui/table'
 import type { OrderStep } from '@/lib/store/icu/icu-order'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
+import type { VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 
 type Props = {
@@ -44,7 +44,7 @@ export default function OrderRowTitle({
 
   // sorting 때문에 상위에 있으면 안되고 여기 있어야함
   const {
-    basicHosData: { orderColorsData, orderColorDisplay, orderFontSizeData },
+    basicHosData: { orderColorsData, orderFontSizeData },
   } = useBasicHosDataContext()
 
   const handleClickOrderTitle = (e: React.MouseEvent) => {
@@ -91,12 +91,6 @@ export default function OrderRowTitle({
       style={{
         width: orderWidth,
         transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
-
-        // 오더 색 표시 방법이 full 인경우
-        background:
-          orderColorDisplay === 'full'
-            ? orderColorsData[order_type as keyof IcuOrderColors]
-            : 'transparent',
       }}
     >
       <Button
@@ -122,7 +116,6 @@ export default function OrderRowTitle({
           orderType={order_type}
           orderName={order_name}
           orderComment={order_comment}
-          orderColorDisplay={orderColorDisplay}
           orderColorsData={orderColorsData}
           orderFontSizeData={orderFontSizeData}
           vitalRefRange={rowVitalRefRange}

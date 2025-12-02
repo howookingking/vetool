@@ -5,10 +5,7 @@ import IcuShareNoResult from '@/components/hospital/share/icu-share-no-result'
 import HighlightGuide from '@/components/ui/highlight-guide'
 import { SHARE_GUIDE_STEPS } from '@/constants/hospital/icu/guide/guide'
 import { fetchSharedIcuData } from '@/lib/services/icu/share'
-import {
-  BasicHosDataProvider,
-  type OrderColorDisplay,
-} from '@/providers/basic-hos-data-context-provider'
+import { BasicHosDataProvider } from '@/providers/basic-hos-data-context-provider'
 
 type IcuSharePageProps = {
   params: Promise<{ icu_io_id: string }>
@@ -56,7 +53,6 @@ export default async function IcuSharePage(props: IcuSharePageProps) {
     <BasicHosDataProvider
       basicHosData={{
         groupListData: [],
-        orderColorDisplay: orderColorDisplay as OrderColorDisplay,
         orderColorsData: orderColorsData,
         memoNameListData: ['', '', ''],
         orderFontSizeData: 16,

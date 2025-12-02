@@ -1,3 +1,4 @@
+import SubmitButton from '@/components/common/submit-button'
 import CellCheckbox from '@/components/hospital/admin/icu-settings/time-guideline/cell-checkbox'
 import OrderTypeColorDot from '@/components/hospital/common/order/order-type-color-dot'
 import { Button } from '@/components/ui/button'
@@ -9,7 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
   Table,
   TableBody,
@@ -22,8 +22,7 @@ import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { updateHosTimeGuidelines } from '@/lib/services/admin/icu/time-guidelines'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import { IcuOrderColors } from '@/types/adimin'
-import { LoaderCircle, RotateCcw } from 'lucide-react'
+import { RotateCcw } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -37,7 +36,7 @@ export function TimeGuideLinSettings({ hosGuidelineData, hosId }: Props) {
   const { refresh } = useRouter()
 
   const {
-    basicHosData: { orderColorDisplay, orderColorsData, orderFontSizeData },
+    basicHosData: { orderColorsData, orderFontSizeData },
   } = useBasicHosDataContext()
 
   const [isUpdating, setIsUpdating] = useState(false)
@@ -80,22 +79,12 @@ export function TimeGuideLinSettings({ hosGuidelineData, hosId }: Props) {
                 key={order.orderTitle}
                 className="relative w-full divide-x"
               >
-                <TableCell
-                  className="flex justify-between font-medium"
-                  style={{
-                    background:
-                      orderColorDisplay === 'full'
-                        ? orderColorsData['checklist' as keyof IcuOrderColors]
-                        : 'transparent',
-                  }}
-                >
+                <TableCell className="flex justify-between font-medium">
                   <div className="flex items-center gap-2">
-                    {orderColorDisplay === 'dot' && (
-                      <OrderTypeColorDot
-                        orderColorsData={orderColorsData}
-                        orderType={'checklist'}
-                      />
-                    )}
+                    <OrderTypeColorDot
+                      orderColorsData={orderColorsData}
+                      orderType={'checklist'}
+                    />
                     <span style={{ fontSize: `${orderFontSizeData}px` }}>
                       {order.orderTitle}
                     </span>
@@ -148,18 +137,11 @@ export function TimeGuideLinSettings({ hosGuidelineData, hosId }: Props) {
         </Table>
       </CardContent>
       <CardFooter>
-        <Button
-          type="button"
+        <SubmitButton
           onClick={handleSubmit}
-          disabled={isUpdating}
-          className="ml-auto md:ml-0 md:mr-auto"
-        >
-          저장
-          <LoaderCircle
-            className={cn(isUpdating ? 'ml-2 animate-spin' : 'hidden')}
-            size={16}
-          />
-        </Button>
+          buttonText="저장"
+          isPending={isUpdating}
+        />
       </CardFooter>
     </Card>
   )
