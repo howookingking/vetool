@@ -2,7 +2,6 @@
 
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
-import { Label } from '@/components/ui/label'
 import {
   Popover,
   PopoverContent,
@@ -24,8 +23,6 @@ type Props = {
 }
 
 export default function OutDueDate({ inDate, outDueDate, icuIoId }: Props) {
-  const disabledDates = (date: Date) => date < parseISO(inDate)
-
   const safeRefresh = useSafeRefresh()
 
   const [outDueDateInput, setOutDueDateInput] = useState<Date | undefined>(
@@ -60,18 +57,15 @@ export default function OutDueDate({ inDate, outDueDate, icuIoId }: Props) {
           size="default"
           variant="outline"
           className={cn(
-            'flex w-full items-center justify-start gap-2 whitespace-pre-wrap px-2',
-            !outDueDateInput && 'text-muted-foreground',
+            'flex w-full items-center justify-start gap-2 px-2 font-normal',
           )}
         >
           <LogOutIcon className="text-muted-foreground" size={16} />
 
           {outDueDateInput ? (
-            <span className="truncate text-sm">
-              <span>{format(outDueDateInput, 'yyyy-MM-dd')}</span>
-            </span>
+            <span>{format(outDueDateInput, 'yyyy-MM-dd')}</span>
           ) : (
-            <span className="truncate text-sm">퇴원 예정일</span>
+            <span className="text-muted-foreground">퇴원 예정일</span>
           )}
         </Button>
       </PopoverTrigger>
@@ -83,7 +77,7 @@ export default function OutDueDate({ inDate, outDueDate, icuIoId }: Props) {
           selected={outDueDateInput}
           onSelect={handleUpdateOutDueDate}
           className="rounded-b-none rounded-t-md border"
-          disabled={disabledDates}
+          disabled={(date) => date < parseISO(inDate)}
         />
         <Button
           className="w-full rounded-t-none border-t-0"
