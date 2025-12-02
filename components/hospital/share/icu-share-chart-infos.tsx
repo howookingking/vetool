@@ -26,7 +26,6 @@ export default function IcuShareChartInfos({
           inDate={icu_io.in_date}
           outDueDate={icu_io.out_due_date}
           outDate={icu_io.out_date}
-          noIcon
         />
       </div>
 

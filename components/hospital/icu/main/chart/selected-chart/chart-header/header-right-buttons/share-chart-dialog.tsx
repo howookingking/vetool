@@ -11,8 +11,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import { Share2Icon } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { toast } from 'sonner'
 
 type Props = {
@@ -21,17 +22,31 @@ type Props = {
 }
 
 export default function ShareChartDialog({ icuIoId, targetDate }: Props) {
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [sharedChartUrl, setSharedChartUrl] = useState('')
+  const {
+    basicHosData: {
+      orderColorDisplay,
+      orderColorsData,
+      showOrderer,
+      timeGuidelineData,
+      vitalRefRange,
+      isInChargeSystem,
+    },
+  } = useBasicHosDataContext()
 
-  useEffect(() => {
-    setSharedChartUrl(
-      `${window.location.origin}/hospital/share/${icuIoId}?target-date=${targetDate}`,
-    )
-  }, [icuIoId, targetDate])
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+
+  const shareChartUrl =
+    `${window.location.origin}/share/${icuIoId}?` +
+    `targetDate=${encodeURIComponent(targetDate)}` +
+    `&orderColorDisplay=${encodeURIComponent(orderColorDisplay)}` +
+    `&orderColors=${encodeURIComponent(JSON.stringify(orderColorsData))}` +
+    `&showOrderer=${encodeURIComponent(showOrderer)}` +
+    `&timeGuideline=${encodeURIComponent(JSON.stringify(timeGuidelineData))}` +
+    `&vitalRefRange=${encodeURIComponent(JSON.stringify(vitalRefRange))}` +
+    `&isInChargeSystem=${encodeURIComponent(isInChargeSystem)}`
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(sharedChartUrl)
+    navigator.clipboard.writeText(shareChartUrl)
 
     setIsDialogOpen(false)
 
@@ -39,7 +54,7 @@ export default function ShareChartDialog({ icuIoId, targetDate }: Props) {
   }
 
   const handleMove = () => {
-    window.open(sharedChartUrl, '_blank')
+    window.open(shareChartUrl, '_blank')
     setIsDialogOpen(false)
   }
 

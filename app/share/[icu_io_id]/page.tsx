@@ -1,25 +1,47 @@
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
-import ChartTable from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table'
+import ReadOnlyIcuChart from '@/components/common/read-only-icu-chart/read-only-icu-chart'
 import IcuShareHeader from '@/components/hospital/share/header/icu-share-header'
-import IcuShareChartInfos from '@/components/hospital/share/icu-share-chart-infos'
 import IcuShareNoResult from '@/components/hospital/share/icu-share-no-result'
 import HighlightGuide from '@/components/ui/highlight-guide'
-import { DEFAULT_SHARE_ORDER_COLOR } from '@/constants/hospital/icu/chart/colors'
 import { SHARE_GUIDE_STEPS } from '@/constants/hospital/icu/guide/guide'
 import { fetchSharedIcuData } from '@/lib/services/icu/share'
-import { BasicHosDataProvider } from '@/providers/basic-hos-data-context-provider'
+import {
+  BasicHosDataProvider,
+  type OrderColorDisplay,
+} from '@/providers/basic-hos-data-context-provider'
 
 type IcuSharePageProps = {
   params: Promise<{ icu_io_id: string }>
   searchParams: Promise<{
-    'target-date'?: string
+    targetDate?: string
+    orderColorDisplay?: string
+    orderColors?: string
+    showOrderer?: string
+    timeGuideline?: string
+    vitalRefRange?: string
+    isInChargeSystem?: string
   }>
 }
 
 export default async function IcuSharePage(props: IcuSharePageProps) {
   const params = await props.params
-  const searchParams = await props.searchParams
-  const targetDate = searchParams['target-date']
+  const {
+    targetDate,
+    orderColorDisplay,
+    orderColors,
+    showOrderer,
+    timeGuideline,
+    vitalRefRange,
+    isInChargeSystem,
+  } = await props.searchParams
+
+  const orderColorsData = JSON.parse(decodeURIComponent(orderColors as string))
+  const timeGuidelineData = JSON.parse(
+    decodeURIComponent(timeGuideline as string),
+  )
+  const vitalRefRangeData = JSON.parse(
+    decodeURIComponent(vitalRefRange as string),
+  )
 
   const sharedChartData = await fetchSharedIcuData(
     params.icu_io_id,
@@ -34,36 +56,34 @@ export default async function IcuSharePage(props: IcuSharePageProps) {
     <BasicHosDataProvider
       basicHosData={{
         groupListData: [],
-        orderColorsData: DEFAULT_SHARE_ORDER_COLOR,
+        orderColorDisplay: orderColorDisplay as OrderColorDisplay,
+        orderColorsData: orderColorsData,
         memoNameListData: ['', '', ''],
-        orderColorDisplay: 'dot',
         orderFontSizeData: 16,
-        showOrderer: false,
+        showOrderer: showOrderer === 'true',
         showTxUser: false,
         icuSidebarPatients: [],
-        timeGuidelineData: [],
+        timeGuidelineData: timeGuidelineData,
         vetList: [],
-        vitalRefRange: [],
+        vitalRefRange: vitalRefRangeData,
         plan: 'severe',
-        isInChargeSystem: false,
+        isInChargeSystem: isInChargeSystem === 'true',
       }}
     >
       <NoResultSquirrel
         size="lg"
         text="PC 환경에서 이용해주세요"
-        className="h-screen flex-col sm:hidden"
+        className="h-screen flex-col lg:hidden"
       />
 
-      <div className="hidden flex-col gap-4 p-4 sm:flex">
+      <div className="hidden flex-col lg:flex">
         <IcuShareHeader
           chartData={sharedChartData}
           targetDate={targetDate as string}
         />
-
-        <IcuShareChartInfos chartData={sharedChartData} />
-
-        <ChartTable chartData={sharedChartData} preview />
+        <ReadOnlyIcuChart chartData={sharedChartData} isShare />
       </div>
+
       <HighlightGuide steps={SHARE_GUIDE_STEPS} localStorageKey="share-guide" />
     </BasicHosDataProvider>
   )
