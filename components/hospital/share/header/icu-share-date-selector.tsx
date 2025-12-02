@@ -38,23 +38,22 @@ export default function IcuShareDateSelector({
     if (!date) return
 
     const params = new URLSearchParams(searchParams.toString())
-    params.set('target-date', format(date, 'yyyy-MM-dd'))
+    params.set('targetDate', format(date, 'yyyy-MM-dd'))
 
     router.push(`?${params.toString()}`)
     setIsCalendarOpen(false)
   }
 
   return (
-    <div data-guide="date-picker" className="flex items-center gap-1">
+    <div data-guide="date-picker" className="flex items-center gap-1 font-mono">
       <Button
         onClick={() => handleUpdateDate(-1)}
         size="icon"
-        variant="outline"
-        className="h-6 w-6 rounded-full"
+        variant="ghost"
+        className="h-8 w-8 rounded-full"
         aria-label="이전 날짜로 이동"
-        disabled={targetDate === inDate}
       >
-        <ArrowLeftIcon />
+        <ArrowLeftIcon className="stroke-black" />
       </Button>
 
       <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
@@ -63,7 +62,7 @@ export default function IcuShareDateSelector({
             className="h-8 px-2 py-0 text-base font-semibold"
             variant="ghost"
           >
-            {format(targetDate, 'yyyy-MM-dd')}
+            {format(targetDate, 'yy.MM.dd')}
           </Button>
         </PopoverTrigger>
 
@@ -89,11 +88,11 @@ export default function IcuShareDateSelector({
       <Button
         onClick={() => handleUpdateDate(1)}
         size="icon"
-        variant="outline"
-        className="h-6 w-6 rounded-full"
+        variant="ghost"
+        className="h-8 w-8 rounded-full"
         aria-label="다음 날짜로 이동"
       >
-        <ArrowRightIcon />
+        <ArrowRightIcon className="stroke-black" />
       </Button>
     </div>
   )
