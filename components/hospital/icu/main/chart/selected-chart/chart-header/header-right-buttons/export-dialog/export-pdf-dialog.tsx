@@ -42,6 +42,8 @@ export default function ExportPdfDialog({
   setIsParentsDialogOpen,
   onDialogOpenChange,
 }: Props) {
+  const isSingleChart = chartData.icu_io.in_date === chartData.target_date
+
   const [isExporting, setIsExporting] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [exportType, setExportType] = useState<'single-chart' | 'all-charts'>(
@@ -60,7 +62,12 @@ export default function ExportPdfDialog({
   const handleExportPdf = async () => {
     setIsExporting(true)
 
-    toast.info('PDF파일을 생성 중입니다. 잠시만 기다려주세요.')
+    toast.info(
+      <>
+        PDF파일을 생성 중입니다
+        <br /> 잠시만 기다려주세요
+      </>,
+    )
 
     try {
       if (exportType === 'single-chart') {
@@ -108,13 +115,15 @@ export default function ExportPdfDialog({
               </Label>
             </div>
 
-            <div className="flex items-center gap-2">
-              <RadioGroupItem value="all-charts" id="all-charts" />
-              <Label htmlFor="all-charts" className="cursor-pointer">
-                {chartData.icu_io.in_date} ~{' '}
-                {chartData.icu_io.out_date ?? chartData.target_date}
-              </Label>
-            </div>
+            {!isSingleChart ? (
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="all-charts" id="all-charts" />
+                <Label htmlFor="all-charts" className="cursor-pointer">
+                  {chartData.icu_io.in_date} ~{' '}
+                  {chartData.icu_io.out_date ?? chartData.target_date}
+                </Label>
+              </div>
+            ) : null}
           </RadioGroup>
 
           <DialogFooter>
