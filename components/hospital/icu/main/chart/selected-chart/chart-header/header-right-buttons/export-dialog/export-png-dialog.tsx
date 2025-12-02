@@ -29,6 +29,7 @@ import {
   useRef,
   useState,
 } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   chartData: SelectedIcuChart
@@ -59,9 +60,10 @@ export default function ExportPngDialog({
   const handleExportPng = async () => {
     setIsExporting(true)
 
+    toast.info('PNG파일을 생성 중입니다. 잠시만 기다려주세요.')
+
     try {
       if (exportType === 'single-chart') {
-        hiddenRef.current?.classList.add('capture-mode')
         await new Promise((resolve) => setTimeout(resolve, 100))
 
         await handleExportSingle(
@@ -73,7 +75,7 @@ export default function ExportPngDialog({
       }
     } catch (error) {
       console.error('Export failed:', error)
-      alert('PNG 내보내기 중 오류가 발생했습니다.')
+      toast.error('PNG 내보내기 중 오류가 발생했습니다.')
     } finally {
       setIsExporting(false)
       setIsParentsDialogOpen(false)

@@ -29,6 +29,7 @@ import {
   useRef,
   useState,
 } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   chartData: SelectedIcuChart
@@ -59,6 +60,8 @@ export default function ExportPdfDialog({
   const handleExportPdf = async () => {
     setIsExporting(true)
 
+    toast.info('PDF파일을 생성 중입니다. 잠시만 기다려주세요.')
+
     try {
       if (exportType === 'single-chart') {
         hiddenRef.current?.classList.add('capture-mode')
@@ -73,7 +76,7 @@ export default function ExportPdfDialog({
       }
     } catch (error) {
       console.error('Export failed:', error)
-      alert('PDF 내보내기 중 오류가 발생했습니다.')
+      toast.error('PDF 내보내기 중 오류가 발생했습니다.')
     } finally {
       setIsExporting(false)
       setIsParentsDialogOpen(false)
