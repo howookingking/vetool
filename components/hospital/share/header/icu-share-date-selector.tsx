@@ -52,6 +52,7 @@ export default function IcuShareDateSelector({
         variant="ghost"
         className="h-8 w-8 rounded-full"
         aria-label="이전 날짜로 이동"
+        disabled={targetDate === inDate}
       >
         <ArrowLeftIcon className="stroke-black" />
       </Button>
