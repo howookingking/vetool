@@ -15,13 +15,15 @@ import {
 import type { SelectedIcuChart } from '@/types/icu/chart'
 import { Share } from 'lucide-react'
 import { useState } from 'react'
-import ExportButtons from './export-buttons'
+import ExportPdfDialog from './export-pdf-dialog'
+import ExportPngDialog from './export-png-dialog'
+import ExportTextDialog from './export-text-dialog'
 
-export default function ExportDialog({
-  chartData,
-}: {
+type Props = {
   chartData: SelectedIcuChart
-}) {
+}
+
+export default function ExportDialog({ chartData }: Props) {
   const [isParentsDialogOpen, setIsParentsDialogOpen] = useState(false)
 
   return (
@@ -41,8 +43,8 @@ export default function ExportDialog({
             <span>
               텍스트 : {chartData.target_date} 차트를 텍스트 형식으로 복사합니다
             </span>
-            <span>PNG : 입원기간 동안의 차트를 PNG 형식으로 저장합니다</span>
-            <span>PDF : 입원기간 동안의 차트를 PDF 형식으로 저장합니다</span>
+            <span>PNG : PNG 형식으로 저장합니다</span>
+            <span>PDF : PDF 형식으로 저장합니다</span>
           </DialogDescription>
         </DialogHeader>
 
@@ -51,10 +53,23 @@ export default function ExportDialog({
             <Button variant="outline">닫기</Button>
           </DialogClose>
 
-          <ExportButtons
-            chartData={chartData}
-            setIsParentsDialogOpen={setIsParentsDialogOpen}
-          />
+          <NewFeature>
+            <ExportTextDialog chartData={chartData} />
+          </NewFeature>
+
+          <NewFeature>
+            <ExportPngDialog
+              chartData={chartData}
+              setIsParentsDialogOpen={setIsParentsDialogOpen}
+            />
+          </NewFeature>
+
+          <NewFeature>
+            <ExportPdfDialog
+              chartData={chartData}
+              setIsParentsDialogOpen={setIsParentsDialogOpen}
+            />
+          </NewFeature>
         </DialogFooter>
       </DialogContent>
     </Dialog>

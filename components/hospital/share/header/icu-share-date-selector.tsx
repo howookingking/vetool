@@ -30,7 +30,7 @@ export default function IcuShareDateSelector({
   const handleUpdateDate = (days: number) => {
     const newDate = addDays(new Date(targetDate), days)
     const params = new URLSearchParams(searchParams.toString())
-    params.set('target-date', format(newDate, 'yyyy-MM-dd'))
+    params.set('targetDate', format(newDate, 'yyyy-MM-dd'))
     router.push(`?${params.toString()}`)
   }
 

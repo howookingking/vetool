@@ -1,3 +1,4 @@
+import SubmitButton from '@/components/common/submit-button'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -74,10 +75,11 @@ export default function ExportTextDialog({ chartData }: Props) {
             </Button>
           </DialogClose>
 
-          <Button type="button" onClick={handleCopy} disabled={isCopying}>
-            복사
-            {isCopying ? <Spinner /> : null}
-          </Button>
+          <SubmitButton
+            isPending={isCopying}
+            buttonText="복사"
+            onClick={handleCopy}
+          />
         </DialogFooter>
       </DialogContent>
     </Dialog>
