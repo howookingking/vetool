@@ -12,7 +12,7 @@ export const fetchSharedIcuData = async (
 
   const { data: icuIoData, error: icuIoDataError } = await supabase
     .from('icu_io')
-    .select('hos_id, patient_id')
+    .select('patient_id')
     .match({ icu_io_id: icuIoId })
     .maybeSingle()
 

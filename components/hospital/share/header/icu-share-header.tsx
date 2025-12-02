@@ -5,9 +5,10 @@ import VitalChartDialog from '@/components/hospital/icu/main/chart/selected-char
 import IcuShareDateSelector from '@/components/hospital/share/header/icu-share-date-selector'
 import IcuSharePatientInfo from '@/components/hospital/share/header/icu-share-patient-info'
 import { checkIfUserIsVisitor } from '@/lib/services/icu/share'
-import { type SelectedIcuChart } from '@/types/icu/chart'
+import type { SelectedIcuChart } from '@/types/icu/chart'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+
 type Props = {
   targetDate: string
   chartData: SelectedIcuChart | null
@@ -25,7 +26,7 @@ export default function IcuShareHeader({ targetDate, chartData }: Props) {
   }, [])
 
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between p-2">
       <IcuShareDateSelector
         targetDate={targetDate}
         inDate={chartData?.icu_io.in_date ?? '2024-01-01'}

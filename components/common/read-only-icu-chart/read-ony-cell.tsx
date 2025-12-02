@@ -3,7 +3,6 @@ import { VitalResultIndication } from '@/components/hospital/icu/main/chart/sele
 import { Input } from '@/components/ui/input'
 import { TableCell } from '@/components/ui/table'
 import useAbnormalVital from '@/hooks/use-abnormal-vital'
-import useCellAutofocus from '@/hooks/use-cell-autofocus'
 import { cn } from '@/lib/utils/utils'
 import type { Treatment } from '@/types/icu/chart'
 import { ImageIcon } from 'lucide-react'
@@ -45,7 +44,6 @@ export default function ReadOnlyCell({
     treatment,
     rowVitalRefRange,
   )
-  useCellAutofocus()
 
   // 배경색을 인라인 스타일로 적용 (PNG export를 위해)
   const getBackgroundColor = () => {

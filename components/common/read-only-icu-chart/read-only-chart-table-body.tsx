@@ -29,7 +29,7 @@ export default function ReadOnlyChartTableBody({
       {orders.map((order, index) => {
         return (
           <TableRow
-            className="relative w-full divide-x"
+            className="w-full divide-x"
             key={order.order_id}
             style={borderedOrderClassName(orders, order, index)}
           >

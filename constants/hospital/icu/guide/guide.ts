@@ -28,10 +28,4 @@ export const SHARE_GUIDE_STEPS: GuideStep[] = [
     title: '입원 정보',
     description: '환자의 입원 정보를 확인할 수 있습니다',
   },
-
-  {
-    target: 'order-info',
-    title: '오더 정보',
-    description: '시간별 오더 및 처치 결과를 확인할 수 있습니다',
-  },
 ]

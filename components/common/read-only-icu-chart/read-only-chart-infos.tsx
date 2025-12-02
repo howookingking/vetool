@@ -31,7 +31,7 @@ export default function ReadOnlyChartInfos({
   } = useBasicHosDataContext()
 
   return (
-    <div className="grid grid-cols-12 gap-2">
+    <div className="grid grid-cols-12 gap-2" data-guide="chart-info">
       {/* 입원일 */}
       <div className="col-span-2 flex h-9 items-center gap-2 rounded-md border px-2 shadow-sm">
         <LogInIcon className="text-muted-foreground" size={16} />
