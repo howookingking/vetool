@@ -4,10 +4,11 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'VETOOL - 벳툴',
+  title: '벳툴 | VETOOL',
   description: '동물병원 전문차트 서비스',
   openGraph: {
-    title: '벳툴',
+    type: 'website',
+    title: '벳툴 | VETOOL',
     description: '동물병원 전문차트 서비스',
     url: 'https://vetool.co.kr',
     images: [
@@ -18,10 +19,11 @@ export const metadata: Metadata = {
         type: 'image/png',
       },
     ],
+    siteName: '벳툴 | VETOOL',
   },
   twitter: {
     card: 'summary_large_image',
-    title: '벳툴',
+    title: '벳툴 | VETOOL',
     description: '동물병원 전문차트 서비스',
     images: ['https://vetool.co.kr/opengraph-image.png'],
   },
