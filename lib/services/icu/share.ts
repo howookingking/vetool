@@ -31,12 +31,14 @@ export const fetchSharedIcuData = async (
 
 export const checkIfUserIsVisitor = async () => {
   const supabase = await createClient()
-  const {
-    data: { user: supabaseUser },
-    error,
-  } = await supabase.auth.getUser()
+  const { data, error } = await supabase.auth.getClaims()
 
-  if (!supabaseUser) {
+  if (error) {
+    console.error(error)
+    redirect(`/error?message=${error.message}`)
+  }
+
+  if (!data) {
     return true
   }
 

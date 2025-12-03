@@ -1,5 +1,5 @@
 import type { Plan } from '@/constants/plans'
-import type { VetoolUser } from '@/types'
+import type { VetoolUser } from '@/lib/services/auth/authorization'
 import MobileSidebar from './mobile-sidebar'
 
 type Props = {
