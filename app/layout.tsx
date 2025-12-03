@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: '벳툴 | VETOOL',
   description: '동물병원 전문차트 서비스',
   openGraph: {
+    siteName: '벳툴 | VETOOL',
     title: '벳툴 | VETOOL',
     description: '동물병원 전문차트 서비스',
     images: [
