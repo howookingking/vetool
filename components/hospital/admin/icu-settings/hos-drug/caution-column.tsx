@@ -1,5 +1,6 @@
 import { Input } from '@/components/ui/input'
 import { updateCaution } from '@/lib/services/admin/icu/hos-drugs'
+import { handleSafeEnterBlur } from '@/lib/utils/utils'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -41,16 +42,7 @@ export default function CautionColumn({ hosDrugId, caution }: Props) {
       onChange={(e) => setCautionInput(e.target.value)}
       onBlur={handleUpdateHosDrugName}
       disabled={isUpdating}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter') {
-          if (e.nativeEvent.isComposing) return
-
-          const target = e.currentTarget
-          if (target) {
-            target.blur()
-          }
-        }
-      }}
+      onKeyDown={handleSafeEnterBlur}
     />
   )
 }

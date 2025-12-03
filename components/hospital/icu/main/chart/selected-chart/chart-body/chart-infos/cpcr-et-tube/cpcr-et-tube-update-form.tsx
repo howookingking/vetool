@@ -1,4 +1,7 @@
 import CommonDialogFooter from '@/components/common/common-dialog-footer'
+import SubmitButton from '@/components/common/submit-button'
+import { Button } from '@/components/ui/button'
+import { DialogClose, DialogFooter } from '@/components/ui/dialog'
 import {
   Form,
   FormControl,
@@ -62,8 +65,8 @@ export default function CpcrEtTubeUpdateForm({
   const form = useForm<z.infer<typeof cpcrEtTubeSchema>>({
     resolver: zodResolver(cpcrEtTubeSchema),
     defaultValues: {
-      cpcr: cpcr,
-      etTube: etTube,
+      cpcr: cpcr ?? '미지정',
+      etTube: etTube ?? '미지정',
     },
   })
 
@@ -83,17 +86,7 @@ export default function CpcrEtTubeUpdateForm({
               <FormLabel>
                 CPCR <span className="text-destructive">*</span>
               </FormLabel>
-              <Select
-                onValueChange={(value) => {
-                  field.onChange(value)
-                  if (value === 'CPCR') {
-                    setEtTubeSelectOpen(true)
-                  } else {
-                    setEtTubeSelectOpen(false)
-                  }
-                }}
-                defaultValue={field.value}
-              >
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger
                     className={cn(
@@ -155,12 +148,15 @@ export default function CpcrEtTubeUpdateForm({
           )}
         />
 
-        <CommonDialogFooter
-          buttonName="변경"
-          isPending={isUpdating}
-          type="submit"
-          className="col-span-2"
-        />
+        <DialogFooter className="col-span-2 ml-auto">
+          <DialogClose asChild>
+            <Button tabIndex={-1} variant="outline">
+              닫기
+            </Button>
+          </DialogClose>
+
+          <SubmitButton isPending={isUpdating} buttonText="변경" />
+        </DialogFooter>
       </form>
     </Form>
   )
@@ -168,6 +164,7 @@ export default function CpcrEtTubeUpdateForm({
 
 const TUBE_THICKNESS = [
   '미지정',
+  'V-GEL',
   2,
   2.5,
   3,
