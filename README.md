@@ -3,7 +3,7 @@
 3. 수의사 셀렉트
 4. shadcn field
 
-- 도메인 호스팅 : hostingkr, 구글오어스 포우, 2년 21450원
+- 도메인 호스팅 : hostingkr, 구글오어스계정 junsgk, 2년 21450원
 - vercel 월 20달러
 - 수퍼베이스 : 월 25달러
 
