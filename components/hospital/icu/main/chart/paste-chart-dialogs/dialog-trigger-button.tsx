@@ -31,7 +31,10 @@ export default function DialogTriggerButton({
         className={cn('flex w-60 py-6', className)}
       >
         {isLoading ? (
-          <Spinner className="absolute left-6 top-3" />
+          <Spinner
+            className="absolute left-4 top-4"
+            style={{ width: 20, height: 20 }}
+          />
         ) : (
           <Icon
             className="absolute left-4 top-1/2 -translate-y-1/2"

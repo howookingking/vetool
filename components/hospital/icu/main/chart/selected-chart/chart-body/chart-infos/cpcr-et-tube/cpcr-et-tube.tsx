@@ -32,28 +32,36 @@ export default function CpcrEtTube({ cpcrEtTube, icuIoId }: Props) {
         <Button
           size="default"
           variant="outline"
-          className="flex w-full items-center justify-start gap-2 truncate px-2"
+          className="flex w-full items-center justify-start gap-2 px-2 font-normal"
         >
           <ActivityIcon className="text-muted-foreground" size={16} />
 
-          <div className="flex items-center gap-1.5 truncate text-xs 2xl:gap-2 2xl:text-sm">
+          <div className="flex items-center gap-2 text-xs">
             <span className={cn(cpcr === '미지정' && 'text-muted-foreground')}>
               {cpcr === '미지정' ? 'CPCR 여부 | ET Tube' : cpcr}
             </span>
 
             <Separator
               orientation="vertical"
-              className={cn(cpcr !== 'CPCR' && 'hidden', 'h-4')}
+              className={cn(
+                (cpcr !== 'CPCR' ||
+                  etTube === '미지정' ||
+                  etTube === undefined) &&
+                  'hidden',
+                'h-4',
+              )}
             />
 
-            <span>{etTube}</span>
+            <span className={etTube === '미지정' ? 'hidden' : ''}>
+              {etTube}
+            </span>
           </div>
         </Button>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-[640px]">
         <DialogHeader>
-          <DialogTitle>CPCR 여부 | ET Tube</DialogTitle>
+          <DialogTitle>CPCR 여부 ET Tube</DialogTitle>
           <DialogDescription />
         </DialogHeader>
 

@@ -453,3 +453,6 @@ export const isVideoFile = (contentType: string) => {
   if (!contentType) false
   return contentType.includes('video')
 }
+
+export const handleSafeEnterBlur = (e: React.KeyboardEvent<HTMLInputElement>) =>
+  e.key === 'Enter' && !e.nativeEvent.isComposing && e.currentTarget.blur()
