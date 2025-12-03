@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import type {
   AnnouncementDetailData,
   AnnouncementFormProps,
-  AnnouncementListProps,
+  AnnouncementList,
 } from '@/types/vetool'
 import { redirect } from 'next/navigation'
 
@@ -44,7 +44,7 @@ export const fetchAnnouncements = async () => {
       'announcement_id, announcement_title, announcement_category, created_at, is_draft',
     )
     .order('created_at', { ascending: false })
-    .overrideTypes<AnnouncementListProps[]>()
+    .overrideTypes<AnnouncementList[]>()
 
   if (error) {
     console.error(error)

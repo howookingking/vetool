@@ -32,68 +32,6 @@ export type Diet = Database['public']['Tables']['diets']['Row']
 export type Vitals = Database['public']['Tables']['vitals']['Row']
 export type Message = Database['public']['Tables']['messages']['Row']
 
-// supabase.auth.getUser() 시 return되는 유져타입
-export type AuthUser = {
-  id: string
-  app_metadata: {
-    provider?: string
-    [key: string]: any
-  }
-  user_metadata: {
-    [key: string]: any
-  }
-  aud: string
-  confirmation_sent_at?: string
-  recovery_sent_at?: string
-  email_change_sent_at?: string
-  new_email?: string
-  new_phone?: string
-  invited_at?: string
-  action_link?: string
-  email?: string
-  phone?: string
-  created_at: string
-  confirmed_at?: string
-  email_confirmed_at?: string
-  phone_confirmed_at?: string
-  last_sign_in_at?: string
-  role?: string
-  updated_at?: string
-  identities?: {
-    id: string
-    user_id: string
-    identity_data?: {
-      [key: string]: any
-    }
-    identity_id: string
-    provider: string
-    created_at?: string
-    last_sign_in_at?: string
-    updated_at?: string
-  }[]
-  is_anonymous?: boolean
-  factors?: {
-    id: string
-    friendly_name?: string
-    factor_type: 'totp' | string
-    status: 'verified' | 'unverified'
-    created_at: string
-    updated_at: string
-  }[]
-}
-
-export type VetoolUser = Pick<
-  User,
-  | 'email'
-  | 'name'
-  | 'avatar_url'
-  | 'position'
-  | 'is_admin'
-  | 'user_id'
-  | 'is_super'
-  | 'hos_id'
->
-
 // is_vet 이 true인 경우에만 사용하는 user
 export type Vet = Pick<
   User,

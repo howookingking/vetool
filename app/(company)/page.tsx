@@ -9,16 +9,16 @@ import { redirect } from 'next/navigation'
 export default async function CompanyHomePage() {
   const supabase = await createClient()
 
-  const {
-    data: { user: supabaseUser },
-  } = await supabase.auth.getUser()
+  const { data } = await supabase.auth.getClaims()
+
+  const supabaseUser = data?.claims
 
   if (supabaseUser) {
     // 벳툴 users 테이블에서 해당 사용자 조회
     const { data: vetoolUser, error: vetoolUserError } = await supabase
       .from('users')
       .select('user_id, hos_id')
-      .match({ user_id: supabaseUser.id })
+      .match({ user_id: supabaseUser.sub })
       .maybeSingle() // 있을 수도 없을 수(첫로그인의경우)도 있으므로
 
     // 조회 과정에서 에러 발생시 login 페이지 이동
@@ -60,9 +60,9 @@ export default async function CompanyHomePage() {
       // users 테이블에 user_id, name, email, avatar_url 추가 후
       // on-boarding 페이지 이동
       const { error: insertUserError } = await supabase.from('users').insert({
-        user_id: supabaseUser.id,
-        name: supabaseUser.user_metadata.full_name,
-        email: supabaseUser.email,
+        user_id: supabaseUser.sub,
+        name: supabaseUser.user_metadata.name,
+        email: supabaseUser.user_metadata.email,
         avatar_url: supabaseUser.user_metadata.avatar_url,
       })
       if (insertUserError) {

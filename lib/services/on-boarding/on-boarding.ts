@@ -10,10 +10,8 @@ export type UserApprovalData = Pick<UserApproval, 'user_approval_id'> & {
 export const getUserApproval = async () => {
   const supabase = await createClient()
 
-  const {
-    data: { user: supabaseUser },
-    error: supabaseUserError,
-  } = await supabase.auth.getUser()
+  const { data: supabaseUser, error: supabaseUserError } =
+    await supabase.auth.getClaims()
 
   if (supabaseUserError) {
     console.error(supabaseUserError)
@@ -33,7 +31,7 @@ export const getUserApproval = async () => {
       `,
     )
     .match({
-      user_id: supabaseUser?.id,
+      user_id: supabaseUser.claims.sub,
     })
     .single()
 
