@@ -15,7 +15,7 @@ export async function updateSession(request: NextRequest) {
           return request.cookies.getAll()
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) =>
+          cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value),
           )
           supabaseResponse = NextResponse.next({
@@ -30,15 +30,20 @@ export async function updateSession(request: NextRequest) {
   )
 
   // Do not run code between createServerClient and
-  // supabase.auth.getUser(). A simple mistake could make it very hard to debug
+  // supabase.auth.getClaims(). A simple mistake could make it very hard to debug
   // issues with users being randomly logged out.
+  // IMPORTANT: If you remove getClaims() and you use server-side rendering
+  // with the Supabase client, your users may be randomly logged out.
 
-  // IMPORTANT: DO NOT REMOVE auth.getUser()
-
-  await supabase.auth.getUser()
+  supabase.auth.getClaims()
 
   // !! 어차피 hospital route에서 authentication하기 때문에 여기 로직 불필요 !!
-  // if (!user && request.nextUrl.pathname.startsWith('/hospital')) {
+  // const user = data?.claims
+  // if (
+  //   !user &&
+  //   !request.nextUrl.pathname.startsWith('/login') &&
+  //   !request.nextUrl.pathname.startsWith('/auth')
+  // ) {
   //   // no user, potentially respond by redirecting the user to the login page
   //   const url = request.nextUrl.clone()
   //   url.pathname = '/login'
