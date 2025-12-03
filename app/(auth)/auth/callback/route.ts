@@ -17,7 +17,7 @@ export async function GET(request: Request) {
       )
     }
 
-    const { error } = await supabase.auth.getUser()
+    const { error } = await supabase.auth.getClaims()
 
     if (error) {
       console.error(error)
