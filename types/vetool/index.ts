@@ -5,7 +5,7 @@ export type AnnouncementFormProps = Omit<
   'announcement_id' | 'created_at' | 'is_draft'
 >
 
-export type AnnouncementListProps = Omit<
+export type AnnouncementList = Omit<
   Announcements,
   'announcement_content' | 'feedback_id'
 >

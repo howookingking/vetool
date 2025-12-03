@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/sheet'
 import { HOS_SIDEBAR_MENUS } from '@/constants/hospital/hos-sidebar-menus'
 import type { Plan } from '@/constants/plans'
-import type { VetoolUser } from '@/types'
+import type { VetoolUser } from '@/lib/services/auth/authorization'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { MenuIcon } from 'lucide-react'
 import { useState } from 'react'

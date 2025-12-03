@@ -4,13 +4,14 @@ import type {
 } from '@/components/hospital/icu/sidebar/filters/filters'
 import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import type { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
-import type { Vet, VetoolUser } from '@/types'
+import type { Vet } from '@/types'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { type ClassValue, clsx } from 'clsx'
 import { differenceInDays, formatDate, isValid, parseISO } from 'date-fns'
 import { redirect } from 'next/navigation'
 import { twMerge } from 'tailwind-merge'
 import type { IcuSidebarPatient } from '../services/icu/icu-layout'
+import type { VetoolUser } from '../services/auth/authorization'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))

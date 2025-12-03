@@ -1,10 +1,10 @@
 import { Button } from '@/components/ui/button'
 import { HOS_SIDEBAR_MENUS } from '@/constants/hospital/hos-sidebar-menus'
-import type { AnnouncementListProps } from '@/types/vetool'
+import type { AnnouncementList } from '@/types/vetool'
 import { ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDownIcon } from 'lucide-react'
 
-export const announcementsTableColumns: ColumnDef<AnnouncementListProps>[] = [
+export const announcementsTableColumns: ColumnDef<AnnouncementList>[] = [
   {
     accessorKey: 'announcement_category',
     header: '카테고리',
@@ -15,7 +15,7 @@ export const announcementsTableColumns: ColumnDef<AnnouncementListProps>[] = [
         ({ path }) => path === category,
       )
       return (
-        <span className="text-xs text-muted-foreground">
+        <span className="text-sm text-muted-foreground">
           {foundCategory?.name ?? '전체'}
         </span>
       )
@@ -30,6 +30,7 @@ export const announcementsTableColumns: ColumnDef<AnnouncementListProps>[] = [
       return (
         <Button
           variant="ghost"
+          size="default"
           className="w-full font-medium transition-colors hover:bg-transparent hover:text-primary hover:underline"
         >
           {title}

@@ -19,8 +19,8 @@ export const HOMEPAGE_NAVBAR_ITEMS = [
   //   label: '가격안내',
   //   href: '#pricing',
   // },
-  {
-    label: '공지사항',
-    href: 'announcements',
-  },
+  // {
+  //   label: '공지사항',
+  //   href: 'announcements',
+  // },
 ] as const

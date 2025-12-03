@@ -2,9 +2,9 @@ import CalculatorSheet from '@/components/hospital/calculator/calculator-sheet'
 import Feedback from '@/components/hospital/feedback/feedback'
 import { HOS_SIDEBAR_MENUS } from '@/constants/hospital/hos-sidebar-menus'
 import type { Plan } from '@/constants/plans'
-import type { VetoolUser } from '@/types'
 import SidebarUserDropdown from '../sidebar-user-dropdown'
 import DesktopSidebarItem from './desktop-sidebar-item'
+import type { VetoolUser } from '@/lib/services/auth/authorization'
 
 type Props = {
   hosId: string
@@ -33,7 +33,7 @@ export default async function DesktopSidebar({
         ))}
       </ul>
 
-      <div className="flex flex-col items-center justify-end gap-1">
+      <div className="flex flex-col items-center justify-end gap-2">
         <CalculatorSheet plan={plan} />
 
         <Feedback />

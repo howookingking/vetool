@@ -14,7 +14,7 @@ import {
 import { logout } from '@/lib/services/auth/authentication'
 import { cn } from '@/lib/utils/utils'
 import userAvatarFallback from '@/public/user-avatar-fallback.svg'
-import type { VetoolUser } from '@/types'
+import { VetoolUser } from '@/lib/services/auth/authorization'
 import { CrownIcon, PowerIcon, UserIcon } from 'lucide-react'
 import Link from 'next/link'
 import type { Dispatch, SetStateAction } from 'react'
