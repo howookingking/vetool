@@ -18,6 +18,7 @@ export default function AdminSidebarItem({ name, path, icon: Icon }: Props) {
     <li className="flex h-10 w-full items-center gap-2">
       <Button
         className={cn('flex w-full items-center justify-start gap-3 px-2')}
+        size="default"
         variant="ghost"
         asChild
       >
@@ -25,7 +26,7 @@ export default function AdminSidebarItem({ name, path, icon: Icon }: Props) {
           href={path as any}
           className={cn('w-full', isActive && 'bg-muted')}
         >
-          <Icon size={18} />
+          <Icon />
           <span>{name}</span>
         </Link>
       </Button>
