@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     siteName: '벳툴 | VETOOL',
     title: '벳툴 | VETOOL',
     description: '동물병원 전문차트 서비스',
+    url: process.env.NEXT_PUBLIC_APP_URL!,
     images: [
       {
         url: '/opengraph-image.png',
@@ -25,10 +26,12 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '벳툴 | VETOOL',
     description: '동물병원 전문차트 서비스',
-    images: {
-      url: '/opengraph-image.png',
-      alt: 'SITE OPENGRAPH IMAGE',
-    },
+    images: [
+      {
+        url: '/opengraph-image.png',
+        alt: 'SITE OPENGRAPH IMAGE',
+      },
+    ],
   },
   authors: [{ name: 'howoo', url: process.env.NEXT_PUBLIC_APP_URL! }],
   robots: {
