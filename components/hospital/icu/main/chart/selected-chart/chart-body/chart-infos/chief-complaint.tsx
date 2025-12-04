@@ -24,18 +24,14 @@ export default function ChiefComplaint({
   const handleUpdateChiefComplaint = async (value: string) => {
     const trimmedValue = value.trim()
 
-    if (chiefComplaint === trimmedValue) {
-      return
-    }
+    if (chiefComplaint === trimmedValue) return
 
     setIsUpdating(true)
-
     await updateChiefComplaint(icuIoId, trimmedValue)
 
     toast.success('주증상을 변경하였습니다')
 
     setIsUpdating(false)
-
     safeRefresh()
   }
 
@@ -45,7 +41,6 @@ export default function ChiefComplaint({
       defaultValue={chiefComplaint}
       handleUpdate={handleUpdateChiefComplaint}
       isUpdating={isUpdating}
-      isShare={isShare}
     />
   )
 }

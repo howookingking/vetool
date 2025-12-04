@@ -40,11 +40,8 @@ export default function OwnerName({ ownerName, patientId }: Props) {
   }, [ownerName])
 
   return (
-    <div className="relative">
-      <Label
-        className="absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground"
-        htmlFor="ownerName"
-      >
+    <div className="relative flex items-center">
+      <Label className="absolute left-2" htmlFor="ownerName">
         <UserIcon size={16} className="text-muted-foreground" />
       </Label>
       <Input
