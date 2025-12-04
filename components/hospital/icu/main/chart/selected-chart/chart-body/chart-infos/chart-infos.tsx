@@ -88,6 +88,7 @@ export default function ChartInfos({
       <div className="col-span-3">
         <ChiefComplaint chiefComplaint={icu_io_cc} icuIoId={icu_io_id} />
       </div>
+
       <div className="col-span-3">
         <Diagnosis diagnosis={icu_io_dx} icuIoId={icu_io_id} />
       </div>

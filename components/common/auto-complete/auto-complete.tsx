@@ -22,7 +22,6 @@ type Props = {
   defaultValue?: string
   isUpdating?: boolean
   placeholder?: string
-  isShare?: boolean
 }
 
 export default function Autocomplete({
@@ -32,7 +31,6 @@ export default function Autocomplete({
   defaultValue,
   isUpdating,
   placeholder,
-  isShare,
 }: Props) {
   const { trie } = useKeywordTrieStore()
 
@@ -188,11 +186,9 @@ export default function Autocomplete({
         />
       )}
 
-      {!isShare && (
-        <HelperTooltip className="absolute right-2 top-2">
-          키워드는 콤마로 구분됩니다
-        </HelperTooltip>
-      )}
+      <HelperTooltip className="absolute right-2 top-2">
+        키워드는 콤마로 구분됩니다
+      </HelperTooltip>
     </div>
   )
 }
