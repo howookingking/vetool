@@ -36,7 +36,7 @@ export default function CpcrEtTube({ cpcrEtTube, icuIoId }: Props) {
         >
           <ActivityIcon className="text-muted-foreground" size={16} />
 
-          <div className="flex items-center gap-2 text-xs">
+          <div className="flex items-center gap-2 text-sm">
             <span className={cn(cpcr === '미지정' && 'text-muted-foreground')}>
               {cpcr === '미지정' ? 'CPCR 여부 | ET Tube' : cpcr}
             </span>

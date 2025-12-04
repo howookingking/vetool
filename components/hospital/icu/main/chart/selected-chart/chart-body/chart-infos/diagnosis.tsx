@@ -20,18 +20,14 @@ export default function Diagnosis({ diagnosis, icuIoId, isShare }: Props) {
   const handleUpdateDiagnosis = async (value: string) => {
     const trimmedValue = value.trim()
 
-    if (diagnosis === trimmedValue) {
-      return
-    }
+    if (diagnosis === trimmedValue) return
 
     setIsUpdating(true)
-
     await updateDiagnosis(icuIoId, trimmedValue)
 
     toast.success('진단명을 변경하였습니다')
 
     setIsUpdating(false)
-
     safeRefresh()
   }
 
@@ -41,7 +37,6 @@ export default function Diagnosis({ diagnosis, icuIoId, isShare }: Props) {
       handleUpdate={handleUpdateDiagnosis}
       defaultValue={diagnosis}
       isUpdating={isUpdating}
-      isShare={isShare}
     />
   )
 }
