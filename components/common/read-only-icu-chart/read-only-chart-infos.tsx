@@ -52,7 +52,7 @@ export default function ReadOnlyChartInfos({
     <div className="grid select-none grid-cols-6 gap-2" data-guide="chart-info">
       {/* 입원일 */}
       <div className="col-span-1">
-        <Indate indate={in_date} />
+        <Indate inDate={in_date} />
       </div>
 
       {/* 퇴원일 */}

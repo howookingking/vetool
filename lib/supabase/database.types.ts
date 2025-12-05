@@ -472,7 +472,6 @@ export type Database = {
           master_user_id: string
           name: string
           order_color: Json | null
-          order_color_display: string
           order_font_size: number
           plan: string
           show_orderer: boolean
@@ -493,7 +492,6 @@ export type Database = {
           master_user_id: string
           name: string
           order_color?: Json | null
-          order_color_display?: string
           order_font_size?: number
           plan?: string
           show_orderer?: boolean
@@ -514,7 +512,6 @@ export type Database = {
           master_user_id?: string
           name?: string
           order_color?: Json | null
-          order_color_display?: string
           order_font_size?: number
           plan?: string
           show_orderer?: boolean
@@ -586,7 +583,6 @@ export type Database = {
           sub_vet: string | null
           target_date: string | null
           urgency: number | null
-          visit_chart: Json | null
           weight: string
           weight_measured_date: string | null
         }
@@ -601,7 +597,6 @@ export type Database = {
           sub_vet?: string | null
           target_date?: string | null
           urgency?: number | null
-          visit_chart?: Json | null
           weight?: string
           weight_measured_date?: string | null
         }
@@ -616,7 +611,6 @@ export type Database = {
           sub_vet?: string | null
           target_date?: string | null
           urgency?: number | null
-          visit_chart?: Json | null
           weight?: string
           weight_measured_date?: string | null
         }
@@ -718,7 +712,6 @@ export type Database = {
           memo_a: Json | null
           memo_b: Json | null
           memo_c: Json | null
-          out_chart: Json | null
           out_date: string | null
           out_due_date: string | null
           patient_id: string
@@ -738,7 +731,6 @@ export type Database = {
           memo_a?: Json | null
           memo_b?: Json | null
           memo_c?: Json | null
-          out_chart?: Json | null
           out_date?: string | null
           out_due_date?: string | null
           patient_id: string
@@ -758,7 +750,6 @@ export type Database = {
           memo_a?: Json | null
           memo_b?: Json | null
           memo_c?: Json | null
-          out_chart?: Json | null
           out_date?: string | null
           out_due_date?: string | null
           patient_id?: string
@@ -888,63 +879,6 @@ export type Database = {
           },
         ]
       }
-      icu_out: {
-        Row: {
-          basic_care: string
-          belongings: string
-          created_at: string
-          etc: string
-          hos_id: string
-          icu_io_id: string
-          icu_out_id: string
-          out_due_date: string
-          out_time: string | null
-          patient_id: string
-          prescription: string
-        }
-        Insert: {
-          basic_care?: string
-          belongings?: string
-          created_at?: string
-          etc?: string
-          hos_id: string
-          icu_io_id: string
-          icu_out_id?: string
-          out_due_date: string
-          out_time?: string | null
-          patient_id: string
-          prescription?: string
-        }
-        Update: {
-          basic_care?: string
-          belongings?: string
-          created_at?: string
-          etc?: string
-          hos_id?: string
-          icu_io_id?: string
-          icu_out_id?: string
-          out_due_date?: string
-          out_time?: string | null
-          patient_id?: string
-          prescription?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "icu_out_icu_io_id_fkey"
-            columns: ["icu_io_id"]
-            isOneToOne: false
-            referencedRelation: "icu_io"
-            referencedColumns: ["icu_io_id"]
-          },
-          {
-            foreignKeyName: "icu_out_patient_id_fkey"
-            columns: ["patient_id"]
-            isOneToOne: false
-            referencedRelation: "patients"
-            referencedColumns: ["patient_id"]
-          },
-        ]
-      }
       icu_templates: {
         Row: {
           created_at: string
@@ -1044,76 +978,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "icu_orders"
             referencedColumns: ["icu_chart_order_id"]
-          },
-        ]
-      }
-      icu_visit: {
-        Row: {
-          consultation_status: string
-          created_at: string
-          hos_id: string | null
-          icu_io_id: string | null
-          icu_visit_id: string
-          is_done: boolean
-          main_vet: string
-          patient_id: string | null
-          place: string
-          preparation: string
-          target_date: string
-          time: string
-          visit_etc: string
-        }
-        Insert: {
-          consultation_status?: string
-          created_at?: string
-          hos_id?: string | null
-          icu_io_id?: string | null
-          icu_visit_id?: string
-          is_done?: boolean
-          main_vet: string
-          patient_id?: string | null
-          place?: string
-          preparation?: string
-          target_date: string
-          time?: string
-          visit_etc?: string
-        }
-        Update: {
-          consultation_status?: string
-          created_at?: string
-          hos_id?: string | null
-          icu_io_id?: string | null
-          icu_visit_id?: string
-          is_done?: boolean
-          main_vet?: string
-          patient_id?: string | null
-          place?: string
-          preparation?: string
-          target_date?: string
-          time?: string
-          visit_etc?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "icu_visit_hos_id_fkey"
-            columns: ["hos_id"]
-            isOneToOne: false
-            referencedRelation: "hospitals"
-            referencedColumns: ["hos_id"]
-          },
-          {
-            foreignKeyName: "icu_visit_icu_io_id_fkey"
-            columns: ["icu_io_id"]
-            isOneToOne: false
-            referencedRelation: "icu_io"
-            referencedColumns: ["icu_io_id"]
-          },
-          {
-            foreignKeyName: "icu_visit_patient_id_fkey"
-            columns: ["patient_id"]
-            isOneToOne: false
-            referencedRelation: "patients"
-            referencedColumns: ["patient_id"]
           },
         ]
       }
@@ -1781,10 +1645,6 @@ export type Database = {
           patient_id_input: string
           target_date_input: string
         }
-        Returns: Json
-      }
-      fetch_icu_layout_data: {
-        Args: { hos_id_input: string; target_date_input: string }
         Returns: Json
       }
       fetch_icu_summary_data: {
