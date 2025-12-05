@@ -1,29 +1,29 @@
 import { createClient } from '@/lib/supabase/server'
 import type { Hospital } from '@/types'
 
-export const fetchHosName = async (hosId: string) => {
-  const supabase = await createClient()
-  const { data, error } = await supabase
-    .from('hospitals')
-    .select('name')
-    .match({ hos_id: hosId })
-    .single()
+// export const fetchHosName = async (hosId: string) => {
+//   const supabase = await createClient()
+//   const { data, error } = await supabase
+//     .from('hospitals')
+//     .select('name')
+//     .match({ hos_id: hosId })
+//     .single()
 
-  if (error) {
-    console.error(error)
-    throw new Error(error.message)
-  }
+//   if (error) {
+//     console.error(error)
+//     throw new Error(error.message)
+//   }
 
-  return data.name
-}
+//   return data.name
+// }
 
 export type HospitalList = Pick<
   Hospital,
   'hos_id' | 'name' | 'city' | 'district' | 'plan'
 >
 
-export const fetchHospitalList = async (isSuper = false) => {
-  if (!isSuper) return
+export const fetchHospitalList = async (isSuper: boolean) => {
+  if (!isSuper) return []
 
   const supabase = await createClient()
 
@@ -45,5 +45,5 @@ export const fetchHospitalList = async (isSuper = false) => {
     throw new Error(error.message)
   }
 
-  return data as HospitalList[]
+  return (data ?? []) as HospitalList[]
 }

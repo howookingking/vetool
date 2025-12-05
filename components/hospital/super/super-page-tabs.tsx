@@ -1,19 +1,16 @@
+import AnnouncementForm from '@/components/hospital/super/announcements/announcement-form'
 import ErrorLogDashboard from '@/components/hospital/super/errors/error-logs'
 import FeedBackDashBoard from '@/components/hospital/super/feedbacks/feedback-dash-board'
 import HospitalTable from '@/components/hospital/super/hospitals/hospitals-table'
-import AnnouncementForm from '@/components/hospital/super/announcements/announcement-form'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { getErrorFeedback } from '@/lib/services/error-feedback/error-feedback'
+import { fetchHospitalList } from '@/lib/services/hospital-home/home'
 import { getFeedback } from '@/lib/services/super/feedback/feedback'
-import type { HospitalList } from '@/lib/services/hospital-home/home'
 
-export default async function SuperPageTabs({
-  hosList,
-}: {
-  hosList: HospitalList[]
-}) {
+export default async function SuperPageTabs({ isSuper }: { isSuper: boolean }) {
   const errorLogData = await getErrorFeedback('all')
   const userFeedbackData = await getFeedback()
+  const hosList = await fetchHospitalList(isSuper)
 
   return (
     <Tabs defaultValue="hosList" className="w-full p-2" orientation="vertical">
