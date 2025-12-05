@@ -150,7 +150,7 @@ export default function ExportPngDialog({
             pointerEvents: 'none',
           }}
         >
-          <ReadOnlyIcuChart chartData={chartData} ref={hiddenRef} />
+          <ReadOnlyIcuChart chartData={chartData} ref={hiddenRef} isExport />
         </div>
       ) : null}
     </>
@@ -253,7 +253,7 @@ async function handleExportAllCharts(
               isInChargeSystem: basicHosData.isInChargeSystem,
             }}
           >
-            <ReadOnlyIcuChart chartData={dateChartData} />
+            <ReadOnlyIcuChart chartData={dateChartData} isExport />
           </BasicHosDataProvider>,
         )
         // 렌더링 완료 대기
