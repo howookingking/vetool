@@ -18,7 +18,7 @@ export default async function HospitalHomePage(
     <>
       <MobileTitle icon={HomeIcon} title="병원 홈" />
 
-      <HospitalHomeHeader isSuper={isSuper} />
+      <HospitalHomeHeader isSuper={isSuper} hosId={hos_id} />
 
       <HospitalHomeBody hosId={hos_id} />
     </>

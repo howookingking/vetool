@@ -15,20 +15,20 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { HospitalList } from '@/lib/services/hospital-home/home'
-import { useParams, usePathname, useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-export default function SuperHospitalSelector({
-  hosList,
-}: {
+type Props = {
   hosList: HospitalList[]
-}) {
-  const { hos_id } = useParams()
+  hosId: string
+}
+
+export default function SuperHospitalSelector({ hosList, hosId }: Props) {
   const pathname = usePathname()
   const { push } = useRouter()
 
   const currentHosName = hosList.find(
-    (hospital) => hospital.hos_id === hos_id,
+    (hospital) => hospital.hos_id === hosId,
   )?.name
 
   const [open, setOpen] = useState(false)
