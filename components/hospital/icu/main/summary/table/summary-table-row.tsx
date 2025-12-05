@@ -5,9 +5,10 @@ import SummaryTableCell from '@/components/hospital/icu/main/summary/table/summa
 import { TableCell, TableRow } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { computeTimeMap } from '@/lib/utils/icu-summary-utils'
-import { cn, getDaysDifference } from '@/lib/utils/utils'
+import { cn } from '@/lib/utils/utils'
 import type { Species } from '@/types/hospital/calculator'
 import type { SummaryData } from '@/types/icu/summary'
+import { differenceInDays } from 'date-fns'
 import { SquarePlusIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
@@ -22,7 +23,10 @@ export default function SummaryTableRow({ summary, hosId, targetDate }: Props) {
 
   const { push } = useRouter()
 
-  const hospitalizationDays = getDaysDifference(summary.icu_io.in_date)
+  const hospitalizationDays = differenceInDays(
+    targetDate,
+    summary.icu_io.in_date,
+  )
   const isPatientOut = summary.icu_io.out_date !== null
 
   const timeMap = computeTimeMap(orders)
