@@ -3,20 +3,20 @@
 import PatientDetailInfo from '@/components/hospital/common/patient/patient-detail-info'
 import { Table } from '@/components/ui/table'
 import useLocalStorage from '@/hooks/use-local-storage'
+import { cn } from '@/lib/utils/utils'
 import type { OrderWidth } from '@/types/hospital/order'
 import type { SelectedIcuChart } from '@/types/icu/chart'
 import ReadOnlyChartInfos from './read-only-chart-infos'
 import ReadOnlyChartTableBody from './read-only-chart-table-body'
 import ReadOnlyChartTableHeader from './read-only-chart-table-header'
-import { cn } from '@/lib/utils/utils'
 
 type Props = {
   chartData: SelectedIcuChart
   ref?: React.RefObject<HTMLDivElement | null>
-  isShare?: boolean
+  isExport?: boolean
 }
 
-export default function ReadOnlyIcuChart({ chartData, ref, isShare }: Props) {
+export default function ReadOnlyIcuChart({ chartData, ref, isExport }: Props) {
   const { patient, weight, weight_measured_date } = chartData
   const [orderWidth, setOrderWidth] = useLocalStorage<OrderWidth>(
     'orderWidth',
@@ -27,11 +27,11 @@ export default function ReadOnlyIcuChart({ chartData, ref, isShare }: Props) {
     <div
       ref={ref}
       className={cn(
-        isShare ? 'w-full' : 'w-[1400px]',
         'flex flex-col gap-2 p-2',
+        isExport ? 'w-[1400px]' : 'w-full',
       )}
     >
-      {!isShare ? (
+      {isExport ? (
         <div className="relative">
           <span className="absolute left-2 font-mono text-sm">
             {chartData.target_date}

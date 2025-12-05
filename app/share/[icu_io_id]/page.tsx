@@ -33,6 +33,8 @@ export default async function IcuSharePage(props: IcuSharePageProps) {
   const orderColorsData = JSON.parse(decodeURIComponent(orderColors!))
   const timeGuidelineData = JSON.parse(decodeURIComponent(timeGuideline!))
   const vitalRefRangeData = JSON.parse(decodeURIComponent(vitalRefRange!))
+  const showOrdererData = JSON.parse(decodeURIComponent(showOrderer!))
+  const isInChargeSystemData = JSON.parse(decodeURIComponent(isInChargeSystem!))
 
   const sharedChartData = await fetchSharedIcuData(
     params.icu_io_id,
@@ -50,14 +52,14 @@ export default async function IcuSharePage(props: IcuSharePageProps) {
         orderColorsData: orderColorsData,
         memoNameListData: ['', '', ''],
         orderFontSizeData: 16,
-        showOrderer: showOrderer === 'true',
+        showOrderer: showOrdererData,
         showTxUser: false,
         icuSidebarPatients: [],
         timeGuidelineData: timeGuidelineData,
         vetList: [],
         vitalRefRange: vitalRefRangeData,
         plan: 'severe',
-        isInChargeSystem: isInChargeSystem === 'true',
+        isInChargeSystem: isInChargeSystemData,
       }}
     >
       <NoResultSquirrel
@@ -68,7 +70,7 @@ export default async function IcuSharePage(props: IcuSharePageProps) {
 
       <div className="hidden flex-col lg:flex">
         <IcuShareHeader chartData={sharedChartData} targetDate={targetDate!} />
-        <ReadOnlyIcuChart chartData={sharedChartData} isShare />
+        <ReadOnlyIcuChart chartData={sharedChartData} />
       </div>
 
       <HighlightGuide steps={SHARE_GUIDE_STEPS} localStorageKey="share-guide" />
