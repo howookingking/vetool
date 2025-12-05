@@ -10,8 +10,8 @@ import { type ClassValue, clsx } from 'clsx'
 import { differenceInDays, formatDate, isValid, parseISO } from 'date-fns'
 import { redirect } from 'next/navigation'
 import { twMerge } from 'tailwind-merge'
-import type { IcuSidebarPatient } from '../services/icu/icu-layout'
 import type { VetoolUser } from '../services/auth/authorization'
+import type { IcuSidebarPatient } from '../services/icu/icu-layout'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -98,23 +98,6 @@ export function calculateAge(dateString: string) {
   }
 }
 
-// YYYY-MM-DD string을 받아 현재와 입력받은 날짜 간의 차이를 반환
-export const getDaysDifference = (dateString: string) => {
-  // 날짜 문자열을 Date 객체로 변환
-  const targetDate = new Date(dateString)
-  const today = new Date(
-    new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }),
-  )
-
-  // 두 날짜의 차이를 밀리초 단위로 계산
-  const diff = today.getTime() - targetDate.getTime()
-
-  // 밀리초를 일 단위로 변환
-  const diffDays = Math.ceil(diff / (1000 * 60 * 60 * 24))
-
-  return diffDays
-}
-
 export const getConsecutiveDays = (selectedDate: Date) => {
   // Create a new date in the local timezone to avoid UTC conversion issues
   const normalizedSelectedDate = new Date(
@@ -192,21 +175,6 @@ export const formatTimeDifference = (inputTime: string) => {
   }
 }
 
-// created_at 형식의 날짜를 현재와 비교해서 difference 차이가 크다면 true
-export const isDaysBehind = (dateString: string, difference: number) => {
-  const isoDate = parseISO(dateString)
-
-  // Check if the parsed date is valid
-  if (!isValid(isoDate)) {
-    throw new Error('Invalid date string provided')
-  }
-
-  const currentDate = new Date()
-  const differenceDays = differenceInDays(currentDate, isoDate)
-
-  return differenceDays >= difference
-}
-
 export const getDateMonthsAgo = (months: string) => {
   const now = new Date()
 
@@ -267,19 +235,19 @@ export function formatOrders(
   }))
 }
 
-export const sortOrders = (orders: SelectedIcuOrder[]): SelectedIcuOrder[] => {
-  return [...orders]
-    .sort((prev, next) => prev.order_name.localeCompare(next.order_name))
-    .sort(
-      (prev, next) =>
-        DEFAULT_ICU_ORDER_TYPE.map((order) => order.value).findIndex(
-          (order) => order === prev.order_type,
-        ) -
-        DEFAULT_ICU_ORDER_TYPE.map((order) => order.value).findIndex(
-          (order) => order === next.order_type,
-        ),
-    )
-}
+// export const sortOrders = (orders: SelectedIcuOrder[]): SelectedIcuOrder[] => {
+//   return [...orders]
+//     .sort((prev, next) => prev.order_name.localeCompare(next.order_name))
+//     .sort(
+//       (prev, next) =>
+//         DEFAULT_ICU_ORDER_TYPE.map((order) => order.value).findIndex(
+//           (order) => order === prev.order_type,
+//         ) -
+//         DEFAULT_ICU_ORDER_TYPE.map((order) => order.value).findIndex(
+//           (order) => order === next.order_type,
+//         ),
+//     )
+// }
 
 export const hasOrderSortingChanged = (
   prevOrders: SelectedIcuOrder[],

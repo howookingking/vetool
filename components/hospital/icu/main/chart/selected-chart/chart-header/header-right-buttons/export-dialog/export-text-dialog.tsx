@@ -10,7 +10,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { Spinner } from '@/components/ui/spinner'
 import { Textarea } from '@/components/ui/textarea'
 import { calculateAge } from '@/lib/utils/utils'
 import type { SelectedIcuChart } from '@/types/icu/chart'
@@ -18,11 +17,11 @@ import { differenceInDays } from 'date-fns'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-type Props = {
+export default function ExportTextDialog({
+  chartData,
+}: {
   chartData: SelectedIcuChart
-}
-
-export default function ExportTextDialog({ chartData }: Props) {
+}) {
   const [isCopying, setIsCopying] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [textContents, setTextContents] = useState('')
@@ -88,7 +87,7 @@ export default function ExportTextDialog({ chartData }: Props) {
 
 const generateTextContents = (chartData: SelectedIcuChart) => {
   let textContents = `
-${chartData.target_date} ${chartData.patient.name} 입원 ${differenceInDays(chartData.target_date as string, chartData.icu_io.in_date) + 1}일차 차트\n
+${chartData.target_date} ${chartData.patient.name} 입원 ${differenceInDays(chartData.target_date as string, chartData.icu_io.in_date)}일차 차트\n
 - 입원일 : ${chartData.icu_io.in_date}
 - Signalment : ${chartData.patient.species.toUpperCase()} / ${chartData.patient.breed} / ${calculateAge(chartData.patient.birth)} / ${chartData.patient.gender.toUpperCase()} / ${chartData.weight}kg  
 - DX : ${chartData.icu_io.icu_io_dx}

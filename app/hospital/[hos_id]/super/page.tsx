@@ -1,16 +1,12 @@
 import SuperPageTabs from '@/components/hospital/super/super-page-tabs'
 import { getVetoolUserData } from '@/lib/services/auth/authorization'
-import { fetchHospitalList } from '@/lib/services/hospital-home/home'
 import { redirect } from 'next/navigation'
 
 export default async function SuperPage() {
   const vetoolUser = await getVetoolUserData()
-  const isSuper = vetoolUser.is_super
-  const hosList = await fetchHospitalList(isSuper)
+  const { is_super } = vetoolUser
 
-  if (!isSuper) {
-    redirect('/')
-  }
+  if (!is_super) redirect('/')
 
-  return <SuperPageTabs hosList={hosList!} />
+  return <SuperPageTabs isSuper={is_super} />
 }
