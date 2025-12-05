@@ -7,9 +7,9 @@ import OwnerName from '@/components/hospital/icu/main/chart/selected-chart/chart
 import Urgency from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/urgency/urgency'
 import Vets from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/vets/vets'
 import type { SelectedIcuChart } from '@/types/icu/chart'
-import Indate from './in-and-out-date/in-date'
 import OutDate from './in-and-out-date/out-date'
 import OutDueDate from './in-and-out-date/out-due-date'
+import Indate from './indate'
 
 export default function ChartInfos({
   chartData,
