@@ -16,10 +16,10 @@ export default async function AdminApprovalPage(props: {
       is_approved: approval.is_approved,
       created_at: approval.created_at,
       updated_at: approval.updated_at,
-      name: approval.user_id.name,
-      user_id: approval.user_id.user_id,
-      avatar_url: approval.user_id.avatar_url,
-      is_vet: approval.user_id.is_vet,
+      name: approval.user_id?.name!,
+      user_id: approval.user_id?.user_id!,
+      avatar_url: approval.user_id?.avatar_url!,
+      is_vet: approval.user_id?.is_vet!,
     }),
   )
 

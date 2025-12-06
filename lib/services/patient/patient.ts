@@ -1,7 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { type PatientDataTable, type PatientWithWeight } from '@/types/patients'
+import type { Patient, Vitals } from '@/types'
 import { redirect } from 'next/navigation'
 
 export const insertPatient = async (
@@ -45,39 +45,12 @@ export const insertPatient = async (
   return data
 }
 
-export const getPatientsData = async (hosId: string) => {
-  const supabase = await createClient()
-
-  const { data, error } = await supabase
-    .from('patients')
-    .select('*')
-    .match({ hos_id: hosId })
-    .order('is_alive', { ascending: false })
-    .order('created_at', { ascending: false })
-    .overrideTypes<PatientDataTable[]>()
-
-  if (error) {
-    throw new Error(error.message)
-  }
-
-  return data.map((patient) => ({
-    birth: patient.birth,
-    name: patient.name,
-    gender: patient.gender,
-    breed: patient.breed,
-    species: patient.species,
-    owner_id: patient.owner_id,
-    created_at: patient.created_at,
-    hos_id: patient.hos_id,
-    patient_id: patient.patient_id,
-    microchip_no: patient.microchip_no,
-    hos_patient_id: patient.hos_patient_id,
-    memo: patient.memo,
-    is_alive: patient.is_alive,
-    owner_name: patient.owner_name,
-    hos_owner_id: patient.hos_owner_id,
-    isIcu: false,
-  })) as PatientDataTable[]
+export type PatientWithWeight = {
+  patient: Pick<
+    Patient,
+    'patient_id' | 'name' | 'species' | 'breed' | 'gender' | 'birth'
+  >
+  vital: Pick<Vitals, 'body_weight' | 'created_at'> | null
 }
 
 export const getPatientData = async (patientId: string) => {

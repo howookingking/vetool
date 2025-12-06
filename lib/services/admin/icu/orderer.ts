@@ -3,22 +3,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
-export const getOrdererSetting = async (hosId: string) => {
-  const supabase = await createClient()
-
-  const { data, error } = await supabase
-    .from('hospitals')
-    .select('show_orderer, show_tx_user')
-    .match({ hos_id: hosId })
-    .single()
-
-  if (error) {
-    throw new Error(error.message)
-  }
-
-  return { showOrderer: data.show_orderer, showTxUser: data.show_tx_user }
-}
-
 export const updateOrdererSetting = async (
   hosId: string,
   showOrderInput: boolean,

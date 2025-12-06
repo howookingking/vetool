@@ -1,15 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import type { User, UserApproval } from '@/types'
 import { redirect } from 'next/navigation'
-
-export type StaffApproval = Pick<
-  UserApproval,
-  'is_approved' | 'created_at' | 'updated_at'
-> & {
-  user_id: Pick<User, 'user_id' | 'name' | 'avatar_url' | 'is_vet'>
-}
 
 export const getStaffApprovals = async (hosId: string) => {
   const supabase = await createClient()
@@ -32,7 +24,6 @@ export const getStaffApprovals = async (hosId: string) => {
     .match({ hos_id: hosId })
     .order('is_approved')
     .order('created_at', { ascending: false })
-    .overrideTypes<StaffApproval[]>()
 
   if (error) {
     throw new Error(error.message)

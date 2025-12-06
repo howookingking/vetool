@@ -28,6 +28,7 @@ export const CALCULATORS = [
   //   label: '테오브로민(초콜릿) 계산',
   // },
 ] as const
+export type SelectedCalculator = (typeof CALCULATORS)[number]['value']
 
 export const THEOBROMINE_LEVELS = {
   white: 0.25,

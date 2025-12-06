@@ -4,16 +4,6 @@ export const CELL_COLORS = {
   OUT: '#f9fafb', // gray-50
 }
 
-export const DEFAULT_SHARE_ORDER_COLOR = {
-  po: '#fecaca',
-  feed: '#fed7aa',
-  test: '#fef08a',
-  fluid: '#bbf7d0',
-  manual: '#a7f3d0',
-  checklist: '#a5f3fc',
-  injection: '#ddd6fe',
-}
-
 export const ORDER_COLORS = {
   red50: '#fef2f2',
   red200: '#fecaca',

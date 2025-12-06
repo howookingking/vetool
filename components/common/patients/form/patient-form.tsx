@@ -38,7 +38,7 @@ import {
   CANINE_BREEDS,
   FELINE_BREEDS,
   SEX,
-} from '@/constants/hospital/register/breed'
+} from '@/constants/hospital/register/signalments'
 import { registerPatientFormSchema } from '@/lib/schemas/patient/patient-schema'
 import { registerIcu } from '@/lib/services/icu/register-icu'
 import {

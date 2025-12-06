@@ -1,18 +1,6 @@
 import { MEMO_COLORS } from '@/constants/hospital/icu/chart/colors'
 import type { OrderType } from '@/constants/hospital/icu/chart/order'
-import type {
-  Diet,
-  DrugDoses,
-  DrugProductsRows,
-  IcuChart,
-  IcuIo,
-  IcuNotification,
-  IcuOrders,
-  IcuTxs,
-  Patient,
-  User,
-  Vet,
-} from '@/types'
+import type { IcuChart, IcuIo, Patient, User, Vet } from '@/types'
 
 export type MainAndSubVet = Pick<User, 'name' | 'avatar_url' | 'user_id'>
 
@@ -22,11 +10,7 @@ export type TxLog = {
   createdAt: string
 }
 
-export type IcuNotificationJoined = IcuNotification & {
-  patient_id: Pick<Patient, 'name' | 'breed' | 'gender' | 'patient_id'>
-}
-
-export type SelectedChartIcuIo = Pick<
+type SelectedChartIcuIo = Pick<
   IcuIo,
   | 'in_date'
   | 'out_date'
@@ -84,58 +68,9 @@ export type Treatment = {
   has_images: boolean
 }
 
-export type IcuSidebarIoData = {
-  vets: {
-    sub_vet: string
-    main_vet: string
-  }
-  in_date: string
-  patient: {
-    name: string
-    breed: string
-    species: string
-    patient_id: string
-    owner_name: string
-  }
-  out_date: string | null
-  icu_io_id: string
-  urgency: number | null
-  group_list: string[]
-  created_at: string
-}
-
-export type DrugProductsJoined = Pick<
-  DrugProductsRows,
-  'drug_id' | 'drug_name'
-> & {
-  drug_doses: DrugDoses[]
-  drug_products: DrugProductsRows[]
-}
-export type IcuReadOnlyOrderData = Pick<
-  IcuOrders,
-  | 'icu_chart_order_id'
-  | 'icu_chart_order_time'
-  | 'icu_chart_order_name'
-  | 'icu_chart_order_comment'
-  | 'icu_chart_order_type'
-  | 'is_bordered'
-> & {
-  treatments?: Treatment[]
-}
-
-export type PinnedDiet = Pick<
-  Diet,
-  'diet_id' | 'name' | 'unit' | 'species' | 'mass_vol' | 'company'
->
-
 export type PrevIoChartData = {
   icu_chart_id: string
   target_date: string | null
-}
-
-export type VitalChartBarData = {
-  vitalId: number
-  value: number
 }
 
 export type VitalChartData = {
@@ -144,12 +79,6 @@ export type VitalChartData = {
   vitalId: string | undefined
   vitalName: string
 }
-
-export type VitalTxData = Pick<
-  IcuTxs,
-  'icu_chart_tx_id' | 'icu_chart_tx_result' | 'created_at'
-> &
-  Pick<IcuOrders, 'icu_chart_order_name'>
 
 export type VitalData = {
   icu_chart_tx_id: string
@@ -174,8 +103,4 @@ export type MemoGroup = {
   a: Memo[]
   b: Memo[]
   c: Memo[]
-}
-
-export type IcuShareData = Omit<SelectedIcuChart, 'orders'> & {
-  orders: IcuReadOnlyOrderData[]
 }

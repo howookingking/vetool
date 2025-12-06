@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import type { Hospital, User } from '@/types'
 import { redirect } from 'next/navigation'
 
-export type StaffsData = Pick<
+type StaffsData = Pick<
   User,
   | 'name'
   | 'position'

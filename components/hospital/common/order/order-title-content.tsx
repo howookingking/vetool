@@ -1,5 +1,5 @@
+import type { OrderFontSize } from '@/components/hospital/admin/icu-settings/order-font-size/order-font-size-setting'
 import OrderTypeColorDot from '@/components/hospital/common/order/order-type-color-dot'
-import { OrderFontSize } from '@/constants/admin/order-font-size'
 import type { OrderType } from '@/constants/hospital/icu/chart/order'
 import type { IcuOrderColors } from '@/types/adimin'
 

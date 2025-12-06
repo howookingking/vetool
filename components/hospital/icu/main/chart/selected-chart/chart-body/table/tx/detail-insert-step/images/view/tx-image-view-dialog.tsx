@@ -1,5 +1,5 @@
 import TxImage from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/detail-insert-step/images/view/tx-image'
-import TxImageViewCarousel from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/detail-insert-step/images/view/tx-image-view-carousel'
+// import TxImageViewCarousel from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/detail-insert-step/images/view/tx-image-view-carousel'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -122,12 +122,12 @@ export default function TxImageViewDialog({
             </div>
           </div>
 
-          <TxImageViewCarousel
+          {/* <TxImageViewCarousel
             isLoading={isLoading}
             bucketImages={bucketImages}
             tempImages={txLocalState?.txImages}
             initialSlide={selectedImageIndex}
-          />
+          /> */}
 
           <div className="flex justify-end gap-2">
             <Button

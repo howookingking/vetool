@@ -1,4 +1,4 @@
-import type { PatientWithWeight } from '@/types/patients'
+import type { PatientWithWeight } from '@/lib/services/patient/patient'
 import { formatDate } from 'date-fns'
 import PatientDetailInfo from '../common/patient/patient-detail-info'
 

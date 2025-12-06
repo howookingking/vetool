@@ -1,0 +1,17 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": [
+    "next.config.{js,ts,mjs}",
+    "proxy.{js,ts}",
+    "app/**/{page,layout,loading,error,not-found,global-error,route,template,default}.{ts,tsx}"
+  ],
+  "project": ["**/*.{ts,tsx,js,jsx}"],
+  "ignore": [
+    "**/*.d.ts",
+    "lib/supabase/database.types.ts",
+    "constants/company/plans.ts",
+    "components/ui/**",
+    "postcss.config.mjs"
+  ],
+  "ignoreDependencies": ["sharp", "encoding"]
+}

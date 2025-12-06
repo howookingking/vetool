@@ -1,3 +1,5 @@
+// 보류
+
 import type { Shortcuts } from '@/types/icu/instruction'
 
 export const INSTRUCTIONS = [

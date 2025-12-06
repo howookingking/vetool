@@ -2,9 +2,11 @@
 
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetTrigger } from '@/components/ui/sheet'
-import { hasPermissions, type Plan } from '@/constants/plans'
-import { getPatientData } from '@/lib/services/patient/patient'
-import type { PatientWithWeight } from '@/types/patients'
+import { hasPermissions, type Plan } from '@/constants/company/plans'
+import {
+  getPatientData,
+  type PatientWithWeight,
+} from '@/lib/services/patient/patient'
 import { CalculatorIcon, LoaderCircleIcon } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'

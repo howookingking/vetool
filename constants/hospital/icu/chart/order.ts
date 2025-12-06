@@ -12,7 +12,7 @@ export const CHECKLIST_ORDERS = [
   '혈당',
 ] as const
 
-export type ChecklistOrder = (typeof CHECKLIST_ORDERS)[number]
+// export type ChecklistOrder = (typeof CHECKLIST_ORDERS)[number]
 
 export const DEFAULT_ICU_ORDER_TYPE = [
   {

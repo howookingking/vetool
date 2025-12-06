@@ -1,8 +1,5 @@
-import {
-  type CalcMethod,
-  type Fold,
-  type Species,
-} from '@/types/hospital/calculator'
+import type { Species } from '@/constants/hospital/register/signalments'
+import type { CalcMethod, Fold } from '@/types/hospital/calculator'
 
 export const calculateMaintenanceRate = (
   weight: string,
