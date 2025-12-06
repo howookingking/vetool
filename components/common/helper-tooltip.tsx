@@ -42,6 +42,7 @@ export default function HelperTooltip({
             variant === 'help'
               ? 'border-2 border-primary bg-white text-black'
               : 'bg-destructive',
+            className,
           )}
         >
           {children}
