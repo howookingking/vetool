@@ -22,7 +22,7 @@ export default function PatientRegisterDialog({ hosId }: { hosId: string }) {
       onOpenChange={setIsPatientRegisterDialogOpen}
     >
       <DialogTrigger asChild>
-        <Button size="sm">환자 등록</Button>
+        <Button size="default">환자 등록</Button>
       </DialogTrigger>
 
       <DialogContent
