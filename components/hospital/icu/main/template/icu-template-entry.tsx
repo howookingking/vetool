@@ -20,9 +20,8 @@ export default function IcuTemplateEntry({
     useState<IcuTemplate | null>(null)
 
   return (
-    <div className="relative p-2">
+    <div className="p-2">
       <DataTable
-        searchBarSpace
         columns={templateColumns(
           setIsUpsertTemplateDialogOpen,
           setSortedOrders,

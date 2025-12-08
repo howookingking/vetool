@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dialog'
 import type { IcuTemplate } from '@/types'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
+import { PlusIcon } from 'lucide-react'
 import { useEffect, useRef, type Dispatch, type SetStateAction } from 'react'
 import ConfirmAddTemplateDialog from './confirm-add-template-dialog'
 import TemplateOrderTable from './template-order-table'
@@ -58,8 +59,13 @@ export default function UpsertTemplateDialog({
 
   return (
     <Dialog open={isUpsertTemplateDialogOpen} onOpenChange={handleOpenChange}>
-      <DialogTrigger asChild className="absolute right-2 top-2">
-        <Button className="h-[34px]">템풀릿 만들기</Button>
+      <DialogTrigger
+        asChild
+        className="absolute bottom-16 right-6 rounded-full"
+      >
+        <Button size="icon">
+          <PlusIcon />
+        </Button>
       </DialogTrigger>
 
       <DialogContent
