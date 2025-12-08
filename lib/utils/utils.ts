@@ -249,11 +249,6 @@ export function formatOrders(
 //     )
 // }
 
-export const hasOrderSortingChanged = (
-  prevOrders: SelectedIcuOrder[],
-  sortedOrders: SelectedIcuOrder[],
-) => JSON.stringify(prevOrders) !== JSON.stringify(sortedOrders)
-
 export const convertPascalCased = (value: string | null) => {
   if (!value) return '품종 선택'
 

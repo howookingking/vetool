@@ -15,7 +15,7 @@ type Props = {
   chartData: SelectedIcuChart
   sortedOrders: SelectedIcuOrder[]
   isSorting: boolean
-  setIsSorting: Dispatch<SetStateAction<boolean>>
+  onSortToggle: () => void
   orderWidth: OrderWidth
   setOrderWidth: Dispatch<SetStateAction<OrderWidth>>
   chartId?: string
@@ -27,7 +27,7 @@ export default function ChartTableHeader({
   chartData,
   sortedOrders,
   isSorting,
-  setIsSorting,
+  onSortToggle,
   orderWidth,
   setOrderWidth,
   chartId,
@@ -47,12 +47,7 @@ export default function ChartTableHeader({
             transition: 'width 0.3s ease-in-out ',
           }}
         >
-          <SortingButton
-            prevOrders={chartData.orders}
-            sortedOrders={sortedOrders}
-            isSorting={isSorting}
-            setIsSorting={setIsSorting}
-          />
+          <SortingButton isSorting={isSorting} onClick={onSortToggle} />
 
           <span className="absolute -z-10 w-full text-center">
             오더 ({sortedOrders.length})
@@ -79,7 +74,7 @@ export default function ChartTableHeader({
         </TableHead>
 
         {TIMES.map((time) => {
-          const shouldShowIndicator = time === hours && isTargetDateToday
+          const shouldShowIndicator = time === hours ? isTargetDateToday : false
           return (
             <TableHead className="relative border text-center" key={time}>
               {time.toString().padStart(2, '0')}

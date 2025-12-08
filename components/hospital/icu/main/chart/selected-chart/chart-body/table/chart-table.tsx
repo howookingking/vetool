@@ -5,10 +5,10 @@ import SortingOrderRows from '@/components/hospital/icu/main/chart/selected-char
 import ChartTableHeader from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/chart-table-header'
 import { Table } from '@/components/ui/table'
 import useLocalStorage from '@/hooks/use-local-storage'
-
-import { type SelectedIcuChart, type SelectedIcuOrder } from '@/types/icu/chart'
-import { type RefObject, useEffect, useState } from 'react'
-import { OrderWidth } from './chart-table-header/order-width-button'
+import { useOrderSorting } from '@/hooks/use-order-sorting'
+import type { SelectedIcuChart } from '@/types/icu/chart'
+import type { RefObject } from 'react'
+import type { OrderWidth } from './chart-table-header/order-width-button'
 
 type Props = {
   chartData: SelectedIcuChart
@@ -24,12 +24,13 @@ export default function ChartTable({ chartData, cellRef, targetDate }: Props) {
     400,
   )
 
-  const [isSorting, setIsSorting] = useState(false)
-  const [sortedOrders, setSortedOrders] = useState<SelectedIcuOrder[]>(orders)
-
-  useEffect(() => {
-    setSortedOrders(orders)
-  }, [orders])
+  const {
+    isSorting,
+    handleSortToggle,
+    sortedOrders,
+    setSortedOrders,
+    handleOrderMove,
+  } = useOrderSorting({ initialOrders: orders })
 
   return (
     <Table className="border">
@@ -37,7 +38,7 @@ export default function ChartTable({ chartData, cellRef, targetDate }: Props) {
       <ChartTableHeader
         chartData={chartData}
         isSorting={isSorting}
-        setIsSorting={setIsSorting}
+        onSortToggle={handleSortToggle}
         sortedOrders={sortedOrders}
         orderWidth={orderWidth}
         setOrderWidth={setOrderWidth}
@@ -53,6 +54,7 @@ export default function ChartTable({ chartData, cellRef, targetDate }: Props) {
           setSortedOrders={setSortedOrders}
           sortedOrders={sortedOrders}
           species={patient.species}
+          onOrderMove={handleOrderMove}
         />
       ) : (
         <ChartTableBody

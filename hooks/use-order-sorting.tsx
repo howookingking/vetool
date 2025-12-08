@@ -1,0 +1,96 @@
+import { Kbd } from '@/components/ui/kbd'
+import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
+import useShortcutKey from '@/hooks/use-shortcut-key'
+import { reorderDefaultOrders } from '@/lib/services/admin/icu/default-orders'
+import { reorderOrders } from '@/lib/services/icu/chart/order-mutation'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
+import { useEffect, useState } from 'react'
+import type { Sortable } from 'react-sortablejs'
+import { toast } from 'sonner'
+
+type Props = {
+  initialOrders: SelectedIcuOrder[]
+  isDt?: boolean
+}
+
+export function useOrderSorting({ initialOrders, isDt }: Props) {
+  const [isSorting, setIsSorting] = useState(false)
+  const [sortedOrders, setSortedOrders] =
+    useState<SelectedIcuOrder[]>(initialOrders)
+  const safeRefresh = useSafeRefresh()
+
+  useEffect(() => {
+    setSortedOrders(initialOrders)
+  }, [initialOrders])
+
+  const handleOrderMove = (event: Sortable.SortableEvent) => {
+    const newOrders = [...sortedOrders]
+    const [movedOrder] = newOrders.splice(event.oldIndex as number, 1)
+    newOrders.splice(event.newIndex as number, 0, movedOrder)
+    setSortedOrders(newOrders)
+  }
+
+  const handleSortToggle = async () => {
+    if (!isSorting) {
+      toast.info('오더를 Drag & Drop 하여 순서를 변경해주세요', {
+        description: (
+          <>
+            <Kbd>Ctrl </Kbd> + <Kbd>S</Kbd> 또는 <Kbd>Esc</Kbd>를 눌러 순서
+            변경을 완료해주세요
+          </>
+        ),
+      })
+
+      setIsSorting(true)
+      return
+    }
+
+    // If sorting, check if changed
+    if (isSorting && !hasOrderSortingChanged(initialOrders, sortedOrders)) {
+      setIsSorting(false)
+      return
+    }
+
+    if (isSorting) {
+      const orderIds = sortedOrders.map((order) => order.order_id)
+
+      isDt
+        ? await reorderDefaultOrders(orderIds)
+        : await reorderOrders(orderIds)
+
+      setIsSorting(false)
+      toast.success('오더 순서를 변경하였습니다')
+      !isDt && safeRefresh()
+    }
+  }
+
+  useShortcutKey({
+    key: 'Escape',
+    condition: isSorting,
+    callback: handleSortToggle,
+    requireCtrl: false,
+  })
+
+  useShortcutKey({
+    key: 's',
+    ignoreInput: true,
+    callback: handleSortToggle,
+  })
+
+  return {
+    isSorting,
+    sortedOrders,
+    setSortedOrders,
+    handleOrderMove,
+    handleSortToggle,
+  }
+}
+
+const hasOrderSortingChanged = (
+  prevOrders: SelectedIcuOrder[],
+  sortedOrders: SelectedIcuOrder[],
+) => {
+  return prevOrders.some(
+    (order, index) => order.order_id !== sortedOrders[index]?.order_id,
+  )
+}
