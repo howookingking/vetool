@@ -20,7 +20,7 @@ export default function Chart({ selectedIcuChart, hosId, targetDate }: Props) {
         targetDate={targetDate}
       />
 
-      <ChartBody chartData={selectedIcuChart} />
+      <ChartBody chartData={selectedIcuChart} targetDate={targetDate} />
 
       {isPatientOut ? <OutPatientCover /> : null}
     </div>

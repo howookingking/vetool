@@ -21,7 +21,7 @@ import DialogTriggerButton from '../dialog-trigger-button'
 type Props = {
   tableHeader?: boolean
   chartId?: string
-  targetDate: string
+  targetDate?: string
   patientId: string
   hosId: string
 }

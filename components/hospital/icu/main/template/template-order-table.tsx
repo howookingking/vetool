@@ -6,11 +6,10 @@ import DtSortingOrderRows from '@/components/hospital/common/default-template-or
 import DtTableHeader from '@/components/hospital/common/default-template-order/dt-table-header'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import useLocalStorage from '@/hooks/use-local-storage'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import type { OrderWidth } from '@/types/hospital/order'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import UserKeyGuideMessage from '../chart/selected-chart/chart-body/table/chart-table-body/order-creator/user-key-guide-message'
+import type { OrderWidth } from '../chart/selected-chart/chart-body/table/chart-table-header/order-width-button'
 
 type Props = {
   sortedOrders: SelectedIcuOrder[]

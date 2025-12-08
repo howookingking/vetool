@@ -75,7 +75,7 @@ export default function SortingButton({
       variant="ghost"
       size="icon"
       className={cn(
-        isSorting && 'animate-pulse text-primary',
+        isSorting ? 'animate-pulse text-primary' : null,
         'hidden shrink-0 md:flex',
       )}
       onClick={handleSortButtonClick}

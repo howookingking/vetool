@@ -67,7 +67,4 @@ export const BG_CANDIDATES = [
   '간이혈당계',
 ] as const
 
-export const DESKTOP_WIDTH_SEQUENCE = [300, 400, 500, 600] as const
-export const MOBILE_WIDTH_SEQUENCE = [200, 300] as const
-
 export type OrderType = (typeof DEFAULT_ICU_ORDER_TYPE)[number]['value']

@@ -1,9 +1,9 @@
 import DtOrderRows from '@/components/hospital/common/default-template-order/dt-order-rows'
 import DtTableHeader from '@/components/hospital/common/default-template-order/dt-table-header'
+import type { OrderWidth } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/order-width-button'
 import { Table, TableBody } from '@/components/ui/table'
 import useLocalStorage from '@/hooks/use-local-storage'
 import type { IcuOrderColors } from '@/types/adimin'
-import type { OrderWidth } from '@/types/hospital/order'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 
 export default function DisplayExampleTable({

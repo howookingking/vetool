@@ -67,14 +67,14 @@ export const reorderOrders = async (orderIds: string[]) => {
   const supabase = await createClient()
 
   orderIds.forEach(async (orderId, index) => {
-    const { error: reorderOrdersError } = await supabase
+    const { error } = await supabase
       .from('icu_orders')
       .update({ icu_chart_order_priority: index })
       .match({ icu_chart_order_id: orderId })
 
-    if (reorderOrdersError) {
-      console.error(reorderOrdersError)
-      redirect(`/error?message=${reorderOrdersError.message}`)
+    if (error) {
+      console.error(error)
+      redirect(`/error?message=${error.message}`)
     }
   })
 }

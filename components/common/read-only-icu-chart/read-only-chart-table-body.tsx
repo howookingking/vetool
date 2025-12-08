@@ -1,7 +1,7 @@
+import type { OrderWidth } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/order-width-button'
 import { TableBody, TableRow } from '@/components/ui/table'
 import { borderedOrderClassName } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import type { OrderWidth } from '@/types/hospital/order'
 import type { SelectedIcuChart } from '@/types/icu/chart'
 import ReadOnlyOrderRowCells from './read-only-order-row-cells'
 import ReadOnlyOrderRowTitle from './read-only-order-row-title'
