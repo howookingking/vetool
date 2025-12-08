@@ -1,7 +1,7 @@
+import type { OrderFontSize } from '@/components/hospital/admin/icu-settings/order-font-size/order-font-size-setting'
 import OrderTitleContent from '@/components/hospital/common/order/order-title-content'
 import { TableCell } from '@/components/ui/table'
-import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import type { VitalRefRange } from '@/types/adimin'
+import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 
 type Props = {
@@ -9,6 +9,8 @@ type Props = {
   vitalRefRange?: VitalRefRange[]
   species: string
   orderWidth: number
+  orderColorsData: IcuOrderColors
+  orderFontSizeData: OrderFontSize
 }
 
 export default function ReadOnlyOrderRowTitle({
@@ -16,12 +18,10 @@ export default function ReadOnlyOrderRowTitle({
   vitalRefRange,
   species,
   orderWidth,
+  orderColorsData,
+  orderFontSizeData,
 }: Props) {
   const { order_comment, order_type, order_name } = order
-
-  const {
-    basicHosData: { orderColorsData, orderFontSizeData },
-  } = useBasicHosDataContext()
 
   // -------- 바이탈 참조범위 --------
   const foundVital = vitalRefRange?.find(

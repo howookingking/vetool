@@ -1,8 +1,7 @@
+import ReadOnlyChartTableBody from '@/components/common/read-only-icu-chart/read-only-chart-table-body'
+import ReadOnlyChartTableHeader from '@/components/common/read-only-icu-chart/read-only-chart-table-header'
 import DtOrderRows from '@/components/hospital/common/default-template-order/dt-order-rows'
-import DtTableHeader from '@/components/hospital/common/default-template-order/dt-table-header'
-import type { OrderWidth } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/order-width-button'
 import { Table, TableBody } from '@/components/ui/table'
-import useLocalStorage from '@/hooks/use-local-storage'
 import type { IcuOrderColors } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 
@@ -11,28 +10,17 @@ export default function DisplayExampleTable({
 }: {
   localColorState: IcuOrderColors
 }) {
-  const [orderWidth] = useLocalStorage<OrderWidth>('orderWidth', 400)
-
   return (
     <div className="relative">
       <Table className="border">
-        <DtTableHeader
-          isSorting={false}
-          setIsSorting={() => {}}
-          orderWidth={orderWidth}
-          setOrderWidth={() => {}}
-          sortedOrders={DUMMY_ORDERS}
-          defaultChartOrders={[]}
-        />
+        <ReadOnlyChartTableHeader orderWidth={400} setOrderWidth={() => {}} />
 
-        <TableBody>
-          <DtOrderRows
-            sortedOrders={DUMMY_ORDERS}
-            isSorting={false}
-            orderwidth={orderWidth}
-            localColorState={localColorState}
-          />
-        </TableBody>
+        <ReadOnlyChartTableBody
+          orders={DUMMY_ORDERS}
+          orderWidth={400}
+          species={''}
+          localColorState={localColorState}
+        />
       </Table>
 
       <div className="absolute inset-0 flex h-full cursor-not-allowed items-center justify-center">

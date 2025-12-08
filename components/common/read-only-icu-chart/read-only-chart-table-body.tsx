@@ -2,26 +2,32 @@ import type { OrderWidth } from '@/components/hospital/icu/main/chart/selected-c
 import { TableBody, TableRow } from '@/components/ui/table'
 import { borderedOrderClassName } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import type { SelectedIcuChart } from '@/types/icu/chart'
+import type { IcuOrderColors } from '@/types/adimin'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
 import ReadOnlyOrderRowCells from './read-only-order-row-cells'
 import ReadOnlyOrderRowTitle from './read-only-order-row-title'
 
 type Props = {
   orderWidth: OrderWidth
-  chartData: SelectedIcuChart
+  orders: SelectedIcuOrder[]
+  species: string
+  localColorState?: IcuOrderColors // 오더색 설정에서 디스플레이 예시
 }
 
 export default function ReadOnlyChartTableBody({
   orderWidth,
-  chartData,
+  orders,
+  species,
+  localColorState,
 }: Props) {
   const {
-    orders,
-    patient: { species },
-  } = chartData
-
-  const {
-    basicHosData: { showOrderer, vitalRefRange, timeGuidelineData },
+    basicHosData: {
+      showOrderer,
+      vitalRefRange,
+      timeGuidelineData,
+      orderColorsData,
+      orderFontSizeData,
+    },
   } = useBasicHosDataContext()
 
   return (
@@ -38,6 +44,10 @@ export default function ReadOnlyChartTableBody({
               vitalRefRange={vitalRefRange}
               species={species}
               orderWidth={orderWidth}
+              orderColorsData={
+                localColorState ? localColorState : orderColorsData
+              }
+              orderFontSizeData={orderFontSizeData}
             />
 
             <ReadOnlyOrderRowCells

@@ -21,7 +21,11 @@ export default function ReadOnlyChartTable({
         setOrderWidth={setOrderWidth}
       />
 
-      <ReadOnlyChartTableBody chartData={chartData} orderWidth={orderWidth} />
+      <ReadOnlyChartTableBody
+        orders={chartData.orders}
+        species={chartData.patient.species}
+        orderWidth={orderWidth}
+      />
     </Table>
   )
 }
