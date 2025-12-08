@@ -33,18 +33,8 @@ export default function ReadOnlyOrderRowTitle({
   // -------- 바이탈 참조범위 --------
 
   return (
-    <TableCell
-      className="p-0"
-      style={{
-        width: orderWidth,
-      }}
-    >
-      <div
-        className="flex h-11 px-2"
-        style={{
-          width: orderWidth,
-        }}
-      >
+    <TableCell className="p-0">
+      <div className="flex h-11 px-2" style={{ width: orderWidth }}>
         <OrderTitleContent
           orderType={order_type}
           orderName={order_name}
