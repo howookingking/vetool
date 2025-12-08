@@ -9,20 +9,16 @@ import type { Dispatch, SetStateAction } from 'react'
 
 type Props = {
   isSorting: boolean
-  setIsSorting: Dispatch<SetStateAction<boolean>>
+  onSortToggle: () => void
   orderWidth: OrderWidth
   setOrderWidth: Dispatch<SetStateAction<OrderWidth>>
-  sortedOrders: SelectedIcuOrder[]
-  defaultChartOrders: SelectedIcuOrder[]
 }
 
 export default function DtTableHeader({
   isSorting,
   orderWidth,
   setOrderWidth,
-  setIsSorting,
-  sortedOrders,
-  defaultChartOrders,
+  onSortToggle,
 }: Props) {
   return (
     <TableHeader className="shadow-sm">
@@ -34,13 +30,7 @@ export default function DtTableHeader({
             transition: 'width 0.3s ease-in-out ',
           }}
         >
-          <SortingButton
-            prevOrders={defaultChartOrders}
-            sortedOrders={sortedOrders}
-            isSorting={isSorting}
-            setIsSorting={setIsSorting}
-            isDt
-          />
+          <SortingButton isSorting={isSorting} onClick={onSortToggle} />
 
           <span className="text-center">기본오더</span>
 

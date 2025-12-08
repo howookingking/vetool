@@ -1,15 +1,17 @@
 import SortableOrderWrapper from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/sortable-order-wrapper'
 import { TableRow } from '@/components/ui/table'
-import { type SelectedIcuOrder } from '@/types/icu/chart'
-import { type Dispatch, type SetStateAction } from 'react'
-import { type Sortable } from 'react-sortablejs'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
+import type { Dispatch, SetStateAction } from 'react'
+import type { Sortable } from 'react-sortablejs'
+import type { OrderWidth } from '../../icu/main/chart/selected-chart/chart-body/table/chart-table-header/order-width-button'
 import DtOrderRowTitle from './dt-order-row-title'
 
 type Props = {
+  isSorting: boolean
+  orderWidth: OrderWidth
   sortedOrders: SelectedIcuOrder[]
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
-  isSorting: boolean
-  orderWidth: number
+  onOrderMove: (event: Sortable.SortableEvent) => void
 }
 
 export default function DtSortingOrderRows({
@@ -17,19 +19,13 @@ export default function DtSortingOrderRows({
   setSortedOrders,
   isSorting,
   orderWidth,
+  onOrderMove,
 }: Props) {
-  const handleReorder = (event: Sortable.SortableEvent) => {
-    const newOrders = [...sortedOrders]
-    const [movedOrder] = newOrders.splice(event.oldIndex as number, 1)
-    newOrders.splice(event.newIndex as number, 0, movedOrder)
-    setSortedOrders(newOrders)
-  }
-
   return (
     <SortableOrderWrapper
       orders={sortedOrders}
       onOrdersChange={setSortedOrders}
-      onSortEnd={handleReorder}
+      onSortEnd={onOrderMove}
     >
       {sortedOrders.map((order, index) => (
         <TableRow className="relative divide-x" key={order.order_id}>

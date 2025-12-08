@@ -10,12 +10,13 @@ import type { OrderWidth } from '@/components/hospital/icu/main/chart/selected-c
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import useIsCommandPressed from '@/hooks/use-is-command-pressed'
 import useLocalStorage from '@/hooks/use-local-storage'
+import { useOrderSorting } from '@/hooks/use-order-sorting'
 import { upsertDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
 import { useDtOrderStore } from '@/lib/store/icu/dt-order'
 import { formatOrders } from '@/lib/utils/utils'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { useParams, useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { toast } from 'sonner'
 
 export default function DefaultOrdersTable({
@@ -34,14 +35,6 @@ export default function DefaultOrdersTable({
   const isCommandPressed = useIsCommandPressed()
 
   const { orderTimePendingQueue, reset: resetOrderStore } = useDtOrderStore()
-
-  const [isSorting, setIsSorting] = useState(false)
-  const [sortedOrders, setSortedOrders] =
-    useState<SelectedIcuOrder[]>(defaultChartOrders)
-
-  useEffect(() => {
-    setSortedOrders(defaultChartOrders)
-  }, [defaultChartOrders])
 
   const handleUpsertOrderTime = async () => {
     const formattedOrders = formatOrders(orderTimePendingQueue)
@@ -88,16 +81,25 @@ export default function DefaultOrdersTable({
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [isCommandPressed])
 
+  const {
+    isSorting,
+    sortedOrders,
+    setSortedOrders,
+    handleOrderMove,
+    handleSortToggle,
+  } = useOrderSorting({
+    initialOrders: defaultChartOrders,
+    isDt: true,
+  })
+
   return (
     <div className="relative">
       <Table className="border">
         <DtTableHeader
+          onSortToggle={handleSortToggle}
           isSorting={isSorting}
-          setIsSorting={setIsSorting}
           orderWidth={orderWidth}
           setOrderWidth={setOrderWidth}
-          sortedOrders={sortedOrders}
-          defaultChartOrders={defaultChartOrders}
         />
 
         {isSorting ? (
@@ -106,6 +108,7 @@ export default function DefaultOrdersTable({
             sortedOrders={sortedOrders}
             setSortedOrders={setSortedOrders}
             orderWidth={orderWidth}
+            onOrderMove={handleOrderMove}
           />
         ) : (
           <TableBody>

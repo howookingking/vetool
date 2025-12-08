@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { ArrowLeftToLine, ArrowRightFromLine } from 'lucide-react'
+import { ArrowLeftToLineIcon, ArrowRightFromLineIcon } from 'lucide-react'
 import type { Dispatch, SetStateAction } from 'react'
 
 export const ORDER_WIDTH_SEQUENCE = [400, 500, 600] as const
@@ -31,7 +31,7 @@ export default function OrderWidthButton({ orderWidth, setOrderWidth }: Props) {
       onClick={handleOrderWidthChange}
       className="shrink-0"
     >
-      {isMaxWidth ? <ArrowLeftToLine /> : <ArrowRightFromLine />}
+      {isMaxWidth ? <ArrowLeftToLineIcon /> : <ArrowRightFromLineIcon />}
     </Button>
   )
 }
