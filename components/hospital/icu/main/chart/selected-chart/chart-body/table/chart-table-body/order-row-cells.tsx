@@ -9,7 +9,6 @@ import { useMemo } from 'react'
 
 type Props = {
   hosId: string
-  preview?: boolean
   order: SelectedIcuOrder
   showOrderer: boolean
   showTxUser: boolean
@@ -37,7 +36,6 @@ type Props = {
 
 export default function OrderRowCells({
   hosId,
-  preview,
   order,
   showOrderer,
   showTxUser,
@@ -146,7 +144,6 @@ export default function OrderRowCells({
 
   const commonCellProps = {
     hosId,
-    preview,
     icuChartOrderId: order_id,
     orderType: order_type,
     orderName: order_name,
@@ -186,9 +183,9 @@ export default function OrderRowCells({
         )
       })}
 
-      {noFecalOrUrineResult && !preview && (
+      {noFecalOrUrineResult ? (
         <NoFecalOrUrineAlert orderName={order_name} />
-      )}
+      ) : null}
     </>
   )
 }

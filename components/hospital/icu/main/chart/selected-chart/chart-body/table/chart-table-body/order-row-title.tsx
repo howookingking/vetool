@@ -11,7 +11,6 @@ type Props = {
   order: SelectedIcuOrder
   index: number
   isSorting?: boolean
-  preview?: boolean
   vitalRefRange?: VitalRefRange[]
   species: string
   orderWidth: number
@@ -30,7 +29,6 @@ export default function OrderRowTitle({
   order,
   isSorting,
   index,
-  preview,
   vitalRefRange,
   species,
   orderWidth,
@@ -96,15 +94,11 @@ export default function OrderRowTitle({
       <Button
         disabled={isOptimisticOrder}
         variant="ghost"
-        onClick={isSorting || preview ? undefined : handleClickOrderTitle}
+        onClick={isSorting ? undefined : handleClickOrderTitle}
         className={cn(
           'group flex h-11 justify-between rounded-none bg-transparent px-2 outline-none transition duration-300 hover:scale-[97%] hover:bg-transparent',
           isOptimisticOrder && 'animate-bounce',
-          preview
-            ? 'cursor-not-allowed'
-            : isSorting
-              ? 'cursor-grab'
-              : 'cursor-pointer',
+          isSorting ? 'cursor-grab' : 'cursor-pointer',
           isInOrderPendingQueue && 'ring-2 ring-inset ring-primary',
         )}
         style={{

@@ -18,7 +18,6 @@ import { toast } from 'sonner'
 type Props = {
   sortedOrders: SelectedIcuOrder[]
   isSorting: boolean
-  preview?: boolean
   showOrderer: boolean
   showTxUser: boolean
   selectedTxPendingQueue: OrderTimePendingQueue[]
@@ -39,7 +38,6 @@ type Props = {
 export default function OrderRows({
   sortedOrders,
   isSorting,
-  preview,
   showOrderer,
   showTxUser,
   selectedTxPendingQueue,
@@ -111,7 +109,6 @@ export default function OrderRows({
             isInOrderPendingQueue={isInOrderPendingQueue}
             index={index}
             order={order}
-            preview={preview}
             isSorting={isSorting}
             vitalRefRange={vitalRefRange}
             species={species}
@@ -124,7 +121,6 @@ export default function OrderRows({
 
           <OrderRowCells
             hosId={hosId}
-            preview={preview}
             order={order}
             showOrderer={showOrderer}
             showTxUser={showTxUser}
@@ -148,7 +144,6 @@ export default function OrderRows({
     sortedOrders,
     selectedOrderPendingQueue,
     cellRef,
-    preview,
     isSorting,
     vitalRefRange,
     species,

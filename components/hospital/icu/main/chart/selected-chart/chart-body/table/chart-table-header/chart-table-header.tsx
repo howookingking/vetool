@@ -1,33 +1,29 @@
 import PasteTemplateOrderDialog from '@/components/hospital/icu/main/chart/paste-chart-dialogs/template/paste-template-order-dialog'
-import OrderWidthButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/order-width-button'
+import OrderWidthButton, {
+  type OrderWidth,
+} from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/order-width-button'
 import SortingButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/sorting-button'
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import { useCurrentTime } from '@/hooks/use-current-time'
-import { cn } from '@/lib/utils/utils'
-import type { OrderWidth } from '@/types/hospital/order'
 import type { SelectedIcuChart, SelectedIcuOrder } from '@/types/icu/chart'
 import { isToday } from 'date-fns'
 import type { Dispatch, SetStateAction } from 'react'
 import { CurrentTimeIndicator } from './current-time-indicator'
-import { useParams } from 'next/navigation'
 
 type Props = {
-  preview?: boolean
   chartData: SelectedIcuChart
   sortedOrders: SelectedIcuOrder[]
   isSorting: boolean
   setIsSorting: Dispatch<SetStateAction<boolean>>
-  isEditOrderMode?: boolean
   orderWidth: OrderWidth
-  isExport?: boolean
   setOrderWidth: Dispatch<SetStateAction<OrderWidth>>
   chartId?: string
   hosId: string
+  targetDate?: string
 }
 
 export default function ChartTableHeader({
-  preview,
   chartData,
   sortedOrders,
   isSorting,
@@ -36,67 +32,60 @@ export default function ChartTableHeader({
   setOrderWidth,
   chartId,
   hosId,
+  targetDate,
 }: Props) {
-  const { target_date } = useParams()
   const { hours, minutes } = useCurrentTime()
-  const isTargetDateToday = isToday(chartData.target_date!)
+  const isTargetDateToday = targetDate ? isToday(targetDate) : false
 
   return (
-    <TableHeader
-      data-guide="order-info"
-      className={cn(
-        preview ? 'top-0' : 'top-12',
-        'sticky z-20 bg-white shadow-sm',
-      )}
-    >
+    <TableHeader className="sticky top-12 z-20 bg-white shadow-sm">
       <TableRow>
         <TableHead
-          className="flex items-center justify-between px-0.5 text-center"
+          className="relative flex items-center justify-between px-0.5"
           style={{
             width: orderWidth,
             transition: 'width 0.3s ease-in-out ',
           }}
         >
-          {!preview && (
-            <SortingButton
-              prevOrders={chartData.orders}
-              sortedOrders={sortedOrders}
-              isSorting={isSorting}
-              setIsSorting={setIsSorting}
-            />
-          )}
+          <SortingButton
+            prevOrders={chartData.orders}
+            sortedOrders={sortedOrders}
+            isSorting={isSorting}
+            setIsSorting={setIsSorting}
+          />
 
-          <span className="w-full text-center">
-            오더 목록 ({sortedOrders.length})
+          <span className="absolute -z-10 w-full text-center">
+            오더 ({sortedOrders.length})
           </span>
 
-          {!preview && !isSorting && (
-            <PasteTemplateOrderDialog
-              tableHeader
-              chartId={chartId}
-              hosId={hosId}
-              patientId={chartData.patient.patient_id}
-              targetDate={target_date as string}
-            />
-          )}
+          <div className="absolute right-0.5 flex items-center gap-0.5">
+            {!isSorting ? (
+              <PasteTemplateOrderDialog
+                tableHeader
+                chartId={chartId}
+                hosId={hosId}
+                patientId={chartData.patient.patient_id}
+                targetDate={targetDate}
+              />
+            ) : null}
 
-          {!isSorting && (
-            <OrderWidthButton
-              orderWidth={orderWidth}
-              setOrderWidth={setOrderWidth}
-            />
-          )}
+            {!isSorting ? (
+              <OrderWidthButton
+                orderWidth={orderWidth}
+                setOrderWidth={setOrderWidth}
+              />
+            ) : null}
+          </div>
         </TableHead>
 
         {TIMES.map((time) => {
-          const shouldShowIndicator =
-            time === hours && !isSorting && !preview && isTargetDateToday
+          const shouldShowIndicator = time === hours && isTargetDateToday
           return (
             <TableHead className="relative border text-center" key={time}>
               {time.toString().padStart(2, '0')}
-              {shouldShowIndicator && (
+              {shouldShowIndicator ? (
                 <CurrentTimeIndicator minutes={minutes} />
-              )}
+              ) : null}
             </TableHead>
           )
         })}

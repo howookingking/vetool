@@ -20,7 +20,6 @@ import { toast } from 'sonner'
 type Props = {
   sortedOrders: SelectedIcuOrder[]
   isSorting: boolean
-  preview?: boolean
   orderWidth: number
   isExport?: boolean
   icuChartId: string
@@ -32,7 +31,6 @@ type Props = {
 export default function ChartTableBody({
   sortedOrders,
   isSorting,
-  preview,
   orderWidth,
   icuChartId,
   setSortedOrders,
@@ -127,7 +125,6 @@ export default function ChartTableBody({
         setOrderStep={setOrderStep}
         sortedOrders={sortedOrders}
         isSorting={isSorting}
-        preview={preview}
         vitalRefRange={vitalRefRange}
         species={species}
         showOrderer={showOrderer}
@@ -143,31 +140,27 @@ export default function ChartTableBody({
         resetOrderStore={resetOrderStore}
       />
 
-      {!preview && (
-        <>
-          <OrderCreatorRow
-            icuChartId={icuChartId}
-            setSortedOrders={setSortedOrders}
-            sortedOrders={sortedOrders}
-            orderColorsData={orderColorsData}
-            weight={chartData.weight}
-          />
+      <OrderCreatorRow
+        icuChartId={icuChartId}
+        setSortedOrders={setSortedOrders}
+        sortedOrders={sortedOrders}
+        orderColorsData={orderColorsData}
+        weight={chartData.weight}
+      />
 
-          <ChartTableDialogs
-            icuChartId={icuChartId}
-            setSortedOrders={setSortedOrders}
-            orders={orders}
-            showOrderer={showOrderer}
-            setOrderStep={setOrderStep}
-            resetOrderStore={resetOrderStore}
-            mainVetName={name}
-            orderColorsData={orderColorsData}
-            showTxUser={showTxUser}
-            isCommandPressed={isCommandPressed}
-            selectedOrderPendingQueue={selectedOrderPendingQueue}
-          />
-        </>
-      )}
+      <ChartTableDialogs
+        icuChartId={icuChartId}
+        setSortedOrders={setSortedOrders}
+        orders={orders}
+        showOrderer={showOrderer}
+        setOrderStep={setOrderStep}
+        resetOrderStore={resetOrderStore}
+        mainVetName={name}
+        orderColorsData={orderColorsData}
+        showTxUser={showTxUser}
+        isCommandPressed={isCommandPressed}
+        selectedOrderPendingQueue={selectedOrderPendingQueue}
+      />
     </TableBody>
   )
 }

@@ -7,7 +7,7 @@ import { useCopiedChartStore } from '@/lib/store/icu/copied-chart'
 import { cn } from '@/lib/utils/utils'
 import { EyeIcon } from 'lucide-react'
 import { useState } from 'react'
-import PreviewDialogContentDynamic from './preview-dialog-content-dynamic'
+import PreviewDialogContent from './preview-dialog-content'
 
 type Props =
   | {
@@ -67,9 +67,7 @@ export default function PreviewDialog({
         </Button>
       </DialogTrigger>
 
-      {isDialogOpen && (
-        <PreviewDialogContentDynamic copiedChart={copiedChart!} />
-      )}
+      <PreviewDialogContent copiedChart={copiedChart!} />
     </Dialog>
   )
 }

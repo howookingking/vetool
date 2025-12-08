@@ -8,7 +8,6 @@ import { type Sortable } from 'react-sortablejs'
 type Props = {
   sortedOrders: SelectedIcuOrder[]
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
-  preview?: boolean
   isSorting: boolean
   orderWidth: number
   species: string
@@ -17,7 +16,6 @@ type Props = {
 export default function SortingOrderRows({
   sortedOrders,
   setSortedOrders,
-  preview,
   isSorting,
   orderWidth,
   species,
@@ -40,7 +38,6 @@ export default function SortingOrderRows({
           <OrderRowTitle
             index={index}
             order={order}
-            preview={preview}
             isSorting={isSorting}
             orderWidth={orderWidth}
             species={species}
