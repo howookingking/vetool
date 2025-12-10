@@ -19,7 +19,10 @@ export default async function DefaultOrdersTab({ hosId }: { hosId: string }) {
       </CardHeader>
 
       <CardContent>
-        <DefaultOrderTable defaultChartOrders={defaultChartOrders} />
+        <DefaultOrderTable
+          defaultChartOrders={defaultChartOrders}
+          hosId={hosId}
+        />
       </CardContent>
     </Card>
   )

@@ -1,7 +1,6 @@
 'use client'
 
 import DtOrderCreator from '@/components/hospital/common/default-template-order/dt-order-creator'
-import DtOrderDialog from '@/components/hospital/common/default-template-order/dt-order-dialog'
 import DtOrderRows from '@/components/hospital/common/default-template-order/dt-order-rows'
 import DtSortingOrderRows from '@/components/hospital/common/default-template-order/dt-sorting-order-rows'
 import DtTableHeader from '@/components/hospital/common/default-template-order/dt-table-header'
@@ -10,21 +9,27 @@ import type { OrderWidth } from '@/components/hospital/icu/main/chart/selected-c
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import useIsCommandPressed from '@/hooks/use-is-command-pressed'
 import useLocalStorage from '@/hooks/use-local-storage'
-import { useOrderSorting } from '@/hooks/use-order-sorting'
-import { upsertDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
-import { useDtOrderStore } from '@/lib/store/icu/dt-order'
+import useOrderSorting from '@/hooks/use-order-sorting'
+import {
+  HosDefaultChartOrder,
+  upsertDefaultChartOrder,
+} from '@/lib/services/admin/icu/default-orders'
+import { useDtOrderTimePendingQueueStore } from '@/lib/store/icu/dt-order'
 import { formatOrders } from '@/lib/utils/utils'
-import type { SelectedIcuOrder } from '@/types/icu/chart'
-import { useParams, useRouter } from 'next/navigation'
+import { SelectedIcuOrder } from '@/types/icu/chart'
+import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
 
+type Props = {
+  defaultChartOrders: HosDefaultChartOrder[]
+  hosId: string
+}
+
 export default function DefaultOrdersTable({
   defaultChartOrders,
-}: {
-  defaultChartOrders: SelectedIcuOrder[]
-}) {
-  const { hos_id } = useParams()
+  hosId,
+}: Props) {
   const { refresh } = useRouter()
 
   const [orderWidth, setOrderWidth] = useLocalStorage<OrderWidth>(
@@ -34,17 +39,18 @@ export default function DefaultOrdersTable({
 
   const isCommandPressed = useIsCommandPressed()
 
-  const { orderTimePendingQueue, reset: resetOrderStore } = useDtOrderStore()
+  const { orderTimePendingQueue, resetTimePendingQueue } =
+    useDtOrderTimePendingQueueStore()
 
   const handleUpsertOrderTime = async () => {
     const formattedOrders = formatOrders(orderTimePendingQueue)
 
     for (const order of formattedOrders) {
       const currentOrder = defaultChartOrders.find(
-        (o) => o.order_id === order.orderId,
+        (o) => o.icu_chart_order_id === order.orderId,
       )!
 
-      const updatedOrderTimes = currentOrder.order_times.map(
+      const updatedOrderTimes = currentOrder.icu_chart_order_time.map(
         (ordererOrZero, index) =>
           order.orderTimes.includes(index)
             ? ordererOrZero === '0'
@@ -53,22 +59,17 @@ export default function DefaultOrdersTable({
             : ordererOrZero,
       )
 
-      await upsertDefaultChartOrder(
-        hos_id as string,
-        order.orderId,
-        updatedOrderTimes,
-        {
-          default_chart_order_name: currentOrder.order_name,
-          default_chart_order_comment: currentOrder.order_comment ?? '',
-          default_chart_order_type: currentOrder.order_type,
-          is_bordered: currentOrder.is_bordered,
-        },
-      )
+      await upsertDefaultChartOrder(hosId, order.orderId, updatedOrderTimes, {
+        icu_chart_order_name: currentOrder.icu_chart_order_name,
+        icu_chart_order_comment: currentOrder.icu_chart_order_comment ?? '',
+        icu_chart_order_type: currentOrder.icu_chart_order_type,
+        is_bordered: currentOrder.is_bordered,
+      })
     }
 
     toast.success('오더시간을 변경하였습니다')
 
-    resetOrderStore()
+    resetTimePendingQueue()
     refresh()
   }
 
@@ -88,8 +89,8 @@ export default function DefaultOrdersTable({
     handleOrderMove,
     handleSortToggle,
   } = useOrderSorting({
-    initialOrders: defaultChartOrders,
-    isDt: true,
+    initialOrders: defaultChartOrders as SelectedIcuOrder[],
+    type: 'default',
   })
 
   return (
@@ -104,35 +105,36 @@ export default function DefaultOrdersTable({
 
         {isSorting ? (
           <DtSortingOrderRows
+            orderWidth={orderWidth}
             isSorting={isSorting}
             sortedOrders={sortedOrders}
             setSortedOrders={setSortedOrders}
-            orderWidth={orderWidth}
             onOrderMove={handleOrderMove}
+            hosId={hosId}
           />
         ) : (
           <TableBody>
             <DtOrderRows
               sortedOrders={sortedOrders}
               isSorting={isSorting}
-              orderwidth={orderWidth}
+              orderWidth={orderWidth}
+              setSortedOrders={setSortedOrders}
+              hosId={hosId}
             />
 
             <TableRow className="hover:bg-transparent">
               <TableCell className="p-0">
-                <DtOrderCreator sortedOrders={sortedOrders} />
+                <DtOrderCreator
+                  sortedOrders={sortedOrders}
+                  hosId={hosId}
+                  setSortedOrders={setSortedOrders}
+                />
               </TableCell>
 
               <UserKeyGuideMessage isDT />
             </TableRow>
           </TableBody>
         )}
-
-        <DtOrderDialog
-          setSortedOrders={setSortedOrders}
-          isTemplate={false}
-          isLastDefaultOrder={sortedOrders.length === 1}
-        />
       </Table>
     </div>
   )
