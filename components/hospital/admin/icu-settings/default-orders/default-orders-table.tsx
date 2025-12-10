@@ -59,6 +59,8 @@ export default function DefaultOrdersTable({
             : ordererOrZero,
       )
 
+      console.log(updatedOrderTimes)
+
       await upsertDefaultChartOrder(hosId, order.orderId, updatedOrderTimes, {
         icu_chart_order_name: currentOrder.icu_chart_order_name,
         icu_chart_order_comment: currentOrder.icu_chart_order_comment ?? '',

@@ -38,18 +38,18 @@ export default function DtOrderRowCells({
         const isInOrderTimePendingQueue = orderTimePendingQueue.some(
           (t) => t.orderId === order.icu_chart_order_id && t.orderTime === time,
         )
-        // const hasOrder = icu_chart_order_time[time] !== '0'
-        // const orderer = icu_chart_order_time[time]
+        const hasOrder = icu_chart_order_time[time] !== '0'
+        const orderer = icu_chart_order_time[time]
         return (
           <DtCell
-            hasOrder={false}
+            hasOrder={hasOrder}
             isGuidelineTime={isGuidelineTime}
             isInOrderTimePendingQueue={isInOrderTimePendingQueue}
             toggleOrderTime={toggleOrderTime}
             icuChartOrderId={icu_chart_order_id}
             key={time}
             time={time}
-            orderer={''}
+            orderer={orderer}
           />
         )
       })}
