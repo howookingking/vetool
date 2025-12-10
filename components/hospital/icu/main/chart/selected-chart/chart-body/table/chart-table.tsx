@@ -5,7 +5,7 @@ import SortingOrderRows from '@/components/hospital/icu/main/chart/selected-char
 import ChartTableHeader from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/chart-table-header'
 import { Table } from '@/components/ui/table'
 import useLocalStorage from '@/hooks/use-local-storage'
-import { useOrderSorting } from '@/hooks/use-order-sorting'
+import useOrderSorting from '@/hooks/use-order-sorting'
 import type { SelectedIcuChart } from '@/types/icu/chart'
 import type { RefObject } from 'react'
 import type { OrderWidth } from './chart-table-header/order-width-button'
@@ -14,10 +14,16 @@ type Props = {
   chartData: SelectedIcuChart
   cellRef?: RefObject<HTMLTableRowElement>
   targetDate?: string
+  hosId: string
 }
 
-export default function ChartTable({ chartData, cellRef, targetDate }: Props) {
-  const { icu_chart_id, orders, patient, hos_id } = chartData
+export default function ChartTable({
+  chartData,
+  cellRef,
+  targetDate,
+  hosId,
+}: Props) {
+  const { icu_chart_id, orders, patient } = chartData
 
   const [orderWidth, setOrderWidth] = useLocalStorage<OrderWidth>(
     'orderWidth',
@@ -30,7 +36,7 @@ export default function ChartTable({ chartData, cellRef, targetDate }: Props) {
     sortedOrders,
     setSortedOrders,
     handleOrderMove,
-  } = useOrderSorting({ initialOrders: orders })
+  } = useOrderSorting({ initialOrders: orders, type: 'chart' })
 
   return (
     <Table className="border">
@@ -43,7 +49,7 @@ export default function ChartTable({ chartData, cellRef, targetDate }: Props) {
         orderWidth={orderWidth}
         setOrderWidth={setOrderWidth}
         chartId={icu_chart_id}
-        hosId={hos_id}
+        hosId={hosId}
         targetDate={targetDate}
       />
 
@@ -65,6 +71,7 @@ export default function ChartTable({ chartData, cellRef, targetDate }: Props) {
           setSortedOrders={setSortedOrders}
           cellRef={cellRef}
           chartData={chartData}
+          hosId={hosId}
         />
       )}
     </Table>
