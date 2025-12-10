@@ -2,13 +2,14 @@
 
 import { Button } from '@/components/ui/button'
 import { useCopiedChartStore } from '@/lib/store/icu/copied-chart'
+import type { SelectedIcuChart } from '@/types/icu/chart'
 import { ClipboardCheckIcon, CopyIcon } from 'lucide-react'
 import { toast } from 'sonner'
 
 export default function CopyChartButton({
   icuChartId,
 }: {
-  icuChartId: string
+  icuChartId: SelectedIcuChart['icu_chart_id']
 }) {
   const { copiedChartId, setCopiedChartId } = useCopiedChartStore()
 

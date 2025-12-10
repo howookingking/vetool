@@ -1,10 +1,10 @@
 import type { ChartableVital } from '@/constants/hospital/icu/chart/vital-chart'
 import { purifyVitalValue } from '@/lib/utils/vital-chart'
-import { Treatment } from '@/types/icu/chart'
+import type { SelectedTreatment } from '@/types/icu/chart'
 
 export default function useAbnormalVital(
   orderName: string,
-  treatment?: Treatment,
+  treatment?: SelectedTreatment,
   rowVitalRefRange?: {
     min: number
     max: number
@@ -14,13 +14,13 @@ export default function useAbnormalVital(
   const calcVitalResult = () => {
     if (
       !rowVitalRefRange ||
-      !treatment?.tx_result ||
-      treatment.tx_result === null
+      !treatment?.icu_chart_tx_result ||
+      treatment.icu_chart_tx_result === null
     ) {
       return undefined
     }
 
-    const result = treatment.tx_result
+    const result = treatment.icu_chart_tx_result
 
     const purifiedResult = purifyVitalValue(orderName as ChartableVital, result)
 

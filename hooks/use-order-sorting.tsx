@@ -4,20 +4,24 @@ import useShortcutKey from '@/hooks/use-shortcut-key'
 import { reorderDefaultOrders } from '@/lib/services/admin/icu/default-orders'
 import { reorderOrders } from '@/lib/services/icu/chart/order-mutation'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import type { Sortable } from 'react-sortablejs'
 import { toast } from 'sonner'
 
 type Props = {
   initialOrders: SelectedIcuOrder[]
-  isDt?: boolean
+  type: 'chart' | 'template' | 'default'
 }
 
-export function useOrderSorting({ initialOrders, isDt }: Props) {
+export default function useOrderSorting({ initialOrders, type }: Props) {
+  const { refresh } = useRouter()
+
+  const safeRefresh = useSafeRefresh()
+
   const [isSorting, setIsSorting] = useState(false)
   const [sortedOrders, setSortedOrders] =
     useState<SelectedIcuOrder[]>(initialOrders)
-  const safeRefresh = useSafeRefresh()
 
   useEffect(() => {
     setSortedOrders(initialOrders)
@@ -52,15 +56,16 @@ export function useOrderSorting({ initialOrders, isDt }: Props) {
     }
 
     if (isSorting) {
-      const orderIds = sortedOrders.map((order) => order.order_id)
+      const orderIds = sortedOrders.map((order) => order.icu_chart_order_id)
 
-      isDt
-        ? await reorderDefaultOrders(orderIds)
-        : await reorderOrders(orderIds)
+      type === 'chart' && (await reorderOrders(orderIds))
+      type === 'default' && (await reorderDefaultOrders(orderIds))
+      // type === 'template' && (await reorderOrders(orderIds))
 
       setIsSorting(false)
       toast.success('오더 순서를 변경하였습니다')
-      !isDt && safeRefresh()
+      type === 'chart' && safeRefresh()
+      type === 'default' && refresh()
     }
   }
 
@@ -91,6 +96,7 @@ const hasOrderSortingChanged = (
   sortedOrders: SelectedIcuOrder[],
 ) => {
   return prevOrders.some(
-    (order, index) => order.order_id !== sortedOrders[index]?.order_id,
+    (order, index) =>
+      order.icu_chart_order_id !== sortedOrders[index]?.icu_chart_order_id,
   )
 }

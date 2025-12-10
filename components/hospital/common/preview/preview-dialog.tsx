@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { Spinner } from '@/components/ui/spinner'
-import { getIcuChartByPatientIdAndTargetDate } from '@/lib/services/icu/chart/get-icu-chart'
+import { getSelectedIcuChart } from '@/lib/services/icu/chart/get-icu-chart'
 import { getTemplateChart } from '@/lib/services/icu/template/template'
 import { useCopiedChartStore } from '@/lib/store/icu/copied-chart'
 import { cn } from '@/lib/utils/utils'
@@ -43,7 +43,7 @@ export default function PreviewDialog({
 
       const chartData = isTemplate
         ? await getTemplateChart(chartId)
-        : await getIcuChartByPatientIdAndTargetDate(targetDate, patientId)
+        : await getSelectedIcuChart(targetDate, patientId)
 
       setCopiedChart(chartData!)
 

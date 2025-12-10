@@ -1,12 +1,12 @@
 import type { OrderFontSize } from '@/components/hospital/admin/icu-settings/order-font-size/order-font-size-setting'
 import OrderTypeColorDot from '@/components/hospital/common/order/order-type-color-dot'
-import type { OrderType } from '@/constants/hospital/icu/chart/order'
 import type { IcuOrderColors } from '@/types/adimin'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
 
 type Props = {
-  orderType: OrderType
-  orderName: string
-  orderComment: string | null
+  orderType: SelectedIcuOrder['icu_chart_order_type']
+  orderName: SelectedIcuOrder['icu_chart_order_name']
+  orderComment: SelectedIcuOrder['icu_chart_order_comment']
   orderColorsData: IcuOrderColors
   orderFontSizeData: OrderFontSize
   vitalRefRange?: {

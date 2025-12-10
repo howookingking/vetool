@@ -61,7 +61,7 @@ export default function AddSelectedOrdersToTemplateDialog({
 
     const ordererDefaulted = selectedOrderPendingQueue.map((order) => ({
       ...order,
-      order_times: order.order_times!.map((time) =>
+      icu_chart_order_time: order.icu_chart_order_time!.map((time) =>
         time !== '0' ? '기본' : '0',
       ),
     }))

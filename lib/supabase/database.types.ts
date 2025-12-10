@@ -1111,57 +1111,6 @@ export type Database = {
           },
         ]
       }
-      messages: {
-        Row: {
-          avatar_url: string
-          category: string
-          content: string | null
-          created_at: string
-          hos_id: string
-          message_id: string
-          position: string
-          user_id: string
-          user_name: string
-        }
-        Insert: {
-          avatar_url?: string
-          category?: string
-          content?: string | null
-          created_at?: string
-          hos_id?: string
-          message_id?: string
-          position?: string
-          user_id?: string
-          user_name?: string
-        }
-        Update: {
-          avatar_url?: string
-          category?: string
-          content?: string | null
-          created_at?: string
-          hos_id?: string
-          message_id?: string
-          position?: string
-          user_id?: string
-          user_name?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "chat_hos_id_fkey"
-            columns: ["hos_id"]
-            isOneToOne: false
-            referencedRelation: "hospitals"
-            referencedColumns: ["hos_id"]
-          },
-          {
-            foreignKeyName: "chat_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["user_id"]
-          },
-        ]
-      }
       notices: {
         Row: {
           created_at: string
@@ -1664,6 +1613,10 @@ export type Database = {
         Returns: Json
       }
       get_default_chart_data: { Args: { hos_id_input: string }; Returns: Json }
+      get_hos_default_chart_orders: {
+        Args: { hos_id_input: string }
+        Returns: Json
+      }
       get_hos_list_data: { Args: never; Returns: Json }
       get_icu_analysis_data: {
         Args: {
@@ -1677,14 +1630,6 @@ export type Database = {
       get_icu_bookmarked_data: { Args: { hos_id_input: string }; Returns: Json }
       get_icu_chart_by_patient_id_and_target_date: {
         Args: { patient_id_input: string; target_date_input: string }
-        Returns: Json
-      }
-      get_icu_chart_data: {
-        Args: {
-          hos_id_input: string
-          patient_id_input: string
-          target_date_input: string
-        }
         Returns: Json
       }
       get_icu_layout_data: {
@@ -1728,11 +1673,7 @@ export type Database = {
         Returns: Json
       }
       get_selected_icu_chart: {
-        Args: {
-          hos_id_input: string
-          patient_id_input: string
-          target_date_input: string
-        }
+        Args: { patient_id_input: string; target_date_input: string }
         Returns: Json
       }
       get_template_chart_data: {

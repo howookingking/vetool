@@ -4,10 +4,12 @@ import { createClient } from '@/lib/supabase/server'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { redirect } from 'next/navigation'
 
+export type HosDefaultChartOrder = Omit<SelectedIcuOrder, 'treatments'>
+
 export const getDefaultChartOrders = async (hosId: string) => {
   const supabase = await createClient()
 
-  const { data, error } = await supabase.rpc('get_default_chart_data', {
+  const { data, error } = await supabase.rpc('get_hos_default_chart_orders', {
     hos_id_input: hosId,
   })
 
@@ -15,7 +17,7 @@ export const getDefaultChartOrders = async (hosId: string) => {
     throw new Error(error.message)
   }
 
-  return data as SelectedIcuOrder[]
+  return data as HosDefaultChartOrder[]
 }
 
 export const deleteDefaultChartOrder = async (defaultChartId: string) => {
@@ -37,26 +39,26 @@ export const upsertDefaultChartOrder = async (
   defaultChartId: string | undefined,
   orderTime: string[] | undefined,
   orderData: {
-    default_chart_order_name: string
-    default_chart_order_comment: string
-    default_chart_order_type: string
+    icu_chart_order_name: string
+    icu_chart_order_comment: string
+    icu_chart_order_type: string
     is_bordered?: boolean
   },
 ) => {
   const supabase = await createClient()
   const {
-    default_chart_order_name,
-    default_chart_order_comment,
-    default_chart_order_type,
+    icu_chart_order_name,
+    icu_chart_order_comment,
+    icu_chart_order_type,
     is_bordered,
   } = orderData
 
   const { error } = await supabase.from('icu_default_chart').upsert({
     hos_id: hosId,
     default_chart_id: defaultChartId,
-    default_chart_order_name,
-    default_chart_order_comment,
-    default_chart_order_type,
+    default_chart_order_name: icu_chart_order_name,
+    default_chart_order_comment: icu_chart_order_comment,
+    default_chart_order_type: icu_chart_order_type,
     is_bordered,
     default_order_time: orderTime,
   })

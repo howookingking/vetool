@@ -40,7 +40,9 @@ export default function TxTableContainer({
         // tx_result가 있는 치료시간을 Set으로 리턴하는 로직
         // [{ time: 2, tx_result: "처치결과" }, { time: 6, tx_result: '' }, { time: 5, tx_result: '결과' }, ...] => {2, 5}
         const doneTreatmentTimeSet = new Set(
-          order.treatments.filter((t) => t.tx_result).map((t) => t.time),
+          order.treatments
+            .filter((t) => t.icu_chart_tx_result)
+            .map((t) => t.time),
         )
 
         // orderTimes에 있는 시간 중 doneTreatmentTimeSet에 없는 시간일 경우 true

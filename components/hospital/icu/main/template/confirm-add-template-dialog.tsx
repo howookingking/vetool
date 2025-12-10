@@ -1,5 +1,6 @@
 'use no memo'
 
+import SubmitButton from '@/components/common/submit-button'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -25,13 +26,12 @@ import {
   updateTemplateChart,
 } from '@/lib/services/icu/template/template'
 import {
+  useDtOrderTimePendingQueueStore,
   type DtOrderTimePendingQueue,
-  useDtOrderStore,
 } from '@/lib/store/icu/dt-order'
 import type { IcuTemplate } from '@/types'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { LoaderCircle } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -41,7 +41,7 @@ import { z } from 'zod'
 type ConfirmAddTemplateDialogProps = {
   sortedOrders: SelectedIcuOrder[]
   setIsUpsertTemplateDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
-  isEdit: boolean
+  isEdit?: boolean
   selectedTemplateChart: IcuTemplate | null
 }
 
@@ -54,7 +54,7 @@ export default function ConfirmAddTemplateDialog({
   const { refresh } = useRouter()
   const { hos_id } = useParams()
 
-  const { orderTimePendingQueue } = useDtOrderStore()
+  const { orderTimePendingQueue } = useDtOrderTimePendingQueueStore()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -182,10 +182,7 @@ export default function ConfirmAddTemplateDialog({
                   </Button>
                 </DialogClose>
 
-                <Button type="submit" disabled={isSubmitting} className="ml-2">
-                  저장
-                  {isSubmitting && <LoaderCircle className="animate-spin" />}
-                </Button>
+                <SubmitButton isPending={isSubmitting} buttonText="저장" />
               </div>
             </div>
           </form>
@@ -210,13 +207,13 @@ function applyAndToggleTimePendingQueueToTemplateOrders(
 
   // 2. 각 order에 대해 order_times 토글 적용
   return sortedOrders.map((order) => {
-    const toggleTimes = queueMap.get(order.order_id)
+    const toggleTimes = queueMap.get(order.icu_chart_order_id)
 
     // 해당 order에 적용할 시간 정보 없으면 그대로 반환
     if (!toggleTimes) return order
 
     // 기존 order_times 복사해서 수정
-    const updatedTimes = order.order_times.map((time, index) => {
+    const updatedTimes = order.icu_chart_order_time.map((time, index) => {
       const hour = index
       if (!toggleTimes.includes(hour)) return time
 

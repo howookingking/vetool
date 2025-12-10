@@ -13,14 +13,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import type { Patient } from '@/types'
+import type { SelectedIcuChart } from '@/types/icu/chart'
 import { useState } from 'react'
 
 type Props = {
-  patient: Patient
-  weight: string
-  weightMeasuredDate: string | null
-  icuChartId: string
+  patient: SelectedIcuChart['patient']
+  weight: SelectedIcuChart['weight']
+  weightMeasuredDate: SelectedIcuChart['weight_measured_date']
+  icuChartId: SelectedIcuChart['icu_chart_id']
   hosId: string
 }
 

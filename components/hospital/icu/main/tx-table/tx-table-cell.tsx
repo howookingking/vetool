@@ -2,7 +2,7 @@ import OrderTypeColorDot from '@/components/hospital/common/order/order-type-col
 import { Button } from '@/components/ui/button'
 import { TableCell } from '@/components/ui/table'
 import type { IcuOrderColors } from '@/types/adimin'
-import type { Treatment } from '@/types/icu/chart'
+import type { SelectedTreatment } from '@/types/icu/chart'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
 import { ArrowRightIcon, EditIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -12,13 +12,13 @@ type Props = {
   targetDate: string
   time: number
   order: IcuTxTableData['orders'][number]
-  treatment?: Treatment
+  treatment?: SelectedTreatment
   patientId: string
   orderColorsData: IcuOrderColors
   handleOpenTxDetail: (
     order: IcuTxTableData['orders'][number],
     time: number,
-    treatment?: Treatment,
+    treatment?: SelectedTreatment,
   ) => void
 }
 
@@ -59,7 +59,7 @@ export default function TxTableCell({
 
           <div className="flex justify-center">
             {treatment?.is_crucial && <div>❗️</div>}
-            <div>{treatment?.tx_comment}</div>
+            <div>{treatment?.icu_chart_tx_comment}</div>
           </div>
 
           <div className="flex justify-center gap-1">

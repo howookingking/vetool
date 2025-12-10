@@ -14,18 +14,19 @@ import {
   type RefObject,
   type SetStateAction,
 } from 'react'
-import ChartTableDialogs from './chart-table-dialogs'
 import { toast } from 'sonner'
+import ChartTableDialogs from './chart-table-dialogs'
 
 type Props = {
   sortedOrders: SelectedIcuOrder[]
   isSorting: boolean
   orderWidth: number
   isExport?: boolean
-  icuChartId: string
+  icuChartId: SelectedIcuChart['icu_chart_id']
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   cellRef?: RefObject<HTMLTableRowElement>
   chartData: SelectedIcuChart
+  hosId: string
 }
 
 export default function ChartTableBody({
@@ -36,6 +37,7 @@ export default function ChartTableBody({
   setSortedOrders,
   cellRef,
   chartData,
+  hosId,
 }: Props) {
   const {
     icu_chart_id,
@@ -72,15 +74,18 @@ export default function ChartTableBody({
     const formattedOrders = formatOrders(orderTimePendingQueue)
 
     for (const order of formattedOrders) {
-      const currentOrder = orders.find((o) => o.order_id === order.orderId)
+      const currentOrder = orders.find(
+        (o) => o.icu_chart_order_id === order.orderId,
+      )
       if (!currentOrder) continue
 
-      const updatedOrderTimes = currentOrder.order_times.map((time, index) =>
-        order.orderTimes.includes(index)
-          ? time === '0'
-            ? vetList[0].name
-            : '0'
-          : time,
+      const updatedOrderTimes = currentOrder.icu_chart_order_time.map(
+        (time, index) =>
+          order.orderTimes.includes(index)
+            ? time === '0'
+              ? vetList[0].name
+              : '0'
+            : time,
       )
 
       await upsertOrder(
@@ -89,9 +94,9 @@ export default function ChartTableBody({
         order.orderId,
         updatedOrderTimes,
         {
-          icu_chart_order_name: currentOrder.order_name,
-          icu_chart_order_comment: currentOrder.order_comment,
-          icu_chart_order_type: currentOrder.order_type,
+          icu_chart_order_name: currentOrder.icu_chart_order_name,
+          icu_chart_order_comment: currentOrder.icu_chart_order_comment,
+          icu_chart_order_type: currentOrder.icu_chart_order_type,
           icu_chart_order_priority: currentOrder.id,
         },
       )
@@ -146,6 +151,7 @@ export default function ChartTableBody({
         sortedOrders={sortedOrders}
         orderColorsData={orderColorsData}
         weight={chartData.weight}
+        hosId={hos_id}
       />
 
       <ChartTableDialogs
@@ -160,6 +166,7 @@ export default function ChartTableBody({
         showTxUser={showTxUser}
         isCommandPressed={isCommandPressed}
         selectedOrderPendingQueue={selectedOrderPendingQueue}
+        hosId={hosId}
       />
     </TableBody>
   )

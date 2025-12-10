@@ -1,6 +1,14 @@
 import { MEMO_COLORS } from '@/constants/hospital/icu/chart/colors'
 import type { OrderType } from '@/constants/hospital/icu/chart/order'
-import type { IcuChart, IcuIo, Patient, User, Vet } from '@/types'
+import type {
+  IcuChart,
+  IcuIo,
+  IcuOrders,
+  IcuTxs,
+  Patient,
+  User,
+  Vet,
+} from '@/types'
 
 export type MainAndSubVet = Pick<User, 'name' | 'avatar_url' | 'user_id'>
 
@@ -46,27 +54,42 @@ export type SelectedIcuChart = Pick<
   sub_vet: Pick<Vet, 'avatar_url' | 'name' | 'user_id'>
 }
 
-export type SelectedIcuOrder = {
-  order_id: string
-  order_name: string
-  order_type: OrderType
-  order_times: string[]
-  treatments: Treatment[]
-  order_comment: string | null
-  id: number // DB상에서는 priority로 돼있음, sortable에서 id를 사용하기 때문에 key값 id로 변경해서 사용
+export type SelectedIcuOrder = Pick<
+  IcuOrders,
+  | 'icu_chart_order_id'
+  | 'icu_chart_order_name'
+  | 'icu_chart_order_time'
+  | 'icu_chart_order_comment'
+  | 'is_bordered'
+> & {
+  icu_chart_order_type: OrderType
+  treatments: SelectedTreatment[]
+  id: number
+  // DB상에서는 priority로 돼있음, sortable에서 id를 사용하기 때문에 key값 id로 변경해서 사용
   // rpc에서 'id', icu_orders.icu_chart_order_priority,
-  is_bordered: boolean
 }
 
-export type Treatment = {
-  time: number
-  tx_id: string
-  tx_log: TxLog | null
-  tx_result: string | null
-  tx_comment: string | null
-  is_crucial: boolean
-  has_images: boolean
+export type SelectedTreatment = Pick<
+  IcuTxs,
+  | 'time'
+  | 'icu_chart_tx_id'
+  | 'icu_chart_tx_result'
+  | 'icu_chart_tx_comment'
+  | 'is_crucial'
+  | 'has_images'
+> & {
+  tx_log: TxLog[] | null
 }
+
+// export type Treatment = {
+//   time: number
+//   tx_id: string
+//   tx_log: TxLog | null
+//   tx_result: string | null
+//   tx_comment: string | null
+//   is_crucial: boolean
+//   has_images: boolean
+// }
 
 export type PrevIoChartData = {
   icu_chart_id: string

@@ -12,6 +12,7 @@ type Props = {
   sortedOrders: SelectedIcuOrder[]
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   onOrderMove: (event: Sortable.SortableEvent) => void
+  hosId: string
 }
 
 export default function DtSortingOrderRows({
@@ -20,6 +21,7 @@ export default function DtSortingOrderRows({
   isSorting,
   orderWidth,
   onOrderMove,
+  hosId,
 }: Props) {
   return (
     <SortableOrderWrapper
@@ -28,8 +30,10 @@ export default function DtSortingOrderRows({
       onSortEnd={onOrderMove}
     >
       {sortedOrders.map((order, index) => (
-        <TableRow className="relative divide-x" key={order.order_id}>
+        <TableRow className="relative divide-x" key={order.icu_chart_order_id}>
           <DtOrderRowTitle
+            setSortedOrders={setSortedOrders}
+            hosId={hosId}
             index={index}
             order={order}
             isSorting={isSorting}

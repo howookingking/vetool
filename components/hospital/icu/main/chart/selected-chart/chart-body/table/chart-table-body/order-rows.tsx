@@ -79,13 +79,19 @@ export default function OrderRows({
 
   const handleUpsertOrderWithoutOrderer = async () => {
     for (const order of copiedOrderPendingQueue) {
-      await upsertOrder(hosId, icuChartId, undefined, order.order_times!, {
-        icu_chart_order_name: order.order_name!,
-        icu_chart_order_comment: order.order_comment!,
-        icu_chart_order_type: order.order_type!,
-        icu_chart_order_priority: order.id!,
-        is_bordered: order.is_bordered!,
-      })
+      await upsertOrder(
+        hosId,
+        icuChartId,
+        undefined,
+        order.icu_chart_order_time!,
+        {
+          icu_chart_order_name: order.icu_chart_order_name!,
+          icu_chart_order_comment: order.icu_chart_order_comment!,
+          icu_chart_order_type: order.icu_chart_order_type!,
+          icu_chart_order_priority: order.id!,
+          is_bordered: order.is_bordered!,
+        },
+      )
     }
 
     toast.success('오더를 붙여넣었습니다')
@@ -96,12 +102,12 @@ export default function OrderRows({
   const memoizedOrderRows = useMemo(() => {
     return sortedOrders.map((order, index) => {
       const isInOrderPendingQueue = selectedOrderPendingQueue.some(
-        (o) => o.order_id === order.order_id,
+        (o) => o.icu_chart_order_id === order.icu_chart_order_id,
       )
       return (
         <TableRow
           className="relative w-full divide-x"
-          key={order.order_id}
+          key={order.icu_chart_order_id}
           ref={cellRef}
           style={borderedOrderClassName(sortedOrders, order, index)}
         >

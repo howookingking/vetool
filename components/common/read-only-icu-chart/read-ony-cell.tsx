@@ -4,12 +4,12 @@ import { Input } from '@/components/ui/input'
 import { TableCell } from '@/components/ui/table'
 import useAbnormalVital from '@/hooks/use-abnormal-vital'
 import { cn } from '@/lib/utils/utils'
-import type { Treatment } from '@/types/icu/chart'
+import type { SelectedTreatment } from '@/types/icu/chart'
 import { ImageIcon } from 'lucide-react'
 
 type Props = {
   time: number
-  treatment?: Treatment
+  treatment?: SelectedTreatment
   icuChartOrderId: string
   isDone: boolean
   orderer: string
@@ -76,7 +76,7 @@ export default function ReadOnlyCell({
             'absolute inset-0 -z-10 flex items-center justify-center overflow-hidden whitespace-pre group-hover:overflow-visible',
           )}
         >
-          {treatment?.tx_result ?? ''}
+          {treatment?.icu_chart_tx_result ?? ''}
         </span>
 
         {hasOrder && showOrderer && (
@@ -89,7 +89,9 @@ export default function ReadOnlyCell({
           </div>
         )}
 
-        {hasComment && <TxDetailHover txComment={treatment?.tx_comment} />}
+        {hasComment && (
+          <TxDetailHover txComment={treatment?.icu_chart_tx_comment} />
+        )}
 
         {isAbnormalVital && (
           <VitalResultIndication

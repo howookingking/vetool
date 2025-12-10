@@ -13,7 +13,11 @@ type Props = {
 }
 
 export default function ReadOnlyIcuChart({ chartData, ref, isExport }: Props) {
-  const { patient, weight, weight_measured_date } = chartData
+  const {
+    patient: { is_alive, species, name, breed, gender, birth },
+    weight,
+    weight_measured_date,
+  } = chartData
 
   return (
     <div
@@ -30,11 +34,12 @@ export default function ReadOnlyIcuChart({ chartData, ref, isExport }: Props) {
           </span>
           <div className="flex justify-center">
             <PatientDetailInfo
-              species={patient.species}
-              name={patient.name}
-              breed={patient.breed}
-              gender={patient.gender}
-              birth={patient.birth}
+              isAlive={is_alive}
+              species={species}
+              name={name}
+              breed={breed}
+              gender={gender}
+              birth={birth}
               weight={weight}
               weightMeasuredDate={weight_measured_date}
             />

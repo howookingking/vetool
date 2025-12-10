@@ -94,74 +94,76 @@ ${chartData.target_date} ${chartData.patient.name} 입원 ${differenceInDays(cha
 - CC : ${chartData.icu_io.icu_io_cc}
 `
   const fluidOrders = chartData.orders.filter(
-    (order) => order.order_type === 'fluid',
+    (order) => order.icu_chart_order_type === 'fluid',
   )
   const checklistOrders = chartData.orders.filter(
-    (order) => order.order_type === 'checklist',
+    (order) => order.icu_chart_order_type === 'checklist',
   )
   const injectionOrders = chartData.orders.filter(
-    (order) => order.order_type === 'injection',
+    (order) => order.icu_chart_order_type === 'injection',
   )
-  const poOrders = chartData.orders.filter((order) => order.order_type === 'po')
+  const poOrders = chartData.orders.filter(
+    (order) => order.icu_chart_order_type === 'po',
+  )
 
   const testOrders = chartData.orders.filter(
-    (order) => order.order_type === 'test',
+    (order) => order.icu_chart_order_type === 'test',
   )
   const manualOrders = chartData.orders.filter(
-    (order) => order.order_type === 'manual',
+    (order) => order.icu_chart_order_type === 'manual',
   )
 
   const feedOrders = chartData.orders.filter(
-    (order) => order.order_type === 'feed',
+    (order) => order.icu_chart_order_type === 'feed',
   )
 
   textContents += `\n- 수액\n`
   fluidOrders.forEach((order) => {
-    const { order_name, order_comment } = order
+    const { icu_chart_order_name, icu_chart_order_comment } = order
 
-    textContents += `${order_name.trim()}${order_comment ? `, ${order_comment}` : ''} \n`
+    textContents += `${icu_chart_order_name.trim()}${icu_chart_order_comment ? `, ${icu_chart_order_comment}` : ''} \n`
   })
 
   textContents += `\n- 체크리스트\n`
   checklistOrders.forEach((order) => {
-    const { order_name, treatments } = order
+    const { icu_chart_order_name, treatments } = order
 
-    textContents += `${order_name.trim()} : ${treatments.length ? treatments.map((tx) => `${tx.tx_result}(${tx.time}시)`).join(', ') : `${order_name.trim()} 미체크`} \n`
+    textContents += `${icu_chart_order_name.trim()} : ${treatments.length ? treatments.map((tx) => `${tx.icu_chart_tx_result}(${tx.time}시)`).join(', ') : `${icu_chart_order_name.trim()} 미체크`} \n`
   })
 
   textContents += `\n- 주사\n`
   injectionOrders.forEach((order) => {
-    const { order_name, order_comment } = order
+    const { icu_chart_order_name, icu_chart_order_comment } = order
 
-    textContents += `${order_name.trim()}${order_comment ? `, ${order_comment}` : ''} \n`
+    textContents += `${icu_chart_order_name.trim()}${icu_chart_order_comment ? `, ${icu_chart_order_comment}` : ''} \n`
   })
 
   textContents += `\n- 경구제\n`
   poOrders.forEach((order) => {
-    const { order_name, order_comment } = order
+    const { icu_chart_order_name, icu_chart_order_comment } = order
 
-    textContents += `${order_name.trim()}${order_comment ? `, ${order_comment}` : ''} \n`
+    textContents += `${icu_chart_order_name.trim()}${icu_chart_order_comment ? `, ${icu_chart_order_comment}` : ''} \n`
   })
 
   textContents += `\n- 검사\n`
   testOrders.forEach((order) => {
-    const { order_name, order_comment } = order
+    const { icu_chart_order_name, icu_chart_order_comment } = order
 
-    textContents += `${order_name.trim()}${order_comment ? `, ${order_comment}` : ''} \n`
+    textContents += `${icu_chart_order_name.trim()}${icu_chart_order_comment ? `, ${icu_chart_order_comment}` : ''} \n`
   })
 
   textContents += `\n- 식이\n`
   feedOrders.forEach((order) => {
-    const { order_name, treatments } = order
+    const { icu_chart_order_name, treatments } = order
 
-    textContents += `${order_name.trim()} : ${treatments.length ? treatments.map((tx) => `${tx.tx_result}(${tx.time}시)`).join(', ') : `${order_name.trim()} 미체크`} \n`
+    textContents += `${icu_chart_order_name.trim()} : ${treatments.length ? treatments.map((tx) => `${tx.icu_chart_tx_result}(${tx.time}시)`).join(', ') : `${icu_chart_order_name.trim()} 미체크`} \n`
   })
 
   textContents += `\n- 기타\n`
   manualOrders.forEach((order) => {
-    const { order_name, treatments } = order
+    const { icu_chart_order_name, treatments } = order
 
-    textContents += `${order_name.trim()} : ${treatments.length ? treatments.map((tx) => `${tx.tx_result}(${tx.time}시)`).join(', ') : `미완료`} \n`
+    textContents += `${icu_chart_order_name.trim()} : ${treatments.length ? treatments.map((tx) => `${tx.icu_chart_tx_result}(${tx.time}시)`).join(', ') : `미완료`} \n`
   })
 
   return textContents.trim()

@@ -3,14 +3,14 @@ import { TableBody, TableRow } from '@/components/ui/table'
 import { borderedOrderClassName } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { IcuOrderColors } from '@/types/adimin'
-import type { SelectedIcuOrder } from '@/types/icu/chart'
+import type { SelectedIcuChart, SelectedIcuOrder } from '@/types/icu/chart'
 import ReadOnlyOrderRowCells from './read-only-order-row-cells'
 import ReadOnlyOrderRowTitle from './read-only-order-row-title'
 
 type Props = {
   orderWidth: OrderWidth
   orders: SelectedIcuOrder[]
-  species: string
+  species: SelectedIcuChart['patient']['species']
   localColorState?: IcuOrderColors // 오더색 설정에서 디스플레이 예시
 }
 
@@ -36,7 +36,7 @@ export default function ReadOnlyChartTableBody({
         return (
           <TableRow
             className="w-full divide-x"
-            key={order.order_id}
+            key={order.icu_chart_order_id}
             style={borderedOrderClassName(orders, order, index)}
           >
             <ReadOnlyOrderRowTitle
