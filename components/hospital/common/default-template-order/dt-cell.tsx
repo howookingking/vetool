@@ -39,6 +39,7 @@ export default function DtCell({
         )}
       >
         <Input
+          readOnly
           className={cn(
             isGuidelineTime && 'bg-amber-300/10',
             hasOrder && 'bg-rose-400/10',

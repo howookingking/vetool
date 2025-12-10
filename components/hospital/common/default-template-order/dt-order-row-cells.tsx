@@ -1,5 +1,5 @@
 import { TIMES } from '@/constants/hospital/icu/chart/time'
-import { useDtOrderStore } from '@/lib/store/icu/dt-order'
+import { useDtOrderTimePendingQueueStore } from '@/lib/store/icu/dt-order'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import DtCell from './dt-cell'
@@ -9,12 +9,13 @@ export default function DtOrderRowCells({
 }: {
   order: SelectedIcuOrder
 }) {
-  const { order_times, order_id } = order
+  const { icu_chart_order_time, icu_chart_order_id } = order
 
   const {
     basicHosData: { timeGuidelineData },
   } = useBasicHosDataContext()
-  const { setOrderTimePendingQueue, orderTimePendingQueue } = useDtOrderStore()
+  const { setOrderTimePendingQueue, orderTimePendingQueue } =
+    useDtOrderTimePendingQueueStore()
 
   const toggleOrderTime = (orderId: string, time: number) => {
     setOrderTimePendingQueue((prevQueue) => {
@@ -35,20 +36,20 @@ export default function DtOrderRowCells({
       {TIMES.map((time) => {
         const isGuidelineTime = timeGuidelineData.includes(time)
         const isInOrderTimePendingQueue = orderTimePendingQueue.some(
-          (t) => t.orderId === order.order_id && t.orderTime === time,
+          (t) => t.orderId === order.icu_chart_order_id && t.orderTime === time,
         )
-        const hasOrder = order_times[time] !== '0'
-        const orderer = order_times[time]
+        // const hasOrder = icu_chart_order_time[time] !== '0'
+        // const orderer = icu_chart_order_time[time]
         return (
           <DtCell
-            hasOrder={hasOrder}
+            hasOrder={false}
             isGuidelineTime={isGuidelineTime}
             isInOrderTimePendingQueue={isInOrderTimePendingQueue}
             toggleOrderTime={toggleOrderTime}
-            icuChartOrderId={order_id}
+            icuChartOrderId={icu_chart_order_id}
             key={time}
             time={time}
-            orderer={orderer}
+            orderer={''}
           />
         )
       })}

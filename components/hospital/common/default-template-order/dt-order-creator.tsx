@@ -16,8 +16,8 @@ import {
 import { upsertDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
-import { Plus } from 'lucide-react'
-import { useParams, useRouter } from 'next/navigation'
+import { PlusIcon } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import {
   type Dispatch,
   type FormEvent,
@@ -25,22 +25,23 @@ import {
   useRef,
   useState,
 } from 'react'
+import { toast } from 'sonner'
 import ChecklistOrderCreator from '../../icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-creator/checklist-order-creator'
 import { OrderTypeLabel } from '../../icu/main/chart/selected-chart/chart-body/table/order/order-form-field'
-import { toast } from 'sonner'
 
 type Props = {
   sortedOrders: SelectedIcuOrder[]
-  setSortedOrders?: Dispatch<SetStateAction<SelectedIcuOrder[]>>
+  setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   isTemplate?: boolean
+  hosId: string
 }
 
 export default function DtOrderCreator({
   sortedOrders,
   setSortedOrders,
   isTemplate,
+  hosId,
 }: Props) {
-  const { hos_id } = useParams()
   const { refresh } = useRouter()
 
   const {
@@ -51,57 +52,73 @@ export default function DtOrderCreator({
 
   const [newOrderInput, setNewOrderInput] = useState('')
   const [orderType, setOrderType] = useState<OrderType>('manual')
-  const [isCreating, setIsCreating] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const availableCheckListOrders = getAvailableChecklistOrders(sortedOrders)
 
-  const createOrder = async (orderName: string, orderDescription: string) => {
-    setIsCreating(true)
+  const createOrder = async (orderName: string, orderComment: string) => {
+    setIsSubmitting(true)
 
     const emptyOrderTimes = Array(24).fill('0')
 
-    isTemplate
-      ? setSortedOrders!((prev) => [
-          ...prev,
-          {
-            order_name: orderName,
-            order_type: orderType as OrderType,
-            order_times: emptyOrderTimes,
-            treatments: [],
-            order_comment: orderDescription,
-            is_bordered: false,
-            id: prev.length + 1,
-            order_id: `temp_order_id_${new Date().getTime()}`,
-          },
-        ])
-      : await upsertDefaultChartOrder(hos_id as string, undefined, undefined, {
-          default_chart_order_name: orderName.trim(),
-          default_chart_order_comment: orderDescription.trim()
-            ? orderDescription.trim()
-            : '',
-          default_chart_order_type: orderType,
-        })
+    // isTemplate
+    //   ? setSortedOrders!((prev) => [
+    //       ...prev,
+    //       {
+    //         order_name: orderName,
+    //         order_type: orderType as OrderType,
+    //         icu_chart_order_time: emptyOrderTimes,
+    //         treatments: [],
+    //         order_comment: orderComment,
+    //         is_bordered: false,
+    //         id: prev.length + 1,
+    //         order_id: `temp_order_id_${new Date().getTime()}`,
+    //       },
+    //     ])
 
-    !isTemplate && (toast.success('오더을 생성하였습니다'), refresh()),
-      setTimeout(() => {
-        inputRef?.current?.focus()
-      }, 100)
+    // optimistic update
+    setSortedOrders((prev) => [
+      ...prev,
+      {
+        icu_chart_order_name: orderName,
+        icu_chart_order_comment: orderComment,
+        icu_chart_order_type: orderType as OrderType,
+        icu_chart_order_time: emptyOrderTimes,
+        treatments: [],
+        is_bordered: false,
+        id: prev.length + 1,
+        icu_chart_order_id: `temp_order_id_${new Date().getTime()}`,
+      },
+    ])
 
+    await upsertDefaultChartOrder(hosId, undefined, undefined, {
+      icu_chart_order_name: orderName,
+      icu_chart_order_comment: orderComment,
+      icu_chart_order_type: orderType,
+    })
+
+    toast.success('오더을 생성하였습니다')
     setNewOrderInput('')
-    setIsCreating(false)
+    refresh()
+    setIsSubmitting(false)
+    setTimeout(() => {
+      inputRef?.current?.focus()
+    }, 100)
   }
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!newOrderInput) return
 
-    const [orderName, orderDescription] = newOrderInput.split('$')
+    const [orderName, orderComment] = newOrderInput
+      .split('$')
+      .map((s) => s.trim())
 
-    await createOrder(orderName, orderDescription ?? '')
+    await createOrder(orderName, orderComment ?? '')
   }
 
-  const orderTypeLabel = OrderTypeLabel(orderType as OrderType)
-  const OrderTypePlaceholder = `${orderTypeLabel.orderName}$${orderTypeLabel.orderComment} + Enter ⏎`
+  const { orderName, orderComment } = OrderTypeLabel(orderType as OrderType)
+  const OrderTypePlaceholder = `${orderName}$${orderComment} + Enter ⏎`
 
   return (
     <div className="relative flex w-full items-center">
@@ -150,20 +167,20 @@ export default function DtOrderCreator({
         >
           <Input
             className="h-11 rounded-none border-0 focus-visible:ring-0"
-            disabled={isCreating}
+            disabled={isSubmitting}
             placeholder={OrderTypePlaceholder}
-            value={isCreating ? '등록 중' : newOrderInput}
+            value={isSubmitting ? '등록 중' : newOrderInput}
             onChange={(e) => setNewOrderInput(e.target.value)}
             ref={inputRef}
           />
           <Button
             className="absolute right-2"
             size="icon"
-            disabled={isCreating}
+            disabled={isSubmitting}
             type="submit"
             variant="ghost"
           >
-            <Plus />
+            <PlusIcon />
           </Button>
         </form>
       )}
@@ -173,8 +190,8 @@ export default function DtOrderCreator({
 
 function getAvailableChecklistOrders(orders: SelectedIcuOrder[]) {
   const currentChecklistTypeOrderNames = orders
-    .filter((order) => order.order_type === 'checklist')
-    .map((order) => order.order_name)
+    .filter((order) => order.icu_chart_order_type === 'checklist')
+    .map((order) => order.icu_chart_order_name)
 
   return CHECKLIST_ORDERS.filter(
     (order) => !currentChecklistTypeOrderNames.includes(order),
