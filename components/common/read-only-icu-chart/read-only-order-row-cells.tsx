@@ -1,6 +1,6 @@
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import type { VitalRefRange } from '@/types/adimin'
-import type { SelectedIcuOrder, Treatment } from '@/types/icu/chart'
+import type { SelectedIcuOrder, SelectedTreatment } from '@/types/icu/chart'
 import { useMemo } from 'react'
 import ReadOnlyCell from './read-ony-cell'
 
@@ -19,10 +19,15 @@ export default function ReadOnlyOrderRowCells({
   species,
   timeGuidelineData,
 }: Props) {
-  const { order_times, order_id, treatments, order_name } = order
+  const {
+    icu_chart_order_time,
+    icu_chart_order_id,
+    treatments,
+    icu_chart_order_name,
+  } = order
 
   const foundVital = vitalRefRange.find(
-    (vital) => vital.order_name === order_name,
+    (vital) => vital.order_name === icu_chart_order_name,
   )
   const rowVitalRefRange = foundVital
     ? foundVital[species as keyof Omit<VitalRefRange, 'order_name'>]
@@ -36,24 +41,25 @@ export default function ReadOnlyOrderRowCells({
       {
         isDone: boolean
         orderer: string
-        treatment: Treatment | undefined
+        treatment: SelectedTreatment | undefined
         hasOrder: boolean
         hasComment: boolean
       }
     >()
 
     for (const time of TIMES) {
-      const orderer = order_times[time]
+      const orderer = icu_chart_order_time[time]
       const treatment = treatments.findLast(
         (treatment) => treatment.time === time,
       )
       const isDone =
         orderer !== '0' &&
         treatments.some(
-          (treatment) => treatment.time === time && treatment.tx_result,
+          (treatment) =>
+            treatment.time === time && treatment.icu_chart_tx_result,
         )
       const hasOrder = orderer !== '0'
-      const hasComment = !!treatment?.tx_comment
+      const hasComment = !!treatment?.icu_chart_tx_comment
 
       map.set(time, {
         isDone,
@@ -64,7 +70,7 @@ export default function ReadOnlyOrderRowCells({
       })
     }
     return map
-  }, [order_times, treatments, order_id])
+  }, [icu_chart_order_time, treatments])
 
   return (
     <>
@@ -75,10 +81,10 @@ export default function ReadOnlyOrderRowCells({
           <ReadOnlyCell
             key={time}
             time={time}
-            icuChartOrderId={order_id}
+            icuChartOrderId={icu_chart_order_id}
             isDone={cellData.isDone}
             orderer={cellData.orderer}
-            orderName={order_name}
+            orderName={icu_chart_order_name}
             showOrderer={showOrderer}
             isGuidelineTime={isGuidelineTime}
             rowVitalRefRange={rowVitalRefRange}

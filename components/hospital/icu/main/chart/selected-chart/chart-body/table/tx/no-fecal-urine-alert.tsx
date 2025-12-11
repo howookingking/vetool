@@ -1,9 +1,10 @@
 import { TableCell } from '@/components/ui/table'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
 
 export default function NoFecalOrUrineAlert({
   orderName,
 }: {
-  orderName: string
+  orderName: SelectedIcuOrder['icu_chart_order_name']
 }) {
   return (
     <TableCell className="absolute inset-0 -z-10 flex items-center justify-center">

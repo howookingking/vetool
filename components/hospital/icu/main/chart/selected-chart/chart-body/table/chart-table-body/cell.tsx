@@ -7,18 +7,18 @@ import useCellAutofocus from '@/hooks/use-cell-autofocus'
 import { useLongPress } from '@/hooks/use-long-press'
 import useUpsertTx from '@/hooks/use-upsert-tx'
 import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
-import { TxLocalState } from '@/lib/store/icu/icu-tx'
+import type { TxLocalState } from '@/lib/store/icu/icu-tx'
 import { cn } from '@/lib/utils/utils'
-import type { Treatment, TxLog } from '@/types/icu/chart'
+import type { SelectedTreatment, TxLog } from '@/types/icu/chart'
 import { format } from 'date-fns'
 import { ImageIcon } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 type Props = {
   time: number
   hosId: string
-  treatment?: Treatment
+  treatment?: SelectedTreatment
   icuChartOrderId: string
   isDone: boolean
   icuChartTxId?: string
@@ -106,8 +106,8 @@ export default function Cell({
       icuChartOrderId,
       icuChartOrderType: orderType,
       icuChartOrderName: orderName,
-      txResult: treatment?.tx_result,
-      txComment: treatment?.tx_comment,
+      txResult: treatment?.icu_chart_tx_result,
+      txComment: treatment?.icu_chart_tx_comment,
       txId: icuChartTxId,
       time,
       txLog: treatment?.tx_log as TxLog[] | null,
@@ -160,7 +160,7 @@ export default function Cell({
     }
 
     // 기존 처치 결과와 동일한 경우
-    if ((treatment?.tx_result ?? '') === briefTxResultInput.trim()) {
+    if ((treatment?.icu_chart_tx_result ?? '') === briefTxResultInput.trim()) {
       setBriefTxResultInput('')
       return
     }
@@ -254,7 +254,7 @@ export default function Cell({
         />
 
         <span className="tx-result-overlay absolute inset-0 -z-10 flex items-center justify-center overflow-hidden whitespace-pre group-hover:overflow-visible">
-          {treatment?.tx_result ?? ''}
+          {treatment?.icu_chart_tx_result ?? ''}
         </span>
 
         {hasOrder && showOrderer && (
@@ -269,7 +269,9 @@ export default function Cell({
           </div>
         )}
 
-        {hasComment && <TxDetailHover txComment={treatment?.tx_comment} />}
+        {hasComment && (
+          <TxDetailHover txComment={treatment?.icu_chart_tx_comment} />
+        )}
 
         {isAbnormalVital && (
           <VitalResultIndication

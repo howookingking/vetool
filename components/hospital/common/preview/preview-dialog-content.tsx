@@ -1,3 +1,4 @@
+import ReadOnlyChartTable from '@/components/common/read-only-icu-chart/read-only-chart-table'
 import {
   DialogContent,
   DialogDescription,
@@ -6,7 +7,6 @@ import {
 } from '@/components/ui/dialog'
 import type { SelectedIcuChart } from '@/types/icu/chart'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
-import ChartTable from '../../icu/main/chart/selected-chart/chart-body/table/chart-table'
 
 export default function PreviewDialogContent({
   copiedChart,
@@ -23,7 +23,7 @@ export default function PreviewDialogContent({
       </DialogHeader>
 
       <div className="max-h-[800px] overflow-y-auto">
-        <ChartTable preview chartData={copiedChart!} />
+        <ReadOnlyChartTable chartData={copiedChart} />
       </div>
     </DialogContent>
   )

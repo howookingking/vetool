@@ -1,5 +1,5 @@
 import UpgragePlanPromptModal from '@/components/hospital/common/upgrade-plan-prompt-modal'
-import { hasPermissions } from '@/constants/plans'
+import { hasPermissions } from '@/constants/company/plans'
 import { getPlan } from '@/lib/services/auth/plan'
 
 export default async function SurgeryPage(props: {

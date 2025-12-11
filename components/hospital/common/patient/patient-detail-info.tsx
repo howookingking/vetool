@@ -1,15 +1,17 @@
+import SpeciesToIcon from '@/components/common/species-to-icon'
+import { Species } from '@/constants/hospital/register/signalments'
 import { calculateAge, convertPascalCased } from '@/lib/utils/utils'
-import { Cat, Dog } from 'lucide-react'
+import type { SelectedIcuChart } from '@/types/icu/chart'
 
 type Props = {
-  species: string
-  name: string
-  breed: string | null
-  gender: string
-  birth: string
-  weight: string
-  weightMeasuredDate?: string | null
-  isAlive?: boolean
+  species: SelectedIcuChart['patient']['species']
+  name: SelectedIcuChart['patient']['name']
+  breed: SelectedIcuChart['patient']['breed']
+  gender: SelectedIcuChart['patient']['gender']
+  birth: SelectedIcuChart['patient']['birth']
+  weight: SelectedIcuChart['weight']
+  weightMeasuredDate: SelectedIcuChart['weight_measured_date']
+  isAlive: SelectedIcuChart['patient']['is_alive']
 }
 
 export default function PatientDetailInfo({
@@ -24,10 +26,10 @@ export default function PatientDetailInfo({
 }: Props) {
   return (
     <div className="flex items-center gap-1 sm:gap-2">
-      {species === 'canine' ? <Dog size={20} /> : <Cat size={20} />}
+      <SpeciesToIcon species={species as Species} />
       <div>
         <span>{name}</span>
-        {!isAlive && <span className="ml-1">🌈</span>}
+        {isAlive ? null : <span className="ml-1">🌈</span>}
       </div>
       ·
       <span className="w-12 truncate sm:w-auto">

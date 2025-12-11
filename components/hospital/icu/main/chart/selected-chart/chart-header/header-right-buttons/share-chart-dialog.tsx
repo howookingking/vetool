@@ -12,12 +12,13 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
+import type { SelectedIcuChart } from '@/types/icu/chart'
 import { Share2Icon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 type Props = {
-  icuIoId: string
+  icuIoId: SelectedIcuChart['icu_io']['icu_io_id']
   targetDate: string
 }
 

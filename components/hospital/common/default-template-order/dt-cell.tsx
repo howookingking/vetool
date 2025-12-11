@@ -5,7 +5,6 @@ import { cn } from '@/lib/utils/utils'
 type Props = {
   time: number
   icuChartOrderId: string
-  orderer: string
   toggleOrderTime: (orderId: string, time: number) => void
   isGuidelineTime: boolean
   hasOrder: boolean
@@ -15,7 +14,6 @@ type Props = {
 export default function DtCell({
   time,
   icuChartOrderId,
-  orderer,
   toggleOrderTime,
   isGuidelineTime,
   hasOrder,
@@ -32,13 +30,14 @@ export default function DtCell({
   const canceledOrderTime = hasOrder && isInOrderTimePendingQueue
 
   return (
-    <TableCell className="handle group p-0">
+    <TableCell className="p-0">
       <div
         className={cn(
           'relative [&:focus-within_.tx-result-overlay]:overflow-visible',
         )}
       >
         <Input
+          readOnly
           className={cn(
             isGuidelineTime && 'bg-amber-300/10',
             hasOrder && 'bg-rose-400/10',
@@ -50,7 +49,7 @@ export default function DtCell({
           aria-label="처치 결과 입력"
         />
 
-        {orderer !== '0' && (
+        {hasOrder && (
           <div
             className={cn(
               canceledOrderTime
@@ -58,7 +57,7 @@ export default function DtCell({
                 : 'pointer-events-none absolute bottom-0.5 right-0.5 text-[10px] leading-none text-muted-foreground',
             )}
           >
-            {orderer}
+            기본
           </div>
         )}
       </div>

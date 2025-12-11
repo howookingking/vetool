@@ -1,6 +1,9 @@
+import HelperTooltip from '@/components/common/helper-tooltip'
 import { Kbd, KbdGroup } from '@/components/ui/kbd'
 import { Separator } from '@/components/ui/separator'
 import { TableCell } from '@/components/ui/table'
+import specificTxTooltip from '@/public/gifs/specific-tx-tooltip.gif'
+import Image from 'next/image'
 
 export default function UserKeyGuideMessage({ isDT }: { isDT?: boolean }) {
   return (
@@ -11,18 +14,17 @@ export default function UserKeyGuideMessage({ isDT }: { isDT?: boolean }) {
           <KbdGroup>
             <Kbd>Ctrl</Kbd>
             <span> + </span>
-            <div className="h-4 w-4 border border-border" />
             <Kbd>우클릭</Kbd>
           </KbdGroup>
         </div>
 
-        {!isDT && (
+        {!isDT ? (
           <>
             <Separator orientation="vertical" className="h-4" />
             <div className="flex items-center gap-1">
               다중선택 : <Kbd>Ctrl</Kbd>
               <span> + </span>
-              <div className="h-4 w-4 border border-border" />
+              <span>오더 또는 처치</span>
               <Kbd>클릭</Kbd>
             </div>
 
@@ -30,9 +32,19 @@ export default function UserKeyGuideMessage({ isDT }: { isDT?: boolean }) {
             <div className="flex items-center gap-1">
               처치 상세 입력 : <div className="h-4 w-4 border border-border" />{' '}
               길게 <Kbd>클릭</Kbd>
+              또는
+              <span className="text-xs">결과$코멘트</span>
+              <HelperTooltip className="p-0">
+                <Image
+                  unoptimized
+                  src={specificTxTooltip}
+                  alt="keyboard"
+                  width={60}
+                />
+              </HelperTooltip>
             </div>
           </>
-        )}
+        ) : null}
       </div>
     </TableCell>
   )

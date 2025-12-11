@@ -1,7 +1,7 @@
 'use server'
 
-import type { OrderFontSize } from '@/constants/admin/order-font-size'
-import type { Plan } from '@/constants/plans'
+import type { OrderFontSize } from '@/components/hospital/admin/icu-settings/order-font-size/order-font-size-setting'
+import type { Plan } from '@/constants/company/plans'
 import { createClient } from '@/lib/supabase/server'
 import type { Hospital, IcuChart, IcuIo, Patient, Vet } from '@/types'
 import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'
@@ -26,7 +26,7 @@ export type IcuSidebarPatient = Pick<
   urgency: IcuChart['urgency']
 }
 
-export type IcuLayoutData = {
+type IcuLayoutData = {
   icuSidebarPatients: IcuSidebarPatient[]
   vetList: Vet[]
   basicHosSettings: Pick<

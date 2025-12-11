@@ -1,6 +1,6 @@
 'use server'
 
-import { Plan } from '@/constants/plans'
+import type { Plan } from '@/constants/company/plans'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 

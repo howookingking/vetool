@@ -1,14 +1,10 @@
 'use client'
 
 import PatientDetailInfo from '@/components/hospital/common/patient/patient-detail-info'
-import { Table } from '@/components/ui/table'
-import useLocalStorage from '@/hooks/use-local-storage'
 import { cn } from '@/lib/utils/utils'
-import type { OrderWidth } from '@/types/hospital/order'
 import type { SelectedIcuChart } from '@/types/icu/chart'
 import ReadOnlyChartInfos from './read-only-chart-infos'
-import ReadOnlyChartTableBody from './read-only-chart-table-body'
-import ReadOnlyChartTableHeader from './read-only-chart-table-header'
+import ReadOnlyChartTable from './read-only-chart-table'
 
 type Props = {
   chartData: SelectedIcuChart
@@ -17,11 +13,11 @@ type Props = {
 }
 
 export default function ReadOnlyIcuChart({ chartData, ref, isExport }: Props) {
-  const { patient, weight, weight_measured_date } = chartData
-  const [orderWidth, setOrderWidth] = useLocalStorage<OrderWidth>(
-    'orderWidth',
-    400,
-  )
+  const {
+    patient: { is_alive, species, name, breed, gender, birth },
+    weight,
+    weight_measured_date,
+  } = chartData
 
   return (
     <div
@@ -38,11 +34,12 @@ export default function ReadOnlyIcuChart({ chartData, ref, isExport }: Props) {
           </span>
           <div className="flex justify-center">
             <PatientDetailInfo
-              species={patient.species}
-              name={patient.name}
-              breed={patient.breed}
-              gender={patient.gender}
-              birth={patient.birth}
+              isAlive={is_alive}
+              species={species}
+              name={name}
+              breed={breed}
+              gender={gender}
+              birth={birth}
               weight={weight}
               weightMeasuredDate={weight_measured_date}
             />
@@ -52,14 +49,7 @@ export default function ReadOnlyIcuChart({ chartData, ref, isExport }: Props) {
 
       <ReadOnlyChartInfos chartData={chartData} />
 
-      <Table className="border">
-        <ReadOnlyChartTableHeader
-          orderWidth={orderWidth}
-          setOrderWidth={setOrderWidth}
-        />
-
-        <ReadOnlyChartTableBody chartData={chartData} orderWidth={orderWidth} />
-      </Table>
+      <ReadOnlyChartTable chartData={chartData} />
     </div>
   )
 }

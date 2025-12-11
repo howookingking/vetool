@@ -1,5 +1,6 @@
 'use no memo'
 
+import SubmitButton from '@/components/common/submit-button'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -24,37 +25,36 @@ import {
   createTemplateChart,
   updateTemplateChart,
 } from '@/lib/services/icu/template/template'
-import {
-  type DtOrderTimePendingQueue,
-  useDtOrderStore,
-} from '@/lib/store/icu/dt-order'
+import type { DtOrderTimePendingQueue } from '@/lib/store/icu/dt-order'
 import type { IcuTemplate } from '@/types'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { LoaderCircle } from 'lucide-react'
-import { useParams, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-type ConfirmAddTemplateDialogProps = {
+type Props = {
+  isSorting: boolean
   sortedOrders: SelectedIcuOrder[]
   setIsUpsertTemplateDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
-  isEdit: boolean
+  isEdit?: boolean
   selectedTemplateChart: IcuTemplate | null
+  hosId: string
+  orderTimePendingQueue: DtOrderTimePendingQueue[]
 }
 
 export default function ConfirmAddTemplateDialog({
+  isSorting,
   sortedOrders,
   setIsUpsertTemplateDialogOpen,
   isEdit,
   selectedTemplateChart,
-}: ConfirmAddTemplateDialogProps) {
+  hosId,
+  orderTimePendingQueue,
+}: Props) {
   const { refresh } = useRouter()
-  const { hos_id } = useParams()
-
-  const { orderTimePendingQueue } = useDtOrderStore()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -78,24 +78,22 @@ export default function ConfirmAddTemplateDialog({
         orderTimePendingQueue,
       )
 
-    if (isEdit) {
-      await updateTemplateChart(
-        hos_id as string,
-        selectedTemplateChart?.icu_chart_id!,
-        updatedTemplateOrders,
-        selectedTemplateChart?.template_id!,
-        template_name,
-        template_comment ?? '',
-      )
-    } else {
-      await createTemplateChart(
-        hos_id as string,
-        updatedTemplateOrders,
-        template_name,
-        true,
-        template_comment,
-      )
-    }
+    isEdit
+      ? await updateTemplateChart(
+          hosId,
+          selectedTemplateChart?.icu_chart_id!,
+          updatedTemplateOrders,
+          selectedTemplateChart?.template_id!,
+          template_name,
+          template_comment ?? '',
+        )
+      : await createTemplateChart(
+          hosId,
+          updatedTemplateOrders,
+          template_name,
+          true,
+          template_comment ?? '',
+        )
 
     toast.success(
       isEdit ? '템플릿이 수정되었습니다' : '템플릿이 추가되었습니다',
@@ -104,7 +102,7 @@ export default function ConfirmAddTemplateDialog({
     setIsSubmitting(false)
     setIsDialogOpen(false)
     setIsUpsertTemplateDialogOpen(false)
-    refresh()
+    setTimeout(refresh, 100)
   }
 
   const handleOpenChange = (open: boolean) => {
@@ -120,7 +118,7 @@ export default function ConfirmAddTemplateDialog({
   return (
     <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button disabled={sortedOrders.length === 0}>다음</Button>
+        <Button disabled={sortedOrders.length === 0 || isSorting}>다음</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -174,19 +172,14 @@ export default function ConfirmAddTemplateDialog({
               )}
             />
 
-            <div className="flex">
-              <div className="ml-auto">
-                <DialogClose asChild>
-                  <Button type="button" variant="outline" tabIndex={-1}>
-                    닫기
-                  </Button>
-                </DialogClose>
-
-                <Button type="submit" disabled={isSubmitting} className="ml-2">
-                  저장
-                  {isSubmitting && <LoaderCircle className="animate-spin" />}
+            <div className="flex justify-end gap-2">
+              <DialogClose asChild>
+                <Button type="button" variant="outline" tabIndex={-1}>
+                  닫기
                 </Button>
-              </div>
+              </DialogClose>
+
+              <SubmitButton isPending={isSubmitting} buttonText="저장" />
             </div>
           </form>
         </Form>
@@ -210,13 +203,13 @@ function applyAndToggleTimePendingQueueToTemplateOrders(
 
   // 2. 각 order에 대해 order_times 토글 적용
   return sortedOrders.map((order) => {
-    const toggleTimes = queueMap.get(order.order_id)
+    const toggleTimes = queueMap.get(order.icu_chart_order_id)
 
     // 해당 order에 적용할 시간 정보 없으면 그대로 반환
     if (!toggleTimes) return order
 
     // 기존 order_times 복사해서 수정
-    const updatedTimes = order.order_times.map((time, index) => {
+    const updatedTimes = order.icu_chart_order_time.map((time, index) => {
       const hour = index
       if (!toggleTimes.includes(hour)) return time
 
@@ -228,7 +221,7 @@ function applyAndToggleTimePendingQueueToTemplateOrders(
 
     return {
       ...order,
-      order_times: updatedTimes,
+      icu_chart_order_time: updatedTimes,
     }
   })
 }

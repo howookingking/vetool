@@ -95,38 +95,6 @@ export const deleteIcuChartTx = async (icuChartTxId: string) => {
   }
 }
 
-export const updateTxWeight = async (
-  chartId: string,
-  patientId: string,
-  weight: string,
-  weightMeasuredDate: string,
-) => {
-  const supabase = await createClient()
-
-  const { error: chartError } = await supabase
-    .from('icu_charts')
-    .update({
-      weight,
-      weight_measured_date: weightMeasuredDate,
-    })
-    .match({ icu_chart_id: chartId })
-
-  if (chartError) {
-    console.error(chartError)
-    redirect(`/error?message=${chartError.message}`)
-  }
-
-  const { error: vitalsError } = await supabase.from('vitals').insert({
-    patient_id: patientId,
-    body_weight: weight,
-  })
-
-  if (vitalsError) {
-    console.error(vitalsError)
-    redirect(`/error?message=${vitalsError.message}`)
-  }
-}
-
 export const uploadTxImages = async (
   txImages: File[],
   txId: string,

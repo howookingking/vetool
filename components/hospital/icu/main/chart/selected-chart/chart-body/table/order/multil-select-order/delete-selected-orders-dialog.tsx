@@ -15,7 +15,7 @@ import { deleteOrder } from '@/lib/services/icu/chart/order-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { Trash2Icon } from 'lucide-react'
-import { type Dispatch, type SetStateAction } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 import { toast } from 'sonner'
 
 type DeleteSelectedOrdersDialogProps = {
@@ -35,7 +35,7 @@ export default function DeleteSelectedOrdersDialog({
     )
 
     selectedOrderPendingQueue.forEach(async (order) => {
-      await deleteOrder(order.order_id!)
+      await deleteOrder(order.icu_chart_order_id!)
     })
 
     toast.success('오더를 삭제하였습니다')

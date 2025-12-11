@@ -1,4 +1,4 @@
-import type { Plan } from '@/constants/plans'
+import type { Plan } from '@/constants/company/plans'
 import type { VetoolUser } from '@/lib/services/auth/authorization'
 import MobileSidebar from './mobile-sidebar'
 

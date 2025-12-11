@@ -3,15 +3,13 @@ import { updateIsBordered } from '@/lib/services/icu/chart/order-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { SquareIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 import { toast } from 'sonner'
 
 export default function BorderSelectedOrdersButton({
   setIsMultiSelectOrderActionDialogOpen,
 }: {
-  setIsMultiSelectOrderActionDialogOpen: React.Dispatch<
-    React.SetStateAction<boolean>
-  >
+  setIsMultiSelectOrderActionDialogOpen: Dispatch<SetStateAction<boolean>>
 }) {
   const { refresh } = useRouter()
 
@@ -19,7 +17,7 @@ export default function BorderSelectedOrdersButton({
 
   const handleBorderOrder = async () => {
     selectedOrderPendingQueue.forEach(async (order) => {
-      await updateIsBordered(order.order_id!, order.is_bordered!)
+      await updateIsBordered(order.icu_chart_order_id!, order.is_bordered!)
     })
 
     toast.success('오더 테두리를 변경하였습니다')

@@ -12,8 +12,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
+import type { Plan } from '@/constants/company/plans'
 import { HOS_SIDEBAR_MENUS } from '@/constants/hospital/hos-sidebar-menus'
-import type { Plan } from '@/constants/plans'
 import type { VetoolUser } from '@/lib/services/auth/authorization'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { MenuIcon } from 'lucide-react'

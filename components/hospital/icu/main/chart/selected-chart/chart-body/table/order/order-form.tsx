@@ -16,7 +16,6 @@ import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provi
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircleIcon } from 'lucide-react'
-import { useParams } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -26,15 +25,15 @@ type Props = {
   showOrderer: boolean
   icuChartId: string
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
+  hosId: string
 }
 
 export default function OrderForm({
   showOrderer,
   icuChartId,
   setSortedOrders,
+  hosId,
 }: Props) {
-  const { hos_id } = useParams()
-
   const { setOrderStep, selectedChartOrder, setSelectedChartOrder, reset } =
     useIcuOrderStore()
   const {
@@ -43,15 +42,15 @@ export default function OrderForm({
 
   const [isUpdating, setIsUpdating] = useState(false)
   const [orderTime, setOrderTime] = useState<string[]>(
-    selectedChartOrder.order_times || new Array(24).fill('0'),
+    selectedChartOrder.icu_chart_order_time || new Array(24).fill('0'),
   )
 
   const form = useForm<z.infer<typeof orderSchema>>({
     resolver: zodResolver(orderSchema),
     defaultValues: {
-      icu_chart_order_type: selectedChartOrder.order_type,
-      icu_chart_order_name: selectedChartOrder.order_name,
-      icu_chart_order_comment: selectedChartOrder.order_comment ?? '',
+      icu_chart_order_type: selectedChartOrder.icu_chart_order_type,
+      icu_chart_order_name: selectedChartOrder.icu_chart_order_name,
+      icu_chart_order_comment: selectedChartOrder.icu_chart_order_comment ?? '',
       is_bordered: selectedChartOrder.is_bordered ?? false,
     },
   })
@@ -65,11 +64,11 @@ export default function OrderForm({
     } = values
 
     setSelectedChartOrder({
-      order_name: icu_chart_order_name,
-      order_comment: icu_chart_order_comment,
-      order_type: icu_chart_order_type as OrderType,
-      order_times: orderTime,
-      order_id: selectedChartOrder.order_id,
+      icu_chart_order_name: icu_chart_order_name,
+      icu_chart_order_comment: icu_chart_order_comment,
+      icu_chart_order_type: icu_chart_order_type as OrderType,
+      icu_chart_order_time: orderTime,
+      icu_chart_order_id: selectedChartOrder.icu_chart_order_id,
       is_bordered: is_bordered,
     })
 
@@ -89,9 +88,9 @@ export default function OrderForm({
     setIsUpdating(true)
 
     await upsertOrder(
-      hos_id as string,
+      hosId,
       icuChartId,
-      selectedChartOrder.order_id,
+      selectedChartOrder.icu_chart_order_id,
       orderTime.map((time) => (time === '0' ? '0' : vetList[0].name)),
       {
         icu_chart_order_name: icu_chart_order_name.trim(),

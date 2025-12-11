@@ -1,7 +1,7 @@
 'use client'
 
+import SubmitButton from '@/components/common/submit-button'
 import UserAvatar from '@/components/hospital/common/user-avatar'
-import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
@@ -22,9 +22,8 @@ import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { cn, formatOrders } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import type { SelectedIcuOrder } from '@/types/icu/chart'
+import type { SelectedIcuChart, SelectedIcuOrder } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { LoaderCircleIcon } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -32,8 +31,8 @@ import { toast } from 'sonner'
 import * as z from 'zod'
 
 type Props = {
-  icuChartId: string
-  mainVetName: string
+  icuChartId: SelectedIcuChart['icu_chart_id']
+  mainVetName: SelectedIcuChart['main_vet']['name']
   orders: SelectedIcuOrder[]
   isSetting?: boolean
 }
@@ -53,11 +52,11 @@ export default function OrdererSelectStep({
     reset,
     selectedChartOrder: {
       is_bordered,
-      order_comment,
-      order_name,
-      order_id,
-      order_type,
-      order_times,
+      icu_chart_order_comment,
+      icu_chart_order_name,
+      icu_chart_order_id,
+      icu_chart_order_type,
+      icu_chart_order_time,
     },
     orderTimePendingQueue,
     copiedOrderPendingQueue,
@@ -88,17 +87,21 @@ export default function OrdererSelectStep({
     await upsertOrder(
       hos_id as string,
       icuChartId,
-      order_id!,
-      order_times!.map((time) => (time === '1' ? values.orderer : time)),
+      icu_chart_order_id!,
+      icu_chart_order_time!.map((time) =>
+        time === '1' ? values.orderer : time,
+      ),
       {
-        icu_chart_order_name: order_name!,
-        icu_chart_order_comment: order_comment!,
-        icu_chart_order_type: order_type!,
+        icu_chart_order_name: icu_chart_order_name!,
+        icu_chart_order_comment: icu_chart_order_comment!,
+        icu_chart_order_type: icu_chart_order_type!,
         is_bordered: is_bordered!,
       },
     )
 
-    toast.success(`${order_name!.split('#')[0]} 오더를 수정하였습니다`)
+    toast.success(
+      `${icu_chart_order_name!.split('#')[0]} 오더를 수정하였습니다`,
+    )
 
     reset()
     setOrderStep('closed')
@@ -112,9 +115,11 @@ export default function OrdererSelectStep({
     const formattedOrders = formatOrders(orderTimePendingQueue)
 
     for (const order of formattedOrders) {
-      const currentOrder = orders.find((o) => o.order_id === order.orderId)!
+      const currentOrder = orders.find(
+        (o) => o.icu_chart_order_id === order.orderId,
+      )!
 
-      const updatedOrderTimes = [...currentOrder.order_times]
+      const updatedOrderTimes = [...currentOrder.icu_chart_order_time]
       for (const time of order.orderTimes) {
         updatedOrderTimes[time] =
           updatedOrderTimes[time] === '0' ? values.orderer : '0'
@@ -126,9 +131,9 @@ export default function OrdererSelectStep({
         order.orderId,
         updatedOrderTimes,
         {
-          icu_chart_order_name: currentOrder.order_name,
-          icu_chart_order_comment: currentOrder.order_comment,
-          icu_chart_order_type: currentOrder.order_type,
+          icu_chart_order_name: currentOrder.icu_chart_order_name,
+          icu_chart_order_comment: currentOrder.icu_chart_order_comment,
+          icu_chart_order_type: currentOrder.icu_chart_order_type,
           is_bordered: currentOrder.is_bordered,
         },
       )
@@ -144,9 +149,9 @@ export default function OrdererSelectStep({
   const handleUpsertOrder = async (values: z.infer<typeof ordererSchema>) => {
     setIsUpdating(true)
     for (const order of copiedOrderPendingQueue) {
-      const updatedOrderTimes = [...order.order_times!]
+      const updatedOrderTimes = [...order.icu_chart_order_time!]
 
-      order.order_times!.forEach((time, index) => {
+      order.icu_chart_order_time!.forEach((time, index) => {
         updatedOrderTimes[index] = time === '0' ? '0' : values.orderer
       })
 
@@ -156,9 +161,9 @@ export default function OrdererSelectStep({
         undefined,
         updatedOrderTimes,
         {
-          icu_chart_order_name: order.order_name!,
-          icu_chart_order_comment: order.order_comment!,
-          icu_chart_order_type: order.order_type!,
+          icu_chart_order_name: order.icu_chart_order_name!,
+          icu_chart_order_comment: order.icu_chart_order_comment!,
+          icu_chart_order_type: order.icu_chart_order_type!,
           is_bordered: order.is_bordered!,
         },
       )
@@ -236,17 +241,10 @@ export default function OrdererSelectStep({
           )}
         />
 
-        <Button
-          type="submit"
-          disabled={isUpdating || isSetting}
-          className="ml-auto flex"
-          ref={okButtonRef}
-        >
-          확인
-          <LoaderCircleIcon
-            className={cn(isUpdating ? 'ml-2 animate-spin' : 'hidden')}
-          />
-        </Button>
+        <SubmitButton
+          isPending={isUpdating || !!isSetting}
+          buttonText={'확인'}
+        />
       </form>
     </Form>
   )

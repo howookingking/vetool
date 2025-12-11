@@ -11,57 +11,56 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import { deleteDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
-import { type OrderStep } from '@/lib/store/icu/icu-order'
-import { type SelectedIcuOrder } from '@/types/icu/chart'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { useRouter } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { toast } from 'sonner'
 
 type Props = {
-  selectedChartOrder: Partial<SelectedIcuOrder>
-  setOrderStep: (orderStep: OrderStep) => void
+  order: Partial<SelectedIcuOrder>
+  setIsDialogOpen: Dispatch<SetStateAction<boolean>>
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   isTemplate?: boolean
   isLastDefaultOrder?: boolean
 }
 
 export default function DtDeleteOrderAlertDialog({
-  selectedChartOrder,
-  setOrderStep,
+  order,
+  setIsDialogOpen,
   setSortedOrders,
   isTemplate,
   isLastDefaultOrder,
 }: Props) {
   const { refresh } = useRouter()
 
-  const [isDeleteOrdersDialogOpen, setIsDeleteOrdersDialogOpen] =
-    useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
-  const handleDeleteOrderClick = async () => {
+  const handleDelete = async () => {
     if (!isTemplate && isLastDefaultOrder) {
       toast.warning('기본오더는 적어도 1개 이상이여야 합니다')
       return
     }
 
-    setOrderStep('closed')
+    setIsDeleting(true)
 
     setSortedOrders((prev) =>
-      prev.filter((order) => order.order_id !== selectedChartOrder.order_id),
+      prev.filter((o) => o.icu_chart_order_id !== order.icu_chart_order_id),
     )
 
-    !isTemplate && (await deleteDefaultChartOrder(selectedChartOrder.order_id!))
+    if (!isTemplate) {
+      await deleteDefaultChartOrder(order.icu_chart_order_id!)
+      toast.success(`${order.icu_chart_order_name} 오더를 삭제하였습니다`)
+    }
 
-    toast.success(`${selectedChartOrder.order_name} 오더를 삭제하였습니다`)
-
-    refresh()
+    setIsDeleting(false)
+    setIsDialogOpen(false)
+    setTimeout(refresh, 100)
   }
 
   return (
-    <AlertDialog
-      open={isDeleteOrdersDialogOpen}
-      onOpenChange={setIsDeleteOrdersDialogOpen}
-    >
+    <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button
           type="button"
@@ -75,7 +74,7 @@ export default function DtDeleteOrderAlertDialog({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            {selectedChartOrder.order_name} 오더 삭제
+            {order.icu_chart_order_name} 오더 삭제
           </AlertDialogTitle>
           <AlertDialogDescription>
             선택한 오더를 삭제합니다
@@ -84,11 +83,14 @@ export default function DtDeleteOrderAlertDialog({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel tabIndex={-1}>닫기</AlertDialogCancel>
+
           <AlertDialogAction
             className="bg-destructive hover:bg-destructive/80"
-            onClick={handleDeleteOrderClick}
+            onClick={handleDelete}
+            disabled={isDeleting}
           >
             삭제
+            {isDeleting ? <Spinner /> : null}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

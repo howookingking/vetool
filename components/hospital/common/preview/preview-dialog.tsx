@@ -1,13 +1,13 @@
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { Spinner } from '@/components/ui/spinner'
-import { getIcuChartByPatientIdAndTargetDate } from '@/lib/services/icu/chart/get-icu-chart'
+import { getSelectedIcuChart } from '@/lib/services/icu/chart/get-icu-chart'
 import { getTemplateChart } from '@/lib/services/icu/template/template'
 import { useCopiedChartStore } from '@/lib/store/icu/copied-chart'
 import { cn } from '@/lib/utils/utils'
 import { EyeIcon } from 'lucide-react'
 import { useState } from 'react'
-import PreviewDialogContentDynamic from './preview-dialog-content-dynamic'
+import PreviewDialogContent from './preview-dialog-content'
 
 type Props =
   | {
@@ -43,7 +43,7 @@ export default function PreviewDialog({
 
       const chartData = isTemplate
         ? await getTemplateChart(chartId)
-        : await getIcuChartByPatientIdAndTargetDate(targetDate, patientId)
+        : await getSelectedIcuChart(targetDate, patientId)
 
       setCopiedChart(chartData!)
 
@@ -67,9 +67,7 @@ export default function PreviewDialog({
         </Button>
       </DialogTrigger>
 
-      {isDialogOpen && (
-        <PreviewDialogContentDynamic copiedChart={copiedChart!} />
-      )}
+      <PreviewDialogContent copiedChart={copiedChart!} />
     </Dialog>
   )
 }

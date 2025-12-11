@@ -33,7 +33,6 @@ export default function PastePrevChartDialog({ targetDate, patientId }: Props) {
     const { error } = await copyPrevChart(targetDate, patientId)
 
     if (error) {
-      console.log(error)
       toast.error('전날 차트를 복사할 수 없습니다', {
         description: '전날 차트가 있는지 확인해주세요',
       })

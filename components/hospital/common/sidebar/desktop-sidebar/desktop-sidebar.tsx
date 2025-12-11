@@ -1,10 +1,10 @@
 import CalculatorSheet from '@/components/hospital/calculator/calculator-sheet'
 import Feedback from '@/components/hospital/feedback/feedback'
+import type { Plan } from '@/constants/company/plans'
 import { HOS_SIDEBAR_MENUS } from '@/constants/hospital/hos-sidebar-menus'
-import type { Plan } from '@/constants/plans'
+import type { VetoolUser } from '@/lib/services/auth/authorization'
 import SidebarUserDropdown from '../sidebar-user-dropdown'
 import DesktopSidebarItem from './desktop-sidebar-item'
-import type { VetoolUser } from '@/lib/services/auth/authorization'
 
 type Props = {
   hosId: string

@@ -3,8 +3,8 @@ import Cri from '@/components/hospital/calculator/cri/cri'
 import FluidRateCalculator from '@/components/hospital/calculator/fluid-rate/fluid-rate-calculator'
 import RerMerCalculator from '@/components/hospital/calculator/rer-mer/rer-mer-calculator'
 import VitalCounter from '@/components/hospital/calculator/vital-counter/vital-counter'
-import type { SelectedCalculator } from '@/types/hospital/calculator'
-import type { PatientWithWeight } from '@/types/patients'
+import type { SelectedCalculator } from '@/constants/hospital/icu/calculator/calculator'
+import type { PatientWithWeight } from '@/lib/services/patient/patient'
 import Kcl from './kcl/kcl'
 
 type Props = {

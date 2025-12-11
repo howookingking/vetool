@@ -1,6 +1,6 @@
 export type Plan = keyof typeof PLANS
 
-export type Features =
+type Features =
   | 'CALCULATOR'
   | 'SURGERY'
   | 'ECHOCARDIO'

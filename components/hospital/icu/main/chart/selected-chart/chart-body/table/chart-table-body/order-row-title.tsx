@@ -11,7 +11,6 @@ type Props = {
   order: SelectedIcuOrder
   index: number
   isSorting?: boolean
-  preview?: boolean
   vitalRefRange?: VitalRefRange[]
   species: string
   orderWidth: number
@@ -30,7 +29,6 @@ export default function OrderRowTitle({
   order,
   isSorting,
   index,
-  preview,
   vitalRefRange,
   species,
   orderWidth,
@@ -40,7 +38,11 @@ export default function OrderRowTitle({
   setSelectedChartOrder,
   isInOrderPendingQueue,
 }: Props) {
-  const { order_comment, order_type, order_name } = order
+  const {
+    icu_chart_order_comment,
+    icu_chart_order_type,
+    icu_chart_order_name,
+  } = order
 
   // sorting 때문에 상위에 있으면 안되고 여기 있어야함
   const {
@@ -53,7 +55,7 @@ export default function OrderRowTitle({
       e.preventDefault()
       setSelectedOrderPendingQueue!((prev) => {
         const existingIndex = prev.findIndex(
-          (item) => item.order_id === order.order_id,
+          (item) => item.icu_chart_order_id === order.icu_chart_order_id,
         )
         if (existingIndex !== -1) {
           return prev.filter((_, index) => index !== existingIndex)
@@ -72,14 +74,14 @@ export default function OrderRowTitle({
 
   // -------- 바이탈 참조범위 --------
   const foundVital = vitalRefRange?.find(
-    (vital) => vital.order_name === order.order_name,
+    (vital) => vital.order_name === order.icu_chart_order_name,
   )
   const rowVitalRefRange = foundVital
     ? foundVital[species as keyof Omit<VitalRefRange, 'order_name'>]
     : undefined
   // -------- 바이탈 참조범위 --------
 
-  const isOptimisticOrder = order.order_id.startsWith('temp_order_id')
+  const isOptimisticOrder = order.icu_chart_order_id.startsWith('temp_order_id')
 
   return (
     <TableCell
@@ -96,15 +98,11 @@ export default function OrderRowTitle({
       <Button
         disabled={isOptimisticOrder}
         variant="ghost"
-        onClick={isSorting || preview ? undefined : handleClickOrderTitle}
+        onClick={isSorting ? undefined : handleClickOrderTitle}
         className={cn(
           'group flex h-11 justify-between rounded-none bg-transparent px-2 outline-none transition duration-300 hover:scale-[97%] hover:bg-transparent',
           isOptimisticOrder && 'animate-bounce',
-          preview
-            ? 'cursor-not-allowed'
-            : isSorting
-              ? 'cursor-grab'
-              : 'cursor-pointer',
+          isSorting ? 'cursor-grab' : 'cursor-pointer',
           isInOrderPendingQueue && 'ring-2 ring-inset ring-primary',
         )}
         style={{
@@ -113,9 +111,9 @@ export default function OrderRowTitle({
         }}
       >
         <OrderTitleContent
-          orderType={order_type}
-          orderName={order_name}
-          orderComment={order_comment}
+          orderType={order.icu_chart_order_type}
+          orderName={order.icu_chart_order_name}
+          orderComment={order.icu_chart_order_comment}
           orderColorsData={orderColorsData}
           orderFontSizeData={orderFontSizeData}
           vitalRefRange={rowVitalRefRange}

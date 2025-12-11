@@ -74,7 +74,7 @@ export default function UploadPatientArea() {
   return (
     <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm">
+        <Button variant="outline" size="default">
           엑셀 업로드
         </Button>
       </DialogTrigger>

@@ -1,27 +1,33 @@
+import type { OrderWidth } from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/order-width-button'
 import { TableBody, TableRow } from '@/components/ui/table'
 import { borderedOrderClassName } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import type { OrderWidth } from '@/types/hospital/order'
-import type { SelectedIcuChart } from '@/types/icu/chart'
+import type { IcuOrderColors } from '@/types/adimin'
+import type { SelectedIcuChart, SelectedIcuOrder } from '@/types/icu/chart'
 import ReadOnlyOrderRowCells from './read-only-order-row-cells'
 import ReadOnlyOrderRowTitle from './read-only-order-row-title'
 
 type Props = {
   orderWidth: OrderWidth
-  chartData: SelectedIcuChart
+  orders: SelectedIcuOrder[]
+  species: SelectedIcuChart['patient']['species']
+  localColorState?: IcuOrderColors // 오더색 설정에서 디스플레이 예시
 }
 
 export default function ReadOnlyChartTableBody({
   orderWidth,
-  chartData,
+  orders,
+  species,
+  localColorState,
 }: Props) {
   const {
-    orders,
-    patient: { species },
-  } = chartData
-
-  const {
-    basicHosData: { showOrderer, vitalRefRange, timeGuidelineData },
+    basicHosData: {
+      showOrderer,
+      vitalRefRange,
+      timeGuidelineData,
+      orderColorsData,
+      orderFontSizeData,
+    },
   } = useBasicHosDataContext()
 
   return (
@@ -30,7 +36,7 @@ export default function ReadOnlyChartTableBody({
         return (
           <TableRow
             className="w-full divide-x"
-            key={order.order_id}
+            key={order.icu_chart_order_id}
             style={borderedOrderClassName(orders, order, index)}
           >
             <ReadOnlyOrderRowTitle
@@ -38,6 +44,10 @@ export default function ReadOnlyChartTableBody({
               vitalRefRange={vitalRefRange}
               species={species}
               orderWidth={orderWidth}
+              orderColorsData={
+                localColorState ? localColorState : orderColorsData
+              }
+              orderFontSizeData={orderFontSizeData}
             />
 
             <ReadOnlyOrderRowCells

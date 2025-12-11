@@ -1,6 +1,6 @@
 import MaintenanceTab from '@/components/hospital/calculator/fluid-rate/maintenance/maintenance-tab'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { type PatientWithWeight } from '@/types/patients'
+import type { PatientWithWeight } from '@/lib/services/patient/patient'
 import { useState } from 'react'
 import RehydrationTab from './rehydration/rehydration-tab'
 import ResuscitationTab from './resuscitation/resuscitation-tab'

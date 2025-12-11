@@ -1,4 +1,3 @@
-import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { create } from 'zustand'
 
 export type DtOrderTimePendingQueue = {
@@ -6,24 +5,7 @@ export type DtOrderTimePendingQueue = {
   orderId: string
 }
 
-type DtOrderState = {
-  selectedDefaultOrder: Partial<SelectedIcuOrder>
-  setSelectedDefaultOrder: (chartOrder: Partial<SelectedIcuOrder>) => void
-
-  selectedOrderPendingQueue: Partial<SelectedIcuOrder>[]
-  setSelectedOrderPendingQueue: (
-    updater:
-      | Partial<SelectedIcuOrder>[]
-      | ((prev: Partial<SelectedIcuOrder>[]) => Partial<SelectedIcuOrder>[]),
-  ) => void
-
-  copiedOrderPendingQueue: Partial<SelectedIcuOrder>[]
-  setCopiedOrderPendingQueue: (
-    updater:
-      | Partial<SelectedIcuOrder>[]
-      | ((prev: Partial<SelectedIcuOrder>[]) => Partial<SelectedIcuOrder>[]),
-  ) => void
-
+type DtOrderTimePendingQueueState = {
   orderTimePendingQueue: DtOrderTimePendingQueue[]
   setOrderTimePendingQueue: (
     updater:
@@ -31,46 +13,22 @@ type DtOrderState = {
       | ((prev: DtOrderTimePendingQueue[]) => DtOrderTimePendingQueue[]),
   ) => void
 
-  reset: () => void
+  resetTimePendingQueue: () => void
 }
 
-export const useDtOrderStore = create<DtOrderState>((set) => ({
-  selectedDefaultOrder: {} as Partial<SelectedIcuOrder>,
-  setSelectedDefaultOrder: (selectedChartOrder) =>
-    set({ selectedDefaultOrder: selectedChartOrder }),
+export const useDtOrderTimePendingQueueStore =
+  create<DtOrderTimePendingQueueState>((set) => ({
+    orderTimePendingQueue: [],
+    setOrderTimePendingQueue: (updater) =>
+      set((state) => ({
+        orderTimePendingQueue:
+          typeof updater === 'function'
+            ? updater(state.orderTimePendingQueue)
+            : updater,
+      })),
 
-  selectedOrderPendingQueue: [],
-  setSelectedOrderPendingQueue: (updater) =>
-    set((state) => ({
-      selectedOrderPendingQueue:
-        typeof updater === 'function'
-          ? updater(state.selectedOrderPendingQueue)
-          : updater,
-    })),
-
-  copiedOrderPendingQueue: [],
-  setCopiedOrderPendingQueue: (updater) =>
-    set((state) => ({
-      copiedOrderPendingQueue:
-        typeof updater === 'function'
-          ? updater(state.copiedOrderPendingQueue)
-          : updater,
-    })),
-
-  orderTimePendingQueue: [],
-  setOrderTimePendingQueue: (updater) =>
-    set((state) => ({
-      orderTimePendingQueue:
-        typeof updater === 'function'
-          ? updater(state.orderTimePendingQueue)
-          : updater,
-    })),
-
-  reset: () =>
-    set({
-      selectedDefaultOrder: {} as Partial<SelectedIcuOrder>,
-      orderTimePendingQueue: [],
-      copiedOrderPendingQueue: [],
-      selectedOrderPendingQueue: [],
-    }),
-}))
+    resetTimePendingQueue: () =>
+      set({
+        orderTimePendingQueue: [],
+      }),
+  }))

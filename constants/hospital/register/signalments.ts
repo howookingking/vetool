@@ -1,5 +1,5 @@
 export const SPECIES = ['canine', 'feline'] as const
-export type SpeciesTypeEnum = (typeof SPECIES)[number]
+export type Species = (typeof SPECIES)[number]
 
 export const SEX = [
   { label: 'Castrated Male', value: 'cm' },
@@ -8,8 +8,7 @@ export const SEX = [
   { label: 'Intact Female', value: 'if' },
   { label: 'Unknown', value: 'un' },
 ] as const
-
-export type SexTypeEnum = (typeof SEX)[number]
+// export type Sex = (typeof SEX)[number]
 
 export const CANINE_BREEDS = [
   {
@@ -1495,19 +1494,4 @@ export const FELINE_BREEDS = [
     kor: '아메리칸 컬',
     eng: 'AMERICAN CURL',
   },
-] as const
-
-export const COLORS = [
-  { label: 'White', value: 'white', hex: ['#ffffff'] },
-  { label: 'Black', value: 'black', hex: ['#000000'] },
-  { label: 'Brown', value: 'brown', hex: ['#552F1A'] },
-  { label: 'Cream', value: 'cream', hex: ['#E4D7C5'] },
-  { label: 'Gold', value: 'gold', hex: ['#F5E1B3'] },
-  { label: 'Orange', value: 'orange', hex: ['#E2BA7F'] },
-  { label: 'Gray', value: 'gray', hex: ['#85838F'] },
-  { label: 'Black & White', value: 'black-white', hex: ['#000000', '#ffffff'] },
-  { label: 'Black & Brown', value: 'black-brown', hex: ['#000000', '#552F1A'] },
-  { label: 'Gold & white', value: 'gold-white', hex: ['#F5E1B3', '#ffffff'] },
-  { label: 'Brown & White', value: 'brown-white', hex: ['#552F1A', '#ffffff'] },
-  { label: 'Chaos', value: 'chaos', hex: ['#000000', '#E2BA7F', '#ffffff'] },
 ] as const

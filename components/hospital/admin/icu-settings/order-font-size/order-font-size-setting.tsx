@@ -9,7 +9,6 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { RadioGroup } from '@/components/ui/radio-group'
-import { ORDER_FONT_SIZES } from '@/constants/admin/order-font-size'
 import { updateOrderFontSize } from '@/lib/services/admin/icu/order-font-size'
 import { cn } from '@/lib/utils/utils'
 import { LoaderCircle } from 'lucide-react'
@@ -80,3 +79,20 @@ export default function OrderFontSetting({ hosId, orderFontSize }: Props) {
     </Card>
   )
 }
+
+const ORDER_FONT_SIZES = {
+  14: {
+    title: '14px',
+    desc: '12px',
+  },
+  16: {
+    title: '16px',
+    desc: '14px',
+  },
+  18: {
+    title: '18px',
+    desc: '16px',
+  },
+} as const
+
+export type OrderFontSize = keyof typeof ORDER_FONT_SIZES
