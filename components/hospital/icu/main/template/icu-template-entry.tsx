@@ -20,7 +20,7 @@ export default function IcuTemplateEntry({ icuTemplates, hosId }: Props) {
       />
 
       {/* 새로운 템플릿 추가 */}
-      <UpsertTemplateDialog hosId={hosId} />
+      <UpsertTemplateDialog hosId={hosId} isEdit={false} template={null} />
     </div>
   )
 }

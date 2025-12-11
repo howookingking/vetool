@@ -13,18 +13,35 @@ import useOrderSorting from '@/hooks/use-order-sorting'
 import { useDtOrderTimePendingQueueStore } from '@/lib/store/icu/dt-order'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { Edit2Icon, PlusIcon } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ConfirmAddTemplateDialog from './confirm-add-template-dialog'
 import TemplateOrderTable from './template-order-table'
+import type { IcuTemplate } from '@/types'
+import { getTemplateChart } from '@/lib/services/icu/template/template'
+import { Spinner } from '@/components/ui/spinner'
 
-type Props = {
-  isEdit?: boolean
+type Props = EditTemplateProps | NewTemplateProps
+
+type EditTemplateProps = {
   hosId: string
+  isEdit: true
+  template: IcuTemplate
+}
+
+type NewTemplateProps = {
+  hosId: string
+  isEdit: false
+  template: null
 }
 
 const EMPTY_ORDERS: SelectedIcuOrder[] = []
 
-export default function UpsertTemplateDialog({ isEdit, hosId }: Props) {
+export default function UpsertTemplateDialog({
+  hosId,
+  isEdit,
+  template,
+}: Props) {
+  const [isFetching, setIsFetching] = useState(false)
   const [isUpsertTemplateDialogOpen, setIsUpsertTemplateDialogOpen] =
     useState(false)
   const { orderTimePendingQueue, resetTimePendingQueue } =
@@ -42,23 +59,38 @@ export default function UpsertTemplateDialog({ isEdit, hosId }: Props) {
     enabled: isUpsertTemplateDialogOpen,
   })
 
-  const handleOpenChange = (open: boolean) => {
+  const handleOpenChange = async (open: boolean) => {
     if (open) {
+      setIsFetching(true)
       setSortedOrders([])
       resetTimePendingQueue()
+
+      if (isEdit) {
+        const chartData = await getTemplateChart(template.icu_chart_id)
+        setSortedOrders(chartData.orders)
+        setIsFetching(false)
+        setIsUpsertTemplateDialogOpen(true)
+      }
+    } else {
+      setIsUpsertTemplateDialogOpen(false)
     }
-    setIsUpsertTemplateDialogOpen(open)
   }
 
   return (
     <Dialog open={isUpsertTemplateDialogOpen} onOpenChange={handleOpenChange}>
-      <DialogTrigger
-        asChild
-        className={
-          isEdit ? 'rounded-full' : 'fixed bottom-16 right-6 z-50 rounded-full'
-        }
-      >
-        <Button size="icon">{isEdit ? <Edit2Icon /> : <PlusIcon />}</Button>
+      <DialogTrigger asChild>
+        <Button
+          size="icon"
+          variant={isEdit ? 'ghost' : 'default'}
+          className={isEdit ? '' : 'fixed bottom-16 right-6 rounded-full'}
+          disabled={isFetching}
+        >
+          {isEdit ? (
+            <>{isFetching ? <Spinner /> : <Edit2Icon />}</>
+          ) : (
+            <PlusIcon />
+          )}
+        </Button>
       </DialogTrigger>
 
       <DialogContent

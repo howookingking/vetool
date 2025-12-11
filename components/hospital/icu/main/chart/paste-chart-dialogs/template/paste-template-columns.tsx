@@ -6,7 +6,7 @@ import { ArrowUpDownIcon } from 'lucide-react'
 import type { Dispatch, SetStateAction } from 'react'
 import ConfirmPasteTemplateDialog from './confirm-paste-template-dialog'
 
-export const templateColumns = (
+export const pasteTemplateColumns = (
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>,
   tableHeader?: boolean,
   chartId?: string,
