@@ -1,7 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { SelectedIcuChart, SelectedIcuOrder } from '@/types/icu/chart'
+import type { SelectedIcuChart, SelectedIcuOrder } from '@/types/icu/chart'
 import { redirect } from 'next/navigation'
 
 export const createTemplateChart = async (
@@ -9,7 +9,7 @@ export const createTemplateChart = async (
   templateOrders: Partial<SelectedIcuOrder>[],
   templateName: string,
   isTimeIncluded: boolean,
-  templateComment?: string | null,
+  templateComment: string,
 ) => {
   const supabase = await createClient()
 
@@ -18,7 +18,7 @@ export const createTemplateChart = async (
     template_orders_input: templateOrders,
     template_name_input: templateName,
     is_time_included_input: isTimeIncluded,
-    template_comment_input: templateComment ?? '',
+    template_comment_input: templateComment,
   })
 
   if (error) {

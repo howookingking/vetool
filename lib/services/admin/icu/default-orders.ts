@@ -45,8 +45,6 @@ export const upsertDefaultChartOrder = async (
     is_bordered?: boolean
   },
 ) => {
-  console.log(orderTime)
-
   const supabase = await createClient()
   const {
     icu_chart_order_name,

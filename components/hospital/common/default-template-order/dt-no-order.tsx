@@ -1,16 +1,19 @@
+import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import { TableCell, TableRow } from '@/components/ui/table'
 
 export default function DtNoOrder({ orderWidth }: { orderWidth: number }) {
   return (
-    <TableRow className="h-[240px]">
+    <TableRow>
       <TableCell
         style={{
           width: orderWidth,
           transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
         }}
-        className="text-center text-base text-gray-500"
       >
-        👇 오더를 추가해주세요
+        <NoResultSquirrel
+          text="오더를 추가해주세요"
+          className="flex-col py-4"
+        />
       </TableCell>
     </TableRow>
   )

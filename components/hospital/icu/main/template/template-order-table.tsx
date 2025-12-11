@@ -1,49 +1,55 @@
 import DtNoOrder from '@/components/hospital/common/default-template-order/dt-no-order'
 import DtOrderCreator from '@/components/hospital/common/default-template-order/dt-order-creator'
-import DtOrderDialog from '@/components/hospital/common/default-template-order/dt-order-dialog'
 import DtOrderRows from '@/components/hospital/common/default-template-order/dt-order-rows'
 import DtSortingOrderRows from '@/components/hospital/common/default-template-order/dt-sorting-order-rows'
 import DtTableHeader from '@/components/hospital/common/default-template-order/dt-table-header'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import useLocalStorage from '@/hooks/use-local-storage'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
-import { type Dispatch, type SetStateAction, useState } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
+import { Sortable } from 'react-sortablejs'
 import UserKeyGuideMessage from '../chart/selected-chart/chart-body/table/chart-table-body/order-creator/user-key-guide-message'
 import type { OrderWidth } from '../chart/selected-chart/chart-body/table/chart-table-header/order-width-button'
 
 type Props = {
-  sortedOrders: SelectedIcuOrder[]
+  isSorting: boolean
+  handleSortToggle: () => void
+  handleOrderMove: (event: Sortable.SortableEvent) => void
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
+  sortedOrders: SelectedIcuOrder[]
+  hosId: string
 }
 
 export default function TemplateOrderTable({
   sortedOrders,
+  isSorting,
+  handleSortToggle,
+  handleOrderMove,
   setSortedOrders,
+  hosId,
 }: Props) {
   const [orderWidth, setOrderWidth] = useLocalStorage<OrderWidth>(
     'orderWidth',
     400,
   )
 
-  const [isSorting, setIsSorting] = useState(false)
-
   return (
     <Table className="border">
       <DtTableHeader
         isSorting={isSorting}
-        setIsSorting={setIsSorting}
         orderWidth={orderWidth}
         setOrderWidth={setOrderWidth}
-        sortedOrders={sortedOrders}
-        defaultChartOrders={[]}
+        onSortToggle={handleSortToggle}
       />
 
       {isSorting ? (
         <DtSortingOrderRows
+          onOrderMove={handleOrderMove}
+          setSortedOrders={setSortedOrders}
           isSorting={isSorting}
           sortedOrders={sortedOrders}
-          setSortedOrders={setSortedOrders}
           orderWidth={orderWidth}
+          hosId={hosId}
         />
       ) : (
         <TableBody>
@@ -53,13 +59,17 @@ export default function TemplateOrderTable({
             <DtOrderRows
               sortedOrders={sortedOrders}
               isSorting={isSorting}
-              orderwidth={orderWidth}
+              orderWidth={orderWidth}
+              setSortedOrders={setSortedOrders}
+              hosId={hosId}
+              isTemplate
             />
           )}
 
-          <TableRow className="hover:bg-transparent">
+          <TableRow>
             <TableCell className="p-0">
               <DtOrderCreator
+                hosId={hosId}
                 sortedOrders={sortedOrders}
                 setSortedOrders={setSortedOrders}
                 isTemplate
@@ -70,8 +80,6 @@ export default function TemplateOrderTable({
           </TableRow>
         </TableBody>
       )}
-
-      <DtOrderDialog setSortedOrders={setSortedOrders} isTemplate />
     </Table>
   )
 }

@@ -39,7 +39,6 @@ export default function DtOrderRowCells({
           (t) => t.orderId === order.icu_chart_order_id && t.orderTime === time,
         )
         const hasOrder = icu_chart_order_time[time] !== '0'
-        const orderer = icu_chart_order_time[time]
         return (
           <DtCell
             hasOrder={hasOrder}
@@ -49,7 +48,6 @@ export default function DtOrderRowCells({
             icuChartOrderId={icu_chart_order_id}
             key={time}
             time={time}
-            orderer={orderer}
           />
         )
       })}

@@ -18,7 +18,7 @@ export default function UserKeyGuideMessage({ isDT }: { isDT?: boolean }) {
           </KbdGroup>
         </div>
 
-        {!isDT && (
+        {!isDT ? (
           <>
             <Separator orientation="vertical" className="h-4" />
             <div className="flex items-center gap-1">
@@ -44,7 +44,7 @@ export default function UserKeyGuideMessage({ isDT }: { isDT?: boolean }) {
               </HelperTooltip>
             </div>
           </>
-        )}
+        ) : null}
       </div>
     </TableCell>
   )

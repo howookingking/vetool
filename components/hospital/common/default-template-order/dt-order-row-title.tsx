@@ -13,6 +13,7 @@ type Props = {
   localColorState?: IcuOrderColors
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   hosId: string
+  isTemplate?: boolean
 }
 
 export default function DtOrderRowTitle({
@@ -22,6 +23,7 @@ export default function DtOrderRowTitle({
   orderWidth,
   setSortedOrders,
   hosId,
+  isTemplate,
 }: Props) {
   return (
     <TableCell
@@ -38,9 +40,9 @@ export default function DtOrderRowTitle({
       <DtOrderDialog
         order={order}
         setSortedOrders={setSortedOrders}
-        isTemplate
         isLastDefaultOrder={false}
         hosId={hosId}
+        isTemplate={isTemplate}
       />
     </TableCell>
   )

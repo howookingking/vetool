@@ -15,6 +15,7 @@ type Props = {
   // 오더 색상 설정에서 바로 화면에 반영되도록 local state임, 다른 컴포넌트(기본오더, 템플릿)에서는 undefined
   localColorState?: IcuOrderColors
   hosId: string
+  isTemplate?: boolean
 }
 
 export default function DtOrderRows({
@@ -24,6 +25,7 @@ export default function DtOrderRows({
   orderWidth,
   localColorState,
   hosId,
+  isTemplate,
 }: Props) {
   return (
     <>
@@ -42,6 +44,7 @@ export default function DtOrderRows({
               localColorState={localColorState}
               setSortedOrders={setSortedOrders}
               hosId={hosId}
+              isTemplate={isTemplate}
             />
 
             <DtOrderRowCells order={order} />

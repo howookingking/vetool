@@ -15,7 +15,6 @@ import { type Dispatch, type SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
-import OrderTimeSettings from '../../icu/main/chart/selected-chart/chart-body/table/order/order-time-settings'
 import DtDeleteOrderAlertDialog from './dt-delete-order-alert-dialog'
 
 type Props = {
@@ -38,9 +37,6 @@ export default function DtOrderForm({
   const { refresh } = useRouter()
 
   const [isUpdating, setIsUpdating] = useState(false)
-  const [orderTime, setOrderTime] = useState<string[]>(
-    order.icu_chart_order_time || new Array(24).fill('0'),
-  )
 
   const form = useForm<z.infer<typeof orderSchema>>({
     resolver: zodResolver(orderSchema),
@@ -54,6 +50,7 @@ export default function DtOrderForm({
 
   const handleSubmit = async (values: z.infer<typeof orderSchema>) => {
     setIsUpdating(true)
+
     const trimmedOrderName = values.icu_chart_order_name.trim()
     const orderComment = values.icu_chart_order_comment
       ? values.icu_chart_order_comment.trim()
@@ -61,41 +58,41 @@ export default function DtOrderForm({
     const orderType = values.icu_chart_order_type
     const isBordered = values.is_bordered
 
-    // isTemplate
-    //   ? setSortedOrders((prev) => {
-    //       return prev.map((order) => {
-    //         if (order.order_id === order.order_id) {
-    //           return {
-    //             ...order,
-    //             order_name: trimmedOrderName,
-    //             order_comment: orderComment,
-    //             order_type: orderType as OrderType,
-    //             is_bordered: isBordered ?? false,
-    //             order_times: orderTime.map((time) =>
-    //               time === '0' ? '0' : '기본',
-    //             ),
-    //           }
-    //         }
-    //         return order
-    //       })
-    //     })
-    await upsertDefaultChartOrder(
-      hosId,
-      order.icu_chart_order_id,
-      orderTime.map((time) => (time === '0' ? '0' : '기본')),
-      {
-        icu_chart_order_name: trimmedOrderName,
-        icu_chart_order_comment: orderComment,
-        icu_chart_order_type: orderType,
-        is_bordered: isBordered,
-      },
-    )
+    setSortedOrders((prev) => {
+      const updatedOrders = prev.map((o) => {
+        if (o.icu_chart_order_id === order.icu_chart_order_id) {
+          return {
+            ...o,
+            icu_chart_order_name: trimmedOrderName,
+            icu_chart_order_comment: orderComment,
+            icu_chart_order_type: orderType,
+            is_bordered: isBordered ?? false,
+            icu_chart_order_time: order.icu_chart_order_time,
+          }
+        }
+        return o
+      })
+      return updatedOrders
+    })
 
-    toast.success('오더을 수정하였습니다')
+    if (!isTemplate) {
+      await upsertDefaultChartOrder(
+        hosId,
+        order.icu_chart_order_id,
+        order.icu_chart_order_time,
+        {
+          icu_chart_order_name: trimmedOrderName,
+          icu_chart_order_comment: orderComment,
+          icu_chart_order_type: orderType,
+          is_bordered: isBordered,
+        },
+      )
+      toast.success('오더을 수정하였습니다')
+    }
 
     setIsUpdating(false)
     setIsDialogOpen(false)
-    refresh()
+    !isTemplate && setTimeout(refresh, 100)
   }
 
   return (
@@ -105,8 +102,6 @@ export default function DtOrderForm({
         className="flex flex-col gap-4"
       >
         <OrderFormField form={form} />
-
-        <OrderTimeSettings orderTime={orderTime} setOrderTime={setOrderTime} />
 
         <OrderBorderCheckbox form={form} />
 

@@ -3,45 +3,24 @@
 import { templateColumns } from '@/components/hospital/icu/main/template/template-columns'
 import DataTable from '@/components/ui/data-table'
 import type { IcuTemplate } from '@/types'
-import type { SelectedIcuOrder } from '@/types/icu/chart'
-import { useState } from 'react'
 import UpsertTemplateDialog from './upsert-template-dialog'
 
-export default function IcuTemplateEntry({
-  icuTemplates,
-}: {
+type Props = {
   icuTemplates: IcuTemplate[]
-}) {
-  const [isUpsertTemplateDialogOpen, setIsUpsertTemplateDialogOpen] =
-    useState(false)
-  const [sortedOrders, setSortedOrders] = useState<SelectedIcuOrder[]>([])
-  const [isEdit, setIsEdit] = useState(false)
-  const [selectedTemplateChart, setSelectedTemplateChart] =
-    useState<IcuTemplate | null>(null)
+  hosId: string
+}
 
+export default function IcuTemplateEntry({ icuTemplates, hosId }: Props) {
   return (
     <div className="p-2">
       <DataTable
-        columns={templateColumns(
-          setIsUpsertTemplateDialogOpen,
-          setSortedOrders,
-          setIsEdit,
-          setSelectedTemplateChart,
-        )}
+        columns={templateColumns(hosId)}
         data={icuTemplates}
         searchPlaceHolder="템플릿 이름, 설명으로 검색"
       />
 
-      <UpsertTemplateDialog
-        isUpsertTemplateDialogOpen={isUpsertTemplateDialogOpen}
-        setIsUpsertTemplateDialogOpen={setIsUpsertTemplateDialogOpen}
-        sortedOrders={sortedOrders}
-        setSortedOrders={setSortedOrders}
-        isEdit={isEdit}
-        setIsEdit={setIsEdit}
-        selectedTemplateChart={selectedTemplateChart}
-        setSelectedTemplateChart={setSelectedTemplateChart}
-      />
+      {/* 새로운 템플릿 추가 */}
+      <UpsertTemplateDialog hosId={hosId} />
     </div>
   )
 }

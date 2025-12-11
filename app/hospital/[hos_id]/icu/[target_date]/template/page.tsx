@@ -3,21 +3,17 @@ import IcuTemplateEntry from '@/components/hospital/icu/main/template/icu-templa
 import { getIcuTemplates } from '@/lib/services/icu/template/template'
 import { BookmarkIcon } from 'lucide-react'
 
-type TemplatePageProps = {
-  params: Promise<{
-    hos_id: string
-    target_date: string
-  }>
-}
-export default async function TemplatePage(props: TemplatePageProps) {
-  const params = await props.params
-  const icuTemplates = await getIcuTemplates(params.hos_id as string)
+export default async function TemplatePage(
+  props: PageProps<'/hospital/[hos_id]/icu/[target_date]/template'>,
+) {
+  const { hos_id } = await props.params
+  const icuTemplates = await getIcuTemplates(hos_id)
 
   return (
     <>
       <MobileTitle icon={BookmarkIcon} title="템플릿" />
 
-      <IcuTemplateEntry icuTemplates={icuTemplates} />
+      <IcuTemplateEntry icuTemplates={icuTemplates} hosId={hos_id} />
     </>
   )
 }

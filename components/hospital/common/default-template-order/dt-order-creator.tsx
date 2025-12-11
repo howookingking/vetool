@@ -61,22 +61,6 @@ export default function DtOrderCreator({
 
     const emptyOrderTimes = Array(24).fill('0')
 
-    // isTemplate
-    //   ? setSortedOrders!((prev) => [
-    //       ...prev,
-    //       {
-    //         order_name: orderName,
-    //         order_type: orderType as OrderType,
-    //         icu_chart_order_time: emptyOrderTimes,
-    //         treatments: [],
-    //         order_comment: orderComment,
-    //         is_bordered: false,
-    //         id: prev.length + 1,
-    //         order_id: `temp_order_id_${new Date().getTime()}`,
-    //       },
-    //     ])
-
-    // optimistic update
     setSortedOrders((prev) => [
       ...prev,
       {
@@ -91,19 +75,20 @@ export default function DtOrderCreator({
       },
     ])
 
-    await upsertDefaultChartOrder(hosId, undefined, undefined, {
-      icu_chart_order_name: orderName,
-      icu_chart_order_comment: orderComment,
-      icu_chart_order_type: orderType,
-    })
+    if (!isTemplate) {
+      await upsertDefaultChartOrder(hosId, undefined, undefined, {
+        icu_chart_order_name: orderName,
+        icu_chart_order_comment: orderComment,
+        icu_chart_order_type: orderType,
+      })
+      toast.success('오더을 생성하였습니다')
+    }
 
-    toast.success('오더을 생성하였습니다')
     setNewOrderInput('')
-    refresh()
     setIsSubmitting(false)
-    setTimeout(() => {
-      inputRef?.current?.focus()
-    }, 100)
+
+    setTimeout(() => inputRef?.current?.focus(), 100)
+    !isTemplate && setTimeout(refresh, 100)
   }
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {

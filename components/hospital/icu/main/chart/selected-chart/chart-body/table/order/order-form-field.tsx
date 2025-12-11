@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import {
   DEFAULT_ICU_ORDER_TYPE,
-  OrderType,
+  type OrderType,
 } from '@/constants/hospital/icu/chart/order'
 import { orderSchema } from '@/lib/schemas/icu/chart/order-schema'
 import { cn } from '@/lib/utils/utils'
@@ -39,7 +39,7 @@ export default function OrderFormField({
               <FormControl>
                 <RadioGroup
                   onValueChange={(value) => {
-                    setCurrentOrderType(value)
+                    setCurrentOrderType(value as OrderType)
                     field.onChange(value)
                   }}
                   defaultValue={field.value}

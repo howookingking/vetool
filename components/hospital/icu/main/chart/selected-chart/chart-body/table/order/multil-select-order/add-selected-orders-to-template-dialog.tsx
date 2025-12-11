@@ -71,7 +71,7 @@ export default function AddSelectedOrdersToTemplateDialog({
       ordererDefaulted,
       template_name,
       is_time_included,
-      template_comment,
+      template_comment ?? '',
     )
 
     toast.success('템플릿을 추가하였습니다')

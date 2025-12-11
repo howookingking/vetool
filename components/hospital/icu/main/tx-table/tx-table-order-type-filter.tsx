@@ -40,7 +40,7 @@ export default function TxTableOrderTypeFilter({
           <Button
             size="icon"
             className={cn(
-              'absolute bottom-4 right-4 h-8 w-8 rounded-full',
+              'absolute bottom-4 right-4 rounded-full',
               isFilterActive && 'animate-pulse',
             )}
           >

@@ -68,3 +68,13 @@ export const BG_CANDIDATES = [
 ] as const
 
 export type OrderType = (typeof DEFAULT_ICU_ORDER_TYPE)[number]['value']
+
+export const ORDER_TYPE_ENUM = [
+  'checklist',
+  'fluid',
+  'injection',
+  'po',
+  'test',
+  'feed',
+  'manual',
+] as const

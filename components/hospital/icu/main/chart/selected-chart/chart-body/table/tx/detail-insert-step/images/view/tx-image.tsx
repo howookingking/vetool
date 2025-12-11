@@ -19,7 +19,6 @@ export default function TxImage({
   control,
   className,
 }: TxImageProps) {
-  console.log(contentType)
   return (
     <>
       {isVideoFile(contentType) ? (

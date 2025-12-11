@@ -13,7 +13,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import { deleteDefaultChartOrder } from '@/lib/services/admin/icu/default-orders'
-import { type SelectedIcuOrder } from '@/types/icu/chart'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { useRouter } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { toast } from 'sonner'
@@ -45,13 +45,18 @@ export default function DtDeleteOrderAlertDialog({
 
     setIsDeleting(true)
 
-    await deleteDefaultChartOrder(order.icu_chart_order_id!)
+    setSortedOrders((prev) =>
+      prev.filter((o) => o.icu_chart_order_id !== order.icu_chart_order_id),
+    )
 
-    toast.success(`${order.icu_chart_order_name} 오더를 삭제하였습니다`)
+    if (!isTemplate) {
+      await deleteDefaultChartOrder(order.icu_chart_order_id!)
+      toast.success(`${order.icu_chart_order_name} 오더를 삭제하였습니다`)
+    }
 
     setIsDeleting(false)
     setIsDialogOpen(false)
-    refresh()
+    setTimeout(refresh, 100)
   }
 
   return (
@@ -78,6 +83,7 @@ export default function DtDeleteOrderAlertDialog({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel tabIndex={-1}>닫기</AlertDialogCancel>
+
           <AlertDialogAction
             className="bg-destructive hover:bg-destructive/80"
             onClick={handleDelete}

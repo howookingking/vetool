@@ -17,17 +17,17 @@ import DtOrderForm from './dt-order-form'
 type Props = {
   order: SelectedIcuOrder
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
-  isTemplate?: boolean
   isLastDefaultOrder?: boolean
   hosId: string
+  isTemplate?: boolean
 }
 
 export default function DtOrderDialog({
   order,
   setSortedOrders,
-  isTemplate,
   isLastDefaultOrder,
   hosId,
+  isTemplate,
 }: Props) {
   const {
     basicHosData: { orderColorsData },
@@ -69,11 +69,11 @@ export default function DtOrderDialog({
 
         <DtOrderForm
           setSortedOrders={setSortedOrders}
-          isTemplate={isTemplate}
           isLastDefaultOrder={isLastDefaultOrder}
           hosId={hosId}
           order={order}
           setIsDialogOpen={setIsDialogOpen}
+          isTemplate={isTemplate}
         />
       </DialogContent>
     </Dialog>

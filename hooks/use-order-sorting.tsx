@@ -12,9 +12,14 @@ import { toast } from 'sonner'
 type Props = {
   initialOrders: SelectedIcuOrder[]
   type: 'chart' | 'template' | 'default'
+  enabled?: boolean
 }
 
-export default function useOrderSorting({ initialOrders, type }: Props) {
+export default function useOrderSorting({
+  initialOrders,
+  type,
+  enabled = true,
+}: Props) {
   const { refresh } = useRouter()
 
   const safeRefresh = useSafeRefresh()
@@ -60,7 +65,6 @@ export default function useOrderSorting({ initialOrders, type }: Props) {
 
       type === 'chart' && (await reorderOrders(orderIds))
       type === 'default' && (await reorderDefaultOrders(orderIds))
-      // type === 'template' && (await reorderOrders(orderIds))
 
       setIsSorting(false)
       toast.success('오더 순서를 변경하였습니다')
@@ -71,13 +75,14 @@ export default function useOrderSorting({ initialOrders, type }: Props) {
 
   useShortcutKey({
     key: 'Escape',
-    condition: isSorting,
+    condition: isSorting && enabled,
     callback: handleSortToggle,
     requireCtrl: false,
   })
 
   useShortcutKey({
     key: 's',
+    condition: enabled,
     ignoreInput: true,
     callback: handleSortToggle,
   })
