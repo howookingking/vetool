@@ -529,48 +529,6 @@ export type Database = {
           },
         ]
       }
-      icu_bookmarks: {
-        Row: {
-          bookmark_comment: string | null
-          bookmark_id: string
-          bookmark_name: string
-          created_at: string
-          hos_id: string
-          icu_chart_id: string
-        }
-        Insert: {
-          bookmark_comment?: string | null
-          bookmark_id?: string
-          bookmark_name?: string
-          created_at?: string
-          hos_id: string
-          icu_chart_id: string
-        }
-        Update: {
-          bookmark_comment?: string | null
-          bookmark_id?: string
-          bookmark_name?: string
-          created_at?: string
-          hos_id?: string
-          icu_chart_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "icu_bookmarks_hos_id_fkey"
-            columns: ["hos_id"]
-            isOneToOne: false
-            referencedRelation: "hospitals"
-            referencedColumns: ["hos_id"]
-          },
-          {
-            foreignKeyName: "icu_bookmarks_icu_chart_id_fkey"
-            columns: ["icu_chart_id"]
-            isOneToOne: true
-            referencedRelation: "icu_charts"
-            referencedColumns: ["icu_chart_id"]
-          },
-        ]
-      }
       icu_charts: {
         Row: {
           created_at: string
