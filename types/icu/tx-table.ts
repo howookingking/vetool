@@ -1,5 +1,6 @@
+import type { OrderType } from '@/constants/hospital/icu/chart/order'
 import type { IcuChart, IcuIo, IcuOrders, Patient } from '@/types'
-import type { Treatment } from '@/types/icu/chart'
+import type { SelectedTreatment } from '@/types/icu/chart'
 
 export type IcuTxTableData = {
   icu_charts: Pick<
@@ -16,8 +17,8 @@ export type IcuTxTableData = {
     | 'icu_chart_order_time'
     | 'icu_chart_order_name'
     | 'icu_chart_order_comment'
-    | 'icu_chart_order_type'
   > & {
-    treatments: Treatment[]
+    icu_chart_order_type: OrderType
+    treatments: SelectedTreatment[]
   })[]
 }

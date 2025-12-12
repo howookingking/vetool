@@ -14,8 +14,8 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
+import type { Species } from '@/constants/hospital/register/signalments'
 import { calculateResuscitation } from '@/lib/calculators/fluid-rate'
-import { type Species } from '@/types/hospital/calculator'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { useState } from 'react'
 

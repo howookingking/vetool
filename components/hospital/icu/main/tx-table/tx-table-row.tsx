@@ -1,10 +1,10 @@
 import PatientBriefInfo from '@/components/hospital/common/patient/patient-brief-info'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
+import type { Species } from '@/constants/hospital/register/signalments'
 import { cn } from '@/lib/utils/utils'
 import type { IcuOrderColors } from '@/types/adimin'
-import type { Species } from '@/types/hospital/calculator'
-import type { Treatment } from '@/types/icu/chart'
+import type { SelectedTreatment } from '@/types/icu/chart'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
 import { SquarePlusIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -21,7 +21,7 @@ type Props = {
   handleOpenTxDetail: (
     order: IcuTxTableData['orders'][number],
     time: number,
-    treatment?: Treatment,
+    treatment?: SelectedTreatment,
   ) => void
   j: number
   isLastOrder: boolean
@@ -43,7 +43,7 @@ const TxTableRow = memo(function TxTableRow({
   const { push } = useRouter()
 
   const timeMap = useMemo(() => {
-    const map = new Map<number, Treatment>()
+    const map = new Map<number, SelectedTreatment>()
     for (const tx of order.treatments) {
       map.set(tx.time, tx)
     }
@@ -100,7 +100,7 @@ const TxTableRow = memo(function TxTableRow({
 
         // 처치결과가 있으면 빈셀
         const treatment = timeMap.get(time)
-        if (treatment?.tx_result) return <TableCell key={time} />
+        if (treatment?.icu_chart_tx_result) return <TableCell key={time} />
 
         return (
           <TxTableCell

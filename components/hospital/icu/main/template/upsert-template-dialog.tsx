@@ -9,57 +9,88 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import type { IcuTemplate } from '@/types'
+import useOrderSorting from '@/hooks/use-order-sorting'
+import { useDtOrderTimePendingQueueStore } from '@/lib/store/icu/dt-order'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
-import { useEffect, useRef, type Dispatch, type SetStateAction } from 'react'
+import { Edit2Icon, PlusIcon } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import ConfirmAddTemplateDialog from './confirm-add-template-dialog'
 import TemplateOrderTable from './template-order-table'
+import type { IcuTemplate } from '@/types'
+import { getTemplateChart } from '@/lib/services/icu/template/template'
+import { Spinner } from '@/components/ui/spinner'
 
-type Props = {
-  isUpsertTemplateDialogOpen: boolean
-  setIsUpsertTemplateDialogOpen: Dispatch<SetStateAction<boolean>>
-  sortedOrders: SelectedIcuOrder[]
-  setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
-  isEdit: boolean
-  setIsEdit: Dispatch<SetStateAction<boolean>>
-  selectedTemplateChart: IcuTemplate | null
-  setSelectedTemplateChart: Dispatch<SetStateAction<IcuTemplate | null>>
+type Props = EditTemplateProps | NewTemplateProps
+
+type EditTemplateProps = {
+  hosId: string
+  isEdit: true
+  template: IcuTemplate
 }
 
+type NewTemplateProps = {
+  hosId: string
+  isEdit: false
+  template: null
+}
+
+const EMPTY_ORDERS: SelectedIcuOrder[] = []
+
 export default function UpsertTemplateDialog({
-  isUpsertTemplateDialogOpen,
-  setIsUpsertTemplateDialogOpen,
-  sortedOrders,
-  setSortedOrders,
+  hosId,
   isEdit,
-  setIsEdit,
-  selectedTemplateChart,
-  setSelectedTemplateChart,
+  template,
 }: Props) {
-  // const { reset } = useDtOrderStore()
+  const [isFetching, setIsFetching] = useState(false)
+  const [isUpsertTemplateDialogOpen, setIsUpsertTemplateDialogOpen] =
+    useState(false)
+  const { orderTimePendingQueue, resetTimePendingQueue } =
+    useDtOrderTimePendingQueueStore()
 
-  const handleOpenChange = (open: boolean) => {
+  const {
+    handleOrderMove,
+    handleSortToggle,
+    isSorting,
+    setSortedOrders,
+    sortedOrders,
+  } = useOrderSorting({
+    initialOrders: EMPTY_ORDERS,
+    type: 'template',
+    enabled: isUpsertTemplateDialogOpen,
+  })
+
+  const handleOpenChange = async (open: boolean) => {
     if (open) {
+      setIsFetching(true)
       setSortedOrders([])
-      setSelectedTemplateChart(null)
-      setIsEdit(false)
-      // reset()
-    }
-    setIsUpsertTemplateDialogOpen(open)
-  }
+      resetTimePendingQueue()
 
-  // Scroll to the bottom when new order is added
-  const scrollRef = useRef<HTMLDivElement | null>(null)
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+      if (isEdit) {
+        const chartData = await getTemplateChart(template.icu_chart_id)
+        setSortedOrders(chartData.orders)
+        setIsFetching(false)
+        setIsUpsertTemplateDialogOpen(true)
+      }
+    } else {
+      setIsUpsertTemplateDialogOpen(false)
     }
-  }, [sortedOrders])
+  }
 
   return (
     <Dialog open={isUpsertTemplateDialogOpen} onOpenChange={handleOpenChange}>
-      <DialogTrigger asChild className="absolute right-2 top-2">
-        <Button className="h-[34px]">템풀릿 만들기</Button>
+      <DialogTrigger asChild>
+        <Button
+          size="icon"
+          variant={isEdit ? 'ghost' : 'default'}
+          className={isEdit ? '' : 'fixed bottom-16 right-6 rounded-full'}
+          disabled={isFetching}
+        >
+          {isEdit ? (
+            <>{isFetching ? <Spinner /> : <Edit2Icon />}</>
+          ) : (
+            <PlusIcon />
+          )}
+        </Button>
       </DialogTrigger>
 
       <DialogContent
@@ -69,18 +100,18 @@ export default function UpsertTemplateDialog({
         }}
       >
         <DialogHeader>
-          <DialogTitle>
-            {isEdit
-              ? `${selectedTemplateChart?.template_name} 템플릿 수정`
-              : '템플릿 만들기'}
-          </DialogTitle>
+          <DialogTitle>{isEdit ? `템플릿 수정` : '템플릿 만들기'}</DialogTitle>
           <DialogDescription>자유롭게 템플릿을 만들어주세요</DialogDescription>
         </DialogHeader>
 
-        <div ref={scrollRef} className="max-h-[680px] overflow-auto">
+        <div className="max-h-[800px] overflow-scroll">
           <TemplateOrderTable
-            setSortedOrders={setSortedOrders}
             sortedOrders={sortedOrders}
+            isSorting={isSorting}
+            handleSortToggle={handleSortToggle}
+            handleOrderMove={handleOrderMove}
+            setSortedOrders={setSortedOrders}
+            hosId={hosId}
           />
         </div>
 
@@ -90,10 +121,13 @@ export default function UpsertTemplateDialog({
           </DialogClose>
 
           <ConfirmAddTemplateDialog
+            isSorting={isSorting}
             sortedOrders={sortedOrders}
-            setIsUpsertTemplateDialogOpen={setIsUpsertTemplateDialogOpen}
             isEdit={isEdit}
-            selectedTemplateChart={selectedTemplateChart}
+            setIsUpsertTemplateDialogOpen={setIsUpsertTemplateDialogOpen}
+            selectedTemplateChart={template}
+            hosId={hosId}
+            orderTimePendingQueue={orderTimePendingQueue}
           />
         </DialogFooter>
       </DialogContent>

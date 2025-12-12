@@ -13,8 +13,9 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import { deleteTemplateChart } from '@/lib/services/icu/template/template'
-import { LoaderCircle, Trash2 } from 'lucide-react'
+import { Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -35,6 +36,7 @@ export default function DeleteTemplateDialog({
 
   const handleDelete = async () => {
     setIsDeleting(true)
+
     await deleteTemplateChart(chartId)
 
     toast.success('템플릿을 삭제하였습니다')
@@ -64,13 +66,14 @@ export default function DeleteTemplateDialog({
 
         <AlertDialogFooter>
           <AlertDialogCancel>닫기</AlertDialogCancel>
+
           <AlertDialogAction
             onClick={handleDelete}
             className="bg-destructive hover:bg-destructive/90"
             disabled={isDeleting}
           >
             삭제
-            {isDeleting && <LoaderCircle className="animate-spin" />}
+            {isDeleting && <Spinner />}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

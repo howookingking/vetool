@@ -2,7 +2,7 @@ import { CSV_HEADER_MAPPING } from '@/constants/hospital/icu/patient/patient'
 import {
   CANINE_BREEDS,
   FELINE_BREEDS,
-} from '@/constants/hospital/register/breed'
+} from '@/constants/hospital/register/signalments'
 
 // Date를 다뤄야하는 경우가 있으므로 클라이언트 상에서 처리해야하므로 서버 컴포넌트가 아닌 유틸 함수화
 export const transformCsvData = (

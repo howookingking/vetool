@@ -6,15 +6,11 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import type { OrderType } from '@/constants/hospital/icu/chart/order'
-import React, { useEffect } from 'react'
+import { type Dispatch, type SetStateAction, useEffect } from 'react'
 
 type Props = {
-  createOrder: (
-    orderName: string,
-    orderType: OrderType,
-    orderDescription: string,
-  ) => Promise<void>
-  setOrderType: React.Dispatch<React.SetStateAction<OrderType>>
+  createOrder: (orderName: string, orderComment: string) => Promise<void>
+  setOrderType: Dispatch<SetStateAction<OrderType>>
   availableCheckListOrders: string[]
 }
 
@@ -23,7 +19,6 @@ export default function ChecklistOrderCreator({
   setOrderType,
   availableCheckListOrders,
 }: Props) {
-  // checklist 오더가 더이상 없는 경우 manual로 바꾸기
   useEffect(() => {
     if (availableCheckListOrders.length === 0) {
       setOrderType('manual')
@@ -31,9 +26,7 @@ export default function ChecklistOrderCreator({
   }, [availableCheckListOrders.length, setOrderType])
 
   return (
-    <Select
-      onValueChange={async (value) => await createOrder(value, 'checklist', '')}
-    >
+    <Select onValueChange={async (value) => await createOrder(value, '')}>
       <SelectTrigger className="h-11 w-full rounded-none border-0 ring-0 focus-visible:ring-0">
         <SelectValue placeholder="체크리스트 항목 선택" />
       </SelectTrigger>

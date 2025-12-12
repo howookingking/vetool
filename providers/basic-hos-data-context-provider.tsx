@@ -1,7 +1,7 @@
 'use client'
 
-import type { OrderFontSize } from '@/constants/admin/order-font-size'
-import type { Plan } from '@/constants/plans'
+import type { OrderFontSize } from '@/components/hospital/admin/icu-settings/order-font-size/order-font-size-setting'
+import type { Plan } from '@/constants/company/plans'
 import type { IcuSidebarPatient } from '@/lib/services/icu/icu-layout'
 import type { Vet } from '@/types'
 import type { IcuOrderColors, VitalRefRange } from '@/types/adimin'

@@ -1,5 +1,5 @@
 import GroupBadge from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/group/group-badge'
-import Indate from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/indate'
+import Indate from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/in-and-out-date/indate'
 import VetName from '@/components/hospital/icu/main/chart/selected-chart/chart-body/chart-infos/vets/vet-name'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils/utils'

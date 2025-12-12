@@ -1,31 +1,8 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { VitalData } from '@/types/icu/chart'
+import type { VitalData } from '@/types/icu/chart'
 import { redirect } from 'next/navigation'
-
-export const updateWeightData = async (
-  patientId: string,
-  weight: string,
-  vitalId?: number,
-) => {
-  if (!vitalId) return
-
-  const supabase = await createClient()
-
-  const { error: vitalsError } = await supabase
-    .from('vitals')
-    .update({
-      body_weight: weight.slice(0, 4),
-      patient_id: patientId,
-    })
-    .match({ vital_id: vitalId })
-
-  if (vitalsError) {
-    console.error(vitalsError)
-    redirect(`/error?message=${vitalsError.message}`)
-  }
-}
 
 export const fetchChartableVitalsData = async (icuIoId: string) => {
   const supabase = await createClient()

@@ -1,4 +1,4 @@
-import { templateColumns } from '@/components/hospital/icu/main/chart/paste-chart-dialogs/template/template-columns'
+import { pasteTemplateColumns } from '@/components/hospital/icu/main/chart/paste-chart-dialogs/template/paste-template-columns'
 import { Button } from '@/components/ui/button'
 import DataTable from '@/components/ui/data-table'
 import {
@@ -21,7 +21,7 @@ import DialogTriggerButton from '../dialog-trigger-button'
 type Props = {
   tableHeader?: boolean
   chartId?: string
-  targetDate: string
+  targetDate?: string
   patientId: string
   hosId: string
 }
@@ -81,7 +81,7 @@ export default function PasteTemplateOrderDialog({
         </DialogHeader>
 
         <DataTable
-          columns={templateColumns(
+          columns={pasteTemplateColumns(
             setIsDialogOpen,
             tableHeader,
             chartId,

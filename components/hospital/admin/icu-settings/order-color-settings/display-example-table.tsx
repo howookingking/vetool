@@ -1,9 +1,7 @@
-import DtOrderRows from '@/components/hospital/common/default-template-order/dt-order-rows'
-import DtTableHeader from '@/components/hospital/common/default-template-order/dt-table-header'
-import { Table, TableBody } from '@/components/ui/table'
-import useLocalStorage from '@/hooks/use-local-storage'
+import ReadOnlyChartTableBody from '@/components/common/read-only-icu-chart/read-only-chart-table-body'
+import ReadOnlyChartTableHeader from '@/components/common/read-only-icu-chart/read-only-chart-table-header'
+import { Table } from '@/components/ui/table'
 import type { IcuOrderColors } from '@/types/adimin'
-import type { OrderWidth } from '@/types/hospital/order'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 
 export default function DisplayExampleTable({
@@ -11,28 +9,17 @@ export default function DisplayExampleTable({
 }: {
   localColorState: IcuOrderColors
 }) {
-  const [orderWidth] = useLocalStorage<OrderWidth>('orderWidth', 400)
-
   return (
     <div className="relative">
       <Table className="border">
-        <DtTableHeader
-          isSorting={false}
-          setIsSorting={() => {}}
-          orderWidth={orderWidth}
-          setOrderWidth={() => {}}
-          sortedOrders={DUMMY_ORDERS}
-          defaultChartOrders={[]}
-        />
+        <ReadOnlyChartTableHeader orderWidth={400} setOrderWidth={() => {}} />
 
-        <TableBody>
-          <DtOrderRows
-            sortedOrders={DUMMY_ORDERS}
-            isSorting={false}
-            orderwidth={orderWidth}
-            localColorState={localColorState}
-          />
-        </TableBody>
+        <ReadOnlyChartTableBody
+          orders={DUMMY_ORDERS}
+          orderWidth={400}
+          species={''}
+          localColorState={localColorState}
+        />
       </Table>
 
       <div className="absolute inset-0 flex h-full cursor-not-allowed items-center justify-center">
@@ -47,12 +34,12 @@ export default function DisplayExampleTable({
 const DUMMY_ORDERS: SelectedIcuOrder[] = [
   {
     id: 0,
-    order_type: 'checklist',
+    icu_chart_order_type: 'checklist',
     is_bordered: false,
-    order_comment: null,
-    order_id: '0',
-    order_name: '체크리스트',
-    order_times: [
+    icu_chart_order_comment: null,
+    icu_chart_order_id: '0',
+    icu_chart_order_name: '체크리스트',
+    icu_chart_order_time: [
       '0',
       '0',
       '0',
@@ -82,12 +69,12 @@ const DUMMY_ORDERS: SelectedIcuOrder[] = [
   },
   {
     id: 1,
-    order_type: 'fluid',
+    icu_chart_order_type: 'fluid',
     is_bordered: false,
-    order_comment: null,
-    order_id: '1',
-    order_name: '수액',
-    order_times: [
+    icu_chart_order_comment: null,
+    icu_chart_order_id: '1',
+    icu_chart_order_name: '수액',
+    icu_chart_order_time: [
       '0',
       '0',
       '0',
@@ -117,12 +104,12 @@ const DUMMY_ORDERS: SelectedIcuOrder[] = [
   },
   {
     id: 2,
-    order_type: 'injection',
+    icu_chart_order_type: 'injection',
     is_bordered: false,
-    order_comment: null,
-    order_id: '2',
-    order_name: '주사',
-    order_times: [
+    icu_chart_order_comment: null,
+    icu_chart_order_id: '2',
+    icu_chart_order_name: '주사',
+    icu_chart_order_time: [
       '0',
       '0',
       '0',
@@ -152,12 +139,12 @@ const DUMMY_ORDERS: SelectedIcuOrder[] = [
   },
   {
     id: 3,
-    order_type: 'po',
+    icu_chart_order_type: 'po',
     is_bordered: false,
-    order_comment: null,
-    order_id: '3',
-    order_name: '경구',
-    order_times: [
+    icu_chart_order_comment: null,
+    icu_chart_order_id: '3',
+    icu_chart_order_name: '경구',
+    icu_chart_order_time: [
       '0',
       '0',
       '0',
@@ -188,12 +175,12 @@ const DUMMY_ORDERS: SelectedIcuOrder[] = [
 
   {
     id: 4,
-    order_type: 'test',
+    icu_chart_order_type: 'test',
     is_bordered: false,
-    order_comment: null,
-    order_id: '4',
-    order_name: '검사',
-    order_times: [
+    icu_chart_order_comment: null,
+    icu_chart_order_id: '4',
+    icu_chart_order_name: '검사',
+    icu_chart_order_time: [
       '0',
       '0',
       '0',
@@ -224,12 +211,12 @@ const DUMMY_ORDERS: SelectedIcuOrder[] = [
 
   {
     id: 5,
-    order_type: 'feed',
+    icu_chart_order_type: 'feed',
     is_bordered: false,
-    order_comment: null,
-    order_id: '6',
-    order_name: '식이',
-    order_times: [
+    icu_chart_order_comment: null,
+    icu_chart_order_id: '6',
+    icu_chart_order_name: '식이',
+    icu_chart_order_time: [
       '0',
       '0',
       '0',
@@ -259,12 +246,12 @@ const DUMMY_ORDERS: SelectedIcuOrder[] = [
   },
   {
     id: 6,
-    order_type: 'manual',
+    icu_chart_order_type: 'manual',
     is_bordered: false,
-    order_comment: null,
-    order_id: '5',
-    order_name: '기타',
-    order_times: [
+    icu_chart_order_comment: null,
+    icu_chart_order_id: '5',
+    icu_chart_order_name: '기타',
+    icu_chart_order_time: [
       '0',
       '0',
       '0',

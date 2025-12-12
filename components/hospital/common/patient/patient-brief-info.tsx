@@ -1,6 +1,6 @@
 import SpeciesToIcon from '@/components/common/species-to-icon'
+import type { Species } from '@/constants/hospital/register/signalments'
 import { cn, convertPascalCased } from '@/lib/utils/utils'
-import type { Species } from '@/types/hospital/calculator'
 
 type Props = {
   name: string

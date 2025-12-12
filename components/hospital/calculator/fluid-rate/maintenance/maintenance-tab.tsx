@@ -15,13 +15,10 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
+import type { Species } from '@/constants/hospital/register/signalments'
 import { calculateMaintenanceRate } from '@/lib/calculators/fluid-rate'
 import { getDaysSince } from '@/lib/utils/utils'
-import {
-  type CalcMethod,
-  type Fold,
-  type Species,
-} from '@/types/hospital/calculator'
+import type { CalcMethod, Fold } from '@/types/hospital/calculator'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { useState } from 'react'
 

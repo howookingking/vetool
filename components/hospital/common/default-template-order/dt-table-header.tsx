@@ -1,27 +1,23 @@
-import OrderWidthButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/order-width-button'
+import OrderWidthButton, {
+  type OrderWidth,
+} from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/order-width-button'
 import SortingButton from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/sorting-button'
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
-import type { OrderWidth } from '@/types/hospital/order'
-import type { SelectedIcuOrder } from '@/types/icu/chart'
 import type { Dispatch, SetStateAction } from 'react'
 
 type Props = {
   isSorting: boolean
-  setIsSorting: Dispatch<SetStateAction<boolean>>
+  onSortToggle: () => void
   orderWidth: OrderWidth
   setOrderWidth: Dispatch<SetStateAction<OrderWidth>>
-  sortedOrders: SelectedIcuOrder[]
-  defaultChartOrders: SelectedIcuOrder[]
 }
 
 export default function DtTableHeader({
   isSorting,
   orderWidth,
   setOrderWidth,
-  setIsSorting,
-  sortedOrders,
-  defaultChartOrders,
+  onSortToggle,
 }: Props) {
   return (
     <TableHeader className="shadow-sm">
@@ -33,13 +29,7 @@ export default function DtTableHeader({
             transition: 'width 0.3s ease-in-out ',
           }}
         >
-          <SortingButton
-            prevOrders={defaultChartOrders}
-            sortedOrders={sortedOrders}
-            isSorting={isSorting}
-            setIsSorting={setIsSorting}
-            isDt
-          />
+          <SortingButton isSorting={isSorting} onClick={onSortToggle} />
 
           <span className="text-center">기본오더</span>
 

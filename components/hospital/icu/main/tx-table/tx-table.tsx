@@ -4,7 +4,7 @@ import { Table, TableBody } from '@/components/ui/table'
 import type { OrderType } from '@/constants/hospital/icu/chart/order'
 import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import type { Treatment, TxLog } from '@/types/icu/chart'
+import type { SelectedTreatment } from '@/types/icu/chart'
 import type { IcuTxTableData } from '@/types/icu/tx-table'
 import { isToday } from 'date-fns'
 import { useEffect, useRef } from 'react'
@@ -64,17 +64,17 @@ export default function TxTable({
   const handleOpenTxDetail = (
     order: IcuTxTableData['orders'][number],
     time: number,
-    treatment?: Treatment,
+    treatment?: SelectedTreatment,
   ) => {
     setTxLocalState({
       icuChartOrderId: order.icu_chart_order_id,
       icuChartOrderType: order.icu_chart_order_type,
       icuChartOrderName: order.icu_chart_order_name,
-      txResult: treatment?.tx_result,
-      txComment: treatment?.tx_comment,
-      txId: treatment?.tx_id,
+      txResult: treatment?.icu_chart_tx_result,
+      txComment: treatment?.icu_chart_tx_comment,
+      txId: treatment?.icu_chart_tx_id,
       time,
-      txLog: treatment?.tx_log as TxLog[] | null,
+      txLog: treatment?.tx_log,
       isCrucialChecked: treatment?.is_crucial,
     })
 

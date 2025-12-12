@@ -1,13 +1,13 @@
 import SpeciesToIcon from '@/components/common/species-to-icon'
 import { Button } from '@/components/ui/button'
+import type { Species } from '@/constants/hospital/register/signalments'
+import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 import type { IcuSidebarPatient } from '@/lib/services/icu/icu-layout'
 import { cn, convertPascalCased } from '@/lib/utils/utils'
 import type { Vet } from '@/types'
-import type { Species } from '@/types/hospital/calculator'
 import { StethoscopeIcon, UserIcon } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import UrgencyStarts from './urgency-stars'
-import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 
 type Props = {
   icuIoData: IcuSidebarPatient

@@ -3,19 +3,22 @@ import ChartMemos from '@/components/hospital/icu/main/chart/selected-chart/char
 import ChartTable from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table'
 import type { Memo, SelectedIcuChart } from '@/types/icu/chart'
 
-export default function ChartBody({
-  chartData,
-}: {
+type Props = {
   chartData: SelectedIcuChart
-}) {
-  const { icu_io } = chartData
-  const { memo_a, memo_b, memo_c, icu_io_id } = icu_io
+  targetDate: string
+  hosId: string
+}
+
+export default function ChartBody({ chartData, targetDate, hosId }: Props) {
+  const {
+    icu_io: { memo_a, memo_b, memo_c, icu_io_id },
+  } = chartData
 
   return (
     <div className="mt-12 flex w-[420vw] flex-col gap-2 p-2 sm:w-[300vw] md:w-full">
       <ChartInfos chartData={chartData} />
 
-      <ChartTable chartData={chartData} />
+      <ChartTable chartData={chartData} targetDate={targetDate} hosId={hosId} />
 
       <ChartMemos
         memoA={memo_a as Memo[] | null}

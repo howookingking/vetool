@@ -12,8 +12,8 @@ import type { IcuOrderColors } from '@/types/adimin'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
-import OrderColorPickers from './color-picker/order-color-pickers'
 import DisplayExampleTable from './display-example-table'
+import OrderColorPickers from './order-color-pickers'
 
 type Props = {
   order_color: IcuOrderColors

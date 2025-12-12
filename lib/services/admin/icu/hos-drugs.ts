@@ -1,7 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { type HosDrug } from '@/types'
+import type { HosDrug } from '@/types'
 import { redirect } from 'next/navigation'
 
 export const getHosDrugs = async (hosId: string) => {

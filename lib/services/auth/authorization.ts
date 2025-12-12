@@ -5,22 +5,6 @@ import type { User } from '@/types'
 import { redirect } from 'next/navigation'
 import { cache } from 'react'
 
-export const getSupabaseUser = cache(async () => {
-  const supabase = await createClient()
-  const { data, error: supabaseUserError } = await supabase.auth.getClaims()
-
-  if (supabaseUserError) {
-    console.error(supabaseUserError)
-    redirect('/login')
-  }
-
-  if (!data) {
-    redirect('/login')
-  }
-
-  return data.claims
-})
-
 export type VetoolUser = Pick<
   User,
   | 'email'
@@ -36,7 +20,17 @@ export type VetoolUser = Pick<
 
 export const getVetoolUserData = cache(async () => {
   const supabase = await createClient()
-  const claims = await getSupabaseUser()
+  const { data: supabaseUser, error: supabaseUserError } =
+    await supabase.auth.getClaims()
+
+  if (supabaseUserError) {
+    console.error(supabaseUserError)
+    redirect('/login')
+  }
+
+  if (!supabaseUser) {
+    redirect('/login')
+  }
 
   const { data: vetoolUser, error: vetoolUserError } = await supabase
     .from('users')
@@ -53,7 +47,7 @@ export const getVetoolUserData = cache(async () => {
         is_admin
       `,
     )
-    .match({ user_id: claims.sub })
+    .match({ user_id: supabaseUser.claims.sub })
     .single()
 
   if (vetoolUserError) {

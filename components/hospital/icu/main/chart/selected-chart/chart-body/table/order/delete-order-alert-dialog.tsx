@@ -36,12 +36,17 @@ export default function DeleteOrderAlertDialog({
     setOrderStep('closed')
 
     setSortedOrders((prev) =>
-      prev.filter((order) => order.order_id !== selectedChartOrder.order_id),
+      prev.filter(
+        (order) =>
+          order.icu_chart_order_id !== selectedChartOrder.icu_chart_order_id,
+      ),
     )
 
-    await deleteOrder(selectedChartOrder.order_id!)
+    await deleteOrder(selectedChartOrder.icu_chart_order_id!)
 
-    toast.success(`${selectedChartOrder.order_name} 오더를 삭제하였습니다`)
+    toast.success(
+      `${selectedChartOrder.icu_chart_order_name} 오더를 삭제하였습니다`,
+    )
 
     setOrderStep('closed')
   }
@@ -64,7 +69,7 @@ export default function DeleteOrderAlertDialog({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            {selectedChartOrder.order_name} 오더 삭제
+            {selectedChartOrder.icu_chart_order_name} 오더 삭제
           </AlertDialogTitle>
           <AlertDialogDescription>
             선택한 오더를 삭제합니다

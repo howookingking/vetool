@@ -1,7 +1,7 @@
 import PatientBriefInfo from '@/components/hospital/common/patient/patient-brief-info'
 import { AccordionTrigger } from '@/components/ui/accordion'
+import type { Species } from '@/constants/hospital/register/signalments'
 import { getAgeFromAgeInDays } from '@/lib/utils/utils'
-import type { Species } from '@/types/hospital/calculator'
 
 type Props = {
   species: string

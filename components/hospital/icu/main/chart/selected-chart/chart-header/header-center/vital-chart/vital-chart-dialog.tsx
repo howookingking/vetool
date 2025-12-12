@@ -12,15 +12,15 @@ import {
 import { Spinner } from '@/components/ui/spinner'
 import type { ChartableVital } from '@/constants/hospital/icu/chart/vital-chart'
 import { fetchChartableVitalsData } from '@/lib/services/icu/chart/vitals'
-import type { VitalData } from '@/types/icu/chart'
+import type { SelectedIcuChart, VitalData } from '@/types/icu/chart'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
-import { LineChart } from 'lucide-react'
+import { LineChartIcon } from 'lucide-react'
 import { useState } from 'react'
 import VitalChart from './vital-chart'
 
 type Props = {
-  icuIoId: string
-  inDate: string
+  icuIoId: SelectedIcuChart['icu_io']['icu_io_id']
+  inDate: SelectedIcuChart['icu_io']['in_date']
 }
 
 export default function VitalChartDialog({ icuIoId, inDate }: Props) {
@@ -55,7 +55,7 @@ export default function VitalChartDialog({ icuIoId, inDate }: Props) {
           data-guide="vital-chart"
           disabled={isFetching}
         >
-          {isFetching ? <Spinner /> : <LineChart />}
+          {isFetching ? <Spinner /> : <LineChartIcon />}
         </Button>
       </DialogTrigger>
 

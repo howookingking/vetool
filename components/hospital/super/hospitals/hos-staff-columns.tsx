@@ -6,7 +6,7 @@ import { type User } from '@/types'
 import { type ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown, Stethoscope, UserIcon } from 'lucide-react'
 
-export type HosStaffDataTable = Pick<
+type HosStaffDataTable = Pick<
   User,
   'name' | 'position' | 'rank' | 'is_vet' | 'avatar_url'
 >

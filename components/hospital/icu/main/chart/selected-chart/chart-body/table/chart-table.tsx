@@ -5,36 +5,38 @@ import SortingOrderRows from '@/components/hospital/icu/main/chart/selected-char
 import ChartTableHeader from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-header/chart-table-header'
 import { Table } from '@/components/ui/table'
 import useLocalStorage from '@/hooks/use-local-storage'
-import { type OrderWidth } from '@/types/hospital/order'
-import { type SelectedIcuChart, type SelectedIcuOrder } from '@/types/icu/chart'
-import { type RefObject, useEffect, useState } from 'react'
+import useOrderSorting from '@/hooks/use-order-sorting'
+import type { SelectedIcuChart } from '@/types/icu/chart'
+import type { RefObject } from 'react'
+import type { OrderWidth } from './chart-table-header/order-width-button'
 
 type Props = {
   chartData: SelectedIcuChart
-  preview?: boolean
-  isExport?: boolean
   cellRef?: RefObject<HTMLTableRowElement>
+  targetDate?: string
+  hosId: string
 }
 
 export default function ChartTable({
   chartData,
-  preview,
-  isExport,
   cellRef,
+  targetDate,
+  hosId,
 }: Props) {
-  const { icu_chart_id, orders, patient, hos_id } = chartData
+  const { icu_chart_id, orders, patient } = chartData
 
   const [orderWidth, setOrderWidth] = useLocalStorage<OrderWidth>(
     'orderWidth',
     400,
   )
 
-  const [isSorting, setIsSorting] = useState(false)
-  const [sortedOrders, setSortedOrders] = useState<SelectedIcuOrder[]>(orders)
-
-  useEffect(() => {
-    setSortedOrders(orders)
-  }, [orders])
+  const {
+    isSorting,
+    handleSortToggle,
+    sortedOrders,
+    setSortedOrders,
+    handleOrderMove,
+  } = useOrderSorting({ initialOrders: orders, type: 'chart' })
 
   return (
     <Table className="border">
@@ -42,36 +44,34 @@ export default function ChartTable({
       <ChartTableHeader
         chartData={chartData}
         isSorting={isSorting}
-        setIsSorting={setIsSorting}
-        preview={preview}
+        onSortToggle={handleSortToggle}
         sortedOrders={sortedOrders}
-        isExport={isExport}
         orderWidth={orderWidth}
         setOrderWidth={setOrderWidth}
         chartId={icu_chart_id}
-        hosId={hos_id}
+        hosId={hosId}
+        targetDate={targetDate}
       />
 
       {isSorting ? (
         <SortingOrderRows
           isSorting={isSorting}
           orderWidth={orderWidth}
-          preview={preview}
           setSortedOrders={setSortedOrders}
           sortedOrders={sortedOrders}
           species={patient.species}
+          onOrderMove={handleOrderMove}
         />
       ) : (
         <ChartTableBody
           isSorting={isSorting}
           sortedOrders={sortedOrders}
-          preview={preview}
           orderWidth={orderWidth}
-          isExport={isExport}
           icuChartId={icu_chart_id}
           setSortedOrders={setSortedOrders}
           cellRef={cellRef}
           chartData={chartData}
+          hosId={hosId}
         />
       )}
     </Table>

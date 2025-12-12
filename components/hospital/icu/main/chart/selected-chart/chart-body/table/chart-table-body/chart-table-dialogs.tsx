@@ -1,7 +1,7 @@
-import { type OrderStep } from '@/lib/store/icu/icu-order'
-import { type IcuOrderColors } from '@/types/adimin'
-import { type SelectedIcuOrder } from '@/types/icu/chart'
-import { type Dispatch, type SetStateAction } from 'react'
+import type { OrderStep } from '@/lib/store/icu/icu-order'
+import type { IcuOrderColors } from '@/types/adimin'
+import type { SelectedIcuChart, SelectedIcuOrder } from '@/types/icu/chart'
+import type { Dispatch, SetStateAction } from 'react'
 import MultiSelectOrderDialog from '../order/multil-select-order/multi-select-order-dialog'
 import OrderDialog from '../order/order-dialog'
 import TxUpsertDialog from '../tx/tx-upsert-dialog'
@@ -9,15 +9,16 @@ import TxUpsertDialog from '../tx/tx-upsert-dialog'
 type Props = {
   showTxUser: boolean
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
-  icuChartId: string
+  icuChartId: SelectedIcuChart['icu_chart_id']
   orders: SelectedIcuOrder[]
   showOrderer: boolean
   setOrderStep: (orderStep: OrderStep) => void
-  mainVetName: string
+  mainVetName: SelectedIcuChart['main_vet']['name']
   orderColorsData: IcuOrderColors
   isCommandPressed: boolean
   selectedOrderPendingQueue: Partial<SelectedIcuOrder>[]
   resetOrderStore: () => void
+  hosId: string
 }
 
 export default function ChartTableDialogs({
@@ -32,6 +33,7 @@ export default function ChartTableDialogs({
   isCommandPressed,
   selectedOrderPendingQueue,
   resetOrderStore,
+  hosId,
 }: Props) {
   return (
     <>
@@ -56,6 +58,7 @@ export default function ChartTableDialogs({
         mainVetName={mainVetName}
         orderColorsData={orderColorsData}
         resetOrderStore={resetOrderStore}
+        hosId={hosId}
       />
     </>
   )

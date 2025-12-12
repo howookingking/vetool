@@ -61,7 +61,7 @@ export default function AddSelectedOrdersToTemplateDialog({
 
     const ordererDefaulted = selectedOrderPendingQueue.map((order) => ({
       ...order,
-      order_times: order.order_times!.map((time) =>
+      icu_chart_order_time: order.icu_chart_order_time!.map((time) =>
         time !== '0' ? '기본' : '0',
       ),
     }))
@@ -71,7 +71,7 @@ export default function AddSelectedOrdersToTemplateDialog({
       ordererDefaulted,
       template_name,
       is_time_included,
-      template_comment,
+      template_comment ?? '',
     )
 
     toast.success('템플릿을 추가하였습니다')

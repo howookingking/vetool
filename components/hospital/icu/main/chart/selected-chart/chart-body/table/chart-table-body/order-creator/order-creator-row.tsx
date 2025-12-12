@@ -10,16 +10,15 @@ import {
 } from '@/components/ui/select'
 import { TableCell, TableRow } from '@/components/ui/table'
 import {
-  BG_CANDIDATES,
   CHECKLIST_ORDERS,
   DEFAULT_ICU_ORDER_TYPE,
   type OrderType,
 } from '@/constants/hospital/icu/chart/order'
+import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import type { IcuOrderColors } from '@/types/adimin'
-import type { SelectedIcuOrder } from '@/types/icu/chart'
+import type { SelectedIcuChart, SelectedIcuOrder } from '@/types/icu/chart'
 import { PlusIcon } from 'lucide-react'
-import { useParams } from 'next/navigation'
 import {
   type Dispatch,
   type FormEvent,
@@ -32,14 +31,14 @@ import { OrderTypeLabel } from '../../order/order-form-field'
 import ChecklistOrderCreator from './checklist-order-creator'
 import { InjectionOrderCreator } from './injection-order/injection-order-creator'
 import UserKeyGuideMessage from './user-key-guide-message'
-import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 
 type Props = {
-  icuChartId: string
+  icuChartId: SelectedIcuChart['icu_chart_id']
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   sortedOrders: SelectedIcuOrder[]
   orderColorsData: IcuOrderColors
   weight: string
+  hosId: string
 }
 
 export default function OrderCreatorRow({
@@ -48,9 +47,8 @@ export default function OrderCreatorRow({
   sortedOrders,
   orderColorsData,
   weight,
+  hosId,
 }: Props) {
-  const { hos_id } = useParams()
-
   const saveRefresh = useSafeRefresh()
 
   const inputRef = useRef<HTMLInputElement | null>(null)
@@ -61,22 +59,18 @@ export default function OrderCreatorRow({
 
   const availableCheckListOrders = getAvailableChecklistOrders(sortedOrders)
 
-  const createOrder = async (
-    orderName: string,
-    orderType: OrderType,
-    orderDescription: string,
-  ) => {
+  const createOrder = async (orderName: string, orderDescription: string) => {
     setIsInserting(true)
 
     const emptyOrderTimes = Array(24).fill('0')
 
-    const newOrder = {
+    const newOrder: SelectedIcuOrder = {
       id: 999,
-      order_id: `temp_order_id_${new Date().getTime()}`,
-      order_name: orderName.trim(),
-      order_comment: orderDescription ? orderDescription.trim() : '',
-      order_type: orderType as OrderType,
-      order_times: emptyOrderTimes,
+      icu_chart_order_id: `temp_order_id_${new Date().getTime()}`,
+      icu_chart_order_name: orderName.trim(),
+      icu_chart_order_comment: orderDescription ? orderDescription.trim() : '',
+      icu_chart_order_type: orderType as OrderType,
+      icu_chart_order_time: emptyOrderTimes,
       treatments: [],
       is_bordered: false,
     }
@@ -84,7 +78,7 @@ export default function OrderCreatorRow({
     setSortedOrders((prev) => [...prev, newOrder])
 
     await upsertOrder(
-      hos_id as string,
+      hosId,
       icuChartId,
       undefined, // insert
       emptyOrderTimes,
@@ -133,22 +127,24 @@ export default function OrderCreatorRow({
     e.preventDefault()
     if (!newOrderInput) return
 
-    const [orderName, orderDescription] = newOrderInput.split('$')
+    const [orderName, orderDescription] = newOrderInput
+      .split('$')
+      .map((s) => s.trim())
 
-    if (
-      BG_CANDIDATES.some(
-        (name) => name.toLowerCase() === orderName.toLowerCase(),
-      )
-    ) {
-      createOrder('혈당', 'checklist', orderDescription ?? '')
-      return
-    }
+    // if (
+    //   BG_CANDIDATES.some(
+    //     (name) => name.toLowerCase() === orderName.toLowerCase(),
+    //   )
+    // ) {
+    //   createOrder('혈당', 'checklist', orderDescription ?? '')
+    //   return
+    // }
 
-    await createOrder(orderName, orderType, orderDescription ?? '')
+    await createOrder(orderName, orderDescription ?? '')
   }
 
-  const orderTypeLabel = OrderTypeLabel(orderType as OrderType)
-  const OrderTypePlaceholder = `${orderTypeLabel.orderName}$${orderTypeLabel.orderComment} + Enter ⏎`
+  const { orderName, orderComment } = OrderTypeLabel(orderType as OrderType)
+  const OrderTypePlaceholder = `${orderName}$${orderComment} + Enter ⏎`
 
   return (
     <TableRow className="hover:bg-transparent">
@@ -232,8 +228,8 @@ export default function OrderCreatorRow({
 
 function getAvailableChecklistOrders(orders: SelectedIcuOrder[]) {
   const currentChecklistTypeOrderNames = orders
-    .filter((order) => order.order_type === 'checklist')
-    .map((order) => order.order_name)
+    .filter((order) => order.icu_chart_order_type === 'checklist')
+    .map((order) => order.icu_chart_order_name)
 
   return CHECKLIST_ORDERS.filter(
     (order) => !currentChecklistTypeOrderNames.includes(order),

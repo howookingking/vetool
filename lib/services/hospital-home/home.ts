@@ -41,7 +41,7 @@ export const fetchHospitalList = async (isSuper: boolean) => {
     .order('created_at')
 
   if (error) {
-    console.log(error)
+    console.error(error)
     throw new Error(error.message)
   }
 

@@ -1,8 +1,9 @@
 import type { IcuOrderColors } from '@/types/adimin'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
 
 type Props = {
   orderColorsData: IcuOrderColors
-  orderType: string
+  orderType: SelectedIcuOrder['icu_chart_order_type']
 }
 
 export default function OrderTypeColorDot({

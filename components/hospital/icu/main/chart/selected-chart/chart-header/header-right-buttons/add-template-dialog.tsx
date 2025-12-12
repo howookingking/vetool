@@ -24,10 +24,9 @@ import {
 import { Input } from '@/components/ui/input'
 import { templateFormSchema } from '@/lib/schemas/icu/chart/template-schema'
 import { createTemplateChart } from '@/lib/services/icu/template/template'
-import { cn } from '@/lib/utils/utils'
-import type { SelectedIcuOrder } from '@/types/icu/chart'
+import type { SelectedIcuChart, SelectedIcuOrder } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { BookmarkPlusIcon, LoaderCircleIcon } from 'lucide-react'
+import { BookmarkPlusIcon } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -41,7 +40,7 @@ const DEFAULT_FORM_VALUES = {
 
 type Props = {
   orders: SelectedIcuOrder[]
-  patientName: string
+  patientName: SelectedIcuChart['patient']['name']
   hosId: string
 }
 
@@ -65,7 +64,7 @@ export default function AddTemplateDialog({
 
     const ordererDefaulted = orders.map((order) => ({
       ...order,
-      order_times: order.order_times!.map((time) =>
+      order_times: order.icu_chart_order_time!.map((time) =>
         time !== '0' ? '기본' : '0',
       ),
     }))
@@ -75,7 +74,7 @@ export default function AddTemplateDialog({
       ordererDefaulted,
       template_name,
       is_time_included,
-      template_comment,
+      template_comment ?? '',
     )
 
     toast.success('템플릿을 추가하였습니다')

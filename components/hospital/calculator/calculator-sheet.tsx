@@ -2,13 +2,16 @@
 
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetTrigger } from '@/components/ui/sheet'
-import { hasPermissions, type Plan } from '@/constants/plans'
-import { getPatientData } from '@/lib/services/patient/patient'
-import type { PatientWithWeight } from '@/types/patients'
+import { hasPermissions, type Plan } from '@/constants/company/plans'
+import {
+  getPatientData,
+  type PatientWithWeight,
+} from '@/lib/services/patient/patient'
 import { CalculatorIcon, LoaderCircleIcon } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import CalculatorSheetContentsDynamic from './calculator-sheet-contents-dynamic'
+import { Spinner } from '@/components/ui/spinner'
 
 export default function CalculatorSheet({ plan }: { plan: Plan }) {
   const { patient_id } = useParams()
@@ -44,11 +47,7 @@ export default function CalculatorSheet({ plan }: { plan: Plan }) {
     <Sheet open={isSheetOpen} onOpenChange={handleOpenChange}>
       <SheetTrigger asChild>
         <Button size="icon" className="mr-1 h-8 w-8 rounded-full 2xl:mr-0">
-          {isFetching ? (
-            <LoaderCircleIcon className="animate-spin" />
-          ) : (
-            <CalculatorIcon />
-          )}
+          {isFetching ? <Spinner /> : <CalculatorIcon />}
         </Button>
       </SheetTrigger>
 

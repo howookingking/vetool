@@ -46,39 +46,6 @@ export const upsertOrder = async (
   }
 }
 
-export const updateOrderTime = async (
-  icuChartOrderId: string,
-  orderTime: string[],
-) => {
-  const supabase = await createClient()
-
-  const { error } = await supabase
-    .from('icu_orders')
-    .update({ icu_chart_order_time: orderTime })
-    .match({ icu_chart_order_id: icuChartOrderId })
-
-  if (error) {
-    console.error(error)
-    redirect(`/error?message=${error.message}`)
-  }
-}
-
-export const getOrder = async (icuChartId: string) => {
-  const supabase = await createClient()
-
-  const { data, error } = await supabase
-    .from('icu_orders')
-    .select('*')
-    .order('icu_chart_order_priority')
-    .match({ icu_chart_id: icuChartId })
-
-  if (error) {
-    throw new Error(error.message)
-  }
-
-  return data
-}
-
 export const pasteTemplateOrders = async (
   templateChartId: string,
   icuChartId: string,
@@ -100,14 +67,14 @@ export const reorderOrders = async (orderIds: string[]) => {
   const supabase = await createClient()
 
   orderIds.forEach(async (orderId, index) => {
-    const { error: reorderOrdersError } = await supabase
+    const { error } = await supabase
       .from('icu_orders')
       .update({ icu_chart_order_priority: index })
       .match({ icu_chart_order_id: orderId })
 
-    if (reorderOrdersError) {
-      console.error(reorderOrdersError)
-      redirect(`/error?message=${reorderOrdersError.message}`)
+    if (error) {
+      console.error(error)
+      redirect(`/error?message=${error.message}`)
     }
   })
 }

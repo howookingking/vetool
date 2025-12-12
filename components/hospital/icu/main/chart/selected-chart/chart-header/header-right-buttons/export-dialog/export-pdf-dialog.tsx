@@ -13,7 +13,7 @@ import {
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Spinner } from '@/components/ui/spinner'
-import { getIcuChartByPatientIdAndTargetDate } from '@/lib/services/icu/chart/get-icu-chart'
+import { getSelectedIcuChart } from '@/lib/services/icu/chart/get-icu-chart'
 import {
   BasicHosData,
   BasicHosDataProvider,
@@ -255,10 +255,7 @@ async function handleExportAllCharts(
       const targetDate = dateRange[i]
 
       // 각 날짜의 차트 데이터 가져오기
-      const dateChartData = await getIcuChartByPatientIdAndTargetDate(
-        targetDate,
-        patientId,
-      )
+      const dateChartData = await getSelectedIcuChart(targetDate, patientId)
 
       if (!dateChartData) {
         console.warn(`No chart data found for ${targetDate}`)

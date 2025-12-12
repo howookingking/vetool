@@ -1,6 +1,5 @@
 'use server'
 
-import { DEFAULT_OUT_CHART } from '@/constants/hospital/icu/chart/out-and-visit'
 import { createClient } from '@/lib/supabase/server'
 import { IcuChartsInCharge } from '@/types/adimin'
 import type { Memo } from '@/types/icu/chart'

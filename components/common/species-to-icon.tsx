@@ -1,4 +1,4 @@
-import type { Species } from '@/types/hospital/calculator'
+import type { Species } from '@/constants/hospital/register/signalments'
 import { CatIcon, DogIcon } from 'lucide-react'
 
 type Props = {

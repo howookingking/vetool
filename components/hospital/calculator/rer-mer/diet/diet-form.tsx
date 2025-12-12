@@ -5,8 +5,15 @@ import DietFeedPerDayInput from '@/components/hospital/calculator/rer-mer/diet/d
 import CalculatorResult from '@/components/hospital/calculator/result/calculator-result'
 import { cacluateFeedAmount } from '@/lib/calculators/rer-mer'
 import { getDiets } from '@/lib/services/icu/chart/get-diets'
-import { type Diet } from '@/types/hospital/calculator'
 import { useEffect, useState } from 'react'
+
+export type Diet = {
+  diet_id: string
+  name: string
+  company: string
+  unit: string
+  mass_vol: number
+}
 
 type Props = {
   mer?: number

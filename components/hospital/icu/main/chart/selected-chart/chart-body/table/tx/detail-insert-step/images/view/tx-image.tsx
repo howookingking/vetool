@@ -1,6 +1,5 @@
-import { isVideoFile } from '@/lib/utils/utils'
+import { cn, isVideoFile } from '@/lib/utils/utils'
 import Image from 'next/image'
-import { cn } from '@/lib/utils/utils'
 
 type TxImageProps = {
   url: string
@@ -20,7 +19,6 @@ export default function TxImage({
   control,
   className,
 }: TxImageProps) {
-  console.log(contentType)
   return (
     <>
       {isVideoFile(contentType) ? (

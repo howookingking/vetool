@@ -1,12 +1,8 @@
 import { MEMO_COLORS } from '@/constants/hospital/icu/chart/colors'
 import type { OrderType } from '@/constants/hospital/icu/chart/order'
 import type {
-  Diet,
-  DrugDoses,
-  DrugProductsRows,
   IcuChart,
   IcuIo,
-  IcuNotification,
   IcuOrders,
   IcuTxs,
   Patient,
@@ -22,11 +18,7 @@ export type TxLog = {
   createdAt: string
 }
 
-export type IcuNotificationJoined = IcuNotification & {
-  patient_id: Pick<Patient, 'name' | 'breed' | 'gender' | 'patient_id'>
-}
-
-export type SelectedChartIcuIo = Pick<
+type SelectedChartIcuIo = Pick<
   IcuIo,
   | 'in_date'
   | 'out_date'
@@ -62,80 +54,46 @@ export type SelectedIcuChart = Pick<
   sub_vet: Pick<Vet, 'avatar_url' | 'name' | 'user_id'>
 }
 
-export type SelectedIcuOrder = {
-  order_id: string
-  order_name: string
-  order_type: OrderType
-  order_times: string[]
-  treatments: Treatment[]
-  order_comment: string | null
-  id: number // DB상에서는 priority로 돼있음, sortable에서 id를 사용하기 때문에 key값 id로 변경해서 사용
-  // rpc에서 'id', icu_orders.icu_chart_order_priority,
-  is_bordered: boolean
-}
-
-export type Treatment = {
-  time: number
-  tx_id: string
-  tx_log: TxLog | null
-  tx_result: string | null
-  tx_comment: string | null
-  is_crucial: boolean
-  has_images: boolean
-}
-
-export type IcuSidebarIoData = {
-  vets: {
-    sub_vet: string
-    main_vet: string
-  }
-  in_date: string
-  patient: {
-    name: string
-    breed: string
-    species: string
-    patient_id: string
-    owner_name: string
-  }
-  out_date: string | null
-  icu_io_id: string
-  urgency: number | null
-  group_list: string[]
-  created_at: string
-}
-
-export type DrugProductsJoined = Pick<
-  DrugProductsRows,
-  'drug_id' | 'drug_name'
-> & {
-  drug_doses: DrugDoses[]
-  drug_products: DrugProductsRows[]
-}
-export type IcuReadOnlyOrderData = Pick<
+export type SelectedIcuOrder = Pick<
   IcuOrders,
   | 'icu_chart_order_id'
-  | 'icu_chart_order_time'
   | 'icu_chart_order_name'
+  | 'icu_chart_order_time'
   | 'icu_chart_order_comment'
-  | 'icu_chart_order_type'
   | 'is_bordered'
 > & {
-  treatments?: Treatment[]
+  icu_chart_order_type: OrderType
+  treatments: SelectedTreatment[]
+  id: number
+  // DB상에서는 priority로 돼있음, sortable에서 id를 사용하기 때문에 key값 id로 변경해서 사용
+  // rpc에서 'id', icu_orders.icu_chart_order_priority,
 }
 
-export type PinnedDiet = Pick<
-  Diet,
-  'diet_id' | 'name' | 'unit' | 'species' | 'mass_vol' | 'company'
->
+export type SelectedTreatment = Pick<
+  IcuTxs,
+  | 'time'
+  | 'icu_chart_tx_id'
+  | 'icu_chart_tx_result'
+  | 'icu_chart_tx_comment'
+  | 'is_crucial'
+  | 'has_images'
+> & {
+  tx_log: TxLog[] | null
+}
+
+// export type Treatment = {
+//   time: number
+//   tx_id: string
+//   tx_log: TxLog | null
+//   tx_result: string | null
+//   tx_comment: string | null
+//   is_crucial: boolean
+//   has_images: boolean
+// }
 
 export type PrevIoChartData = {
   icu_chart_id: string
   target_date: string | null
-}
-
-export type VitalChartBarData = {
-  vitalId: number
-  value: number
 }
 
 export type VitalChartData = {
@@ -144,12 +102,6 @@ export type VitalChartData = {
   vitalId: string | undefined
   vitalName: string
 }
-
-export type VitalTxData = Pick<
-  IcuTxs,
-  'icu_chart_tx_id' | 'icu_chart_tx_result' | 'created_at'
-> &
-  Pick<IcuOrders, 'icu_chart_order_name'>
 
 export type VitalData = {
   icu_chart_tx_id: string
@@ -174,8 +126,4 @@ export type MemoGroup = {
   a: Memo[]
   b: Memo[]
   c: Memo[]
-}
-
-export type IcuShareData = Omit<SelectedIcuChart, 'orders'> & {
-  orders: IcuReadOnlyOrderData[]
 }

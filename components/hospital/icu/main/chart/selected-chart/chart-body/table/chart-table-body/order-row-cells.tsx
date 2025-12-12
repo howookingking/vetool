@@ -4,12 +4,11 @@ import { TIMES } from '@/constants/hospital/icu/chart/time'
 import type { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
 import type { TxLocalState } from '@/lib/store/icu/icu-tx'
 import type { VitalRefRange } from '@/types/adimin'
-import type { SelectedIcuOrder, Treatment } from '@/types/icu/chart'
+import type { SelectedIcuOrder, SelectedTreatment } from '@/types/icu/chart'
 import { useMemo } from 'react'
 
 type Props = {
   hosId: string
-  preview?: boolean
   order: SelectedIcuOrder
   showOrderer: boolean
   showTxUser: boolean
@@ -37,7 +36,6 @@ type Props = {
 
 export default function OrderRowCells({
   hosId,
-  preview,
   order,
   showOrderer,
   showTxUser,
@@ -54,17 +52,24 @@ export default function OrderRowCells({
   timeGuidelineData,
   orderTimePendingQueue,
 }: Props) {
-  const { order_times, order_id, treatments, order_type, order_name } = order
+  const {
+    icu_chart_order_time,
+    icu_chart_order_id,
+    treatments,
+    icu_chart_order_type,
+    icu_chart_order_name,
+  } = order
 
   const foundVital = vitalRefRange.find(
-    (vital) => vital.order_name === order_name,
+    (vital) => vital.order_name === icu_chart_order_name,
   )
   const rowVitalRefRange = foundVital
     ? foundVital[species as keyof Omit<VitalRefRange, 'order_name'>]
     : undefined
 
   const noFecalOrUrineResult =
-    (order_name === '배변' || order_name === '배뇨') && treatments.length === 0
+    (icu_chart_order_name === '배변' || icu_chart_order_name === '배뇨') &&
+    treatments.length === 0
 
   const toggleOrderTime = (orderId: string, time: number) => {
     setOrderTimePendingQueue((prevQueue) => {
@@ -103,7 +108,7 @@ export default function OrderRowCells({
       {
         isDone: boolean
         orderer: string
-        treatment: Treatment | undefined
+        treatment: SelectedTreatment | undefined
         hasOrder: boolean
         hasComment: boolean
         isInPendingQueue: boolean
@@ -112,18 +117,19 @@ export default function OrderRowCells({
     >()
 
     for (const time of TIMES) {
-      const orderer = order_times[time]
+      const orderer = icu_chart_order_time[time]
       const treatment = treatments.findLast(
         (treatment) => treatment.time === time,
       )
       const isDone =
         orderer !== '0' &&
         treatments.some(
-          (treatment) => treatment.time === time && treatment.tx_result,
+          (treatment) =>
+            treatment.time === time && treatment.icu_chart_tx_result,
         )
       const hasOrder = orderer !== '0'
-      const hasComment = !!treatment?.tx_comment
-      const pendingKey = `${order_id}_${time}`
+      const hasComment = !!treatment?.icu_chart_tx_comment
+      const pendingKey = `${icu_chart_order_id}_${time}`
 
       map.set(time, {
         isDone,
@@ -137,19 +143,18 @@ export default function OrderRowCells({
     }
     return map
   }, [
-    order_times,
+    icu_chart_order_time,
     treatments,
-    order_id,
+    icu_chart_order_id,
     selectedTxPendingMap,
     orderTimePendingMap,
   ])
 
   const commonCellProps = {
     hosId,
-    preview,
-    icuChartOrderId: order_id,
-    orderType: order_type,
-    orderName: order_name,
+    icuChartOrderId: icu_chart_order_id,
+    orderType: icu_chart_order_type,
+    orderName: icu_chart_order_name,
     toggleOrderTime,
     showOrderer,
     showTxUser,
@@ -175,7 +180,7 @@ export default function OrderRowCells({
             treatment={cellData.treatment}
             isDone={cellData.isDone}
             orderer={cellData.orderer}
-            icuChartTxId={cellData.treatment?.tx_id}
+            icuChartTxId={cellData.treatment?.icu_chart_tx_id}
             isGuidelineTime={isGuidelineTime}
             hasOrder={cellData.hasOrder}
             hasComment={cellData.hasComment}
@@ -186,9 +191,9 @@ export default function OrderRowCells({
         )
       })}
 
-      {noFecalOrUrineResult && !preview && (
-        <NoFecalOrUrineAlert orderName={order_name} />
-      )}
+      {noFecalOrUrineResult ? (
+        <NoFecalOrUrineAlert orderName={icu_chart_order_name} />
+      ) : null}
     </>
   )
 }
