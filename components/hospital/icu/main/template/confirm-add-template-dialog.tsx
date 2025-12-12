@@ -62,8 +62,8 @@ export default function ConfirmAddTemplateDialog({
   const form = useForm<z.infer<typeof templateFormSchema>>({
     resolver: zodResolver(templateFormSchema),
     defaultValues: {
-      template_name: '',
-      template_comment: '',
+      template_name: selectedTemplateChart?.template_name ?? '',
+      template_comment: selectedTemplateChart?.template_comment ?? '',
     },
   })
 

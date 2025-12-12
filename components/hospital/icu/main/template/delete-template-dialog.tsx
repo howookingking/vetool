@@ -15,7 +15,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import { deleteTemplateChart } from '@/lib/services/icu/template/template'
-import { LoaderCircle, Trash2 } from 'lucide-react'
+import { Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -36,6 +36,7 @@ export default function DeleteTemplateDialog({
 
   const handleDelete = async () => {
     setIsDeleting(true)
+
     await deleteTemplateChart(chartId)
 
     toast.success('템플릿을 삭제하였습니다')

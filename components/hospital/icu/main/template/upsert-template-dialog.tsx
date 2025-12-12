@@ -125,7 +125,7 @@ export default function UpsertTemplateDialog({
             sortedOrders={sortedOrders}
             isEdit={isEdit}
             setIsUpsertTemplateDialogOpen={setIsUpsertTemplateDialogOpen}
-            selectedTemplateChart={null}
+            selectedTemplateChart={template}
             hosId={hosId}
             orderTimePendingQueue={orderTimePendingQueue}
           />

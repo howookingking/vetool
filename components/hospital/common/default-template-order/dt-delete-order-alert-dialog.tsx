@@ -56,7 +56,7 @@ export default function DtDeleteOrderAlertDialog({
 
     setIsDeleting(false)
     setIsDialogOpen(false)
-    setTimeout(refresh, 100)
+    !isTemplate && setTimeout(refresh, 100)
   }
 
   return (
