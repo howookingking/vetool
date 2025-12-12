@@ -44,7 +44,7 @@ export default function ChartTableBody({
     orders,
     patient: { species },
     hos_id,
-    main_vet: { name },
+    main_vet,
   } = chartData
 
   const isCommandPressed = useIsCommandPressed()
@@ -161,7 +161,7 @@ export default function ChartTableBody({
         showOrderer={showOrderer}
         setOrderStep={setOrderStep}
         resetOrderStore={resetOrderStore}
-        mainVetName={name}
+        mainVet={main_vet}
         orderColorsData={orderColorsData}
         showTxUser={showTxUser}
         isCommandPressed={isCommandPressed}

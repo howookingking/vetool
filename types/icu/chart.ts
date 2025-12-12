@@ -50,8 +50,8 @@ export type SelectedIcuChart = Pick<
   icu_io: SelectedChartIcuIo
   orders: SelectedIcuOrder[]
   patient: Patient
-  main_vet: Pick<Vet, 'avatar_url' | 'name' | 'user_id'>
-  sub_vet: Pick<Vet, 'avatar_url' | 'name' | 'user_id'>
+  main_vet: Pick<Vet, 'avatar_url' | 'name' | 'user_id'> | null
+  sub_vet: Pick<Vet, 'avatar_url' | 'name' | 'user_id'> | null
 }
 
 export type SelectedIcuOrder = Pick<
