@@ -61,18 +61,20 @@ export default function UpsertTemplateDialog({
 
   const handleOpenChange = async (open: boolean) => {
     if (open) {
-      setIsFetching(true)
       setSortedOrders([])
       resetTimePendingQueue()
 
       if (isEdit) {
+        setIsFetching(true)
+
         const chartData = await getTemplateChart(template.icu_chart_id)
         setSortedOrders(chartData.orders)
+
         setIsFetching(false)
-        setIsUpsertTemplateDialogOpen(true)
       }
+      setIsUpsertTemplateDialogOpen(open)
     } else {
-      setIsUpsertTemplateDialogOpen(false)
+      setIsUpsertTemplateDialogOpen(open)
     }
   }
 
