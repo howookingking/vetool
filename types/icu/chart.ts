@@ -71,10 +71,10 @@ export type SelectedIcuOrder = Pick<
 
 export type SelectedTreatment = Pick<
   IcuTxs,
-  | 'time'
   | 'icu_chart_tx_id'
   | 'icu_chart_tx_result'
   | 'icu_chart_tx_comment'
+  | 'time'
   | 'is_crucial'
   | 'has_images'
 > & {

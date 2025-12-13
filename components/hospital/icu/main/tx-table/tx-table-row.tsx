@@ -4,8 +4,7 @@ import { TIMES } from '@/constants/hospital/icu/chart/time'
 import type { Species } from '@/constants/hospital/register/signalments'
 import { cn } from '@/lib/utils/utils'
 import type { IcuOrderColors } from '@/types/adimin'
-import type { SelectedTreatment } from '@/types/icu/chart'
-import type { IcuTxTableData } from '@/types/icu/tx-table'
+import type { IcuTxTableData, TxTableTreatment } from '@/types/icu/tx-table'
 import { SquarePlusIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { memo, useMemo } from 'react'
@@ -21,7 +20,7 @@ type Props = {
   handleOpenTxDetail: (
     order: IcuTxTableData['orders'][number],
     time: number,
-    treatment?: SelectedTreatment,
+    treatment?: TxTableTreatment,
   ) => void
   j: number
   isLastOrder: boolean
@@ -43,7 +42,7 @@ const TxTableRow = memo(function TxTableRow({
   const { push } = useRouter()
 
   const timeMap = useMemo(() => {
-    const map = new Map<number, SelectedTreatment>()
+    const map = new Map<number, TxTableTreatment>()
     for (const tx of order.treatments) {
       map.set(tx.time, tx)
     }

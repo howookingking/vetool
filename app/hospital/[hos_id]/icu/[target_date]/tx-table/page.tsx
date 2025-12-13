@@ -1,17 +1,14 @@
 import MobileTitle from '@/components/common/mobile-title'
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
 import TxTableContainer from '@/components/hospital/icu/main/tx-table/tx-table-container'
-import { fetchIcuTxTableData } from '@/lib/services/icu/tx-table/fetch-icu-tx-table-data'
+import { getIcuTxTableData } from '@/lib/services/icu/tx-table/fetch-icu-tx-table-data'
 import { ListChecksIcon } from 'lucide-react'
 
-export default async function TxTablePage(props: {
-  params: Promise<{
-    hos_id: string
-    target_date: string
-  }>
-}) {
+export default async function TxTablePage(
+  props: PageProps<'/hospital/[hos_id]/icu/[target_date]/tx-table'>,
+) {
   const { hos_id, target_date } = await props.params
-  const txTableData = await fetchIcuTxTableData(hos_id, target_date)
+  const txTableData = await getIcuTxTableData(hos_id, target_date)
 
   return (
     <>
