@@ -13,7 +13,7 @@ type Props = {
   orders: SelectedIcuOrder[]
   showOrderer: boolean
   setOrderStep: (orderStep: OrderStep) => void
-  mainVetName: SelectedIcuChart['main_vet']['name']
+  mainVet: SelectedIcuChart['main_vet']
   orderColorsData: IcuOrderColors
   isCommandPressed: boolean
   selectedOrderPendingQueue: Partial<SelectedIcuOrder>[]
@@ -28,7 +28,7 @@ export default function ChartTableDialogs({
   orders,
   showOrderer,
   setOrderStep,
-  mainVetName,
+  mainVet,
   orderColorsData,
   isCommandPressed,
   selectedOrderPendingQueue,
@@ -55,7 +55,7 @@ export default function ChartTableDialogs({
         showOrderer={showOrderer}
         setOrderStep={setOrderStep}
         setSortedOrders={setSortedOrders}
-        mainVetName={mainVetName}
+        mainVet={mainVet}
         orderColorsData={orderColorsData}
         resetOrderStore={resetOrderStore}
         hosId={hosId}

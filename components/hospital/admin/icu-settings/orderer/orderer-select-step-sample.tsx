@@ -24,8 +24,9 @@ export default function OrdererSelecteStepSample({
         <OrdererSelectStep
           icuChartId=""
           orders={[]}
-          mainVetName={vetList[0].name}
+          mainVet={vetList[0]}
           isSetting
+          hosId=""
         />
       </Dialog>
     </div>

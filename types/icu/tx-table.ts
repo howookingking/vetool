@@ -1,6 +1,6 @@
 import type { OrderType } from '@/constants/hospital/icu/chart/order'
-import type { IcuChart, IcuIo, IcuOrders, Patient } from '@/types'
-import type { SelectedTreatment } from '@/types/icu/chart'
+import type { IcuChart, IcuIo, IcuOrders, IcuTxs, Patient } from '@/types'
+import type { TxLog } from '@/types/icu/chart'
 
 export type IcuTxTableData = {
   icu_charts: Pick<
@@ -19,6 +19,17 @@ export type IcuTxTableData = {
     | 'icu_chart_order_comment'
   > & {
     icu_chart_order_type: OrderType
-    treatments: SelectedTreatment[]
+    treatments: TxTableTreatment[]
   })[]
+}
+
+export type TxTableTreatment = Pick<
+  IcuTxs,
+  | 'icu_chart_tx_id'
+  | 'icu_chart_tx_result'
+  | 'icu_chart_tx_comment'
+  | 'time'
+  | 'is_crucial'
+> & {
+  tx_log: TxLog[] | null
 }

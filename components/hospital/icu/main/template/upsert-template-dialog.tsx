@@ -9,16 +9,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { Spinner } from '@/components/ui/spinner'
 import useOrderSorting from '@/hooks/use-order-sorting'
+import { getTemplateChart } from '@/lib/services/icu/template/template'
 import { useDtOrderTimePendingQueueStore } from '@/lib/store/icu/dt-order'
+import type { IcuTemplate } from '@/types'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { Edit2Icon, PlusIcon } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import ConfirmAddTemplateDialog from './confirm-add-template-dialog'
 import TemplateOrderTable from './template-order-table'
-import type { IcuTemplate } from '@/types'
-import { getTemplateChart } from '@/lib/services/icu/template/template'
-import { Spinner } from '@/components/ui/spinner'
 
 type Props = EditTemplateProps | NewTemplateProps
 

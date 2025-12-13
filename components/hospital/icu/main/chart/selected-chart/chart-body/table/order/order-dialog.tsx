@@ -13,6 +13,8 @@ import type { SelectedIcuChart, SelectedIcuOrder } from '@/types/icu/chart'
 import type { Dispatch, SetStateAction } from 'react'
 import OrderForm from './order-form'
 import OrdererSelectStep from './orderer-select-step'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
+import { cn } from '@/lib/utils/utils'
 
 type Props = {
   icuChartId: SelectedIcuChart['icu_chart_id']
@@ -20,7 +22,7 @@ type Props = {
   showOrderer: boolean
   setOrderStep: (orderStep: OrderStep) => void
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
-  mainVetName: SelectedIcuChart['main_vet']['name']
+  mainVet: SelectedIcuChart['main_vet']
   orderColorsData: IcuOrderColors
   resetOrderStore: () => void
   hosId: string
@@ -33,7 +35,7 @@ export default function OrderDialog({
   setOrderStep,
   setSortedOrders,
   resetOrderStore,
-  mainVetName,
+  mainVet,
   orderColorsData,
   hosId,
 }: Props) {
@@ -50,9 +52,9 @@ export default function OrderDialog({
 
   return (
     <Dialog open={orderStep !== 'closed'} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-3xl">
+      <DialogContent className={cn(orderStep === 'edit' ? 'max-w-3xl' : '')}>
         <DialogHeader>
-          {orderStep === 'edit' && (
+          {orderStep === 'edit' ? (
             <>
               <DialogTitle className="mb-2 flex items-center gap-2">
                 <OrderTypeColorDot
@@ -68,6 +70,9 @@ export default function OrderDialog({
                   오더 수정
                 </span>
               </DialogTitle>
+              <VisuallyHidden>
+                <DialogDescription />
+              </VisuallyHidden>
 
               <OrderForm
                 hosId={hosId}
@@ -76,18 +81,23 @@ export default function OrderDialog({
                 setSortedOrders={setSortedOrders}
               />
             </>
-          )}
+          ) : null}
 
-          {orderStep === 'selectOrderer' && (
+          {orderStep === 'selectOrderer' ? (
             <>
               <DialogTitle>오더자 선택</DialogTitle>
+              <VisuallyHidden>
+                <DialogDescription />
+              </VisuallyHidden>
+
               <OrdererSelectStep
                 icuChartId={icuChartId}
                 orders={orders}
-                mainVetName={mainVetName}
+                mainVet={mainVet}
+                hosId={hosId}
               />
             </>
-          )}
+          ) : null}
 
           <DialogDescription />
         </DialogHeader>

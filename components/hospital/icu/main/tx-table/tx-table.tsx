@@ -4,8 +4,7 @@ import { Table, TableBody } from '@/components/ui/table'
 import type { OrderType } from '@/constants/hospital/icu/chart/order'
 import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import type { SelectedTreatment } from '@/types/icu/chart'
-import type { IcuTxTableData } from '@/types/icu/tx-table'
+import type { IcuTxTableData, TxTableTreatment } from '@/types/icu/tx-table'
 import { isToday } from 'date-fns'
 import { useEffect, useRef } from 'react'
 import TxUpsertDialog from '../chart/selected-chart/chart-body/table/tx/tx-upsert-dialog'
@@ -64,7 +63,7 @@ export default function TxTable({
   const handleOpenTxDetail = (
     order: IcuTxTableData['orders'][number],
     time: number,
-    treatment?: SelectedTreatment,
+    treatment?: TxTableTreatment,
   ) => {
     setTxLocalState({
       icuChartOrderId: order.icu_chart_order_id,

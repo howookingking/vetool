@@ -2,8 +2,7 @@ import OrderTypeColorDot from '@/components/hospital/common/order/order-type-col
 import { Button } from '@/components/ui/button'
 import { TableCell } from '@/components/ui/table'
 import type { IcuOrderColors } from '@/types/adimin'
-import type { SelectedTreatment } from '@/types/icu/chart'
-import type { IcuTxTableData } from '@/types/icu/tx-table'
+import type { IcuTxTableData, TxTableTreatment } from '@/types/icu/tx-table'
 import { ArrowRightIcon, EditIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
@@ -12,13 +11,13 @@ type Props = {
   targetDate: string
   time: number
   order: IcuTxTableData['orders'][number]
-  treatment?: SelectedTreatment
+  treatment?: TxTableTreatment
   patientId: string
   orderColorsData: IcuOrderColors
   handleOpenTxDetail: (
     order: IcuTxTableData['orders'][number],
     time: number,
-    treatment?: SelectedTreatment,
+    treatment?: TxTableTreatment,
   ) => void
 }
 
