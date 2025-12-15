@@ -7,12 +7,10 @@ import { Table } from '@/components/ui/table'
 import useLocalStorage from '@/hooks/use-local-storage'
 import useOrderSorting from '@/hooks/use-order-sorting'
 import type { SelectedIcuChart } from '@/types/icu/chart'
-import type { RefObject } from 'react'
 import type { OrderWidth } from './chart-table-header/order-width-button'
 
 type Props = {
   chartData: SelectedIcuChart
-  cellRef?: RefObject<HTMLTableRowElement>
   targetDate?: string
   hosId: string
   patientId: string
@@ -20,7 +18,6 @@ type Props = {
 
 export default function ChartTable({
   chartData,
-  cellRef,
   targetDate,
   hosId,
   patientId,
@@ -42,17 +39,12 @@ export default function ChartTable({
 
   return (
     <Table className="border">
-      {/* 소팅버튼, 오더목록, 오더너비조절 버튼, 시간 */}
       <ChartTableHeader
         orderCount={orders.length}
-        chartData={chartData}
         isSorting={isSorting}
         onSortToggle={handleSortToggle}
-        sortedOrders={sortedOrders}
         orderWidth={orderWidth}
         setOrderWidth={setOrderWidth}
-        chartId={icu_chart_id}
-        hosId={hosId}
         targetDate={targetDate}
       />
 
@@ -62,7 +54,6 @@ export default function ChartTable({
           orderWidth={orderWidth}
           setSortedOrders={setSortedOrders}
           sortedOrders={sortedOrders}
-          species={patient.species}
           onOrderMove={handleOrderMove}
         />
       ) : (
@@ -72,10 +63,8 @@ export default function ChartTable({
           orderWidth={orderWidth}
           icuChartId={icu_chart_id}
           setSortedOrders={setSortedOrders}
-          cellRef={cellRef}
           chartData={chartData}
           hosId={hosId}
-          patientId={patientId}
         />
       )}
     </Table>

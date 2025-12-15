@@ -44,7 +44,7 @@ export default function ReadOnlyOrderRowTitle({
         className="flex h-11 px-2"
         style={{
           width: orderWidth,
-          transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
+          transition: 'width 0.3s ease-in-out',
         }}
       >
         <OrderTitleContent

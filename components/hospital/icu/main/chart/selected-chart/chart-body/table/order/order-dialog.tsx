@@ -53,7 +53,7 @@ export default function OrderDialog({
   return (
     <Dialog open={orderStep !== 'closed'} onOpenChange={handleOpenChange}>
       <DialogContent className={cn(orderStep === 'edit' ? 'max-w-3xl' : '')}>
-        <DialogHeader>
+        <DialogHeader className="space-y-0">
           {orderStep === 'edit' ? (
             <>
               <DialogTitle className="mb-2 flex items-center gap-2">

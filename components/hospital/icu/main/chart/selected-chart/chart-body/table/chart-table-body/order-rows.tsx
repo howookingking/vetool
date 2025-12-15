@@ -12,7 +12,7 @@ import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
 import { borderedOrderClassName } from '@/lib/utils/utils'
 import type { VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
-import { useMemo, type RefObject } from 'react'
+import { useMemo } from 'react'
 import { toast } from 'sonner'
 
 type Props = {
@@ -25,7 +25,6 @@ type Props = {
   vitalRefRange: VitalRefRange[]
   species: string
   orderwidth: number
-  cellRef?: RefObject<HTMLTableRowElement>
   icuChartId: string
   hosId: string
   setOrderStep: (orderStep: OrderStep) => void
@@ -45,7 +44,6 @@ export default function OrderRows({
   vitalRefRange,
   species,
   orderwidth,
-  cellRef,
   icuChartId,
   hosId,
   setOrderStep,
@@ -106,9 +104,8 @@ export default function OrderRows({
       )
       return (
         <TableRow
-          className="relative w-full divide-x"
+          className="relative divide-x"
           key={order.icu_chart_order_id}
-          ref={cellRef}
           style={borderedOrderClassName(sortedOrders, order, index)}
         >
           <OrderRowTitle
@@ -149,7 +146,6 @@ export default function OrderRows({
   }, [
     sortedOrders,
     selectedOrderPendingQueue,
-    cellRef,
     isSorting,
     vitalRefRange,
     species,

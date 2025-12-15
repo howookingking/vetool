@@ -44,7 +44,7 @@ export default function DtOrderDialog({
         className="h-11 w-full px-2"
         style={{
           width: orderWidth,
-          transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
+          transition: 'width 0.3s ease-in-out',
         }}
       >
         <OrderTitleContent

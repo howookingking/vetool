@@ -8,12 +8,7 @@ import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
 import { formatOrders } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedIcuChart, SelectedIcuOrder } from '@/types/icu/chart'
-import {
-  useEffect,
-  type Dispatch,
-  type RefObject,
-  type SetStateAction,
-} from 'react'
+import { useEffect, type Dispatch, type SetStateAction } from 'react'
 import { toast } from 'sonner'
 import ChartTableDialogs from './chart-table-dialogs'
 
@@ -21,13 +16,10 @@ type Props = {
   sortedOrders: SelectedIcuOrder[]
   isSorting: boolean
   orderWidth: number
-  isExport?: boolean
   icuChartId: SelectedIcuChart['icu_chart_id']
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
-  cellRef?: RefObject<HTMLTableRowElement>
   chartData: SelectedIcuChart
   hosId: string
-  patientId: string
 }
 
 export default function ChartTableBody({
@@ -36,10 +28,8 @@ export default function ChartTableBody({
   orderWidth,
   icuChartId,
   setSortedOrders,
-  cellRef,
   chartData,
   hosId,
-  patientId,
 }: Props) {
   const {
     icu_chart_id,
@@ -140,7 +130,6 @@ export default function ChartTableBody({
         orderTimePendingQueueLength={orderTimePendingQueue.length}
         orderTimePendingQueue={orderTimePendingQueue}
         orderwidth={orderWidth}
-        cellRef={cellRef}
         icuChartId={icuChartId}
         hosId={hos_id}
         timeGuidelineData={timeGuidelineData}

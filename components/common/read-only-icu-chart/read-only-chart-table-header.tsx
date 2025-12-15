@@ -23,7 +23,7 @@ export default function ReadOnlyChartTableHeader({
           className="relative text-center"
           style={{
             width: orderWidth,
-            transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
+            transition: 'width 0.3s ease-in-out',
           }}
         >
           <span>오더 {orderCount === 0 ? '' : `(${orderCount})`}</span>

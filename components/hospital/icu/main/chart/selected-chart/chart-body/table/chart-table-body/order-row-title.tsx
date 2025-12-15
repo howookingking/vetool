@@ -12,7 +12,7 @@ type Props = {
   index: number
   isSorting?: boolean
   vitalRefRange?: VitalRefRange[]
-  species: string
+  species?: string
   orderWidth: number
   resetOrderStore?: () => void
   setSelectedOrderPendingQueue?: (
@@ -83,16 +83,18 @@ export default function OrderRowTitle({
 
   const isOptimisticOrder = order.icu_chart_order_id.startsWith('temp_order_id')
 
+  const isEvenIndex = index % 2 === 0
+
   return (
     <TableCell
       className={cn(
-        'handle group p-0',
-        isSorting && index % 2 === 0 && 'animate-shake-strong',
-        isSorting && index % 2 !== 0 && 'animate-shake-strong-reverse',
+        'handle p-0',
+        isSorting && isEvenIndex && 'animate-shake-strong',
+        isSorting && !isEvenIndex && 'animate-shake-strong-reverse',
       )}
       style={{
         width: orderWidth,
-        transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
+        transition: 'width 0.3s ease-in-out',
       }}
     >
       <Button
@@ -100,20 +102,21 @@ export default function OrderRowTitle({
         variant="ghost"
         onClick={isSorting ? undefined : handleClickOrderTitle}
         className={cn(
-          'group flex h-11 justify-between rounded-none bg-transparent px-2 outline-none transition duration-300 hover:scale-[97%] hover:bg-transparent',
+          'flex h-11 rounded-none px-2 hover:bg-transparent',
           isOptimisticOrder && 'animate-bounce',
           isSorting ? 'cursor-grab' : 'cursor-pointer',
-          isInOrderPendingQueue && 'ring-2 ring-inset ring-primary',
+          isInOrderPendingQueue &&
+            'bg-primary/10 ring-1 ring-inset ring-primary transition-colors duration-200 hover:bg-primary/10',
         )}
         style={{
           width: orderWidth,
-          transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
+          transition: 'width 0.3s ease-in-out',
         }}
       >
         <OrderTitleContent
-          orderType={order.icu_chart_order_type}
-          orderName={order.icu_chart_order_name}
-          orderComment={order.icu_chart_order_comment}
+          orderType={icu_chart_order_type}
+          orderName={icu_chart_order_name}
+          orderComment={icu_chart_order_comment}
           orderColorsData={orderColorsData}
           orderFontSizeData={orderFontSizeData}
           vitalRefRange={rowVitalRefRange}

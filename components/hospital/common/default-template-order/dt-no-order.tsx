@@ -7,7 +7,7 @@ export default function DtNoOrder({ orderWidth }: { orderWidth: number }) {
       <TableCell
         style={{
           width: orderWidth,
-          transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
+          transition: 'width 0.3s ease-in-out',
         }}
       >
         <NoResultSquirrel
