@@ -17,7 +17,7 @@ export default function ReadOnlyChartTableHeader({
   setOrderWidth,
 }: Props) {
   return (
-    <TableHeader className="shadow-sm">
+    <TableHeader className="sticky top-0 z-10 bg-white shadow-sm">
       <TableRow>
         <TableHead
           className="relative text-center"

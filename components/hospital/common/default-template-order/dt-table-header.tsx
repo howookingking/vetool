@@ -22,10 +22,10 @@ export default function DtTableHeader({
   orderCount,
 }: Props) {
   return (
-    <TableHeader className="shadow-sm">
+    <TableHeader className="sticky top-0 z-10 bg-white shadow-sm">
       <TableRow>
         <TableHead
-          className="flex items-center justify-between px-0.5 text-center"
+          className="flex items-center justify-between px-0.5"
           style={{
             width: orderWidth,
             transition: 'width 0.3s ease-in-out ',
@@ -33,7 +33,6 @@ export default function DtTableHeader({
         >
           <SortingButton isSorting={isSorting} onClick={onSortToggle} />
 
-          <span className="text-center">기본오더</span>
           <span>오더 {orderCount === 0 ? '' : `(${orderCount})`}</span>
 
           <OrderWidthButton
