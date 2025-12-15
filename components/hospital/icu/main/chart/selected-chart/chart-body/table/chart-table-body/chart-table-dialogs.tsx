@@ -2,7 +2,7 @@ import type { OrderStep } from '@/lib/store/icu/icu-order'
 import type { IcuOrderColors } from '@/types/adimin'
 import type { SelectedIcuChart, SelectedIcuOrder } from '@/types/icu/chart'
 import type { Dispatch, SetStateAction } from 'react'
-import MultiSelectOrderDialog from '../order/multil-select-order/multi-select-order-dialog'
+import MultiOrderDialog from '../order/multil-order/multi-order-dialog'
 import OrderDialog from '../order/order-dialog'
 import TxUpsertDialog from '../tx/tx-upsert-dialog'
 
@@ -16,9 +16,15 @@ type Props = {
   mainVet: SelectedIcuChart['main_vet']
   orderColorsData: IcuOrderColors
   isCommandPressed: boolean
-  selectedOrderPendingQueue: Partial<SelectedIcuOrder>[]
+  multiOrderPendingQueue: Partial<SelectedIcuOrder>[]
   resetOrderStore: () => void
   hosId: string
+  setCopiedOrderPendingQueue: Dispatch<
+    SetStateAction<Partial<SelectedIcuOrder>[]>
+  >
+  setMultiOrderPendingQueue: Dispatch<
+    SetStateAction<Partial<SelectedIcuOrder>[]>
+  >
 }
 
 export default function ChartTableDialogs({
@@ -31,9 +37,11 @@ export default function ChartTableDialogs({
   mainVet,
   orderColorsData,
   isCommandPressed,
-  selectedOrderPendingQueue,
+  multiOrderPendingQueue,
   resetOrderStore,
   hosId,
+  setCopiedOrderPendingQueue,
+  setMultiOrderPendingQueue,
 }: Props) {
   return (
     <>
@@ -41,11 +49,13 @@ export default function ChartTableDialogs({
       <TxUpsertDialog showTxUser={showTxUser} />
 
       {/* 다중 오더 선택 후 작업 : 오더 복사, 템플릿저장, 테두리 변경, 오더 삭제 */}
-      <MultiSelectOrderDialog
+      <MultiOrderDialog
         setSortedOrders={setSortedOrders}
         isCommandPressed={isCommandPressed}
-        selectedOrderPendingQueue={selectedOrderPendingQueue}
+        multiOrderPendingQueue={multiOrderPendingQueue}
         resetOrderStore={resetOrderStore}
+        setCopiedOrderPendingQueue={setCopiedOrderPendingQueue}
+        setMultiOrderPendingQueue={setMultiOrderPendingQueue}
       />
 
       {/* 오더자선택, 오더수정 */}

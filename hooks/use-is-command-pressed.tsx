@@ -5,15 +5,11 @@ export default function useIsCommandPressed() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.metaKey || e.ctrlKey) {
-        setIsCommandPressed(true)
-      }
+      if (e.metaKey || e.ctrlKey) setIsCommandPressed(true)
     }
 
     const handleKeyUp = (e: KeyboardEvent) => {
-      if (e.key === 'Meta' || e.key === 'Control') {
-        setIsCommandPressed(false)
-      }
+      if (e.key === 'Meta' || e.key === 'Control') setIsCommandPressed(false)
     }
 
     window.addEventListener('keydown', handleKeyDown)

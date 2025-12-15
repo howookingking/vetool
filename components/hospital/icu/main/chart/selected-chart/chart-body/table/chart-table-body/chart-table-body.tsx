@@ -57,7 +57,9 @@ export default function ChartTableBody({
     reset: resetOrderStore,
     orderTimePendingQueue,
     selectedTxPendingQueue,
-    selectedOrderPendingQueue,
+    multiOrderPendingQueue,
+    setCopiedOrderPendingQueue,
+    setMultiOrderPendingQueue,
   } = useIcuOrderStore()
 
   const { setTxStep } = useIcuTxStore()
@@ -99,7 +101,6 @@ export default function ChartTableBody({
     resetOrderStore()
   }
 
-  // 고정, 멀티오더는 멀티오더 컴포넌트로 보냄
   useEffect(() => {
     if (!isCommandPressed) {
       if (orderTimePendingQueue.length >= 1) {
@@ -118,7 +119,7 @@ export default function ChartTableBody({
   return (
     <TableBody>
       <OrderRows
-        selectedOrderPendingQueue={selectedOrderPendingQueue}
+        multiOrderPendingQueue={multiOrderPendingQueue}
         setOrderStep={setOrderStep}
         sortedOrders={sortedOrders}
         isSorting={isSorting}
@@ -156,8 +157,10 @@ export default function ChartTableBody({
         orderColorsData={orderColorsData}
         showTxUser={showTxUser}
         isCommandPressed={isCommandPressed}
-        selectedOrderPendingQueue={selectedOrderPendingQueue}
+        multiOrderPendingQueue={multiOrderPendingQueue}
         hosId={hosId}
+        setCopiedOrderPendingQueue={setCopiedOrderPendingQueue}
+        setMultiOrderPendingQueue={setMultiOrderPendingQueue}
       />
     </TableBody>
   )

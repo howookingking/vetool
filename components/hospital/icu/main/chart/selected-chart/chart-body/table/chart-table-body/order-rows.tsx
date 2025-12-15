@@ -28,7 +28,7 @@ type Props = {
   icuChartId: string
   hosId: string
   setOrderStep: (orderStep: OrderStep) => void
-  selectedOrderPendingQueue: Partial<SelectedIcuOrder>[]
+  multiOrderPendingQueue: Partial<SelectedIcuOrder>[]
   resetOrderStore: () => void
   timeGuidelineData: number[]
   orderTimePendingQueue: OrderTimePendingQueue[]
@@ -47,14 +47,14 @@ export default function OrderRows({
   icuChartId,
   hosId,
   setOrderStep,
-  selectedOrderPendingQueue,
+  multiOrderPendingQueue,
   resetOrderStore,
   timeGuidelineData,
   orderTimePendingQueue,
 }: Props) {
   const {
     setSelectedChartOrder,
-    setSelectedOrderPendingQueue,
+    setMultiOrderPendingQueue,
     copiedOrderPendingQueue,
     setOrderTimePendingQueue,
     setSelectedTxPendingQueue,
@@ -99,7 +99,7 @@ export default function OrderRows({
 
   const memoizedOrderRows = useMemo(() => {
     return sortedOrders.map((order, index) => {
-      const isInOrderPendingQueue = selectedOrderPendingQueue.some(
+      const isInOrderPendingQueue = multiOrderPendingQueue.some(
         (o) => o.icu_chart_order_id === order.icu_chart_order_id,
       )
       return (
@@ -117,7 +117,7 @@ export default function OrderRows({
             species={species}
             orderWidth={orderwidth}
             resetOrderStore={resetOrderStore}
-            setSelectedOrderPendingQueue={setSelectedOrderPendingQueue}
+            setSelectedOrderPendingQueue={setMultiOrderPendingQueue}
             setOrderStep={setOrderStep}
             setSelectedChartOrder={setSelectedChartOrder}
           />
@@ -145,13 +145,13 @@ export default function OrderRows({
     })
   }, [
     sortedOrders,
-    selectedOrderPendingQueue,
+    multiOrderPendingQueue,
     isSorting,
     vitalRefRange,
     species,
     orderwidth,
     resetOrderStore,
-    setSelectedOrderPendingQueue,
+    setMultiOrderPendingQueue,
     setOrderStep,
     setSelectedChartOrder,
     hosId,
