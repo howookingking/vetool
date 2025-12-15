@@ -7,6 +7,7 @@ import OrderDialog from '../order/order-dialog'
 import TxUpsertDialog from '../tx/tx-upsert-dialog'
 
 type Props = {
+  hosId: string
   showTxUser: boolean
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   icuChartId: SelectedIcuChart['icu_chart_id']
@@ -18,7 +19,6 @@ type Props = {
   isCommandPressed: boolean
   multiOrderPendingQueue: Partial<SelectedIcuOrder>[]
   resetOrderStore: () => void
-  hosId: string
   setCopiedOrderPendingQueue: Dispatch<
     SetStateAction<Partial<SelectedIcuOrder>[]>
   >
@@ -28,6 +28,7 @@ type Props = {
 }
 
 export default function ChartTableDialogs({
+  hosId,
   showTxUser,
   setSortedOrders,
   icuChartId,
@@ -39,7 +40,6 @@ export default function ChartTableDialogs({
   isCommandPressed,
   multiOrderPendingQueue,
   resetOrderStore,
-  hosId,
   setCopiedOrderPendingQueue,
   setMultiOrderPendingQueue,
 }: Props) {
@@ -50,6 +50,7 @@ export default function ChartTableDialogs({
 
       {/* 다중 오더 선택 후 작업 : 오더 복사, 템플릿저장, 테두리 변경, 오더 삭제 */}
       <MultiOrderDialog
+        hosId={hosId}
         setSortedOrders={setSortedOrders}
         isCommandPressed={isCommandPressed}
         multiOrderPendingQueue={multiOrderPendingQueue}

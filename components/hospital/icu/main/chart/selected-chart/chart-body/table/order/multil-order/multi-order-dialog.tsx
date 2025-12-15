@@ -14,6 +14,7 @@ import CopyMultiOrderButton from './copy-multi-order-button'
 import DeleteSelectedOrdersDialog from './delete-multi-order-dialog'
 
 type Props = {
+  hosId: string
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   isCommandPressed: boolean
   multiOrderPendingQueue: Partial<SelectedIcuOrder>[]
@@ -27,6 +28,7 @@ type Props = {
 }
 
 export default function MultiOrderDialog({
+  hosId,
   setSortedOrders,
   isCommandPressed,
   multiOrderPendingQueue,
@@ -70,7 +72,10 @@ export default function MultiOrderDialog({
         />
 
         <AddMultiOrderToTemplateDialog
+          hosId={hosId}
           setIsMultiOrderDialogOpen={setIsMultiOrderDialogOpen}
+          multiOrderPendingQueue={multiOrderPendingQueue}
+          setMultiOrderPendingQueue={setMultiOrderPendingQueue}
         />
 
         <BorderMultiOrderButton

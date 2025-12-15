@@ -35,7 +35,6 @@ export default function ChartTableBody({
     icu_chart_id,
     orders,
     patient: { species },
-    hos_id,
     main_vet,
   } = chartData
 
@@ -82,18 +81,12 @@ export default function ChartTableBody({
             : time,
       )
 
-      await upsertOrder(
-        hos_id,
-        icu_chart_id,
-        order.orderId,
-        updatedOrderTimes,
-        {
-          icu_chart_order_name: currentOrder.icu_chart_order_name,
-          icu_chart_order_comment: currentOrder.icu_chart_order_comment,
-          icu_chart_order_type: currentOrder.icu_chart_order_type,
-          icu_chart_order_priority: currentOrder.id,
-        },
-      )
+      await upsertOrder(hosId, icu_chart_id, order.orderId, updatedOrderTimes, {
+        icu_chart_order_name: currentOrder.icu_chart_order_name,
+        icu_chart_order_comment: currentOrder.icu_chart_order_comment,
+        icu_chart_order_type: currentOrder.icu_chart_order_type,
+        icu_chart_order_priority: currentOrder.id,
+      })
     }
 
     toast.success('오더시간을 변경하였습니다')
@@ -132,7 +125,7 @@ export default function ChartTableBody({
         orderTimePendingQueue={orderTimePendingQueue}
         orderwidth={orderWidth}
         icuChartId={icuChartId}
-        hosId={hos_id}
+        hosId={hosId}
         timeGuidelineData={timeGuidelineData}
         resetOrderStore={resetOrderStore}
       />
@@ -143,10 +136,11 @@ export default function ChartTableBody({
         sortedOrders={sortedOrders}
         orderColorsData={orderColorsData}
         weight={chartData.weight}
-        hosId={hos_id}
+        hosId={hosId}
       />
 
       <ChartTableDialogs
+        hosId={hosId}
         icuChartId={icuChartId}
         setSortedOrders={setSortedOrders}
         orders={orders}
@@ -158,7 +152,6 @@ export default function ChartTableBody({
         showTxUser={showTxUser}
         isCommandPressed={isCommandPressed}
         multiOrderPendingQueue={multiOrderPendingQueue}
-        hosId={hosId}
         setCopiedOrderPendingQueue={setCopiedOrderPendingQueue}
         setMultiOrderPendingQueue={setMultiOrderPendingQueue}
       />
