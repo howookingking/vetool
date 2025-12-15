@@ -15,6 +15,7 @@ type Props = {
   cellRef?: RefObject<HTMLTableRowElement>
   targetDate?: string
   hosId: string
+  patientId: string
 }
 
 export default function ChartTable({
@@ -22,6 +23,7 @@ export default function ChartTable({
   cellRef,
   targetDate,
   hosId,
+  patientId,
 }: Props) {
   const { icu_chart_id, orders, patient } = chartData
 
@@ -73,6 +75,7 @@ export default function ChartTable({
           cellRef={cellRef}
           chartData={chartData}
           hosId={hosId}
+          patientId={patientId}
         />
       )}
     </Table>

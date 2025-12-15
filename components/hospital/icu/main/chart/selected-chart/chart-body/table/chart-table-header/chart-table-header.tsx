@@ -55,17 +55,7 @@ export default function ChartTableHeader({
             오더 ({orderCount})
           </span>
 
-          <div className="absolute right-0.5 flex items-center gap-0.5">
-            {!isSorting ? (
-              <PasteTemplateOrderDialog
-                tableHeader
-                chartId={chartId}
-                hosId={hosId}
-                patientId={chartData.patient.patient_id}
-                targetDate={targetDate}
-              />
-            ) : null}
-
+          <div className="absolute right-0.5">
             {!isSorting ? (
               <OrderWidthButton
                 orderWidth={orderWidth}

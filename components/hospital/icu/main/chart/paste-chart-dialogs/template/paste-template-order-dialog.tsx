@@ -11,88 +11,136 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { Skeleton } from '@/components/ui/skeleton'
 import { Spinner } from '@/components/ui/spinner'
 import { getIcuTemplates } from '@/lib/services/icu/template/template'
 import type { IcuTemplate } from '@/types'
 import { BookmarkIcon } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import DialogTriggerButton from '../dialog-trigger-button'
 
-type Props = {
-  tableHeader?: boolean
-  chartId?: string
-  targetDate?: string
-  patientId: string
+// OrderCreatorRowProps : 이미 생성된 차트에서 템플릿오더를 추가
+// PasteChartDialogProps : 익일차트 혹은 첫차트에서 템플릿 오더를 추가
+
+type Props = OrderCreatorRowProps | PasteChartDialogProps
+
+type OrderCreatorRowProps = {
   hosId: string
+  isOrderCreator: true
+  chartId: string
+  patientId: null
+  targetDate: null
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+}
+
+type PasteChartDialogProps = {
+  hosId: string
+  isOrderCreator: false
+  chartId: null
+  patientId: string
+  targetDate: string
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
 }
 
 export default function PasteTemplateOrderDialog({
-  tableHeader,
+  isOrderCreator,
   chartId,
   targetDate,
   patientId,
   hosId,
+  open: controlledOpen,
+  onOpenChange: setControlledOpen,
 }: Props) {
   const [templateCharts, setTemplateCharts] = useState<IcuTemplate[]>([])
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [internalOpen, setInternalOpen] = useState(false)
   const [isFetching, setIsFetching] = useState(false)
 
-  const handleDialogOpenChange = async (open: boolean) => {
-    if (open) {
-      setIsFetching(true)
+  const isControlled = controlledOpen !== undefined
+  const isDialogOpen = isControlled ? controlledOpen : internalOpen
 
-      const templateCharts = await getIcuTemplates(hosId)
-      setTemplateCharts(templateCharts)
-
-      setIsFetching(false)
-      setIsDialogOpen(true)
+  const setIsDialogOpen = (
+    open: boolean | ((prevState: boolean) => boolean),
+  ) => {
+    const nextOpen = typeof open === 'function' ? open(isDialogOpen) : open
+    if (isControlled) {
+      setControlledOpen?.(nextOpen)
     } else {
-      setIsDialogOpen(false)
+      setInternalOpen(nextOpen)
     }
   }
 
+  const handleDialogOpenChange = async (open: boolean) => {
+    setIsDialogOpen(open)
+  }
+
+  useEffect(() => {
+    const fetchTemplates = async () => {
+      setIsFetching(true)
+
+      const templates = await getIcuTemplates(hosId)
+      setTemplateCharts(templates)
+
+      setIsFetching(false)
+    }
+    isDialogOpen && fetchTemplates()
+  }, [isDialogOpen])
+
   return (
     <Dialog open={isDialogOpen} onOpenChange={handleDialogOpenChange}>
-      {tableHeader ? (
-        <DialogTrigger asChild className="relative">
-          <Button
-            size="icon"
-            variant="ghost"
-            className="hidden shrink-0 md:inline-flex"
+      {!isControlled &&
+        (isOrderCreator ? (
+          <DialogTrigger
+            className="flex items-center gap-2"
             disabled={isFetching}
           >
-            {isFetching ? <Spinner /> : <BookmarkIcon />}
-          </Button>
-        </DialogTrigger>
-      ) : (
-        <DialogTriggerButton
-          icon={BookmarkIcon}
-          title="템플릿 차트 붙여넣기"
-          isLoading={isFetching}
-        />
-      )}
+            {isFetching ? <Spinner /> : <BookmarkIcon size={16} />}
+            템플릿
+          </DialogTrigger>
+        ) : (
+          <DialogTriggerButton
+            icon={BookmarkIcon}
+            title="템플릿 차트 붙여넣기"
+          />
+        ))}
 
-      <DialogContent className="md:max-w-[1200px]">
+      <DialogContent className="flex h-[609.5px] flex-col justify-start md:max-w-[1200px]">
         <DialogHeader>
           <DialogTitle>
-            {tableHeader ? '템플릿 오더 추가' : '템플릿 차트 붙여넣기'}
+            {isOrderCreator ? '템플릿 오더 추가' : '템플릿 차트 붙여넣기'}
           </DialogTitle>
           <DialogDescription>템플릿을 선택해주세요</DialogDescription>
         </DialogHeader>
 
-        <DataTable
-          columns={pasteTemplateColumns(
-            setIsDialogOpen,
-            tableHeader,
-            chartId,
-            targetDate,
-            patientId,
-          )}
-          data={templateCharts}
-          searchPlaceHolder="템플릿 이름 · 템플릿 설명 검색"
-        />
+        {isFetching ? (
+          <Skeleton className="h-[450px]" />
+        ) : (
+          <DataTable
+            columns={pasteTemplateColumns(
+              isOrderCreator
+                ? {
+                    setIsDialogOpen,
+                    isOrderCreator: true,
+                    chartId: chartId!,
+                    patientId: null,
+                    targetDate: null,
+                  }
+                : {
+                    setIsDialogOpen,
+                    isOrderCreator: false,
+                    chartId: null,
+                    patientId: patientId!,
+                    targetDate: targetDate!,
+                  },
+            )}
+            data={templateCharts}
+            searchPlaceHolder="템플릿 이름 · 템플릿 설명 검색"
+            rowLength={6}
+          />
+        )}
 
-        <DialogFooter>
+        <DialogFooter className="mt-auto">
           <DialogClose asChild>
             <Button size="sm" type="button" variant="outline">
               닫기

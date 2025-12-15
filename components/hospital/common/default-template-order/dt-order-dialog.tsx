@@ -13,6 +13,7 @@ import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { useState, type Dispatch, type SetStateAction } from 'react'
 import OrderTitleContent from '../order/order-title-content'
 import DtOrderForm from './dt-order-form'
+import type { OrderWidth } from '../../icu/main/chart/selected-chart/chart-body/table/chart-table-header/order-width-button'
 
 type Props = {
   order: SelectedIcuOrder
@@ -20,6 +21,7 @@ type Props = {
   isLastDefaultOrder?: boolean
   hosId: string
   isTemplate?: boolean
+  orderWidth: OrderWidth
 }
 
 export default function DtOrderDialog({
@@ -28,6 +30,7 @@ export default function DtOrderDialog({
   isLastDefaultOrder,
   hosId,
   isTemplate,
+  orderWidth,
 }: Props) {
   const {
     basicHosData: { orderColorsData },
@@ -37,7 +40,13 @@ export default function DtOrderDialog({
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      <DialogTrigger className="h-11 w-full px-2">
+      <DialogTrigger
+        className="h-11 w-full px-2"
+        style={{
+          width: orderWidth,
+          transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
+        }}
+      >
         <OrderTitleContent
           orderType={order.icu_chart_order_type!}
           orderName={order.icu_chart_order_name!}

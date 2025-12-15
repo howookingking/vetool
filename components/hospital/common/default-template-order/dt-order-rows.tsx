@@ -32,8 +32,8 @@ export default function DtOrderRows({
       {sortedOrders.map((order, index) => {
         return (
           <TableRow
-            className="relative w-full divide-x"
-            key={index}
+            className="divide-x"
+            key={order.icu_chart_order_id}
             style={borderedOrderClassName(sortedOrders, order, index)}
           >
             <DtOrderRowTitle

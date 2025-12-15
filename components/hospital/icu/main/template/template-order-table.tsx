@@ -68,7 +68,12 @@ export default function TemplateOrderTable({
           )}
 
           <TableRow>
-            <TableCell className="p-0">
+            <TableCell
+              className="w-full p-0"
+              style={{
+                width: orderWidth,
+              }}
+            >
               <DtOrderCreator
                 hosId={hosId}
                 sortedOrders={sortedOrders}
