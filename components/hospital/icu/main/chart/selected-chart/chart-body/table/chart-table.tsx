@@ -42,6 +42,7 @@ export default function ChartTable({
     <Table className="border">
       {/* 소팅버튼, 오더목록, 오더너비조절 버튼, 시간 */}
       <ChartTableHeader
+        orderCount={orders.length}
         chartData={chartData}
         isSorting={isSorting}
         onSortToggle={handleSortToggle}

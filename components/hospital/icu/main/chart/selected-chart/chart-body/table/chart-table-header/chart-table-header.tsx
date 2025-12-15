@@ -21,6 +21,7 @@ type Props = {
   chartId?: string
   hosId: string
   targetDate?: string
+  orderCount: number
 }
 
 export default function ChartTableHeader({
@@ -33,6 +34,7 @@ export default function ChartTableHeader({
   chartId,
   hosId,
   targetDate,
+  orderCount,
 }: Props) {
   const { hours, minutes } = useCurrentTime()
   const isTargetDateToday = targetDate ? isToday(targetDate) : false
@@ -50,7 +52,7 @@ export default function ChartTableHeader({
           <SortingButton isSorting={isSorting} onClick={onSortToggle} />
 
           <span className="absolute -z-10 w-full text-center">
-            오더 ({sortedOrders.length})
+            오더 ({orderCount})
           </span>
 
           <div className="absolute right-0.5 flex items-center gap-0.5">

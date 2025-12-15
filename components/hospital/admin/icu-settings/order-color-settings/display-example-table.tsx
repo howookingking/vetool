@@ -12,7 +12,11 @@ export default function DisplayExampleTable({
   return (
     <div className="relative">
       <Table className="border">
-        <ReadOnlyChartTableHeader orderWidth={400} setOrderWidth={() => {}} />
+        <ReadOnlyChartTableHeader
+          orderWidth={400}
+          setOrderWidth={() => {}}
+          orderCount={0}
+        />
 
         <ReadOnlyChartTableBody
           orders={DUMMY_ORDERS}

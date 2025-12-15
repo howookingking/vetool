@@ -11,6 +11,7 @@ type Props = {
   onSortToggle: () => void
   orderWidth: OrderWidth
   setOrderWidth: Dispatch<SetStateAction<OrderWidth>>
+  orderCount: number
 }
 
 export default function DtTableHeader({
@@ -18,6 +19,7 @@ export default function DtTableHeader({
   orderWidth,
   setOrderWidth,
   onSortToggle,
+  orderCount,
 }: Props) {
   return (
     <TableHeader className="shadow-sm">
@@ -32,6 +34,7 @@ export default function DtTableHeader({
           <SortingButton isSorting={isSorting} onClick={onSortToggle} />
 
           <span className="text-center">기본오더</span>
+          <span>오더 {orderCount === 0 ? '' : `(${orderCount})`}</span>
 
           <OrderWidthButton
             orderWidth={orderWidth}

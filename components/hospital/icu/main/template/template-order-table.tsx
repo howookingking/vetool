@@ -40,6 +40,7 @@ export default function TemplateOrderTable({
         orderWidth={orderWidth}
         setOrderWidth={setOrderWidth}
         onSortToggle={handleSortToggle}
+        orderCount={sortedOrders.length}
       />
 
       {isSorting ? (

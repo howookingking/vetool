@@ -97,6 +97,7 @@ export default function DefaultOrdersTable({
     <div className="relative">
       <Table className="border">
         <DtTableHeader
+          orderCount={defaultChartOrders.length}
           onSortToggle={handleSortToggle}
           isSorting={isSorting}
           orderWidth={orderWidth}
