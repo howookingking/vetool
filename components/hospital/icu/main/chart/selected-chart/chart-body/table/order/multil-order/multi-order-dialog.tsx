@@ -80,6 +80,8 @@ export default function MultiOrderDialog({
 
         <BorderMultiOrderButton
           setIsMultiOrderDialogOpen={setIsMultiOrderDialogOpen}
+          multiOrderPendingQueue={multiOrderPendingQueue}
+          setMultiOrderPendingQueue={setMultiOrderPendingQueue}
         />
 
         <DeleteSelectedOrdersDialog
