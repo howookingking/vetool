@@ -87,6 +87,8 @@ export default function MultiOrderDialog({
         <DeleteSelectedOrdersDialog
           setIsMultiOrderDialogOpen={setIsMultiOrderDialogOpen}
           setSortedOrders={setSortedOrders}
+          multiOrderPendingQueue={multiOrderPendingQueue}
+          setMultiOrderPendingQueue={setMultiOrderPendingQueue}
         />
       </DialogContent>
     </Dialog>
