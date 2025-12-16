@@ -44,6 +44,7 @@ export default function IcuFooter({ hosId, targetDate }: IcuFooterProps) {
             className={hideInMobile ? 'hidden md:block' : 'block'}
           >
             <Button
+              disabled={route === 'analysis'}
               size="sm"
               variant="ghost"
               className={cn(
