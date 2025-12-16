@@ -14,7 +14,6 @@ type Props = {
   vitalRefRange?: VitalRefRange[]
   species?: string
   orderWidth: number
-  resetOrderStore?: () => void
   setSelectedOrderPendingQueue?: (
     updater:
       | Partial<SelectedIcuOrder>[]
@@ -32,7 +31,6 @@ export default function OrderRowTitle({
   vitalRefRange,
   species,
   orderWidth,
-  resetOrderStore,
   setSelectedOrderPendingQueue,
   setOrderStep,
   setSelectedChartOrder,
@@ -43,6 +41,8 @@ export default function OrderRowTitle({
     icu_chart_order_type,
     icu_chart_order_name,
   } = order
+  const isOptimisticOrder = order.icu_chart_order_id.startsWith('temp_order_id')
+  const isEvenIndex = index % 2 === 0
 
   // sorting 때문에 상위에 있으면 안되고 여기 있어야함
   const {
@@ -67,7 +67,6 @@ export default function OrderRowTitle({
     }
 
     // 오더 수정하기 위해 다이얼로그 여는 경우
-    resetOrderStore!()
     setOrderStep!('edit')
     setSelectedChartOrder!(order)
   }
@@ -80,10 +79,6 @@ export default function OrderRowTitle({
     ? foundVital[species as keyof Omit<VitalRefRange, 'order_name'>]
     : undefined
   // -------- 바이탈 참조범위 --------
-
-  const isOptimisticOrder = order.icu_chart_order_id.startsWith('temp_order_id')
-
-  const isEvenIndex = index % 2 === 0
 
   return (
     <TableCell
@@ -103,10 +98,10 @@ export default function OrderRowTitle({
         onClick={isSorting ? undefined : handleClickOrderTitle}
         className={cn(
           'flex h-11 rounded-none px-2 hover:bg-transparent',
-          isOptimisticOrder && 'animate-bounce',
           isSorting ? 'cursor-grab' : 'cursor-pointer',
+          isOptimisticOrder && 'animate-shake-strong',
           isInOrderPendingQueue &&
-            'bg-primary/10 ring-1 ring-inset ring-primary transition-colors duration-200 hover:bg-primary/10',
+            'bg-primary/10 ring-1 ring-inset ring-primary hover:bg-primary/10',
         )}
         style={{
           width: orderWidth,
