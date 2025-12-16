@@ -31,23 +31,20 @@ export default function OrderTitleContent({
           orderType={orderType}
         />
 
-        <span
-          style={{ fontSize: `${orderFontSizeData}px` }}
-          className="leading-tight"
-        >
+        <span style={{ fontSize: orderFontSizeData }} className="leading-tight">
           {orderName}
         </span>
 
-        {vitalRefRange ? (
+        {vitalRefRange && (
           <span className="text-xs text-muted-foreground">
             ({vitalRefRange.min}~{vitalRefRange.max})
           </span>
-        ) : null}
+        )}
       </div>
 
       <span
         className="min-w-16 truncate text-right text-xs font-semibold text-muted-foreground"
-        style={{ fontSize: `${orderFontSizeData - 2}px` }}
+        style={{ fontSize: orderFontSizeData - 2 }}
       >
         {orderComment}
       </span>

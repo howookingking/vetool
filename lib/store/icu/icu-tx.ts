@@ -15,9 +15,11 @@ export type TxLocalState = {
   bucketImagesLength?: number
 } | null
 
+export type TxStep = 'closed' | 'detailInsert' | 'selectUser'
+
 type IcuTxStoreState = {
-  txStep: 'closed' | 'detailInsert' | 'selectUser'
-  setTxStep: (txStep: 'closed' | 'detailInsert' | 'selectUser') => void
+  txStep: TxStep
+  setTxStep: (txStep: TxStep) => void
 
   txLocalState: TxLocalState
   setTxLocalState: (updates: Partial<TxLocalState>) => void

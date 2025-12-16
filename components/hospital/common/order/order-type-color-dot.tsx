@@ -14,7 +14,7 @@ export default function OrderTypeColorDot({
     <div
       className="h-4 w-4 shrink-0 rounded-full border"
       style={{
-        background: orderColorsData[orderType as keyof IcuOrderColors],
+        background: orderColorsData[orderType],
       }}
     />
   )
