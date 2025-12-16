@@ -11,11 +11,12 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 import { deleteOrder } from '@/lib/services/icu/chart/order-mutation'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { Trash2Icon } from 'lucide-react'
-import type { Dispatch, SetStateAction } from 'react'
+import { useState, type Dispatch, type SetStateAction } from 'react'
 import { toast } from 'sonner'
 
 type Props = {
@@ -35,24 +36,31 @@ export default function DeleteSelectedOrdersDialog({
 }: Props) {
   const safeRefresh = useSafeRefresh()
 
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false)
+
   const handleDeleteOrderClick = async () => {
+    setIsDeleting(true)
     setSortedOrders((prev) =>
       prev.filter((order) => !multiOrderPendingQueue.includes(order)),
     )
 
-    multiOrderPendingQueue.forEach(async (order) => {
-      await deleteOrder(order.icu_chart_order_id!)
-    })
+    await Promise.all(
+      multiOrderPendingQueue.map((order) =>
+        deleteOrder(order.icu_chart_order_id!),
+      ),
+    )
 
     toast.success('오더를 삭제하였습니다')
-
+    setIsDeleting(false)
+    setIsAlertDialogOpen(false)
     setIsMultiOrderDialogOpen(false)
     setMultiOrderPendingQueue([])
     safeRefresh()
   }
 
   return (
-    <AlertDialog>
+    <AlertDialog open={isAlertDialogOpen} onOpenChange={setIsAlertDialogOpen}>
       <AlertDialogTrigger asChild>
         <Button
           className="flex items-center justify-start gap-2 py-5 text-base"
@@ -77,8 +85,10 @@ export default function DeleteSelectedOrdersDialog({
           <AlertDialogAction
             className="bg-destructive hover:bg-destructive/80"
             onClick={handleDeleteOrderClick}
+            disabled={isDeleting}
           >
             삭제
+            {isDeleting ? <Spinner /> : null}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
