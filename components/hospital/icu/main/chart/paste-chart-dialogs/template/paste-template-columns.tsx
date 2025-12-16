@@ -32,6 +32,7 @@ export const pasteTemplateColumns = (
     header: ({ column }) => {
       return (
         <Button
+          size="default"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
@@ -46,6 +47,7 @@ export const pasteTemplateColumns = (
     header: ({ column }) => {
       return (
         <Button
+          size="default"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
@@ -64,6 +66,7 @@ export const pasteTemplateColumns = (
     header: ({ column }) => {
       return (
         <Button
+          size="default"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
