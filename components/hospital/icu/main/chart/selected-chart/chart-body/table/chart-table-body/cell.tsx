@@ -110,7 +110,7 @@ export default function Cell({
       txComment: treatment?.icu_chart_tx_comment,
       txId: icuChartTxId,
       time,
-      txLog: treatment?.tx_log as TxLog[] | null,
+      txLog: treatment?.icu_chart_tx_log as TxLog[] | null,
       isCrucialChecked: treatment?.is_crucial,
     })
     setTxStep('detailInsert')
@@ -138,7 +138,7 @@ export default function Cell({
             txId: icuChartTxId,
             orderId,
             orderTime: time,
-            txLog: treatment?.tx_log as TxLog[] | null,
+            txLog: treatment?.icu_chart_tx_log as TxLog[] | null,
             isCrucialChecked: treatment?.is_crucial,
           },
         ]
@@ -177,7 +177,7 @@ export default function Cell({
       txResult: trimmedTxResult,
       txComment: trimmedTxComment ?? '',
       txId: icuChartTxId,
-      txLog: treatment?.tx_log as TxLog[] | null,
+      txLog: treatment?.icu_chart_tx_log as TxLog[] | null,
     }
 
     if (showTxUser) {

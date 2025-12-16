@@ -8,12 +8,7 @@ import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
 import { formatOrders } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedIcuChart, SelectedIcuOrder } from '@/types/icu/chart'
-import {
-  useEffect,
-  type Dispatch,
-  type RefObject,
-  type SetStateAction,
-} from 'react'
+import { useEffect, type Dispatch, type SetStateAction } from 'react'
 import { toast } from 'sonner'
 import ChartTableDialogs from './chart-table-dialogs'
 
@@ -21,10 +16,8 @@ type Props = {
   sortedOrders: SelectedIcuOrder[]
   isSorting: boolean
   orderWidth: number
-  isExport?: boolean
   icuChartId: SelectedIcuChart['icu_chart_id']
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
-  cellRef?: RefObject<HTMLTableRowElement>
   chartData: SelectedIcuChart
   hosId: string
 }
@@ -35,7 +28,6 @@ export default function ChartTableBody({
   orderWidth,
   icuChartId,
   setSortedOrders,
-  cellRef,
   chartData,
   hosId,
 }: Props) {
@@ -43,7 +35,6 @@ export default function ChartTableBody({
     icu_chart_id,
     orders,
     patient: { species },
-    hos_id,
     main_vet,
   } = chartData
 
@@ -65,7 +56,9 @@ export default function ChartTableBody({
     reset: resetOrderStore,
     orderTimePendingQueue,
     selectedTxPendingQueue,
-    selectedOrderPendingQueue,
+    multiOrderPendingQueue,
+    setCopiedOrderPendingQueue,
+    setMultiOrderPendingQueue,
   } = useIcuOrderStore()
 
   const { setTxStep } = useIcuTxStore()
@@ -88,18 +81,12 @@ export default function ChartTableBody({
             : time,
       )
 
-      await upsertOrder(
-        hos_id,
-        icu_chart_id,
-        order.orderId,
-        updatedOrderTimes,
-        {
-          icu_chart_order_name: currentOrder.icu_chart_order_name,
-          icu_chart_order_comment: currentOrder.icu_chart_order_comment,
-          icu_chart_order_type: currentOrder.icu_chart_order_type,
-          icu_chart_order_priority: currentOrder.id,
-        },
-      )
+      await upsertOrder(hosId, icu_chart_id, order.orderId, updatedOrderTimes, {
+        icu_chart_order_name: currentOrder.icu_chart_order_name,
+        icu_chart_order_comment: currentOrder.icu_chart_order_comment,
+        icu_chart_order_type: currentOrder.icu_chart_order_type,
+        icu_chart_order_priority: currentOrder.id,
+      })
     }
 
     toast.success('오더시간을 변경하였습니다')
@@ -107,7 +94,6 @@ export default function ChartTableBody({
     resetOrderStore()
   }
 
-  // 고정, 멀티오더는 멀티오더 컴포넌트로 보냄
   useEffect(() => {
     if (!isCommandPressed) {
       if (orderTimePendingQueue.length >= 1) {
@@ -126,7 +112,7 @@ export default function ChartTableBody({
   return (
     <TableBody>
       <OrderRows
-        selectedOrderPendingQueue={selectedOrderPendingQueue}
+        multiOrderPendingQueue={multiOrderPendingQueue}
         setOrderStep={setOrderStep}
         sortedOrders={sortedOrders}
         isSorting={isSorting}
@@ -138,9 +124,8 @@ export default function ChartTableBody({
         orderTimePendingQueueLength={orderTimePendingQueue.length}
         orderTimePendingQueue={orderTimePendingQueue}
         orderwidth={orderWidth}
-        cellRef={cellRef}
         icuChartId={icuChartId}
-        hosId={hos_id}
+        hosId={hosId}
         timeGuidelineData={timeGuidelineData}
         resetOrderStore={resetOrderStore}
       />
@@ -151,10 +136,11 @@ export default function ChartTableBody({
         sortedOrders={sortedOrders}
         orderColorsData={orderColorsData}
         weight={chartData.weight}
-        hosId={hos_id}
+        hosId={hosId}
       />
 
       <ChartTableDialogs
+        hosId={hosId}
         icuChartId={icuChartId}
         setSortedOrders={setSortedOrders}
         orders={orders}
@@ -165,8 +151,9 @@ export default function ChartTableBody({
         orderColorsData={orderColorsData}
         showTxUser={showTxUser}
         isCommandPressed={isCommandPressed}
-        selectedOrderPendingQueue={selectedOrderPendingQueue}
-        hosId={hosId}
+        multiOrderPendingQueue={multiOrderPendingQueue}
+        setCopiedOrderPendingQueue={setCopiedOrderPendingQueue}
+        setMultiOrderPendingQueue={setMultiOrderPendingQueue}
       />
     </TableBody>
   )

@@ -1,6 +1,5 @@
 'use client'
 
-import NewFeature from '@/components/common/new-feature'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -13,7 +12,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import type { SelectedIcuChart } from '@/types/icu/chart'
-import { Share } from 'lucide-react'
+import { ShareIcon } from 'lucide-react'
 import { useState } from 'react'
 import ExportPdfDialog from './export-pdf-dialog'
 import ExportPngDialog from './export-png-dialog'
@@ -28,13 +27,11 @@ export default function ExportDialog({ chartData }: Props) {
 
   return (
     <Dialog open={isParentsDialogOpen} onOpenChange={setIsParentsDialogOpen}>
-      <NewFeature>
-        <DialogTrigger asChild>
-          <Button variant="ghost" size="icon">
-            <Share size={18} />
-          </Button>
-        </DialogTrigger>
-      </NewFeature>
+      <DialogTrigger asChild>
+        <Button variant="ghost" size="icon">
+          <ShareIcon />
+        </Button>
+      </DialogTrigger>
 
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="gap-2">
@@ -53,23 +50,17 @@ export default function ExportDialog({ chartData }: Props) {
             <Button variant="outline">닫기</Button>
           </DialogClose>
 
-          <NewFeature>
-            <ExportTextDialog chartData={chartData} />
-          </NewFeature>
+          <ExportTextDialog chartData={chartData} />
 
-          <NewFeature>
-            <ExportPngDialog
-              chartData={chartData}
-              setIsParentsDialogOpen={setIsParentsDialogOpen}
-            />
-          </NewFeature>
+          <ExportPngDialog
+            chartData={chartData}
+            setIsParentsDialogOpen={setIsParentsDialogOpen}
+          />
 
-          <NewFeature>
-            <ExportPdfDialog
-              chartData={chartData}
-              setIsParentsDialogOpen={setIsParentsDialogOpen}
-            />
-          </NewFeature>
+          <ExportPdfDialog
+            chartData={chartData}
+            setIsParentsDialogOpen={setIsParentsDialogOpen}
+          />
         </DialogFooter>
       </DialogContent>
     </Dialog>

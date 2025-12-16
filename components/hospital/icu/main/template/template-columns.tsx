@@ -15,6 +15,7 @@ export const templateColumns = (hosId: string): ColumnDef<IcuTemplate>[] => [
       return (
         <Button
           variant="ghost"
+          size="default"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           템플릿 이름
@@ -29,6 +30,7 @@ export const templateColumns = (hosId: string): ColumnDef<IcuTemplate>[] => [
       return (
         <Button
           variant="ghost"
+          size="default"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           설명
@@ -43,6 +45,7 @@ export const templateColumns = (hosId: string): ColumnDef<IcuTemplate>[] => [
       return (
         <Button
           variant="ghost"
+          size="default"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           생성일

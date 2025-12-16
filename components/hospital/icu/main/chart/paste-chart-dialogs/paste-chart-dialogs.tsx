@@ -70,6 +70,8 @@ export default function PasteChartDialogs({
         hosId={hosId}
         patientId={patientId}
         targetDate={targetDate}
+        isOrderCreator={false}
+        chartId={null}
       />
 
       <PasteCopiedChartDialog patientId={patientId} targetDate={targetDate} />

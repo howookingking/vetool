@@ -11,37 +11,44 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
+import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 import { deleteOrder } from '@/lib/services/icu/chart/order-mutation'
-import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { Trash2Icon } from 'lucide-react'
 import type { Dispatch, SetStateAction } from 'react'
 import { toast } from 'sonner'
 
-type DeleteSelectedOrdersDialogProps = {
-  setIsMultiSelectOrderActionDialogOpen: Dispatch<SetStateAction<boolean>>
+type Props = {
+  setIsMultiOrderDialogOpen: Dispatch<SetStateAction<boolean>>
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
+  multiOrderPendingQueue: Partial<SelectedIcuOrder>[]
+  setMultiOrderPendingQueue: Dispatch<
+    SetStateAction<Partial<SelectedIcuOrder>[]>
+  >
 }
 
 export default function DeleteSelectedOrdersDialog({
-  setIsMultiSelectOrderActionDialogOpen,
+  setIsMultiOrderDialogOpen,
   setSortedOrders,
-}: DeleteSelectedOrdersDialogProps) {
-  const { reset: orderReset, selectedOrderPendingQueue } = useIcuOrderStore()
+  multiOrderPendingQueue,
+  setMultiOrderPendingQueue,
+}: Props) {
+  const safeRefresh = useSafeRefresh()
 
   const handleDeleteOrderClick = async () => {
     setSortedOrders((prev) =>
-      prev.filter((order) => !selectedOrderPendingQueue.includes(order)),
+      prev.filter((order) => !multiOrderPendingQueue.includes(order)),
     )
 
-    selectedOrderPendingQueue.forEach(async (order) => {
+    multiOrderPendingQueue.forEach(async (order) => {
       await deleteOrder(order.icu_chart_order_id!)
     })
 
     toast.success('오더를 삭제하였습니다')
 
-    setIsMultiSelectOrderActionDialogOpen(false)
-    orderReset()
+    setIsMultiOrderDialogOpen(false)
+    setMultiOrderPendingQueue([])
+    safeRefresh()
   }
 
   return (
@@ -52,13 +59,13 @@ export default function DeleteSelectedOrdersDialog({
           variant="outline"
         >
           <Trash2Icon />
-          오더 삭제
+          삭제
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            {selectedOrderPendingQueue.length}개의 오더 삭제
+            {multiOrderPendingQueue.length}개의 오더 삭제
           </AlertDialogTitle>
           <AlertDialogDescription>
             선택한 오더를 삭제합니다

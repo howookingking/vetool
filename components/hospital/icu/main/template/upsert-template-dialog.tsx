@@ -19,6 +19,7 @@ import { Edit2Icon, PlusIcon } from 'lucide-react'
 import { useState } from 'react'
 import ConfirmAddTemplateDialog from './confirm-add-template-dialog'
 import TemplateOrderTable from './template-order-table'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 
 type Props = EditTemplateProps | NewTemplateProps
 
@@ -103,7 +104,9 @@ export default function UpsertTemplateDialog({
       >
         <DialogHeader>
           <DialogTitle>{isEdit ? `템플릿 수정` : '템플릿 만들기'}</DialogTitle>
-          <DialogDescription>자유롭게 템플릿을 만들어주세요</DialogDescription>
+          <VisuallyHidden>
+            <DialogDescription />
+          </VisuallyHidden>
         </DialogHeader>
 
         <div className="max-h-[800px] overflow-scroll">

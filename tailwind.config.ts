@@ -111,8 +111,8 @@ const config = {
         },
         shake: createShakeKeyframes(0.1),
         'shake-reverse': createShakeKeyframes(0.1, true),
-        'shake-strong': createShakeKeyframes(0.5),
-        'shake-strong-reverse': createShakeKeyframes(0.5, true),
+        'shake-strong': createShakeKeyframes(0.3),
+        'shake-strong-reverse': createShakeKeyframes(0.3, true),
 
         slideDown: {
           '0%': { transform: 'translateY(-100%)', opacity: '0' },

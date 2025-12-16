@@ -78,18 +78,8 @@ export type SelectedTreatment = Pick<
   | 'is_crucial'
   | 'has_images'
 > & {
-  tx_log: TxLog[] | null
+  icu_chart_tx_log: TxLog[] | null
 }
-
-// export type Treatment = {
-//   time: number
-//   tx_id: string
-//   tx_log: TxLog | null
-//   tx_result: string | null
-//   tx_comment: string | null
-//   is_crucial: boolean
-//   has_images: boolean
-// }
 
 export type PrevIoChartData = {
   icu_chart_id: string

@@ -7,9 +7,15 @@ type Props = {
   chartData: SelectedIcuChart
   targetDate: string
   hosId: string
+  patientId: string
 }
 
-export default function ChartBody({ chartData, targetDate, hosId }: Props) {
+export default function ChartBody({
+  chartData,
+  targetDate,
+  hosId,
+  patientId,
+}: Props) {
   const {
     icu_io: { memo_a, memo_b, memo_c, icu_io_id },
   } = chartData
@@ -18,7 +24,12 @@ export default function ChartBody({ chartData, targetDate, hosId }: Props) {
     <div className="mt-12 flex w-[420vw] flex-col gap-2 p-2 sm:w-[300vw] md:w-full">
       <ChartInfos chartData={chartData} />
 
-      <ChartTable chartData={chartData} targetDate={targetDate} hosId={hosId} />
+      <ChartTable
+        chartData={chartData}
+        targetDate={targetDate}
+        hosId={hosId}
+        patientId={patientId}
+      />
 
       <ChartMemos
         memoA={memo_a as Memo[] | null}

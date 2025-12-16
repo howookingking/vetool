@@ -1,12 +1,14 @@
 'use no memo'
 
 import StyledCheckbox from '@/components/common/styled-checkbox'
+import SubmitButton from '@/components/common/submit-button'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogClose,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -22,11 +24,9 @@ import {
 import { Input } from '@/components/ui/input'
 import { templateFormSchema } from '@/lib/schemas/icu/chart/template-schema'
 import { createTemplateChart } from '@/lib/services/icu/template/template'
-import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
-import { cn } from '@/lib/utils/utils'
+import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { BookmarkIcon, LoaderCircleIcon } from 'lucide-react'
-import { useParams } from 'next/navigation'
+import { BookmarkPlusIcon } from 'lucide-react'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -36,19 +36,26 @@ const DEFAULT_FORM_VALUES = {
   template_name: undefined,
   template_comment: undefined,
   is_time_included: false,
+} as const
+
+type Props = {
+  hosId: string
+  setIsMultiOrderDialogOpen: Dispatch<SetStateAction<boolean>>
+  multiOrderPendingQueue: Partial<SelectedIcuOrder>[]
+  setMultiOrderPendingQueue: Dispatch<
+    SetStateAction<Partial<SelectedIcuOrder>[]>
+  >
 }
 
-export default function AddSelectedOrdersToTemplateDialog({
+export default function AddMultiOrderToTemplateDialog({
+  hosId,
   setIsMultiOrderDialogOpen,
-}: {
-  setIsMultiOrderDialogOpen: Dispatch<SetStateAction<boolean>>
-}) {
-  const { hos_id } = useParams()
-
+  multiOrderPendingQueue,
+  setMultiOrderPendingQueue,
+}: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
-  const { selectedOrderPendingQueue, reset: orderReset } = useIcuOrderStore()
   const form = useForm<z.infer<typeof templateFormSchema>>({
     resolver: zodResolver(templateFormSchema),
     defaultValues: DEFAULT_FORM_VALUES,
@@ -59,7 +66,7 @@ export default function AddSelectedOrdersToTemplateDialog({
 
     setIsSubmitting(true)
 
-    const ordererDefaulted = selectedOrderPendingQueue.map((order) => ({
+    const ordererDefaultedMultiOrder = multiOrderPendingQueue.map((order) => ({
       ...order,
       icu_chart_order_time: order.icu_chart_order_time!.map((time) =>
         time !== '0' ? '기본' : '0',
@@ -67,8 +74,8 @@ export default function AddSelectedOrdersToTemplateDialog({
     }))
 
     await createTemplateChart(
-      hos_id as string,
-      ordererDefaulted,
+      hosId,
+      ordererDefaultedMultiOrder,
       template_name,
       is_time_included,
       template_comment ?? '',
@@ -79,13 +86,11 @@ export default function AddSelectedOrdersToTemplateDialog({
     setIsSubmitting(false)
     setIsDialogOpen(false)
     setIsMultiOrderDialogOpen(false)
-    orderReset()
+    setMultiOrderPendingQueue([])
   }
 
   const handleOpenChange = (open: boolean) => {
-    if (open) {
-      form.reset(DEFAULT_FORM_VALUES)
-    }
+    if (open) form.reset(DEFAULT_FORM_VALUES)
     setIsDialogOpen(open)
   }
 
@@ -96,14 +101,14 @@ export default function AddSelectedOrdersToTemplateDialog({
           className="flex items-center justify-start gap-2 py-5 text-base"
           variant="outline"
         >
-          <BookmarkIcon />
+          <BookmarkPlusIcon />
           템플릿으로 저장
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>템플릿 저장</DialogTitle>
-          <DialogDescription>{`${selectedOrderPendingQueue.length || selectedOrderPendingQueue.length}개의 오더를 저장합니다`}</DialogDescription>
+          <DialogDescription>{`${multiOrderPendingQueue.length}개의 오더를 저장합니다`}</DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
@@ -158,7 +163,7 @@ export default function AddSelectedOrdersToTemplateDialog({
                     <StyledCheckbox
                       title={
                         <>
-                          <span className="bg-rose-400/10 p-1">시간정보</span>를
+                          <span className="bg-rose-400/10 p-1">형광팬</span>을
                           같이 저장합니다
                         </>
                       }
@@ -170,23 +175,15 @@ export default function AddSelectedOrdersToTemplateDialog({
               )}
             />
 
-            <div className="flex">
-              <div className="ml-auto">
-                <DialogClose asChild>
-                  <Button type="button" variant="outline" tabIndex={-1}>
-                    닫기
-                  </Button>
-                </DialogClose>
-                <Button type="submit" disabled={isSubmitting} className="ml-2">
-                  저장
-                  <LoaderCircleIcon
-                    className={cn(
-                      isSubmitting ? 'ml-2 animate-spin' : 'hidden',
-                    )}
-                  />
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button type="button" variant="outline" tabIndex={-1}>
+                  닫기
                 </Button>
-              </div>
-            </div>
+              </DialogClose>
+
+              <SubmitButton buttonText="저장" isPending={isSubmitting} />
+            </DialogFooter>
           </form>
         </Form>
       </DialogContent>

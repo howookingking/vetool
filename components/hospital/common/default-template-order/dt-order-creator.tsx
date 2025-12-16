@@ -51,7 +51,7 @@ export default function DtOrderCreator({
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const [newOrderInput, setNewOrderInput] = useState('')
-  const [orderType, setOrderType] = useState<OrderType>('manual')
+  const [orderType, setOrderType] = useState<OrderType | 'template'>('manual')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const availableCheckListOrders = getAvailableChecklistOrders(sortedOrders)

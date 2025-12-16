@@ -39,14 +39,14 @@ export default function ReadOnlyOrderRowTitle({
   // -------- 바이탈 참조범위 --------
 
   return (
-    <TableCell
-      className="p-0"
-      style={{
-        width: orderWidth,
-        transition: 'width 0.3s ease-in-out, transform 0.3s ease-in-out',
-      }}
-    >
-      <div className="flex h-11 px-2">
+    <TableCell className="p-0">
+      <div
+        className="flex h-11 px-2"
+        style={{
+          width: orderWidth,
+          transition: 'width 0.3s ease-in-out',
+        }}
+      >
         <OrderTitleContent
           orderType={icu_chart_order_type as OrderType}
           orderName={icu_chart_order_name}

@@ -10,7 +10,7 @@ import { type Dispatch, type SetStateAction, useEffect } from 'react'
 
 type Props = {
   createOrder: (orderName: string, orderComment: string) => Promise<void>
-  setOrderType: Dispatch<SetStateAction<OrderType>>
+  setOrderType: Dispatch<SetStateAction<OrderType | 'template'>>
   availableCheckListOrders: string[]
 }
 
