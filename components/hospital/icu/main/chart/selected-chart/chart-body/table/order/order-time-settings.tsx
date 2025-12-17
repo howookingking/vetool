@@ -1,5 +1,6 @@
 import HelperTooltip from '@/components/common/helper-tooltip'
 import { Button } from '@/components/ui/button'
+import { Kbd } from '@/components/ui/kbd'
 import {
   Select,
   SelectContent,
@@ -77,7 +78,8 @@ export default function OrderTimeSettings({
       <div className="flex items-center gap-2">
         <span className="text-sm font-semibold">오더 시간 설정</span>
         <HelperTooltip side="right">
-          표에서 ctrl + 우클릭 으로도 설정이 가능합니다
+          처치표에서 <Kbd>Ctrl</Kbd> + <Kbd>우클릭</Kbd> 으로도 설정이
+          가능합니다
         </HelperTooltip>
       </div>
       <div className="flex flex-col justify-between gap-2 md:flex-row">

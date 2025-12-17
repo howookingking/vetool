@@ -24,10 +24,10 @@ export const txDetailRegisterFormSchema = z
 export const userLogFormSchema = z.object({
   userLog: z
     .string({
-      required_error: '내부적으로 정한 처치자의 코드 또는 이름을 입력해주세요',
+      required_error: '처치자를 입력해주세요',
     })
     .trim()
     .min(1, {
-      message: '내부적으로 정한 처치자의 코드 또는 이름을 입력해주세요',
+      message: '처치자를 입력해주세요',
     }),
 })

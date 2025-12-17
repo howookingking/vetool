@@ -1,8 +1,8 @@
 import Cell from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/cell'
-import NoFecalOrUrineAlert from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/no-fecal-urine-alert'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
-import type { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
-import type { TxLocalState } from '@/lib/store/icu/icu-tx'
+import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
+import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder, SelectedTreatment } from '@/types/icu/chart'
 import { useMemo } from 'react'
@@ -10,48 +10,10 @@ import { useMemo } from 'react'
 type Props = {
   hosId: string
   order: SelectedIcuOrder
-  showOrderer: boolean
-  showTxUser: boolean
-  selectedTxPendingQueue: OrderTimePendingQueue[]
-  orderTimePendingQueueLength: number
-  vitalRefRange: VitalRefRange[]
   species: string
-  setOrderTimePendingQueue: (
-    updater:
-      | OrderTimePendingQueue[]
-      | ((prev: OrderTimePendingQueue[]) => OrderTimePendingQueue[]),
-  ) => void
-  setSelectedTxPendingQueue: (
-    updater:
-      | OrderTimePendingQueue[]
-      | ((prev: OrderTimePendingQueue[]) => OrderTimePendingQueue[]),
-  ) => void
-  isMutationCanceled: boolean
-  setIsMutationCanceled: (isMutationCanceled: boolean) => void
-  setTxStep: (txStep: 'closed' | 'detailInsert' | 'selectUser') => void
-  setTxLocalState: (updates: Partial<TxLocalState>) => void
-  timeGuidelineData: number[]
-  orderTimePendingQueue: OrderTimePendingQueue[]
 }
 
-export default function OrderRowCells({
-  hosId,
-  order,
-  showOrderer,
-  showTxUser,
-  selectedTxPendingQueue,
-  orderTimePendingQueueLength,
-  vitalRefRange,
-  species,
-  setOrderTimePendingQueue,
-  setSelectedTxPendingQueue,
-  isMutationCanceled,
-  setIsMutationCanceled,
-  setTxStep,
-  setTxLocalState,
-  timeGuidelineData,
-  orderTimePendingQueue,
-}: Props) {
+export default function OrderRowCells({ hosId, order, species }: Props) {
   const {
     icu_chart_order_time,
     icu_chart_order_id,
@@ -60,16 +22,28 @@ export default function OrderRowCells({
     icu_chart_order_name,
   } = order
 
+  const {
+    basicHosData: { vitalRefRange, timeGuidelineData, showOrderer, showTxUser },
+  } = useBasicHosDataContext()
+  const {
+    orderTimePendingQueue,
+    setOrderTimePendingQueue,
+    selectedTxPendingQueue,
+    setSelectedTxPendingQueue,
+  } = useIcuOrderStore()
+  const {
+    isMutationCanceled,
+    setIsMutationCanceled,
+    setTxLocalState,
+    setTxStep,
+  } = useIcuTxStore()
+
   const foundVital = vitalRefRange.find(
     (vital) => vital.order_name === icu_chart_order_name,
   )
   const rowVitalRefRange = foundVital
     ? foundVital[species as keyof Omit<VitalRefRange, 'order_name'>]
     : undefined
-
-  const noFecalOrUrineResult =
-    (icu_chart_order_name === '배변' || icu_chart_order_name === '배뇨') &&
-    treatments.length === 0
 
   const toggleOrderTime = (orderId: string, time: number) => {
     setOrderTimePendingQueue((prevQueue) => {
@@ -163,7 +137,7 @@ export default function OrderRowCells({
     setIsMutationCanceled,
     setTxStep,
     setTxLocalState,
-    orderTimePendingQueueLength,
+    orderTimePendingQueueLength: orderTimePendingQueue.length,
     rowVitalRefRange,
     selectedTxPendingQueue,
   }
@@ -190,10 +164,6 @@ export default function OrderRowCells({
           />
         )
       })}
-
-      {noFecalOrUrineResult ? (
-        <NoFecalOrUrineAlert orderName={icu_chart_order_name} />
-      ) : null}
     </>
   )
 }

@@ -12,6 +12,7 @@ type Props = {
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   orderWidth: OrderWidth
   onOrderMove: (event: Sortable.SortableEvent) => void
+  targetDate: string
 }
 
 export default function SortingOrderRows({
@@ -20,6 +21,7 @@ export default function SortingOrderRows({
   setSortedOrders,
   orderWidth,
   onOrderMove,
+  targetDate,
 }: Props) {
   return (
     <SortableOrderWrapper
@@ -34,6 +36,7 @@ export default function SortingOrderRows({
             order={order}
             isSorting={isSorting}
             orderWidth={orderWidth}
+            targetDate={targetDate}
           />
         </TableRow>
       ))}
