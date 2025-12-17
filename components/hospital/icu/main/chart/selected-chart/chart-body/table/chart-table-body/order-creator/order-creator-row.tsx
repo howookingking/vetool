@@ -1,4 +1,3 @@
-import NewFeature from '@/components/common/new-feature'
 import OrderTypeColorDot from '@/components/hospital/common/order/order-type-color-dot'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -15,7 +14,7 @@ import {
   DEFAULT_ICU_ORDER_TYPE,
   type OrderType,
 } from '@/constants/hospital/icu/chart/order'
-import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
+import { useSafeRefresh } from '@/hooks/use-safe-refresh'
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedIcuChart, SelectedIcuOrder } from '@/types/icu/chart'
@@ -155,48 +154,44 @@ export default function OrderCreatorRow({
     <TableRow className="hover:bg-transparent">
       <TableCell className="p-0">
         <div className="relative flex w-full items-center">
-          <NewFeature>
-            <Select
-              onValueChange={(value: string) => {
-                if (value === 'template') {
-                  setIsTemplateDialogOpen(true)
-                  return
-                }
-                setOrderType(value as OrderType)
-              }}
-              value={orderType}
-            >
-              <SelectTrigger className="focus-inset h-11 w-[128px] shrink-0 rounded-none border-0 border-r px-2 shadow-none">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="p-0">
-                {DEFAULT_ICU_ORDER_TYPE.filter((order) =>
-                  availableCheckListOrders.length > 0
-                    ? order
-                    : order.value !== 'checklist',
-                ).map((item) => (
-                  <SelectItem key={item.value} value={item.value}>
-                    <div className="flex items-center gap-2">
-                      <OrderTypeColorDot
-                        orderType={item.value}
-                        orderColorsData={orderColorsData}
-                      />
-                      <span>{item.label}</span>
-                    </div>
-                  </SelectItem>
-                ))}
+          <Select
+            onValueChange={(value: string) => {
+              if (value === 'template') {
+                setIsTemplateDialogOpen(true)
+                return
+              }
+              setOrderType(value as OrderType)
+            }}
+            value={orderType}
+          >
+            <SelectTrigger className="focus-inset h-11 w-[128px] shrink-0 rounded-none border-0 border-r px-2 shadow-none">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="p-0">
+              {DEFAULT_ICU_ORDER_TYPE.filter((order) =>
+                availableCheckListOrders.length > 0
+                  ? order
+                  : order.value !== 'checklist',
+              ).map((item) => (
+                <SelectItem key={item.value} value={item.value}>
+                  <div className="flex items-center gap-2">
+                    <OrderTypeColorDot
+                      orderType={item.value}
+                      orderColorsData={orderColorsData}
+                    />
+                    <span>{item.label}</span>
+                  </div>
+                </SelectItem>
+              ))}
 
-                <NewFeature>
-                  <SelectItem value="template">
-                    <div className="flex items-center gap-2">
-                      <BookmarkIcon size={16} />
-                      <span>템플릿</span>
-                    </div>
-                  </SelectItem>
-                </NewFeature>
-              </SelectContent>
-            </Select>
-          </NewFeature>
+              <SelectItem value="template">
+                <div className="flex items-center gap-2">
+                  <BookmarkIcon size={16} />
+                  <span>템플릿</span>
+                </div>
+              </SelectItem>
+            </SelectContent>
+          </Select>
 
           <PasteTemplateOrderDialog
             chartId={icuChartId}

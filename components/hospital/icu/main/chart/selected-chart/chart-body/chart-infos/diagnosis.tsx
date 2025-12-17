@@ -1,7 +1,7 @@
 'use client'
 
 import Autocomplete from '@/components/common/auto-complete/auto-complete'
-import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
+import { useSafeRefresh } from '@/hooks/use-safe-refresh'
 import { updateDiagnosis } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { useState } from 'react'
 import { toast } from 'sonner'

@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
+import { useSafeRefresh } from '@/hooks/use-safe-refresh'
 import { cpcrEtTubeSchema } from '@/lib/schemas/icu/chart/chart-info-schema'
 import { updateCpcrEtTube } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { cn } from '@/lib/utils/utils'

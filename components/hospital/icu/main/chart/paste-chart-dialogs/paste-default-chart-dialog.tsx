@@ -11,7 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
+import { useSafeRefresh } from '@/hooks/use-safe-refresh'
 import { pasteDefaultIcuChart } from '@/lib/services/icu/chart/add-icu-chart'
 import { ClipboardListIcon, CrownIcon, SyringeIcon } from 'lucide-react'
 import { useState } from 'react'

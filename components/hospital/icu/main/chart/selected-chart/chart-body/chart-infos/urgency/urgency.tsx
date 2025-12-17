@@ -6,7 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
+import { useSafeRefresh } from '@/hooks/use-safe-refresh'
 import { updateUrgency } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { SirenIcon, StarIcon } from 'lucide-react'
 import { useState } from 'react'

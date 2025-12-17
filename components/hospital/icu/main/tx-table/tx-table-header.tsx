@@ -1,4 +1,4 @@
-import LettOrderCountsAndCopyTxButton from '@/components/hospital/icu/main/tx-table/left-order-counts-and-copy-tx-button'
+import LeftOrderCountsAndCopyTxButton from '@/components/hospital/icu/main/tx-table/left-order-counts-and-copy-tx-button'
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import {
   DEFAULT_ICU_ORDER_TYPE,
@@ -92,7 +92,7 @@ export default function TxTableHeader({
                 <span>{time.toString().padStart(2, '0')}</span>
 
                 {leftOrderCountsAtTime > 0 && (
-                  <LettOrderCountsAndCopyTxButton
+                  <LeftOrderCountsAndCopyTxButton
                     handleClick={() => handleCopyToClipboard(time)}
                     isCopied={copiedTxTime === time}
                     leftOrderCountsAtTime={leftOrderCountsAtTime}

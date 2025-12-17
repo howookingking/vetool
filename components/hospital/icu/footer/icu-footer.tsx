@@ -3,7 +3,7 @@
 import RealtimeStatus from '@/components/hospital/icu/footer/realtime-status'
 import { Button } from '@/components/ui/button'
 import useIcuRealtime from '@/hooks/use-icu-realtime'
-import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
+import { useSafeRefresh } from '@/hooks/use-safe-refresh'
 import { cn } from '@/lib/utils/utils'
 import { DashboardIcon } from '@radix-ui/react-icons'
 import {

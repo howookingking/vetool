@@ -9,7 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
+import { useSafeRefresh } from '@/hooks/use-safe-refresh'
 import { copyPrevChart } from '@/lib/services/icu/chart/add-icu-chart'
 import { ClipboardPasteIcon } from 'lucide-react'
 import { useState } from 'react'

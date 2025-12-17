@@ -1,6 +1,7 @@
 'use no memo'
 
 import StyledCheckbox from '@/components/common/styled-checkbox'
+import SubmitButton from '@/components/common/submit-button'
 import TxLog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/tx/detail-insert-step/tx-log'
 import { Button } from '@/components/ui/button'
 import {
@@ -19,7 +20,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
+import { useSafeRefresh } from '@/hooks/use-safe-refresh'
 import useUpsertTx from '@/hooks/use-upsert-tx'
 import { txDetailRegisterFormSchema } from '@/lib/schemas/icu/chart/tx-schema'
 import { deleteIcuChartTx } from '@/lib/services/icu/chart/tx-mutation'
@@ -29,8 +30,6 @@ import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provi
 // import type { ImageUrlResponse } from '@/types/images'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
-import { LoaderCircleIcon } from 'lucide-react'
-import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -293,12 +292,10 @@ export default function TxDetailInsertStep({ hosId }: { hosId: string }) {
                 </Button>
               </DialogClose>
 
-              <Button type="submit" disabled={isSubmitting}>
-                {showTxUser ? '다음' : '확인'}
-                {isSubmitting && (
-                  <LoaderCircleIcon className="h-4 w-4 animate-spin" />
-                )}
-              </Button>
+              <SubmitButton
+                isPending={isSubmitting}
+                buttonText={showTxUser ? '다음' : '확인'}
+              />
             </div>
           </div>
         </form>

@@ -1,5 +1,5 @@
 import { Kbd } from '@/components/ui/kbd'
-import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
+import { useSafeRefresh } from '@/hooks/use-safe-refresh'
 import useShortcutKey from '@/hooks/use-shortcut-key'
 import { reorderDefaultOrders } from '@/lib/services/admin/icu/default-orders'
 import { reorderOrders } from '@/lib/services/icu/chart/order-mutation'

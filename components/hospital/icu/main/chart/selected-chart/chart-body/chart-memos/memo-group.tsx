@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Textarea } from '@/components/ui/textarea'
 import { MEMO_COLORS } from '@/constants/hospital/icu/chart/colors'
-import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
+import { useSafeRefresh } from '@/hooks/use-safe-refresh'
 import { updateMemos } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import type { Memo, MemoColor, MemoGroup } from '@/types/icu/chart'
 import {
