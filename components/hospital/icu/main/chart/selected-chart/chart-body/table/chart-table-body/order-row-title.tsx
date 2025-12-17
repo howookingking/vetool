@@ -1,59 +1,60 @@
 import OrderTitleContent from '@/components/hospital/common/order/order-title-content'
 import { Button } from '@/components/ui/button'
 import { TableCell } from '@/components/ui/table'
-import type { OrderStep } from '@/lib/store/icu/icu-order'
+import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 
 type Props = {
-  order: SelectedIcuOrder
   index: number
+  order: SelectedIcuOrder
   isSorting?: boolean
   vitalRefRange?: VitalRefRange[]
   species?: string
   orderWidth: number
-  setSelectedOrderPendingQueue?: (
-    updater:
-      | Partial<SelectedIcuOrder>[]
-      | ((prev: Partial<SelectedIcuOrder>[]) => Partial<SelectedIcuOrder>[]),
-  ) => void
-  setOrderStep?: (orderStep: OrderStep) => void
-  setSelectedChartOrder?: (chartOrder: Partial<SelectedIcuOrder>) => void
-  isInOrderPendingQueue?: boolean
+  targetDate: string
 }
 
 export default function OrderRowTitle({
+  index,
   order,
   isSorting,
-  index,
-  vitalRefRange,
   species,
   orderWidth,
-  setSelectedOrderPendingQueue,
-  setOrderStep,
-  setSelectedChartOrder,
-  isInOrderPendingQueue,
+  targetDate,
 }: Props) {
   const {
     icu_chart_order_comment,
     icu_chart_order_type,
     icu_chart_order_name,
+    treatments,
   } = order
+
   const isOptimisticOrder = order.icu_chart_order_id.startsWith('temp_order_id')
   const isEvenIndex = index % 2 === 0
 
-  // sorting 때문에 상위에 있으면 안되고 여기 있어야함
   const {
-    basicHosData: { orderColorsData, orderFontSizeData },
+    basicHosData: { orderColorsData, orderFontSizeData, vitalRefRange },
   } = useBasicHosDataContext()
+
+  const {
+    setMultiOrderPendingQueue,
+    setOrderStep,
+    setSelectedChartOrder,
+    multiOrderPendingQueue,
+  } = useIcuOrderStore()
+
+  const isInOrderPendingQueue = multiOrderPendingQueue.some(
+    (o) => o.icu_chart_order_id === order.icu_chart_order_id,
+  )
 
   const handleClickOrderTitle = (e: React.MouseEvent) => {
     // 오더 다중 선택시
     if (e.metaKey || e.ctrlKey) {
       e.preventDefault()
-      setSelectedOrderPendingQueue!((prev) => {
+      setMultiOrderPendingQueue!((prev) => {
         const existingIndex = prev.findIndex(
           (item) => item.icu_chart_order_id === order.icu_chart_order_id,
         )
@@ -67,8 +68,8 @@ export default function OrderRowTitle({
     }
 
     // 오더 수정하기 위해 다이얼로그 여는 경우
-    setOrderStep!('edit')
-    setSelectedChartOrder!(order)
+    setOrderStep('edit')
+    setSelectedChartOrder(order)
   }
 
   // -------- 바이탈 참조범위 --------
@@ -112,9 +113,11 @@ export default function OrderRowTitle({
           orderType={icu_chart_order_type}
           orderName={icu_chart_order_name}
           orderComment={icu_chart_order_comment}
+          treatmentLength={treatments.length}
           orderColorsData={orderColorsData}
           orderFontSizeData={orderFontSizeData}
           vitalRefRange={rowVitalRefRange}
+          targetDate={targetDate}
         />
       </Button>
     </TableCell>

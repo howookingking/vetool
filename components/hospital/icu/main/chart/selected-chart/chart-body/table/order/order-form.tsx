@@ -1,5 +1,6 @@
 'use no memo'
 
+import SubmitButton from '@/components/common/submit-button'
 import DeleteOrderAlertDialog from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/delete-order-alert-dialog'
 import OrderBorderCheckbox from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-border-checkbox'
 import OrderFormField from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/order/order-form-field'
@@ -7,37 +8,32 @@ import OrderTimeSettings from '@/components/hospital/icu/main/chart/selected-cha
 import { Button } from '@/components/ui/button'
 import { DialogClose, DialogFooter } from '@/components/ui/dialog'
 import { Form } from '@/components/ui/form'
-import type { OrderType } from '@/constants/hospital/icu/chart/order'
 import { orderSchema } from '@/lib/schemas/icu/chart/order-schema'
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
-import { cn } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
-import type { SelectedIcuOrder } from '@/types/icu/chart'
+import type { SelectedIcuChart, SelectedIcuOrder } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { LoaderCircleIcon } from 'lucide-react'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
 type Props = {
-  showOrderer: boolean
-  icuChartId: string
-  setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   hosId: string
+  icuChartId: SelectedIcuChart['icu_chart_id']
+  setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
 }
 
 export default function OrderForm({
-  showOrderer,
+  hosId,
   icuChartId,
   setSortedOrders,
-  hosId,
 }: Props) {
   const { setOrderStep, selectedChartOrder, setSelectedChartOrder, reset } =
     useIcuOrderStore()
   const {
-    basicHosData: { vetList },
+    basicHosData: { vetList, showOrderer },
   } = useBasicHosDataContext()
 
   const [isUpdating, setIsUpdating] = useState(false)
@@ -66,7 +62,7 @@ export default function OrderForm({
     setSelectedChartOrder({
       icu_chart_order_name: icu_chart_order_name,
       icu_chart_order_comment: icu_chart_order_comment,
-      icu_chart_order_type: icu_chart_order_type as OrderType,
+      icu_chart_order_type: icu_chart_order_type,
       icu_chart_order_time: orderTime,
       icu_chart_order_id: selectedChartOrder.icu_chart_order_id,
       is_bordered: is_bordered,
@@ -121,7 +117,9 @@ export default function OrderForm({
 
         <OrderTimeSettings orderTime={orderTime} setOrderTime={setOrderTime} />
 
-        <OrderBorderCheckbox form={form} />
+        <div className="mt-2">
+          <OrderBorderCheckbox form={form} />
+        </div>
 
         <DialogFooter className="ml-auto w-full gap-2 md:gap-0">
           <DeleteOrderAlertDialog
@@ -136,12 +134,7 @@ export default function OrderForm({
             </Button>
           </DialogClose>
 
-          <Button type="submit" disabled={isUpdating}>
-            확인
-            <LoaderCircleIcon
-              className={cn(isUpdating ? 'animate-spin' : 'hidden')}
-            />
-          </Button>
+          <SubmitButton isPending={isUpdating} buttonText="확인" />
         </DialogFooter>
       </form>
     </Form>

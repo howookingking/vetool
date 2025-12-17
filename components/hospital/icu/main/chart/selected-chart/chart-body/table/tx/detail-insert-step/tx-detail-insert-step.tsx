@@ -25,6 +25,7 @@ import { txDetailRegisterFormSchema } from '@/lib/schemas/icu/chart/tx-schema'
 import { deleteIcuChartTx } from '@/lib/services/icu/chart/tx-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 // import type { ImageUrlResponse } from '@/types/images'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
@@ -35,14 +36,9 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-export default function TxDetailInsertStep({
-  showTxUser,
-}: {
-  showTxUser: boolean
-}) {
-  const { hos_id } = useParams()
-
+export default function TxDetailInsertStep({ hosId }: { hosId: string }) {
   const safeRefrsh = useSafeRefresh()
+
   const { selectedTxPendingQueue, reset: resetOrderStore } = useIcuOrderStore()
   const {
     setTxStep,
@@ -51,13 +47,16 @@ export default function TxDetailInsertStep({
     reset: resetTxStore,
   } = useIcuTxStore()
   const { isSubmitting, upsertTx, upsertMultipleTx } = useUpsertTx({
-    hosId: hos_id as string,
+    hosId,
     onSuccess: () => {
       setTxStep('closed')
       resetTxStore()
       resetOrderStore()
     },
   })
+  const {
+    basicHosData: { showTxUser },
+  } = useBasicHosDataContext()
 
   // const [bucketImages, setBucketImages] = useState<ImageUrlResponse[]>([])
   const [isLoading, setIsLoading] = useState(false)

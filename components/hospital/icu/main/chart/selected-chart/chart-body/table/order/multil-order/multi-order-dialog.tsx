@@ -12,30 +12,25 @@ import AddMultiOrderToTemplateDialog from './add-multi-order-to-template-dialog'
 import BorderMultiOrderButton from './border-multi-order-button'
 import CopyMultiOrderButton from './copy-multi-order-button'
 import DeleteSelectedOrdersDialog from './delete-multi-order-dialog'
+import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 
 type Props = {
   hosId: string
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   isCommandPressed: boolean
-  multiOrderPendingQueue: Partial<SelectedIcuOrder>[]
-  resetOrderStore: () => void
-  setCopiedOrderPendingQueue: Dispatch<
-    SetStateAction<Partial<SelectedIcuOrder>[]>
-  >
-  setMultiOrderPendingQueue: Dispatch<
-    SetStateAction<Partial<SelectedIcuOrder>[]>
-  >
 }
 
 export default function MultiOrderDialog({
   hosId,
   setSortedOrders,
   isCommandPressed,
-  multiOrderPendingQueue,
-  resetOrderStore,
-  setCopiedOrderPendingQueue,
-  setMultiOrderPendingQueue,
 }: Props) {
+  const {
+    multiOrderPendingQueue,
+    setCopiedOrderPendingQueue,
+    setMultiOrderPendingQueue,
+  } = useIcuOrderStore()
+
   const [isMultiOrderDialogOpen, setIsMultiOrderDialogOpen] = useState(false)
 
   const handleDialogOpenChange = (open: boolean) => {
@@ -65,30 +60,30 @@ export default function MultiOrderDialog({
         </DialogHeader>
 
         <CopyMultiOrderButton
-          setIsMultiOrderDialogOpen={setIsMultiOrderDialogOpen}
           multiOrderPendingQueue={multiOrderPendingQueue}
           setCopiedOrderPendingQueue={setCopiedOrderPendingQueue}
+          setIsMultiOrderDialogOpen={setIsMultiOrderDialogOpen}
           setMultiOrderPendingQueue={setMultiOrderPendingQueue}
         />
 
         <AddMultiOrderToTemplateDialog
           hosId={hosId}
-          setIsMultiOrderDialogOpen={setIsMultiOrderDialogOpen}
           multiOrderPendingQueue={multiOrderPendingQueue}
           setMultiOrderPendingQueue={setMultiOrderPendingQueue}
+          setIsMultiOrderDialogOpen={setIsMultiOrderDialogOpen}
         />
 
         <BorderMultiOrderButton
-          setIsMultiOrderDialogOpen={setIsMultiOrderDialogOpen}
           multiOrderPendingQueue={multiOrderPendingQueue}
           setMultiOrderPendingQueue={setMultiOrderPendingQueue}
+          setIsMultiOrderDialogOpen={setIsMultiOrderDialogOpen}
         />
 
         <DeleteSelectedOrdersDialog
-          setIsMultiOrderDialogOpen={setIsMultiOrderDialogOpen}
-          setSortedOrders={setSortedOrders}
           multiOrderPendingQueue={multiOrderPendingQueue}
           setMultiOrderPendingQueue={setMultiOrderPendingQueue}
+          setIsMultiOrderDialogOpen={setIsMultiOrderDialogOpen}
+          setSortedOrders={setSortedOrders}
         />
       </DialogContent>
     </Dialog>
