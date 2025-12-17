@@ -27,7 +27,7 @@ type Props = {
 
 type Option = Record<'value' | 'label', string> & Record<string, string>
 
-export function InjectionOrderCreator({ weight, createOrder }: Props) {
+export default function InjectionOrderCreator({ weight, createOrder }: Props) {
   const { hos_id } = useParams()
 
   const [isArbitraryOrder, setIsArbitraryOrder] = useState(false)

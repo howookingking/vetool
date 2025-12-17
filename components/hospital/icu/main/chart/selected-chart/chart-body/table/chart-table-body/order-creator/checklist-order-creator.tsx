@@ -5,30 +5,50 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import type { OrderType } from '@/constants/hospital/icu/chart/order'
-import { type Dispatch, type SetStateAction, useEffect } from 'react'
+import type {
+  ChecklistOrder,
+  OrderType,
+} from '@/constants/hospital/icu/chart/order'
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 
 type Props = {
   createOrder: (orderName: string, orderComment: string) => Promise<void>
   setOrderType: Dispatch<SetStateAction<OrderType | 'template'>>
-  availableCheckListOrders: string[]
+  availableCheckListOrders: ChecklistOrder[]
+  isSubmitting: boolean
 }
 
 export default function ChecklistOrderCreator({
   createOrder,
   setOrderType,
   availableCheckListOrders,
+  isSubmitting,
 }: Props) {
+  const [localChecklistOrder, setLocalChecklistOrder] = useState<
+    ChecklistOrder | ''
+  >('')
+
   useEffect(() => {
     if (availableCheckListOrders.length === 0) {
       setOrderType('manual')
     }
   }, [availableCheckListOrders.length, setOrderType])
 
+  const handleSelect = async (value: ChecklistOrder) => {
+    await createOrder(value, '')
+
+    setLocalChecklistOrder('')
+  }
+
   return (
-    <Select onValueChange={async (value) => await createOrder(value, '')}>
-      <SelectTrigger className="h-11 w-full rounded-none border-0 ring-0 focus-visible:ring-0">
-        <SelectValue placeholder="체크리스트 항목 선택" />
+    <Select value={localChecklistOrder} onValueChange={handleSelect}>
+      <SelectTrigger
+        className="h-11 w-full rounded-none border-0 ring-0 ring-inset ring-offset-0 focus:outline-none"
+        disabled={isSubmitting}
+      >
+        <SelectValue
+          placeholder={isSubmitting ? '등록 중...' : '체크리스트 항목 선택'}
+        />
       </SelectTrigger>
 
       <SelectContent>
