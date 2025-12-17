@@ -1,7 +1,7 @@
+import SubmitButton from '@/components/common/submit-button'
 import WarningMessage from '@/components/common/warning-message'
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -11,7 +11,6 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { Spinner } from '@/components/ui/spinner'
 import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
 import { deleteOrder } from '@/lib/services/icu/chart/order-mutation'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
@@ -39,10 +38,15 @@ export default function DeleteSelectedOrdersDialog({
   const [isDeleting, setIsDeleting] = useState(false)
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false)
 
-  const handleDeleteOrderClick = async () => {
+  const handleDelete = async () => {
     setIsDeleting(true)
     setSortedOrders((prev) =>
-      prev.filter((order) => !multiOrderPendingQueue.includes(order)),
+      prev.filter(
+        (order) =>
+          !multiOrderPendingQueue.some(
+            (o) => o.icu_chart_order_id === order.icu_chart_order_id,
+          ),
+      ),
     )
 
     await Promise.all(
@@ -82,14 +86,13 @@ export default function DeleteSelectedOrdersDialog({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel tabIndex={-1}>닫기</AlertDialogCancel>
-          <AlertDialogAction
-            className="bg-destructive hover:bg-destructive/80"
-            onClick={handleDeleteOrderClick}
-            disabled={isDeleting}
-          >
-            삭제
-            {isDeleting ? <Spinner /> : null}
-          </AlertDialogAction>
+
+          <SubmitButton
+            variant="destructive"
+            buttonText="삭제"
+            isPending={isDeleting}
+            onClick={handleDelete}
+          />
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

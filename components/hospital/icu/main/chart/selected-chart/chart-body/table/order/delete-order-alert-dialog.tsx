@@ -60,7 +60,7 @@ export default function DeleteOrderAlertDialog({
         <Button
           type="button"
           className="mr-auto"
-          variant="secondary"
+          variant="destructive"
           tabIndex={-1}
         >
           삭제
