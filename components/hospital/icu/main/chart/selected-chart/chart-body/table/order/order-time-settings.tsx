@@ -158,7 +158,7 @@ export default function OrderTimeSettings({
             style={{
               background:
                 orderTime.at(time) !== '0'
-                  ? CELL_COLORS.NOT_DONE
+                  ? CELL_COLORS.HAS_ORDER
                   : 'transparent',
             }}
             onClick={handleTimeToggle(time)}

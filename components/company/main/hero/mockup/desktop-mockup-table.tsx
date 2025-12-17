@@ -14,7 +14,7 @@ import {
 import type { OrderType } from '@/constants/hospital/icu/chart/order'
 import { TIMES } from '@/constants/hospital/icu/chart/time'
 import useIsMobile from '@/hooks/use-is-mobile'
-import { cn } from '@/lib/utils/utils'
+import { cn, HAS_ORDER } from '@/lib/utils/utils'
 
 export default function DesktopMockupTable() {
   const isMobile = useIsMobile()
@@ -79,7 +79,7 @@ export default function DesktopMockupTable() {
                   key={time}
                   className={cn(
                     'relative w-10 border border-input text-center',
-                    hasOrder && 'bg-rose-400/10',
+                    hasOrder && HAS_ORDER,
                     value && 'bg-emerald-400/10',
                   )}
                 >

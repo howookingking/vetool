@@ -2,7 +2,7 @@ import OrderTitleContent from '@/components/hospital/common/order/order-title-co
 import { Button } from '@/components/ui/button'
 import { TableCell } from '@/components/ui/table'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
-import { cn } from '@/lib/utils/utils'
+import { cn, MULTISELECT } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { VitalRefRange } from '@/types/adimin'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
@@ -101,8 +101,7 @@ export default function OrderRowTitle({
           'flex h-11 rounded-none px-2 hover:bg-transparent',
           isSorting ? 'cursor-grab' : 'cursor-pointer',
           isOptimisticOrder && 'animate-shake-strong',
-          isInOrderPendingQueue &&
-            'bg-primary/10 ring-1 ring-inset ring-primary hover:bg-primary/10',
+          isInOrderPendingQueue && `${MULTISELECT} hover:bg-primary/10`,
         )}
         style={{
           width: orderWidth,

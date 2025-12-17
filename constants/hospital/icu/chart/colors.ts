@@ -1,6 +1,6 @@
 export const CELL_COLORS = {
-  DONE: '#ecfdf5', // emerald-50
-  NOT_DONE: '#fff1f2', // rose-50
+  DONE: '#34d3991a' /* bg-emerald-400/10 */,
+  HAS_ORDER: '#fb71851a' /* bg-rose-400/10 */,
   OUT: '#f9fafb', // gray-50
 }
 

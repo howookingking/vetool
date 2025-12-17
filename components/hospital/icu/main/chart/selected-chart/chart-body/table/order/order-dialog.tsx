@@ -31,13 +31,16 @@ export default function OrderDialog({
   orders,
   mainVet,
 }: Props) {
-  const { orderStep, selectedChartOrder, setOrderStep } = useIcuOrderStore()
+  const { orderStep, selectedChartOrder, setOrderStep, reset } =
+    useIcuOrderStore()
   const {
     basicHosData: { orderColorsData },
   } = useBasicHosDataContext()
 
-  const handleOpenChange = () =>
+  const handleOpenChange = () => {
     orderStep === 'closed' ? setOrderStep('edit') : setOrderStep('closed')
+    reset()
+  }
 
   return (
     <Dialog open={orderStep !== 'closed'} onOpenChange={handleOpenChange}>

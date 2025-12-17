@@ -45,7 +45,7 @@ export default function ChartTableBody({
   const isCommandPressed = useIsCommandPressed()
 
   const {
-    basicHosData: { showOrderer, vetList, orderColorsData },
+    basicHosData: { showOrderer, vetList },
   } = useBasicHosDataContext()
 
   const {

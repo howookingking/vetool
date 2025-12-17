@@ -227,7 +227,7 @@ export default function OrderCreatorRow({
               onSubmit={handleSubmit}
             >
               <Input
-                className="h-11 rounded-none border-0 pr-11 focus-visible:ring-0"
+                className="h-11 rounded-none border-0 pr-11 ring-inset"
                 disabled={isSubmitting}
                 placeholder={OrderTypePlaceholder}
                 value={isSubmitting ? '등록 중...' : newOrderInput}
