@@ -9,16 +9,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { Spinner } from '@/components/ui/spinner'
 import useOrderSorting from '@/hooks/use-order-sorting'
+import { getTemplateChart } from '@/lib/services/icu/template/template'
 import { useDtOrderTimePendingQueueStore } from '@/lib/store/icu/dt-order'
+import type { IcuTemplate } from '@/types'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { Edit2Icon, PlusIcon } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import ConfirmAddTemplateDialog from './confirm-add-template-dialog'
 import TemplateOrderTable from './template-order-table'
-import type { IcuTemplate } from '@/types'
-import { getTemplateChart } from '@/lib/services/icu/template/template'
-import { Spinner } from '@/components/ui/spinner'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 
 type Props = EditTemplateProps | NewTemplateProps
 
@@ -61,18 +62,20 @@ export default function UpsertTemplateDialog({
 
   const handleOpenChange = async (open: boolean) => {
     if (open) {
-      setIsFetching(true)
       setSortedOrders([])
       resetTimePendingQueue()
 
       if (isEdit) {
+        setIsFetching(true)
+
         const chartData = await getTemplateChart(template.icu_chart_id)
         setSortedOrders(chartData.orders)
+
         setIsFetching(false)
-        setIsUpsertTemplateDialogOpen(true)
       }
+      setIsUpsertTemplateDialogOpen(open)
     } else {
-      setIsUpsertTemplateDialogOpen(false)
+      setIsUpsertTemplateDialogOpen(open)
     }
   }
 
@@ -101,7 +104,9 @@ export default function UpsertTemplateDialog({
       >
         <DialogHeader>
           <DialogTitle>{isEdit ? `템플릿 수정` : '템플릿 만들기'}</DialogTitle>
-          <DialogDescription>자유롭게 템플릿을 만들어주세요</DialogDescription>
+          <VisuallyHidden>
+            <DialogDescription />
+          </VisuallyHidden>
         </DialogHeader>
 
         <div className="max-h-[800px] overflow-scroll">

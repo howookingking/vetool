@@ -64,7 +64,7 @@ export default function SearchPatientContainer({
         {!isIcu && <RegisterPatientButton hosId={hosId} />}
       </div>
 
-      <div className="h-[408px]">
+      <div className="h-[480px]">
         <DataTable
           isLoading={isSearching}
           rowLength={6}

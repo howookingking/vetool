@@ -14,11 +14,11 @@ import {
   DEFAULT_ICU_ORDER_TYPE,
   type OrderType,
 } from '@/constants/hospital/icu/chart/order'
-import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
+import { useSafeRefresh } from '@/hooks/use-safe-refresh'
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
-import type { IcuOrderColors } from '@/types/adimin'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedIcuChart, SelectedIcuOrder } from '@/types/icu/chart'
-import { PlusIcon } from 'lucide-react'
+import { BookmarkIcon, PlusIcon } from 'lucide-react'
 import {
   type Dispatch,
   type FormEvent,
@@ -27,17 +27,17 @@ import {
   useState,
 } from 'react'
 import { toast } from 'sonner'
+import PasteTemplateOrderDialog from '../../../../../paste-chart-dialogs/template/paste-template-order-dialog'
 import { OrderTypeLabel } from '../../order/order-form-field'
 import ChecklistOrderCreator from './checklist-order-creator'
-import { InjectionOrderCreator } from './injection-order/injection-order-creator'
+import InjectionOrderCreator from './injection-order/injection-order-creator'
 import UserKeyGuideMessage from './user-key-guide-message'
 
 type Props = {
   icuChartId: SelectedIcuChart['icu_chart_id']
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   sortedOrders: SelectedIcuOrder[]
-  orderColorsData: IcuOrderColors
-  weight: string
+  weight: SelectedIcuChart['weight']
   hosId: string
 }
 
@@ -45,22 +45,26 @@ export default function OrderCreatorRow({
   icuChartId,
   setSortedOrders,
   sortedOrders,
-  orderColorsData,
   weight,
   hosId,
 }: Props) {
+  const {
+    basicHosData: { orderColorsData },
+  } = useBasicHosDataContext()
+
   const saveRefresh = useSafeRefresh()
 
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const [newOrderInput, setNewOrderInput] = useState('')
-  const [orderType, setOrderType] = useState<OrderType>('manual')
-  const [isInserting, setIsInserting] = useState(false)
+  const [orderType, setOrderType] = useState<OrderType | 'template'>('manual')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isTemplateDialogOpen, setIsTemplateDialogOpen] = useState(false)
 
   const availableCheckListOrders = getAvailableChecklistOrders(sortedOrders)
 
   const createOrder = async (orderName: string, orderDescription: string) => {
-    setIsInserting(true)
+    setIsSubmitting(true)
 
     const emptyOrderTimes = Array(24).fill('0')
 
@@ -94,7 +98,7 @@ export default function OrderCreatorRow({
     toast.success(`${orderName} 오더를 생성하였습니다`)
 
     setNewOrderInput('')
-    setIsInserting(false)
+    setIsSubmitting(false)
     saveRefresh()
 
     setTimeout(() => {
@@ -152,11 +156,15 @@ export default function OrderCreatorRow({
         <div className="relative flex w-full items-center">
           <Select
             onValueChange={(value: string) => {
+              if (value === 'template') {
+                setIsTemplateDialogOpen(true)
+                return
+              }
               setOrderType(value as OrderType)
             }}
             value={orderType}
           >
-            <SelectTrigger className="h-11 w-[128px] shrink-0 rounded-none border-0 border-r px-2 shadow-none ring-0 focus:ring-0">
+            <SelectTrigger className="focus-inset h-11 w-[128px] shrink-0 rounded-none border-0 border-r px-2 shadow-none">
               <SelectValue />
             </SelectTrigger>
             <SelectContent className="p-0">
@@ -165,11 +173,7 @@ export default function OrderCreatorRow({
                   ? order
                   : order.value !== 'checklist',
               ).map((item) => (
-                <SelectItem
-                  key={item.value}
-                  value={item.value}
-                  className="rounded-none p-1 transition hover:opacity-70"
-                >
+                <SelectItem key={item.value} value={item.value}>
                   <div className="flex items-center gap-2">
                     <OrderTypeColorDot
                       orderType={item.value}
@@ -179,14 +183,32 @@ export default function OrderCreatorRow({
                   </div>
                 </SelectItem>
               ))}
+
+              <SelectItem value="template">
+                <div className="flex items-center gap-2">
+                  <BookmarkIcon size={16} />
+                  <span>템플릿</span>
+                </div>
+              </SelectItem>
             </SelectContent>
           </Select>
+
+          <PasteTemplateOrderDialog
+            chartId={icuChartId}
+            hosId={hosId}
+            isOrderCreator={true}
+            patientId={null}
+            targetDate={null}
+            open={isTemplateDialogOpen}
+            onOpenChange={setIsTemplateDialogOpen}
+          />
 
           {orderType === 'checklist' && (
             <ChecklistOrderCreator
               createOrder={createOrder}
               setOrderType={setOrderType}
               availableCheckListOrders={availableCheckListOrders}
+              isSubmitting={isSubmitting}
             />
           )}
 
@@ -200,17 +222,17 @@ export default function OrderCreatorRow({
               onSubmit={handleSubmit}
             >
               <Input
-                className="h-11 rounded-none border-0 pr-11 focus-visible:ring-0"
-                disabled={isInserting}
+                className="h-11 rounded-none border-0 pr-11 ring-inset"
+                disabled={isSubmitting}
                 placeholder={OrderTypePlaceholder}
-                value={isInserting ? '등록 중' : newOrderInput}
+                value={isSubmitting ? '등록 중...' : newOrderInput}
                 onChange={(e) => setNewOrderInput(e.target.value)}
                 ref={inputRef}
               />
               <Button
                 className="absolute right-2"
                 size="icon"
-                disabled={isInserting}
+                disabled={isSubmitting}
                 type="submit"
                 variant="ghost"
               >

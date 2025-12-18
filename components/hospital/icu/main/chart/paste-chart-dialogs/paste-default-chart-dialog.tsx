@@ -1,5 +1,3 @@
-import HelperTooltip from '@/components/common/helper-tooltip'
-import StepBadge from '@/components/common/step-badge'
 import SubmitButton from '@/components/common/submit-button'
 import { Button } from '@/components/ui/button'
 import {
@@ -11,9 +9,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
+import { useSafeRefresh } from '@/hooks/use-safe-refresh'
 import { pasteDefaultIcuChart } from '@/lib/services/icu/chart/add-icu-chart'
-import { ClipboardListIcon, CrownIcon, SyringeIcon } from 'lucide-react'
+import { ClipboardListIcon } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import DialogTriggerButton from './dialog-trigger-button'

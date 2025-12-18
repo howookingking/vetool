@@ -17,6 +17,7 @@ export default function ReadOnlyChartTable({
   return (
     <Table className="border">
       <ReadOnlyChartTableHeader
+        orderCount={chartData.orders.length}
         orderWidth={orderWidth}
         setOrderWidth={setOrderWidth}
       />

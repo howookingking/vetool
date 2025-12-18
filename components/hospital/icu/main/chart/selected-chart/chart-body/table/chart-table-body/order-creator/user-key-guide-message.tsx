@@ -2,6 +2,7 @@ import HelperTooltip from '@/components/common/helper-tooltip'
 import { Kbd, KbdGroup } from '@/components/ui/kbd'
 import { Separator } from '@/components/ui/separator'
 import { TableCell } from '@/components/ui/table'
+import { cn, HAS_ORDER } from '@/lib/utils/utils'
 import specificTxTooltip from '@/public/gifs/specific-tx-tooltip.gif'
 import Image from 'next/image'
 
@@ -10,7 +11,7 @@ export default function UserKeyGuideMessage({ isDT }: { isDT?: boolean }) {
     <TableCell className="relative border-l">
       <div className="absolute bottom-2 left-1 hidden items-center gap-2 whitespace-nowrap text-muted-foreground md:flex">
         <div className="flex items-center gap-1">
-          <span className="mx-1 bg-rose-400/10 p-1">형광팬</span> :{' '}
+          <span className={cn('mx-1 p-1', HAS_ORDER)}>형광팬</span> :{' '}
           <KbdGroup>
             <Kbd>Ctrl</Kbd>
             <span> + </span>

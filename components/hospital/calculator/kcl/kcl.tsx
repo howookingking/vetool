@@ -1,4 +1,3 @@
-import HelperTooltip from '@/components/common/helper-tooltip'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
@@ -36,13 +35,7 @@ export default function Kcl({ weight, setIsSheetOpen }: Props) {
   return (
     <>
       <SheetHeader>
-        <SheetTitle className="flex items-center gap-2">
-          <span>KCl(2mEq/mL) 첨가</span>
-          <HelperTooltip side="right">
-            *Textbook of Small Animal Emergency Medicine, 2019 John Wiley and
-            Sons
-          </HelperTooltip>
-        </SheetTitle>
+        <SheetTitle>KCl(2mEq/mL) 첨가</SheetTitle>
         <VisuallyHidden>
           <SheetDescription />
         </VisuallyHidden>

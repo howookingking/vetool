@@ -78,7 +78,9 @@ export default function DtDeleteOrderAlertDialog({
           </AlertDialogTitle>
           <AlertDialogDescription>
             선택한 오더를 삭제합니다
-            <WarningMessage text="해당작업은 실행 후 되될릴 수 없습니다." />
+            {!isTemplate ? (
+              <WarningMessage text="해당작업은 실행 후 되될릴 수 없습니다" />
+            ) : null}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

@@ -1,63 +1,44 @@
-import type { OrderStep } from '@/lib/store/icu/icu-order'
-import type { IcuOrderColors } from '@/types/adimin'
 import type { SelectedIcuChart, SelectedIcuOrder } from '@/types/icu/chart'
 import type { Dispatch, SetStateAction } from 'react'
-import MultiSelectOrderDialog from '../order/multil-select-order/multi-select-order-dialog'
+import MultiOrderDialog from '../order/multil-order/multi-order-dialog'
 import OrderDialog from '../order/order-dialog'
 import TxUpsertDialog from '../tx/tx-upsert-dialog'
 
 type Props = {
-  showTxUser: boolean
+  hosId: string
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   icuChartId: SelectedIcuChart['icu_chart_id']
   orders: SelectedIcuOrder[]
-  showOrderer: boolean
-  setOrderStep: (orderStep: OrderStep) => void
-  mainVetName: SelectedIcuChart['main_vet']['name']
-  orderColorsData: IcuOrderColors
+  mainVet: SelectedIcuChart['main_vet']
   isCommandPressed: boolean
-  selectedOrderPendingQueue: Partial<SelectedIcuOrder>[]
-  resetOrderStore: () => void
-  hosId: string
 }
 
 export default function ChartTableDialogs({
-  showTxUser,
+  hosId,
   setSortedOrders,
   icuChartId,
   orders,
-  showOrderer,
-  setOrderStep,
-  mainVetName,
-  orderColorsData,
+  mainVet,
   isCommandPressed,
-  selectedOrderPendingQueue,
-  resetOrderStore,
-  hosId,
 }: Props) {
   return (
     <>
       {/* 처치관련 : 처치 상세 입력, 처치자 입력 */}
-      <TxUpsertDialog showTxUser={showTxUser} />
+      <TxUpsertDialog hosId={hosId} />
 
       {/* 다중 오더 선택 후 작업 : 오더 복사, 템플릿저장, 테두리 변경, 오더 삭제 */}
-      <MultiSelectOrderDialog
+      <MultiOrderDialog
+        hosId={hosId}
         setSortedOrders={setSortedOrders}
         isCommandPressed={isCommandPressed}
-        selectedOrderPendingQueue={selectedOrderPendingQueue}
-        resetOrderStore={resetOrderStore}
       />
 
       {/* 오더자선택, 오더수정 */}
       <OrderDialog
         icuChartId={icuChartId}
         orders={orders}
-        showOrderer={showOrderer}
-        setOrderStep={setOrderStep}
         setSortedOrders={setSortedOrders}
-        mainVetName={mainVetName}
-        orderColorsData={orderColorsData}
-        resetOrderStore={resetOrderStore}
+        mainVet={mainVet}
         hosId={hosId}
       />
     </>

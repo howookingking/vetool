@@ -50,8 +50,8 @@ export type SelectedIcuChart = Pick<
   icu_io: SelectedChartIcuIo
   orders: SelectedIcuOrder[]
   patient: Patient
-  main_vet: Pick<Vet, 'avatar_url' | 'name' | 'user_id'>
-  sub_vet: Pick<Vet, 'avatar_url' | 'name' | 'user_id'>
+  main_vet: Pick<Vet, 'avatar_url' | 'name' | 'user_id'> | null
+  sub_vet: Pick<Vet, 'avatar_url' | 'name' | 'user_id'> | null
 }
 
 export type SelectedIcuOrder = Pick<
@@ -71,25 +71,15 @@ export type SelectedIcuOrder = Pick<
 
 export type SelectedTreatment = Pick<
   IcuTxs,
-  | 'time'
   | 'icu_chart_tx_id'
   | 'icu_chart_tx_result'
   | 'icu_chart_tx_comment'
+  | 'time'
   | 'is_crucial'
   | 'has_images'
 > & {
-  tx_log: TxLog[] | null
+  icu_chart_tx_log: TxLog[] | null
 }
-
-// export type Treatment = {
-//   time: number
-//   tx_id: string
-//   tx_log: TxLog | null
-//   tx_result: string | null
-//   tx_comment: string | null
-//   is_crucial: boolean
-//   has_images: boolean
-// }
 
 export type PrevIoChartData = {
   icu_chart_id: string

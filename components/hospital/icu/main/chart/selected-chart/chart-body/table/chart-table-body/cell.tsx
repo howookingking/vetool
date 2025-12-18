@@ -8,7 +8,7 @@ import { useLongPress } from '@/hooks/use-long-press'
 import useUpsertTx from '@/hooks/use-upsert-tx'
 import { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
 import type { TxLocalState } from '@/lib/store/icu/icu-tx'
-import { cn } from '@/lib/utils/utils'
+import { cn, getCellClassName } from '@/lib/utils/utils'
 import type { SelectedTreatment, TxLog } from '@/types/icu/chart'
 import { format } from 'date-fns'
 import { ImageIcon } from 'lucide-react'
@@ -87,7 +87,6 @@ export default function Cell({
     treatment,
     rowVitalRefRange,
   )
-  useCellAutofocus()
 
   const [briefTxResultInput, setBriefTxResultInput] = useState('')
 
@@ -110,7 +109,7 @@ export default function Cell({
       txComment: treatment?.icu_chart_tx_comment,
       txId: icuChartTxId,
       time,
-      txLog: treatment?.tx_log as TxLog[] | null,
+      txLog: treatment?.icu_chart_tx_log as TxLog[] | null,
       isCrucialChecked: treatment?.is_crucial,
     })
     setTxStep('detailInsert')
@@ -138,7 +137,7 @@ export default function Cell({
             txId: icuChartTxId,
             orderId,
             orderTime: time,
-            txLog: treatment?.tx_log as TxLog[] | null,
+            txLog: treatment?.icu_chart_tx_log as TxLog[] | null,
             isCrucialChecked: treatment?.is_crucial,
           },
         ]
@@ -177,7 +176,7 @@ export default function Cell({
       txResult: trimmedTxResult,
       txComment: trimmedTxComment ?? '',
       txId: icuChartTxId,
-      txLog: treatment?.tx_log as TxLog[] | null,
+      txLog: treatment?.icu_chart_tx_log as TxLog[] | null,
     }
 
     if (showTxUser) {
@@ -230,19 +229,13 @@ export default function Cell({
       >
         <Input
           id={`${icuChartOrderId}&${time}`}
-          className={cn(
-            isGuidelineTime && 'bg-amber-300/10',
-            hasOrder && 'bg-rose-400/10',
-            canceldeOrderTime && 'bg-transparent',
-            isDone &&
-              !isInOrderTimePendingQueue &&
-              !isInPendingQueue &&
-              'bg-emerald-400/10',
-            !hasOrder && isInOrderTimePendingQueue && 'bg-rose-400/30',
-            isDone && isInPendingQueue && 'bg-emerald-400/30',
-            !isDone && isInPendingQueue && 'bg-emerald-400/30',
-            'h-11 min-w-12 rounded-none border-none px-1 text-center ring-inset focus-visible:ring-2 md:min-w-0',
-          )}
+          className={getCellClassName({
+            isGuidelineTime,
+            hasOrder,
+            isDone,
+            isInPendingQueue,
+            isInOrderTimePendingQueue,
+          })}
           disabled={preview || isSubmitting}
           value={briefTxResultInput}
           onChange={(e) => setBriefTxResultInput(e.target.value)}
@@ -270,7 +263,7 @@ export default function Cell({
         )}
 
         {hasComment && (
-          <TxDetailHover txComment={treatment?.icu_chart_tx_comment} />
+          <TxDetailHover txComment={treatment?.icu_chart_tx_comment!} />
         )}
 
         {isAbnormalVital && (

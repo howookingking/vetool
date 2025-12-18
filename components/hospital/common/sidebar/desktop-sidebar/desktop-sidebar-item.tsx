@@ -1,7 +1,6 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import CustomTooltip from '@/components/ui/custom-tooltip'
 import { cn } from '@/lib/utils/utils'
 import { format } from 'date-fns'
 import { usePathname, useRouter } from 'next/navigation'
@@ -36,26 +35,19 @@ export default function DesktopSidebarItem({
 
   return (
     <li key={name}>
-      <CustomTooltip
-        contents={name}
-        side="right"
-        sideOffset={4}
-        delayDuration={300}
+      <Button
+        onClick={() => push(`/hospital/${hosId}/${dynamicPath}` as any)}
+        className={cn(
+          'h-8 w-8 bg-white',
+          isActive && 'bg-primary text-white',
+          !isSuper && name === '벳툴' && 'hidden',
+        )}
+        variant="ghost"
+        disabled={!isReady}
+        aria-label={name}
       >
-        <Button
-          onClick={() => push(`/hospital/${hosId}/${dynamicPath}` as any)}
-          className={cn(
-            'h-8 w-8 bg-white',
-            isActive && 'bg-primary text-white',
-            !isSuper && name === '벳툴' && 'hidden',
-          )}
-          variant="ghost"
-          disabled={!isReady}
-          aria-label={name}
-        >
-          {icon}
-        </Button>
-      </CustomTooltip>
+        {icon}
+      </Button>
     </li>
   )
 }

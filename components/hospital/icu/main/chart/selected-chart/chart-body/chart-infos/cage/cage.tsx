@@ -2,7 +2,7 @@
 
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
+import { useSafeRefresh } from '@/hooks/use-safe-refresh'
 import { updateCage } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { handleSafeEnterBlur } from '@/lib/utils/utils'
 import { SquarePlusIcon } from 'lucide-react'

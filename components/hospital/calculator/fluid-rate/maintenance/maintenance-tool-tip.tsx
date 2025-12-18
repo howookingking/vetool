@@ -23,7 +23,7 @@ export default function MaintenanceToolTip() {
         </div>
       </div>
 
-      <div className="mt-2">
+      <div className="mt-2 text-xs text-muted-foreground">
         *2024 AAHA Fluid Therapy Guidelines for Dogs and Cats
       </div>
     </HelperTooltip>

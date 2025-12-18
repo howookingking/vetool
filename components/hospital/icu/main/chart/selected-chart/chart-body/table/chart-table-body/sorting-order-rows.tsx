@@ -7,12 +7,12 @@ import type { Sortable } from 'react-sortablejs'
 import type { OrderWidth } from '../chart-table-header/order-width-button'
 
 type Props = {
-  isSorting: boolean
+  isSorting: true
   sortedOrders: SelectedIcuOrder[]
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   orderWidth: OrderWidth
-  species: string
   onOrderMove: (event: Sortable.SortableEvent) => void
+  targetDate: string
 }
 
 export default function SortingOrderRows({
@@ -21,7 +21,7 @@ export default function SortingOrderRows({
   setSortedOrders,
   orderWidth,
   onOrderMove,
-  species,
+  targetDate,
 }: Props) {
   return (
     <SortableOrderWrapper
@@ -30,13 +30,13 @@ export default function SortingOrderRows({
       onSortEnd={onOrderMove}
     >
       {sortedOrders.map((order, index) => (
-        <TableRow className="relative divide-x" key={order.icu_chart_order_id}>
+        <TableRow key={order.icu_chart_order_id}>
           <OrderRowTitle
             index={index}
             order={order}
             isSorting={isSorting}
             orderWidth={orderWidth}
-            species={species}
+            targetDate={targetDate}
           />
         </TableRow>
       ))}

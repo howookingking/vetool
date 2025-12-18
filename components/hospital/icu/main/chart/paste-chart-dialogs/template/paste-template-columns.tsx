@@ -6,18 +6,33 @@ import { ArrowUpDownIcon } from 'lucide-react'
 import type { Dispatch, SetStateAction } from 'react'
 import ConfirmPasteTemplateDialog from './confirm-paste-template-dialog'
 
+type Props = OrderCreatorRowProps | PasteChartDialogProps
+
+type OrderCreatorRowProps = {
+  setIsDialogOpen: Dispatch<SetStateAction<boolean>>
+  isOrderCreator: true
+  chartId: string
+  patientId: null
+  targetDate: null
+}
+
+type PasteChartDialogProps = {
+  setIsDialogOpen: Dispatch<SetStateAction<boolean>>
+  isOrderCreator: false
+  chartId: null
+  patientId: string
+  targetDate: string
+}
+
 export const pasteTemplateColumns = (
-  setIsDialogOpen: Dispatch<SetStateAction<boolean>>,
-  tableHeader?: boolean,
-  chartId?: string,
-  targetDate?: string,
-  patientId?: string,
+  props: Props,
 ): ColumnDef<IcuTemplate>[] => [
   {
     accessorKey: 'template_name',
     header: ({ column }) => {
       return (
         <Button
+          size="default"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
@@ -32,6 +47,7 @@ export const pasteTemplateColumns = (
     header: ({ column }) => {
       return (
         <Button
+          size="default"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
@@ -50,6 +66,7 @@ export const pasteTemplateColumns = (
     header: ({ column }) => {
       return (
         <Button
+          size="default"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
@@ -87,12 +104,8 @@ export const pasteTemplateColumns = (
       const templateChartId = row.original.icu_chart_id
       return (
         <ConfirmPasteTemplateDialog
+          {...props}
           templateChartId={templateChartId}
-          setIsDialogOpen={setIsDialogOpen}
-          tableHeader={tableHeader}
-          chartId={chartId}
-          targetDate={targetDate}
-          patientId={patientId}
         />
       )
     },

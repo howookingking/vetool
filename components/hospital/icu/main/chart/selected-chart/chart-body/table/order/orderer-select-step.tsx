@@ -24,7 +24,6 @@ import { cn, formatOrders } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedIcuChart, SelectedIcuOrder } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -32,22 +31,23 @@ import * as z from 'zod'
 
 type Props = {
   icuChartId: SelectedIcuChart['icu_chart_id']
-  mainVetName: SelectedIcuChart['main_vet']['name']
+  mainVet: SelectedIcuChart['main_vet']
   orders: SelectedIcuOrder[]
   isSetting?: boolean
+  hosId: string
 }
 
 export default function OrdererSelectStep({
   icuChartId,
-  mainVetName,
+  mainVet,
   orders,
   isSetting,
+  hosId,
 }: Props) {
-  const { hos_id } = useParams()
-
   const {
     basicHosData: { vetList },
   } = useBasicHosDataContext()
+
   const {
     reset,
     selectedChartOrder: {
@@ -75,7 +75,7 @@ export default function OrdererSelectStep({
   const form = useForm<z.infer<typeof ordererSchema>>({
     resolver: zodResolver(ordererSchema),
     defaultValues: {
-      orderer: mainVetName,
+      orderer: mainVet?.name,
     },
   })
 
@@ -85,7 +85,7 @@ export default function OrdererSelectStep({
     setIsUpdating(true)
 
     await upsertOrder(
-      hos_id as string,
+      hosId,
       icuChartId,
       icu_chart_order_id!,
       icu_chart_order_time!.map((time) =>
@@ -112,6 +112,7 @@ export default function OrdererSelectStep({
     values: z.infer<typeof ordererSchema>,
   ) => {
     setIsUpdating(true)
+
     const formattedOrders = formatOrders(orderTimePendingQueue)
 
     for (const order of formattedOrders) {
@@ -125,18 +126,12 @@ export default function OrdererSelectStep({
           updatedOrderTimes[time] === '0' ? values.orderer : '0'
       }
 
-      await upsertOrder(
-        hos_id as string,
-        icuChartId,
-        order.orderId,
-        updatedOrderTimes,
-        {
-          icu_chart_order_name: currentOrder.icu_chart_order_name,
-          icu_chart_order_comment: currentOrder.icu_chart_order_comment,
-          icu_chart_order_type: currentOrder.icu_chart_order_type,
-          is_bordered: currentOrder.is_bordered,
-        },
-      )
+      await upsertOrder(hosId, icuChartId, order.orderId, updatedOrderTimes, {
+        icu_chart_order_name: currentOrder.icu_chart_order_name,
+        icu_chart_order_comment: currentOrder.icu_chart_order_comment,
+        icu_chart_order_type: currentOrder.icu_chart_order_type,
+        is_bordered: currentOrder.is_bordered,
+      })
     }
 
     toast.success('오더시간을 변경하였습니다')
@@ -148,6 +143,7 @@ export default function OrdererSelectStep({
 
   const handleUpsertOrder = async (values: z.infer<typeof ordererSchema>) => {
     setIsUpdating(true)
+
     for (const order of copiedOrderPendingQueue) {
       const updatedOrderTimes = [...order.icu_chart_order_time!]
 
@@ -155,18 +151,12 @@ export default function OrdererSelectStep({
         updatedOrderTimes[index] = time === '0' ? '0' : values.orderer
       })
 
-      await upsertOrder(
-        hos_id as string,
-        icuChartId,
-        undefined,
-        updatedOrderTimes,
-        {
-          icu_chart_order_name: order.icu_chart_order_name!,
-          icu_chart_order_comment: order.icu_chart_order_comment!,
-          icu_chart_order_type: order.icu_chart_order_type!,
-          is_bordered: order.is_bordered!,
-        },
-      )
+      await upsertOrder(hosId, icuChartId, undefined, updatedOrderTimes, {
+        icu_chart_order_name: order.icu_chart_order_name!,
+        icu_chart_order_comment: order.icu_chart_order_comment!,
+        icu_chart_order_type: order.icu_chart_order_type!,
+        is_bordered: order.is_bordered!,
+      })
     }
 
     toast.success('오더를 붙여넣었습니다')
@@ -203,7 +193,7 @@ export default function OrdererSelectStep({
               <FormLabel>오더결정 수의사</FormLabel>
               <Select
                 onValueChange={field.onChange}
-                defaultValue={mainVetName}
+                defaultValue={mainVet?.name}
                 disabled={isUpdating || isSetting}
               >
                 <FormControl>
@@ -241,10 +231,14 @@ export default function OrdererSelectStep({
           )}
         />
 
-        <SubmitButton
-          isPending={isUpdating || !!isSetting}
-          buttonText={'확인'}
-        />
+        <div className="flex justify-end">
+          <SubmitButton
+            isPending={isUpdating}
+            buttonText={'확인'}
+            ref={okButtonRef}
+            disabled={isSetting}
+          />
+        </div>
       </form>
     </Form>
   )

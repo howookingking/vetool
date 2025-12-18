@@ -7,9 +7,11 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { DEFAULT_ICU_ORDER_TYPE_DIC } from '@/constants/hospital/icu/chart/order'
-import { useIcuOrderStore, type OrderStep } from '@/lib/store/icu/icu-order'
-import type { IcuOrderColors } from '@/types/adimin'
+import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
+import { cn } from '@/lib/utils/utils'
+import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedIcuChart, SelectedIcuOrder } from '@/types/icu/chart'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import type { Dispatch, SetStateAction } from 'react'
 import OrderForm from './order-form'
 import OrdererSelectStep from './orderer-select-step'
@@ -17,41 +19,33 @@ import OrdererSelectStep from './orderer-select-step'
 type Props = {
   icuChartId: SelectedIcuChart['icu_chart_id']
   orders: SelectedIcuOrder[]
-  showOrderer: boolean
-  setOrderStep: (orderStep: OrderStep) => void
+  mainVet: SelectedIcuChart['main_vet']
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
-  mainVetName: SelectedIcuChart['main_vet']['name']
-  orderColorsData: IcuOrderColors
-  resetOrderStore: () => void
   hosId: string
 }
 
 export default function OrderDialog({
-  icuChartId,
-  orders,
-  showOrderer,
-  setOrderStep,
-  setSortedOrders,
-  resetOrderStore,
-  mainVetName,
-  orderColorsData,
   hosId,
+  icuChartId,
+  setSortedOrders,
+  orders,
+  mainVet,
 }: Props) {
-  const { orderStep, selectedChartOrder } = useIcuOrderStore()
+  const { orderStep, selectedChartOrder, setOrderStep, reset } =
+    useIcuOrderStore()
+  const {
+    basicHosData: { orderColorsData },
+  } = useBasicHosDataContext()
 
   const handleOpenChange = () => {
-    if (orderStep === 'closed') {
-      setOrderStep('edit')
-    } else {
-      setOrderStep('closed')
-    }
-    resetOrderStore()
+    orderStep === 'closed' ? setOrderStep('edit') : setOrderStep('closed')
+    reset()
   }
 
   return (
     <Dialog open={orderStep !== 'closed'} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-3xl">
-        <DialogHeader>
+      <DialogContent className={cn(orderStep === 'edit' ? 'max-w-3xl' : '')}>
+        <DialogHeader className="space-y-0">
           {orderStep === 'edit' && (
             <>
               <DialogTitle className="mb-2 flex items-center gap-2">
@@ -62,16 +56,18 @@ export default function OrderDialog({
                 <span>
                   {
                     DEFAULT_ICU_ORDER_TYPE_DIC[
-                      selectedChartOrder.icu_chart_order_type as keyof typeof DEFAULT_ICU_ORDER_TYPE_DIC
+                      selectedChartOrder.icu_chart_order_type!
                     ]
                   }
                   오더 수정
                 </span>
               </DialogTitle>
+              <VisuallyHidden>
+                <DialogDescription />
+              </VisuallyHidden>
 
               <OrderForm
                 hosId={hosId}
-                showOrderer={showOrderer}
                 icuChartId={icuChartId}
                 setSortedOrders={setSortedOrders}
               />
@@ -81,10 +77,15 @@ export default function OrderDialog({
           {orderStep === 'selectOrderer' && (
             <>
               <DialogTitle>오더자 선택</DialogTitle>
+              <VisuallyHidden>
+                <DialogDescription />
+              </VisuallyHidden>
+
               <OrdererSelectStep
                 icuChartId={icuChartId}
                 orders={orders}
-                mainVetName={mainVetName}
+                mainVet={mainVet}
+                hosId={hosId}
               />
             </>
           )}

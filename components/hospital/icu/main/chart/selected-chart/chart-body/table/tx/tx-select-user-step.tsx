@@ -1,7 +1,11 @@
 'use no memo'
 
-import { Button } from '@/components/ui/button'
-import { DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import SubmitButton from '@/components/common/submit-button'
+import {
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import {
   Form,
   FormControl,
@@ -10,46 +14,37 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
+import { useSafeRefresh } from '@/hooks/use-safe-refresh'
 import useUpsertTx from '@/hooks/use-upsert-tx'
 import { userLogFormSchema } from '@/lib/schemas/icu/chart/tx-schema'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
-import { cn } from '@/lib/utils/utils'
 import type { TxLog } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { DialogDescription } from '@radix-ui/react-dialog'
 import { format } from 'date-fns'
-import { LoaderCircle } from 'lucide-react'
-import { useParams } from 'next/navigation'
-import { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
 type Props = {
+  hosId: string
   handleClose: () => void
   isSetting?: boolean
 }
 
-export default function TxSelectUserStep({ handleClose, isSetting }: Props) {
-  const { hos_id } = useParams()
-
+export default function TxSelectUserStep({
+  hosId,
+  handleClose,
+  isSetting,
+}: Props) {
   const safeRefrsh = useSafeRefresh()
 
   const { txLocalState } = useIcuTxStore()
   const { selectedTxPendingQueue } = useIcuOrderStore()
   const { isSubmitting, upsertTx, upsertMultipleTx } = useUpsertTx({
-    hosId: hos_id as string,
+    hosId,
     onSuccess: () => handleClose(),
   })
-
-  const inputRef = useRef<HTMLInputElement>(null)
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus()
-    }
-  }, [])
 
   const form = useForm<z.infer<typeof userLogFormSchema>>({
     resolver: zodResolver(userLogFormSchema),
@@ -103,7 +98,7 @@ export default function TxSelectUserStep({ handleClose, isSetting }: Props) {
       <DialogHeader>
         <DialogTitle>처치자 선택</DialogTitle>
         <DialogDescription>
-          처치자의 코드 또는 이름을 입력해주세요
+          처치자 코드 또는 이름을 입력해주세요
         </DialogDescription>
       </DialogHeader>
 
@@ -122,7 +117,7 @@ export default function TxSelectUserStep({ handleClose, isSetting }: Props) {
                     {...field}
                     className="h-8 text-sm"
                     autoComplete="off"
-                    ref={inputRef}
+                    autoFocus
                     disabled={isSubmitting || isSetting}
                   />
                 </FormControl>
@@ -131,17 +126,12 @@ export default function TxSelectUserStep({ handleClose, isSetting }: Props) {
             )}
           />
 
-          <div className="col-span-2 ml-auto font-semibold">
-            <Button
-              type="submit"
-              className="ml-2"
-              disabled={isSubmitting || isSetting}
-            >
-              확인
-              <LoaderCircle
-                className={cn(isSubmitting ? 'ml-2 animate-spin' : 'hidden')}
-              />
-            </Button>
+          <div className="ml-auto">
+            <SubmitButton
+              isPending={isSubmitting}
+              buttonText="확인"
+              disabled={isSetting}
+            />
           </div>
         </form>
       </Form>

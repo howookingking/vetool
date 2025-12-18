@@ -103,7 +103,9 @@ export default function DtOrderForm({
       >
         <OrderFormField form={form} />
 
-        <OrderBorderCheckbox form={form} />
+        <div className="mt-2">
+          <OrderBorderCheckbox form={form} />
+        </div>
 
         <DialogFooter className="ml-auto w-full gap-2 md:gap-0">
           <DtDeleteOrderAlertDialog

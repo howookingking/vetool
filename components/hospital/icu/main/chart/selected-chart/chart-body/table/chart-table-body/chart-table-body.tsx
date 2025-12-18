@@ -2,31 +2,27 @@ import OrderCreatorRow from '@/components/hospital/icu/main/chart/selected-chart
 import OrderRows from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-rows'
 import { TableBody } from '@/components/ui/table'
 import useIsCommandPressed from '@/hooks/use-is-command-pressed'
+import useShortcutKey from '@/hooks/use-shortcut-key'
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
 import { formatOrders } from '@/lib/utils/utils'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
 import type { SelectedIcuChart, SelectedIcuOrder } from '@/types/icu/chart'
-import {
-  useEffect,
-  type Dispatch,
-  type RefObject,
-  type SetStateAction,
-} from 'react'
+import { useEffect, type Dispatch, type SetStateAction } from 'react'
 import { toast } from 'sonner'
+import type { OrderWidth } from '../chart-table-header/order-width-button'
 import ChartTableDialogs from './chart-table-dialogs'
 
 type Props = {
   sortedOrders: SelectedIcuOrder[]
   isSorting: boolean
-  orderWidth: number
-  isExport?: boolean
+  orderWidth: OrderWidth
   icuChartId: SelectedIcuChart['icu_chart_id']
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
-  cellRef?: RefObject<HTMLTableRowElement>
   chartData: SelectedIcuChart
   hosId: string
+  targetDate: string
 }
 
 export default function ChartTableBody({
@@ -35,29 +31,21 @@ export default function ChartTableBody({
   orderWidth,
   icuChartId,
   setSortedOrders,
-  cellRef,
   chartData,
   hosId,
+  targetDate,
 }: Props) {
   const {
     icu_chart_id,
     orders,
     patient: { species },
-    hos_id,
-    main_vet: { name },
+    main_vet,
   } = chartData
 
   const isCommandPressed = useIsCommandPressed()
 
   const {
-    basicHosData: {
-      showOrderer,
-      showTxUser,
-      vetList,
-      vitalRefRange,
-      timeGuidelineData,
-      orderColorsData,
-    },
+    basicHosData: { showOrderer, vetList },
   } = useBasicHosDataContext()
 
   const {
@@ -65,7 +53,7 @@ export default function ChartTableBody({
     reset: resetOrderStore,
     orderTimePendingQueue,
     selectedTxPendingQueue,
-    selectedOrderPendingQueue,
+    copiedOrderPendingQueue,
   } = useIcuOrderStore()
 
   const { setTxStep } = useIcuTxStore()
@@ -88,18 +76,12 @@ export default function ChartTableBody({
             : time,
       )
 
-      await upsertOrder(
-        hos_id,
-        icu_chart_id,
-        order.orderId,
-        updatedOrderTimes,
-        {
-          icu_chart_order_name: currentOrder.icu_chart_order_name,
-          icu_chart_order_comment: currentOrder.icu_chart_order_comment,
-          icu_chart_order_type: currentOrder.icu_chart_order_type,
-          icu_chart_order_priority: currentOrder.id,
-        },
-      )
+      await upsertOrder(hosId, icu_chart_id, order.orderId, updatedOrderTimes, {
+        icu_chart_order_name: currentOrder.icu_chart_order_name,
+        icu_chart_order_comment: currentOrder.icu_chart_order_comment,
+        icu_chart_order_type: currentOrder.icu_chart_order_type,
+        icu_chart_order_priority: currentOrder.id,
+      })
     }
 
     toast.success('오더시간을 변경하였습니다')
@@ -107,7 +89,6 @@ export default function ChartTableBody({
     resetOrderStore()
   }
 
-  // 고정, 멀티오더는 멀티오더 컴포넌트로 보냄
   useEffect(() => {
     if (!isCommandPressed) {
       if (orderTimePendingQueue.length >= 1) {
@@ -123,50 +104,64 @@ export default function ChartTableBody({
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [isCommandPressed])
 
+  // --- 복사한 다중 오더 붙여넣기 ---
+  useShortcutKey({
+    key: 'v',
+    condition: copiedOrderPendingQueue.length > 0,
+    callback: showOrderer
+      ? () => setOrderStep('selectOrderer')
+      : () => handleUpsertOrderWithoutOrderer(),
+  })
+
+  const handleUpsertOrderWithoutOrderer = async () => {
+    for (const order of copiedOrderPendingQueue) {
+      await upsertOrder(
+        hosId,
+        icuChartId,
+        undefined,
+        order.icu_chart_order_time!,
+        {
+          icu_chart_order_name: order.icu_chart_order_name!,
+          icu_chart_order_comment: order.icu_chart_order_comment!,
+          icu_chart_order_type: order.icu_chart_order_type!,
+          icu_chart_order_priority: order.id!,
+          is_bordered: order.is_bordered!,
+        },
+      )
+    }
+
+    toast.success('오더를 붙여넣었습니다')
+
+    resetOrderStore()
+  }
+  // --- 복사한 다중 오더 붙여넣기 ---
+
   return (
     <TableBody>
       <OrderRows
-        selectedOrderPendingQueue={selectedOrderPendingQueue}
-        setOrderStep={setOrderStep}
-        sortedOrders={sortedOrders}
+        hosId={hosId}
         isSorting={isSorting}
-        vitalRefRange={vitalRefRange}
+        sortedOrders={sortedOrders}
         species={species}
-        showOrderer={showOrderer}
-        showTxUser={showTxUser}
-        selectedTxPendingQueue={selectedTxPendingQueue}
-        orderTimePendingQueueLength={orderTimePendingQueue.length}
-        orderTimePendingQueue={orderTimePendingQueue}
         orderwidth={orderWidth}
-        cellRef={cellRef}
-        icuChartId={icuChartId}
-        hosId={hos_id}
-        timeGuidelineData={timeGuidelineData}
-        resetOrderStore={resetOrderStore}
+        targetDate={targetDate}
       />
 
       <OrderCreatorRow
         icuChartId={icuChartId}
         setSortedOrders={setSortedOrders}
         sortedOrders={sortedOrders}
-        orderColorsData={orderColorsData}
         weight={chartData.weight}
-        hosId={hos_id}
+        hosId={hosId}
       />
 
       <ChartTableDialogs
+        hosId={hosId}
         icuChartId={icuChartId}
         setSortedOrders={setSortedOrders}
         orders={orders}
-        showOrderer={showOrderer}
-        setOrderStep={setOrderStep}
-        resetOrderStore={resetOrderStore}
-        mainVetName={name}
-        orderColorsData={orderColorsData}
-        showTxUser={showTxUser}
+        mainVet={main_vet}
         isCommandPressed={isCommandPressed}
-        selectedOrderPendingQueue={selectedOrderPendingQueue}
-        hosId={hosId}
       />
     </TableBody>
   )

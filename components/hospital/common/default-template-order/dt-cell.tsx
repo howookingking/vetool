@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input'
 import { TableCell } from '@/components/ui/table'
-import { cn } from '@/lib/utils/utils'
+import { cn, HAS_ORDER } from '@/lib/utils/utils'
 
 type Props = {
   time: number
@@ -40,9 +40,9 @@ export default function DtCell({
           readOnly
           className={cn(
             isGuidelineTime && 'bg-amber-300/10',
-            hasOrder && 'bg-rose-400/10',
+            hasOrder && HAS_ORDER,
             canceledOrderTime && 'bg-transparent',
-            !hasOrder && isInOrderTimePendingQueue && 'bg-rose-400/10',
+            !hasOrder && isInOrderTimePendingQueue && HAS_ORDER,
             'h-11 min-w-12 rounded-none border-none px-1 text-center ring-inset focus-visible:ring-2 md:min-w-0',
           )}
           onContextMenu={handleRightClick}

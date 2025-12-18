@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
+import { useSafeRefresh } from '@/hooks/use-safe-refresh'
 import { pasteTemplateOrders } from '@/lib/services/icu/chart/order-mutation'
 import { pasteChart } from '@/lib/services/icu/chart/paste-chart'
 import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provider'
@@ -27,22 +27,32 @@ import { CheckIcon } from 'lucide-react'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { toast } from 'sonner'
 
-type Props = {
-  templateChartId: string
+type Props = OrderCreatorRowProps | PasteChartDialogProps
+
+type OrderCreatorRowProps = {
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>
-  tableHeader?: boolean // 이미 차트가 생성된 후 템플릿 오더를 추가하는 경우
-  chartId?: string
-  targetDate?: string
-  patientId?: string
+  isOrderCreator: true
+  chartId: string
+  patientId: null
+  targetDate: null
+  templateChartId: string
 }
 
+type PasteChartDialogProps = {
+  setIsDialogOpen: Dispatch<SetStateAction<boolean>>
+  isOrderCreator: false
+  chartId: null
+  patientId: string
+  targetDate: string
+  templateChartId: string
+}
 export default function ConfirmPasteTemplateDialog({
-  templateChartId,
   setIsDialogOpen,
-  tableHeader,
+  isOrderCreator,
   chartId,
   targetDate,
   patientId,
+  templateChartId,
 }: Props) {
   const safeRefresh = useSafeRefresh()
   const {
@@ -59,7 +69,7 @@ export default function ConfirmPasteTemplateDialog({
 
     // tableHeader : 이미 생성된 차트에서 템플릿오더를 추가
     // !tableHeader : 익일차트 혹은 첫차트에서 템플릿 오더를 추가하는 경우
-    tableHeader
+    isOrderCreator
       ? await pasteTemplateOrders(templateChartId, chartId!)
       : await pasteChart(patientId!, templateChartId, targetDate!, orderer)
 
