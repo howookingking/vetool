@@ -37,3 +37,20 @@ export const getPrevIoChartData = async (patientId: string) => {
 
   return data[1] ?? null
 }
+
+export type History = Awaited<ReturnType<typeof getHistories>>[number]
+export const getHistories = async (patientId: string) => {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from('icu_io')
+    .select('in_date, out_date')
+    .match({ patient_id: patientId })
+    .order('created_at', { ascending: false })
+
+  if (error) {
+    throw new Error(error.message)
+  }
+
+  return data
+}

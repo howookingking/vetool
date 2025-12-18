@@ -20,7 +20,7 @@ export default function HeaderRightButtons({
   const { icu_chart_id, icu_io, patient, orders } = chartData
 
   return (
-    <div className="absolute right-2 top-2 hidden gap-1 2xl:flex">
+    <div className="absolute right-2 top-1.5 hidden gap-1 2xl:flex">
       <AddTemplateDialog
         orders={orders}
         patientName={patient.name}
