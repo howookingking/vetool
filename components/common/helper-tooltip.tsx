@@ -23,7 +23,7 @@ export default function HelperTooltip({
   return (
     <TooltipProvider delayDuration={70}>
       <Tooltip>
-        <TooltipTrigger asChild className={cn(className, 'z-50')}>
+        <TooltipTrigger asChild className={cn(className, 'z-10')}>
           <span className="inline-flex items-center">
             {variant === 'help' ? (
               <CircleHelp className="cursor-pointer text-primary" size={18} />
