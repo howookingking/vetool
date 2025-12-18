@@ -70,7 +70,7 @@ export default function FactorToolTip() {
   return (
     <HelperTooltip side="right">
       <Table className="text-sm">
-        <TableCaption className="text-xs text-white">
+        <TableCaption className="text-xs text-muted-foreground">
           <p>
             *2021 AAHA Nutrition and Weight Management Guidelines for Dogs and
             Cats
@@ -83,13 +83,11 @@ export default function FactorToolTip() {
 
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px] text-xs text-white">
-              Factors
-            </TableHead>
-            <TableHead className="w-[180px] text-center text-sm font-bold text-white">
+            <TableHead className="w-[100px]">Factors</TableHead>
+            <TableHead className="w-[180px] text-center text-sm font-bold">
               개
             </TableHead>
-            <TableHead className="w-[180px] text-center text-sm font-bold text-white">
+            <TableHead className="w-[180px] text-center text-sm font-bold">
               고양이
             </TableHead>
           </TableRow>
@@ -97,15 +95,9 @@ export default function FactorToolTip() {
         <TableBody>
           {FACTORS.map((invoice) => (
             <TableRow key={invoice.factor}>
-              <TableCell className="text-xs font-medium">
-                {invoice.factor}
-              </TableCell>
-              <TableCell className="text-center text-xs">
-                {invoice.canine}
-              </TableCell>
-              <TableCell className="text-center text-xs">
-                {invoice.feline}
-              </TableCell>
+              <TableCell className="font-medium">{invoice.factor}</TableCell>
+              <TableCell className="text-center">{invoice.canine}</TableCell>
+              <TableCell className="text-center">{invoice.feline}</TableCell>
             </TableRow>
           ))}
         </TableBody>

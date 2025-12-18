@@ -1,7 +1,11 @@
 'use no memo'
 
 import SubmitButton from '@/components/common/submit-button'
-import { DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import {
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import {
   Form,
   FormControl,
@@ -17,7 +21,6 @@ import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
 import type { TxLog } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { DialogDescription } from '@radix-ui/react-dialog'
 import { format } from 'date-fns'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -95,7 +98,7 @@ export default function TxSelectUserStep({
       <DialogHeader>
         <DialogTitle>처치자 선택</DialogTitle>
         <DialogDescription>
-          내부적으로 정한 처치자의 코드 또는 이름을 입력해주세요
+          처치자 코드 또는 이름을 입력해주세요
         </DialogDescription>
       </DialogHeader>
 

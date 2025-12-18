@@ -87,7 +87,6 @@ export default function Cell({
     treatment,
     rowVitalRefRange,
   )
-  useCellAutofocus()
 
   const [briefTxResultInput, setBriefTxResultInput] = useState('')
 
@@ -264,7 +263,7 @@ export default function Cell({
         )}
 
         {hasComment && (
-          <TxDetailHover txComment={treatment?.icu_chart_tx_comment} />
+          <TxDetailHover txComment={treatment?.icu_chart_tx_comment!} />
         )}
 
         {isAbnormalVital && (

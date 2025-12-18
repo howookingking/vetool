@@ -40,8 +40,8 @@ export default function HelperTooltip({
           side={side}
           className={cn(
             variant === 'help'
-              ? 'border-2 border-primary bg-white text-black'
-              : 'bg-destructive',
+              ? 'border border-primary bg-white text-inherit'
+              : 'border border-destructive bg-white text-inherit',
           )}
         >
           {children}
