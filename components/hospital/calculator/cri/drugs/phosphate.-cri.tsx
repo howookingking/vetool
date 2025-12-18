@@ -80,7 +80,7 @@ export default function PhosphateCri({
             </p>
             <br />
 
-            <p>
+            <p className="mt-2 text-xs text-muted-foreground">
               * Small Animal Critical Care Medicine Second Edition, Deborah
               Silverstein & Kate Hopper
             </p>

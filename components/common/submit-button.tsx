@@ -1,4 +1,3 @@
-import { cn } from '@/lib/utils/utils'
 import { VariantProps } from 'class-variance-authority'
 import { ButtonHTMLAttributes } from 'react'
 import { Button, buttonVariants } from '../ui/button'
@@ -12,6 +11,7 @@ type Props = {
   className?: string
   variant?: VariantProps<typeof buttonVariants>['variant']
   disabled?: boolean
+  ref?: React.RefObject<HTMLButtonElement | null>
 }
 
 export default function SubmitButton({
@@ -22,6 +22,7 @@ export default function SubmitButton({
   variant,
   className,
   disabled,
+  ref,
 }: Props) {
   return (
     <Button
@@ -29,7 +30,9 @@ export default function SubmitButton({
       disabled={isPending || disabled}
       onClick={onClick}
       size="sm"
-      className={cn(buttonVariants({ variant }), className)}
+      variant={variant}
+      className={className}
+      ref={ref}
     >
       {buttonText}
       {isPending ? <Spinner /> : null}

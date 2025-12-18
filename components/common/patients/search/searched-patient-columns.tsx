@@ -25,6 +25,7 @@ export const searchedPatientsColumns = ({
   const columns: ColumnDef<Patient>[] = [
     {
       accessorKey: 'species',
+      size: 60,
       header: () => '종',
       cell: ({ row }) => {
         const species = row.original.species as Species
@@ -38,6 +39,7 @@ export const searchedPatientsColumns = ({
     {
       accessorKey: 'hos_patient_id',
       header: () => '환자번호',
+      size: 80,
       cell: ({ row }) => {
         const hosPatientId = row.original.hos_patient_id
         return <>{hosPatientId}</>
@@ -56,12 +58,17 @@ export const searchedPatientsColumns = ({
       header: () => '품종',
       cell: ({ row }) => {
         const breed = row.original.breed
-        return <>{breed}</>
+        return (
+          <span className="line-clamp-1" title={breed}>
+            {breed}
+          </span>
+        )
       },
     },
     {
       accessorKey: 'gender',
       header: () => '성별',
+      size: 90,
       cell: ({ row }) => {
         const gender = row.original.gender
         return <>{gender.toUpperCase()}</>
@@ -70,6 +77,7 @@ export const searchedPatientsColumns = ({
     {
       accessorKey: 'birth',
       header: () => '나이 (생일)',
+      size: 200,
       cell: ({ row }) => {
         const birth = row.original.birth
         return (

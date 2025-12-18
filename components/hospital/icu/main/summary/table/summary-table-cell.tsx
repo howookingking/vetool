@@ -20,7 +20,7 @@ export default function SummaryTableCell({
         backgroundColor: isPatientOut
           ? CELL_COLORS.OUT
           : pendingCount > 0
-            ? CELL_COLORS.NOT_DONE
+            ? CELL_COLORS.HAS_ORDER
             : CELL_COLORS.DONE,
       }}
     >

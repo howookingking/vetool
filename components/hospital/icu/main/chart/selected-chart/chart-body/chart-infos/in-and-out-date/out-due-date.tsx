@@ -7,7 +7,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
+import { useSafeRefresh } from '@/hooks/use-safe-refresh'
 import { updateOutDueDate } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import { cn } from '@/lib/utils/utils'
 import { format, parseISO } from 'date-fns'

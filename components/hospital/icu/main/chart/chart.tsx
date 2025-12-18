@@ -7,15 +7,9 @@ type Props = {
   selectedIcuChart: SelectedIcuChart
   hosId: string
   targetDate: string
-  patientId: string
 }
 
-export default function Chart({
-  selectedIcuChart,
-  hosId,
-  targetDate,
-  patientId,
-}: Props) {
+export default function Chart({ selectedIcuChart, hosId, targetDate }: Props) {
   const isPatientOut = selectedIcuChart?.icu_io?.out_date !== null
 
   return (
@@ -30,7 +24,6 @@ export default function Chart({
         chartData={selectedIcuChart}
         targetDate={targetDate}
         hosId={hosId}
-        patientId={patientId}
       />
 
       {isPatientOut ? <OutPatientCover /> : null}

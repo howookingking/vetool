@@ -8,21 +8,18 @@ import useLocalStorage from '@/hooks/use-local-storage'
 import useOrderSorting from '@/hooks/use-order-sorting'
 import type { SelectedIcuChart } from '@/types/icu/chart'
 import type { OrderWidth } from './chart-table-header/order-width-button'
+import useCellAutofocus from '@/hooks/use-cell-autofocus'
 
 type Props = {
   chartData: SelectedIcuChart
-  targetDate?: string
+  targetDate: string
   hosId: string
-  patientId: string
 }
 
-export default function ChartTable({
-  chartData,
-  targetDate,
-  hosId,
-  patientId,
-}: Props) {
-  const { icu_chart_id, orders, patient } = chartData
+export default function ChartTable({ chartData, targetDate, hosId }: Props) {
+  const { icu_chart_id, orders } = chartData
+
+  useCellAutofocus()
 
   const [orderWidth, setOrderWidth] = useLocalStorage<OrderWidth>(
     'orderWidth',
@@ -55,6 +52,7 @@ export default function ChartTable({
           setSortedOrders={setSortedOrders}
           sortedOrders={sortedOrders}
           onOrderMove={handleOrderMove}
+          targetDate={targetDate}
         />
       ) : (
         <ChartTableBody
@@ -65,6 +63,7 @@ export default function ChartTable({
           setSortedOrders={setSortedOrders}
           chartData={chartData}
           hosId={hosId}
+          targetDate={targetDate}
         />
       )}
     </Table>

@@ -112,6 +112,7 @@ export default function OrdererSelectStep({
     values: z.infer<typeof ordererSchema>,
   ) => {
     setIsUpdating(true)
+
     const formattedOrders = formatOrders(orderTimePendingQueue)
 
     for (const order of formattedOrders) {
@@ -142,6 +143,7 @@ export default function OrdererSelectStep({
 
   const handleUpsertOrder = async (values: z.infer<typeof ordererSchema>) => {
     setIsUpdating(true)
+
     for (const order of copiedOrderPendingQueue) {
       const updatedOrderTimes = [...order.icu_chart_order_time!]
 
@@ -231,8 +233,10 @@ export default function OrdererSelectStep({
 
         <div className="flex justify-end">
           <SubmitButton
-            isPending={isUpdating || !!isSetting}
+            isPending={isUpdating}
             buttonText={'확인'}
+            ref={okButtonRef}
+            disabled={isSetting}
           />
         </div>
       </form>

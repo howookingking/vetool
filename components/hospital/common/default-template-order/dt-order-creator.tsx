@@ -139,6 +139,7 @@ export default function DtOrderCreator({
 
       {orderType === 'checklist' && (
         <ChecklistOrderCreator
+          isSubmitting={isSubmitting}
           createOrder={createOrder}
           setOrderType={setOrderType}
           availableCheckListOrders={availableCheckListOrders}

@@ -1,6 +1,6 @@
 import UnReadCounts from '@/components/hospital/common/unread-counts'
 import { Button } from '@/components/ui/button'
-import { ClipboardCheckIcon, ClipboardIcon } from 'lucide-react'
+import { ClipboardCheckIcon, CopyIcon } from 'lucide-react'
 
 type Props = {
   handleClick: () => void
@@ -8,7 +8,7 @@ type Props = {
   leftOrderCountsAtTime: number
 }
 
-export default function LettOrderCountsAndCopyTxButton({
+export default function LeftOrderCountsAndCopyTxButton({
   handleClick,
   isCopied,
   leftOrderCountsAtTime,
@@ -26,7 +26,7 @@ export default function LettOrderCountsAndCopyTxButton({
         {isCopied ? (
           <ClipboardCheckIcon style={{ width: 14 }} />
         ) : (
-          <ClipboardIcon style={{ width: 14 }} />
+          <CopyIcon style={{ width: 14 }} />
         )}
       </Button>
     </>

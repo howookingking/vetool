@@ -15,7 +15,7 @@ export default function TxSelectUserStepSample({
       )}
     >
       <Dialog>
-        <TxSelectUserStep handleClose={() => {}} isSetting />
+        <TxSelectUserStep handleClose={() => {}} isSetting hosId="" />
       </Dialog>
     </div>
   )

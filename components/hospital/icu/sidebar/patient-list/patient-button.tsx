@@ -1,7 +1,7 @@
 import SpeciesToIcon from '@/components/common/species-to-icon'
 import { Button } from '@/components/ui/button'
 import type { Species } from '@/constants/hospital/register/signalments'
-import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
+import { useSafeRefresh } from '@/hooks/use-safe-refresh'
 import type { IcuSidebarPatient } from '@/lib/services/icu/icu-layout'
 import { cn, convertPascalCased } from '@/lib/utils/utils'
 import type { Vet } from '@/types'

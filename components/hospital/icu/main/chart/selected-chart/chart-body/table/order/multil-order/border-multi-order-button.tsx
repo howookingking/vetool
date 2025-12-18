@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
+import { useSafeRefresh } from '@/hooks/use-safe-refresh'
 import { updateIsBordered } from '@/lib/services/icu/chart/order-mutation'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { SquareIcon } from 'lucide-react'

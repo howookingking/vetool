@@ -1,6 +1,5 @@
 import { Button } from '@/components/ui/button'
 import { Kbd } from '@/components/ui/kbd'
-import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { CopyIcon } from 'lucide-react'
 import type { Dispatch, SetStateAction } from 'react'

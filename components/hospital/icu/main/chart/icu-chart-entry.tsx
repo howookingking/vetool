@@ -80,7 +80,6 @@ export default function IcuChartEntry({
         selectedIcuChart={selectedIcuChart}
         hosId={hosId}
         targetDate={targetDate}
-        patientId={patientId}
       />
     )
   }

@@ -9,10 +9,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Spinner } from '@/components/ui/spinner'
 import { getIcuTemplates } from '@/lib/services/icu/template/template'
 import type { IcuTemplate } from '@/types'
 import { BookmarkIcon } from 'lucide-react'
@@ -89,21 +87,9 @@ export default function PasteTemplateOrderDialog({
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={handleDialogOpenChange}>
-      {!isControlled &&
-        (isOrderCreator ? (
-          <DialogTrigger
-            className="flex items-center gap-2"
-            disabled={isFetching}
-          >
-            {isFetching ? <Spinner /> : <BookmarkIcon size={16} />}
-            템플릿
-          </DialogTrigger>
-        ) : (
-          <DialogTriggerButton
-            icon={BookmarkIcon}
-            title="템플릿 차트 붙여넣기"
-          />
-        ))}
+      {!isControlled && (
+        <DialogTriggerButton icon={BookmarkIcon} title="템플릿 차트 붙여넣기" />
+      )}
 
       <DialogContent className="flex h-[609.5px] flex-col justify-start md:max-w-[1200px]">
         <DialogHeader>

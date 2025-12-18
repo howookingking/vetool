@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
+import { useSafeRefresh } from '@/hooks/use-safe-refresh'
 import {
   deleteChart,
   deleteOrders,

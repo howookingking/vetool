@@ -24,6 +24,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { templateFormSchema } from '@/lib/schemas/icu/chart/template-schema'
 import { createTemplateChart } from '@/lib/services/icu/template/template'
+import { cn, HAS_ORDER } from '@/lib/utils/utils'
 import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { BookmarkPlusIcon } from 'lucide-react'
@@ -163,7 +164,7 @@ export default function AddMultiOrderToTemplateDialog({
                     <StyledCheckbox
                       title={
                         <>
-                          <span className="bg-rose-400/10 p-1">형광팬</span>을
+                          <span className={cn('p-1', HAS_ORDER)}>형광팬</span>을
                           같이 저장합니다
                         </>
                       }

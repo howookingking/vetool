@@ -90,7 +90,7 @@ export default function ReadOnlyCell({
         )}
 
         {hasComment && (
-          <TxDetailHover txComment={treatment?.icu_chart_tx_comment} />
+          <TxDetailHover txComment={treatment?.icu_chart_tx_comment!} />
         )}
 
         {isAbnormalVital && (

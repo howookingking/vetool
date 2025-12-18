@@ -2,12 +2,10 @@ import type {
   FilterState,
   SortFilterValue,
 } from '@/components/hospital/icu/sidebar/filters/filters'
-import { DEFAULT_ICU_ORDER_TYPE } from '@/constants/hospital/icu/chart/order'
 import type { OrderTimePendingQueue } from '@/lib/store/icu/icu-order'
 import type { Vet } from '@/types'
-import type { SelectedIcuOrder } from '@/types/icu/chart'
 import { type ClassValue, clsx } from 'clsx'
-import { differenceInDays, formatDate, isValid, parseISO } from 'date-fns'
+import { formatDate } from 'date-fns'
 import { redirect } from 'next/navigation'
 import { twMerge } from 'tailwind-merge'
 import type { VetoolUser } from '../services/auth/authorization'
@@ -271,16 +269,16 @@ export const borderedOrderClassName = (
 
   // 초기 스타일 설정
   const style: React.CSSProperties = {
-    borderLeft: '2.5px solid #fb7185',
-    borderRight: '2.5px solid #fb7185',
+    borderLeft: '2px solid #fb7185',
+    borderRight: '2px solid #fb7185',
   }
 
   if (!isPrevOrderBordered) {
-    style.borderTop = '2.5px solid #fb7185'
+    style.borderTop = '2px solid #fb7185'
   }
 
   if (!isNextOrderBordered) {
-    style.borderBottom = '2.5px solid #fb7185'
+    style.borderBottom = '2px solid #fb7185'
   }
 
   return style
@@ -420,3 +418,80 @@ export const isVideoFile = (contentType: string) => {
 
 export const handleSafeEnterBlur = (e: React.KeyboardEvent<HTMLInputElement>) =>
   e.key === 'Enter' && !e.nativeEvent.isComposing && e.currentTarget.blur()
+
+type CellClassParams = {
+  isGuidelineTime: boolean
+  hasOrder: boolean
+  isDone: boolean
+  isInPendingQueue: boolean
+  isInOrderTimePendingQueue: boolean
+}
+
+// cell에서 조건에 따른 CSS 표현
+// constants/colors와 동기화해야함
+export const MULTISELECT =
+  'bg-primary/10 ring-1 ring-primary focus-visible:ring-1 focus-visible:ring-primary'
+export const GUIDELINE = 'bg-amber-300/10'
+export const HAS_ORDER = 'bg-rose-400/10'
+export const DONE = 'bg-emerald-400/10'
+export const TIME_PENDING = 'bg-rose-400/10 ring-1 ring-rose-400'
+export const CANCEL_TIME_PENDING = 'bg-transparent'
+
+export const getCellClassName = (params: CellClassParams) => {
+  const { isInPendingQueue } = params
+
+  const baseBg = getBaseBgClass(params)
+  const orderTimePendingBg = getOrderTimePendingBg(params)
+
+  return cn(
+    'h-11 rounded-none border-none px-1 text-center ring-inset focus-visible:ring-1',
+
+    // 기본 상태
+    baseBg,
+
+    // 시간 pending 특수 처리
+    orderTimePendingBg,
+
+    // ✅ 무조건 최우선
+    isInPendingQueue && MULTISELECT,
+  )
+}
+
+const getOrderTimePendingBg = ({
+  isInOrderTimePendingQueue,
+  hasOrder,
+  isGuidelineTime,
+}: Pick<
+  CellClassParams,
+  'isInOrderTimePendingQueue' | 'hasOrder' | 'isGuidelineTime'
+>) => {
+  if (!isInOrderTimePendingQueue) return null
+
+  // 기존에 오더가 있었던 경우
+  if (hasOrder) {
+    // 가이드라인이면 가이드라인 색 유지
+    if (isGuidelineTime) return GUIDELINE
+    // 아니면 투명
+    return CANCEL_TIME_PENDING
+  }
+
+  // 기존에 오더가 없었던 경우
+  return TIME_PENDING
+}
+
+const getBaseBgClass = ({
+  isGuidelineTime,
+  hasOrder,
+  isDone,
+}: Pick<CellClassParams, 'isGuidelineTime' | 'hasOrder' | 'isDone'>) => {
+  // 완료가 최우선
+  if (isDone) return DONE
+
+  // 오더가 있으면 붉은색
+  if (hasOrder) return HAS_ORDER
+
+  // 오더 없고 가이드라인이면 amber
+  if (isGuidelineTime) return GUIDELINE
+
+  return ''
+}

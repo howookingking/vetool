@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useSafeRefresh } from '@/hooks/use-realtime-refresh'
+import { useSafeRefresh } from '@/hooks/use-safe-refresh'
 import { vetsFormSchema } from '@/lib/schemas/icu/chart/chart-info-schema'
 import { updateMainSubVet } from '@/lib/services/icu/chart/update-icu-chart-infos'
 import type { Json } from '@/lib/supabase/database.types'

@@ -6,11 +6,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
 
-export default function TxUpsertDialog({
-  showTxUser,
-}: {
-  showTxUser: boolean
-}) {
+export default function TxUpsertDialog({ hosId }: { hosId: string }) {
   const {
     txStep,
     setTxStep,
@@ -29,12 +25,10 @@ export default function TxUpsertDialog({
   return (
     <Dialog open={txStep !== 'closed'} onOpenChange={handleClose}>
       <DialogContent>
-        {txStep === 'detailInsert' && (
-          <TxDetailInsertStep showTxUser={showTxUser} />
-        )}
+        {txStep === 'detailInsert' && <TxDetailInsertStep hosId={hosId} />}
 
         {txStep === 'selectUser' && (
-          <TxSelectUserStep handleClose={handleClose} />
+          <TxSelectUserStep hosId={hosId} handleClose={handleClose} />
         )}
       </DialogContent>
     </Dialog>

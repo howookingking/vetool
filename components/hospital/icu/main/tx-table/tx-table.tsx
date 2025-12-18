@@ -124,7 +124,7 @@ export default function TxTable({
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
 
-      <TxUpsertDialog showTxUser={showTxUser} />
+      <TxUpsertDialog hosId={hosId} />
     </>
   )
 }

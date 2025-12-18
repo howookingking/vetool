@@ -2,6 +2,7 @@ import OrderCreatorRow from '@/components/hospital/icu/main/chart/selected-chart
 import OrderRows from '@/components/hospital/icu/main/chart/selected-chart/chart-body/table/chart-table-body/order-rows'
 import { TableBody } from '@/components/ui/table'
 import useIsCommandPressed from '@/hooks/use-is-command-pressed'
+import useShortcutKey from '@/hooks/use-shortcut-key'
 import { upsertOrder } from '@/lib/services/icu/chart/order-mutation'
 import { useIcuOrderStore } from '@/lib/store/icu/icu-order'
 import { useIcuTxStore } from '@/lib/store/icu/icu-tx'
@@ -10,16 +11,18 @@ import { useBasicHosDataContext } from '@/providers/basic-hos-data-context-provi
 import type { SelectedIcuChart, SelectedIcuOrder } from '@/types/icu/chart'
 import { useEffect, type Dispatch, type SetStateAction } from 'react'
 import { toast } from 'sonner'
+import type { OrderWidth } from '../chart-table-header/order-width-button'
 import ChartTableDialogs from './chart-table-dialogs'
 
 type Props = {
   sortedOrders: SelectedIcuOrder[]
   isSorting: boolean
-  orderWidth: number
+  orderWidth: OrderWidth
   icuChartId: SelectedIcuChart['icu_chart_id']
   setSortedOrders: Dispatch<SetStateAction<SelectedIcuOrder[]>>
   chartData: SelectedIcuChart
   hosId: string
+  targetDate: string
 }
 
 export default function ChartTableBody({
@@ -30,6 +33,7 @@ export default function ChartTableBody({
   setSortedOrders,
   chartData,
   hosId,
+  targetDate,
 }: Props) {
   const {
     icu_chart_id,
@@ -41,14 +45,7 @@ export default function ChartTableBody({
   const isCommandPressed = useIsCommandPressed()
 
   const {
-    basicHosData: {
-      showOrderer,
-      showTxUser,
-      vetList,
-      vitalRefRange,
-      timeGuidelineData,
-      orderColorsData,
-    },
+    basicHosData: { showOrderer, vetList },
   } = useBasicHosDataContext()
 
   const {
@@ -56,9 +53,7 @@ export default function ChartTableBody({
     reset: resetOrderStore,
     orderTimePendingQueue,
     selectedTxPendingQueue,
-    multiOrderPendingQueue,
-    setCopiedOrderPendingQueue,
-    setMultiOrderPendingQueue,
+    copiedOrderPendingQueue,
   } = useIcuOrderStore()
 
   const { setTxStep } = useIcuTxStore()
@@ -109,32 +104,53 @@ export default function ChartTableBody({
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [isCommandPressed])
 
+  // --- 복사한 다중 오더 붙여넣기 ---
+  useShortcutKey({
+    key: 'v',
+    condition: copiedOrderPendingQueue.length > 0,
+    callback: showOrderer
+      ? () => setOrderStep('selectOrderer')
+      : () => handleUpsertOrderWithoutOrderer(),
+  })
+
+  const handleUpsertOrderWithoutOrderer = async () => {
+    for (const order of copiedOrderPendingQueue) {
+      await upsertOrder(
+        hosId,
+        icuChartId,
+        undefined,
+        order.icu_chart_order_time!,
+        {
+          icu_chart_order_name: order.icu_chart_order_name!,
+          icu_chart_order_comment: order.icu_chart_order_comment!,
+          icu_chart_order_type: order.icu_chart_order_type!,
+          icu_chart_order_priority: order.id!,
+          is_bordered: order.is_bordered!,
+        },
+      )
+    }
+
+    toast.success('오더를 붙여넣었습니다')
+
+    resetOrderStore()
+  }
+  // --- 복사한 다중 오더 붙여넣기 ---
+
   return (
     <TableBody>
       <OrderRows
-        multiOrderPendingQueue={multiOrderPendingQueue}
-        setOrderStep={setOrderStep}
-        sortedOrders={sortedOrders}
-        isSorting={isSorting}
-        vitalRefRange={vitalRefRange}
-        species={species}
-        showOrderer={showOrderer}
-        showTxUser={showTxUser}
-        selectedTxPendingQueue={selectedTxPendingQueue}
-        orderTimePendingQueueLength={orderTimePendingQueue.length}
-        orderTimePendingQueue={orderTimePendingQueue}
-        orderwidth={orderWidth}
-        icuChartId={icuChartId}
         hosId={hosId}
-        timeGuidelineData={timeGuidelineData}
-        resetOrderStore={resetOrderStore}
+        isSorting={isSorting}
+        sortedOrders={sortedOrders}
+        species={species}
+        orderwidth={orderWidth}
+        targetDate={targetDate}
       />
 
       <OrderCreatorRow
         icuChartId={icuChartId}
         setSortedOrders={setSortedOrders}
         sortedOrders={sortedOrders}
-        orderColorsData={orderColorsData}
         weight={chartData.weight}
         hosId={hosId}
       />
@@ -144,16 +160,8 @@ export default function ChartTableBody({
         icuChartId={icuChartId}
         setSortedOrders={setSortedOrders}
         orders={orders}
-        showOrderer={showOrderer}
-        setOrderStep={setOrderStep}
-        resetOrderStore={resetOrderStore}
         mainVet={main_vet}
-        orderColorsData={orderColorsData}
-        showTxUser={showTxUser}
         isCommandPressed={isCommandPressed}
-        multiOrderPendingQueue={multiOrderPendingQueue}
-        setCopiedOrderPendingQueue={setCopiedOrderPendingQueue}
-        setMultiOrderPendingQueue={setMultiOrderPendingQueue}
       />
     </TableBody>
   )
