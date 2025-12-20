@@ -11,8 +11,8 @@ import {
 } from '@/components/ui/select'
 import { Spinner } from '@/components/ui/spinner'
 import {
-  getHistories,
-  type History,
+  getIoHistories,
+  type IoHistory,
 } from '@/lib/services/icu/chart/get-icu-chart'
 import { format } from 'date-fns'
 import { useRouter } from 'next/navigation'
@@ -27,30 +27,27 @@ type Props = {
 export default function PrevIo({ patientId, hosId, targetDate }: Props) {
   const { push } = useRouter()
 
-  const [histories, setHistories] = useState<History[]>([])
+  const [ioHistories, setIoHistories] = useState<IoHistory[]>([])
   const [isFetching, setIsFetching] = useState(false)
 
   const handleOpenChange = async (open: boolean) => {
-    if (open && histories.length === 0) {
+    if (open) {
       setIsFetching(true)
-      try {
-        const res = await getHistories(patientId)
-        setHistories(res)
-      } catch (error) {
-        console.error(error)
-      } finally {
-        setIsFetching(false)
-      }
+
+      const res = await getIoHistories(patientId)
+      setIoHistories(res)
+
+      setIsFetching(false)
     }
   }
 
   const handleMove = (inDate: string) => {
-    requestAnimationFrame(() => {
-      push(`/hospital/${hosId}/icu/${inDate}/chart/${patientId}`)
-    })
+    requestAnimationFrame(() =>
+      push(`/hospital/${hosId}/icu/${inDate}/chart/${patientId}`),
+    )
   }
 
-  const currentHistoryValue = histories.find(
+  const currentHistoryValue = ioHistories.find(
     (history) =>
       targetDate >= history.in_date &&
       (!history.out_date || targetDate <= history.out_date),
@@ -73,7 +70,7 @@ export default function PrevIo({ patientId, hosId, targetDate }: Props) {
           </div>
         ) : (
           <SelectGroup>
-            {histories.map((history) => (
+            {ioHistories.map((history) => (
               <SelectItem
                 key={history.in_date}
                 value={history.in_date}
