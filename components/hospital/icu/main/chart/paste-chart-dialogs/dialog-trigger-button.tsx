@@ -1,3 +1,4 @@
+import NewFeature from '@/components/common/new-feature'
 import { Button } from '@/components/ui/button'
 import { DialogTrigger } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils/utils'
@@ -31,7 +32,13 @@ export default function DialogTriggerButton({
           className="absolute left-4 top-1/2 -translate-y-1/2"
           style={{ width: 20, height: 20 }}
         />
-        <span className="ml-6 text-base">{title}</span>
+        <NewFeature
+          className={
+            title === '과거 차트 붙여넣기' ? '-right-2 -top-1' : 'hidden'
+          }
+        >
+          <span className="ml-6 text-base">{title}</span>
+        </NewFeature>
       </Button>
     </DialogTrigger>
   )

@@ -67,7 +67,12 @@ export default function PreviewDialog({
         </Button>
       </DialogTrigger>
 
-      <PreviewDialogContent copiedChart={copiedChart!} />
+      {copiedChart && (
+        <PreviewDialogContent
+          copiedChart={copiedChart}
+          isTemplate={isTemplate}
+        />
+      )}
     </Dialog>
   )
 }
