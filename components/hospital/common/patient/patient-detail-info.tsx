@@ -1,6 +1,6 @@
 import SpeciesToIcon from '@/components/common/species-to-icon'
 import { Species } from '@/constants/hospital/register/signalments'
-import { calculateAge, convertPascalCased } from '@/lib/utils/utils'
+import { calculateAge, cn, convertPascalCased } from '@/lib/utils/utils'
 import type { SelectedIcuChart } from '@/types/icu/chart'
 
 type Props = {
@@ -12,6 +12,7 @@ type Props = {
   weight: SelectedIcuChart['weight']
   weightMeasuredDate: SelectedIcuChart['weight_measured_date']
   isAlive: SelectedIcuChart['patient']['is_alive']
+  className?: string
 }
 
 export default function PatientDetailInfo({
@@ -23,9 +24,10 @@ export default function PatientDetailInfo({
   weight,
   weightMeasuredDate,
   isAlive = true,
+  className,
 }: Props) {
   return (
-    <div className="flex items-center gap-1 sm:gap-2">
+    <div className={cn('flex items-center gap-1 sm:gap-2', className)}>
       <SpeciesToIcon species={species as Species} />
       <div>
         <span>{name}</span>
@@ -39,7 +41,7 @@ export default function PatientDetailInfo({
       <span>{calculateAge(birth)} </span>
       <span>·</span>
       <span>
-        {weight === '' ? '체중 입력' : `${weight}kg`}
+        {weight === '' ? '체중 미측정' : `${weight}kg`}
 
         {weightMeasuredDate && (
           <span className="hidden md:inline">

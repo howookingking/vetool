@@ -1,13 +1,15 @@
-import { getPrevIoChartData } from '@/lib/services/icu/chart/get-icu-chart'
-import type { PrevIoChartData, SelectedIcuChart } from '@/types/icu/chart'
+import {
+  getPatientIos,
+  PatientIo,
+} from '@/lib/services/icu/chart/get-icu-chart'
+import type { SelectedIcuChart } from '@/types/icu/chart'
 import { useEffect, useState } from 'react'
+import PastePastChartDialog from './past-chart/paste-past-chart-dialog'
 import PasteCopiedChartDialog from './paste-copied-chart-dialog'
 import PasteDefaultChartDialog from './paste-default-chart-dialog'
 import PastePrevChartDialog from './paste-prev-chart-dialog'
-import PastePrevIoChartDialog from './paste-prev-io-chart-dialog'
 import PasteTemplateOrderDialog from './template/paste-template-order-dialog'
 import UndoIoDialog from './undo-Io-dialogi'
-import { useCopiedChartStore } from '@/lib/store/icu/copied-chart'
 
 type Props =
   | {
@@ -32,12 +34,11 @@ export default function PasteChartDialogs({
   hosId,
   targetDate,
 }: Props) {
-  const [prevIoChartData, setPrevIoChartData] =
-    useState<PrevIoChartData | null>(null)
+  const [patientIos, setPatientIos] = useState<PatientIo[]>([])
 
   useEffect(() => {
     if (!firstChart) return
-    getPrevIoChartData(patientId).then(setPrevIoChartData)
+    getPatientIos(patientId).then(setPatientIos)
   }, [patientId, firstChart])
 
   return (
@@ -58,11 +59,13 @@ export default function PasteChartDialogs({
         <PastePrevChartDialog targetDate={targetDate} patientId={patientId} />
       )}
 
-      {prevIoChartData && (
-        <PastePrevIoChartDialog
-          prevIoChartData={prevIoChartData}
-          patientId={patientId}
+      {/* 무조건 당일차트는 생성되므로 2개 이상인 경우 과거차트가 있음 */}
+      {/* paste, past 스펠링  */}
+      {patientIos.length > 1 && (
+        <PastePastChartDialog
           targetDate={targetDate}
+          patientId={patientId}
+          patientIos={patientIos.slice(1)}
         />
       )}
 
