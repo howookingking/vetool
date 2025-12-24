@@ -9,6 +9,7 @@ import {
 import { changeTargetDateInUrl } from '@/lib/utils/utils'
 import { format, isToday } from 'date-fns'
 import { ko } from 'date-fns/locale'
+import { TreesIcon } from 'lucide-react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { DayContentProps } from 'react-day-picker'
 
@@ -41,6 +42,10 @@ export default function IcuDatePicker({ targetDate }: { targetDate: string }) {
     )
   }
 
+  const isChrismas =
+    new Date(targetDate).getMonth() === 11 &&
+    new Date(targetDate).getDate() === 25
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -52,6 +57,7 @@ export default function IcuDatePicker({ targetDate }: { targetDate: string }) {
           {isToday(new Date(targetDate)) && (
             <PulsingDot className="right-0 top-0" />
           )}
+          {isChrismas && <span className="text-lg">🎄</span>}
         </Button>
       </PopoverTrigger>
 
