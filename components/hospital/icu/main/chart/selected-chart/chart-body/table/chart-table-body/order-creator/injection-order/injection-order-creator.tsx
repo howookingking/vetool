@@ -6,7 +6,6 @@ import {
   CommandList,
 } from '@/components/ui/command'
 import { Skeleton } from '@/components/ui/skeleton'
-import type { OrderType } from '@/constants/hospital/icu/chart/order'
 import { getHosDrugs } from '@/lib/services/admin/icu/hos-drugs'
 import { cn } from '@/lib/utils/utils'
 import { Command as CommandPrimitive } from 'cmdk'
@@ -18,11 +17,7 @@ import ArbitraryInjectionOrder from './arbitrary-injection-order'
 
 type Props = {
   weight: string
-  createOrder: (
-    orderName: string,
-    orderType: OrderType,
-    orderDescription: string,
-  ) => Promise<void>
+  createOrder: (orderName: string, orderDescription: string) => Promise<void>
 }
 
 type Option = Record<'value' | 'label', string> & Record<string, string>
@@ -66,7 +61,7 @@ export default function InjectionOrderCreator({ weight, createOrder }: Props) {
     setInputValue('')
     setIsAutocompleteOpen(false)
 
-    await createOrder(drugName, 'injection', totalDose)
+    await createOrder(drugName, totalDose)
 
     setTimeout(() => {
       autocompleteInputRef?.current?.blur()
@@ -103,7 +98,6 @@ export default function InjectionOrderCreator({ weight, createOrder }: Props) {
 
     createOrder(
       selectedOption.label,
-      'injection',
       `${(Number(selectedOption.value) * Number(weight)).toFixed(2)}ml`,
     )
     setInputValue('')
