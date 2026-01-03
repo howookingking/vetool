@@ -8,6 +8,7 @@ import {
   HeartPulseIcon,
   HomeIcon,
   ListChecksIcon,
+  MessageCircleIcon,
   PawPrintIcon,
   SliceIcon,
   SyringeIcon,
@@ -135,6 +136,15 @@ export default function AnnouncementCard({
                   className="animate-pulse rounded-md border-emerald-200 bg-emerald-50 px-2 font-bold text-emerald-700"
                 >
                   NEW
+                </Badge>
+              )}
+              {announcement.feedback_id?.feedback_description && (
+                <Badge
+                  variant="outline"
+                  className="rounded-md border-amber-200 bg-amber-50 px-2 font-bold text-amber-700 hover:bg-amber-50"
+                >
+                  <MessageCircleIcon className="mr-1 h-3 w-3" />
+                  피드백 반영
                 </Badge>
               )}
             </div>

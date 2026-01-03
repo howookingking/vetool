@@ -41,7 +41,7 @@ export const getAnnouncements = async () => {
   const { data, error } = await supabase
     .from('announcements')
     .select(
-      'announcement_id, announcement_title, announcement_category, created_at, is_pinned',
+      'announcement_id, announcement_title, announcement_category, created_at, is_pinned, feedback_id(feedback_description)',
     )
     .order('created_at', { ascending: false })
     .overrideTypes<AnnouncementList[]>()
