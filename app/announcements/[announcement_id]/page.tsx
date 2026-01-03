@@ -1,6 +1,6 @@
 import SingleAnnouncement from '@/components/announcements/single-announcement'
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
-import { getSingleAnouncement } from '@/lib/services/super/announcement/announcement'
+import { getSingleAnnouncement } from '@/lib/services/super/announcement/announcement'
 
 export default async function AnnouncementDetailPage(props: {
   params: Promise<{
@@ -8,9 +8,9 @@ export default async function AnnouncementDetailPage(props: {
   }>
 }) {
   const { announcement_id } = await props.params
-  const announcementDetailData = await getSingleAnouncement(announcement_id)
+  const singleAnnouncement = await getSingleAnnouncement(announcement_id)
 
-  if (!announcementDetailData) {
+  if (!singleAnnouncement) {
     return (
       <NoResultSquirrel
         className="h-screen"
@@ -21,7 +21,7 @@ export default async function AnnouncementDetailPage(props: {
 
   return (
     <div className="min-h-screen bg-slate-50/50">
-      <SingleAnnouncement announcementDetailData={announcementDetailData} />
+      <SingleAnnouncement singleAnnouncement={singleAnnouncement} />
     </div>
   )
 }

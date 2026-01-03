@@ -5,12 +5,9 @@ export type AnnouncementFormProps = Omit<
   'announcement_id' | 'created_at' | 'is_draft'
 >
 
-export type AnnouncementList = Omit<Announcements, 'announcement_content'> & {
-  feedback_id: Pick<VetoolFeedbacks, 'feedback_description'> | null
-}
-
-export type AnnouncementDetailData = Pick<
+export type Announcement = Pick<
   Announcements,
+  | 'announcement_id'
   | 'created_at'
   | 'announcement_title'
   | 'announcement_category'

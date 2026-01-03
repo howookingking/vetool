@@ -1,11 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import type {
-  AnnouncementDetailData,
-  AnnouncementFormProps,
-  AnnouncementList,
-} from '@/types/vetool'
+import type { Announcement, AnnouncementFormProps } from '@/types/vetool'
 import { redirect } from 'next/navigation'
 
 export const createAnnouncement = async (
@@ -40,11 +36,8 @@ export const getAnnouncements = async () => {
 
   const { data, error } = await supabase
     .from('announcements')
-    .select(
-      'announcement_id, announcement_title, announcement_category, created_at, is_pinned, feedback_id(feedback_description)',
-    )
+    .select('*')
     .order('created_at', { ascending: false })
-    .overrideTypes<AnnouncementList[]>()
 
   if (error) {
     console.error(error)
@@ -54,7 +47,7 @@ export const getAnnouncements = async () => {
   return data
 }
 
-export const getSingleAnouncement = async (announcementId: string) => {
+export const getSingleAnnouncement = async (announcementId: string) => {
   const supabase = await createClient()
 
   const { data, error } = await supabase
@@ -71,7 +64,7 @@ export const getSingleAnouncement = async (announcementId: string) => {
     .order('created_at')
     .match({ announcement_id: announcementId })
     .maybeSingle()
-    .overrideTypes<AnnouncementDetailData>()
+    .overrideTypes<Announcement>()
 
   if (error) {
     console.error(error)

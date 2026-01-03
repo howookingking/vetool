@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils/utils'
-import type { AnnouncementList } from '@/types/vetool'
+import { Announcements } from '@/types'
 import { format } from 'date-fns'
 import {
   BarChart4Icon,
@@ -62,7 +62,7 @@ export const CATEGORY_MAP = [
 ] as const
 
 type Props = {
-  announcement: AnnouncementList
+  announcement: Announcements
   index: number
   priority?: boolean
 }
@@ -138,7 +138,7 @@ export default function AnnouncementCard({
                   NEW
                 </Badge>
               )}
-              {announcement.feedback_id?.feedback_description && (
+              {announcement.feedback_id && (
                 <Badge
                   variant="outline"
                   className="rounded-md border-amber-200 bg-amber-50 px-2 font-bold text-amber-700 hover:bg-amber-50"
