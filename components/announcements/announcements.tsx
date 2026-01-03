@@ -1,7 +1,7 @@
 'use client'
 
 import { Input } from '@/components/ui/input'
-import type { AnnouncementList } from '@/types/vetool'
+import type { Announcements } from '@/types'
 import { MegaphoneIcon, PinIcon, SearchIcon } from 'lucide-react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useMemo, useState } from 'react'
@@ -10,7 +10,7 @@ import AnnouncementCard from './annoucement-card'
 export default function Announcements({
   announcements,
 }: {
-  announcements: AnnouncementList[]
+  announcements: Announcements[]
 }) {
   const [searchQuery, setSearchQuery] = useState('')
 

@@ -2,7 +2,7 @@
 
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
-import type { AnnouncementDetailData } from '@/types/vetool'
+import type { Announcement } from '@/types/vetool'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import {
@@ -19,9 +19,9 @@ import remarkGfm from 'remark-gfm'
 import { CATEGORY_MAP } from './annoucement-card'
 
 export default function SingleAnnouncement({
-  announcementDetailData,
+  singleAnnouncement,
 }: {
-  announcementDetailData: AnnouncementDetailData
+  singleAnnouncement: Announcement
 }) {
   const {
     announcement_title,
@@ -29,7 +29,7 @@ export default function SingleAnnouncement({
     created_at,
     feedback_id,
     announcement_category,
-  } = announcementDetailData
+  } = singleAnnouncement
 
   const category = useMemo(() => {
     return CATEGORY_MAP.find((c) => c.eng === announcement_category)
