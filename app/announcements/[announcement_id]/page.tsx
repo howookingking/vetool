@@ -1,7 +1,6 @@
-import AnnouncementsDetail from '@/components/announcements/announcements-detail'
-import BackToAnnouncementsButton from '@/components/announcements/back-to-announcement-button'
+import SingleAnnouncement from '@/components/announcements/single-announcement'
 import NoResultSquirrel from '@/components/common/no-result-squirrel'
-import { fetchAnnouncementDetail } from '@/lib/services/super/announcement/announcement'
+import { getSingleAnouncement } from '@/lib/services/super/announcement/announcement'
 
 export default async function AnnouncementDetailPage(props: {
   params: Promise<{
@@ -9,7 +8,7 @@ export default async function AnnouncementDetailPage(props: {
   }>
 }) {
   const { announcement_id } = await props.params
-  const announcementDetailData = await fetchAnnouncementDetail(announcement_id)
+  const announcementDetailData = await getSingleAnouncement(announcement_id)
 
   if (!announcementDetailData) {
     return (
@@ -21,9 +20,8 @@ export default async function AnnouncementDetailPage(props: {
   }
 
   return (
-    <div className="space-y-2 p-2">
-      <BackToAnnouncementsButton />
-      <AnnouncementsDetail announcementDetailData={announcementDetailData} />
+    <div className="min-h-screen bg-slate-50/50">
+      <SingleAnnouncement announcementDetailData={announcementDetailData} />
     </div>
   )
 }

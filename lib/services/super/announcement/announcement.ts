@@ -35,13 +35,13 @@ export const createAnnouncement = async (
   }
 }
 
-export const fetchAnnouncements = async () => {
+export const getAnnouncements = async () => {
   const supabase = await createClient()
 
   const { data, error } = await supabase
     .from('announcements')
     .select(
-      'announcement_id, announcement_title, announcement_category, created_at',
+      'announcement_id, announcement_title, announcement_category, created_at, is_pinned',
     )
     .order('created_at', { ascending: false })
     .overrideTypes<AnnouncementList[]>()
@@ -54,7 +54,7 @@ export const fetchAnnouncements = async () => {
   return data
 }
 
-export const fetchAnnouncementDetail = async (announcementId: string) => {
+export const getSingleAnouncement = async (announcementId: string) => {
   const supabase = await createClient()
 
   const { data, error } = await supabase
