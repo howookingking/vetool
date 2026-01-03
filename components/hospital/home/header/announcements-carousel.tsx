@@ -21,7 +21,7 @@ export default function AnnouncementsCarousel({
       setCurrentIndex((prevIndex) =>
         prevIndex >= announcementTitlesData.length - 1 ? 0 : prevIndex + 1,
       )
-    }, 5000)
+    }, 3000)
     return () => clearInterval(interval)
   }, [announcementTitlesData.length, isPaused])
 
@@ -30,8 +30,10 @@ export default function AnnouncementsCarousel({
   }
 
   return (
-    <div className="h-10 w-[300px]">
-      <div
+    <div className="h-10 min-w-[360px]">
+      <Link
+        href={`/announcements/${announcementTitlesData[currentIndex].announcement_id}`}
+        target="_blank"
         className="group relative flex h-full items-center overflow-hidden bg-background px-3 transition-all duration-300 hover:bg-accent"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
@@ -47,24 +49,22 @@ export default function AnnouncementsCarousel({
                 announcementTitlesData.length
 
             return (
-              <Link
+              <div
                 key={announcement.announcement_id}
-                className={`absolute w-full cursor-pointer ${
+                className={`absolute w-full ${
                   isCurrent
-                    ? 'animate-slideDown'
+                    ? 'z-10 animate-slideDown'
                     : isPrev
-                      ? 'animate-slideUp'
-                      : 'translate-y-full opacity-0'
+                      ? 'pointer-events-none animate-slideUp'
+                      : 'pointer-events-none translate-y-full opacity-0'
                 }`}
-                href={`/announcements/${announcement.announcement_id}`}
-                target="_blank"
               >
                 <div className="flex items-center justify-between px-2">
                   <p className="w-full truncate text-center text-sm font-medium">
                     {announcement.announcement_title}
                   </p>
                 </div>
-              </Link>
+              </div>
             )
           })}
         </div>
@@ -73,7 +73,7 @@ export default function AnnouncementsCarousel({
           size="16"
           className="ml-2 transform opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100"
         />
-      </div>
+      </Link>
     </div>
   )
 }

@@ -22,7 +22,7 @@ export type Database = {
           announcement_title: string
           created_at: string
           feedback_id: string | null
-          is_draft: boolean
+          is_pinned: boolean
         }
         Insert: {
           announcement_category?: string
@@ -31,7 +31,7 @@ export type Database = {
           announcement_title: string
           created_at?: string
           feedback_id?: string | null
-          is_draft?: boolean
+          is_pinned?: boolean
         }
         Update: {
           announcement_category?: string
@@ -40,7 +40,7 @@ export type Database = {
           announcement_title?: string
           created_at?: string
           feedback_id?: string | null
-          is_draft?: boolean
+          is_pinned?: boolean
         }
         Relationships: [
           {

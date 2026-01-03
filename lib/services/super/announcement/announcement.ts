@@ -41,7 +41,7 @@ export const fetchAnnouncements = async () => {
   const { data, error } = await supabase
     .from('announcements')
     .select(
-      'announcement_id, announcement_title, announcement_category, created_at, is_draft',
+      'announcement_id, announcement_title, announcement_category, created_at',
     )
     .order('created_at', { ascending: false })
     .overrideTypes<AnnouncementList[]>()
@@ -87,9 +87,8 @@ export const fetchAnnouncementTitles = async () => {
   const { data, error } = await supabase
     .from('announcements')
     .select('announcement_id, announcement_title')
-    .match({ is_draft: false })
+    .match({ is_pinned: true })
     .order('created_at', { ascending: false })
-    .limit(3)
 
   if (error) {
     console.error(error)
