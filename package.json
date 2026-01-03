@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "type": "npx supabase gen types typescript --project-id ognykpkimfcqlhtttlss > lib/supabase/database.types.ts",
     "db": "npx supabase db pull",
-    "https": "next dev --experimental-https"
+    "https": "next dev --experimental-https",
+    "knip": "pnpm dlx knip"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.777.0",
