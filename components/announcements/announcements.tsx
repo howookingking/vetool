@@ -1,18 +1,13 @@
-'use client'
-
 import { announcementsTableColumns } from '@/components/announcements/announcements-table-columns'
 import DataTable from '@/components/ui/data-table'
 import type { AnnouncementList } from '@/types/vetool'
 import { FileTextIcon } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 
 export default function Announcements({
   announcements,
 }: {
   announcements: AnnouncementList[]
 }) {
-  const { push } = useRouter()
-
   return (
     <div className="space-y-6 p-4 md:p-12">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -26,12 +21,11 @@ export default function Announcements({
           </h2>
         </div>
       </div>
+
       <DataTable
         columns={announcementsTableColumns}
         data={announcements}
-        onRowClick={(row) => {
-          push(`/announcements/${row.announcement_id}`)
-        }}
+        rowLength={12}
       />
     </div>
   )

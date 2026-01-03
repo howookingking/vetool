@@ -1,26 +1,11 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
-import { HOS_SIDEBAR_MENUS } from '@/constants/hospital/hos-sidebar-menus'
 import type { AnnouncementList } from '@/types/vetool'
-import { ColumnDef } from '@tanstack/react-table'
-import { ArrowUpDownIcon } from 'lucide-react'
+import type { ColumnDef } from '@tanstack/react-table'
+import Link from 'next/link'
 
 export const announcementsTableColumns: ColumnDef<AnnouncementList>[] = [
-  {
-    accessorKey: 'announcement_category',
-    header: '카테고리',
-
-    cell: ({ row }) => {
-      const category = row.original.announcement_category
-      const foundCategory = HOS_SIDEBAR_MENUS.find(
-        ({ path }) => path === category,
-      )
-      return (
-        <span className="text-sm text-muted-foreground">
-          {foundCategory?.name ?? '전체'}
-        </span>
-      )
-    },
-  },
   {
     accessorKey: 'announcement_title',
     header: '제목',
@@ -28,40 +13,35 @@ export const announcementsTableColumns: ColumnDef<AnnouncementList>[] = [
       const title = row.original.announcement_title
 
       return (
-        <Button
-          variant="ghost"
-          size="default"
-          className="w-full font-medium transition-colors hover:bg-transparent hover:text-primary hover:underline"
-        >
-          {title}
-        </Button>
+        <div className="flex justify-center">
+          <Button
+            asChild
+            variant="ghost"
+            size="default"
+            className="max-w-[200px] justify-start font-medium transition-colors hover:bg-transparent hover:text-primary hover:underline sm:max-w-none"
+          >
+            <Link
+              href={`/announcements/${row.original.announcement_id}`}
+              className="truncate"
+            >
+              {title}
+            </Link>
+          </Button>
+        </div>
       )
     },
   },
   {
     accessorKey: 'created_at',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          작성일
-          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
+    header: '작성일',
     cell: ({ row }) => {
       const createdAt = row.original.created_at
       return (
-        <span className="text-[10px] text-muted-foreground md:text-sm">
-          <span className="hidden text-sm md:inline">
-            {createdAt.slice(0, 10)}
-          </span>
-          <span className="inline text-[10px] md:hidden">
+        <div className="flex justify-center">
+          <span className="w-16 shrink-0 text-xs sm:w-20 sm:text-sm">
             {createdAt.slice(2, 10)}
           </span>
-        </span>
+        </div>
       )
     },
   },
