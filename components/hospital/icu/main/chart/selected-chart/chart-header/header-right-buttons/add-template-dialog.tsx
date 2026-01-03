@@ -155,7 +155,7 @@ export default function AddTemplateDialog({
                     <StyledCheckbox
                       title={
                         <>
-                          <span className="bg-rose-400/10 p-1">형광팬</span>을
+                          <span className="bg-rose-400/10 p-1">형광펜</span>을
                           같이 저장합니다
                         </>
                       }

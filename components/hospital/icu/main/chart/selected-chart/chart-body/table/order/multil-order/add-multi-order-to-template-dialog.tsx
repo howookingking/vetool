@@ -164,7 +164,7 @@ export default function AddMultiOrderToTemplateDialog({
                     <StyledCheckbox
                       title={
                         <>
-                          <span className={cn('p-1', HAS_ORDER)}>형광팬</span>을
+                          <span className={cn('p-1', HAS_ORDER)}>형광펜</span>을
                           같이 저장합니다
                         </>
                       }

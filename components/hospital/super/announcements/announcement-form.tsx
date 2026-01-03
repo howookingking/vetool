@@ -44,6 +44,7 @@ export default function AnnouncementForm({
     announcement_title: '',
     announcement_content: '',
     announcement_category: '',
+    is_pinned: false,
   })
 
   const handleInputChange = (
@@ -84,6 +85,7 @@ export default function AnnouncementForm({
       announcement_title: '',
       announcement_content: '',
       announcement_category: '',
+      is_pinned: false,
     })
   }
 
